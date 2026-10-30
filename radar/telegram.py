@@ -16,7 +16,7 @@ def format_event(ev: dict, report: dict) -> str:
         p = ev["plan"]
         side = "🟢 LONG" if p["side"] == "long" else "🔴 SHORT"
         mk = "spot + futures" if p["side"] == "long" else "solo futures"
-        lines = [f"<b>RADAR BTC · NUOVO SEGNALE {side}</b> ({mk})",
+        lines = [f"<b>RADAR SIGNAL BTC · NUOVO SEGNALE {side}</b> ({mk})",
                  f"Setup: <b>{p['setup']}</b> · {p['setup_label']}",
                  f"Chiusura {p['date']}: {_usd(p['price'])} · score flusso {p['score']:+.2f}", "",
                  "<b>Entrata DCA</b>"]
@@ -33,15 +33,15 @@ def format_event(ev: dict, report: dict) -> str:
         return "\n".join(lines)
     tr, market = ev["trade"], ev["market"]
     if t == "dca_fill":
-        return (f"<b>RADAR BTC · DCA eseguito</b> ({market})\nTranche riempite: {tr['tranches']}/3 · "
+        return (f"<b>RADAR SIGNAL BTC · DCA eseguito</b> ({market})\nTranche riempite: {tr['tranches']}/3 · "
                 f"prezzo medio {_usd(tr['avg_entry'])} · stop {_usd(tr['stop'])}")
     if t == "tp_hit":
         nxt = ", ".join(_usd(x) for x in tr.get("next_tps", [])) or "trailing"
-        return (f"<b>RADAR BTC · Take profit {tr['tp_hit']} raggiunto</b> ({market})\n"
+        return (f"<b>RADAR SIGNAL BTC · Take profit {tr['tp_hit']} raggiunto</b> ({market})\n"
                 f"Stop ora a {_usd(tr['stop'])} · prossimi target: {nxt} · residuo {tr['remaining']*100:.0f}%")
     if t == "closed":
         emoji = "✅" if tr["pnl_pct_capital"] > 0 else "❌"
-        return (f"<b>RADAR BTC · Trade chiuso {emoji}</b> ({market}, {tr['side']})\n"
+        return (f"<b>RADAR SIGNAL BTC · Trade chiuso {emoji}</b> ({market}, {tr['side']})\n"
                 f"Uscita: {tr['exit']} · {tr['days']} gg · PnL {tr['pnl_pct_invested']:+.2f}% sull'investito")
     return str(ev)
 
@@ -52,7 +52,7 @@ def daily_brief(report: dict) -> str:
     pos = (f"Trade {ot['side']} aperto dal {ot['signal_date']} · medio {_usd(ot['avg_entry'])} · stop {_usd(ot['stop'])}"
            if ot else "Nessun trade aperto")
     active = [x["setup"] for x in report.get("checklist", []) if x["active"]]
-    return (f"<b>RADAR BTC · {report['date']}</b>\nPrezzo {_usd(report['price'])} · score flusso {report['score']:+.2f} "
+    return (f"<b>RADAR SIGNAL BTC · {report['date']}</b>\nPrezzo {_usd(report['price'])} · score flusso {report['score']:+.2f} "
             f"(soglia ±{report['threshold']}) · regime {report['regime']}\n"
             f"Setup attivi: {', '.join(active) if active else 'nessuno'}\n"
             f"CVD perp z {c['perp_flow_z']:+.2f} · L/S retail z {c['retail_ls_z']:+.2f} · "

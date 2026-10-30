@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1024" height="1024"><defs>
+    <linearGradient id="aiBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b3a8f"/><stop offset=".55" stop-color="#0b1f5c"/><stop offset="1" stop-color="#050d2b"/></linearGradient>
+    <radialGradient id="aiGlow" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="#2f8cff" stop-opacity=".55"/><stop offset="1" stop-color="#2f8cff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="aiSweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5ef0c4" stop-opacity="0"/><stop offset="1" stop-color="#5ef0c4" stop-opacity=".85"/></linearGradient>
+    <linearGradient id="aiGloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    </defs>
+      <rect x="2" y="2" width="96" height="96" rx="22" fill="url(#aiBg)"/>
+      <rect x="2" y="2" width="96" height="96" rx="22" fill="url(#aiGlow)"/>
+      <g fill="none" stroke="#7fb4ff" stroke-opacity=".38" stroke-width="2">
+        <circle cx="50" cy="54" r="34"/><circle cx="50" cy="54" r="23"/><circle cx="50" cy="54" r="12"/>
+        <path d="M16 54h68M50 20v68" stroke-opacity=".22"/>
+      </g>
+      <path d="M50 54 L84 54 A34 34 0 0 0 74 30 Z" fill="url(#aiSweep)" transform="rotate(-38 50 54)"/>
+      <path d="M50 54 L77 33" stroke="#9ff7dd" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="68" cy="38" r="5.2" fill="#30d158"/><circle cx="68" cy="38" r="9" fill="#30d158" fill-opacity=".25"/>
+      <circle cx="50" cy="54" r="3.4" fill="#d6e7ff"/>
+      <path d="M2 24 Q2 2 24 2 H76 Q98 2 98 24 V40 Q50 30 2 46 Z" fill="url(#aiGloss)"/>
+      <rect x="2.5" y="2.5" width="95" height="95" rx="21.5" fill="none" stroke="#fff" stroke-opacity=".18"/>
+    </svg>

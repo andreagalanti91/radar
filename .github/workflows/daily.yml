@@ -1,4 +1,4 @@
-name: Radar BTC daily
+name: Radar Signal BTC daily
 
 on:
   schedule:

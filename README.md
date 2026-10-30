@@ -1,95 +1,106 @@
-# Radar BTC
+<p align="center"><img src="brand/banner.png" alt="Radar Signal BTC" width="100%"></p>
 
-Segnali swing su Bitcoin (orizzonte di giorni, ~10 trade l'anno) basati su **order flow** e **posizionamento** dei derivati, con piano **DCA in entrata e in uscita**, alert su **Telegram** e **dashboard online** aggiornata ogni giorno.
+# Radar Signal BTC
 
-Ispirato ai dati che mostra [FlowX](https://app.flowx.trade/) (CVD spot/perp, liquidazioni, basis, open interest), ma costruito direttamente sulle fonti pubbliche degli exchange.
+Segnali swing su Bitcoin (orizzonte di giorni, circa 10 trade l'anno) basati su **order flow** e **posizionamento** dei derivati. Ogni notte il modello legge i dati, decide se c'è un setup e invia il piano operativo su **Telegram** con entrata e uscita a scaglioni (DCA). La **dashboard** online si aggiorna da sola.
 
-## Come funziona
+**Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot)
 
-Sei setup indipendenti, una sola posizione alla volta (il long ha priorità). Tutti usano dati giornalieri a chiusura UTC.
+## La dashboard
+
+Pensata per il telefono (si installa come app dalla schermata Home), in tema chiaro e scuro, con quattro sezioni:
+
+| Sezione | Cosa trovi |
+|---|---|
+| **Oggi** | prezzo, score di flusso, indicatori, piano operativo o trade aperto, stato dei 6 setup, grafico con i trade |
+| **Simulatore** | inserisci capitale, data di partenza, leva e mercato e vedi quanto varrebbe oggi seguendo i segnali; calcolo di quante volte un obiettivo di capitale è stato raggiunto in passato |
+| **Statistiche** | curva di equity contro BTC, backtest per periodo, leva e setup, storico trade |
+| **Metodo** | regole complete e limiti del sistema |
+
+## I 6 setup
+
+Una sola posizione alla volta (il long ha priorità). Dati giornalieri a chiusura UTC.
 
 | Setup | Lato | Condizione | Logica |
 |---|---|---|---|
 | `flow` | long | z(CVD perp 14g) − z(long/short retail) > 1,5 | acquisti aggressivi sui perp + retail scettico |
-| `capit` | long | drawdown 30g < −12% e open interest −8% in 7g | flush della leva: liquidazioni hanno ripulito il mercato |
+| `capit` | long | drawdown 30g < −12% e open interest −8% in 7g | flush della leva: le liquidazioni hanno ripulito il mercato |
 | `fundneg` | long | funding medio 7g < 0 | short affollati che pagano: carburante per uno squeeze |
 | `brk` | long | nuovo massimo 20g, CVD perp > +1σ, trend rialzista | breakout confermato dal flusso |
 | `sflow` | short | score < −1,5 in regime ribassista | flusso debole + retail long |
 | `sfund` | short | funding 7g > +1σ in regime ribassista | rimbalzo a leva dentro un trend ribassista |
 
-Regime ribassista = prezzo sotto SMA200 e SMA50 sotto SMA200. Gli short contro-trend storicamente perdono, quindi sono filtrati. Gli short si fanno solo sui futures.
+Regime ribassista: prezzo sotto la SMA200 e SMA50 sotto la SMA200. Gli short si fanno solo sui futures.
 
-### Piano operativo (multipli dell'ATR a 14 giorni)
-- **Entrata DCA**: 40% all'apertura successiva al segnale, 30% limit a −0,75 ATR, 30% limit a −1,5 ATR (validi 7 giorni).
+### Gestione della posizione (multipli dell'ATR a 14 giorni)
+- **Entrata DCA**: 40% all'apertura dopo il segnale, 30% limit a −0,75 ATR, 30% limit a −1,5 ATR (validi 7 giorni).
 - **Stop**: −3 ATR dal primo ingresso.
-- **Uscita DCA**: 30% a +1 ATR dal prezzo medio, 30% a +3 ATR, 40% in trailing a 3 ATR. Dopo il TP1 lo stop va a pareggio.
+- **Uscita DCA**: 30% a +1 ATR dal prezzo medio, 30% a +3 ATR, 40% in trailing a 3 ATR. Dopo il primo target lo stop va a pareggio.
 - **Uscita forzata** dopo 45 giorni.
-- **Leva consigliata sui futures: 2x**, margine isolato. Con lo stop a circa 6–9% dal prezzo medio, a 2x la perdita massima è circa il 18% del capitale allocato, mentre la liquidazione è a circa −45%: lo stop scatta molto prima.
+- **Leva consigliata sui futures: 2x**, margine isolato.
 
-## Risultati del backtest (mar 2022 – ott 2026, commissioni e funding inclusi)
+## Risultati del backtest (mar 2022 – ott 2026)
 
-| | Futures train (2022–23) | Futures test (2024–26) | Spot train | Spot test |
+Commissioni e funding inclusi. Parametri scelti su mar 2022 – dic 2023, verificati su gen 2024 – oggi.
+
+| | Futures train | Futures test | Spot train | Spot test |
 |---|---|---|---|---|
 | Trade | 20 | 27 | 23 | 26 |
 | Win rate | 90% | 88,9% | 91,3% | 84,6% |
-| Profit factor | 9,9 | 4,36 | 75,7 | 2,16 |
 | Aspettativa/trade | +2,01% | +2,19% | +1,83% | +1,43% |
 | Max drawdown | −4,4% | −16,4% | −0,4% | −16,5% |
 
-Futures sull'intero periodo, con leva (BTC buy & hold nello stesso periodo: +76%, max drawdown −67%):
-
-| Leva | Rendimento | CAGR | Max drawdown | Peggior trade |
+| Leva (futures) | Rendimento | CAGR | Max drawdown | Peggior trade |
 |---|---|---|---|---|
 | 1x | +157% | +22% | −16% | −9% |
 | **2x** | **+499%** | **+47%** | **−31%** | **−18%** |
 | 3x | +1181% | +73% | −45% | −27% |
 
-Circa 10 trade l'anno.
+BTC buy & hold nello stesso periodo: +76%, max drawdown −67%.
 
-### Robustezza
-- Test di sensibilità su 21 varianti dei parametri, cambiandone uno alla volta: tutte in profitto, win rate tra 75% e 94%, rendimento a 1x tra +65% e +163%. Il set scelto è nella parte alta della distribuzione: **un'aspettativa realistica è inferiore al backtest**, nell'ordine di +80–120% a 1x sullo stesso periodo.
-- Periodo 2020–21 (mai usato, solo i setup che non richiedono le metrics di Binance): 6 trade su 6 in profitto.
-- Limite: la scelta dei setup ha guardato anche i dati 2024–26, quindi il test non è del tutto "cieco". Il miglior test sarà il trading reale.
-- Le barre giornaliere non dicono cosa succede prima tra stop e target nello stesso giorno: il backtest assume sempre il caso peggiore (prima lo stop).
-
-## Dashboard
-
-Quattro sezioni: **Oggi** (score, piano operativo, setup attivi, grafico), **Simulatore** (inserisci capitale, data di partenza, leva e mercato e vedi quanto varrebbe oggi seguendo i segnali, più il calcolo di quante volte un obiettivo è stato raggiunto nel passato), **Statistiche** (backtest per periodo, leva e setup, storico trade), **Metodo**.
+### Limiti
+- Il campione è di circa 50 trade: il win rate reale può scostarsi di diversi punti.
+- Test di sensibilità su 21 varianti dei parametri: tutte in profitto (win rate 75–94%), ma il set scelto è nella parte alta. Un'aspettativa realistica è sotto il backtest.
+- Su orizzonti brevi il sistema rende poco: in finestre di 2 mesi il raddoppio del capitale non è mai avvenuto con leva fino a 3x. Il simulatore della dashboard mostra questo calcolo per qualsiasi obiettivo.
+- Con barre giornaliere il backtest assume sempre il caso peggiore tra stop e target nello stesso giorno.
 
 ## Ciclo di miglioramento
 
-`radar/research.py` contiene la scorecard e il gate di promozione; `RESEARCH.md` è il diario delle iterazioni.
+Ogni ora un'iterazione automatica prova un'idea nuova e la promuove solo se supera il gate in `radar/research.py`: migliore aspettativa nel test, nessun peggioramento di drawdown e training, robustezza sulle varianti dei parametri, nessuna modifica con un trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
 
-## Uso
+## Messa online
+
+1. Bot Telegram da [@BotFather](https://t.me/BotFather); il token non va mai scritto nel codice.
+2. *Settings → Secrets and variables → Actions*: `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID`.
+3. *Settings → Pages → Source: GitHub Actions*.
+4. Il workflow `Radar Signal BTC daily` gira ogni giorno alle 00:30 UTC: aggiorna i dati, invia gli alert e pubblica la dashboard.
+
+Alert inviati: nuovo segnale con piano completo, tranche DCA eseguita, target raggiunto, trade chiuso, riepilogo giornaliero (disattivabile con la variabile `RADAR_DAILY_BRIEF=0`).
+
+## Uso locale
 
 ```bash
 pip install -r requirements.txt
-python -m radar.cli daily          # aggiorna dati, segnale, alert, dashboard in site/index.html
+python -m radar.cli daily          # dati, segnale, alert, dashboard in site/
 python -m radar.cli backtest       # statistiche e lista trade
+python -m radar.research           # scorecard della strategia
 python -m radar.cli test-telegram  # verifica il bot
 ```
-
-## Messa online (GitHub Actions + Pages)
-
-1. **Bot Telegram**: crea un bot con [@BotFather](https://t.me/BotFather) e copia il token. Scrivi un messaggio al bot e ricava il tuo `chat_id` da `https://api.telegram.org/bot<TOKEN>/getUpdates`. Il token non va mai scritto nel codice.
-2. Nel repo GitHub: *Settings → Secrets and variables → Actions*, aggiungi `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID`.
-3. *Settings → Pages → Source: GitHub Actions*.
-4. *Actions → Radar BTC daily → Run workflow* per il primo avvio. Poi gira da solo ogni giorno alle 00:30 UTC.
-
-Alert inviati: nuovo segnale con piano completo, tranche DCA eseguita, take profit raggiunto, trade chiuso, più un riepilogo giornaliero (disattivabile con la variabile `RADAR_DAILY_BRIEF=0`).
-
-Nota: i runner GitHub sono negli USA, dove l'API futures di Binance è bloccata. Per questo il tool usa l'archivio pubblico `data.binance.vision`, `data-api.binance.vision` e OKX, che funzionano ovunque.
 
 ## Struttura
 
 ```
 radar/data.py         download e cache incrementale (data/*.csv)
 radar/features.py     CVD spot/perp, funding, OI, long/short, basis, ATR, trend
-radar/strategy.py     score, parametri, piano DCA
+radar/strategy.py     6 setup, parametri, piano DCA
 radar/backtest.py     simulazione con DCA, commissioni, funding
 radar/live.py         stato giornaliero, trade aperto, eventi
+radar/research.py     scorecard e gate di promozione
 radar/telegram.py     messaggi
-radar/dashboard.py    generazione della dashboard
+radar/dashboard*.py   dashboard (stile Apple HIG, light/dark, mobile)
+brand/                icona, favicon, banner
 ```
+
+Fonti dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear & Greed).
 
 Strumento di analisi, non consulenza finanziaria.

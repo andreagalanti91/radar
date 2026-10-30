@@ -1,4 +1,4 @@
-# Diario di ricerca
+# Diario di ricerca · Radar Signal BTC
 
 Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la valuta con
 `python -m radar.research` e la promuove solo se supera il gate in `radar/research.py`:

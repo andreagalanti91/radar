@@ -1,233 +1,331 @@
-<title>Radar BTC</title>
+<title>Radar Signal BTC</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: banco strumenti. Lettura di stato in alto, piano operativo, poi grafico e storico. */
+/* Layout: app iOS a schede. Titolo grande, liste raggruppate inset, tab bar traslucida in basso su telefono,
+   segmented control in alto su schermi larghi. Colori di sistema Apple in chiaro e scuro. */
 :root{
-  --bg:#f3f5f6; --panel:#ffffff; --ink:#122028; --muted:#5b6b73; --line:#d9e0e3;
-  --accent:#0d6e8a; --long:#13804f; --short:#c0392b; --warn:#b7791f; --grid:#e8edef;
-  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
-  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --bg:#f2f2f7; --card:#ffffff; --fill:#e9e9ee; --fill2:#f2f2f7;
+  --label:#000000; --label2:rgba(60,60,67,.62); --label3:rgba(60,60,67,.32); --sep:rgba(60,60,67,.18);
+  --tint:#007aff; --green:#34c759; --red:#ff3b30; --orange:#ff9500; --indigo:#5856d6; --teal:#30b0c7;
+  --chrome:rgba(249,249,251,.78); --shadow:0 1px 2px rgba(0,0,0,.04),0 6px 24px rgba(0,0,0,.05);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,"Segoe UI",Roboto,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,monospace;
+  --r-card:16px; --r-ctl:10px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0c1418; --panel:#121d22; --ink:#e3ecef; --muted:#8fa2aa; --line:#22323a;
-  --accent:#4fb3cf; --long:#3ccf8a; --short:#ff6b5b; --warn:#e3a73a; --grid:#1a272d; color-scheme:dark}}
+  --bg:#000000; --card:#1c1c1e; --fill:#2c2c2e; --fill2:#232325;
+  --label:#ffffff; --label2:rgba(235,235,245,.62); --label3:rgba(235,235,245,.3); --sep:rgba(84,84,88,.6);
+  --tint:#0a84ff; --green:#30d158; --red:#ff453a; --orange:#ff9f0a; --indigo:#5e5ce6; --teal:#40c8e0;
+  --chrome:rgba(22,22,24,.74); --shadow:none; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0c1418; --panel:#121d22; --ink:#e3ecef; --muted:#8fa2aa; --line:#22323a;
-  --accent:#4fb3cf; --long:#3ccf8a; --short:#ff6b5b; --warn:#e3a73a; --grid:#1a272d; color-scheme:dark}
+  --bg:#000000; --card:#1c1c1e; --fill:#2c2c2e; --fill2:#232325;
+  --label:#ffffff; --label2:rgba(235,235,245,.62); --label3:rgba(235,235,245,.3); --sep:rgba(84,84,88,.6);
+  --tint:#0a84ff; --green:#30d158; --red:#ff453a; --orange:#ff9f0a; --indigo:#5e5ce6; --teal:#40c8e0;
+  --chrome:rgba(22,22,24,.74); --shadow:none; color-scheme:dark}
+
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0}
-.wrap{max-width:1180px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
-h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
-h1{font-size:30px;font-weight:800;letter-spacing:-.01em}
-h2{font-size:17px;font-weight:700}
-.label{font:500 11px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
-header p{margin:4px 0 0;color:var(--muted)}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font:600 13px var(--mono);letter-spacing:.04em;border:1px solid currentColor}
-.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
-.pill.long{color:var(--long)} .pill.short{color:var(--short)} .pill.wait{color:var(--muted)} .pill.open{color:var(--accent)}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
-.top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px}
-@media (max-width:820px){.top{grid-template-columns:minmax(0,1fr)}}
-.gauge{display:grid;gap:14px}
-.scoreline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.score{font:800 52px/1 var(--display);font-variant-numeric:tabular-nums}
-.meter{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,color-mix(in srgb,var(--short) 35%,transparent),var(--grid) 40%,var(--grid) 60%,color-mix(in srgb,var(--long) 35%,transparent))}
-.meter .tick{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--muted)}
-.meter .needle{position:absolute;top:-6px;width:4px;height:26px;margin-left:-2px;border-radius:2px;background:var(--ink)}
-.scale{display:flex;justify-content:space-between;font:11px var(--mono);color:var(--muted)}
-.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 18px}
-@media (max-width:520px){.kv{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.kv div{display:grid;gap:3px;min-width:0}
-.kv b{font:500 17px var(--mono);font-variant-numeric:tabular-nums}
-.kv small{color:var(--muted);font-size:12px}
-.plan{display:grid;gap:14px}
-.plan table{width:100%;border-collapse:collapse;font:14px var(--mono);font-variant-numeric:tabular-nums}
-.plan td{padding:6px 0;border-bottom:1px solid var(--line)}
-.plan td:last-child{text-align:right}
-.note{color:var(--muted);font-size:13px;margin:0}
-.chart{height:380px}
-.chart.small{height:150px}
-.charts{display:grid;gap:6px}
-.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:12px var(--mono);color:var(--muted)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-@media (max-width:820px){.stats{grid-template-columns:minmax(0,1fr)}}
-.scroll{overflow-x:auto}
-table.grid{width:100%;border-collapse:collapse;font:13px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
-table.grid th{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
-table.grid td{text-align:right;padding:6px 6px;border-bottom:1px solid var(--grid)}
-table.grid th:first-child,table.grid td:first-child{text-align:left}
-.pos{color:var(--long)} .neg{color:var(--short)}
-.tabs{display:flex;gap:6px}
-.tabs button{font:500 12px var(--mono);padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
-.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-footer{color:var(--muted);font-size:12.5px;max-width:80ch}
-nav.sections{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding-top:6px}
-nav.sections a{font:600 14px var(--body);color:var(--muted);text-decoration:none;padding:10px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
-nav.sections a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
-nav.sections a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.view{display:grid;gap:22px}
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--label);font:400 1rem/1.47 var(--font);letter-spacing:-.011em;margin:0;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 [hidden]{display:none!important}
-.form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-@media (max-width:760px){.form{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.form label{display:grid;gap:6px;min-width:0}
-.form input,.form select{font:500 15px var(--mono);padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%}
-.form input:focus-visible,.form select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-@media (max-width:760px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.big div{display:grid;gap:4px;min-width:0}
-.big b{font:700 24px var(--display);font-variant-numeric:tabular-nums}
-.prose{max-width:72ch;display:grid;gap:12px}
-.prose p,.prose li{margin:0;line-height:1.6}
+.app{max-width:1080px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:24px}
+@media (max-width:819px){.app{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- brand header */
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand .id{display:flex;align-items:center;gap:12px;min-width:0}
+.appicon{width:44px;height:44px;flex:none;filter:drop-shadow(0 4px 10px rgba(10,60,160,.28))}
+.wordmark{display:grid;line-height:1.1}
+.wordmark b{font:700 1.06rem/1.15 var(--display);letter-spacing:-.02em}
+.wordmark span{font-size:.8rem;color:var(--label2);letter-spacing:0}
+.status{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:.8rem;font-weight:600;background:var(--fill);color:var(--label2);white-space:nowrap}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.status.long{color:var(--green);background:color-mix(in srgb,var(--green) 14%,transparent)}
+.status.short{color:var(--red);background:color-mix(in srgb,var(--red) 14%,transparent)}
+.status.open{color:var(--tint);background:color-mix(in srgb,var(--tint) 14%,transparent)}
+.hero{display:grid;gap:2px}
+.hero h1{margin:0;font:700 clamp(2.1rem,7vw,2.8rem)/1.05 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.hero p{margin:0;color:var(--label2);font-size:.92rem}
+
+/* ---------- navigazione */
+.segnav{display:none}
+@media (min-width:820px){
+  .segnav{display:flex;position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;justify-self:start;padding:3px;border-radius:12px;background:var(--chrome);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:0 0 0 .5px var(--sep)}
+  .tabbar{display:none!important}
+}
+.segnav a{padding:7px 18px;border-radius:9px;font-size:.88rem;font-weight:600;color:var(--label);text-decoration:none;transition:background .2s,transform .1s}
+.segnav a[aria-current="page"]{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px var(--sep)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px));background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-top:.5px solid var(--sep)}
+.tabbar a{display:grid;justify-items:center;gap:2px;padding:4px 0;font-size:.66rem;font-weight:600;letter-spacing:.01em;color:var(--label2);text-decoration:none}
+.tabbar svg{width:26px;height:26px}
+.tabbar a[aria-current="page"]{color:var(--tint)}
+a,button,[role="button"],.seg button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+
+/* ---------- superfici */
+.view{display:grid;gap:24px;animation:fade .22s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.section{display:grid;gap:8px;min-width:0}
+.section>h2,.sh{margin:0 4px;font:700 1.3rem/1.2 var(--display);letter-spacing:-.022em;text-wrap:balance;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.sh small,.section>h2 small{font:400 .85rem var(--font);color:var(--label2);letter-spacing:0}
+.foot{margin:0 4px;font-size:.8rem;color:var(--label2);line-height:1.45}
+.card{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow);padding:16px;min-width:0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:819px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+/* lista raggruppata inset (stile Impostazioni) */
+.list{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;min-height:46px;padding:10px 16px;position:relative}
+.row+.row::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.row.ic+.row.ic::before{left:58px}
+.row .k{flex:1;min-width:0}
+.row .k small{display:block;color:var(--label2);font-size:.8rem;line-height:1.35;overflow-wrap:anywhere}
+.row .v{font-variant-numeric:tabular-nums;color:var(--label2);text-align:right}
+.row .v.strong{color:var(--label);font-weight:600}
+.row input,.row select{font:500 16px var(--font);color:var(--tint);background:transparent;border:0;text-align:right;padding:4px 0;min-width:0;width:9.5em}
+.row input[type=date]{width:auto}
+
+/* icone setup "3D" (tile stile iOS con luce dall'alto) */
+.ico{width:30px;height:30px;flex:none;border-radius:8px;display:grid;place-items:center;color:#fff;position:relative;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 78%,#fff) 0%,var(--c) 55%,color-mix(in srgb,var(--c) 82%,#000) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.18),0 3px 8px color-mix(in srgb,var(--c) 35%,transparent)}
+.ico::after{content:"";position:absolute;inset:1px 1px 50% 1px;border-radius:7px 7px 12px 12px/7px 7px 6px 6px;background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0));pointer-events:none}
+.ico svg{width:18px;height:18px;filter:drop-shadow(0 1px 0 rgba(0,0,0,.22))}
+.ico.dim{filter:saturate(.25) brightness(1.05);opacity:.75}
+.chip{font-size:.72rem;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--fill);color:var(--label2);white-space:nowrap}
+.chip.on.long{background:var(--green);color:#fff}.chip.on.short{background:var(--red);color:#fff}
+
+/* score */
+.gauge{display:grid;gap:14px}
+.scoreline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score{font:700 3.2rem/1 var(--display);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.note{color:var(--label2);font-size:.88rem}
+.meter{position:relative;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--red),var(--fill) 32%,var(--fill) 68%,var(--green))}
+.meter .tick{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;border-radius:1px;background:var(--label3)}
+.meter .needle{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.25)}
+.scale{display:flex;justify-content:space-between;font-size:.72rem;color:var(--label2)}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--sep);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow)}
+@media (max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tiles>div{background:var(--card);padding:12px 14px;display:grid;gap:2px;min-width:0}
+.tiles span{font-size:.75rem;color:var(--label2)}
+.tiles b{font:600 1.15rem/1.25 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tiles small{font-size:.72rem;color:var(--label2);line-height:1.3}
+
+/* segmented control */
+.seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:2px;border-radius:9px;background:var(--fill);gap:2px}
+.seg button{font:600 .82rem var(--font);border:0;background:transparent;color:var(--label);padding:6px 12px;border-radius:7px;cursor:pointer;transition:background .2s,box-shadow .2s,transform .1s}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.14),0 0 0 .5px var(--sep)}
+.seg button:disabled{opacity:.4}
+.seg button:active,.segnav a:active,.tabbar a:active{transform:scale(.96)}
+
+/* grafici */
+.chart{height:340px}
+.chart.small{height:130px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.78rem;color:var(--label2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+@media (max-width:560px){.chart{height:260px}}
+
+/* tabelle */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+table.grid{width:100%;border-collapse:collapse;font-size:.86rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.grid th{font-weight:600;font-size:.72rem;color:var(--label2);text-align:right;padding:8px 10px;border-bottom:.5px solid var(--sep)}
+table.grid td{text-align:right;padding:9px 10px;border-bottom:.5px solid var(--sep)}
+table.grid tr:last-child td{border-bottom:0}
+table.grid th:first-child,table.grid td:first-child{text-align:left}
+.pos{color:var(--green)} .neg{color:var(--red)}
+
+.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--sep);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow)}
+@media (max-width:640px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big>div{background:var(--card);padding:14px;display:grid;gap:2px;min-width:0}
+.big span{font-size:.75rem;color:var(--label2)}
+.big b{font:700 1.45rem/1.15 var(--display);letter-spacing:-.025em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+.prose{display:grid;gap:12px;max-width:68ch}
+.prose p,.prose li{margin:0;line-height:1.55}
 .prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (max-width:900px){.checks{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.checks{grid-template-columns:minmax(0,1fr)}}
-.check{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:6px;min-width:0}
-.check.on{border-color:currentColor}
-.check.on.long{color:var(--long)} .check.on.short{color:var(--short)}
-.check .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.check b{font:600 14px var(--mono);color:var(--ink)}
-.check p{margin:0;font-size:13px;color:var(--ink)}
-.check small{font:12px/1.4 var(--mono);color:var(--muted);overflow-wrap:anywhere}
-.tag{font:500 10.5px var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
-.tag.long{color:var(--long);border-color:currentColor} .tag.short{color:var(--short);border-color:currentColor}
-.tag.on{background:currentColor}
-.tag.on span{color:var(--panel)}
+.prose h3{margin:8px 0 0;font:700 1.05rem var(--display);letter-spacing:-.015em}
+footer{color:var(--label2);font-size:.78rem;max-width:72ch;margin:0 4px;line-height:1.5}
+
+@media (hover:hover) and (pointer:fine){
+  .segnav a:not([aria-current="page"]):hover{background:color-mix(in srgb,var(--label) 6%,transparent)}
+  .seg button:not([aria-pressed="true"]):hover{background:color-mix(in srgb,var(--label) 6%,transparent)}
+}
+@media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
+@media (prefers-reduced-transparency:reduce){.tabbar,.segnav{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
 
-<div class="wrap">
-  <header>
-    <div>
-      <span class="label">Bitcoin · swing giornaliero · order flow</span>
-      <h1>Radar BTC</h1>
-      <p id="sub"></p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="aiBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b3a8f"/><stop offset=".55" stop-color="#0b1f5c"/><stop offset="1" stop-color="#050d2b"/></linearGradient>
+    <radialGradient id="aiGlow" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="#2f8cff" stop-opacity=".55"/><stop offset="1" stop-color="#2f8cff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="aiSweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5ef0c4" stop-opacity="0"/><stop offset="1" stop-color="#5ef0c4" stop-opacity=".85"/></linearGradient>
+    <linearGradient id="aiGloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <symbol id="appicon" viewBox="0 0 100 100">
+      <rect x="2" y="2" width="96" height="96" rx="22" fill="url(#aiBg)"/>
+      <rect x="2" y="2" width="96" height="96" rx="22" fill="url(#aiGlow)"/>
+      <g fill="none" stroke="#7fb4ff" stroke-opacity=".38" stroke-width="2">
+        <circle cx="50" cy="54" r="34"/><circle cx="50" cy="54" r="23"/><circle cx="50" cy="54" r="12"/>
+        <path d="M16 54h68M50 20v68" stroke-opacity=".22"/>
+      </g>
+      <path d="M50 54 L84 54 A34 34 0 0 0 74 30 Z" fill="url(#aiSweep)" transform="rotate(-38 50 54)"/>
+      <path d="M50 54 L77 33" stroke="#9ff7dd" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="68" cy="38" r="5.2" fill="#30d158"/><circle cx="68" cy="38" r="9" fill="#30d158" fill-opacity=".25"/>
+      <circle cx="50" cy="54" r="3.4" fill="#d6e7ff"/>
+      <path d="M2 24 Q2 2 24 2 H76 Q98 2 98 24 V40 Q50 30 2 46 Z" fill="url(#aiGloss)"/>
+      <rect x="2.5" y="2.5" width="95" height="95" rx="21.5" fill="none" stroke="#fff" stroke-opacity=".18"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <header class="brand">
+    <div class="id">
+      <svg class="appicon" viewBox="0 0 100 100" role="img" aria-label="Radar Signal BTC"><use href="#appicon"/></svg>
+      <div class="wordmark"><b>Radar Signal</b><span>BTC · swing di giorni</span></div>
     </div>
-    <span id="state" class="pill wait"></span>
+    <span id="state" class="status"></span>
   </header>
 
-  <nav class="sections" aria-label="Sezioni">
+  <div class="hero">
+    <h1 id="price"></h1>
+    <p id="sub"></p>
+  </div>
+
+  <nav class="segnav" aria-label="Sezioni">
     <a href="#oggi" data-v="oggi">Oggi</a>
     <a href="#simulatore" data-v="simulatore">Simulatore</a>
     <a href="#statistiche" data-v="statistiche">Statistiche</a>
     <a href="#metodo" data-v="metodo">Metodo</a>
   </nav>
 
+  <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
-
-  <section class="top">
-    <div class="panel gauge">
-      <div class="head"><h2>Score di flusso</h2><span class="label" id="regime"></span></div>
-      <div class="scoreline"><span class="score" id="score"></span><span class="note" id="scoreNote"></span></div>
-      <div>
-        <div class="meter" id="meter"></div>
-        <div class="scale"><span>−4</span><span>short</span><span>0</span><span>long</span><span>+4</span></div>
+    <div class="cols">
+      <div class="section">
+        <div class="sh">Score di flusso <small id="regime"></small></div>
+        <div class="card gauge">
+          <div class="scoreline"><span class="score" id="score"></span><span class="note" id="scoreNote"></span></div>
+          <div><div class="meter" id="meter"></div><div class="scale" style="margin-top:8px"><span>−4 short</span><span>0</span><span>long +4</span></div></div>
+        </div>
+        <div class="tiles" id="kv"></div>
       </div>
-      <div class="kv" id="kv"></div>
+      <div class="section" id="plan"></div>
     </div>
-    <div class="panel plan" id="plan"></div>
-  </section>
 
-  <section class="panel" style="display:grid;gap:14px">
-    <div class="head"><h2>I 6 setup oggi</h2><span class="label" id="ckSum"></span></div>
-    <div class="checks" id="checks"></div>
-  </section>
+    <div class="section">
+      <div class="sh">Setup <small id="ckSum"></small></div>
+      <div class="list" id="checks"></div>
+    </div>
 
-  <section class="panel charts">
-    <div class="head"><h2>Prezzo e trade del modello</h2>
-      <div class="legend"><span><i style="background:var(--long)"></i>ingresso long</span><span><i style="background:var(--short)"></i>ingresso short</span><span><i style="background:var(--muted)"></i>uscita</span><span><i style="background:var(--warn)"></i>SMA 200</span></div></div>
-    <div id="price" class="chart"></div>
-    <span class="label">Score di flusso (soglie ±<span id="th"></span>)</span>
-    <div id="scorechart" class="chart small"></div>
-  </section>
+    <div class="section">
+      <div class="sh">Prezzo e trade</div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="legend"><span><i style="background:var(--green)"></i>long</span><span><i style="background:var(--red)"></i>short</span><span><i style="background:var(--label3)"></i>uscita</span><span><i style="background:var(--orange)"></i>SMA 200</span></div>
+        <div id="pricechart" class="chart"></div>
+        <span class="note">Score di flusso · soglie ±<span id="th"></span></span>
+        <div id="scorechart" class="chart small"></div>
+      </div>
+    </div>
   </div>
 
+  <!-- ============ SIMULATORE ============ -->
   <div class="view" id="v-simulatore" hidden>
-  <section class="panel" style="display:grid;gap:16px">
-    <div class="head"><h2>Simulatore di capitale</h2><span class="label">trade reali del modello, interesse composto</span></div>
-    <div class="form">
-      <label><span class="label">Capitale iniziale ($)</span><input id="simCap" type="number" min="100" step="1000" value="50000"></label>
-      <label><span class="label">Data di partenza</span><input id="simStart" type="date"></label>
-      <label><span class="label">Leva</span><select id="simLev"><option value="1">1x</option><option value="2" selected>2x</option><option value="3">3x</option><option value="5">5x (sconsigliata)</option></select></label>
-      <label><span class="label">Mercato</span><select id="simMk"><option value="futures">futures (long + short)</option><option value="spot">spot (solo long, max 1x)</option></select></label>
+    <div class="section">
+      <div class="sh">Simulatore <small>trade reali del modello</small></div>
+      <div class="list">
+        <label class="row"><span class="k">Capitale iniziale</span><input id="simCap" type="number" inputmode="decimal" min="100" step="1000" value="50000" enterkeyhint="done"></label>
+        <label class="row"><span class="k">Data di partenza</span><input id="simStart" type="date"></label>
+        <div class="row"><span class="k">Leva</span><div class="seg" id="simLev" role="group" aria-label="Leva"><button data-v="1">1x</button><button data-v="2" aria-pressed="true">2x</button><button data-v="3">3x</button><button data-v="5">5x</button></div></div>
+        <div class="row"><span class="k">Mercato</span><div class="seg" id="simMk" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button></div></div>
+      </div>
+      <p class="foot">La leva 5x è mostrata a scopo di confronto: storicamente porta drawdown oltre il 60%. Lo spot è solo long e senza leva.</p>
     </div>
+
     <div class="big" id="simOut"></div>
-    <div id="simChart" class="chart" style="height:300px"></div>
-    <p class="note" id="simNote"></p>
-  </section>
 
-  <section class="panel" style="display:grid;gap:16px">
-    <div class="head"><h2>Obiettivo</h2><span class="label">quante volte è successo nel passato</span></div>
-    <div class="form">
-      <label><span class="label">Capitale obiettivo ($)</span><input id="goalCap" type="number" min="100" step="1000" value="100000"></label>
-      <label><span class="label">Entro il</span><input id="goalDate" type="date" value="2026-12-31"></label>
+    <div class="section">
+      <div class="card"><div id="simChart" class="chart" style="height:280px"></div></div>
+      <p class="foot" id="simNote"></p>
     </div>
-    <div class="big" id="goalOut"></div>
-    <p class="note" id="goalNote"></p>
-  </section>
 
-  <section class="panel" style="display:grid;gap:12px;min-width:0">
-    <div class="head"><h2>Trade nel periodo simulato</h2><span class="label" id="simCount"></span></div>
-    <div class="scroll" style="max-height:640px;overflow-y:auto"><table class="grid" id="simTrades"></table></div>
-  </section>
+    <div class="section">
+      <div class="sh">Obiettivo <small>quante volte è successo</small></div>
+      <div class="list">
+        <label class="row"><span class="k">Capitale obiettivo</span><input id="goalCap" type="number" inputmode="decimal" min="100" step="1000" value="100000" enterkeyhint="done"></label>
+        <label class="row"><span class="k">Entro il</span><input id="goalDate" type="date" value="2026-12-31"></label>
+      </div>
+      <div class="big" id="goalOut"></div>
+      <p class="foot" id="goalNote"></p>
+    </div>
+
+    <div class="section">
+      <div class="sh">Trade simulati <small id="simCount"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:560px;overflow-y:auto"><table class="grid" id="simTrades"></table></div></div>
+    </div>
   </div>
 
+  <!-- ============ STATISTICHE ============ -->
   <div class="view" id="v-statistiche" hidden>
-  <section class="panel charts">
-    <div class="head"><h2>Equity del modello (futures) vs BTC</h2>
-      <div class="tabs" role="group" aria-label="Leva"><button id="lv1" aria-pressed="false">1x</button><button id="lv2" aria-pressed="true">2x</button><button id="lv3" aria-pressed="false">3x</button></div></div>
-    <div class="legend"><span><i style="background:var(--accent)"></i>modello</span><span><i style="background:var(--warn)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
-    <div id="equity" class="chart" style="height:300px"></div>
-  </section>
-
-  <section class="stats">
-    <div class="panel" style="display:grid;gap:12px">
-      <div class="head"><h2>Backtest</h2><span class="label">dal mar 2022, con commissioni e funding</span></div>
-      <div class="scroll"><table class="grid" id="stats"></table></div>
-      <p class="note">Training: parametri scelti su mar 2022 – dic 2023. Test: gen 2024 – oggi. PnL sul capitale allocato, senza leva.</p>
-      <span class="label">Futures con leva (mar 2022 – oggi)</span>
-      <div class="scroll"><table class="grid" id="lev"></table></div>
-      <span class="label">Per setup (futures, 1x)</span>
-      <div class="scroll"><table class="grid" id="bySetup"></table></div>
+    <div class="section">
+      <div class="sh">Equity vs BTC <div class="seg" id="eqSeg" role="group" aria-label="Leva"><button data-v="1">1x</button><button data-v="2" aria-pressed="true">2x</button><button data-v="3">3x</button></div></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="legend"><span><i style="background:var(--tint)"></i>modello futures</span><span><i style="background:var(--orange)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
+        <div id="equity" class="chart" style="height:280px"></div>
+      </div>
     </div>
-    <div class="panel" style="display:grid;gap:12px;min-width:0;align-content:start">
-      <div class="head"><h2>Storico trade</h2>
-        <div class="tabs" role="group" aria-label="Mercato"><button id="tFut" aria-pressed="true">futures</button><button id="tSpot" aria-pressed="false">spot</button></div></div>
-      <div class="scroll" style="max-height:900px;overflow-y:auto"><table class="grid" id="trades"></table></div>
+    <div class="cols">
+      <div class="section">
+        <div class="sh">Backtest <small>da mar 2022</small></div>
+        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="stats"></table></div></div>
+        <p class="foot">Training: parametri scelti su mar 2022 – dic 2023. Test: gen 2024 – oggi. Commissioni e funding inclusi, senza leva.</p>
+        <div class="sh" style="margin-top:12px">Con leva</div>
+        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="lev"></table></div></div>
+        <div class="sh" style="margin-top:12px">Per setup</div>
+        <div class="list" id="bySetup"></div>
+      </div>
+      <div class="section">
+        <div class="sh">Storico <div class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button></div></div>
+        <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:900px;overflow-y:auto"><table class="grid" id="trades"></table></div></div>
+      </div>
     </div>
-  </section>
-
   </div>
 
+  <!-- ============ METODO ============ -->
   <div class="view" id="v-metodo" hidden>
-  <section class="panel prose">
-    <h2>Come funziona</h2>
-    <p>Ogni notte, alla chiusura della candela giornaliera UTC, il modello legge prezzo, CVD spot e perp, funding, open interest e long/short ratio di Binance. Se uno dei 6 setup scatta, apre un piano operativo e lo invia su Telegram. Tiene una sola posizione alla volta.</p>
-    <ul id="setupList"></ul>
-    <h2>Gestione della posizione</h2>
-    <ul id="ruleList"></ul>
-    <h2>Limiti</h2>
-    <ul>
-      <li>Circa 10 trade l'anno: in un mese può non arrivare nessun segnale.</li>
-      <li>Nessun sistema ha il 100% di segnali vincenti. Il win rate storico è intorno all'85–90%, ma le perdite, quando arrivano, valgono 3–4 vincite medie.</li>
-      <li>Con barre giornaliere il backtest non sa cosa succede prima tra stop e target nello stesso giorno: assume sempre il caso peggiore.</li>
-      <li>La leva moltiplica guadagni e perdite. Oltre 3x una serie di stop può dimezzare il capitale.</li>
-    </ul>
-  </section>
+    <div class="section">
+      <div class="sh">Come funziona</div>
+      <div class="card prose">
+        <p>Ogni notte, alla chiusura della candela giornaliera UTC, Radar Signal legge prezzo, CVD spot e perp, funding, open interest e long/short ratio. Se uno dei 6 setup scatta, prepara un piano operativo e lo invia su Telegram. Tiene una sola posizione alla volta.</p>
+        <h3>Gestione della posizione</h3>
+        <ul id="ruleList"></ul>
+        <h3>Limiti</h3>
+        <ul>
+          <li>Circa 10 trade l'anno: in un mese può non arrivare nessun segnale.</li>
+          <li>Nessun sistema ha il 100% di segnali vincenti. Il win rate storico è intorno all'85–90%, ma le perdite valgono 3–4 vincite medie.</li>
+          <li>Con barre giornaliere il backtest assume sempre il caso peggiore tra stop e target nello stesso giorno.</li>
+          <li>La leva moltiplica guadagni e perdite. Oltre 3x una serie di stop può dimezzare il capitale.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sh">I 6 setup</div>
+      <div class="list" id="setupList"></div>
+    </div>
   </div>
 
-  <footer>
-    Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX (ultimi giorni non ancora archiviati), alternative.me (Fear &amp; Greed). Il segnale si calcola sulla chiusura giornaliera UTC. I risultati passati non garantiscono quelli futuri: il campione è di circa 50 trade (10 l'anno), quindi il win rate ha un margine d'errore di diversi punti. Con la leva le perdite si moltiplicano allo stesso modo dei guadagni. Strumento di analisi, non consulenza finanziaria.
-  </footer>
+  <footer>Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear &amp; Greed). Risultati passati non garantiscono quelli futuri. Strumento di analisi, non consulenza finanziaria.</footer>
 </div>
+
+<nav class="tabbar" aria-label="Sezioni">
+  <a href="#oggi" data-v="oggi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8.5"/><circle cx="12" cy="13" r="4.5"/><path d="M12 13l5.5-5.5"/><circle cx="12" cy="13" r="1.2" fill="currentColor"/></svg>Oggi</a>
+  <a href="#simulatore" data-v="simulatore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17"/><path d="M4.5 16l4.5-5 4 3 6.5-8"/><path d="M15.5 6h4v4"/></svg>Simulatore</a>
+  <a href="#statistiche" data-v="statistiche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="11" width="3.6" height="9" rx="1.2"/><rect x="10.2" y="5" width="3.6" height="15" rx="1.2"/><rect x="16.4" y="8" width="3.6" height="12" rx="1.2"/></svg>Statistiche</a>
+  <a href="#metodo" data-v="metodo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r="1.1" fill="currentColor" stroke="none"/></svg>Metodo</a>
+</nav>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
@@ -236,116 +334,141 @@ const $ = id => document.getElementById(id);
 const usd = x => x == null ? "–" : "$" + Math.round(x).toLocaleString("it-IT");
 const pct = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const sgn = x => (x > 0 ? "+" : "") + x.toFixed(2);
 
-const ot = R.open_trade.futures, sig = R.signal;
-$("sub").textContent = `Chiusura ${R.date} · ${usd(R.price)} · aggiornato ogni giorno alle 00:30 UTC`;
+// icone dei setup (glifo bianco su tile colorata)
+const ICON = {
+  flow: ["--tint", '<path d="M3 15l4-4 3.5 3L17 7.5"/><path d="M13.5 7H17v3.5"/>'],
+  capit: ["--teal", '<path d="M3 6l5 7 3-3 6 8"/><path d="M13.5 18H17v-3.5"/>'],
+  fundneg: ["--indigo", '<path d="M6 16L14 4"/><circle cx="6.5" cy="5.5" r="2"/><circle cx="13.5" cy="14.5" r="2"/>'],
+  brk: ["--green", '<path d="M3 13h14" stroke-dasharray="2 2.4"/><path d="M5 17l4-5 3 2 5-9"/><path d="M13.5 5H17v3.5"/>'],
+  sflow: ["--red", '<path d="M3 5l4 4 3.5-3L17 12.5"/><path d="M13.5 13H17V9.5"/>'],
+  sfund: ["--orange", '<path d="M10 2.8c.4 2.4 3.9 3.7 3.9 7.6a3.9 3.9 0 1 1-7.8 0c0-1.6.8-2.7 1.7-3.5.2 1.3.9 2 1.6 2.2C9 7 9.4 4.6 10 2.8z"/>'],
+};
+const icon = (k, dim) => `<span class="ico${dim ? " dim" : ""}" style="--c:var(${ICON[k][0]})"><svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k][1]}</svg></span>`;
+
+// ---- intestazione
+const ot = R.open_trade.futures, sig = R.signal, c = R.components, P = R.params;
+$("price").textContent = usd(R.price);
+$("sub").textContent = `BTC · chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })} · aggiornato ogni notte`;
 const st = $("state");
-if (sig) { st.className = "pill " + sig.side; st.textContent = "NUOVO SEGNALE " + sig.side.toUpperCase(); }
-else if (ot) { st.className = "pill open"; st.textContent = "TRADE " + ot.side.toUpperCase() + " APERTO"; }
-else { st.className = "pill wait"; st.textContent = "IN ATTESA DI SETUP"; }
+if (sig) { st.className = "status " + sig.side; st.textContent = "Segnale " + sig.side; }
+else if (ot) { st.className = "status open"; st.textContent = "Trade " + ot.side + " aperto"; }
+else { st.className = "status"; st.textContent = "In attesa"; }
 
+// ---- score
 $("regime").textContent = "regime " + R.regime;
-$("score").textContent = (R.score > 0 ? "+" : "") + R.score.toFixed(2);
-$("score").style.color = R.score >= R.threshold ? css("--long") : R.score <= -R.threshold ? css("--short") : "";
-const toLong = R.threshold - R.score;
+$("score").textContent = sgn(R.score);
+$("score").style.color = R.score >= R.threshold ? css("--green") : R.score <= -R.threshold ? css("--red") : "";
 $("scoreNote").textContent = R.score >= R.threshold ? "sopra la soglia long"
-  : R.score <= -R.threshold ? (R.regime === "ribassista" ? "sotto la soglia short" : "sotto −" + R.threshold + ", ma lo short è attivo solo in regime ribassista")
-  : `mancano ${toLong.toFixed(2)} punti alla soglia long`;
+  : R.score <= -R.threshold ? (R.regime === "ribassista" ? "sotto la soglia short" : "debole, ma lo short si attiva solo in regime ribassista")
+  : `mancano ${(R.threshold - R.score).toFixed(2)} alla soglia long`;
 const m = $("meter"), clamp = v => Math.max(-4, Math.min(4, v));
 [-R.threshold, R.threshold].forEach(t => { const d = document.createElement("span"); d.className = "tick"; d.style.left = ((t + 4) / 8 * 100) + "%"; m.appendChild(d); });
 const nd = document.createElement("span"); nd.className = "needle"; nd.style.left = ((clamp(R.score) + 4) / 8 * 100) + "%"; m.appendChild(nd);
-
-const c = R.components;
-const kv = [
-  ["CVD perp 14g", (c.perp_flow_z > 0 ? "+" : "") + c.perp_flow_z.toFixed(2) + "σ", "flusso aggressivo sui futures"],
-  ["Long/short retail", (c.retail_ls_z > 0 ? "+" : "") + c.retail_ls_z.toFixed(2) + "σ", "ratio " + c.global_ls.toFixed(2) + " · contrarian"],
+$("kv").innerHTML = [
+  ["CVD perp 14g", sgn(c.perp_flow_z) + "σ", "acquisti aggressivi futures"],
+  ["Long/short retail", sgn(c.retail_ls_z) + "σ", "ratio " + c.global_ls.toFixed(2)],
   ["CVD spot 14g", pct(c.spot_flow14 * 100, 2), "delta / volume"],
   ["Funding 7g", pct(c.funding7_annual_pct, 1), "annualizzato"],
   ["Open interest 7g", pct(c.oi_chg7_pct, 1), "variazione"],
   ["Fear & Greed", c.fng.toFixed(0), "0 paura · 100 avidità"],
-];
-$("kv").innerHTML = kv.map(([a, b, d]) => `<div><span class="label">${a}</span><b>${b}</b><small>${d}</small></div>`).join("");
+].map(([a, b, d]) => `<div><span>${a}</span><b>${b}</b><small>${d}</small></div>`).join("");
 
-function planTable(rows) { return `<table>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table>`; }
-const P = R.params;
+// ---- piano operativo
+const rows = r => `<div class="list">${r.map(([k, v, strong]) => `<div class="row"><span class="k">${k}</span><span class="v${strong ? " strong" : ""}">${v}</span></div>`).join("")}</div>`;
 if (sig) {
-  $("plan").innerHTML = `<div class="head"><h2>Piano operativo · ${sig.side.toUpperCase()}</h2><span class="label">${sig.side === "long" ? "spot + futures" : "solo futures"}</span></div>` +
-    `<p style="margin:0">Setup <b class="mono">${sig.setup}</b> · ${sig.setup_label}</p>` +
-    `<span class="label">Entrata DCA</span>` + planTable(sig.entries.map((e, i) => [`${Math.round(e.weight * 100)}% ${i ? "limit (7 gg)" : "all'apertura"}`, usd(e.price)]).concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", usd(sig.stop) + ` (−${sig.risk_pct_full}%)`]])) +
-    `<span class="label">Uscita DCA</span>` + planTable(sig.take_profits.map((t, i) => [`TP${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price)]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
-    planTable([["Leva futures consigliata", sig.leverage + "x · margine isolato"], ["Perdita max sul capitale allocato", "−" + sig.risk_pct_capital_at_leverage + "%"]]) +
-    `<p class="note">Target calcolati sul prezzo medio a DCA completa: si ricalcolano a ogni tranche eseguita. Dopo il TP1 lo stop va a pareggio. Uscita forzata dopo ${sig.max_hold_days} giorni.</p>`;
+  $("plan").innerHTML = `<div class="sh">Piano ${sig.side} <small>${sig.side === "long" ? "spot + futures" : "solo futures"}</small></div>` +
+    `<div class="list"><div class="row ic">${icon(sig.setup)}<span class="k">${sig.setup_label}<small>setup ${sig.setup} · score ${sgn(sig.score)}</small></span></div></div>` +
+    rows(sig.entries.map((e, i) => [`Entrata ${i + 1} · ${Math.round(e.weight * 100)}%<small>${i ? "limit, valido 7 giorni" : "all'apertura"}</small>`, usd(e.price), true])
+      .concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", `${usd(sig.stop)} · −${sig.risk_pct_full}%`, true]])) +
+    rows(sig.take_profits.map((t, i) => [`Target ${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price), true]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
+    rows([["Leva futures", sig.leverage + "x · isolato", true], ["Perdita max sul capitale", "−" + sig.risk_pct_capital_at_leverage + "%"]]) +
+    `<p class="foot">I target si ricalcolano sul prezzo medio a ogni tranche. Dopo il primo target lo stop va a pareggio. Uscita entro ${sig.max_hold_days} giorni.</p>`;
 } else if (ot) {
-  $("plan").innerHTML = `<div class="head"><h2>Trade aperto · ${ot.side.toUpperCase()}</h2><span class="label">dal ${ot.signal_date}</span></div>` +
-    planTable([["Tranche riempite", ot.tranches + " / 3"], ["Prezzo medio", usd(ot.avg_entry)], ["Stop attuale", usd(ot.stop)],
+  $("plan").innerHTML = `<div class="sh">Trade ${ot.side} aperto <small>dal ${ot.signal_date}</small></div>` +
+    `<div class="list"><div class="row ic">${icon(ot.setup)}<span class="k">Setup ${ot.setup}<small>${ot.tranches} tranche su 3 · residuo ${Math.round(ot.remaining * 100)}%</small></span><span class="v strong ${ot.pnl_pct_invested > 0 ? "pos" : "neg"}">${pct(ot.pnl_pct_invested, 2)}</span></div></div>` +
+    rows([["Prezzo medio", usd(ot.avg_entry), true], ["Stop attuale", usd(ot.stop), true],
       ["Limit DCA in attesa", ot.pending_entries.length ? ot.pending_entries.map(usd).join(" · ") : "nessuno"],
-      ["Prossimi target", ot.next_tps.length ? ot.next_tps.map(usd).join(" · ") : "trailing"],
-      ["Posizione residua", Math.round(ot.remaining * 100) + "%"], ["PnL corrente", pct(ot.pnl_pct_invested, 2)]]) +
-    `<p class="note">Il piano si aggiorna ogni chiusura giornaliera; ogni variazione arriva anche su Telegram.</p>`;
+      ["Prossimi target", ot.next_tps.length ? ot.next_tps.map(usd).join(" · ") : "trailing"]]) +
+    `<p class="foot">Il piano si aggiorna a ogni chiusura giornaliera; ogni variazione arriva su Telegram.</p>`;
 } else {
   const atr = c.atr;
-  $("plan").innerHTML = `<div class="head"><h2>Piano operativo</h2><span class="label">nessuna posizione</span></div>
-    <p style="margin:0">Nessun setup attivo. Il modello apre una posizione quando uno dei 6 setup qui sotto scatta; gli short solo sui futures e solo in regime ribassista.</p>
-    <span class="label">Come sarebbe un long oggi</span>` +
-    planTable([["40% all'apertura", usd(R.price)], ["30% limit", usd(R.price - P.entry_step_atr * atr)], ["30% limit", usd(R.price - 2 * P.entry_step_atr * atr)],
-      ["Stop", usd(R.price - P.stop_atr * atr)], ["TP1 / TP2 dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["Leva futures", P.leverage + "x"], ["ATR 14g", usd(atr) + ` (${c.atr_pct.toFixed(1)}%)`]]) +
-    `<p class="note">Esempio con l'ATR di oggi, solo a scopo illustrativo.</p>`;
+  $("plan").innerHTML = `<div class="sh">Piano operativo <small>nessuna posizione</small></div>` +
+    `<div class="card"><p style="margin:0">Nessun setup attivo. Quando uno dei 6 setup scatta ricevi il piano completo su Telegram.</p></div>` +
+    `<p class="foot" style="margin-top:6px">Come sarebbe un long oggi, con l'ATR attuale:</p>` +
+    rows([["Entrata 1 · 40%", usd(R.price), true], ["Entrata 2 · 30%", usd(R.price - P.entry_step_atr * atr)], ["Entrata 3 · 30%", usd(R.price - 2 * P.entry_step_atr * atr)],
+      ["Stop", usd(R.price - P.stop_atr * atr), true], ["Target dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["Leva futures", P.leverage + "x"], ["ATR 14 giorni", `${usd(atr)} · ${c.atr_pct.toFixed(1)}%`]]);
 }
 $("th").textContent = R.threshold;
 
-// ---- statistiche
-const S = R.stats, rows = [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
-  ["Media vincite", "avg_win_%", v => pct(v, 2)], ["Media perdite", "avg_loss_%", v => pct(v, 2)], ["Aspettativa / trade", "expectancy_%", v => pct(v, 2)],
-  ["Rendimento totale", "total_return_%", v => pct(v, 1)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Durata media", "avg_days", v => v + " gg"]];
-const cols = [["futures", "train"], ["futures", "test"], ["spot", "train"], ["spot", "test"]];
-$("stats").innerHTML = `<tr><th></th>${cols.map(([m, p]) => `<th>${m}<br>${p}</th>`).join("")}</tr>` +
-  rows.map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(([m, p]) => { const v = S[m][p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("");
-
-function renderTrades(mk) {
-  const t = R.trades[mk].slice().reverse();
-  $("trades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Gg</th><th>DCA</th><th>Medio</th><th>TP</th><th>Uscita</th><th>PnL</th></tr>` +
-    t.map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.tranches}/3</td><td>${usd(r.avg_entry)}</td><td>${r.tp_hit}</td><td>${r.exit}</td><td class="${r.pnl_pct_capital > 0 ? "pos" : "neg"}">${pct(r.pnl_pct_invested, 2)}</td></tr>`).join("");
-  $("tFut").setAttribute("aria-pressed", mk === "futures"); $("tSpot").setAttribute("aria-pressed", mk === "spot");
-}
-$("tFut").onclick = () => renderTrades("futures"); $("tSpot").onclick = () => renderTrades("spot");
-renderTrades("futures");
-
-// ---- checklist setup
+// ---- setup
 const on = R.checklist.filter(x => x.active).length;
 $("ckSum").textContent = on ? on + " attivi" : "nessuno attivo";
-$("checks").innerHTML = R.checklist.map(x => `<div class="check ${x.side}${x.active ? " on" : ""}"><div class="row"><b>${x.setup}</b><span class="tag ${x.side}${x.active ? " on" : ""}"><span>${x.active ? "attivo · " : ""}${x.side}</span></span></div><p>${x.label}</p><small>${x.detail}</small></div>`).join("");
+$("checks").innerHTML = R.checklist.map(x => `<div class="row ic">${icon(x.setup, !x.active)}<span class="k">${x.label}<small>${x.detail}</small></span><span class="chip ${x.side}${x.active ? " on" : ""}">${x.active ? "attivo" : x.side}</span></div>`).join("");
+const S = R.stats;
+$("setupList").innerHTML = R.checklist.map(x => { const b = S.by_setup[x.setup] || { trades: 0, win_rate: 0 };
+  return `<div class="row ic">${icon(x.setup)}<span class="k">${x.label}<small>${x.setup} · ${x.side} · ${b.trades} trade, win ${b.win_rate}%</small></span></div>`; }).join("");
+$("ruleList").innerHTML = [
+  `Entrata DCA: ${P.entry_weights.map(w => Math.round(w * 100) + "%").join(" / ")} a 0, −${P.entry_step_atr} e −${2 * P.entry_step_atr} ATR dal primo ingresso (limit validi ${P.entry_window} giorni).`,
+  `Stop a ${P.stop_atr} ATR dal primo ingresso.`,
+  `Uscita DCA: ${Math.round(P.tp_weights[0] * 100)}% a +${P.tp_atr[0]} ATR e ${Math.round(P.tp_weights[1] * 100)}% a +${P.tp_atr[1]} ATR dal prezzo medio, il resto in trailing a ${P.trail_atr} ATR. Dopo il primo target lo stop va a pareggio.`,
+  `Uscita forzata dopo ${P.max_hold} giorni. Leva consigliata sui futures: ${P.leverage}x con margine isolato.`,
+].map(t => `<li>${t}</li>`).join("");
 
+// ---- segmented control
+function seg(id, onChange) {
+  const el = $(id);
+  el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    if (b.disabled) return;
+    el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    onChange(b.dataset.v);
+  }));
+  return { set(v) { el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === String(v))); },
+           disable(flag) { el.querySelectorAll("button").forEach(x => x.disabled = flag && x.dataset.v !== "1"); } };
+}
+
+// ---- statistiche
+const cols = [["futures", "train"], ["futures", "test"], ["spot", "train"], ["spot", "test"]];
+$("stats").innerHTML = `<tr><th></th>${cols.map(([m, p]) => `<th>${m}<br>${p}</th>`).join("")}</tr>` +
+  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
+   ["Media vincite", "avg_win_%", v => pct(v, 2)], ["Media perdite", "avg_loss_%", v => pct(v, 2)], ["Aspettativa", "expectancy_%", v => pct(v, 2)],
+   ["Rendimento", "total_return_%", v => pct(v, 1)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Durata media", "avg_days", v => v + " gg"]]
+  .map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(([m, p]) => { const v = S[m][p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("");
 const LV = S.leverage;
 $("lev").innerHTML = `<tr><th></th><th>1x</th><th>2x</th><th>3x</th></tr>` +
-  [["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa / trade", "expectancy_%", v => pct(v, 2)]]
+  [["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa", "expectancy_%", v => pct(v, 2)]]
   .map(([n, k, f]) => `<tr><td>${n}</td>${["1", "2", "3"].map(l => `<td>${f(LV[l][k])}</td>`).join("")}</tr>`).join("");
-$("bySetup").innerHTML = `<tr><th>Setup</th><th>Lato</th><th>Trade</th><th>Win</th><th>Media</th></tr>` +
-  Object.entries(S.by_setup).map(([k, v]) => `<tr><td>${k}</td><td class="${v.side === "long" ? "pos" : "neg"}">${v.side}</td><td>${v.trades}</td><td>${v.win_rate}%</td><td>${pct(v["expectancy_%"], 2)}</td></tr>`).join("");
+$("bySetup").innerHTML = Object.entries(S.by_setup).map(([k, v]) => `<div class="row ic">${icon(k)}<span class="k">${k}<small>${v.side} · ${v.trades} trade</small></span><span class="v strong">${v.win_rate}% · ${pct(v["expectancy_%"], 2)}</span></div>`).join("");
+function renderTrades(mk) {
+  $("trades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Gg</th><th>DCA</th><th>Medio</th><th>Uscita</th><th>PnL</th></tr>` +
+    R.trades[mk].slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.tranches}/3</td><td>${usd(r.avg_entry)}</td><td>${r.exit}</td><td class="${r.pnl_pct_capital > 0 ? "pos" : "neg"}">${pct(r.pnl_pct_invested, 2)}</td></tr>`).join("");
+}
+seg("trSeg", renderTrades); renderTrades("futures");
 
 // ---- grafici
+const chartOpts = extra => Object.assign({ autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--label2"), fontFamily: css("--font"), fontSize: 11 },
+  grid: { vertLines: { visible: false }, horzLines: { color: css("--sep") } }, rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false },
+  crosshair: { mode: 0, vertLine: { color: css("--label3") }, horzLine: { color: css("--label3") } } }, extra || {});
 function charts() {
   if (!window.LightweightCharts) return;
   const s = R.series;
-  const base = el => LightweightCharts.createChart(el, {
-    autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--muted"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 },
-    grid: { vertLines: { color: css("--grid") }, horzLines: { color: css("--grid") } },
-    rightPriceScale: { borderColor: css("--line") }, timeScale: { borderColor: css("--line") }, crosshair: { mode: 0 }, handleScroll: true, handleScale: true });
-  const pc = base($("price")), sc = base($("scorechart"));
-  const candles = pc.addCandlestickSeries({ upColor: css("--long"), downColor: css("--short"), borderVisible: false, wickUpColor: css("--long"), wickDownColor: css("--short"), priceFormat: { type: "price", precision: 0, minMove: 1 } });
+  const pc = LightweightCharts.createChart($("pricechart"), chartOpts()), sc = LightweightCharts.createChart($("scorechart"), chartOpts());
+  const candles = pc.addCandlestickSeries({ upColor: css("--green"), downColor: css("--red"), borderVisible: false, wickUpColor: css("--green"), wickDownColor: css("--red"), priceFormat: { type: "price", precision: 0, minMove: 1 } });
   candles.setData(s.date.map((d, i) => ({ time: d, open: s.open[i], high: s.high[i], low: s.low[i], close: s.close[i] })));
-  const sma = pc.addLineSeries({ color: css("--warn"), lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
-  sma.setData(s.date.map((d, i) => ({ time: d, value: s.sma200[i] })).filter(p => p.value != null));
+  pc.addLineSeries({ color: css("--orange"), lineWidth: 1, priceLineVisible: false, lastValueVisible: false })
+    .setData(s.date.map((d, i) => ({ time: d, value: s.sma200[i] })).filter(p => p.value != null));
   const mk = [];
   R.trades.futures.forEach(t => {
     const L = t.side === "long";
-    mk.push({ time: t.signal_date, position: L ? "belowBar" : "aboveBar", color: L ? css("--long") : css("--short"), shape: L ? "arrowUp" : "arrowDown", text: t.side });
-    if (t.exit_date) mk.push({ time: t.exit_date, position: L ? "aboveBar" : "belowBar", color: css("--muted"), shape: "circle", text: pct(t.pnl_pct_invested, 1) });
+    mk.push({ time: t.signal_date, position: L ? "belowBar" : "aboveBar", color: L ? css("--green") : css("--red"), shape: L ? "arrowUp" : "arrowDown", text: t.setup });
+    if (t.exit_date) mk.push({ time: t.exit_date, position: L ? "aboveBar" : "belowBar", color: css("--label2"), shape: "circle", text: pct(t.pnl_pct_invested, 1) });
   });
   mk.sort((a, b) => a.time < b.time ? -1 : 1); candles.setMarkers(mk);
-  const line = sc.addLineSeries({ color: css("--accent"), lineWidth: 2, priceLineVisible: false });
+  const line = sc.addLineSeries({ color: css("--tint"), lineWidth: 2, priceLineVisible: false });
   line.setData(s.date.map((d, i) => ({ time: d, value: s.score[i] })).filter(p => p.value != null));
-  [R.threshold, -R.threshold].forEach(v => line.createPriceLine({ price: v, color: v > 0 ? css("--long") : css("--short"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true }));
-  const from = s.date[Math.max(0, s.date.length - 540)], to = s.date[s.date.length - 1];
+  [R.threshold, -R.threshold].forEach(v => line.createPriceLine({ price: v, color: v > 0 ? css("--green") : css("--red"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true }));
+  const from = s.date[Math.max(0, s.date.length - 365)], to = s.date[s.date.length - 1];
   window.refitPrice = () => { pc.timeScale().setVisibleRange({ from, to }); sc.timeScale().setVisibleRange({ from, to }); };
   window.refitPrice();
   pc.timeScale().subscribeVisibleLogicalRangeChange(r => r && sc.timeScale().setVisibleLogicalRange(r));
@@ -353,45 +476,48 @@ function charts() {
 }
 charts();
 
-// ---- metodo
-$("setupList").innerHTML = R.checklist.map(x => `<li><b class="mono">${x.setup}</b> (${x.side}): ${x.label}</li>`).join("");
-$("ruleList").innerHTML = [
-  `Entrata DCA: ${P.entry_weights.map(w => Math.round(w * 100) + "%").join(" / ")}, a 0, −${P.entry_step_atr} e −${2 * P.entry_step_atr} ATR dal primo ingresso (limit validi ${P.entry_window} giorni).`,
-  `Stop a ${P.stop_atr} ATR dal primo ingresso.`,
-  `Uscita DCA: ${Math.round(P.tp_weights[0] * 100)}% a +${P.tp_atr[0]} ATR e ${Math.round(P.tp_weights[1] * 100)}% a +${P.tp_atr[1]} ATR dal prezzo medio, il resto in trailing a ${P.trail_atr} ATR. Dopo il primo target lo stop va a pareggio.`,
-  `Uscita forzata dopo ${P.max_hold} giorni. Leva consigliata sui futures: ${P.leverage}x con margine isolato.`,
-].map(t => `<li>${t}</li>`).join("");
+let eqChart, eqLine;
+function equity(lv) {
+  if (!window.LightweightCharts) return;
+  if (!eqChart) {
+    eqChart = LightweightCharts.createChart($("equity"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1 } }));
+    eqChart.addLineSeries({ color: css("--orange"), lineWidth: 1, priceLineVisible: false, priceFormat: { type: "price", precision: 2, minMove: 0.01 } })
+      .setData(R.equity.btc.map(p => ({ time: p.date, value: p.eq })));
+    eqLine = eqChart.addLineSeries({ color: css("--tint"), lineWidth: 2, lineType: 1, priceLineVisible: false, priceFormat: { type: "price", precision: 2, minMove: 0.01 } });
+  }
+  const pts = [{ time: R.equity.btc[0].date, value: 1 }].concat(R.equity[lv + "x"].map(p => ({ time: p.date, value: p.eq })));
+  const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time === p.time) d[d.length - 1] = p; else d.push(p); });
+  eqLine.setData(d); eqChart.timeScale().fitContent();
+  $("eqNote").textContent = `capitale ×${d[d.length - 1].value.toFixed(2)} · max drawdown ${S.leverage[String(lv)]["max_dd_%"]}% · scala log`;
+}
+seg("eqSeg", v => equity(+v)); equity(2);
 
 // ---- simulatore
 const firstDate = R.series.date[0];
 $("simStart").min = firstDate; $("simStart").max = R.date; $("simStart").value = firstDate;
+const sim = { lev: 2, mk: "futures" };
 let simChart, simLine;
-function closedTrades(mk) { return R.trades[mk].filter(t => t.exit !== "open"); }
+const levSeg = seg("simLev", v => { sim.lev = +v; simulate(); });
+seg("simMk", v => { sim.mk = v; levSeg.disable(v === "spot"); if (v === "spot") levSeg.set(1); else levSeg.set(sim.lev); simulate(); });
+const closedTrades = mk => R.trades[mk].filter(t => t.exit !== "open");
 function simulate() {
   const cap = Math.max(100, +$("simCap").value || 50000), start = $("simStart").value || firstDate;
-  const mk = $("simMk").value, lev = mk === "spot" ? 1 : +$("simLev").value;
-  $("simLev").disabled = mk === "spot";
+  const mk = sim.mk, lev = mk === "spot" ? 1 : sim.lev;
   const tr = closedTrades(mk).filter(t => t.signal_date >= start);
   let eq = cap, peak = cap, dd = 0, wins = 0;
-  const rows = [], pts = [{ time: start, value: cap }];
-  tr.forEach(t => {
-    const r = t.pnl_pct_capital * lev / 100, pnl = eq * r;
-    eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++;
-    rows.push({ ...t, pnl, eq }); pts.push({ time: t.exit_date, value: eq });
-  });
-  const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01);
-  const cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
-  $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win rate", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
-    .map(([a, b]) => `<div><span class="label">${a}</span><b>${b}</b></div>`).join("");
-  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, rendimento annuo composto ${pct(cagr, 1)}. Commissioni e funding inclusi; slippage e tasse esclusi. Il trade eventualmente aperto oggi non è conteggiato.`;
-  $("simCount").textContent = `${tr.length} trade · leva ${lev}x`;
-  $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Gg</th><th>Uscita</th><th>PnL $</th><th>Capitale</th></tr>` +
-    rows.slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.exit}</td><td class="${r.pnl > 0 ? "pos" : "neg"}">${(r.pnl > 0 ? "+" : "") + usd(r.pnl)}</td><td>${usd(r.eq)}</td></tr>`).join("");
+  const out = [], pts = [{ time: start, value: cap }];
+  tr.forEach(t => { const pnl = eq * t.pnl_pct_capital * lev / 100; eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++; out.push({ ...t, pnl, eq }); pts.push({ time: t.exit_date, value: eq }); });
+  const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01), cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
+  $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
+    .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
+  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, leva ${lev}x. Commissioni e funding inclusi; slippage e tasse esclusi.`;
+  $("simCount").textContent = `${tr.length} trade · ${lev}x`;
+  $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
+    out.slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.exit}</td><td class="${r.pnl > 0 ? "pos" : "neg"}">${(r.pnl > 0 ? "+" : "−") + usd(Math.abs(r.pnl))}</td><td>${usd(r.eq)}</td></tr>`).join("");
   if (window.LightweightCharts) {
     if (!simChart) {
-      simChart = LightweightCharts.createChart($("simChart"), { autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--muted"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 },
-        grid: { vertLines: { color: css("--grid") }, horzLines: { color: css("--grid") } }, rightPriceScale: { borderColor: css("--line") }, timeScale: { borderColor: css("--line") }, crosshair: { mode: 0 } });
-      simLine = simChart.addAreaSeries({ lineColor: css("--accent"), topColor: css("--accent") + "44", bottomColor: css("--accent") + "05", lineWidth: 2, lineType: 1, priceFormat: { type: "price", precision: 0, minMove: 1 } });
+      simChart = LightweightCharts.createChart($("simChart"), chartOpts());
+      simLine = simChart.addAreaSeries({ lineColor: css("--tint"), topColor: "rgba(10,132,255,.28)", bottomColor: "rgba(10,132,255,0)", lineWidth: 2, lineType: 1, priceFormat: { type: "price", precision: 0, minMove: 1 } });
     }
     const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time >= p.time) d[d.length - 1].value = p.value; else d.push({ ...p }); });
     simLine.setData(d); simChart.timeScale().fitContent();
@@ -400,52 +526,28 @@ function simulate() {
 }
 function goal(cap, lev, mk) {
   const target = +$("goalCap").value || cap * 2, end = $("goalDate").value || "2026-12-31";
-  const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5));
-  const mult = target / cap, tr = closedTrades(mk);
-  const res = [];
+  const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5)), mult = target / cap, tr = closedTrades(mk), res = [];
   for (let d = new Date(firstDate); d <= new Date(new Date(R.date) - days * 864e5); d = new Date(+d + 864e5)) {
     const a = d.toISOString().slice(0, 10), b = new Date(+d + days * 864e5).toISOString().slice(0, 10);
-    let m = 1; tr.forEach(t => { if (t.exit_date > a && t.exit_date <= b) m *= 1 + t.pnl_pct_capital * lev / 100; });
-    res.push(m);
+    let x = 1; tr.forEach(t => { if (t.exit_date > a && t.exit_date <= b) x *= 1 + t.pnl_pct_capital * lev / 100; }); res.push(x);
   }
   const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
-  const hit = res.filter(m => m >= mult).length / (res.length || 1) * 100;
-  $("goalOut").innerHTML = [["Serve", "×" + mult.toFixed(2) + ` in ${days} gg`], ["Successo storico", hit.toFixed(1) + "%"], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
-    .map(([a, b]) => `<div><span class="label">${a}</span><b>${b}</b></div>`).join("");
-  $("goalNote").textContent = `Calcolato su ${res.length} finestre storiche di ${days} giorni (una per ogni giorno di partenza dal ${firstDate}), con la leva ${lev}x e il mercato scelti sopra. ` +
-    `Nel 90% delle finestre il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
+  const hit = res.filter(x => x >= mult).length / (res.length || 1) * 100;
+  $("goalOut").innerHTML = [["Serve", `×${mult.toFixed(2)} in ${days} gg`], ["Successo storico", hit.toFixed(1) + "%"], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
+    .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
+  $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x. Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
 }
-["simCap", "simStart", "simLev", "simMk", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
+["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
 simulate();
 
 // ---- sezioni
+const VIEWS = ["oggi", "simulatore", "statistiche", "metodo"];
 function route() {
-  const v = (location.hash || "#oggi").slice(1), ok = ["oggi", "simulatore", "statistiche", "metodo"].includes(v) ? v : "oggi";
+  const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) ? v : "oggi";
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
-  document.querySelectorAll("nav.sections a").forEach(a => a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
-  // i grafici creati in una sezione nascosta vanno riadattati quando diventa visibile
+  document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
   setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
 }
-window.addEventListener("hashchange", route); route();
-
-let eqChart, eqLine;
-function equity(lv) {
-  if (!window.LightweightCharts) return;
-  ["1", "2", "3"].forEach(l => $("lv" + l).setAttribute("aria-pressed", l === String(lv)));
-  if (!eqChart) {
-    eqChart = LightweightCharts.createChart($("equity"), { autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--muted"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 },
-      grid: { vertLines: { color: css("--grid") }, horzLines: { color: css("--grid") } }, rightPriceScale: { borderColor: css("--line"), mode: 1 }, timeScale: { borderColor: css("--line") }, crosshair: { mode: 0 } });
-    const bh = eqChart.addLineSeries({ color: css("--warn"), lineWidth: 1, priceLineVisible: false, lastValueVisible: true, priceFormat: { type: "price", precision: 2, minMove: 0.01 } });
-    bh.setData(R.equity.btc.map(p => ({ time: p.date, value: p.eq })));
-    eqLine = eqChart.addLineSeries({ color: css("--accent"), lineWidth: 2, lineType: 1, priceLineVisible: false, priceFormat: { type: "price", precision: 2, minMove: 0.01 } });
-  }
-  const pts = [{ time: R.equity.btc[0].date, value: 1 }].concat(R.equity[lv + "x"].map(p => ({ time: p.date, value: p.eq })));
-  const dedup = []; pts.forEach(p => { if (dedup.length && dedup[dedup.length - 1].time === p.time) dedup[dedup.length - 1] = p; else dedup.push(p); });
-  eqLine.setData(dedup);
-  eqChart.timeScale().fitContent();
-  const st = S.leverage[String(lv)];
-  $("eqNote").textContent = `capitale ×${dedup[dedup.length - 1].value.toFixed(2)} · max drawdown ${st["max_dd_%"]}% · scala logaritmica`;
-}
-[1, 2, 3].forEach(l => $("lv" + l).onclick = () => equity(l));
-equity(2);
+window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
+route();
 </script>
