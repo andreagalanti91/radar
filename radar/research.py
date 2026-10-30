@@ -46,6 +46,8 @@ def scorecard(f: pd.DataFrame, p: Params, signals=None) -> dict:
         "full": summary(t),
         "full_2x": summary(t, 2),
         "spot_full": summary(sp),
+        # pnl per trade (chiave: data del segnale) per misurare quanto il miglioramento è concentrato
+        "pnl_by_signal": {str(d): float(v) for d, v in zip(t["signal_date"], t["pnl_pct_capital"])} if len(t) else {},
     }
 
 
@@ -83,6 +85,14 @@ def promotion_gate(base: dict, cand: dict, cand_robust: list[dict]) -> tuple[boo
     bh, ch = base["holdout"], cand["holdout"]
     if bh.get("trades") and ch.get("expectancy_%", 0) < bh.get("expectancy_%", 0) - 0.25:
         why.append(f"peggiora nel periodo di conferma 2026 ({ch.get('expectancy_%')} vs {bh.get('expectancy_%')})")
+    # concentrazione: il miglioramento non deve dipendere da uno o due trade
+    bp, cp = base.get("pnl_by_signal", {}), cand.get("pnl_by_signal", {})
+    diffs = sorted((cp.get(k, 0.0) - bp.get(k, 0.0) for k in set(bp) | set(cp)), reverse=True)
+    gain = sum(diffs)
+    if gain > 0 and diffs and (gain - diffs[0]) <= 0:
+        why.append(f"miglioramento concentrato: senza il trade che migliora di più il guadagno netto è {gain - diffs[0]:+.2f} punti")
+    elif gain > 0 and len(diffs) > 1 and (gain - diffs[0] - diffs[1]) <= 0:
+        why.append("miglioramento concentrato: dipende dai due trade che migliorano di più")
     bad = [r for r in cand_robust if r["total_return_%"] <= 0 or r["win_rate"] < 70]
     if bad:
         why.append(f"non robusto: {len(bad)} varianti vicine in perdita o con win rate < 70%")

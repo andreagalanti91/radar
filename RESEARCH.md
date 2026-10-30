@@ -10,6 +10,8 @@ Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la 
 - rendimento totale almeno +5%
 - almeno l'80% dei trade attuali
 - robustezza: tutte le varianti vicine dei parametri in profitto e con win rate ≥ 70%
+- non concentrato: togliendo il trade (o i due trade) che migliorano di più, il candidato deve restare migliore della base (aggiunto dopo l'iterazione 3)
+- i nuovi parametri introdotti dal candidato vanno variati anche loro nel test di robustezza: un risultato "a gradino" non si promuove
 
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
@@ -86,3 +88,5 @@ Ogni variante va confrontata con il gate standard (`radar/research.py`) e riport
 ## Iterazioni
 - **2026-10-30 10:40 UTC · Iterazione 1 · SCARTATO** — Idea: tranche DCA 2 e 3 ai bordi della zona prevista (`radar/zones.py`: buy_hi/buy_lo long, sell_lo/sell_hi short) invece di −0,75/−1,5 ATR fissi, stop invariato. Test 2024–25: aspettativa +1,92% → +1,50%, rendimento +40,2% → +24,8%, max DD −16,4% → −25,4% (train exp +2,01 → +1,94; holdout 2026 +2,85 → +3,16; full 1x +156,7% → +130,3%, 2x +498,9% → +372,1%). Motivo: aspettativa test e drawdown peggiori — la zona è più vicina (0,66/1,33 ATR) e riempie più tranche nei trade stoppati (stop pieno −10,8% a mar 2025). Prossime: tranche più profonde (buy_lo e buy_lo − 0,5 ATR) o peso ridotto nella zona, combinare con stop sul prezzo medio (backlog 3).
 - **2026-10-30 11:40 UTC · Iterazione 2 · RAPPORTO** — Valutazione ETH/SOL con parametri invariati: ETH non aggiungere (full −8%, DD −60%, exp test −0,03%), SOL solo osservazione (full +374% ma edge concentrato nel 2022–23, test exp +0,54%, 2025 negativo, peggior trade −21,9%); nessun mix batte BTC da solo nel test. Dettagli nella sezione Valutazione ETH e SOL.
+- **2026-10-30 13:05 UTC · Iterazione 3 · NON PROMOSSO (gate superato ma fragile)** — Stop calcolato. (a) stop sul prezzo medio avg − k·ATR: test exp 0,67–1,42 vs 1,92, scartato; (c) pareggio con margine 0,5/1 ATR o solo dopo TP2: test exp 0,85–1,16, DD −25/−28%, scartato (il pareggio dopo TP1 protegge più di quanto costa; WR pulito sale a 61% ma l'aspettativa crolla); (b) stop di struttura sotto il minimo a 20g − 0,5 ATR, limitato 3–5 ATR: test exp 1,92 → 2,95, full +156,7% → +194,9%, DD −16,4 → −7,7, gate formalmente superato. Non promosso: identico a uno stop fisso a 5 ATR, il guadagno dipende da un solo trade (17/12/2024 da −8,96% a −0,52%, che fa sparire anche lo stop del 06/01/2025), risultato a gradino (3,5 ATR peggiora, ≥4,5 migliora) e perdita potenziale per stop +67%. Gate rafforzato con il controllo di concentrazione. Prossimo: stop 3–5 ATR insieme al sizing a rischio fisso (size = rischio / distanza stop, leva max 3x), così uno stop più largo non aumenta la perdita in % del capitale.
+
