@@ -12,9 +12,9 @@ Pensata per il telefono (si installa come app dalla schermata Home), dark-first 
 
 | Sezione | Cosa trovi |
 |---|---|
-| **Oggi** | prezzo, score di flusso, indicatori, piano operativo o trade aperto, stato dei 6 setup, grafico con i trade |
+| **Oggi** | prezzo live, regione prevista a 7 giorni, score di flusso, piano operativo o trade aperto con timeline e **calcolatore in dollari sul tuo capitale**, stato dei 6 setup, grafico con i trade |
 | **Simulatore** | inserisci capitale, data di partenza, leva e mercato e vedi quanto varrebbe oggi seguendo i segnali; calcolo di quante volte un obiettivo di capitale è stato raggiunto in passato |
-| **Statistiche** | curva di equity contro BTC, backtest per periodo, leva e setup, storico trade |
+| **Statistiche** | curva di equity contro BTC, anatomia del win rate (standard, sopra +1%, pulito), storico operativo trade per trade (segnale, ingressi, uscite), **registro dei segnali reali** dal 30/10/2026, backtest per periodo, leva e setup |
 | **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
 | **Metodo** | regole complete e limiti del sistema |
 
@@ -64,6 +64,14 @@ Commissioni e funding inclusi. Parametri scelti su mar 2022 – dic 2023, verifi
 | 3x | +1181% | +73% | −45% | −27% |
 
 BTC buy & hold nello stesso periodo: +76%, max drawdown −67%.
+
+### Win rate: come leggerlo
+
+| | Standard | Sopra +1% | Pulito (senza stop e pareggi) |
+|---|---|---|---|
+| Futures mar 2022 – ott 2026 | 89,4% | 72,3% | 34,0% |
+
+25 trade su 47 incassano solo il primo target e chiudono il resto a pareggio (+1,25% medio): il guadagno vero arriva dal 40% lasciato correre.
 
 ### Limiti
 - Il campione è di circa 50 trade: il win rate reale può scostarsi di diversi punti.
