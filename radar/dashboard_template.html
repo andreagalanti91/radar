@@ -632,7 +632,7 @@ function seg(id, onChange) {
 // ---- statistiche
 const cols = [["futures", "train"], ["futures", "test"], ["spot", "train"], ["spot", "test"]];
 $("stats").innerHTML = `<tr><th></th>${cols.map(([m, p]) => `<th>${m}<br>${p}</th>`).join("")}</tr>` +
-  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
+  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v + "%"], ["Win rate > +1%", "win_rate_1pct", v => v + "%"], ["Win rate pulito", "win_rate_clean", v => v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
    ["Media vincite", "avg_win_%", v => pct(v, 2)], ["Media perdite", "avg_loss_%", v => pct(v, 2)], ["Aspettativa", "expectancy_%", v => pct(v, 2)],
    ["Rendimento", "total_return_%", v => pct(v, 1)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Durata media", "avg_days", v => v + " gg"]]
   .map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(([m, p]) => { const v = S[m][p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("");
@@ -707,7 +707,7 @@ $("anaLegend").innerHTML = parts.map(([k, n, col, d]) => `<div><span><i style="b
 const strict = Math.round((A.small + A.good) / tot * 100), be = A.by_exit;
 $("anaNote").textContent = `Il win rate del ${Math.round((tot - A.loss) / tot * 100)}% conta come vincita ogni trade chiuso sopra zero, commissioni comprese. ` +
   `${A.flat} vincite sono quasi a pareggio: il prezzo ha toccato il primo target (+${P.tp_atr[0]} ATR) sul ${Math.round(P.tp_weights[0] * 100)}% della posizione e poi è tornato allo stop spostato a pareggio. ` +
-  `Contando solo i trade sopra +1% il win rate è del ${strict}%. ` +
+  `Contando solo i trade sopra +1% il win rate è del ${strict}%; senza contare come vincite le uscite in stop o a pareggio (solo target, trailing o tempo in profitto) è del ${S.futures.full.win_rate_clean}%. ` +
   `Il guadagno arriva soprattutto dalle uscite a tempo (${be.time ? be.time.n : 0} trade, media ${be.time ? pct(be.time.avg, 1) : "–"}) e dal trailing stop (${be.trail ? be.trail.n : 0}, media ${be.trail ? pct(be.trail.avg, 1) : "–"}); ` +
   `gli stop pieni sono stati ${be.stop ? be.stop.n : 0}, con media ${be.stop ? pct(be.stop.avg, 1) : "–"} sull'investito.`;
 

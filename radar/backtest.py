@@ -161,4 +161,7 @@ def summary(t: pd.DataFrame, leverage: float = 1.0) -> dict:
         "max_dd_%": round(float(((eq / eq.cummax()) - 1).min()) * 100, 1),
         "avg_days": round(float(t["days"].mean()), 1),
         "worst_%": round(float(pnl.min()), 2),
+        # win rate "pulito": solo trade chiusi da target, trailing o tempo in profitto (stop e pareggi non contano come vincite)
+        "win_rate_clean": round(float(((t["exit"].isin(["tp", "trail", "time"])) & (pnl > 0)).mean() * 100), 1),
+        "win_rate_1pct": round(float((t["pnl_pct_invested"] >= 1).mean() * 100), 1),
     }
