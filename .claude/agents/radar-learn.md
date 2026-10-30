@@ -10,6 +10,7 @@ Input: il riepilogo della fase di scan.
 
 Compito (massimo 15 minuti):
 1. Leggi `RESEARCH.md` (backlog prioritario e iterazioni già fatte): non ripetere idee già provate.
+   Se c'è una sezione "PROSSIMO GIRO" non ancora completata, esegui quella al posto della singola idea.
 2. Scegli **una** idea con una logica di mercato chiara. Prima le "Priorità dell'utente" di RESEARCH.md
    (stop calcolato, drawdown limitato, budget per operazione, win rate pulito), poi il backlog:
    DCA in entrata, take profit a scaglioni, stop loss a scaglioni, uso della regione prevista

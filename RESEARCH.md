@@ -14,6 +14,22 @@ Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la 
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
 
+## PROSSIMO GIRO (richiesta dell'utente, 30/10/2026): valutazione profonda ETH e SOL
+Iterazione dedicata, al posto della singola idea. Non promuove nulla in automatico: produce un rapporto.
+1. Scaricare per ETHUSDT e SOLUSDT gli stessi dati di BTC (spot e perp da data.binance.vision, funding, metrics
+   OI/long-short, ultimi giorni da OKX): `radar/data.py` oggi ha `SYMBOL` fisso, va parametrizzato senza
+   rompere BTC (cache separata per simbolo, es. `data/ETHUSDT/`). SOL perp USDT-M esiste dal 2020, metrics da fine 2021.
+2. Applicare la strategia attuale **senza ritoccare i parametri** (test fuori campione puro): trade, win rate,
+   win rate pulito, aspettativa, max drawdown, rendimento 1x/2x per train 2022–23, test 2024–25, holdout 2026.
+3. Verificare la regione prevista (`radar/zones.py`) su ETH e SOL: tassi di tocco delle zone.
+4. Valutare il portafoglio: correlazione dei rendimenti dei trade e delle date di segnale con BTC; equity combinata
+   BTC+ETH+SOL con capitale diviso (es. 50/25/25) contro solo BTC: rendimento, drawdown, trade/anno.
+5. Rischi specifici: liquidità e slippage (SOL più volatile, ATR più alto), code di rischio (crolli > 20% in un giorno),
+   funding più estremi.
+6. Conclusione con raccomandazione chiara (aggiungere / non aggiungere / solo in osservazione) e, se positiva,
+   piano di integrazione (alert Telegram, dashboard multi-asset). Registrare qui il rapporto e inviarlo su Telegram
+   come "RADAR SIGNAL BTC · Valutazione ETH e SOL".
+
 ## Priorità dell'utente (30/10/2026, dopo l'iterazione 1) — affrontare per prime
 1. **Stop calcolato**: stop non fisso a 3 ATR dal primo ingresso ma derivato da struttura/volatilità (es. sotto il bordo profondo della zona prevista − k·ATR, minimo a 20 giorni, stop sul prezzo medio dopo ogni tranche, stop a scaglioni). Misurare perdita media e massima per trade.
 2. **Drawdown calcolato e limitato**: regole di rischio a livello di portafoglio, es. riduzione della size dopo una perdita o quando l'equity è sotto il massimo di X%, stop di sistema temporaneo dopo N stop consecutivi. Obiettivo: max drawdown a 1x sotto il 12% senza perdere più del 10% di rendimento.
