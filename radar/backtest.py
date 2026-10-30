@@ -46,6 +46,13 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
         best = e0
         pos = 0.0  # quantità aperta (in unità di capitale / prezzo)
         exit_reason, j = None, i + 1
+        D = lambda k: str(idx[k].date())
+        # registro operativo del trade: segnale, piano, ogni ingresso e ogni uscita
+        ev = [{"date": D(i), "type": "signal", "price": round(float(c[i]), 1),
+               "note": f"segnale {setup[i]} alla chiusura"}]
+        plan = {"entries": [round(float(lv), 1) for lv in levels], "weights": list(p.entry_weights),
+                "stop": round(float(stop), 1), "atr": round(float(a), 1),
+                "tp_atr": list(p.tp_atr), "tp_weights": list(p.tp_weights), "trail_atr": p.trail_atr}
         for j in range(i + 1, min(n, i + 1 + p.max_hold)):
             # 1) ingressi DCA
             for k, lv in enumerate(levels):
@@ -56,6 +63,8 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                     px = e0 if k == 0 else (min(lv, o[j]) if sg == 1 else max(lv, o[j]))
                     q = p.entry_weights[k] / px
                     filled[k] = True
+                    ev.append({"date": D(j), "type": "entry", "price": round(float(px), 1), "pct": round(p.entry_weights[k] * 100),
+                               "note": "ingresso all'apertura" if k == 0 else f"limit DCA {k + 1} eseguito"})
                     qty += q
                     pos += q
                     cost += q * px
@@ -66,8 +75,11 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 px = min(stop, o[j]) if sg == 1 else max(stop, o[j])
                 realized += sg * pos * (px - avg)
                 fees += pos * px * fee
+                exit_reason = "stop" if tp_hit == 0 else ("stop_be" if abs(px - avg) / avg < 0.003 else "trail")
+                ev.append({"date": D(j), "type": "exit", "kind": exit_reason, "price": round(float(px), 1),
+                           "pct": round(pos / qty * 100), "note": {"stop": "stop loss", "stop_be": "stop a pareggio",
+                                                                  "trail": "trailing stop"}[exit_reason]})
                 pos = 0
-                exit_reason = "stop" if tp_hit == 0 else "stop_be"
                 break
             # 3) take profit a scaglioni
             while tp_hit < len(tps):
@@ -76,6 +88,8 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                     q = min(pos, qty * tp_w[tp_hit])
                     realized += sg * q * (tp - avg)
                     fees += q * tp * fee
+                    ev.append({"date": D(j), "type": "exit", "kind": f"tp{tp_hit + 1}", "price": round(float(tp), 1),
+                               "pct": round(q / qty * 100), "note": f"take profit {tp_hit + 1} (+{tps[tp_hit]} ATR dal medio)"})
                     pos -= q
                     tp_hit += 1
                     if tp_hit == 1:  # stop a pareggio (con commissioni)
@@ -104,12 +118,15 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 "pending_entries": [round(lv, 1) for k, lv in enumerate(levels)
                                     if not filled[k] and not tp_hit and j - (i + 1) < p.entry_window],
                 "next_tps": [round(avg + sg * k * a, 1) for k in tps[tp_hit:]],
+                "events": ev, "plan": plan, "last_price": round(float(c[j]), 1),
             })
             break
         if pos > 1e-12:
             px = c[j]
             realized += sg * pos * (px - avg)
             fees += pos * px * fee
+            ev.append({"date": D(j), "type": "exit", "kind": "time", "price": round(float(px), 1),
+                       "pct": round(pos / qty * 100), "note": f"uscita a tempo ({p.max_hold} giorni)"})
             exit_reason = exit_reason or "time"
         notional = cost  # capitale effettivamente investito (somma pesi riempiti)
         pnl = realized - fees + funding
@@ -118,6 +135,8 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
             "days": j - i, "tranches": sum(filled), "avg_entry": round(avg, 1),
             "invested": round(notional, 3), "tp_hit": tp_hit, "exit": exit_reason,
             "pnl_pct_invested": pnl / notional * 100, "pnl_pct_capital": pnl * 100,
+            "fees_pct": fees * 100, "funding_pct": funding * 100,
+            "events": ev, "plan": plan,
         })
         i = j + p.cooldown
     return pd.DataFrame(trades)

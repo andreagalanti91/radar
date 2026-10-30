@@ -134,6 +134,57 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .zrows>div:first-child b{color:var(--green)} .zrows>div:last-child b{color:var(--red)}
 .zrows small{font-size:.74rem;color:var(--label2);line-height:1.35}
 
+/* anatomia */
+.stack{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px}
+.stack i{display:block;height:100%}
+.anaLegend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.anaLegend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.anaLegend div{display:grid;gap:2px;padding:10px 12px;border-radius:14px;background:var(--raise);border:1px solid var(--line)}
+.anaLegend b{font:600 1.2rem var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.anaLegend small{font-size:.74rem;color:var(--label2)}
+.anaLegend span{display:flex;align-items:center;gap:6px;font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.anaLegend span i{width:8px;height:8px;border-radius:2px;display:inline-block}
+
+/* storico operativo */
+.trades{display:grid;gap:8px}
+.trade{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.trade summary{list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}
+.trade summary::-webkit-details-marker{display:none}
+.trade summary .t1{display:grid;gap:1px;min-width:0}
+.trade summary .t1 b{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trade summary .t1 small{font-size:.76rem;color:var(--label2)}
+.trade summary .res{text-align:right;display:grid;gap:1px}
+.trade summary .res b{font:600 1rem var(--font);font-variant-numeric:tabular-nums}
+.trade summary .res small{font:500 .6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+.trade summary .chev{width:16px;height:16px;color:var(--label3);transition:transform .2s}
+.trade[open] summary .chev{transform:rotate(90deg)}
+.trade .body{display:grid;gap:14px;padding:0 14px 16px}
+.why{font-size:.86rem;line-height:1.5;padding:12px 14px;border-radius:14px;background:var(--raise);border:1px solid var(--line)}
+.why b{display:block;font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3);margin-bottom:4px}
+.tchart{height:200px}
+.kvs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:640px){.kvs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kvs div{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:var(--raise)}
+.kvs span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.kvs b{font-weight:600;font-variant-numeric:tabular-nums}
+/* timeline eventi */
+.tl{display:grid;position:relative}
+.tl .ev{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:12px;align-items:start;padding:8px 0;position:relative}
+.tl .ev::before{content:"";position:absolute;left:7px;top:22px;bottom:-8px;width:2px;background:var(--line)}
+.tl .ev:last-child::before{display:none}
+.tl .dot{width:16px;height:16px;border-radius:50%;margin-top:2px;background:var(--card2);border:2px solid var(--label3)}
+.tl .ev.signal .dot{border-color:var(--tint);background:color-mix(in srgb,var(--tint) 30%,var(--card))}
+.tl .ev.entry .dot{border-color:var(--green)}
+.tl .ev.tp .dot{border-color:var(--green);background:var(--green)}
+.tl .ev.stop .dot{border-color:var(--red);background:var(--red)}
+.tl .ev.flat .dot{border-color:var(--label2);background:var(--label3)}
+.tl .ev.pending .dot{border-style:dashed}
+.tl .what{display:grid;gap:1px;min-width:0}
+.tl .what b{font-size:.9rem;font-weight:600}
+.tl .what small{font-size:.76rem;color:var(--label2)}
+.tl .px{text-align:right;font-variant-numeric:tabular-nums;font-size:.9rem;display:grid;gap:1px}
+.tl .px small{font:500 .62rem var(--mono);color:var(--label3);letter-spacing:.06em}
+
 /* score */
 .gauge{display:grid;gap:16px}
 .scoreline{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
@@ -323,24 +374,41 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
         <div id="equity" class="chart" style="height:280px"></div>
       </div>
     </div>
+    <div class="section">
+      <div class="sh">Anatomia del win rate <small id="anaSub"></small></div>
+      <div class="card" style="display:grid;gap:14px">
+        <div class="stack" id="anaBar"></div>
+        <div class="anaLegend" id="anaLegend"></div>
+        <p class="foot" id="anaNote" style="margin:0"></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sh">Storico operativo
+        <span style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button></span>
+          <span class="seg" id="resSeg" role="group" aria-label="Esito"><button data-v="all" aria-pressed="true">Tutti</button><button data-v="win">Vinti</button><button data-v="loss">Persi</button></span>
+        </span>
+      </div>
+      <p class="foot">Ogni trade usato per calcolare le statistiche. Tocca una riga per vedere il motivo del segnale, ogni ingresso e ogni uscita con data e prezzo, e il grafico del periodo.</p>
+      <div class="trades" id="trades"></div>
+    </div>
+
     <div class="cols">
       <div class="section">
         <div class="sh">Backtest <small>da mar 2022</small></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="stats"></table></div></div>
         <p class="foot">Training: parametri scelti su mar 2022 – dic 2023. Test: gen 2024 – oggi. Commissioni e funding inclusi, senza leva.</p>
-        <div class="sh" style="margin-top:12px">Con leva</div>
+      </div>
+      <div class="section">
+        <div class="sh">Con leva</div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="lev"></table></div></div>
         <div class="sh" style="margin-top:12px">Per setup</div>
         <div class="list" id="bySetup"></div>
       </div>
-      <div class="section">
-        <div class="sh">Storico <div class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button></div></div>
-        <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:900px;overflow-y:auto"><table class="grid" id="trades"></table></div></div>
-      </div>
     </div>
   </div>
 
-  <!-- ============ METODO ============ -->
   <div class="view" id="v-metodo" hidden>
     <div class="section">
       <div class="sh">Come funziona</div>
@@ -430,17 +498,20 @@ const rows = r => `<div class="list">${r.map(([k, v, strong]) => `<div class="ro
 if (sig) {
   $("plan").innerHTML = `<div class="sh">Piano ${sig.side} <small>${sig.side === "long" ? "spot + futures" : "solo futures"}</small></div>` +
     `<div class="list"><div class="row ic">${icon(sig.setup)}<span class="k">${sig.setup_label}<small>setup ${sig.setup} · score ${sgn(sig.score)}</small></span></div></div>` +
+    `<div class="why"><b>Perché è scattato</b>${sig.why || ""}</div>` +
     rows(sig.entries.map((e, i) => [`Entrata ${i + 1} · ${Math.round(e.weight * 100)}%<small>${i ? "limit, valido 7 giorni" : "all'apertura"}</small>`, usd(e.price), true])
       .concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", `${usd(sig.stop)} · −${sig.risk_pct_full}%`, true]])) +
     rows(sig.take_profits.map((t, i) => [`Target ${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price), true]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
     rows([["Leva futures", sig.leverage + "x · isolato", true], ["Perdita max sul capitale", "−" + sig.risk_pct_capital_at_leverage + "%"]]) +
     `<p class="foot">I target si ricalcolano sul prezzo medio a ogni tranche. Dopo il primo target lo stop va a pareggio. Uscita entro ${sig.max_hold_days} giorni.</p>`;
 } else if (ot) {
+  const pend = ot.pending_entries.map((v, k) => ({ title: `${ot.side === "long" ? "Compra" : "Vendi short"} · limit DCA`, note: "ordine limite ancora attivo", price: usd(v) }))
+    .concat(ot.next_tps.map((v, k) => ({ title: `Target ${ot.tp_hit + k + 1}`, note: "take profit dal prezzo medio", price: usd(v), cls: "tp" })))
+    .concat([{ title: "Stop attuale", note: ot.tp_hit ? "stop a pareggio o trailing" : "stop loss iniziale", price: usd(ot.stop), cls: "stop" }]);
   $("plan").innerHTML = `<div class="sh">Trade ${ot.side} aperto <small>dal ${ot.signal_date}</small></div>` +
-    `<div class="list"><div class="row ic">${icon(ot.setup)}<span class="k">Setup ${ot.setup}<small>${ot.tranches} tranche su 3 · residuo ${Math.round(ot.remaining * 100)}%</small></span><span class="v strong ${ot.pnl_pct_invested > 0 ? "pos" : "neg"}">${pct(ot.pnl_pct_invested, 2)}</span></div></div>` +
-    rows([["Prezzo medio", usd(ot.avg_entry), true], ["Stop attuale", usd(ot.stop), true],
-      ["Limit DCA in attesa", ot.pending_entries.length ? ot.pending_entries.map(usd).join(" · ") : "nessuno"],
-      ["Prossimi target", ot.next_tps.length ? ot.next_tps.map(usd).join(" · ") : "trailing"]]) +
+    `<div class="list"><div class="row ic">${icon(ot.setup)}<span class="k">Setup ${ot.setup}<small>${ot.tranches} tranche su 3 · prezzo medio ${usd(ot.avg_entry)} · residuo ${Math.round(ot.remaining * 100)}%</small></span><span class="v strong ${ot.pnl_pct_invested > 0 ? "pos" : "neg"}">${pct(ot.pnl_pct_invested, 2)}</span></div></div>` +
+    `<div class="why"><b>Perché è scattato</b>${ot.why || ""}</div>` +
+    `<div class="card">${timeline(ot.events, ot.side, pend)}</div>` +
     `<p class="foot">Il piano si aggiorna a ogni chiusura giornaliera; ogni variazione arriva su Telegram.</p>`;
 } else {
   const atr = c.atr;
@@ -508,11 +579,75 @@ $("lev").innerHTML = `<tr><th></th><th>1x</th><th>2x</th><th>3x</th></tr>` +
   [["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa", "expectancy_%", v => pct(v, 2)]]
   .map(([n, k, f]) => `<tr><td>${n}</td>${["1", "2", "3"].map(l => `<td>${f(LV[l][k])}</td>`).join("")}</tr>`).join("");
 $("bySetup").innerHTML = Object.entries(S.by_setup).map(([k, v]) => `<div class="row ic">${icon(k)}<span class="k">${k}<small>${v.side} · ${v.trades} trade</small></span><span class="v strong">${v.win_rate}% · ${pct(v["expectancy_%"], 2)}</span></div>`).join("");
-function renderTrades(mk) {
-  $("trades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Gg</th><th>DCA</th><th>Medio</th><th>Uscita</th><th>PnL</th></tr>` +
-    R.trades[mk].slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.tranches}/3</td><td>${usd(r.avg_entry)}</td><td>${r.exit}</td><td class="${r.pnl_pct_capital > 0 ? "pos" : "neg"}">${pct(r.pnl_pct_invested, 2)}</td></tr>`).join("");
+// timeline condivisa: storico e trade live
+const EXIT_LABEL = { tp1: "Take profit 1", tp2: "Take profit 2", stop: "Stop loss", stop_be: "Stop a pareggio", trail: "Trailing stop", time: "Uscita a tempo" };
+const fmtD = d => new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "2-digit" });
+function evClass(e) {
+  if (e.type === "signal") return "signal";
+  if (e.type === "entry") return "entry";
+  if (e.kind === "stop") return "stop";
+  if (e.kind === "stop_be") return "flat";
+  return "tp";
 }
-seg("trSeg", renderTrades); renderTrades("futures");
+function timeline(evs, side, extra) {
+  const verb = side === "long" ? ["Compra", "Vendi"] : ["Vendi short", "Ricompra"];
+  return `<div class="tl">` + evs.map(e => {
+    const title = e.type === "signal" ? "Segnale" : e.type === "entry" ? `${verb[0]} ${e.pct}%` : `${verb[1]} ${e.pct}% · ${EXIT_LABEL[e.kind] || e.kind}`;
+    return `<div class="ev ${evClass(e)}"><span class="dot"></span><span class="what"><b>${title}</b><small>${e.note}</small></span><span class="px">${usd(e.price)}<small>${fmtD(e.date)}</small></span></div>`;
+  }).join("") + (extra || []).map(x => `<div class="ev pending ${x.cls || ""}"><span class="dot"></span><span class="what"><b>${x.title}</b><small>${x.note}</small></span><span class="px">${x.price}<small>in attesa</small></span></div>`).join("") + `</div>`;
+}
+const exitTag = t => t.exit === "open" ? "aperto" : (EXIT_LABEL[t.exit] || t.exit);
+let trMk = "futures", trRes = "all";
+function renderTrades() {
+  const list = R.trades[trMk].slice().reverse().filter(t => trRes === "all" || (trRes === "win" ? t.pnl_pct_capital > 0 : t.pnl_pct_capital <= 0));
+  $("trades").innerHTML = list.map((t, n) => {
+    const pos = t.pnl_pct_capital > 0, last = t.events[t.events.length - 1];
+    return `<details class="trade" data-i="${R.trades[trMk].indexOf(t)}">
+      <summary>${icon(t.setup)}<span class="t1"><b>${t.side === "long" ? "Long" : "Short"} · ${t.setup}</b><small>${fmtD(t.signal_date)} → ${t.exit_date ? fmtD(t.exit_date) : "oggi"} · ${t.days} gg · DCA ${t.tranches}/3</small></span>
+        <span class="res"><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b><small>${exitTag(t)}</small></span>
+        <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></summary>
+      <div class="body">
+        <div class="why"><b>Perché è scattato</b>${t.why || ""}</div>
+        <div class="tchart" id="tc-${trMk}-${n}"></div>
+        ${timeline(t.events, t.side)}
+        <div class="kvs"><div><span>Prezzo medio</span><b>${usd(t.avg_entry)}</b></div><div><span>Capitale usato</span><b>${Math.round(t.invested * 100)}%</b></div>
+          <div><span>PnL sull'investito</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b></div><div><span>PnL sul capitale 1x</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_capital, 2)}</b></div></div>
+        <p class="foot" style="margin:0">Commissioni ${t.fees_pct != null ? "−" + t.fees_pct.toFixed(2) + "%" : "incluse"}${t.funding_pct ? " · funding " + pct(t.funding_pct, 2) : ""} sul capitale. Stop iniziale ${usd(t.plan.stop)}, ATR ${usd(t.plan.atr)}.</p>
+      </div></details>`;
+  }).join("") || `<div class="card"><p style="margin:0">Nessun trade con questo filtro.</p></div>`;
+  $("trades").querySelectorAll("details").forEach((d, n) => d.addEventListener("toggle", () => { if (d.open) tradeChart(d.querySelector(".tchart"), R.trades[trMk][+d.dataset.i]); }, { once: true }));
+}
+function tradeChart(el, t) {
+  if (!window.LightweightCharts || !el) return;
+  const s = R.series, i0 = Math.max(0, s.date.indexOf(t.signal_date) - 12), end = t.exit_date || R.date, i1 = Math.min(s.date.length - 1, s.date.indexOf(end) + 6);
+  const ch = LightweightCharts.createChart(el, chartOpts({ handleScroll: false, handleScale: false, rightPriceScale: { borderVisible: false, scaleMargins: { top: .15, bottom: .22 } } }));
+  const ln = ch.addAreaSeries({ lineColor: css("--tint"), topColor: "rgba(79,107,255,.22)", bottomColor: "rgba(79,107,255,0)", lineWidth: 2, priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
+  ln.setData(s.date.slice(i0, i1 + 1).map((d, k) => ({ time: d, value: s.close[i0 + k] })));
+  ln.createPriceLine({ price: t.plan.stop, color: css("--red"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "stop" });
+  ln.createPriceLine({ price: t.avg_entry, color: css("--label2"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "medio" });
+  const L = t.side === "long", mk = t.events.filter(e => e.type !== "signal").map(e => ({ time: e.date, position: (e.type === "entry") === L ? "belowBar" : "aboveBar",
+    color: e.type === "entry" ? css("--green") : e.kind === "stop" ? css("--red") : css("--label"), shape: e.type === "entry" ? (L ? "arrowUp" : "arrowDown") : "circle",
+    text: e.type === "entry" ? e.pct + "%" : (e.kind || "").toUpperCase() }));
+  const seen = {}; mk.sort((a, b) => a.time < b.time ? -1 : 1);
+  ln.setMarkers(mk.map(m => { seen[m.time] = (seen[m.time] || 0) + 1; return m; }));
+  ch.timeScale().fitContent();
+}
+seg("trSeg", v => { trMk = v; renderTrades(); });
+seg("resSeg", v => { trRes = v; renderTrades(); });
+renderTrades();
+
+// anatomia del win rate
+const A = S.anatomy, tot = A.loss + A.flat + A.small + A.good;
+const parts = [["Perdite", A.loss, "var(--red)", "chiuse in perdita"], ["Quasi pareggio", A.flat, "var(--label3)", "0–1%: TP1 e poi stop a pareggio"], ["Piccole vincite", A.small, "color-mix(in srgb,var(--green) 55%,transparent)", "tra +1% e +3%"], ["Vincite piene", A.good, "var(--green)", "oltre +3%"]];
+$("anaSub").textContent = `${tot} trade futures`;
+$("anaBar").innerHTML = parts.map(([, n, col]) => `<i style="flex:${n};background:${col}"></i>`).join("");
+$("anaLegend").innerHTML = parts.map(([k, n, col, d]) => `<div><span><i style="background:${col}"></i>${k}</span><b>${n} · ${Math.round(n / tot * 100)}%</b><small>${d}</small></div>`).join("");
+const strict = Math.round((A.small + A.good) / tot * 100), be = A.by_exit;
+$("anaNote").textContent = `Il win rate del ${Math.round((tot - A.loss) / tot * 100)}% conta come vincita ogni trade chiuso sopra zero, commissioni comprese. ` +
+  `${A.flat} vincite sono quasi a pareggio: il prezzo ha toccato il primo target (+${P.tp_atr[0]} ATR) sul ${Math.round(P.tp_weights[0] * 100)}% della posizione e poi è tornato allo stop spostato a pareggio. ` +
+  `Contando solo i trade sopra +1% il win rate è del ${strict}%. ` +
+  `Il guadagno arriva soprattutto dalle uscite a tempo (${be.time ? be.time.n : 0} trade, media ${be.time ? pct(be.time.avg, 1) : "–"}) e dal trailing stop (${be.trail ? be.trail.n : 0}, media ${be.trail ? pct(be.trail.avg, 1) : "–"}); ` +
+  `gli stop pieni sono stati ${be.stop ? be.stop.n : 0}, con media ${be.stop ? pct(be.stop.avg, 1) : "–"} sull'investito.`;
 
 // ---- grafici
 const chartOpts = extra => Object.assign({ autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--label2"), fontFamily: css("--font"), fontSize: 11 },

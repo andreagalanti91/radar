@@ -10,7 +10,7 @@ import pandas as pd
 from .backtest import run, summary
 from .data import DATA_DIR
 from .zones import latest_zone
-from .strategy import SETUPS, Params, compute_signals, conditions, trade_plan
+from .strategy import SETUPS, Params, compute_signals, conditions, explain, trade_plan
 
 STATE_FILE = DATA_DIR / "state.json"
 BACKTEST_START = "2022-03-01"   # le metrics (long/short ratio) partono da dic 2021 + warm-up
@@ -45,12 +45,17 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
         signal = trade_plan(last, "long", p)
     elif bool(last["short_sig"]):
         signal = trade_plan(last, "short", p)
+    if signal:
+        signal["why"] = explain(last, signal["setup"], p)
 
     fut = run(f, p, "futures", BACKTEST_START)
     spot = run(f, p, "spot", BACKTEST_START)
     open_fut = fut[fut["exit"] == "open"].to_dict("records")
     open_spot = spot[spot["exit"] == "open"].to_dict("records")
 
+    for t in (fut, spot):  # motivo del segnale per ogni trade
+        if len(t):
+            t["why"] = [explain(s.loc[pd.Timestamp(d)], st, p) for d, st in zip(t["signal_date"], t["setup"])]
     stats = {}
     for name, t in (("futures", fut), ("spot", spot)):
         stats[name] = {
@@ -64,6 +69,13 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
         k: {"trades": int(len(g)), "win_rate": round(float((g["pnl_pct_capital"] > 0).mean() * 100), 1),
             "expectancy_%": round(float(g["pnl_pct_capital"].mean()), 2), "label": SETUPS[k][1], "side": SETUPS[k][0]}
         for k, g in closed.groupby("setup")
+    }
+    # anatomia del win rate: di che tipo sono le vincite
+    pi = closed["pnl_pct_invested"]
+    stats["anatomy"] = {
+        "loss": int((pi <= 0).sum()), "flat": int(((pi > 0) & (pi < 1)).sum()),
+        "small": int(((pi >= 1) & (pi < 3)).sum()), "good": int((pi >= 3).sum()),
+        "by_exit": {k: {"n": int(len(g)), "avg": round(float(g.mean()), 2)} for k, g in pi.groupby(closed["exit"])},
     }
     years = (s.index[-1] - pd.Timestamp(BACKTEST_START)).days / 365.25
     stats["trades_per_year"] = round(len(closed) / years, 1)

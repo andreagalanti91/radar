@@ -18,6 +18,7 @@ def format_event(ev: dict, report: dict) -> str:
         mk = "spot + futures" if p["side"] == "long" else "solo futures"
         lines = [f"<b>RADAR SIGNAL BTC · NUOVO SEGNALE {side}</b> ({mk})",
                  f"Setup: <b>{p['setup']}</b> · {p['setup_label']}",
+                 f"Perché: {p.get('why', '')}",
                  f"Chiusura {p['date']}: {_usd(p['price'])} · score flusso {p['score']:+.2f}", "",
                  "<b>Entrata DCA</b>"]
         lines += [f"  {int(e['weight']*100)}% @ {_usd(e['price'])}" + (" (open domani)" if i == 0 else " (limit, 7 gg)")

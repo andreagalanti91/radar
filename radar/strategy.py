@@ -76,6 +76,23 @@ def conditions(f: pd.DataFrame, p: Params) -> dict[str, pd.Series]:
     }
 
 
+def explain(row: pd.Series, setup: str, p: Params) -> str:
+    """Perché il setup è scattato: i valori che hanno superato le soglie quel giorno."""
+    score = row["pf14z"] - row["ls_z"]
+    trend = "rialzista" if row["close"] > row["sma200"] and row["sma50"] > row["sma200"] else \
+        "ribassista" if row["close"] < row["sma200"] and row["sma50"] < row["sma200"] else "neutrale"
+    txt = {
+        "flow": f"score di flusso {score:+.2f} sopra +{p.flow_threshold}: CVD perp {row['pf14z']:+.2f}σ, long/short retail {row['ls_z']:+.2f}σ",
+        "capit": f"calo dal massimo a 30 giorni {row['dd30']*100:.1f}% e open interest {row['oi_chg7']*100:+.1f}% in 7 giorni: leva ripulita",
+        "fundneg": f"funding medio 7 giorni {row['funding7']*100:+.4f}% al giorno: gli short pagano per restare aperti",
+        "brk": f"chiusura sopra il massimo a 20 giorni ({row['brk20']*100:+.1f}%) con CVD perp {row['pf14z']:+.2f}σ in trend rialzista",
+        "sflow": f"score di flusso {score:+.2f} sotto −{p.flow_threshold} in trend ribassista",
+        "sfund": f"funding {row['funding_z']:+.2f}σ sopra la media in trend ribassista: rimbalzo a leva",
+    }.get(setup, "")
+    atr = f"{row['atr']:,.0f}".replace(",", ".")
+    return f"{txt} · trend {trend}, ATR {atr} $"
+
+
 def compute_signals(f: pd.DataFrame, p: Params) -> pd.DataFrame:
     s = f.copy()
     s["score"] = s["pf14z"] - s["ls_z"]
