@@ -2,7 +2,8 @@ name: Radar Signal BTC daily
 
 on:
   schedule:
-    - cron: "30 0 * * *"   # 00:30 UTC, dopo la chiusura della candela giornaliera
+    - cron: "30 0 * * *"   # 00:30 UTC, dopo la chiusura della candela giornaliera: segnale + riepilogo
+    - cron: "7 * * * *"    # ogni ora: notizie, calendario, dashboard e alert sui trade aperti
   workflow_dispatch:
 
 permissions:
@@ -27,7 +28,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          RADAR_DAILY_BRIEF: ${{ vars.RADAR_DAILY_BRIEF || '1' }}
+          # il riepilogo giornaliero parte solo con l'esecuzione delle 00:30
+          RADAR_DAILY_BRIEF: ${{ github.event.schedule == '30 0 * * *' && (vars.RADAR_DAILY_BRIEF || '1') || '0' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
         run: |

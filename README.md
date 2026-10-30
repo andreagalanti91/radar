@@ -8,13 +8,14 @@ Segnali swing su Bitcoin (orizzonte di giorni, circa 10 trade l'anno) basati su 
 
 ## La dashboard
 
-Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro, con quattro sezioni:
+Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:
 
 | Sezione | Cosa trovi |
 |---|---|
 | **Oggi** | prezzo, score di flusso, indicatori, piano operativo o trade aperto, stato dei 6 setup, grafico con i trade |
 | **Simulatore** | inserisci capitale, data di partenza, leva e mercato e vedi quanto varrebbe oggi seguendo i segnali; calcolo di quante volte un obiettivo di capitale è stato raggiunto in passato |
 | **Statistiche** | curva di equity contro BTC, backtest per periodo, leva e setup, storico trade |
+| **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
 | **Metodo** | regole complete e limiti del sistema |
 
 ## Regione prevista
@@ -93,7 +94,7 @@ Il gate (`radar/research.py`) richiede: miglioramento nel test 2024–25, nessun
 1. Bot Telegram da [@BotFather](https://t.me/BotFather); il token non va mai scritto nel codice.
 2. *Settings → Secrets and variables → Actions*: `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID`.
 3. *Settings → Pages → Source: GitHub Actions*.
-4. Il workflow `Radar Signal BTC daily` gira ogni giorno alle 00:30 UTC: aggiorna i dati, invia gli alert e pubblica la dashboard.
+4. Il workflow `Radar Signal BTC daily` gira ogni ora (notizie, calendario, dashboard, alert sui trade aperti) e alle 00:30 UTC calcola il segnale sulla candela chiusa e invia il riepilogo giornaliero.
 
 Alert inviati: nuovo segnale con piano completo, tranche DCA eseguita, target raggiunto, trade chiuso, riepilogo giornaliero (disattivabile con la variabile `RADAR_DAILY_BRIEF=0`).
 
@@ -121,6 +122,7 @@ radar/dashboard*.py   dashboard (dark-first, light/dark, mobile, installabile)
 brand/                logo, icona app, banner, social preview, brand board (sorgenti in brand/src)
 .claude/agents/       sotto-agenti del ciclo orario (scan, apprendimento, miglioramento)
 radar/zones.py        previsione della regione di prezzo a 7 giorni
+radar/news.py         notizie RSS classificate per impatto e calendario economico
 ```
 
 Fonti dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear & Greed).

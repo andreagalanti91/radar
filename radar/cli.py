@@ -17,11 +17,13 @@ from .dashboard import render  # noqa: E402
 from .data import load_all, update_all  # noqa: E402
 from .features import build_features  # noqa: E402
 from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E402
+from .news import fetch_calendar, fetch_news  # noqa: E402
 from .strategy import Params  # noqa: E402
 
 
 def daily() -> None:
     report = evaluate(build_features(update_all()))
+    report["news"], report["calendar"] = fetch_news(), fetch_calendar()
     events = diff_events(report)
     for ev in events:
         telegram.send(telegram.format_event(ev, report))

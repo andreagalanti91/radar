@@ -185,6 +185,41 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tl .px{text-align:right;font-variant-numeric:tabular-nums;font-size:.9rem;display:grid;gap:1px}
 .tl .px small{font:500 .62rem var(--mono);color:var(--label3);letter-spacing:.06em}
 
+/* live */
+.live{display:inline-flex;align-items:center;gap:6px;font:500 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.live.on{color:var(--green)}
+.live.on::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+#price{transition:color .6s}
+#price.up{color:var(--green)} #price.down{color:var(--red)}
+
+/* notizie */
+.hscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px 4px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.hscroll .seg{display:inline-flex}
+.hscroll .seg button{white-space:nowrap}
+.news{display:grid;gap:8px}
+.nitem{display:grid;gap:6px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:18px;color:var(--label);text-decoration:none}
+.nitem .meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font:500 .62rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+.nitem b{font-weight:600;font-size:.98rem;line-height:1.35;letter-spacing:-.015em}
+.nitem p{margin:0;font-size:.84rem;color:var(--label2);line-height:1.45}
+.imp{padding:3px 7px;border-radius:999px;border:1px solid var(--line)}
+.imp.alto{color:var(--red);border-color:color-mix(in srgb,var(--red) 45%,transparent);background:color-mix(in srgb,var(--red) 10%,transparent)}
+.imp.medio{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 45%,transparent)}
+.cal{display:grid;gap:8px}
+.cday{font:500 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3);margin:8px 4px 0}
+.cev{background:var(--card);border:1px solid var(--line);border-radius:16px}
+.cev summary{list-style:none;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;cursor:pointer}
+.cev summary::-webkit-details-marker{display:none}
+.cev .tm{font:600 .9rem var(--font);font-variant-numeric:tabular-nums}
+.cev .tm small{display:block;font:500 .6rem var(--mono);color:var(--label3);letter-spacing:.08em}
+.cev .ti{display:grid;gap:2px;min-width:0}
+.cev .ti b{font-weight:600;font-size:.92rem}
+.cev .ti small{font-size:.76rem;color:var(--label2)}
+.cev .note{padding:0 14px 14px 78px;font-size:.84rem;line-height:1.5;color:var(--label2)}
+.cev.past{opacity:.6}
+.cev.next{border-color:color-mix(in srgb,var(--tint) 55%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--tint) 14%,transparent)}
+
 /* score */
 .gauge{display:grid;gap:16px}
 .scoreline{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
@@ -211,7 +246,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(4,1fr);width:min(420px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);width:min(460px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -260,6 +295,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   <symbol id="i-oggi" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 12l5-5"/></g><circle cx="8.6" cy="15.2" r="1.6" fill="currentColor"/></symbol>
   <symbol id="i-sim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20h17"/><path d="M4.5 15.5l4.5-5 4 3 6.5-8"/><path d="M15.5 5.5h4v4"/></g></symbol>
   <symbol id="i-stat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="11" width="3.6" height="9" rx="1.4"/><rect x="10.2" y="5" width="3.6" height="15" rx="1.4"/><rect x="16.4" y="8" width="3.6" height="12" rx="1.4"/></g></symbol>
+  <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="14" height="15" rx="2.5"/><path d="M17.5 8.5h2a1 1 0 0 1 1 1V17a2.5 2.5 0 0 1-5 0"/><path d="M7 9h7M7 12.5h7M7 16h4"/></g></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
 
@@ -271,6 +307,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simulatore</a>
     <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Statistiche</a>
+    <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
     <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
   </nav>
   <div class="promo"><b>Alert su Telegram</b><span>Ogni nuovo segnale, tranche e target arriva su @CryptoRadarGalaBot.</span></div>
@@ -285,7 +322,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   <div class="hero">
     <span class="cap"><span>Bitcoin · BTC/USDT</span><span id="stateD" class="status"></span></span>
     <h1 id="price"></h1>
-    <p id="sub"></p>
+    <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
 
 <!-- ============ OGGI ============ -->
@@ -409,6 +446,26 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     </div>
   </div>
 
+  <div class="view" id="v-notizie" hidden>
+    <div class="section">
+      <div class="sh">Notizie <small id="newsUpd"></small></div>
+      <div class="hscroll"><div class="seg" id="newsSeg" role="group" aria-label="Categoria">
+        <button data-v="impatto" aria-pressed="true">Impatto</button><button data-v="macro">Dati macro</button><button data-v="bitcoin">Bitcoin</button>
+        <button data-v="etf">ETF e istituzionali</button><button data-v="regolamentazione">Regole</button><button data-v="derivati">Derivati e on-chain</button><button data-v="tutte">Tutte</button>
+      </div></div>
+      <p class="foot" id="newsWhy"></p>
+    </div>
+    <div class="section" id="calSec" hidden>
+      <div class="sh">Calendario economico <small>settimana in corso · ora italiana</small></div>
+      <div class="cal" id="cal"></div>
+      <p class="foot">Fonte: calendario ForexFactory. Previsione = consenso degli analisti; il dato effettivo esce all'orario indicato. Gli eventi ad alto impatto muovono spesso BTC nell'ora successiva: meglio non aprire leva a ridosso dell'uscita.</p>
+    </div>
+    <div class="section">
+      <div class="news" id="newsList"></div>
+      <p class="foot">Fonti: CoinDesk, Cointelegraph, Decrypt, The Block, Bitcoin Magazine, CryptoSlate, Cryptonomist, Investing, Bitcoin.com, Federal Reserve. Impatto stimato da parole chiave che storicamente muovono il prezzo (Fed e dati macro, hack, flussi ETF, azioni regolatorie, liquidazioni): è un filtro, non un giudizio.</p>
+    </div>
+  </div>
+
   <div class="view" id="v-metodo" hidden>
     <div class="section">
       <div class="sh">Come funziona</div>
@@ -439,6 +496,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simula</a>
   <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Stats</a>
+  <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>News</a>
   <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
 </nav>
 
@@ -467,7 +525,7 @@ const icon = (k, dim) => `<span class="ico${dim ? " dim" : ""}" style="--c:var($
 // ---- intestazione
 const ot = R.open_trade.futures, sig = R.signal, c = R.components, P = R.params;
 $("price").innerHTML = dots(usd(R.price));
-$("sub").textContent = `BTC · chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })} · aggiornato ogni notte`;
+$("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
 const st = $("state");
 if (sig) { st.className = "status " + sig.side; st.textContent = "Segnale " + sig.side; }
 else if (ot) { st.className = "status open"; st.textContent = "Trade " + ot.side + " aperto"; }
@@ -527,11 +585,15 @@ $("th").textContent = R.threshold;
 const Z = R.zone;
 if (Z) {
   const lo = Z.buy[0] - (Z.sell[1] - Z.buy[0]) * .12, hi = Z.sell[1] + (Z.sell[1] - Z.buy[0]) * .12, x = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
-  $("ladder").innerHTML = `<div class="rail"></div>` +
-    `<div class="band buy" style="left:${x(Z.buy[0])};width:calc(${x(Z.buy[1])} - ${x(Z.buy[0])})"></div>` +
-    `<div class="band sell" style="left:${x(Z.sell[0])};width:calc(${x(Z.sell[1])} - ${x(Z.sell[0])})"></div>` +
-    `<div class="now" style="left:${x(R.price)}"><span>ORA ${usd(R.price)}</span></div>` +
-    [Z.buy[0], Z.sell[1]].map(v => `<span class="tk" style="left:${x(v)}">${usd(v)}</span>`).join("");
+  window.drawLadder = px => {
+    const l2 = Math.min(lo, px - (hi - lo) * .04), h2 = Math.max(hi, px + (hi - lo) * .04), xx = v => ((v - l2) / (h2 - l2) * 100).toFixed(2) + "%";
+    $("ladder").innerHTML = `<div class="rail"></div>` +
+      `<div class="band buy" style="left:${xx(Z.buy[0])};width:calc(${xx(Z.buy[1])} - ${xx(Z.buy[0])})"></div>` +
+      `<div class="band sell" style="left:${xx(Z.sell[0])};width:calc(${xx(Z.sell[1])} - ${xx(Z.sell[0])})"></div>` +
+      `<div class="now" style="left:${xx(px)}"><span>ORA ${usd(px)}</span></div>` +
+      [Z.buy[0], Z.sell[1]].map(v => `<span class="tk" style="left:${xx(v)}">${usd(v)}</span>`).join("");
+  };
+  window.drawLadder(R.price);
   const st = Z.stats, d = v => pct((v / R.price - 1) * 100, 1);
   $("zoneH").textContent = `prossimi ${Z.horizon_days} giorni`;
   $("zBuy").textContent = `${usd(Z.buy[0])} – ${usd(Z.buy[1])}`;
@@ -743,8 +805,80 @@ function goal(cap, lev, mk) {
 ["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
 simulate();
 
+// ---- notizie
+const NEWS_WHY = {
+  impatto: "Le notizie che storicamente muovono di più il prezzo di BTC, ordinate per impatto stimato e recenza.",
+  macro: "Dati economici e banche centrali: muovono dollaro, rendimenti e quindi l'appetito per il rischio. Sotto trovi il calendario della settimana con previsioni e dati precedenti.",
+  bitcoin: "Notizie che parlano direttamente di Bitcoin.",
+  etf: "Flussi degli ETF spot e acquisti delle società: la domanda istituzionale è uno dei motori principali dal 2024.",
+  regolamentazione: "SEC, CFTC, leggi su stablecoin e mercato: cambiano chi può comprare e come.",
+  derivati: "Liquidazioni, leva, opzioni, balene e miner: il posizionamento che il modello legge anche nei dati.",
+  tutte: "Tutte le notizie degli ultimi giorni, dalla più recente.",
+};
+let NEWS = R.news || [], CAL = R.calendar || [], newsTab = "impatto";
+const ago = d => { const m = Math.round((Date.now() - new Date(d)) / 6e4); return m < 60 ? `${Math.max(m, 1)} min fa` : m < 1440 ? `${Math.round(m / 60)} h fa` : `${Math.round(m / 1440)} g fa`; };
+const esc = t => String(t).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
+const TAGN = { macro: "macro", regolamentazione: "regole", etf: "etf", derivati: "derivati", bitcoin: "btc" };
+function renderNews() {
+  $("newsWhy").textContent = NEWS_WHY[newsTab];
+  $("calSec").hidden = newsTab !== "macro" && newsTab !== "impatto";
+  let list = NEWS;
+  if (newsTab === "impatto") list = NEWS.filter(n => n.level !== "basso").slice().sort((a, b) => (b.impact - a.impact) || (a.date < b.date ? 1 : -1));
+  else if (newsTab !== "tutte") list = NEWS.filter(n => n.tabs.includes(newsTab));
+  $("newsList").innerHTML = list.slice(0, 40).map(n => `<a class="nitem" href="${esc(n.link)}" target="_blank" rel="noopener">
+      <span class="meta"><span>${esc(n.source)}</span><span>${ago(n.date)}</span>${n.level !== "basso" ? `<span class="imp ${n.level}">impatto ${n.level}</span>` : ""}${n.tabs.filter(t => t !== newsTab).map(t => `<span>#${TAGN[t]}</span>`).join("")}</span>
+      <b>${esc(n.title)}</b>${n.summary ? `<p>${esc(n.summary)}</p>` : ""}</a>`).join("") || `<div class="card"><p style="margin:0">Nessuna notizia in questa categoria negli ultimi giorni.</p></div>`;
+  // calendario: in "Impatto" solo gli eventi ad alto impatto
+  const cal = newsTab === "impatto" ? CAL.filter(e => e.impact === "alto") : CAL;
+  const now = Date.now(), nextIdx = cal.findIndex(e => new Date(e.date) > now);
+  let day = "";
+  $("cal").innerHTML = cal.map((e, k) => {
+    const d = new Date(e.date), dl = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+    const head = dl !== day ? `<div class="cday">${(day = dl)}</div>` : "";
+    const past = d < now, nums = [e.forecast && `previsto ${e.forecast}`, e.previous && `precedente ${e.previous}`].filter(Boolean).join(" · ");
+    return head + `<details class="cev${past ? " past" : ""}${k === nextIdx ? " next" : ""}"><summary>
+      <span class="tm">${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}<small>${e.country}</small></span>
+      <span class="ti"><b>${esc(e.title)}</b><small>${[nums || (past ? "" : "senza previsione"), past ? "uscito" : k === nextIdx ? "prossimo" : ""].filter(Boolean).join(" · ")}</small></span>
+      <span class="imp ${e.impact}">${e.impact}</span></summary>${e.note ? `<div class="note">${esc(e.note)}</div>` : ""}</details>`;
+  }).join("") || `<div class="card"><p style="margin:0">Calendario non disponibile in questo momento.</p></div>`;
+  const newest = NEWS.length ? NEWS[0].date : null;
+  $("newsUpd").textContent = newest ? `ultima ${ago(newest)}` : "";
+}
+seg("newsSeg", v => { newsTab = v; renderNews(); });
+renderNews();
+// sulla pagina pubblicata le notizie si ricaricano ogni 10 minuti senza rigenerare la dashboard
+setInterval(() => fetch("news.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(j => { if (j && j.news) { NEWS = j.news; CAL = j.calendar || CAL; renderNews(); } }).catch(() => {}), 6e5);
+
+// ---- prezzo live (Binance in tempo reale, Coinbase come riserva). Se la rete è bloccata resta la chiusura.
+let lastPx = R.price;
+function setLive(px, chg, src) {
+  if (!(px > 0)) return;
+  const el = $("price");
+  el.innerHTML = dots(usd(px));
+  if (px !== lastPx) { el.classList.remove("up", "down"); void el.offsetWidth; el.classList.add(px > lastPx ? "up" : "down"); setTimeout(() => el.classList.remove("up", "down"), 700); }
+  lastPx = px;
+  $("liveTag").className = "live on"; $("liveTag").textContent = "live · " + src;
+  if (chg != null) { $("chg24").textContent = pct(chg, 2) + " 24h"; $("chg24").className = "num " + (chg >= 0 ? "pos" : "neg"); }
+  window.drawLadder && window.drawLadder(px);
+}
+function pollCoinbase() {
+  const tick = () => fetch("https://api.exchange.coinbase.com/products/BTC-USD/stats").then(r => r.json()).then(j => setLive(+j.last, (+j.last / +j.open - 1) * 100, "coinbase")).catch(() => {});
+  tick(); setInterval(tick, 10000);
+}
+function startLive() {
+  let ok = false, fell = false;
+  const fallback = () => { if (!fell) { fell = true; pollCoinbase(); } };
+  try {
+    const ws = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@miniTicker");
+    ws.onmessage = e => { ok = true; const d = JSON.parse(e.data); setLive(+d.c, (+d.c / +d.o - 1) * 100, "binance"); };
+    ws.onerror = ws.onclose = () => { if (!ok) fallback(); else setTimeout(startLive, 3000); };
+    setTimeout(() => { if (!ok) { try { ws.close(); } catch (_) {} fallback(); } }, 6000);
+  } catch (_) { fallback(); }
+}
+startLive();
+
 // ---- sezioni
-const VIEWS = ["oggi", "simulatore", "statistiche", "metodo"];
+const VIEWS = ["oggi", "simulatore", "statistiche", "notizie", "metodo"];
 function route() {
   const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) ? v : "oggi";
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
