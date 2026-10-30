@@ -115,6 +115,17 @@ placebo e vicini, diventa il nuovo campione e si annota qui con i numeri. Nel to
    opening-range 4h, momentum time-series) contro placebo.
 - Notte · ora 22:47 — costruito modulo su carta (H2 v1 dal 31/10/2026): radar/paper.py (motore H2 pulito su candele 4h da spot_1h, conto virtuale 10.000 $ a rischio 3%, data/paper.json), chiamata in `daily`, riquadro "Su carta · H2" in dashboard, tests/test_paper.py. Numeri riprodotti identici a eng.py del giro 12: 105 trade, WR 79,0%, +85,4%, DD giornaliero −11,4% (stessi trade, stesso esito trade per trade, equity finale 18.541,59 $ su 10.000).
 
+### Notte · ora 22:47 (2) — multi-timeframe: trend settimanale/giornaliero su H2 · NON PROMUOVERE (sfidante su carta)
+Preregistrato, 15 combinazioni (W-SMA10/20/40, pendenza W-EMA20, D-50/200 × filtro / peso / peso solo short).
+Miglior: **W-SMA40 filtro** (long solo sopra la SMA 40 settimane, short solo sotto): WR 81,8%, 77 trade; a DD 15% **+190%**
+(H2 +127%), a DD 20% +311% (H2 +198%); walk-forward positivo; placebo p 0,024. NON passa il bootstrap (P(DD>20%) 27% > 15%),
+nel 2026 rende meno di H2 (+10,9 vs +16,9), vicini fragili (SMA32 r15 54,5) e contro "togli 50 long a caso" p 0,07.
+Al rischio massimo che tiene il bootstrap: W40 +160,9% vs H2 +123,4%. W-SMA40 peso (4%/2%): +158,9% a DD 15%.
+**Lezione 21**: i filtri di trend GIORNALIERI peggiorano (SMA50/200 anche su H2: r15 60,6 vs 127); la media SETTIMANALE lunga
+no — precisazione della 7b. Gli short di H2 sono già tutti sotto la W-SMA40; il filtro agisce solo sui long contro trend
+(ancora in profitto, ma pesano sul DD). Prossimo: peso continuo sulla distanza dalla W-SMA40 e rischio 2% ai long contro trend,
+con placebo "togli trade a caso" obbligatorio.
+
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
   delle 2 candele 4h precedenti (short: sotto il minimo), 2 livelli 40/60 a −0,5 ATR dal prezzo di ingresso, stop 1 ATR, TP 1R,
