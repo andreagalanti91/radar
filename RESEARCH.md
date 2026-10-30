@@ -16,6 +16,14 @@ Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la 
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
 
+## Lezioni apprese (aggiornare a ogni giro: è la memoria del ciclo)
+1. Più tranche riempite nei trade che poi vanno in stop = perdite più grandi: avvicinare i limit DCA peggiora il drawdown (it. 1).
+2. Lo stop a pareggio dopo il TP1 protegge più di quanto costa: toglierlo o allargarlo alza il win rate pulito ma fa crollare l'aspettativa (it. 3).
+3. Un miglioramento che dipende da 1–2 trade non è un miglioramento: controllare sempre la concentrazione e variare anche i nuovi parametri (it. 3).
+4. Uno stop più largo va sempre abbinato a una size più piccola, altrimenti aumenta la perdita reale sul capitale (it. 3).
+5. Il vantaggio di un asset va verificato anno per anno: risultati aggregati possono nascondere un edge concentrato in un periodo (SOL 2022–23, it. 2).
+6. Il guadagno vero arriva dal 40% lasciato correre (uscite a tempo +12%, trailing +8,9%): proteggerlo prima di ottimizzare altro.
+
 ## Osservazione SOL (dal 30/10/2026, decisione dell'utente)
 SOL viene seguito a ogni giro con `python -m radar.observe SOLUSDT` (stessa strategia e parametri di BTC,
 dati in `data/SOLUSDT/`, trade solo su carta). Non entra nel tool operativo: niente alert di trading, niente dashboard.
