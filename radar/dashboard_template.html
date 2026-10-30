@@ -355,6 +355,13 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       <div class="list" id="checks"></div>
     </div>
 
+    <div class="section" id="paperSec" hidden>
+      <div class="sh">Su carta · H2 <small id="paperSub"></small></div>
+      <div class="tiles" id="paperKv"></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="paperTr"></table></div></div>
+      <p class="foot" id="paperNote"></p>
+    </div>
+
     <div class="section">
       <div class="sh">Prezzo e trade</div>
       <div class="card" style="display:grid;gap:10px">
@@ -716,6 +723,26 @@ renderCalc();
 seg("trSeg", v => { trMk = v; renderTrades(); });
 seg("resSeg", v => { trRes = v; renderTrades(); });
 renderTrades();
+// ---- conto su carta H2 (data/paper.json): capitale virtuale, trade aperto o in attesa, ultimi trade
+(function renderPaper() {
+  const P = R.paper; if (!P) return;
+  $("paperSec").hidden = false;
+  const S = P.stats, o = P.open, side = x => x === "long" ? "Long" : "Short";
+  $("paperSub").textContent = `dal ${fmtD(P.start)} · rischio ${Math.round(P.risk * 100)}%`;
+  const pos = !o ? ["In attesa", "nessun segnale attivo"]
+    : o.status === "aperto" ? [`${side(o.side)} ${usd(o.entry)}`, `stop ${usd(o.stop)} · TP ${usd(o.tp)}` + (o.filled[1] ? "" : ` · limit ${usd(o.levels[1])}`)]
+    : o.status === "ingresso" ? [`${side(o.side)} confermato`, "ingresso alla prossima apertura 4h"]
+    : [`${side(o.side)} in conferma`, `chiusura 4h ${o.side === "long" ? "sopra" : "sotto"} ${usd(o.trigger)} entro ${fmtD(o.deadline)}`];
+  $("paperKv").innerHTML = [["Capitale virtuale", usd(P.capital), `da ${usd(P.capital0)}`], ["Rendimento", pct(S.ret, 1), `${S.n} trade · WR ${S.wr == null ? "–" : S.wr + "%"}`],
+    ["Max drawdown", pct(S.dd, 1), "giornaliero"], ["Posizione", pos[0], pos[1]]]
+    .map(([k, v, n]) => `<div><span>${k}</span><b>${v}</b><small>${n}</small></div>`).join("");
+  const T = P.trades.slice(-5).reverse();
+  $("paperTr").innerHTML = T.length ? `<tr><th>Segnale</th><th>Lato</th><th>Ingresso</th><th>Uscita</th><th>Esito</th><th>Conto</th></tr>` +
+    T.map(t => `<tr><td>${fmtD(t.date)}</td><td>${side(t.side)}</td><td>${usd(t.entry)}</td><td>${fmtD(t.exit_date)}</td><td>${t.exit === "tp" ? "TP" : t.exit === "stop" ? "Stop" : "Tempo"}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pct(t.pnl_pct, 2)}</td></tr>`).join("")
+    : `<tr><td>Nessun trade chiuso finora</td></tr>`;
+  const F = P.reference;
+  $("paperNote").textContent = `Conto virtuale, nessun ordine reale. Riferimento storico H2 dal ${fmtD(F.start)}: ${F.n} trade, WR ${F.wr}%, ${pct(F.ret, 1)}, DD ${pct(F.dd, 1)}.`;
+})();
 
 // anatomia del win rate
 const A = S.anatomy, tot = A.loss + A.flat + A.small + A.good;

@@ -113,6 +113,7 @@ placebo e vicini, diventa il nuovo campione e si annota qui con i numeri. Nel to
 4. Confluenze: punteggio di confluenza (segnale + livello S/R + volume + conferma 4h), richiesto ≥ k fattori.
 5. Strategie migliori note in letteratura da testare onestamente su BTC (Turtle, RSI2 su trend, VWAP reversion,
    opening-range 4h, momentum time-series) contro placebo.
+- Notte · ora 22:47 — costruito modulo su carta (H2 v1 dal 31/10/2026): radar/paper.py (motore H2 pulito su candele 4h da spot_1h, conto virtuale 10.000 $ a rischio 3%, data/paper.json), chiamata in `daily`, riquadro "Su carta · H2" in dashboard, tests/test_paper.py. Numeri riprodotti identici a eng.py del giro 12: 105 trade, WR 79,0%, +85,4%, DD giornaliero −11,4% (stessi trade, stesso esito trade per trade, equity finale 18.541,59 $ su 10.000).
 
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo

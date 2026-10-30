@@ -19,6 +19,7 @@ from .features import build_features  # noqa: E402
 from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E402
 from .news import fetch_calendar, fetch_news  # noqa: E402
 from . import intraday  # noqa: E402
+from . import paper  # noqa: E402
 import pandas as pd  # noqa: E402
 from .liquidations import collect as collect_liquidations  # noqa: E402
 import json  # noqa: E402
@@ -28,7 +29,12 @@ from .strategy import Params  # noqa: E402
 
 def daily() -> None:
     d = update_all()
-    report = evaluate(build_features(d))
+    f = build_features(d)
+    report = evaluate(f)
+    try:   # modulo su carta (H2): un errore qui non deve fermare alert e dashboard
+        paper.update(f)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] modulo su carta non aggiornato: {e!r}")
     st0 = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
     stale = [k for k in ("spot", "perp", "funding", "metrics") if (pd.Timestamp.utcnow().tz_localize(None) - d[k].index.max()).days > 2]
     if stale and st0.get("stale_alert") != str(pd.Timestamp.utcnow().date()):

@@ -1,0 +1,24 @@
+{
+ "version": "H2 v1",
+ "start": "2026-10-31",
+ "updated": "2026-10-30 00:00:00",
+ "capital0": 10000.0,
+ "risk": 0.03,
+ "capital": 10000.0,
+ "stats": {
+  "n": 0,
+  "wr": null,
+  "ret": 0.0,
+  "dd": 0.0
+ },
+ "open": null,
+ "trades": [],
+ "equity": [],
+ "reference": {
+  "start": "2022-03-01",
+  "n": 105,
+  "wr": 79.0,
+  "ret": 85.4,
+  "dd": -11.4
+ }
+}

@@ -38,6 +38,9 @@ HEAD = """<!doctype html>
 def render(report: dict, out: Path | None = None, standalone: bool = True) -> Path:
     out = out or ROOT / "site" / "index.html"
     out.parent.mkdir(parents=True, exist_ok=True)
+    pf = ROOT / "data" / "paper.json"   # conto su carta H2 (radar/paper.py), se già calcolato
+    if "paper" not in report and pf.exists():
+        report = dict(report, paper=json.loads(pf.read_text()))
     html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str))
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)
     if standalone:
