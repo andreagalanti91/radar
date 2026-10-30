@@ -4,5 +4,6 @@
   "open": {
     "futures": null,
     "spot": null
-  }
+  },
+  "intraday_keys": []
 }
