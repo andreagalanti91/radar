@@ -87,6 +87,24 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
+- **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
+  delle 2 candele 4h precedenti (short: sotto il minimo), 2 livelli 40/60 a −0,5 ATR dal prezzo di ingresso, stop 1 ATR, TP 1R,
+  finestra 72h, tenuta 14 g, rischio 3%. **WR 79,0%, 105 trade, +85,4%, DD −11,4%, MAR 7,5**; ogni anno positivo
+  (2022 +17,0, 2023 +13,5, 2024 +6,4, 2025 +17,8, 2026 +15,6 a 1x); walk-forward sceglie H2 in entrambe le finestre e resta
+  positivo; placebo p 0,024; bootstrap P(DD>20%) 4%; slippage 0,2% +60%. Tutti i 16 vicini guadagnano in ogni periodo, ma
+  4/15 hanno WR 64,6–68,9% nel 2022–23 → criterio preregistrato NON soddisfatto. Stop sotto lo swing 4h: peggiora sempre.
+  10.000 $: 1x 19.241 (DD −11,4%), 2x 35.170 (−21,8%), 5x 156.770 (−47,9%); base 1x 13.014 (−28,4%).
+- **B, S9 range preregistrata**: NON passa 4/6 criteri (24–25, vicini, walk-forward −1,6%, bootstrap P(DD>20%) 23%);
+  con ADX<20 come regime crolla → risultato "a gradino". Portafoglio **50% S9 + 50% A+EMA** (corr −0,03): +78,7%, DD −6,8%,
+  MAR 11,6; 2x +209% DD −13,2%; stabile cambiando i parametri di S9 (MAR 5,7–7,3), ma i pezzi non reggono i vicini.
+- **Lezione 20**: una conferma di prezzo 4h (micro-breakout nella direzione del segnale) è più robusta di una media mobile;
+  lo stop strutturale rende il rischio troppo variabile; due strategie fragili ma scorrelate fanno un portafoglio stabile.
+  Correzione della 19: l'affollamento "in range" dipende da una sola definizione di range e da una soglia (non robusto).
+- **Prossimo passo concreto**: portare nel repo un modulo di osservazione su carta (paper) che segue ogni giorno H2,
+  A+EMA e il portafoglio b) congelati, con Telegram e dashboard; poi gate dedicato su 4h preregistrato (vicini con passi
+  più piccoli: TP 0,9/1,1R; WR minimo valutato sull'intero periodo oltre che per periodo).
+
 ## Giro 11 · manuale 30/10/2026 sera — leva fino a 5x, ingressi/uscite, strategie nuove · ESITO: NON PROMUOVERE (3 candidati in osservazione)
 Motori 4h con slippage 0,1% e liquidazione isolata. Base a 1x con slippage: +30,1%, DD −28,4%; a 5x −27,9% con DD −89,6%.
 - **A, ingressi/uscite**: famiglia A + ingresso alla prima chiusura 4h sopra EMA20 4h (finestra 72h), rischio 3%:
