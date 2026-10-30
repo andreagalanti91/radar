@@ -17,7 +17,8 @@ def format_event(ev: dict, report: dict) -> str:
         side = "🟢 LONG" if p["side"] == "long" else "🔴 SHORT"
         mk = "spot + futures" if p["side"] == "long" else "solo futures"
         lines = [f"<b>RADAR BTC · NUOVO SEGNALE {side}</b> ({mk})",
-                 f"Chiusura {p['date']}: {_usd(p['price'])} · score {p['score']:.2f}", "",
+                 f"Setup: <b>{p['setup']}</b> · {p['setup_label']}",
+                 f"Chiusura {p['date']}: {_usd(p['price'])} · score flusso {p['score']:+.2f}", "",
                  "<b>Entrata DCA</b>"]
         lines += [f"  {int(e['weight']*100)}% @ {_usd(e['price'])}" + (" (open domani)" if i == 0 else " (limit, 7 gg)")
                   for i, e in enumerate(p["entries"])]
@@ -26,7 +27,9 @@ def format_event(ev: dict, report: dict) -> str:
                   "<b>Uscita DCA</b> (sul medio a DCA completa; il bot ricalcola i target a ogni tranche)"]
         lines += [f"  {int(tp['weight']*100)}% @ {_usd(tp['price'])}" for tp in p["take_profits"]]
         lines += [f"  {int(p['trail_weight']*100)}% in trailing a {p['trail_atr']} ATR · max {p['max_hold_days']} gg",
-                  "Dopo il TP1 lo stop va a pareggio."]
+                  "Dopo il TP1 lo stop va a pareggio.", "",
+                  f"<b>Leva</b> futures consigliata {p['leverage']:g}x: perdita massima ~{p['risk_pct_capital_at_leverage']}% "
+                  f"del capitale allocato se tutte le tranche si riempiono e scatta lo stop. Usa margine isolato."]
         return "\n".join(lines)
     tr, market = ev["trade"], ev["market"]
     if t == "dca_fill":
@@ -44,12 +47,14 @@ def format_event(ev: dict, report: dict) -> str:
 
 
 def daily_brief(report: dict) -> str:
-    c = report["components"]
+    c = {k: (0.0 if v is None else v) for k, v in report["components"].items()}
     ot = report["open_trade"]["futures"]
     pos = (f"Trade {ot['side']} aperto dal {ot['signal_date']} · medio {_usd(ot['avg_entry'])} · stop {_usd(ot['stop'])}"
            if ot else "Nessun trade aperto")
-    return (f"<b>RADAR BTC · {report['date']}</b>\nPrezzo {_usd(report['price'])} · score {report['score']:+.2f} "
+    active = [x["setup"] for x in report.get("checklist", []) if x["active"]]
+    return (f"<b>RADAR BTC · {report['date']}</b>\nPrezzo {_usd(report['price'])} · score flusso {report['score']:+.2f} "
             f"(soglia ±{report['threshold']}) · regime {report['regime']}\n"
+            f"Setup attivi: {', '.join(active) if active else 'nessuno'}\n"
             f"CVD perp z {c['perp_flow_z']:+.2f} · L/S retail z {c['retail_ls_z']:+.2f} · "
             f"funding {c['funding7_annual_pct']:.1f}%/anno · F&amp;G {c['fng']:.0f}\n{pos}")
 

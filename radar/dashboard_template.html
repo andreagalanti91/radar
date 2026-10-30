@@ -60,7 +60,7 @@ header p{margin:4px 0 0;color:var(--muted)}
 .scroll{overflow-x:auto}
 table.grid{width:100%;border-collapse:collapse;font:13px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 table.grid th{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
-table.grid td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--grid)}
+table.grid td{text-align:right;padding:6px 6px;border-bottom:1px solid var(--grid)}
 table.grid th:first-child,table.grid td:first-child{text-align:left}
 .pos{color:var(--long)} .neg{color:var(--short)}
 .tabs{display:flex;gap:6px}
@@ -69,6 +69,20 @@ table.grid th:first-child,table.grid td:first-child{text-align:left}
 .tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 footer{color:var(--muted);font-size:12.5px;max-width:80ch}
+.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.checks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.checks{grid-template-columns:minmax(0,1fr)}}
+.check{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:6px;min-width:0}
+.check.on{border-color:currentColor}
+.check.on.long{color:var(--long)} .check.on.short{color:var(--short)}
+.check .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.check b{font:600 14px var(--mono);color:var(--ink)}
+.check p{margin:0;font-size:13px;color:var(--ink)}
+.check small{font:12px/1.4 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+.tag{font:500 10.5px var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.tag.long{color:var(--long);border-color:currentColor} .tag.short{color:var(--short);border-color:currentColor}
+.tag.on{background:currentColor}
+.tag.on span{color:var(--panel)}
 </style>
 
 <div class="wrap">
@@ -83,7 +97,7 @@ footer{color:var(--muted);font-size:12.5px;max-width:80ch}
 
   <section class="top">
     <div class="panel gauge">
-      <div class="head"><h2>Score di order flow</h2><span class="label" id="regime"></span></div>
+      <div class="head"><h2>Score di flusso</h2><span class="label" id="regime"></span></div>
       <div class="scoreline"><span class="score" id="score"></span><span class="note" id="scoreNote"></span></div>
       <div>
         <div class="meter" id="meter"></div>
@@ -94,11 +108,23 @@ footer{color:var(--muted);font-size:12.5px;max-width:80ch}
     <div class="panel plan" id="plan"></div>
   </section>
 
+  <section class="panel" style="display:grid;gap:14px">
+    <div class="head"><h2>I 6 setup oggi</h2><span class="label" id="ckSum"></span></div>
+    <div class="checks" id="checks"></div>
+  </section>
+
+  <section class="panel charts">
+    <div class="head"><h2>Equity del modello (futures) vs BTC</h2>
+      <div class="tabs" role="group" aria-label="Leva"><button id="lv1" aria-pressed="false">1x</button><button id="lv2" aria-pressed="true">2x</button><button id="lv3" aria-pressed="false">3x</button></div></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>modello</span><span><i style="background:var(--warn)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
+    <div id="equity" class="chart" style="height:300px"></div>
+  </section>
+
   <section class="panel charts">
     <div class="head"><h2>Prezzo e trade del modello</h2>
       <div class="legend"><span><i style="background:var(--long)"></i>ingresso long</span><span><i style="background:var(--short)"></i>ingresso short</span><span><i style="background:var(--muted)"></i>uscita</span><span><i style="background:var(--warn)"></i>SMA 200</span></div></div>
     <div id="price" class="chart"></div>
-    <span class="label">Score (soglie ±<span id="th"></span>)</span>
+    <span class="label">Score di flusso (soglie ±<span id="th"></span>)</span>
     <div id="scorechart" class="chart small"></div>
   </section>
 
@@ -106,17 +132,21 @@ footer{color:var(--muted);font-size:12.5px;max-width:80ch}
     <div class="panel" style="display:grid;gap:12px">
       <div class="head"><h2>Backtest</h2><span class="label">dal mar 2022, con commissioni e funding</span></div>
       <div class="scroll"><table class="grid" id="stats"></table></div>
-      <p class="note">Training: parametri scelti solo su mar 2022 – dic 2023. Test: gen 2024 – oggi, dati mai visti in fase di scelta. PnL espresso sul capitale allocato alla strategia, senza leva.</p>
+      <p class="note">Training: parametri scelti su mar 2022 – dic 2023. Test: gen 2024 – oggi. PnL sul capitale allocato, senza leva.</p>
+      <span class="label">Futures con leva (mar 2022 – oggi)</span>
+      <div class="scroll"><table class="grid" id="lev"></table></div>
+      <span class="label">Per setup (futures, 1x)</span>
+      <div class="scroll"><table class="grid" id="bySetup"></table></div>
     </div>
-    <div class="panel" style="display:grid;gap:12px;min-width:0">
+    <div class="panel" style="display:grid;gap:12px;min-width:0;align-content:start">
       <div class="head"><h2>Storico trade</h2>
         <div class="tabs" role="group" aria-label="Mercato"><button id="tFut" aria-pressed="true">futures</button><button id="tSpot" aria-pressed="false">spot</button></div></div>
-      <div class="scroll" style="max-height:420px;overflow-y:auto"><table class="grid" id="trades"></table></div>
+      <div class="scroll" style="max-height:900px;overflow-y:auto"><table class="grid" id="trades"></table></div>
     </div>
   </section>
 
   <footer>
-    Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX (ultimi giorni non ancora archiviati), alternative.me (Fear &amp; Greed). Il segnale si calcola sulla chiusura giornaliera UTC. I risultati passati non garantiscono quelli futuri: il campione è di circa 30 trade, quindi il win rate ha un margine d'errore ampio. Strumento di analisi, non consulenza finanziaria.
+    Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX (ultimi giorni non ancora archiviati), alternative.me (Fear &amp; Greed). Il segnale si calcola sulla chiusura giornaliera UTC. I risultati passati non garantiscono quelli futuri: il campione è di circa 50 trade (10 l'anno), quindi il win rate ha un margine d'errore di diversi punti. Con la leva le perdite si moltiplicano allo stesso modo dei guadagni. Strumento di analisi, non consulenza finanziaria.
   </footer>
 </div>
 
@@ -161,8 +191,10 @@ function planTable(rows) { return `<table>${rows.map(r => `<tr><td>${r[0]}</td><
 const P = R.params;
 if (sig) {
   $("plan").innerHTML = `<div class="head"><h2>Piano operativo · ${sig.side.toUpperCase()}</h2><span class="label">${sig.side === "long" ? "spot + futures" : "solo futures"}</span></div>` +
+    `<p style="margin:0">Setup <b class="mono">${sig.setup}</b> · ${sig.setup_label}</p>` +
     `<span class="label">Entrata DCA</span>` + planTable(sig.entries.map((e, i) => [`${Math.round(e.weight * 100)}% ${i ? "limit (7 gg)" : "all'apertura"}`, usd(e.price)]).concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", usd(sig.stop) + ` (−${sig.risk_pct_full}%)`]])) +
     `<span class="label">Uscita DCA</span>` + planTable(sig.take_profits.map((t, i) => [`TP${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price)]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
+    planTable([["Leva futures consigliata", sig.leverage + "x · margine isolato"], ["Perdita max sul capitale allocato", "−" + sig.risk_pct_capital_at_leverage + "%"]]) +
     `<p class="note">Target calcolati sul prezzo medio a DCA completa: si ricalcolano a ogni tranche eseguita. Dopo il TP1 lo stop va a pareggio. Uscita forzata dopo ${sig.max_hold_days} giorni.</p>`;
 } else if (ot) {
   $("plan").innerHTML = `<div class="head"><h2>Trade aperto · ${ot.side.toUpperCase()}</h2><span class="label">dal ${ot.signal_date}</span></div>` +
@@ -174,10 +206,10 @@ if (sig) {
 } else {
   const atr = c.atr;
   $("plan").innerHTML = `<div class="head"><h2>Piano operativo</h2><span class="label">nessuna posizione</span></div>
-    <p style="margin:0">Nessun setup attivo. Il modello apre un <b>long</b> quando lo score supera <b class="mono">+${R.threshold}</b> e uno <b>short</b> (solo futures) quando scende sotto <b class="mono">−${R.threshold}</b> in regime ribassista.</p>
+    <p style="margin:0">Nessun setup attivo. Il modello apre una posizione quando uno dei 6 setup qui sotto scatta; gli short solo sui futures e solo in regime ribassista.</p>
     <span class="label">Come sarebbe un long oggi</span>` +
     planTable([["40% all'apertura", usd(R.price)], ["30% limit", usd(R.price - P.entry_step_atr * atr)], ["30% limit", usd(R.price - 2 * P.entry_step_atr * atr)],
-      ["Stop", usd(R.price - P.stop_atr * atr)], ["TP1 / TP2 dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["ATR 14g", usd(atr) + ` (${c.atr_pct.toFixed(1)}%)`]]) +
+      ["Stop", usd(R.price - P.stop_atr * atr)], ["TP1 / TP2 dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["Leva futures", P.leverage + "x"], ["ATR 14g", usd(atr) + ` (${c.atr_pct.toFixed(1)}%)`]]) +
     `<p class="note">Esempio con l'ATR di oggi, solo a scopo illustrativo.</p>`;
 }
 $("th").textContent = R.threshold;
@@ -192,12 +224,24 @@ $("stats").innerHTML = `<tr><th></th>${cols.map(([m, p]) => `<th>${m}<br>${p}</t
 
 function renderTrades(mk) {
   const t = R.trades[mk].slice().reverse();
-  $("trades").innerHTML = `<tr><th>Segnale</th><th>Lato</th><th>Gg</th><th>DCA</th><th>Medio</th><th>TP</th><th>Uscita</th><th>PnL</th></tr>` +
-    t.map(r => `<tr><td>${r.signal_date}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.tranches}/3</td><td>${usd(r.avg_entry)}</td><td>${r.tp_hit}</td><td>${r.exit}</td><td class="${r.pnl_pct_capital > 0 ? "pos" : "neg"}">${pct(r.pnl_pct_invested, 2)}</td></tr>`).join("");
+  $("trades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Gg</th><th>DCA</th><th>Medio</th><th>TP</th><th>Uscita</th><th>PnL</th></tr>` +
+    t.map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.tranches}/3</td><td>${usd(r.avg_entry)}</td><td>${r.tp_hit}</td><td>${r.exit}</td><td class="${r.pnl_pct_capital > 0 ? "pos" : "neg"}">${pct(r.pnl_pct_invested, 2)}</td></tr>`).join("");
   $("tFut").setAttribute("aria-pressed", mk === "futures"); $("tSpot").setAttribute("aria-pressed", mk === "spot");
 }
 $("tFut").onclick = () => renderTrades("futures"); $("tSpot").onclick = () => renderTrades("spot");
 renderTrades("futures");
+
+// ---- checklist setup
+const on = R.checklist.filter(x => x.active).length;
+$("ckSum").textContent = on ? on + " attivi" : "nessuno attivo";
+$("checks").innerHTML = R.checklist.map(x => `<div class="check ${x.side}${x.active ? " on" : ""}"><div class="row"><b>${x.setup}</b><span class="tag ${x.side}${x.active ? " on" : ""}"><span>${x.active ? "attivo · " : ""}${x.side}</span></span></div><p>${x.label}</p><small>${x.detail}</small></div>`).join("");
+
+const LV = S.leverage;
+$("lev").innerHTML = `<tr><th></th><th>1x</th><th>2x</th><th>3x</th></tr>` +
+  [["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa / trade", "expectancy_%", v => pct(v, 2)]]
+  .map(([n, k, f]) => `<tr><td>${n}</td>${["1", "2", "3"].map(l => `<td>${f(LV[l][k])}</td>`).join("")}</tr>`).join("");
+$("bySetup").innerHTML = `<tr><th>Setup</th><th>Lato</th><th>Trade</th><th>Win</th><th>Media</th></tr>` +
+  Object.entries(S.by_setup).map(([k, v]) => `<tr><td>${k}</td><td class="${v.side === "long" ? "pos" : "neg"}">${v.side}</td><td>${v.trades}</td><td>${v.win_rate}%</td><td>${pct(v["expectancy_%"], 2)}</td></tr>`).join("");
 
 // ---- grafici
 function charts() {
@@ -228,4 +272,25 @@ function charts() {
   sc.timeScale().subscribeVisibleLogicalRangeChange(r => r && pc.timeScale().setVisibleLogicalRange(r));
 }
 charts();
+
+let eqChart, eqLine;
+function equity(lv) {
+  if (!window.LightweightCharts) return;
+  ["1", "2", "3"].forEach(l => $("lv" + l).setAttribute("aria-pressed", l === String(lv)));
+  if (!eqChart) {
+    eqChart = LightweightCharts.createChart($("equity"), { autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--muted"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 },
+      grid: { vertLines: { color: css("--grid") }, horzLines: { color: css("--grid") } }, rightPriceScale: { borderColor: css("--line"), mode: 1 }, timeScale: { borderColor: css("--line") }, crosshair: { mode: 0 } });
+    const bh = eqChart.addLineSeries({ color: css("--warn"), lineWidth: 1, priceLineVisible: false, lastValueVisible: true, priceFormat: { type: "price", precision: 2, minMove: 0.01 } });
+    bh.setData(R.equity.btc.map(p => ({ time: p.date, value: p.eq })));
+    eqLine = eqChart.addLineSeries({ color: css("--accent"), lineWidth: 2, lineType: 1, priceLineVisible: false, priceFormat: { type: "price", precision: 2, minMove: 0.01 } });
+  }
+  const pts = [{ time: R.equity.btc[0].date, value: 1 }].concat(R.equity[lv + "x"].map(p => ({ time: p.date, value: p.eq })));
+  const dedup = []; pts.forEach(p => { if (dedup.length && dedup[dedup.length - 1].time === p.time) dedup[dedup.length - 1] = p; else dedup.push(p); });
+  eqLine.setData(dedup);
+  eqChart.timeScale().fitContent();
+  const st = S.leverage[String(lv)];
+  $("eqNote").textContent = `capitale ×${dedup[dedup.length - 1].value.toFixed(2)} · max drawdown ${st["max_dd_%"]}% · scala logaritmica`;
+}
+[1, 2, 3].forEach(l => $("lv" + l).onclick = () => equity(l));
+equity(2);
 </script>

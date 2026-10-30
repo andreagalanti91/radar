@@ -10,13 +10,13 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .strategy import Params, compute_score
+from .strategy import Params, compute_signals
 
 FEES = {"spot": 0.001, "futures": 0.0005}  # per lato (taker)
 
 
-def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=None) -> pd.DataFrame:
-    s = compute_score(f, p)
+def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=None, signals: pd.DataFrame | None = None) -> pd.DataFrame:
+    s = compute_signals(f, p) if signals is None else signals
     if start:
         s = s[s.index >= pd.Timestamp(start)]
     if end:
@@ -25,6 +25,7 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
     idx, o, h, l, c = s.index, s["open"].values, s["high"].values, s["low"].values, s["close"].values
     atr, fund = s["atr"].values, s["funding"].fillna(0).values
     longs, shorts = s["long_sig"].values, s["short_sig"].values
+    setup = s["setup"].values if "setup" in s else np.array([""] * len(s))
     trades, i, n = [], 0, len(s)
     while i < n - 1:
         side = "long" if longs[i] else "short" if (shorts[i] and market == "futures") else None
@@ -95,7 +96,7 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
         if still_open:
             pnl = realized - fees + funding + sg * pos * (c[j] - avg)
             trades.append({
-                "signal_date": idx[i].date(), "exit_date": None, "side": side,
+                "signal_date": idx[i].date(), "exit_date": None, "side": side, "setup": setup[i],
                 "days": j - i, "tranches": sum(filled), "avg_entry": round(avg, 1),
                 "invested": round(cost, 3), "tp_hit": tp_hit, "exit": "open",
                 "pnl_pct_invested": pnl / cost * 100, "pnl_pct_capital": pnl * 100,
@@ -113,7 +114,7 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
         notional = cost  # capitale effettivamente investito (somma pesi riempiti)
         pnl = realized - fees + funding
         trades.append({
-            "signal_date": idx[i].date(), "exit_date": idx[j].date(), "side": side,
+            "signal_date": idx[i].date(), "exit_date": idx[j].date(), "side": side, "setup": setup[i],
             "days": j - i, "tranches": sum(filled), "avg_entry": round(avg, 1),
             "invested": round(notional, 3), "tp_hit": tp_hit, "exit": exit_reason,
             "pnl_pct_invested": pnl / notional * 100, "pnl_pct_capital": pnl * 100,
@@ -122,22 +123,23 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
     return pd.DataFrame(trades)
 
 
-def summary(t: pd.DataFrame) -> dict:
+def summary(t: pd.DataFrame, leverage: float = 1.0) -> dict:
     if not t.empty:
         t = t[t["exit"] != "open"]
     if t.empty:
         return {"trades": 0}
-    pnl = t["pnl_pct_capital"]
+    pnl = t["pnl_pct_capital"] * leverage
     wins, losses = pnl[pnl > 0], pnl[pnl <= 0]
     eq = (1 + pnl / 100).cumprod()
     return {
         "trades": len(t),
         "win_rate": round(len(wins) / len(t) * 100, 1),
-        "avg_win_%": round(wins.mean(), 2) if len(wins) else 0,
-        "avg_loss_%": round(losses.mean(), 2) if len(losses) else 0,
-        "profit_factor": round(wins.sum() / -losses.sum(), 2) if len(losses) and losses.sum() < 0 else float("inf"),
-        "expectancy_%": round(pnl.mean(), 2),
-        "total_return_%": round((eq.iloc[-1] - 1) * 100, 1),
-        "max_dd_%": round(((eq / eq.cummax()) - 1).min() * 100, 1),
-        "avg_days": round(t["days"].mean(), 1),
+        "avg_win_%": round(float(wins.mean()), 2) if len(wins) else 0,
+        "avg_loss_%": round(float(losses.mean()), 2) if len(losses) else 0,
+        "profit_factor": round(float(wins.sum() / -losses.sum()), 2) if len(losses) and losses.sum() < 0 else float("inf"),
+        "expectancy_%": round(float(pnl.mean()), 2),
+        "total_return_%": round(float(eq.iloc[-1] - 1) * 100, 1),
+        "max_dd_%": round(float(((eq / eq.cummax()) - 1).min()) * 100, 1),
+        "avg_days": round(float(t["days"].mean()), 1),
+        "worst_%": round(float(pnl.min()), 2),
     }

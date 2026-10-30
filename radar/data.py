@@ -181,7 +181,8 @@ def fetch_perp() -> pd.DataFrame:
 def fetch_funding() -> pd.DataFrame:
     last = _cache_last("funding")
     today = _today()
-    start = (last + timedelta(days=1)) if last else START
+    # i giorni recenti arrivano da OKX; si riscaricano i mesi Binance per sovrascriverli appena archiviati
+    start = (last - timedelta(days=45)) if last else START
     this_month = date(today.year, today.month, 1)
     months = [m for m in _months(start, today) if m < this_month]
     frames = []
@@ -201,7 +202,8 @@ def fetch_funding() -> pd.DataFrame:
         okx["date"] = pd.to_datetime(pd.to_numeric(okx["fundingTime"]), unit="ms").dt.normalize()
         okx = okx.groupby("date")["realizedRate"].apply(lambda s: pd.to_numeric(s).sum()).to_frame("funding")
         okx = okx[(okx.index > out.index.max()) & (okx.index.date < today)]
-        out = pd.concat([out, okx]).sort_index()
+        if len(okx):
+            out = _merge_cache("funding", okx)
     return out
 
 

@@ -35,6 +35,8 @@ def build_features(d: dict[str, pd.DataFrame]) -> pd.DataFrame:
         f[f"perp_flow{n}"] = f["perp_delta"].rolling(n).sum() / f["perp_vol"].rolling(n).sum()
     f["cvd_spot"] = f["spot_delta"].cumsum()
     f["cvd_perp"] = f["perp_delta"].fillna(0).cumsum()
+    f["pf14z"] = _z(f["perp_flow14"], 180)
+    f["sf14z"] = _z(f["spot_flow14"], 180)
     # spot-led vs perp-led: chi guida il movimento
     f["flow_gap14"] = _z(f["spot_flow14"], 180) - _z(f["perp_flow14"], 180)
 
@@ -67,6 +69,8 @@ def build_features(d: dict[str, pd.DataFrame]) -> pd.DataFrame:
     f["ret7"] = c.pct_change(7)
     f["ret14"] = c.pct_change(14)
     f["dd30"] = c / c.rolling(30).max() - 1
+    f["brk20"] = c / c.rolling(20).max().shift() - 1
+    f["ret30"] = c.pct_change(30)
     f["pump30"] = c / c.rolling(30).min() - 1
     f["rsi"] = _rsi(c)
     # divergenza prezzo/CVD spot su 14 giorni: prezzo scende ma lo spot compra (assorbimento)

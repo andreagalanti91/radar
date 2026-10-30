@@ -9,7 +9,7 @@ import pandas as pd
 
 from .backtest import run, summary
 from .data import DATA_DIR
-from .strategy import Params, compute_score, trade_plan
+from .strategy import SETUPS, Params, compute_signals, conditions, trade_plan
 
 STATE_FILE = DATA_DIR / "state.json"
 BACKTEST_START = "2022-03-01"   # le metrics (long/short ratio) partono da dic 2021 + warm-up
@@ -32,12 +32,12 @@ def _clean(x):
 
 def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
     p = p or Params()
-    s = compute_score(f, p)
+    s = compute_signals(f, p)
     s = s.loc[: s["score"].last_valid_index()]  # ultimo giorno con dati derivati completi
     f = f.loc[: s.index[-1]]
     last = s.iloc[-1]
     downtrend = bool((last["close"] < last["sma200"]) and (last["sma50"] < last["sma200"]))
-    regime = "rialzista" if bool(last["trend_up"]) else "ribassista" if downtrend else "neutrale"
+    regime = "rialzista" if bool(last["up"]) else "ribassista" if downtrend else "neutrale"
 
     signal = None
     if bool(last["long_sig"]):
@@ -57,17 +57,49 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
             "test": summary(t[pd.to_datetime(t["signal_date"]) >= TEST_START]),
             "full": summary(t),
         }
+    stats["leverage"] = {str(lv): summary(fut, lv) for lv in (1, 2, 3)}
+    closed = fut[fut["exit"] != "open"]
+    stats["by_setup"] = {
+        k: {"trades": int(len(g)), "win_rate": round(float((g["pnl_pct_capital"] > 0).mean() * 100), 1),
+            "expectancy_%": round(float(g["pnl_pct_capital"].mean()), 2), "label": SETUPS[k][1], "side": SETUPS[k][0]}
+        for k, g in closed.groupby("setup")
+    }
+    years = (s.index[-1] - pd.Timestamp(BACKTEST_START)).days / 365.25
+    stats["trades_per_year"] = round(len(closed) / years, 1)
+
+    # stato attuale di ciascun setup (per la checklist)
+    cond = conditions(f.loc[: s.index[-1]], p)
+    checklist = []
+    detail = {
+        "flow": f"score {last['score']:+.2f} (soglia +{p.flow_threshold})",
+        "capit": f"drawdown 30g {last['dd30']*100:.1f}% (≤ {p.capit_dd*100:.0f}%) · OI 7g {last['oi_chg7']*100:+.1f}% (≤ {p.capit_oi*100:.0f}%)",
+        "fundneg": f"funding 7g {last['funding7']*100:+.4f}% per giorno (< 0)",
+        "brk": f"distanza dal max 20g {last['brk20']*100:+.1f}% · CVD perp {last['pf14z']:+.2f}σ (> +{p.brk_flow}) · trend {'ok' if last['up'] else 'no'}",
+        "sflow": f"score {last['score']:+.2f} (soglia −{p.flow_threshold}) · regime {'ribassista' if last['down'] else 'non ribassista'}",
+        "sfund": f"funding z {last['funding_z']:+.2f} (soglia +{p.sfund_z}) · regime {'ribassista' if last['down'] else 'non ribassista'}",
+    }
+    for k, (side, label) in SETUPS.items():
+        checklist.append({"setup": k, "side": side, "label": label, "active": bool(cond[k].iloc[-1]), "detail": detail[k]})
+
+    # curve di equity (chiusura trade) vs buy & hold
+    def curve(t, lev):
+        t = t[t["exit"] != "open"]
+        eq = (1 + t["pnl_pct_capital"] * lev / 100).cumprod()
+        return [{"date": str(d), "eq": round(float(v), 4)} for d, v in zip(t["exit_date"], eq)]
+    hist0 = s[s.index >= pd.Timestamp(BACKTEST_START)]["close"]
+    equity = {"1x": curve(fut, 1), "2x": curve(fut, 2), "3x": curve(fut, 3),
+              "btc": [{"date": str(d.date()), "eq": round(float(v / hist0.iloc[0]), 4)} for d, v in hist0.items()]}
 
     hist = s[s.index >= pd.Timestamp(BACKTEST_START)]
     return _clean({
         "date": str(last.name.date()),
         "price": float(last["close"]),
         "score": float(last["score"]),
-        "threshold": p.threshold,
+        "threshold": p.flow_threshold,
         "regime": regime,
         "components": {
-            "perp_flow_z": float(last["pf_z"]),
-            "retail_ls_z": float(last["ls_zz"]),
+            "perp_flow_z": float(last["pf14z"]),
+            "retail_ls_z": float(last["ls_z"]),
             "perp_flow14": float(last["perp_flow14"]),
             "spot_flow14": float(last["spot_flow14"]),
             "global_ls": float(last["global_ls"]),
@@ -80,6 +112,8 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
             "sma200": float(last["sma200"]),
         },
         "signal": signal,
+        "checklist": checklist,
+        "equity": equity,
         "open_trade": {"futures": open_fut[0] if open_fut else None, "spot": open_spot[0] if open_spot else None},
         "stats": stats,
         "params": p.to_dict(),
