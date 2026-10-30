@@ -126,6 +126,17 @@ no — precisazione della 7b. Gli short di H2 sono già tutti sotto la W-SMA40; 
 (ancora in profitto, ma pesano sul DD). Prossimo: peso continuo sulla distanza dalla W-SMA40 e rischio 2% ai long contro trend,
 con placebo "togli trade a caso" obbligatorio.
 
+### Notte · ora 23:47 — volume e CVD intraday 4h su H2 · NON PROMUOVERE (sfidante su carta)
+Preregistrato, 24 combinazioni (volume relativo, delta taker, CVD 6/12 × filtro / peso 4%-2%) sulla barra 4h di conferma.
+Tutti i 12 FILTRI peggiorano H2 (perdono buoni trade, 2022–23 negativo). I PESI sul delta taker migliorano sempre.
+Miglior: **D10 peso** (rischio 4% se delta taker della barra di conferma nella direzione del trade ≥ 0,10, altrimenti 2%):
+stessi 105 trade, WR 79%; a DD 15% **+217%** (H2 +127%), a DD 20% +345% (H2 +198%); placebo segnali p 0,024 e placebo
+"pesi a caso" p 0,040; vicini tutti positivi in ogni periodo. NON passa il bootstrap al rischio di DD 15% (P(DD>20%) 20,5%)
+e il walk-forward sceglie V10+D0 peso, non D10. Al rischio massimo che tiene il bootstrap: +176,8% (H2 +123,4%).
+**Lezione 22**: il flusso taker intraday funziona come PESO della size, non come filtro; il volume relativo da solo non serve.
+I pesi concentrati alzano la coda del bootstrap anche se il DD storico scende: va sempre verificato al rischio di DD 15%.
+Prossimo: peso continuo clip(DT,0,0,15) + peso W-SMA40, delta taker perp e divergenza perp−spot.
+
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
   delle 2 candele 4h precedenti (short: sotto il minimo), 2 livelli 40/60 a −0,5 ATR dal prezzo di ingresso, stop 1 ATR, TP 1R,
