@@ -1,6 +1,6 @@
 # Diario di ricerca · Radar Signal BTC
 
-Ciclo di miglioramento automatico: **2 giri approfonditi al giorno** (07:17 e 19:17 ora italiana). Il controllo orario di prezzi, ordini, stop e target gira gratis su GitHub Actions.
+Ciclo di miglioramento automatico: **2 giri al giorno** (07:17 e 19:17 ora italiana): pensiero, apprendimento, test. Il controllo orario di prezzi, ordini, stop e target gira gratis su GitHub Actions.
 
 **Obiettivo (dal 30/10/2026): rendimento corretto per il rischio** = rendimento totale / |max drawdown| (MAR). Il win rate è un vincolo, non l'obiettivo. Ogni iterazione prova un'idea, la valuta con
 `python -m radar.research` e la promuove solo se supera il gate in `radar/research.py`:
@@ -106,10 +106,16 @@ Ordine dei giri serali; la pianificazione può riordinare in base ai risultati. 
 - **R12 Liquidazioni reali** raccolte da oggi; **R13** rivalutazione di SOL dopo 10 trade su carta.
 
 ## Obiettivi e struttura dei giri (dal 30/10/2026)
-**Obiettivo principale**: rendimento corretto per il rischio (MAR = rendimento / |max drawdown|), oggi 9,55.
-**Vincoli** (una modifica non li deve violare): perdita massima per singolo trade a 1x ≤ 9%; almeno 8 trade l'anno;
-win rate ≥ 85% e win rate pulito non in calo; nessun peggioramento su SOL (banco di prova).
-**Traguardo a 3 mesi**: MAR ≥ 12 (a 1x) e profilo 2x con rendimento ≥ +450% e drawdown ≤ −20%, e ≥ 5 segnali reali registrati coerenti con il backtest.
+**Obiettivo (utente, 30/10/2026 sera) — sostituisce i precedenti**: strategia swing **con DCA** su BTC con
+**win rate ≥ 70%** e **max drawdown giornaliero reale ≤ 15%** (mark-to-market, a 1x; la leva si sceglie dopo in base al DD),
+massimizzando il rendimento dentro questi due vincoli. Base corretta oggi: WR 83,3%, DD giornaliero 1x −28,1%, +57%:
+il vincolo da conquistare è il **drawdown**, non il win rate.
+**Prima di tutto una base solida**: audit completo di motore, dati, feature e segnali (look-ahead, ordine degli eventi
+nella giornata, riempimenti, commissioni/funding, date) con verifica su candele a 4h/1h. Nessuna promozione finché
+l'audit non è chiuso; ogni errore trovato va corretto con un test di non regressione e i numeri aggiornati ovunque.
+**Vincoli**: almeno 8 trade l'anno; perdita massima per trade a 1x ≤ 9%; nessun peggioramento nel 2026.
+**Struttura**: 2 giri al giorno (07:17 mattino, 19:17 sera), ognuno con tre fasi: **pensiero** (piano e ipotesi),
+**apprendimento** (lezioni dai giri e dai segnali reali), **test** (backtest e gate).
 
 **Giro del mattino (07:17) · verifica e operatività** — breve:
 dati e test, segnale della notte, ordini toccati, registro dei segnali reali contro il backtest, SOL su carta,
