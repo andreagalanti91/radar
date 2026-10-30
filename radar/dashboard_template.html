@@ -118,6 +118,22 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .ico svg{width:19px;height:19px}
 .ico.dim{color:var(--label3);border-color:var(--line);box-shadow:none;background:var(--raise)}
 
+/* regione prevista */
+.zone{display:grid;gap:16px}
+.ladder{position:relative;height:56px;margin:6px 4px 0}
+.ladder .rail{position:absolute;left:0;right:0;top:26px;height:4px;border-radius:2px;background:var(--raise)}
+.ladder .band{position:absolute;top:18px;height:20px;border-radius:8px}
+.ladder .band.buy{background:color-mix(in srgb,var(--green) 28%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 55%,transparent)}
+.ladder .band.sell{background:color-mix(in srgb,var(--red) 24%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--red) 50%,transparent)}
+.ladder .now{position:absolute;top:8px;width:2px;height:40px;margin-left:-1px;border-radius:1px;background:var(--label);box-shadow:0 0 12px var(--tint)}
+.ladder .now span{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font:500 .66rem var(--mono);letter-spacing:.06em;color:var(--label);white-space:nowrap}
+.ladder .tk{position:absolute;top:44px;font:500 .62rem var(--mono);color:var(--label3);transform:translateX(-50%);white-space:nowrap}
+.zrows{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.zrows>div{display:grid;gap:3px;padding:12px 14px;border-radius:16px;background:var(--raise);border:1px solid var(--line);min-width:0}
+.zrows b{font:600 1.08rem/1.25 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.zrows>div:first-child b{color:var(--green)} .zrows>div:last-child b{color:var(--red)}
+.zrows small{font-size:.74rem;color:var(--label2);line-height:1.35}
+
 /* score */
 .gauge{display:grid;gap:16px}
 .scoreline{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
@@ -223,6 +239,17 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
+    <div class="section">
+      <div class="sh">Regione prevista <small id="zoneH"></small></div>
+      <div class="card glow zone">
+        <div class="ladder" id="ladder"></div>
+        <div class="zrows">
+          <div><span class="cap">Zona di acquisto</span><b id="zBuy"></b><small id="zBuyN"></small></div>
+          <div><span class="cap">Zona di vendita</span><b id="zSell"></b><small id="zSellN"></small></div>
+        </div>
+        <p class="foot" id="zNote" style="margin:0"></p>
+      </div>
+    </div>
     <div class="cols">
       <div class="section">
         <div class="sh">Score di flusso <small id="regime"></small></div>
@@ -424,6 +451,24 @@ if (sig) {
       ["Stop", usd(R.price - P.stop_atr * atr), true], ["Target dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["Leva futures", P.leverage + "x"], ["ATR 14 giorni", `${usd(atr)} · ${c.atr_pct.toFixed(1)}%`]]);
 }
 $("th").textContent = R.threshold;
+
+// ---- regione prevista
+const Z = R.zone;
+if (Z) {
+  const lo = Z.buy[0] - (Z.sell[1] - Z.buy[0]) * .12, hi = Z.sell[1] + (Z.sell[1] - Z.buy[0]) * .12, x = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
+  $("ladder").innerHTML = `<div class="rail"></div>` +
+    `<div class="band buy" style="left:${x(Z.buy[0])};width:calc(${x(Z.buy[1])} - ${x(Z.buy[0])})"></div>` +
+    `<div class="band sell" style="left:${x(Z.sell[0])};width:calc(${x(Z.sell[1])} - ${x(Z.sell[0])})"></div>` +
+    `<div class="now" style="left:${x(R.price)}"><span>ORA ${usd(R.price)}</span></div>` +
+    [Z.buy[0], Z.sell[1]].map(v => `<span class="tk" style="left:${x(v)}">${usd(v)}</span>`).join("");
+  const st = Z.stats, d = v => pct((v / R.price - 1) * 100, 1);
+  $("zoneH").textContent = `prossimi ${Z.horizon_days} giorni`;
+  $("zBuy").textContent = `${usd(Z.buy[0])} – ${usd(Z.buy[1])}`;
+  $("zBuyN").textContent = `${d(Z.buy[1])} / ${d(Z.buy[0])} · toccata nel ${st["buy_zone_touch_%"]}% dei casi`;
+  $("zSell").textContent = `${usd(Z.sell[0])} – ${usd(Z.sell[1])}`;
+  $("zSellN").textContent = `${d(Z.sell[0])} / ${d(Z.sell[1])} · toccata nel ${st["sell_zone_touch_%"]}% dei casi`;
+  $("zNote").textContent = `Dove il prezzo tende ad arrivare nei prossimi ${Z.horizon_days} giorni, stimato sui ritracciamenti storici in ATR nello stesso regime (${({up: "trend rialzista", down: "trend ribassista"})[Z.regime_bucket.split("_")[0]]}, ${({hi: "flusso forte", mid: "flusso neutro", lo: "flusso debole"})[Z.regime_bucket.split("_")[1]]}). Comprare al centro della zona ha dato in media un ingresso ${st["zone_entry_advantage_%"]}% migliore del prezzo di chiusura; nel ${st["below_zone_%"]}% dei casi il prezzo è sceso sotto la zona, quindi lo stop resta necessario.`;
+}
 
 // ---- setup
 const on = R.checklist.filter(x => x.active).length;

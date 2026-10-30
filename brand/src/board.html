@@ -11,7 +11,7 @@ body{font-family:Geist,Inter,system-ui,sans-serif;background:#07080c;color:#fff}
 </style></head><body>
 <div id="out"></div>
 <script>
-const MARK = s => `<svg class="mark" width="${s}" height="${s}" viewBox="0 0 64 64" fill="currentColor"><path fill-rule="evenodd" d="M32 3a29 29 0 1 1 0 58 29 29 0 0 1 0-58Zm0 7a22 22 0 1 0 0 44 22 22 0 0 0 0-44Z"/><path d="M32 32 L42.5 13.8 A21 21 0 0 1 53 32 Z"/><circle cx="21.5" cy="40.5" r="5"/></svg>`;
+const MARK = s => `<svg class="mark" width="${s}" height="${s}" viewBox="0 0 64 64" fill="currentColor"><path fill-rule="evenodd" d="M32 3a29 29 0 1 1 0 58 29 29 0 0 1 0-58Zm0 7a22 22 0 1 0 0 44 22 22 0 0 0 0-44Z"/><path d="M32 32 L42.5 13.8 A21 21 0 0 1 53 32 Z"/><circle cx="21.5" cy="40.5" r="5" fill="#5ef0c4"/></svg>`;
 const WM = (size, color) => `<div class="wm" style="font-size:${size}px;color:${color};gap:${size*.28}px">${MARK(size*1.05)}<span>radar<span style="opacity:.55;font-weight:600">signal</span></span></div>`;
 const views = {
   banner: `<div class="frame" style="width:1280px;height:420px;background:radial-gradient(70% 120% at 85% 120%,#c06bff 0%,#6a3dff 28%,#2a2fb8 52%,#0b1240 78%,#05071a 100%)">

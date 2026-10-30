@@ -9,6 +9,7 @@ import pandas as pd
 
 from .backtest import run, summary
 from .data import DATA_DIR
+from .zones import latest_zone
 from .strategy import SETUPS, Params, compute_signals, conditions, trade_plan
 
 STATE_FILE = DATA_DIR / "state.json"
@@ -112,6 +113,7 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
             "sma200": float(last["sma200"]),
         },
         "signal": signal,
+        "zone": latest_zone(f),
         "checklist": checklist,
         "equity": equity,
         "open_trade": {"futures": open_fut[0] if open_fut else None, "spot": open_spot[0] if open_spot else None},

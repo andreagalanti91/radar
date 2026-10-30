@@ -24,7 +24,8 @@ from .strategy import Params
 warnings.filterwarnings("ignore")
 
 TRAIN = ("2022-03-01", "2024-01-01")
-TEST = ("2024-01-01", None)
+TEST = ("2024-01-01", "2026-01-01")
+HOLDOUT = ("2026-01-01", None)  # periodo di conferma: il candidato non deve peggiorarlo
 NEIGHBORS = {  # perturbazioni per il test di robustezza
     "stop_atr": 0.5, "entry_step_atr": 0.25, "trail_atr": 1.0, "flow_threshold": 0.25, "max_hold": 15,
 }
@@ -41,6 +42,7 @@ def scorecard(f: pd.DataFrame, p: Params, signals=None) -> dict:
     return {
         "train": summary(_period(t, *TRAIN)),
         "test": summary(_period(t, *TEST)),
+        "holdout": summary(_period(t, *HOLDOUT)),
         "full": summary(t),
         "full_2x": summary(t, 2),
         "spot_full": summary(sp),
@@ -78,6 +80,9 @@ def promotion_gate(base: dict, cand: dict, cand_robust: list[dict]) -> tuple[boo
         why.append(f"drawdown peggiore ({cf['max_dd_%']} vs {bf['max_dd_%']})")
     if cf["total_return_%"] < bf["total_return_%"] * 1.05:
         why.append("miglioramento del rendimento totale sotto il 5%")
+    bh, ch = base["holdout"], cand["holdout"]
+    if bh.get("trades") and ch.get("expectancy_%", 0) < bh.get("expectancy_%", 0) - 0.25:
+        why.append(f"peggiora nel periodo di conferma 2026 ({ch.get('expectancy_%')} vs {bh.get('expectancy_%')})")
     bad = [r for r in cand_robust if r["total_return_%"] <= 0 or r["win_rate"] < 70]
     if bad:
         why.append(f"non robusto: {len(bad)} varianti vicine in perdita o con win rate < 70%")

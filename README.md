@@ -17,6 +17,12 @@ Pensata per il telefono (si installa come app dalla schermata Home), dark-first 
 | **Statistiche** | curva di equity contro BTC, backtest per periodo, leva e setup, storico trade |
 | **Metodo** | regole complete e limiti del sistema |
 
+## Regione prevista
+
+Ogni giorno il modello stima la **regione** in cui il prezzo andrà nei prossimi 7 giorni: una **zona di acquisto** sotto il prezzo (dove piazzare ingressi DCA, spot o a leva) e una **zona di vendita** sopra (target o short). La profondità dei ritracciamenti è misurata in ATR e si usano i quantili storici nello stesso regime di trend e flusso, senza guardare al futuro (`radar/zones.py`).
+
+Validazione 2021–2026 (1857 giorni): la zona di acquisto viene toccata entro 7 giorni nel **65%** dei casi, quella di vendita nel **64%**; comprare al centro della zona ha dato un ingresso in media **4,4%** migliore del prezzo di chiusura. Nel 39% dei casi il prezzo scende sotto la zona: lo stop resta necessario.
+
 ## I 6 setup
 
 Una sola posizione alla volta (il long ha priorità). Dati giornalieri a chiusura UTC.
@@ -72,7 +78,15 @@ Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `rada
 
 ## Ciclo di miglioramento
 
-Ogni ora un'iterazione automatica prova un'idea nuova e la promuove solo se supera il gate in `radar/research.py`: migliore aspettativa nel test, nessun peggioramento di drawdown e training, robustezza sulle varianti dei parametri, nessuna modifica con un trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
+Ogni ora (o ogni 3, 6, 12 ore se i limiti di utilizzo lo richiedono) un ciclo in tre fasi, ciascuna affidata a un sotto-agente definito in `.claude/agents/`:
+
+| Fase | Agente | Cosa fa |
+|---|---|---|
+| Scan | `radar-scan` | aggiorna i dati, controlla la salute del sistema, fotografa mercato e prestazioni recenti |
+| Apprendimento | `radar-learn` | prova una sola idea (DCA, take profit e stop a scaglioni, uso della regione prevista, nuovi setup) su una copia di lavoro e la valuta |
+| Miglioramento | `radar-improve` | se il gate è superato la pubblica e invia l'alert Telegram con la performance prima/dopo, altrimenti la scarta |
+
+Il gate (`radar/research.py`) richiede: miglioramento nel test 2024–25, nessun peggioramento nel training 2022–23 e nel periodo di conferma 2026, drawdown non peggiore, robustezza sulle varianti dei parametri, nessun trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
 
 ## Messa online
 
@@ -104,7 +118,9 @@ radar/live.py         stato giornaliero, trade aperto, eventi
 radar/research.py     scorecard e gate di promozione
 radar/telegram.py     messaggi
 radar/dashboard*.py   dashboard (dark-first, light/dark, mobile, installabile)
-brand/                logo, icona app, banner, brand board (sorgente in brand/src)
+brand/                logo, icona app, banner, social preview, brand board (sorgenti in brand/src)
+.claude/agents/       sotto-agenti del ciclo orario (scan, apprendimento, miglioramento)
+radar/zones.py        previsione della regione di prezzo a 7 giorni
 ```
 
 Fonti dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear & Greed).
