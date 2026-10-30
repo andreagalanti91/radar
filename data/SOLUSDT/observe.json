@@ -2,7 +2,7 @@
  "symbol": "SOLUSDT",
  "date": "2026-10-29",
  "price": 95.64,
- "score": -2.2488512507426175,
+ "score": -2.2488512507426233,
  "signal": null,
  "open_trade": {
   "signal_date": "2026-10-23",
@@ -58,5 +58,5 @@
   "win_rate_clean": 35.7,
   "win_rate_1pct": 83.9
  },
- "updated": "2026-10-30T12:53+00:00"
+ "updated": "2026-10-30T13:58+00:00"
 }
