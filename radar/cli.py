@@ -60,7 +60,7 @@ def backtest() -> None:
     for mk in ("futures", "spot"):
         t = run(f, p, mk, BACKTEST_START)
         print(f"\n== {mk}\n{summary(t)}")
-        print(t.drop(columns=[c for c in ("pending_entries", "next_tps") if c in t]).to_string())
+        print(t.drop(columns=[c for c in ("pending_entries", "next_tps", "mtm") if c in t]).to_string())
 
 
 def main() -> None:

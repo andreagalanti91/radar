@@ -51,6 +51,9 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
 
     fut = run(f, p, "futures", BACKTEST_START)
     spot = run(f, p, "spot", BACKTEST_START)
+    # il percorso giornaliero mark-to-market serve solo alla ricerca: non va nello stato/dashboard
+    fut = fut.drop(columns=["mtm"], errors="ignore")
+    spot = spot.drop(columns=["mtm"], errors="ignore")
     open_fut = fut[fut["exit"] == "open"].to_dict("records")
     open_spot = spot[spot["exit"] == "open"].to_dict("records")
 

@@ -47,6 +47,9 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
         pos = 0.0  # quantità aperta (in unità di capitale / prezzo)
         exit_reason, j = None, i + 1
         D = lambda k: str(idx[k].date())
+        # percorso giornaliero mark-to-market (PnL in frazione del capitale a 1x, alla chiusura del giorno):
+        # serve solo alla misura del drawdown reale, non cambia la logica del trade
+        mtm: list = []
         # registro operativo del trade: segnale, piano, ogni ingresso e ogni uscita
         ev = [{"date": D(i), "type": "signal", "price": round(float(c[i]), 1),
                "note": f"segnale {setup[i]} alla chiusura"}]
@@ -103,12 +106,16 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 stop = max(stop, trail) if sg == 1 else min(stop, trail)
             if market == "futures":
                 funding -= sg * pos * c[j] * fund[j]
+            if qty > 0:
+                mtm.append((D(j), float(realized - fees + funding + sg * pos * (c[j] - avg))))
             if pos <= 1e-12:
                 exit_reason = "tp"
                 break
         still_open = pos > 1e-12 and j == n - 1 and (j - i) < p.max_hold
         if still_open:
             pnl = realized - fees + funding + sg * pos * (c[j] - avg)
+            if not mtm or mtm[-1][0] != D(j):
+                mtm.append((D(j), float(pnl)))
             trades.append({
                 "signal_date": idx[i].date(), "exit_date": None, "side": side, "setup": setup[i],
                 "days": j - i, "tranches": sum(filled), "avg_entry": round(avg, 1),
@@ -118,7 +125,7 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 "pending_entries": [round(lv, 1) for k, lv in enumerate(levels)
                                     if not filled[k] and not tp_hit and j - (i + 1) < p.entry_window],
                 "next_tps": [round(avg + sg * k * a, 1) for k in tps[tp_hit:]],
-                "events": ev, "plan": plan, "last_price": round(float(c[j]), 1),
+                "events": ev, "plan": plan, "last_price": round(float(c[j]), 1), "mtm": mtm,
             })
             break
         if pos > 1e-12:
@@ -130,13 +137,17 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
             exit_reason = exit_reason or "time"
         notional = cost  # capitale effettivamente investito (somma pesi riempiti)
         pnl = realized - fees + funding
+        if mtm and mtm[-1][0] == D(j):
+            mtm[-1] = (D(j), float(pnl))  # il giorno di uscita vale il risultato finale
+        else:
+            mtm.append((D(j), float(pnl)))
         trades.append({
             "signal_date": idx[i].date(), "exit_date": idx[j].date(), "side": side, "setup": setup[i],
             "days": j - i, "tranches": sum(filled), "avg_entry": round(avg, 1),
             "invested": round(notional, 3), "tp_hit": tp_hit, "exit": exit_reason,
             "pnl_pct_invested": pnl / notional * 100, "pnl_pct_capital": pnl * 100,
             "fees_pct": fees * 100, "funding_pct": funding * 100,
-            "events": ev, "plan": plan,
+            "events": ev, "plan": plan, "mtm": mtm,
         })
         i = j + p.cooldown
     return pd.DataFrame(trades)

@@ -42,6 +42,116 @@ def mar(sm: dict) -> float:
     return round(sm.get("total_return_%", 0) / max(1.0, abs(sm.get("max_dd_%", 0))), 2)
 
 
+def path_from_events(tr: dict, close: pd.Series) -> list[tuple[str, float]]:
+    """Ricostruisce il PnL giornaliero mark-to-market di un trade dai suoi eventi (entry/exit) e dalle chiusure.
+
+    Unità: frazione del capitale a 1x (i pesi delle tranche sono quote del capitale). Approssimato: ignora
+    commissioni e funding e usa prezzi/percentuali arrotondati degli eventi. Serve per i trade che non hanno
+    il percorso esatto `mtm` registrato dal backtest (per esempio dallo stato live).
+    """
+    sg = 1 if tr["side"] == "long" else -1
+    ev = [e for e in tr.get("events", []) if e.get("type") in ("entry", "exit")]
+    if not ev:
+        return []
+    d0 = ev[0]["date"]
+    d1 = str(tr["exit_date"]) if tr.get("exit_date") not in (None, "") and str(tr.get("exit_date")) != "NaT" else str(close.index[-1].date())
+    days = close[(close.index >= pd.Timestamp(d0)) & (close.index <= pd.Timestamp(d1))]
+    units = cost = pos = realized = 0.0
+    out = []
+    for day, px_close in days.items():
+        ds = str(day.date())
+        for e in ev:
+            if e["date"] != ds:
+                continue
+            if e["type"] == "entry":
+                q = e["pct"] / 100 / e["price"]
+                units += q; pos += q; cost += q * e["price"]
+            elif units > 0:
+                avg = cost / units
+                q = min(pos, e["pct"] / 100 * units)
+                realized += sg * q * (e["price"] - avg)
+                pos -= q
+        if units > 0:
+            avg = cost / units
+            out.append((ds, float(realized + sg * pos * (px_close - avg))))
+    return out
+
+
+def daily_equity(t: pd.DataFrame, close: pd.Series | None = None, leverage: float = 1.0,
+                 start: str | None = None) -> pd.Series:
+    """Equity giornaliera mark-to-market (base 1.0) scalata per leva.
+
+    Ogni giorno: equity = capitale realizzato all'apertura del trade x (1 + leva x PnL del trade a quel giorno),
+    dove il PnL del trade include le uscite parziali già realizzate e il non realizzato della quantità residua
+    alla chiusura del giorno (prezzo medio effettivo delle tranche riempite). Fra un trade e l'altro l'equity è
+    piatta. Il giorno di uscita vale il risultato finale, quindi l'equity finale coincide con quella trade per trade.
+    Usa il percorso esatto `mtm` del backtest se presente, altrimenti lo ricostruisce dagli eventi (serve `close`).
+    """
+    if t is None or t.empty:
+        return pd.Series(dtype=float)
+    rows: dict[str, float] = {}
+    eq = 1.0
+    t = t.sort_values("signal_date")
+    if start is None:
+        start = str(t["signal_date"].iloc[0])
+    rows[str(pd.Timestamp(start).date())] = 1.0
+    for _, tr in t.iterrows():
+        path = tr.get("mtm") if "mtm" in t and isinstance(tr.get("mtm"), list) else None
+        if path is None:
+            if close is None:
+                raise ValueError("serve la serie delle chiusure per ricostruire il percorso dagli eventi")
+            path = path_from_events(tr.to_dict(), close)
+        for ds, v in path:
+            rows[ds] = eq * (1 + leverage * v)
+        if path and tr["exit"] != "open":
+            eq = eq * (1 + leverage * path[-1][1])
+    s = pd.Series(rows)
+    s.index = pd.to_datetime(s.index)
+    s = s.sort_index()
+    full = pd.date_range(s.index[0], s.index[-1], freq="D")
+    return s.reindex(full).ffill()
+
+
+def drawdown_stats(eq: pd.Series, t: pd.DataFrame | None = None) -> dict:
+    """Max drawdown dell'equity giornaliera, data del minimo, durata (picco→minimo, picco→recupero) e trade responsabile."""
+    if eq is None or eq.empty:
+        return {"max_dd_%": 0.0}
+    peak = eq.cummax()
+    dd = eq / peak - 1
+    trough = dd.idxmin()
+    pk = eq.loc[:trough].idxmax()
+    after = eq.loc[trough:]
+    rec = after[after >= eq.loc[pk]]
+    out = {
+        "max_dd_%": round(float(dd.min()) * 100, 1),
+        "peak": str(pk.date()), "trough": str(trough.date()),
+        "recovery": str(rec.index[0].date()) if len(rec) else None,
+        "days_peak_to_trough": int((trough - pk).days),
+        "days_underwater": int(((rec.index[0] if len(rec) else eq.index[-1]) - pk).days),
+        "return_%": round(float(eq.iloc[-1] - 1) * 100, 1),
+    }
+    if t is not None and not t.empty:
+        sd = pd.to_datetime(t["signal_date"].astype(str))
+        ed = pd.to_datetime(t["exit_date"].astype(str), errors="coerce").fillna(eq.index[-1])
+        hit = t[(sd < trough) & (ed >= trough)]
+        if len(hit):
+            out["trade"] = f"{hit.iloc[0]['signal_date']} {hit.iloc[0]['side']} {hit.iloc[0]['setup']} ({hit.iloc[0]['exit']})"
+        # trade aperti fra il picco e il minimo (chi ha prodotto il drawdown)
+        inside = t[(ed > pk) & (sd < trough)]
+        out["trades_in_dd"] = [f"{r['signal_date']} {r['setup']} {r['exit']} {r['pnl_pct_capital']:+.2f}%" for _, r in inside.iterrows()]
+    return out
+
+
+def dd_daily(t: pd.DataFrame, close: pd.Series | None = None, levels=(1, 2, 3)) -> dict:
+    """Drawdown reale (mark-to-market giornaliero) a più leve, con rendimento/drawdown corrispondente."""
+    out = {}
+    for L in levels:
+        st = drawdown_stats(daily_equity(t, close, L), t)
+        st["mar"] = round(st.get("return_%", 0) / max(1.0, abs(st["max_dd_%"])), 2)
+        out[f"{L}x"] = st
+    return out
+
+
 def windows(t: pd.DataFrame) -> dict:
     """Aspettativa per semestre (validazione su finestre consecutive)."""
     if t.empty:
@@ -64,6 +174,8 @@ def scorecard(f: pd.DataFrame, p: Params, signals=None) -> dict:
         "spot_full": summary(sp),
         # pnl per trade (chiave: data del segnale) per misurare quanto il miglioramento è concentrato
         "mar": mar(summary(t)),
+        # drawdown reale: equity giornaliera mark-to-market (posizione aperta valutata alla chiusura), 1x/2x/3x
+        "dd_daily": dd_daily(t, f["close"]),
         "windows": windows(t),
         "pnls": [float(x) for x in t[t["exit"] != "open"]["pnl_pct_capital"]] if len(t) else [],
         "pnl_by_signal": {str(d): float(v) for d, v in zip(t["signal_date"], t["pnl_pct_capital"])} if len(t) else {},
@@ -100,8 +212,11 @@ def promotion_gate(base: dict, cand: dict, cand_robust: list[dict]) -> tuple[boo
         why.append("peggiora troppo nel training: miglioramento probabilmente casuale")
     if ct["win_rate"] < bt["win_rate"] - 2:
         why.append(f"win rate test più basso ({ct['win_rate']} vs {bt['win_rate']})")
-    if cf["max_dd_%"] < bf["max_dd_%"] - 3:
-        why.append(f"drawdown peggiore ({cf['max_dd_%']} vs {bf['max_dd_%']})")
+    # drawdown: misurato sull'equity giornaliera mark-to-market (reale) se disponibile, altrimenti trade per trade
+    bdd = base.get("dd_daily", {}).get("1x", {}).get("max_dd_%", bf["max_dd_%"])
+    cdd = cand.get("dd_daily", {}).get("1x", {}).get("max_dd_%", cf["max_dd_%"])
+    if cdd < bdd - 3:
+        why.append(f"drawdown giornaliero peggiore ({cdd} vs {bdd})")
     if cf.get("win_rate_clean", 0) < bf.get("win_rate_clean", 0) - 3:
         why.append(f"win rate pulito più basso ({cf.get('win_rate_clean')} vs {bf.get('win_rate_clean')})")
     # validazione su finestre semestrali: deve reggere nella maggior parte dei periodi

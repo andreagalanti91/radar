@@ -50,7 +50,7 @@ def observe(symbol: str = "SOLUSDT") -> dict:
         "symbol": symbol, "date": str(last.name.date()), "price": float(last["close"]),
         "score": float(last["score"]), "signal": side and {"side": side, "setup": last["setup"],
                                                           "why": explain(last, last["setup"], p)},
-        "open_trade": opened.drop(columns=["events", "plan"], errors="ignore").to_dict("records")[0] if len(opened) else None,
+        "open_trade": opened.drop(columns=["events", "plan", "mtm"], errors="ignore").to_dict("records")[0] if len(opened) else None,
         "zone": {k: v for k, v in latest_zone(f.loc[: s.index[-1]]).items() if k != "stats"},
         "observation": {"since": OBS_START, **summary(t_obs)},
         "backtest_full": summary(t),
