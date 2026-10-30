@@ -52,6 +52,14 @@ Circa 10 trade l'anno.
 - Limite: la scelta dei setup ha guardato anche i dati 2024–26, quindi il test non è del tutto "cieco". Il miglior test sarà il trading reale.
 - Le barre giornaliere non dicono cosa succede prima tra stop e target nello stesso giorno: il backtest assume sempre il caso peggiore (prima lo stop).
 
+## Dashboard
+
+Quattro sezioni: **Oggi** (score, piano operativo, setup attivi, grafico), **Simulatore** (inserisci capitale, data di partenza, leva e mercato e vedi quanto varrebbe oggi seguendo i segnali, più il calcolo di quante volte un obiettivo è stato raggiunto nel passato), **Statistiche** (backtest per periodo, leva e setup, storico trade), **Metodo**.
+
+## Ciclo di miglioramento
+
+`radar/research.py` contiene la scorecard e il gate di promozione; `RESEARCH.md` è il diario delle iterazioni.
+
 ## Uso
 
 ```bash

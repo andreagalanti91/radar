@@ -69,6 +69,25 @@ table.grid th:first-child,table.grid td:first-child{text-align:left}
 .tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 footer{color:var(--muted);font-size:12.5px;max-width:80ch}
+nav.sections{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding-top:6px}
+nav.sections a{font:600 14px var(--body);color:var(--muted);text-decoration:none;padding:10px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
+nav.sections a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.sections a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.view{display:grid;gap:22px}
+[hidden]{display:none!important}
+.form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.form{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.form label{display:grid;gap:6px;min-width:0}
+.form input,.form select{font:500 15px var(--mono);padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%}
+.form input:focus-visible,.form select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big div{display:grid;gap:4px;min-width:0}
+.big b{font:700 24px var(--display);font-variant-numeric:tabular-nums}
+.prose{max-width:72ch;display:grid;gap:12px}
+.prose p,.prose li{margin:0;line-height:1.6}
+.prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 @media (max-width:900px){.checks{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.checks{grid-template-columns:minmax(0,1fr)}}
@@ -95,6 +114,15 @@ footer{color:var(--muted);font-size:12.5px;max-width:80ch}
     <span id="state" class="pill wait"></span>
   </header>
 
+  <nav class="sections" aria-label="Sezioni">
+    <a href="#oggi" data-v="oggi">Oggi</a>
+    <a href="#simulatore" data-v="simulatore">Simulatore</a>
+    <a href="#statistiche" data-v="statistiche">Statistiche</a>
+    <a href="#metodo" data-v="metodo">Metodo</a>
+  </nav>
+
+  <div class="view" id="v-oggi">
+
   <section class="top">
     <div class="panel gauge">
       <div class="head"><h2>Score di flusso</h2><span class="label" id="regime"></span></div>
@@ -114,18 +142,50 @@ footer{color:var(--muted);font-size:12.5px;max-width:80ch}
   </section>
 
   <section class="panel charts">
-    <div class="head"><h2>Equity del modello (futures) vs BTC</h2>
-      <div class="tabs" role="group" aria-label="Leva"><button id="lv1" aria-pressed="false">1x</button><button id="lv2" aria-pressed="true">2x</button><button id="lv3" aria-pressed="false">3x</button></div></div>
-    <div class="legend"><span><i style="background:var(--accent)"></i>modello</span><span><i style="background:var(--warn)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
-    <div id="equity" class="chart" style="height:300px"></div>
-  </section>
-
-  <section class="panel charts">
     <div class="head"><h2>Prezzo e trade del modello</h2>
       <div class="legend"><span><i style="background:var(--long)"></i>ingresso long</span><span><i style="background:var(--short)"></i>ingresso short</span><span><i style="background:var(--muted)"></i>uscita</span><span><i style="background:var(--warn)"></i>SMA 200</span></div></div>
     <div id="price" class="chart"></div>
     <span class="label">Score di flusso (soglie ±<span id="th"></span>)</span>
     <div id="scorechart" class="chart small"></div>
+  </section>
+  </div>
+
+  <div class="view" id="v-simulatore" hidden>
+  <section class="panel" style="display:grid;gap:16px">
+    <div class="head"><h2>Simulatore di capitale</h2><span class="label">trade reali del modello, interesse composto</span></div>
+    <div class="form">
+      <label><span class="label">Capitale iniziale ($)</span><input id="simCap" type="number" min="100" step="1000" value="50000"></label>
+      <label><span class="label">Data di partenza</span><input id="simStart" type="date"></label>
+      <label><span class="label">Leva</span><select id="simLev"><option value="1">1x</option><option value="2" selected>2x</option><option value="3">3x</option><option value="5">5x (sconsigliata)</option></select></label>
+      <label><span class="label">Mercato</span><select id="simMk"><option value="futures">futures (long + short)</option><option value="spot">spot (solo long, max 1x)</option></select></label>
+    </div>
+    <div class="big" id="simOut"></div>
+    <div id="simChart" class="chart" style="height:300px"></div>
+    <p class="note" id="simNote"></p>
+  </section>
+
+  <section class="panel" style="display:grid;gap:16px">
+    <div class="head"><h2>Obiettivo</h2><span class="label">quante volte è successo nel passato</span></div>
+    <div class="form">
+      <label><span class="label">Capitale obiettivo ($)</span><input id="goalCap" type="number" min="100" step="1000" value="100000"></label>
+      <label><span class="label">Entro il</span><input id="goalDate" type="date" value="2026-12-31"></label>
+    </div>
+    <div class="big" id="goalOut"></div>
+    <p class="note" id="goalNote"></p>
+  </section>
+
+  <section class="panel" style="display:grid;gap:12px;min-width:0">
+    <div class="head"><h2>Trade nel periodo simulato</h2><span class="label" id="simCount"></span></div>
+    <div class="scroll" style="max-height:640px;overflow-y:auto"><table class="grid" id="simTrades"></table></div>
+  </section>
+  </div>
+
+  <div class="view" id="v-statistiche" hidden>
+  <section class="panel charts">
+    <div class="head"><h2>Equity del modello (futures) vs BTC</h2>
+      <div class="tabs" role="group" aria-label="Leva"><button id="lv1" aria-pressed="false">1x</button><button id="lv2" aria-pressed="true">2x</button><button id="lv3" aria-pressed="false">3x</button></div></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>modello</span><span><i style="background:var(--warn)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
+    <div id="equity" class="chart" style="height:300px"></div>
   </section>
 
   <section class="stats">
@@ -144,6 +204,25 @@ footer{color:var(--muted);font-size:12.5px;max-width:80ch}
       <div class="scroll" style="max-height:900px;overflow-y:auto"><table class="grid" id="trades"></table></div>
     </div>
   </section>
+
+  </div>
+
+  <div class="view" id="v-metodo" hidden>
+  <section class="panel prose">
+    <h2>Come funziona</h2>
+    <p>Ogni notte, alla chiusura della candela giornaliera UTC, il modello legge prezzo, CVD spot e perp, funding, open interest e long/short ratio di Binance. Se uno dei 6 setup scatta, apre un piano operativo e lo invia su Telegram. Tiene una sola posizione alla volta.</p>
+    <ul id="setupList"></ul>
+    <h2>Gestione della posizione</h2>
+    <ul id="ruleList"></ul>
+    <h2>Limiti</h2>
+    <ul>
+      <li>Circa 10 trade l'anno: in un mese può non arrivare nessun segnale.</li>
+      <li>Nessun sistema ha il 100% di segnali vincenti. Il win rate storico è intorno all'85–90%, ma le perdite, quando arrivano, valgono 3–4 vincite medie.</li>
+      <li>Con barre giornaliere il backtest non sa cosa succede prima tra stop e target nello stesso giorno: assume sempre il caso peggiore.</li>
+      <li>La leva moltiplica guadagni e perdite. Oltre 3x una serie di stop può dimezzare il capitale.</li>
+    </ul>
+  </section>
+  </div>
 
   <footer>
     Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX (ultimi giorni non ancora archiviati), alternative.me (Fear &amp; Greed). Il segnale si calcola sulla chiusura giornaliera UTC. I risultati passati non garantiscono quelli futuri: il campione è di circa 50 trade (10 l'anno), quindi il win rate ha un margine d'errore di diversi punti. Con la leva le perdite si moltiplicano allo stesso modo dei guadagni. Strumento di analisi, non consulenza finanziaria.
@@ -267,11 +346,87 @@ function charts() {
   line.setData(s.date.map((d, i) => ({ time: d, value: s.score[i] })).filter(p => p.value != null));
   [R.threshold, -R.threshold].forEach(v => line.createPriceLine({ price: v, color: v > 0 ? css("--long") : css("--short"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true }));
   const from = s.date[Math.max(0, s.date.length - 540)], to = s.date[s.date.length - 1];
-  pc.timeScale().setVisibleRange({ from, to }); sc.timeScale().setVisibleRange({ from, to });
+  window.refitPrice = () => { pc.timeScale().setVisibleRange({ from, to }); sc.timeScale().setVisibleRange({ from, to }); };
+  window.refitPrice();
   pc.timeScale().subscribeVisibleLogicalRangeChange(r => r && sc.timeScale().setVisibleLogicalRange(r));
   sc.timeScale().subscribeVisibleLogicalRangeChange(r => r && pc.timeScale().setVisibleLogicalRange(r));
 }
 charts();
+
+// ---- metodo
+$("setupList").innerHTML = R.checklist.map(x => `<li><b class="mono">${x.setup}</b> (${x.side}): ${x.label}</li>`).join("");
+$("ruleList").innerHTML = [
+  `Entrata DCA: ${P.entry_weights.map(w => Math.round(w * 100) + "%").join(" / ")}, a 0, −${P.entry_step_atr} e −${2 * P.entry_step_atr} ATR dal primo ingresso (limit validi ${P.entry_window} giorni).`,
+  `Stop a ${P.stop_atr} ATR dal primo ingresso.`,
+  `Uscita DCA: ${Math.round(P.tp_weights[0] * 100)}% a +${P.tp_atr[0]} ATR e ${Math.round(P.tp_weights[1] * 100)}% a +${P.tp_atr[1]} ATR dal prezzo medio, il resto in trailing a ${P.trail_atr} ATR. Dopo il primo target lo stop va a pareggio.`,
+  `Uscita forzata dopo ${P.max_hold} giorni. Leva consigliata sui futures: ${P.leverage}x con margine isolato.`,
+].map(t => `<li>${t}</li>`).join("");
+
+// ---- simulatore
+const firstDate = R.series.date[0];
+$("simStart").min = firstDate; $("simStart").max = R.date; $("simStart").value = firstDate;
+let simChart, simLine;
+function closedTrades(mk) { return R.trades[mk].filter(t => t.exit !== "open"); }
+function simulate() {
+  const cap = Math.max(100, +$("simCap").value || 50000), start = $("simStart").value || firstDate;
+  const mk = $("simMk").value, lev = mk === "spot" ? 1 : +$("simLev").value;
+  $("simLev").disabled = mk === "spot";
+  const tr = closedTrades(mk).filter(t => t.signal_date >= start);
+  let eq = cap, peak = cap, dd = 0, wins = 0;
+  const rows = [], pts = [{ time: start, value: cap }];
+  tr.forEach(t => {
+    const r = t.pnl_pct_capital * lev / 100, pnl = eq * r;
+    eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++;
+    rows.push({ ...t, pnl, eq }); pts.push({ time: t.exit_date, value: eq });
+  });
+  const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01);
+  const cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
+  $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win rate", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
+    .map(([a, b]) => `<div><span class="label">${a}</span><b>${b}</b></div>`).join("");
+  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, rendimento annuo composto ${pct(cagr, 1)}. Commissioni e funding inclusi; slippage e tasse esclusi. Il trade eventualmente aperto oggi non è conteggiato.`;
+  $("simCount").textContent = `${tr.length} trade · leva ${lev}x`;
+  $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Gg</th><th>Uscita</th><th>PnL $</th><th>Capitale</th></tr>` +
+    rows.slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.exit}</td><td class="${r.pnl > 0 ? "pos" : "neg"}">${(r.pnl > 0 ? "+" : "") + usd(r.pnl)}</td><td>${usd(r.eq)}</td></tr>`).join("");
+  if (window.LightweightCharts) {
+    if (!simChart) {
+      simChart = LightweightCharts.createChart($("simChart"), { autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--muted"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 },
+        grid: { vertLines: { color: css("--grid") }, horzLines: { color: css("--grid") } }, rightPriceScale: { borderColor: css("--line") }, timeScale: { borderColor: css("--line") }, crosshair: { mode: 0 } });
+      simLine = simChart.addAreaSeries({ lineColor: css("--accent"), topColor: css("--accent") + "44", bottomColor: css("--accent") + "05", lineWidth: 2, lineType: 1, priceFormat: { type: "price", precision: 0, minMove: 1 } });
+    }
+    const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time >= p.time) d[d.length - 1].value = p.value; else d.push({ ...p }); });
+    simLine.setData(d); simChart.timeScale().fitContent();
+  }
+  goal(cap, lev, mk);
+}
+function goal(cap, lev, mk) {
+  const target = +$("goalCap").value || cap * 2, end = $("goalDate").value || "2026-12-31";
+  const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5));
+  const mult = target / cap, tr = closedTrades(mk);
+  const res = [];
+  for (let d = new Date(firstDate); d <= new Date(new Date(R.date) - days * 864e5); d = new Date(+d + 864e5)) {
+    const a = d.toISOString().slice(0, 10), b = new Date(+d + days * 864e5).toISOString().slice(0, 10);
+    let m = 1; tr.forEach(t => { if (t.exit_date > a && t.exit_date <= b) m *= 1 + t.pnl_pct_capital * lev / 100; });
+    res.push(m);
+  }
+  const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
+  const hit = res.filter(m => m >= mult).length / (res.length || 1) * 100;
+  $("goalOut").innerHTML = [["Serve", "×" + mult.toFixed(2) + ` in ${days} gg`], ["Successo storico", hit.toFixed(1) + "%"], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
+    .map(([a, b]) => `<div><span class="label">${a}</span><b>${b}</b></div>`).join("");
+  $("goalNote").textContent = `Calcolato su ${res.length} finestre storiche di ${days} giorni (una per ogni giorno di partenza dal ${firstDate}), con la leva ${lev}x e il mercato scelti sopra. ` +
+    `Nel 90% delle finestre il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
+}
+["simCap", "simStart", "simLev", "simMk", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
+simulate();
+
+// ---- sezioni
+function route() {
+  const v = (location.hash || "#oggi").slice(1), ok = ["oggi", "simulatore", "statistiche", "metodo"].includes(v) ? v : "oggi";
+  document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
+  document.querySelectorAll("nav.sections a").forEach(a => a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  // i grafici creati in una sezione nascosta vanno riadattati quando diventa visibile
+  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
+}
+window.addEventListener("hashchange", route); route();
 
 let eqChart, eqLine;
 function equity(lv) {
