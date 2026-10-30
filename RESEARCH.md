@@ -66,6 +66,35 @@ Attenzione: il drawdown attuale è misurato trade per trade; quello giornaliero 
 Giri del mattino: verifica operativa, segnali reali contro backtest, un solo parametro veloce collegato al piano serale.
 Domenica sera: revisione settimanale e riordino del piano.
 
+## Roadmap (30/10/2026) — ogni voce: ipotesi → test → criterio di successo
+Ordine dei giri serali; la pianificazione può riordinare in base ai risultati. Ogni fase si chiude con una lezione appresa.
+
+### Fase 1 · Misurare bene (giri sera 1–2)
+- **R1 Drawdown reale**: equity giornaliera mark-to-market a 1x/2x/3x nella scorecard e nel gate. Successo: metrica disponibile e usata dal gate.
+- **R2 Trade piccoli e pareggi** (vedi punto 6 sotto): evitarli o tenerli? Successo: decisione motivata con controfattuale e test fuori campione.
+- **R3 Campione più grande**: backtest su candele a 4 ore e su più finestre (rolling); stima del win rate con intervallo di confidenza. Successo: intervalli pubblicati in dashboard.
+
+### Fase 2 · Uscite (giri sera 3–4) — il guadagno vero è nel 40% che corre
+- **R4 Runner**: trailing ATR/chandelier/SMA20/minimo a N giorni, durata massima 30–60 giorni, uscita parziale nella zona di vendita prevista. Successo: MAR 2x +10% senza peggiorare il drawdown reale.
+- **R5 Target a scaglioni**: distanza TP1/TP2 in ATR o multipli del rischio, quote 20/30/50. Successo: meno trade "quasi pareggio" a parità di perdite.
+
+### Fase 3 · Rischio (giri sera 5–7) — traguardo 2x: ≥ +450% con drawdown ≤ −20%
+- **R6 Leva per setup**: leva più alta sui setup affidabili (capit, brk), più bassa sui deboli (sflow, fundneg). Successo: MAR 2x ≥ 20 senza concentrazione.
+- **R7 Drawdown di portafoglio**: size ridotta dopo uno stop o con capitale sotto il massimo, pausa dopo 2 stop di fila. Successo: drawdown 2x ≤ −22%.
+- **R8 DCA**: pesi 30/30/40 o 25/35/40, ultima tranche più profonda, tranche condizionate al setup ancora attivo. Successo: perdita media dei 3 stop −20% senza perdere trade vincenti.
+
+### Fase 4 · Ingressi e nuovi segnali (giri sera 8–10)
+- **R9 Filtro di distribuzione** sui long (score negativo + retail affollato anche in trend rialzista).
+- **R10 Timing a 4 ore** dentro la regione prevista: tranche al primo rimbalzo invece che a livelli fissi.
+- **R11 Nuovi setup** da dati non ancora usati: basis spot-perp, struttura a termine dei funding, OI per exchange.
+
+### Fase 5 · Tool operativo (in parallelo, basso costo, su richiesta)
+- **T1** Drawdown reale e intervalli di confidenza in dashboard; **T2** registro segnali reali con scostamento dal backtest;
+  **T3** alert di "rischio evento" prima dei dati macro ad alto impatto; **T4** revisione dei difetti grafici segnalati.
+
+### Fase 6 · Dati futuri (dal 2027)
+- **R12 Liquidazioni reali** raccolte da oggi; **R13** rivalutazione di SOL dopo 10 trade su carta.
+
 ## Obiettivi e struttura dei giri (dal 30/10/2026)
 **Obiettivo principale**: rendimento corretto per il rischio (MAR = rendimento / |max drawdown|), oggi 9,55.
 **Vincoli** (una modifica non li deve violare): perdita massima per singolo trade a 1x ≤ 9%; almeno 8 trade l'anno;
