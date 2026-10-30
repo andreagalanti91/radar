@@ -1,0 +1,231 @@
+<title>Radar BTC</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banco strumenti. Lettura di stato in alto, piano operativo, poi grafico e storico. */
+:root{
+  --bg:#f3f5f6; --panel:#ffffff; --ink:#122028; --muted:#5b6b73; --line:#d9e0e3;
+  --accent:#0d6e8a; --long:#13804f; --short:#c0392b; --warn:#b7791f; --grid:#e8edef;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1418; --panel:#121d22; --ink:#e3ecef; --muted:#8fa2aa; --line:#22323a;
+  --accent:#4fb3cf; --long:#3ccf8a; --short:#ff6b5b; --warn:#e3a73a; --grid:#1a272d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1418; --panel:#121d22; --ink:#e3ecef; --muted:#8fa2aa; --line:#22323a;
+  --accent:#4fb3cf; --long:#3ccf8a; --short:#ff6b5b; --warn:#e3a73a; --grid:#1a272d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:30px;font-weight:800;letter-spacing:-.01em}
+h2{font-size:17px;font-weight:700}
+.label{font:500 11px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+header p{margin:4px 0 0;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font:600 13px var(--mono);letter-spacing:.04em;border:1px solid currentColor}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.pill.long{color:var(--long)} .pill.short{color:var(--short)} .pill.wait{color:var(--muted)} .pill.open{color:var(--accent)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px}
+.top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px}
+@media (max-width:820px){.top{grid-template-columns:minmax(0,1fr)}}
+.gauge{display:grid;gap:14px}
+.scoreline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score{font:800 52px/1 var(--display);font-variant-numeric:tabular-nums}
+.meter{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,color-mix(in srgb,var(--short) 35%,transparent),var(--grid) 40%,var(--grid) 60%,color-mix(in srgb,var(--long) 35%,transparent))}
+.meter .tick{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--muted)}
+.meter .needle{position:absolute;top:-6px;width:4px;height:26px;margin-left:-2px;border-radius:2px;background:var(--ink)}
+.scale{display:flex;justify-content:space-between;font:11px var(--mono);color:var(--muted)}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 18px}
+@media (max-width:520px){.kv{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kv div{display:grid;gap:3px;min-width:0}
+.kv b{font:500 17px var(--mono);font-variant-numeric:tabular-nums}
+.kv small{color:var(--muted);font-size:12px}
+.plan{display:grid;gap:14px}
+.plan table{width:100%;border-collapse:collapse;font:14px var(--mono);font-variant-numeric:tabular-nums}
+.plan td{padding:6px 0;border-bottom:1px solid var(--line)}
+.plan td:last-child{text-align:right}
+.note{color:var(--muted);font-size:13px;margin:0}
+.chart{height:380px}
+.chart.small{height:150px}
+.charts{display:grid;gap:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:12px var(--mono);color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+@media (max-width:820px){.stats{grid-template-columns:minmax(0,1fr)}}
+.scroll{overflow-x:auto}
+table.grid{width:100%;border-collapse:collapse;font:13px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.grid th{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.grid td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--grid)}
+table.grid th:first-child,table.grid td:first-child{text-align:left}
+.pos{color:var(--long)} .neg{color:var(--short)}
+.tabs{display:flex;gap:6px}
+.tabs button{font:500 12px var(--mono);padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+footer{color:var(--muted);font-size:12.5px;max-width:80ch}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <span class="label">Bitcoin · swing giornaliero · order flow</span>
+      <h1>Radar BTC</h1>
+      <p id="sub"></p>
+    </div>
+    <span id="state" class="pill wait"></span>
+  </header>
+
+  <section class="top">
+    <div class="panel gauge">
+      <div class="head"><h2>Score di order flow</h2><span class="label" id="regime"></span></div>
+      <div class="scoreline"><span class="score" id="score"></span><span class="note" id="scoreNote"></span></div>
+      <div>
+        <div class="meter" id="meter"></div>
+        <div class="scale"><span>−4</span><span>short</span><span>0</span><span>long</span><span>+4</span></div>
+      </div>
+      <div class="kv" id="kv"></div>
+    </div>
+    <div class="panel plan" id="plan"></div>
+  </section>
+
+  <section class="panel charts">
+    <div class="head"><h2>Prezzo e trade del modello</h2>
+      <div class="legend"><span><i style="background:var(--long)"></i>ingresso long</span><span><i style="background:var(--short)"></i>ingresso short</span><span><i style="background:var(--muted)"></i>uscita</span><span><i style="background:var(--warn)"></i>SMA 200</span></div></div>
+    <div id="price" class="chart"></div>
+    <span class="label">Score (soglie ±<span id="th"></span>)</span>
+    <div id="scorechart" class="chart small"></div>
+  </section>
+
+  <section class="stats">
+    <div class="panel" style="display:grid;gap:12px">
+      <div class="head"><h2>Backtest</h2><span class="label">dal mar 2022, con commissioni e funding</span></div>
+      <div class="scroll"><table class="grid" id="stats"></table></div>
+      <p class="note">Training: parametri scelti solo su mar 2022 – dic 2023. Test: gen 2024 – oggi, dati mai visti in fase di scelta. PnL espresso sul capitale allocato alla strategia, senza leva.</p>
+    </div>
+    <div class="panel" style="display:grid;gap:12px;min-width:0">
+      <div class="head"><h2>Storico trade</h2>
+        <div class="tabs" role="group" aria-label="Mercato"><button id="tFut" aria-pressed="true">futures</button><button id="tSpot" aria-pressed="false">spot</button></div></div>
+      <div class="scroll" style="max-height:420px;overflow-y:auto"><table class="grid" id="trades"></table></div>
+    </div>
+  </section>
+
+  <footer>
+    Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX (ultimi giorni non ancora archiviati), alternative.me (Fear &amp; Greed). Il segnale si calcola sulla chiusura giornaliera UTC. I risultati passati non garantiscono quelli futuri: il campione è di circa 30 trade, quindi il win rate ha un margine d'errore ampio. Strumento di analisi, non consulenza finanziaria.
+  </footer>
+</div>
+
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<script>
+const R = /*__DATA__*/null;
+const $ = id => document.getElementById(id);
+const usd = x => x == null ? "–" : "$" + Math.round(x).toLocaleString("it-IT");
+const pct = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const ot = R.open_trade.futures, sig = R.signal;
+$("sub").textContent = `Chiusura ${R.date} · ${usd(R.price)} · aggiornato ogni giorno alle 00:30 UTC`;
+const st = $("state");
+if (sig) { st.className = "pill " + sig.side; st.textContent = "NUOVO SEGNALE " + sig.side.toUpperCase(); }
+else if (ot) { st.className = "pill open"; st.textContent = "TRADE " + ot.side.toUpperCase() + " APERTO"; }
+else { st.className = "pill wait"; st.textContent = "IN ATTESA DI SETUP"; }
+
+$("regime").textContent = "regime " + R.regime;
+$("score").textContent = (R.score > 0 ? "+" : "") + R.score.toFixed(2);
+$("score").style.color = R.score >= R.threshold ? css("--long") : R.score <= -R.threshold ? css("--short") : "";
+const toLong = R.threshold - R.score;
+$("scoreNote").textContent = R.score >= R.threshold ? "sopra la soglia long"
+  : R.score <= -R.threshold ? (R.regime === "ribassista" ? "sotto la soglia short" : "sotto −" + R.threshold + ", ma lo short è attivo solo in regime ribassista")
+  : `mancano ${toLong.toFixed(2)} punti alla soglia long`;
+const m = $("meter"), clamp = v => Math.max(-4, Math.min(4, v));
+[-R.threshold, R.threshold].forEach(t => { const d = document.createElement("span"); d.className = "tick"; d.style.left = ((t + 4) / 8 * 100) + "%"; m.appendChild(d); });
+const nd = document.createElement("span"); nd.className = "needle"; nd.style.left = ((clamp(R.score) + 4) / 8 * 100) + "%"; m.appendChild(nd);
+
+const c = R.components;
+const kv = [
+  ["CVD perp 14g", (c.perp_flow_z > 0 ? "+" : "") + c.perp_flow_z.toFixed(2) + "σ", "flusso aggressivo sui futures"],
+  ["Long/short retail", (c.retail_ls_z > 0 ? "+" : "") + c.retail_ls_z.toFixed(2) + "σ", "ratio " + c.global_ls.toFixed(2) + " · contrarian"],
+  ["CVD spot 14g", pct(c.spot_flow14 * 100, 2), "delta / volume"],
+  ["Funding 7g", pct(c.funding7_annual_pct, 1), "annualizzato"],
+  ["Open interest 7g", pct(c.oi_chg7_pct, 1), "variazione"],
+  ["Fear & Greed", c.fng.toFixed(0), "0 paura · 100 avidità"],
+];
+$("kv").innerHTML = kv.map(([a, b, d]) => `<div><span class="label">${a}</span><b>${b}</b><small>${d}</small></div>`).join("");
+
+function planTable(rows) { return `<table>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table>`; }
+const P = R.params;
+if (sig) {
+  $("plan").innerHTML = `<div class="head"><h2>Piano operativo · ${sig.side.toUpperCase()}</h2><span class="label">${sig.side === "long" ? "spot + futures" : "solo futures"}</span></div>` +
+    `<span class="label">Entrata DCA</span>` + planTable(sig.entries.map((e, i) => [`${Math.round(e.weight * 100)}% ${i ? "limit (7 gg)" : "all'apertura"}`, usd(e.price)]).concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", usd(sig.stop) + ` (−${sig.risk_pct_full}%)`]])) +
+    `<span class="label">Uscita DCA</span>` + planTable(sig.take_profits.map((t, i) => [`TP${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price)]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
+    `<p class="note">Dopo il TP1 lo stop va a pareggio. Uscita forzata dopo ${sig.max_hold_days} giorni.</p>`;
+} else if (ot) {
+  $("plan").innerHTML = `<div class="head"><h2>Trade aperto · ${ot.side.toUpperCase()}</h2><span class="label">dal ${ot.signal_date}</span></div>` +
+    planTable([["Tranche riempite", ot.tranches + " / 3"], ["Prezzo medio", usd(ot.avg_entry)], ["Stop attuale", usd(ot.stop)],
+      ["Limit DCA in attesa", ot.pending_entries.length ? ot.pending_entries.map(usd).join(" · ") : "nessuno"],
+      ["Prossimi target", ot.next_tps.length ? ot.next_tps.map(usd).join(" · ") : "trailing"],
+      ["Posizione residua", Math.round(ot.remaining * 100) + "%"], ["PnL corrente", pct(ot.pnl_pct_invested, 2)]]) +
+    `<p class="note">Il piano si aggiorna ogni chiusura giornaliera; ogni variazione arriva anche su Telegram.</p>`;
+} else {
+  const atr = c.atr;
+  $("plan").innerHTML = `<div class="head"><h2>Piano operativo</h2><span class="label">nessuna posizione</span></div>
+    <p style="margin:0">Nessun setup attivo. Il modello apre un <b>long</b> quando lo score supera <b class="mono">+${R.threshold}</b> e uno <b>short</b> (solo futures) quando scende sotto <b class="mono">−${R.threshold}</b> in regime ribassista.</p>
+    <span class="label">Come sarebbe un long oggi</span>` +
+    planTable([["40% all'apertura", usd(R.price)], ["30% limit", usd(R.price - P.entry_step_atr * atr)], ["30% limit", usd(R.price - 2 * P.entry_step_atr * atr)],
+      ["Stop", usd(R.price - P.stop_atr * atr)], ["TP1 / TP2 dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["ATR 14g", usd(atr) + ` (${c.atr_pct.toFixed(1)}%)`]]) +
+    `<p class="note">Esempio con l'ATR di oggi, solo a scopo illustrativo.</p>`;
+}
+$("th").textContent = R.threshold;
+
+// ---- statistiche
+const S = R.stats, rows = [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
+  ["Media vincite", "avg_win_%", v => pct(v, 2)], ["Media perdite", "avg_loss_%", v => pct(v, 2)], ["Aspettativa / trade", "expectancy_%", v => pct(v, 2)],
+  ["Rendimento totale", "total_return_%", v => pct(v, 1)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Durata media", "avg_days", v => v + " gg"]];
+const cols = [["futures", "train"], ["futures", "test"], ["spot", "train"], ["spot", "test"]];
+$("stats").innerHTML = `<tr><th></th>${cols.map(([m, p]) => `<th>${m}<br>${p}</th>`).join("")}</tr>` +
+  rows.map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(([m, p]) => { const v = S[m][p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("");
+
+function renderTrades(mk) {
+  const t = R.trades[mk].slice().reverse();
+  $("trades").innerHTML = `<tr><th>Segnale</th><th>Lato</th><th>Gg</th><th>DCA</th><th>Medio</th><th>TP</th><th>Uscita</th><th>PnL</th></tr>` +
+    t.map(r => `<tr><td>${r.signal_date}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.days}</td><td>${r.tranches}/3</td><td>${usd(r.avg_entry)}</td><td>${r.tp_hit}</td><td>${r.exit}</td><td class="${r.pnl_pct_capital > 0 ? "pos" : "neg"}">${pct(r.pnl_pct_invested, 2)}</td></tr>`).join("");
+  $("tFut").setAttribute("aria-pressed", mk === "futures"); $("tSpot").setAttribute("aria-pressed", mk === "spot");
+}
+$("tFut").onclick = () => renderTrades("futures"); $("tSpot").onclick = () => renderTrades("spot");
+renderTrades("futures");
+
+// ---- grafici
+function charts() {
+  if (!window.LightweightCharts) return;
+  const s = R.series;
+  const base = el => LightweightCharts.createChart(el, {
+    autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--muted"), fontFamily: "IBM Plex Mono, monospace", fontSize: 11 },
+    grid: { vertLines: { color: css("--grid") }, horzLines: { color: css("--grid") } },
+    rightPriceScale: { borderColor: css("--line") }, timeScale: { borderColor: css("--line") }, crosshair: { mode: 0 }, handleScroll: true, handleScale: true });
+  const pc = base($("price")), sc = base($("scorechart"));
+  const candles = pc.addCandlestickSeries({ upColor: css("--long"), downColor: css("--short"), borderVisible: false, wickUpColor: css("--long"), wickDownColor: css("--short"), priceFormat: { type: "price", precision: 0, minMove: 1 } });
+  candles.setData(s.date.map((d, i) => ({ time: d, open: s.open[i], high: s.high[i], low: s.low[i], close: s.close[i] })));
+  const sma = pc.addLineSeries({ color: css("--warn"), lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+  sma.setData(s.date.map((d, i) => ({ time: d, value: s.sma200[i] })).filter(p => p.value != null));
+  const mk = [];
+  R.trades.futures.forEach(t => {
+    const L = t.side === "long";
+    mk.push({ time: t.signal_date, position: L ? "belowBar" : "aboveBar", color: L ? css("--long") : css("--short"), shape: L ? "arrowUp" : "arrowDown", text: t.side });
+    if (t.exit_date) mk.push({ time: t.exit_date, position: L ? "aboveBar" : "belowBar", color: css("--muted"), shape: "circle", text: pct(t.pnl_pct_invested, 1) });
+  });
+  mk.sort((a, b) => a.time < b.time ? -1 : 1); candles.setMarkers(mk);
+  const line = sc.addLineSeries({ color: css("--accent"), lineWidth: 2, priceLineVisible: false });
+  line.setData(s.date.map((d, i) => ({ time: d, value: s.score[i] })).filter(p => p.value != null));
+  [R.threshold, -R.threshold].forEach(v => line.createPriceLine({ price: v, color: v > 0 ? css("--long") : css("--short"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true }));
+  const from = s.date[Math.max(0, s.date.length - 540)], to = s.date[s.date.length - 1];
+  pc.timeScale().setVisibleRange({ from, to }); sc.timeScale().setVisibleRange({ from, to });
+  pc.timeScale().subscribeVisibleLogicalRangeChange(r => r && sc.timeScale().setVisibleLogicalRange(r));
+  sc.timeScale().subscribeVisibleLogicalRangeChange(r => r && pc.timeScale().setVisibleLogicalRange(r));
+}
+charts();
+</script>
