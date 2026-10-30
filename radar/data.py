@@ -22,6 +22,7 @@ import requests
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 SYMBOL = "BTCUSDT"
+OKX_INST = "BTC-USDT-SWAP"
 START = date(2019, 9, 1)  # nascita del perp USDT-M Binance
 METRICS_START = date(2021, 12, 1)
 ARCHIVE = "https://data.binance.vision/data/futures/um"
@@ -132,7 +133,7 @@ def fetch_spot() -> pd.DataFrame:
 # ---------------------------------------------------------------- perp
 def _okx_perp_daily() -> pd.DataFrame:
     r = _get("https://www.okx.com/api/v5/market/history-candles",
-             {"instId": "BTC-USDT-SWAP", "bar": "1Dutc", "limit": 100})
+             {"instId": OKX_INST, "bar": "1Dutc", "limit": 100})
     d = pd.DataFrame(r.json()["data"]).iloc[:, :8]
     d.columns = ["ts", "open", "high", "low", "close", "vol", "volCcy", "volQuote"]
     d["date"] = pd.to_datetime(pd.to_numeric(d["ts"]), unit="ms").dt.normalize()
@@ -199,7 +200,7 @@ def fetch_funding() -> pd.DataFrame:
                 frames.append(df.groupby("date")["rate"].sum().to_frame("funding"))
     out = _merge_cache("funding", pd.concat(frames)) if frames else pd.read_csv(DATA_DIR / "funding.csv", index_col=0, parse_dates=True)
     # mese corrente da OKX (stesso ordine di grandezza del funding Binance)
-    r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": "BTC-USDT-SWAP", "limit": 100})
+    r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": OKX_INST, "limit": 100})
     okx = pd.DataFrame(r.json()["data"])
     if len(okx):
         okx["date"] = pd.to_datetime(pd.to_numeric(okx["fundingTime"]), unit="ms").dt.normalize()

@@ -18,13 +18,20 @@ Se le regole sono soddisfatte:
    `RADAR_DAILY_BRIEF=0` per rigenerare la dashboard senza inviare il riepilogo.
 2. Aggiorna README (tabelle dei risultati) se i numeri cambiano.
 3. Aggiungi la riga in `RESEARCH.md` con esito PROMOSSO.
-4. Commit con messaggio chiaro, `git pull --rebase`, `git push`.
+4. Commit con messaggio chiaro (includi anche `data/SOLUSDT/` se aggiornato), `git pull --rebase`, `git push`.
 5. Invia su Telegram (variabili `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID` dell'ambiente, oppure quelle
    fornite dal prompt del ciclo) un messaggio che inizia con "RADAR SIGNAL BTC · Aggiornamento algoritmo"
    con: la modifica in una frase, e prima/dopo per win rate, aspettativa, rendimento 1x e 2x, max drawdown.
 
 Se le regole non sono soddisfatte: nessuna modifica al codice; aggiungi solo la riga in `RESEARCH.md`
-con esito SCARTATO e il motivo principale, commit e push. Nessun messaggio Telegram.
+con esito SCARTATO (o NON PROMOSSO) e il motivo principale, commit e push.
+
+**In ogni caso**, a fine giro, invia su Telegram un messaggio di esito (HTML semplice, conciso):
+"<b>RADAR SIGNAL BTC · Giro N · ESITO</b>" (ESITO = PROMOSSO / SCARTATO / RAPPORTO), poi:
+idea provata in una frase; numeri chiave base → candidato (aspettativa test, rendimento 1x, max drawdown,
+win rate e win rate pulito); motivo dell'esito; stato BTC (prezzo, score, setup attivi, trade aperto);
+una riga "SOL (osservazione, non operativo)" con prezzo, segnale o trade su carta e PnL; prossimo tema.
+Se il giro è stato promosso, il messaggio è quello "Aggiornamento algoritmo" descritto sopra con in più la riga SOL.
 
 In entrambi i casi rimuovi la copia di lavoro (`git worktree remove --force /tmp/radar-cand`).
 Restituisci una riga di esito.

@@ -16,6 +16,12 @@ Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la 
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
 
+## Osservazione SOL (dal 30/10/2026, decisione dell'utente)
+SOL viene seguito a ogni giro con `python -m radar.observe SOLUSDT` (stessa strategia e parametri di BTC,
+dati in `data/SOLUSDT/`, trade solo su carta). Non entra nel tool operativo: niente alert di trading, niente dashboard.
+Lo stato è riportato nel messaggio Telegram di ogni giro. Rivalutazione dopo 10 trade chiusi fuori campione o 6 mesi
+(criteri: aspettativa > +1%, drawdown del portafoglio non peggiore di BTC da solo, nessun trade < −12%).
+
 ## Valutazione ETH e SOL (completata 30/10/2026, iterazione 2)
 **Raccomandazione: ETH non aggiungere; SOL solo osservazione; BTC unico operativo.**
 

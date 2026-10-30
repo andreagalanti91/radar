@@ -17,6 +17,10 @@ Compito (massimo 5 minuti):
 5. Verifica le ultime zone previste: negli ultimi 30 giorni, in quanti casi il prezzo è entrato nella
    zona di acquisto o di vendita entro 7 giorni.
 
-Non modificare file. Restituisci un riepilogo compatto in italiano con:
-stato del mercato, salute dei dati, metriche attuali, eventuali anomalie, e 1–3 osservazioni utili alla
+6. Osservazione SOL (solo carta, non entra nel tool): `python3 -m radar.observe SOLUSDT`.
+   Riporta prezzo, score, eventuale nuovo segnale con motivo, trade su carta aperto (PnL), zona prevista,
+   e i trade chiusi dall'inizio dell'osservazione (30/10/2026). Il comando aggiorna `data/SOLUSDT/`.
+
+Non modificare file (a parte quelli che `update_all` e `radar.observe` aggiornano da soli). Restituisci un riepilogo compatto in italiano con:
+stato del mercato, salute dei dati, metriche attuali, eventuali anomalie, una riga "SOL (osservazione)", e 1–3 osservazioni utili alla
 fase di apprendimento (es. "nelle ultime 4 settimane la zona di acquisto è stata superata al ribasso 3 volte").
