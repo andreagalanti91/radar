@@ -87,6 +87,24 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Giro 11 · manuale 30/10/2026 sera — leva fino a 5x, ingressi/uscite, strategie nuove · ESITO: NON PROMUOVERE (3 candidati in osservazione)
+Motori 4h con slippage 0,1% e liquidazione isolata. Base a 1x con slippage: +30,1%, DD −28,4%; a 5x −27,9% con DD −89,6%.
+- **A, ingressi/uscite**: famiglia A + ingresso alla prima chiusura 4h sopra EMA20 4h (finestra 72h), rischio 3%:
+  WR 73,6%, 110 trade, **+62,7% a 1x con DD −12,2%**; a DD 15% rende +78% (base +16%); placebo p 0,024; walk-forward ok;
+  3x +264% DD −34%, 5x +549% DD −52% (0 liquidazioni). NON passa i vicini (6/17 perdono nel 2022–23, 2 con WR < 70%).
+  Uscite: nessuna batte il TP unico 1R (TP parziale + pareggio alza il WR all'80–83% ma dimezza il rendimento); filtro pf14z peggiora.
+- **B, strategie nuove**: S9 "regime" (in pratica posizionamento affollato simmetrico long/short SOLO in regime di range):
+  WR 76%, +102,8% a 1x DD −12,2%, walk-forward positivo ogni finestra (concatenato MAR 1,75 vs 1,24), placebo p 0,
+  correlazione −0,07 con l'attuale; NON passa i vicini (soglia 1,5 → WR 62,5%). S8 compressione→breakout: solo long buono
+  (WR 86%), short perdono, walk-forward 22–23 −7%. S7 squeeze e S10 sweep: non distinguibili dal placebo.
+- **Lezione 19**: la conferma del momentum 4h all'ingresso vale più di ogni regola di uscita; il posizionamento affollato
+  funziona solo in range (fuori dal range lo stesso segnale perde: WR 62%, DD −38,6%); gli short di trend/rimbalzo non aggiungono nulla.
+  A 5x il limite non è la liquidazione (stop molto prima) ma il drawdown: con DD ≤ 15–20% la leva sensata è 1,2–1,5x.
+- **Osservazione su carta (congelati, senza riottimizzare)**: famiglia A; A + EMA20 4h; S9 range (pb 1, soglia 1,0, TP 1R, stop 2 ATR).
+- **Prossimi giri (preregistrati)**: (1) A + EMA 4h con stop sotto il minimo dello swing 4h; (2) S9 solo range con griglia
+  dichiarata soglia {0,75;1;1,25} × stop {1,5;2;2,5} × TP {0,8;1;1,2}, giudicata sui vicini; (3) portafoglio attuale 50% + S9 50%;
+  (4) S8 solo long come ipotesi nuova.
+
 ## Giro 10 · SERA 30/10/2026 — DCA coerente e strategie settimanali (agenti L, M) · ESITO: NON PROMUOVERE / DA APPROFONDIRE
 Base dopo l'audit: 49 trade, WR 81,6%, +34,9% 1x, DD giornaliero −28,1%; per stare a DD ≤ 15% va a 0,5x: **+17,8%, DD −14,8%** (riferimento).
 - **L, geometria DCA + size a rischio fisso** (motore 4h, 5760 configurazioni dichiarate): famiglia "A" = 2 livelli vicini
