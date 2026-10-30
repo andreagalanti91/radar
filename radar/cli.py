@@ -18,11 +18,25 @@ from .data import load_all, update_all  # noqa: E402
 from .features import build_features  # noqa: E402
 from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E402
 from .news import fetch_calendar, fetch_news  # noqa: E402
+from . import intraday  # noqa: E402
+import pandas as pd  # noqa: E402
+from .liquidations import collect as collect_liquidations  # noqa: E402
+import json  # noqa: E402
+from .live import STATE_FILE  # noqa: E402
 from .strategy import Params  # noqa: E402
 
 
 def daily() -> None:
-    report = evaluate(build_features(update_all()))
+    d = update_all()
+    report = evaluate(build_features(d))
+    st0 = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
+    stale = [k for k in ("spot", "perp", "funding", "metrics") if (pd.Timestamp.utcnow().tz_localize(None) - d[k].index.max()).days > 2]
+    if stale and st0.get("stale_alert") != str(pd.Timestamp.utcnow().date()):
+        telegram.send(f"<b>RADAR SIGNAL BTC · Dati non aggiornati</b>\nFonti ferme da oltre 36 ore: {', '.join(stale)}. "
+                      f"I segnali potrebbero essere in ritardo finché le fonti non tornano disponibili.")
+        st0["stale_alert"] = str(pd.Timestamp.utcnow().date())
+        STATE_FILE.write_text(json.dumps(st0, indent=2, default=str))
+    collect_liquidations()
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
     events = diff_events(report)
     for ev in events:
@@ -30,6 +44,12 @@ def daily() -> None:
     if os.environ.get("RADAR_DAILY_BRIEF", "1") == "1":
         telegram.send(telegram.daily_brief(report))
     save_state(report)
+    # controllo orario degli ordini (limit DCA, stop, target) sulle candele orarie di oggi
+    st = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
+    ev, st["intraday_keys"] = intraday.check(report, st.get("intraday_keys", []))
+    if ev:
+        telegram.send(intraday.format_events(ev))
+    STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
     out = render(report)
     print(f"[radar] {report['date']} score {report['score']:+.2f} · eventi: {[e['type'] for e in events]} · dashboard: {out}")
 
@@ -49,6 +69,10 @@ def main() -> None:
         daily()
     elif cmd == "backtest":
         backtest()
+    elif cmd == "test":
+        import unittest
+        r = unittest.TextTestRunner(verbosity=1).run(unittest.defaultTestLoader.discover("tests"))
+        sys.exit(0 if r.wasSuccessful() else 1)
     elif cmd == "test-telegram":
         ok = telegram.send("<b>RADAR BTC</b> · test connessione riuscito ✅")
         sys.exit(0 if ok else 1)

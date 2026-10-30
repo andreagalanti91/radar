@@ -423,7 +423,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <div class="section">
       <div class="sh">Storico operativo
         <span style="display:flex;gap:8px;flex-wrap:wrap">
-          <span class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button></span>
+          <span class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button><button data-v="live">Reali</button></span>
           <span class="seg" id="resSeg" role="group" aria-label="Esito"><button data-v="all" aria-pressed="true">Tutti</button><button data-v="win">Vinti</button><button data-v="loss">Persi</button></span>
         </span>
       </div>
@@ -561,6 +561,7 @@ if (sig) {
       .concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", `${usd(sig.stop)} · −${sig.risk_pct_full}%`, true]])) +
     rows(sig.take_profits.map((t, i) => [`Target ${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price), true]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
     rows([["Leva futures", sig.leverage + "x · isolato", true], ["Perdita max sul capitale", "−" + sig.risk_pct_capital_at_leverage + "%"]]) +
+    `<div id="calc"></div>` +
     `<p class="foot">I target si ricalcolano sul prezzo medio a ogni tranche. Dopo il primo target lo stop va a pareggio. Uscita entro ${sig.max_hold_days} giorni.</p>`;
 } else if (ot) {
   const pend = ot.pending_entries.map((v, k) => ({ title: `${ot.side === "long" ? "Compra" : "Vendi short"} · limit DCA`, note: "ordine limite ancora attivo", price: usd(v) }))
@@ -569,7 +570,7 @@ if (sig) {
   $("plan").innerHTML = `<div class="sh">Trade ${ot.side} aperto <small>dal ${ot.signal_date}</small></div>` +
     `<div class="list"><div class="row ic">${icon(ot.setup)}<span class="k">Setup ${ot.setup}<small>${ot.tranches} tranche su 3 · prezzo medio ${usd(ot.avg_entry)} · residuo ${Math.round(ot.remaining * 100)}%</small></span><span class="v strong ${ot.pnl_pct_invested > 0 ? "pos" : "neg"}">${pct(ot.pnl_pct_invested, 2)}</span></div></div>` +
     `<div class="why"><b>Perché è scattato</b>${ot.why || ""}</div>` +
-    `<div class="card">${timeline(ot.events, ot.side, pend)}</div>` +
+    `<div class="card">${timeline(ot.events, ot.side, pend)}</div>` + `<div id="calc"></div>` +
     `<p class="foot">Il piano si aggiorna a ogni chiusura giornaliera; ogni variazione arriva su Telegram.</p>`;
 } else {
   const atr = c.atr;
@@ -577,6 +578,26 @@ if (sig) {
     `<div class="card"><p style="margin:0">Nessun setup attivo. Quando uno dei 6 setup scatta ricevi il piano completo su Telegram.</p></div>`;
 }
 $("th").textContent = R.threshold;
+
+// ---- calcolatore della posizione sul capitale dell'utente (salvato solo in questo browser)
+const CALC = (() => { try { return JSON.parse(localStorage.getItem("radarCalc")) || {}; } catch (_) { return {}; } })();
+CALC.cap = CALC.cap || 50000; CALC.lev = CALC.lev || P.leverage;
+function renderCalc() {
+  const el = $("calc"); if (!el) return;
+  const plan = sig ? { side: sig.side, entries: sig.entries, risk: sig.risk_pct_full } : ot ? { side: ot.side, entries: ot.plan.entries.map((p, i) => ({ price: p, weight: ot.plan.weights[i] })), risk: Math.abs(ot.avg_entry - ot.plan.stop) / ot.avg_entry * 100 } : null;
+  if (!plan) { el.innerHTML = ""; return; }
+  const cap = CALC.cap, lev = CALC.lev, w = plan.entries.reduce((a, e) => a + e.weight, 0);
+  el.innerHTML = `<div class="sh" style="margin-top:6px">Sul tuo capitale <small>salvato solo su questo dispositivo</small></div>
+    <div class="list">
+      <label class="row"><span class="k">Capitale</span><input id="cCap" type="number" inputmode="decimal" min="100" step="1000" value="${cap}"></label>
+      <div class="row"><span class="k">Leva futures</span><div class="seg" id="cLev">${[1, 2, 3].map(l => `<button data-v="${l}" aria-pressed="${l === lev}">${l}x</button>`).join("")}</div></div>
+      ${plan.entries.map((e, i) => `<div class="row"><span class="k">Tranche ${i + 1} · ${usd(e.price)}<small>margine ${usd(cap * e.weight)}</small></span><span class="v strong">${usd(cap * lev * e.weight)}<br><small>${(cap * lev * e.weight / e.price).toFixed(4)} BTC</small></span></div>`).join("")}
+      <div class="row"><span class="k">Perdita se scatta lo stop<small>con tutte le tranche eseguite</small></span><span class="v strong neg">−${usd(cap * lev * w * plan.risk / 100)}</span></div>
+    </div>`;
+  $("cCap").addEventListener("change", e => { CALC.cap = Math.max(100, +e.target.value || 50000); saveCalc(); });
+  seg("cLev", v => { CALC.lev = +v; saveCalc(); });
+}
+function saveCalc() { try { localStorage.setItem("radarCalc", JSON.stringify(CALC)); } catch (_) {} renderCalc(); }
 
 // ---- regione prevista
 const Z = R.zone;
@@ -673,7 +694,7 @@ function renderTrades() {
           <div><span>PnL sull'investito</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b></div><div><span>PnL sul capitale 1x</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_capital, 2)}</b></div></div>
         <p class="foot" style="margin:0">Commissioni ${t.fees_pct != null ? "−" + t.fees_pct.toFixed(2) + "%" : "incluse"}${t.funding_pct ? " · funding " + pct(t.funding_pct, 2) : ""} sul capitale. Stop iniziale ${usd(t.plan.stop)}, ATR ${usd(t.plan.atr)}.</p>
       </div></details>`;
-  }).join("") || `<div class="card"><p style="margin:0">Nessun trade con questo filtro.</p></div>`;
+  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali dal ${fmtD(R.live_start)}: ancora nessun trade. Qui compariranno i segnali live con lo stesso dettaglio del backtest, per confrontarli con quanto promesso dallo storico.` : "Nessun trade con questo filtro."}</p></div>`;
   $("trades").querySelectorAll("details").forEach((d, n) => d.addEventListener("toggle", () => { if (d.open) tradeChart(d.querySelector(".tchart"), R.trades[trMk][+d.dataset.i]); }, { once: true }));
 }
 function tradeChart(el, t) {
@@ -691,6 +712,7 @@ function tradeChart(el, t) {
   ln.setMarkers(mk.map(m => { seen[m.time] = (seen[m.time] || 0) + 1; return m; }));
   ch.timeScale().fitContent();
 }
+renderCalc();
 seg("trSeg", v => { trMk = v; renderTrades(); });
 seg("resSeg", v => { trRes = v; renderTrades(); });
 renderTrades();

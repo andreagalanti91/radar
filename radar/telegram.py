@@ -31,6 +31,14 @@ def format_event(ev: dict, report: dict) -> str:
                   "Dopo il TP1 lo stop va a pareggio.", "",
                   f"<b>Leva</b> futures consigliata {p['leverage']:g}x: perdita massima ~{p['risk_pct_capital_at_leverage']}% "
                   f"del capitale allocato se tutte le tranche si riempiono e scatta lo stop. Usa margine isolato."]
+        cap = float(os.environ.get("RADAR_CAPITAL", "50000"))
+        lev = p["leverage"] if p["side"] == "short" else p["leverage"]
+        lines += ["", f"<b>Su {_usd(cap)} a {lev:g}x</b> (futures, margine isolato)"]
+        lines += [f"  Tranche {i+1}: {_usd(cap*lev*e['weight'])} di posizione = {cap*lev*e['weight']/e['price']:.4f} BTC · margine {_usd(cap*e['weight'])}"
+                  for i, e in enumerate(p["entries"])]
+        lines += [f"  Perdita se scatta lo stop a DCA completa: ~{_usd(cap*p['risk_pct_capital_at_leverage']/100)}"]
+        if p["side"] == "long":
+            lines += [f"  Spot (senza leva): {' / '.join(_usd(cap*e['weight']) for e in p['entries'])} · perdita max ~{_usd(cap*p['risk_pct_full']/100)}"]
         return "\n".join(lines)
     tr, market = ev["trade"], ev["market"]
     if t == "dca_fill":

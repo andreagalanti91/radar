@@ -15,6 +15,7 @@ from .strategy import SETUPS, Params, compute_signals, conditions, explain, trad
 STATE_FILE = DATA_DIR / "state.json"
 BACKTEST_START = "2022-03-01"   # le metrics (long/short ratio) partono da dic 2021 + warm-up
 TEST_START = "2024-01-01"       # parametri scelti solo su dati precedenti
+LIVE_START = "2026-10-30"       # da qui i segnali sono reali (registro fuori campione)
 
 
 def _clean(x):
@@ -131,7 +132,9 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
         "open_trade": {"futures": open_fut[0] if open_fut else None, "spot": open_spot[0] if open_spot else None},
         "stats": stats,
         "params": p.to_dict(),
-        "trades": {"futures": fut.to_dict("records"), "spot": spot.to_dict("records")},
+        "trades": {"futures": fut.to_dict("records"), "spot": spot.to_dict("records"),
+                   "live": fut[fut["signal_date"].astype(str) >= LIVE_START].to_dict("records") if len(fut) else []},
+        "live_start": LIVE_START,
         "series": {
             "date": [str(d.date()) for d in hist.index],
             "open": hist["open"].round(1).tolist(), "high": hist["high"].round(1).tolist(),

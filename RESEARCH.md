@@ -1,13 +1,19 @@
 # Diario di ricerca · Radar Signal BTC
 
-Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la valuta con
+Ciclo di miglioramento automatico: **2 giri approfonditi al giorno** (07:17 e 19:17 ora italiana). Il controllo orario di prezzi, ordini, stop e target gira gratis su GitHub Actions.
+
+**Obiettivo (dal 30/10/2026): rendimento corretto per il rischio** = rendimento totale / |max drawdown| (MAR). Il win rate è un vincolo, non l'obiettivo. Ogni iterazione prova un'idea, la valuta con
 `python -m radar.research` e la promuove solo se supera il gate in `radar/research.py`:
 
-- aspettativa nel test (2024–2025) migliore della versione attuale
+- MAR (rendimento / max drawdown) migliore di almeno il 5% (obiettivo principale)
+- aspettativa nel test (2024–2025) non peggiore di oltre 0,1 punti
+- migliore in almeno il 60% dei semestri dal 2022, nessun semestre peggiore di oltre 1,5 punti per trade
+- probabilità ≥ 75% che l'aspettativa superi la base (ricampionamento dei trade)
+- win rate pulito non più basso di oltre 3 punti
+- su SOL (banco di prova, non operativo) l'aspettativa non peggiora di oltre 0,5 punti
 - nessun peggioramento oltre 0,25 punti nel periodo di conferma (2026–oggi)
 - non peggiora troppo nel training (2022–23): altrimenti è rumore
 - win rate test non più basso di 2 punti, max drawdown non peggiore di 3 punti
-- rendimento totale almeno +5%
 - almeno l'80% dei trade attuali
 - robustezza: tutte le varianti vicine dei parametri in profitto e con win rate ≥ 70%
 - non concentrato: togliendo il trade (o i due trade) che migliorano di più, il candidato deve restare migliore della base (aggiunto dopo l'iterazione 3)

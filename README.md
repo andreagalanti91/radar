@@ -79,7 +79,7 @@ Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `rada
 
 ## Ciclo di miglioramento
 
-Ogni ora (o ogni 3, 6, 12 ore se i limiti di utilizzo lo richiedono) un ciclo in tre fasi, ciascuna affidata a un sotto-agente definito in `.claude/agents/`:
+Due volte al giorno (07:17 e 19:17 ora italiana) un giro approfondito in tre fasi, ciascuna affidata a un sotto-agente definito in `.claude/agents/`:
 
 | Fase | Agente | Cosa fa |
 |---|---|---|
@@ -87,7 +87,7 @@ Ogni ora (o ogni 3, 6, 12 ore se i limiti di utilizzo lo richiedono) un ciclo in
 | Apprendimento | `radar-learn` | prova una sola idea (DCA, take profit e stop a scaglioni, uso della regione prevista, nuovi setup) su una copia di lavoro e la valuta |
 | Miglioramento | `radar-improve` | se il gate è superato la pubblica e invia l'alert Telegram con la performance prima/dopo, altrimenti la scarta |
 
-Il gate (`radar/research.py`) richiede: miglioramento nel test 2024–25, nessun peggioramento nel training 2022–23 e nel periodo di conferma 2026, drawdown non peggiore, robustezza sulle varianti dei parametri, nessun trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
+Obiettivo: rendimento corretto per il rischio (rendimento / max drawdown). Il gate (`radar/research.py`) richiede: MAR migliore del 5%, nessun peggioramento nel test 2024–25, nel training 2022–23 e nel 2026, miglioramento nella maggior parte dei semestri, probabilità ≥ 75% al ricampionamento, nessuna dipendenza da 1–2 trade, nessun peggioramento su SOL (banco di prova), robustezza, test automatici superati, nessun trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
 
 ## Messa online
 
@@ -96,7 +96,7 @@ Il gate (`radar/research.py`) richiede: miglioramento nel test 2024–25, nessun
 3. *Settings → Pages → Source: GitHub Actions*.
 4. Il workflow `Radar Signal BTC daily` gira ogni ora (notizie, calendario, dashboard, alert sui trade aperti) e alle 00:30 UTC calcola il segnale sulla candela chiusa e invia il riepilogo giornaliero.
 
-Alert inviati: nuovo segnale con piano completo, tranche DCA eseguita, target raggiunto, trade chiuso, riepilogo giornaliero (disattivabile con la variabile `RADAR_DAILY_BRIEF=0`).
+Alert inviati: nuovo segnale con piano completo e importi in dollari sul capitale (`RADAR_CAPITAL`, predefinito 50.000 $), ordini toccati in tempo reale (controllo orario su candele orarie: limit DCA, stop, target), dati non aggiornati da oltre 36 ore, tranche DCA eseguita, target raggiunto, trade chiuso, riepilogo giornaliero (disattivabile con la variabile `RADAR_DAILY_BRIEF=0`).
 
 ## Uso locale
 
@@ -123,6 +123,10 @@ brand/                logo, icona app, banner, social preview, brand board (sorg
 .claude/agents/       sotto-agenti del ciclo orario (scan, apprendimento, miglioramento)
 radar/zones.py        previsione della regione di prezzo a 7 giorni
 radar/news.py         notizie RSS classificate per impatto e calendario economico
+radar/intraday.py     controllo orario degli ordini del piano (alert in tempo reale)
+radar/liquidations.py raccolta delle liquidazioni reali OKX da oggi (data/liquidations.csv)
+radar/observe.py      osservazione su carta di altri asset (SOL)
+tests/                test del motore di backtest (python -m radar.cli test)
 ```
 
 Fonti dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear & Greed).
