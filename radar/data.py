@@ -163,7 +163,8 @@ def fetch_perp() -> pd.DataFrame:
     if len(new):
         new["source"] = "binance"
     out = _merge_cache("perp", new) if len(new) else pd.read_csv(DATA_DIR / "perp.csv", index_col=0, parse_dates=True)
-    out = out[out.get("source", "binance") == "binance"] if "source" in out else out
+    if "source" in out:  # le righe OKX sono provvisorie: ricalcola sempre quali mancano dall'archivio Binance
+        out = out[out["source"].fillna("binance") == "binance"]
     # riempi gli ultimi giorni non ancora archiviati con OKX (taker buy stimato dopo, dalle metrics)
     have = set(out.index.date)
     missing = [d for d in _days(today - timedelta(days=60), today - timedelta(days=1)) if d not in have]
@@ -173,7 +174,9 @@ def fetch_perp() -> pd.DataFrame:
         if len(okx):
             okx["taker_buy_volume"] = float("nan")
             okx["source"] = "okx"
-            out = pd.concat([out, okx]).sort_index()
+            # salvati su disco: il backtest e gli agenti leggono il CSV. Al prossimo giro l'archivio
+            # Binance (riscaricato sugli ultimi 10 giorni) sovrascrive queste righe appena disponibile.
+            out = _merge_cache("perp", pd.concat([out, okx]))
     return out
 
 
