@@ -87,12 +87,14 @@ Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `rada
 
 ## Ciclo di miglioramento
 
-Due volte al giorno (07:17 e 19:17 ora italiana) un giro approfondito in tre fasi, ciascuna affidata a un sotto-agente definito in `.claude/agents/`:
+Due volte al giorno: alle 07:17 un giro di verifica, alle 19:17 un giro di ricerca approfondita con due agenti di ricerca in parallelo; la domenica sera anche la revisione settimanale. Ogni giro impara (lezioni apprese) e propone nuove idee, ciascuna affidata a un sotto-agente definito in `.claude/agents/`:
 
 | Fase | Agente | Cosa fa |
 |---|---|---|
+| Pianificazione | `radar-plan` | legge obiettivi, roadmap, lezioni e scelte dell'utente e decide cosa studiare |
 | Scan | `radar-scan` | aggiorna i dati, controlla la salute del sistema, fotografa mercato e prestazioni recenti |
 | Apprendimento | `radar-learn` | prova una sola idea (DCA, take profit e stop a scaglioni, uso della regione prevista, nuovi setup) su una copia di lavoro e la valuta |
+| Revisione | `radar-review` | avvocato del diavolo sui candidati: overfitting, dipendenza da pochi trade, errori |
 | Miglioramento | `radar-improve` | se il gate è superato la pubblica e invia l'alert Telegram con la performance prima/dopo, altrimenti la scarta |
 
 Obiettivo: rendimento corretto per il rischio (rendimento / max drawdown). Il gate (`radar/research.py`) richiede: MAR migliore del 5%, nessun peggioramento nel test 2024–25, nel training 2022–23 e nel 2026, miglioramento nella maggior parte dei semestri, probabilità ≥ 75% al ricampionamento, nessuna dipendenza da 1–2 trade, nessun peggioramento su SOL (banco di prova), robustezza, test automatici superati, nessun trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
