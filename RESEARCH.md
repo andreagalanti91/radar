@@ -87,6 +87,23 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Giri notturni orari (dal 30/10/2026, richiesta dell'utente) — campione/sfidante
+Ogni ora dalle 22:47 alle 06:47 (Roma) un giro breve: una linea di ricerca, un agente, test completo.
+**Campione attuale (versione di ricerca v1)**: H2 del giro 12 (WR 79%, +85,4%, DD −11,4%, MAR 7,5; fallisce solo i vicini 2022–23).
+Ogni giro prova a creare una **versione migliore** (v2, v3, …): se batte il campione su MAR a DD fisso, WR ≥ 70%, walk-forward,
+placebo e vicini, diventa il nuovo campione e si annota qui con i numeri. Nel tool entra SOLO se passa tutti i criteri del gate.
+**Catalogo notturno** (un tema per ora, a rotazione, evitando ciò che è già bocciato):
+1. Indicatori uno per uno come filtro/conferma di H2: RSI, MACD, Stocastico, ADX/DMI, Bollinger (larghezza, %B), Keltner,
+   EMA/SMA (cross e distanza), Ichimoku, SuperTrend, Parabolic SAR, ATR%, OBV, MFI, CMF, VWAP (giornaliero/settimanale,
+   ancorato ai pivot), Donchian, Williams %R, CCI, ROC, divergenze RSI/CVD.
+2. Supporti e resistenze: pivot giornalieri/settimanali, massimi/minimi swing 4h e 1d, livelli tondi, volume profile (POC/VAH/VAL)
+   su 4h/1h, zone di liquidità (cluster di massimi/minimi), retest di livelli rotti.
+3. Volume: volume relativo, taker buy/sell (CVD spot e perp su 1h/4h), assorbimento (volume alto + range piccolo),
+   picchi di volume ai livelli; "volume in tempo reale" = CVD/volume 1h-4h intraday prima della chiusura giornaliera.
+4. Confluenze: punteggio di confluenza (segnale + livello S/R + volume + conferma 4h), richiesto ≥ k fattori.
+5. Strategie migliori note in letteratura da testare onestamente su BTC (Turtle, RSI2 su trend, VWAP reversion,
+   opening-range 4h, momentum time-series) contro placebo.
+
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
   delle 2 candele 4h precedenti (short: sotto il minimo), 2 livelli 40/60 a −0,5 ATR dal prezzo di ingresso, stop 1 ATR, TP 1R,
