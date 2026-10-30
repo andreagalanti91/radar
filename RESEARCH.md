@@ -16,6 +16,23 @@ Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la 
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
 
+## PROSSIMO GIRO (richiesta dell'utente, 30/10/2026): studio degli indicatori tecnici e incroci
+Giro dedicato (rapporto, nessuna promozione automatica), al posto della singola idea. Il drawdown di portafoglio slitta al giro successivo.
+1. Calcolare su BTC giornaliero (senza look-ahead): SMA 20/50/100/200 e incroci, EMA 9/21/50/200 e incroci, MACD (12,26,9: linea,
+   istogramma, incroci), RSI 14 (zone, divergenze), volume (z-score, OBV, volume relativo, CVD già presente), proxy di
+   liquidazioni (crolli dell'open interest insieme a movimenti forti di prezzo e sbilanciamento taker: lo storico delle
+   liquidazioni vere non è disponibile gratis), ritracciamenti di Fibonacci (distanza dai livelli 0,382/0,5/0,618 dell'ultimo
+   swing a 60–90 giorni), ADX/DI 14 (forza del trend), Bande di Bollinger (posizione %B, ampiezza e squeeze), più altri utili:
+   Stocastico, ATR percentuale, Donchian, VWAP ancorato, funding/basis estremi, Fear & Greed.
+2. Per ogni indicatore e condizione: potere predittivo sul rendimento a 7/14/30 giorni (correlazione di rango e tasso di
+   successo condizionato), separato per periodo 2020–21, 2022–23, 2024–25, 2026, per vedere se è stabile.
+3. Incroci: combinazioni di 2–3 condizioni (es. trend ADX forte + RSI in ipervenduto + prezzo sul 0,618 di Fibonacci;
+   squeeze di Bollinger + flusso perp positivo). Riportare numero di casi, successo e rendimento medio, sempre per periodo.
+   Penalizzare le combinazioni con pochi casi (< 15) e controllare l'effetto "data mining" (quante combinazioni provate).
+4. Confrontare con lo score attuale (CVD perp − long/short retail): un indicatore aggiunge informazione nuova o è ridondante?
+5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
+6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
+
 ## Lezioni apprese (aggiornare a ogni giro: è la memoria del ciclo)
 1. Più tranche riempite nei trade che poi vanno in stop = perdite più grandi: avvicinare i limit DCA peggiora il drawdown (it. 1).
 2. Lo stop a pareggio dopo il TP1 protegge più di quanto costa: toglierlo o allargarlo alza il win rate pulito ma fa crollare l'aspettativa (it. 3).
