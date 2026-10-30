@@ -28,7 +28,7 @@ Compito (giro approfondito, massimo 40 minuti; i giri sono 2 al giorno):
 4. Non modificare mai i criteri del gate e non toccare il branch principale.
 
 Il gate (`python3 -m radar.research '<json>'`) include ora: MAR, finestre semestrali, ricampionamento, concentrazione
-e banco di prova su SOL (`cross_asset`). Prima di proporre una modifica esegui anche `python3 -m radar.cli test`.
+. Analizza SEMPRE E SOLO BTC (decisione dell'utente). Prima di proporre una modifica esegui anche `python3 -m radar.cli test`.
 
 Riporta sempre anche **cosa hai imparato** (una riga): cosa conferma, smentisce o aggiunge rispetto alle lezioni apprese.
 

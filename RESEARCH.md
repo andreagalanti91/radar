@@ -10,7 +10,6 @@ Ciclo di miglioramento automatico: **2 giri approfonditi al giorno** (07:17 e 19
 - migliore in almeno il 60% dei semestri dal 2022, nessun semestre peggiore di oltre 1,5 punti per trade
 - probabilità ≥ 75% che l'aspettativa superi la base (ricampionamento dei trade)
 - win rate pulito non più basso di oltre 3 punti
-- su SOL (banco di prova, non operativo) l'aspettativa non peggiora di oltre 0,5 punti
 - nessun peggioramento oltre 0,25 punti nel periodo di conferma (2026–oggi)
 - non peggiora troppo nel training (2022–23): altrimenti è rumore
 - win rate test non più basso di 2 punti, max drawdown non peggiore di 3 punti
@@ -38,6 +37,9 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 4. Confrontare con lo score attuale (CVD perp − long/short retail): un indicatore aggiunge informazione nuova o è ridondante?
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
+
+## SOLO BTC (decisione dell'utente, 30/10/2026)
+Ogni analisi, validazione e osservazione riguarda solo BTC: niente ETH/SOL (né come banco di prova nel gate, né osservazione su carta). Validazione con periodi diversi di BTC, walk-forward, segnali presi uno per uno e barre 4h.
 
 ## CORREZIONE DEL BACKTEST (30/10/2026, giro 8, agente G) — leggere prima di tutto
 Il backtest calcolava il TP del giorno sul prezzo medio DOPO i limit DCA riempiti nello stesso giorno: dentro la giornata

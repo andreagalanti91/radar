@@ -11,7 +11,7 @@ Input: i rapporti degli agenti di ricerca del giro (uno o due), con i candidati 
 Compito (massimo 10 minuti, nessuna modifica ai file del repo; puoi rieseguire controlli nelle copie di lavoro indicate):
 1. Per ogni candidato verifica in modo indipendente i punti deboli: look-ahead nel codice, risultati dipendenti da 1–3
    trade, comportamento "a gradino" sui parametri nuovi, coerenza tra periodi (train, test, holdout, semestri),
-   effetto su SOL, perdita massima per trade, numero di trade, coerenza con le lezioni apprese.
+   perdita massima per trade, numero di trade, coerenza con le lezioni apprese.
 2. Se i due rapporti propongono modifiche compatibili, valuta se combinarle ha senso (solo se entrambe passano il gate da sole).
 3. Verdetto per ciascun candidato: PROMUOVERE / NON PROMUOVERE / DA APPROFONDIRE, con il motivo principale in una riga.
    Il gate è necessario ma non sufficiente: se trovi un problema serio, il verdetto è NON PROMUOVERE anche con gate True.

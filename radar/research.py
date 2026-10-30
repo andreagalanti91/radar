@@ -279,13 +279,10 @@ def main() -> None:
     cand_p = replace(base_p, **json.loads(sys.argv[1]))
     cand = scorecard(f, cand_p)
     ok, why = promotion_gate(base, cand, robustness(f, cand_p))
-    xb, xc = cross_asset(base_p), cross_asset(cand_p)
-    if xc.get("expectancy_%", 0) < xb.get("expectancy_%", 0) - 0.5:
-        ok = False
-        why.append(f"peggiora su SOL (banco di prova): {xc.get('expectancy_%')} vs {xb.get('expectancy_%')}")
+    # analisi solo su BTC (decisione dell'utente, 30/10/2026): nessun banco di prova su altri asset
     for d in (base, cand):
         d.pop("pnls", None); d.pop("pnl_by_signal", None)
-    print(json.dumps({"base": base, "candidate": cand, "sol_base": xb, "sol_candidate": xc, "promote": ok, "reasons": why}, indent=1, default=str))
+    print(json.dumps({"base": base, "candidate": cand, "promote": ok, "reasons": why}, indent=1, default=str))
 
 
 if __name__ == "__main__":
