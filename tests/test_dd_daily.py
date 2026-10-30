@@ -78,9 +78,9 @@ class TestRiferimentoDD(unittest.TestCase):
             self.skipTest("dati non presenti")
         f = build_features(load_all())
         t = run(f, Params(), "futures", "2022-03-01", "2026-10-01")
-        self.assertEqual(len(t), 47)
+        self.assertEqual(len(t), 48)
         dd = dd_daily(t, f["close"])
-        self.assertAlmostEqual(dd["1x"]["max_dd_%"], -22.4, delta=0.3)
+        self.assertAlmostEqual(dd["1x"]["max_dd_%"], -28.1, delta=0.3)
         self.assertLessEqual(dd["2x"]["max_dd_%"], summary(t, 2)["max_dd_%"])
 
 

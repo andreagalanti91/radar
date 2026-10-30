@@ -58,6 +58,9 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 "tp_atr": list(p.tp_atr), "tp_weights": list(p.tp_weights), "trail_atr": p.trail_atr}
         for j in range(i + 1, min(n, i + 1 + p.max_hold)):
             # 1) ingressi DCA
+            # il target del giorno si calcola sul prezzo medio PRIMA dei limit riempiti oggi: dentro la giornata
+            # il massimo può arrivare prima del calo che riempie la tranche (verificato su candele a 4 ore)
+            q_prev, c_prev, filled_today = qty, cost, False
             for k, lv in enumerate(levels):
                 if filled[k] or (k > 0 and j - (i + 1) >= p.entry_window) or tp_hit:
                     continue
@@ -66,6 +69,10 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                     px = e0 if k == 0 else (min(lv, o[j]) if sg == 1 else max(lv, o[j]))
                     q = p.entry_weights[k] / px
                     filled[k] = True
+                    if k == 0:  # il primo ingresso è all'apertura: precede tutto il resto della giornata
+                        q_prev, c_prev = q_prev + q, c_prev + q * px
+                    else:
+                        filled_today = True
                     ev.append({"date": D(j), "type": "entry", "price": round(float(px), 1), "pct": round(p.entry_weights[k] * 100),
                                "note": "ingresso all'apertura" if k == 0 else f"limit DCA {k + 1} eseguito"})
                     qty += q
@@ -85,8 +92,9 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 pos = 0
                 break
             # 3) take profit a scaglioni
+            avg_tp = (c_prev / q_prev) if (filled_today and q_prev > 0) else avg
             while tp_hit < len(tps):
-                tp = avg + sg * tps[tp_hit] * a
+                tp = avg_tp + sg * tps[tp_hit] * a
                 if (sg == 1 and h[j] >= tp) or (sg == -1 and l[j] <= tp):
                     q = min(pos, qty * tp_w[tp_hit])
                     realized += sg * q * (tp - avg)

@@ -39,7 +39,15 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
 
-## Profilo di riferimento scelto dall'utente (30/10/2026)
+## CORREZIONE DEL BACKTEST (30/10/2026, giro 8, agente G) — leggere prima di tutto
+Il backtest calcolava il TP del giorno sul prezzo medio DOPO i limit DCA riempiti nello stesso giorno: dentro la giornata
+il massimo spesso arriva prima del calo (verificato su candele a 4 ore). Corretto (`avg_tp` in radar/backtest.py).
+Nuova base: 48 trade, WR 83,3%, pulito 29,2%, >1% 66,7%, 1x +57,0% (DD trade −18,0%, giornaliero −28,1%), 2x +115,2%
+(DD giornaliero −50,4%), MAR 3,17; train exp 0,57, test 1,93, holdout 0,39. L'esecuzione simulata a 4 ore dà ~+50% a 1x.
+Tutti i risultati delle iterazioni 1–8 sono stati misurati con il backtest vecchio: le conclusioni qualitative restano
+indicative, i numeri no. Il profilo di riferimento qui sotto è superato.
+
+## Profilo di riferimento scelto dall'utente (30/10/2026) — SUPERATO dalla correzione
 **Futures a 2x, 50.000 $ dal 01/03/2022 → ~299.400 $ (+498,9%), max drawdown −31,4% trade per trade, −40,6% reale giornaliero (misurato dal giro 6), 47 trade, win rate 89%.**
 Rendimento/drawdown a 2x = 15,9 (12,3 sul drawdown giornaliero). **Traguardo: stesso rendimento (≥ +450% a 2x) con drawdown ≤ −20% (MAR 2x ≥ 22),
 poche operazioni ben strutturate in DCA.** I giri valutano sempre anche il profilo 2x (`full_2x` della scorecard).
@@ -131,6 +139,7 @@ l'utente sceglie in chat; senza risposta si segue la roadmap.
 10. Il trailing a 3 ATR del runner è già vicino all'ottimo: le alternative muovono il DD di ≤ 3 punti e quando sembrano migliori spostano la sequenza dei trade (it. 6).
 11. Leva per setup e regole sul capitale (size dopo stop, size sul drawdown, anti-martingala) non creano vantaggio: spostano la leva effettiva o dipendono dai 2 stop di dic 2024–gen 2025. La pausa di 21–45 giorni dopo uno stop raggiunge il traguardo 2x su carta (+616%, DD −17,9) ma salta un solo trade: non dimostrabile con 3 stop (it. 7).
 12. Con 47 trade in sequenza ogni modifica che cambia le date di uscita produce risultati "a gradino": per giudicare servono più stop (ETH/SOL come banco di prova, candele a 4 ore) (it. 6–7).
+13. Prima di ottimizzare, verificare la misura: il backtest giornaliero gonfiava i risultati (TP calcolato dopo i fill dello stesso giorno). Ogni nuova regola di esecuzione va controllata su candele a 4 ore (it. 8).
 6. Il guadagno vero arriva dal 40% lasciato correre (uscite a tempo +12%, trailing +8,9%): proteggerlo prima di ottimizzare altro.
 7. Il sizing a rischio fisso non crea vantaggio da solo; con soli 3 stop in 47 trade ogni confronto stop largo + sizing dipende da 2–3 trade: giudicarlo a parità di perdita massima per stop, non di drawdown (it. 4).
 

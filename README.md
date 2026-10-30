@@ -46,32 +46,34 @@ Regime ribassista: prezzo sotto la SMA200 e SMA50 sotto la SMA200. Gli short si 
 - **Uscita forzata** dopo 45 giorni.
 - **Leva consigliata sui futures: 2x**, margine isolato.
 
-## Risultati del backtest (mar 2022 – ott 2026)
+## Risultati del backtest (mar 2022 – ott 2026, commissioni e funding inclusi)
 
-Commissioni e funding inclusi. Parametri scelti su mar 2022 – dic 2023, verificati su gen 2024 – oggi.
+> **Correzione del 30/10/2026.** Il backtest giornaliero era troppo ottimista: quando nello stesso giorno si riempiva una
+> tranche DCA e veniva toccato il primo target, assumeva che il target arrivasse dopo il riempimento (sul prezzo medio più
+> basso). Le candele a 4 ore mostrano che spesso il massimo arriva prima. Corretto l'ordine, 3 trade "in pari" sono in
+> realtà stop pieni e la sequenza del 2022 cambia. Prima della correzione: 47 trade, +156,7% a 1x, +498,9% a 2x.
+> Un'esecuzione simulata a 4 ore dà numeri ancora un po' più bassi (circa +50% a 1x): la verità sta in quell'intervallo.
 
-| | Futures train | Futures test | Spot train | Spot test |
+| | Train 2022–23 | Test 2024–25 | 2026 |
+|---|---|---|---|
+| Trade | 22 | 19 | 7 |
+| Win rate | 86,4% | 84,2% | 71,4% |
+| Aspettativa/trade | +0,57% | +1,93% | +0,39% |
+| Rendimento | +10,4% | +40,6% | +1,1% |
+
+| Leva (futures, intero periodo) | Rendimento | Drawdown trade per trade | **Drawdown reale giornaliero** | Peggior trade |
 |---|---|---|---|---|
-| Trade | 20 | 27 | 23 | 26 |
-| Win rate | 90% | 88,9% | 91,3% | 84,6% |
-| Aspettativa/trade | +2,01% | +2,19% | +1,83% | +1,43% |
-| Max drawdown | −4,4% | −16,4% | −0,4% | −16,5% |
+| 1x | +57,0% | −18,0% | −28,1% | −12,1% |
+| 2x | +115,2% | −34,6% | −50,4% | −24,2% |
+| 3x | +156,1% | −49,6% | −67,6% | −36,4% |
 
-| Leva (futures) | Rendimento | CAGR | Max drawdown | Peggior trade |
-|---|---|---|---|---|
-| 1x | +157% | +22% | −16% | −9% |
-| **2x** | **+499%** | **+47%** | **−31%** | **−18%** |
-| 3x | +1181% | +73% | −45% | −27% |
-
-BTC buy & hold nello stesso periodo: +76%, max drawdown −67%.
+Spot: 47 trade, win rate 85,1%, +52,9%, drawdown −21,2%. BTC buy & hold nello stesso periodo: +76%, drawdown −67%.
 
 ### Win rate: come leggerlo
 
 | | Standard | Sopra +1% | Pulito (senza stop e pareggi) |
 |---|---|---|---|
-| Futures mar 2022 – ott 2026 | 89,4% | 72,3% | 34,0% |
-
-25 trade su 47 incassano solo il primo target e chiudono il resto a pareggio (+1,25% medio): il guadagno vero arriva dal 40% lasciato correre.
+| Futures mar 2022 – ott 2026 | 83,3% | 66,7% | 29,2% |
 
 ### Limiti
 - Il campione è di circa 50 trade: il win rate reale può scostarsi di diversi punti.
