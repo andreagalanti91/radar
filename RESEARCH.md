@@ -38,6 +38,22 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
 
+## Mandato dell'utente (30/10/2026 sera) — giri autonomi di scoperta
+Due giri al giorno (07:17, 19:17) per **scoprire nuove strategie** e **migliorare ingressi e uscite**, in autonomia:
+proporre, creare, confrontare con backtest; **se passa il gate si esegue** (promozione con test, README, dashboard, Telegram).
+**Gate per nuove strategie** (in aggiunta ai criteri esistenti, mai abbassati): confronto a DD giornaliero fisso 15% (rendimento a
+parità di rischio), batte un placebo con la stessa meccanica (ingressi casuali, p ≤ 0,05), walk-forward con geometria scelta solo
+sul passato positivo in ogni finestra, vicini dei parametri, esecuzione su 4h/1h con slippage 0,1%, WR ≥ 70%, solo BTC.
+**Catalogo da esplorare** (il planner sceglie e aggiunge idee proprie):
+- ingressi: flusso perp pf14z come asse (lezione 17), conferma su 4h (reclaim, sweep del minimo), limit dentro la regione prevista,
+  ingresso a 2 livelli vicini (famiglia A del giro 10), size per livello di pf14z;
+- uscite: TP in R coerente con lo stop, TP parziale + pareggio dopo +0,5 R, uscita su perdita di momentum 4h, uscita a tempo breve,
+  zona di vendita prevista come target;
+- strategie nuove: posizionamento (short affollati/funding negativo, S3), squeeze dopo liquidazioni, breakout di volatilità
+  compressa, reazione a eventi macro (CPI/FOMC), weekend/sessioni, regime trend vs range con regole diverse;
+- portafoglio: strategia + quota trend SMA (giro 9 H), più strategie poco correlate con budget di rischio comune.
+- osservazione su carta della famiglia A congelata dal 31/10/2026 (2 livelli 40/60 a −0,5 ATR, stop 1 ATR, TP 1 R, rischio 3%).
+
 ## AUDIT DEGLI ERRORI (30/10/2026, giro 9, agente K) — base solida
 Verificati dati, feature, segnali, ordine degli eventi (48 trade rifatti su candele 1h e 4h), contabilità, live.
 Errori corretti (con test in tests/test_audit.py):
