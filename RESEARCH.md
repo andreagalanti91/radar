@@ -39,6 +39,29 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
 
+## Obiettivi e struttura dei giri (dal 30/10/2026)
+**Obiettivo principale**: rendimento corretto per il rischio (MAR = rendimento / |max drawdown|), oggi 9,55.
+**Vincoli** (una modifica non li deve violare): perdita massima per singolo trade a 1x ≤ 9%; almeno 8 trade l'anno;
+win rate ≥ 85% e win rate pulito non in calo; nessun peggioramento su SOL (banco di prova).
+**Traguardo a 3 mesi**: MAR ≥ 12 con drawdown a 1x ≤ 12%, e ≥ 5 segnali reali registrati coerenti con il backtest.
+
+**Giro del mattino (07:17) · verifica e operatività** — breve:
+dati e test, segnale della notte, ordini toccati, registro dei segnali reali contro il backtest, SOL su carta,
+regione prevista del giorno, calendario macro della giornata; una sola idea "veloce" (parametro singolo) se c'è tempo.
+**Giro della sera (19:17) · ricerca approfondita** — una famiglia di idee della roadmap, fino a 5–6 varianti, gate completo,
+eventuale promozione.
+**Domenica sera · revisione settimanale**: riepilogo della settimana, lezioni apprese, riordino della roadmap.
+**Ogni giro** chiude il messaggio Telegram con 2–3 **idee proposte** per i giri successivi (cosa, perché, impatto atteso):
+l'utente sceglie in chat; senza risposta si segue la roadmap.
+
+**Roadmap della ricerca** (ordine per impatto atteso):
+1. Gestione del 40% lasciato correre (fonte principale del guadagno): trailing alternativi (chandelier, SMA20, minimo a N giorni),
+   durata massima 30/45/60 giorni, uscita parziale sulla zona di vendita prevista.
+2. Drawdown di portafoglio: size ridotta dopo uno stop o con capitale sotto il massimo, pausa dopo stop consecutivi.
+3. Filtro di "distribuzione": long bloccati quando score negativo e retail long affollato anche con trend rialzista.
+4. Ingressi più precisi con candele a 4 ore dentro la regione prevista (anche per avere più trade e un campione più grande).
+5. Liquidazioni reali (quando `data/liquidations.csv` avrà almeno 2–3 mesi).
+
 ## Lezioni apprese (aggiornare a ogni giro: è la memoria del ciclo)
 1. Più tranche riempite nei trade che poi vanno in stop = perdite più grandi: avvicinare i limit DCA peggiora il drawdown (it. 1).
 2. Lo stop a pareggio dopo il TP1 protegge più di quanto costa: toglierlo o allargarlo alza il win rate pulito ma fa crollare l'aspettativa (it. 3).

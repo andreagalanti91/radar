@@ -30,7 +30,9 @@ con esito SCARTATO (o NON PROMOSSO) e il motivo principale, commit e push.
 "<b>RADAR SIGNAL BTC · Giro N · ESITO</b>" (ESITO = PROMOSSO / SCARTATO / RAPPORTO), poi:
 idea provata in una frase; numeri chiave base → candidato (aspettativa test, rendimento 1x, max drawdown,
 win rate e win rate pulito); motivo dell'esito; stato BTC (prezzo, score, setup attivi, trade aperto);
-una riga "SOL (osservazione, non operativo)" con prezzo, segnale o trade su carta e PnL; prossimo tema.
+una riga "SOL (osservazione, non operativo)" con prezzo, segnale o trade su carta e PnL; prossimo tema;
+infine "<b>Idee proposte</b>": 2–3 idee numerate per i giri successivi (cosa, perché, impatto atteso), basate su quanto
+emerso nel giro, sulla roadmap e sulle lezioni apprese. Riportale anche in RESEARCH.md.
 Se il giro è stato promosso, il messaggio è quello "Aggiornamento algoritmo" descritto sopra con in più la riga SOL.
 
 In entrambi i casi rimuovi la copia di lavoro (`git worktree remove --force /tmp/radar-cand`).
