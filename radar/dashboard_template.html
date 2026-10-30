@@ -793,7 +793,7 @@ function simulate() {
   tr.forEach(t => { const pnl = eq * t.pnl_pct_capital * lev / 100; eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++; out.push({ ...t, pnl, eq }); pts.push({ time: t.exit_date, value: eq }); });
   const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01), cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
-    .map(([a, b]) => `<div><span>${a}</span><b>${dots(b)}</b></div>`).join("");
+    .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
   $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, leva ${lev}x. Commissioni e funding inclusi; slippage e tasse esclusi.`;
   $("simCount").textContent = `${tr.length} trade · ${lev}x`;
   $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
@@ -818,7 +818,7 @@ function goal(cap, lev, mk) {
   const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
   const hit = res.filter(x => x >= mult).length / (res.length || 1) * 100;
   $("goalOut").innerHTML = [["Serve", `×${mult.toFixed(2)} in ${days} gg`], ["Successo storico", hit.toFixed(1) + "%"], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
-    .map(([a, b]) => `<div><span>${a}</span><b>${dots(b)}</b></div>`).join("");
+    .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
   $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x. Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
 }
 ["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));

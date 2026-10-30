@@ -39,11 +39,30 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
 
+## Profilo di riferimento scelto dall'utente (30/10/2026)
+**Futures a 2x, 50.000 $ dal 01/03/2022 → ~299.400 $ (+498,9%), max drawdown −31,4%, 47 trade, win rate 89%.**
+Rendimento/drawdown a 2x = 15,9. **Traguardo: stesso rendimento (≥ +450% a 2x) con drawdown ≤ −20% (MAR 2x ≥ 22),
+poche operazioni ben strutturate in DCA.** I giri valutano sempre anche il profilo 2x (`full_2x` della scorecard).
+Attenzione: il drawdown attuale è misurato trade per trade; quello giornaliero con le posizioni aperte (mark-to-market)
+è probabilmente più ampio: misurarlo è il primo passo (giro sera 1).
+
+### Piano dei prossimi giri serali (aggiornabile dalla pianificazione e dall'utente)
+1. **Drawdown reale + gestione del 40% che corre**: aggiungere alla scorecard l'equity giornaliera mark-to-market (anche a 2x);
+   poi trailing alternativi e durata massima del runner, giudicati sul drawdown reale.
+2. **Leva per setup**: leva più alta sui setup storicamente più affidabili (capit 14/14, brk 4/4) e più bassa su quelli
+   deboli (sflow, fundneg); l'obiettivo è alzare il rendimento a parità di drawdown. Attenzione alla concentrazione.
+3. **Drawdown di portafoglio**: size ridotta dopo uno stop o con capitale sotto il massimo, pausa dopo 2 stop di fila
+   (il drawdown −31% a 2x viene dalle due perdite di dic 2024 – gen 2025).
+4. **Pesi e profondità della DCA**: 30/30/40 o 25/35/40 con l'ultima tranche più profonda; giudicati sulla perdita dei 3 stop.
+5. **Filtro di distribuzione** sui long (score negativo + retail long affollato anche con trend rialzista).
+Giri del mattino: verifica operativa, segnali reali contro backtest, un solo parametro veloce collegato al piano serale.
+Domenica sera: revisione settimanale e riordino del piano.
+
 ## Obiettivi e struttura dei giri (dal 30/10/2026)
 **Obiettivo principale**: rendimento corretto per il rischio (MAR = rendimento / |max drawdown|), oggi 9,55.
 **Vincoli** (una modifica non li deve violare): perdita massima per singolo trade a 1x ≤ 9%; almeno 8 trade l'anno;
 win rate ≥ 85% e win rate pulito non in calo; nessun peggioramento su SOL (banco di prova).
-**Traguardo a 3 mesi**: MAR ≥ 12 con drawdown a 1x ≤ 12%, e ≥ 5 segnali reali registrati coerenti con il backtest.
+**Traguardo a 3 mesi**: MAR ≥ 12 (a 1x) e profilo 2x con rendimento ≥ +450% e drawdown ≤ −20%, e ≥ 5 segnali reali registrati coerenti con il backtest.
 
 **Giro del mattino (07:17) · verifica e operatività** — breve:
 dati e test, segnale della notte, ordini toccati, registro dei segnali reali contro il backtest, SOL su carta,
