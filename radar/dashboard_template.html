@@ -163,7 +163,7 @@ if (sig) {
   $("plan").innerHTML = `<div class="head"><h2>Piano operativo · ${sig.side.toUpperCase()}</h2><span class="label">${sig.side === "long" ? "spot + futures" : "solo futures"}</span></div>` +
     `<span class="label">Entrata DCA</span>` + planTable(sig.entries.map((e, i) => [`${Math.round(e.weight * 100)}% ${i ? "limit (7 gg)" : "all'apertura"}`, usd(e.price)]).concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", usd(sig.stop) + ` (−${sig.risk_pct_full}%)`]])) +
     `<span class="label">Uscita DCA</span>` + planTable(sig.take_profits.map((t, i) => [`TP${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price)]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
-    `<p class="note">Dopo il TP1 lo stop va a pareggio. Uscita forzata dopo ${sig.max_hold_days} giorni.</p>`;
+    `<p class="note">Target calcolati sul prezzo medio a DCA completa: si ricalcolano a ogni tranche eseguita. Dopo il TP1 lo stop va a pareggio. Uscita forzata dopo ${sig.max_hold_days} giorni.</p>`;
 } else if (ot) {
   $("plan").innerHTML = `<div class="head"><h2>Trade aperto · ${ot.side.toUpperCase()}</h2><span class="label">dal ${ot.signal_date}</span></div>` +
     planTable([["Tranche riempite", ot.tranches + " / 3"], ["Prezzo medio", usd(ot.avg_entry)], ["Stop attuale", usd(ot.stop)],

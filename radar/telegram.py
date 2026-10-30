@@ -23,7 +23,7 @@ def format_event(ev: dict, report: dict) -> str:
                   for i, e in enumerate(p["entries"])]
         lines += [f"  Prezzo medio se completa: {_usd(p['avg_entry_if_full'])}",
                   f"<b>Stop</b>: {_usd(p['stop'])} (rischio ~{p['risk_pct_full']}% sul medio)", "",
-                  "<b>Uscita DCA</b>"]
+                  "<b>Uscita DCA</b> (sul medio a DCA completa; il bot ricalcola i target a ogni tranche)"]
         lines += [f"  {int(tp['weight']*100)}% @ {_usd(tp['price'])}" for tp in p["take_profits"]]
         lines += [f"  {int(p['trail_weight']*100)}% in trailing a {p['trail_atr']} ATR · max {p['max_hold_days']} gg",
                   "Dopo il TP1 lo stop va a pareggio."]
