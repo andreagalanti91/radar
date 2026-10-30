@@ -130,6 +130,29 @@ def fetch_spot() -> pd.DataFrame:
     return _merge_cache("spot", df)
 
 
+def fetch_spot_1h() -> pd.DataFrame:
+    """Candele orarie spot (solo OHLC) dal 2022-02: il backtest le usa per ordinare TP1 e stop a pareggio."""
+    last = _cache_last("spot_1h")
+    start = datetime.combine(last, datetime.min.time(), tzinfo=timezone.utc) if last else datetime(2022, 2, 1, tzinfo=timezone.utc)
+    rows, start_ms = [], int(start.timestamp() * 1000)
+    while True:
+        r = _get("https://data-api.binance.vision/api/v3/klines",
+                 {"symbol": SYMBOL, "interval": "1h", "startTime": start_ms, "limit": 1000})
+        batch = r.json()
+        if not batch:
+            break
+        rows += batch
+        start_ms = batch[-1][0] + 3_600_000
+        if len(batch) < 1000:
+            break
+    d = pd.DataFrame(rows).iloc[:, :5]
+    d.columns = ["t", "open", "high", "low", "close"]
+    d["t"] = pd.to_datetime(pd.to_numeric(d["t"]), unit="ms")
+    d = d.set_index("t").astype(float)
+    d = d[d.index.normalize().date < _today()]  # solo giorni chiusi
+    return _merge_cache("spot_1h", d)
+
+
 # ---------------------------------------------------------------- perp
 def _okx_perp_daily() -> pd.DataFrame:
     r = _get("https://www.okx.com/api/v5/market/history-candles",
@@ -219,9 +242,12 @@ def _metrics_day(d: date) -> pd.DataFrame | None:
     for c in df.columns[2:]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
     tr = df["sum_taker_long_short_vol_ratio"]
+    # l'archivio ha righe con open interest 0 (es. 07/03/2022, 10/07/2024): ultimo valore valido del giorno
+    oi = df["sum_open_interest"].where(df["sum_open_interest"] > 0).dropna()
+    oi_usd = df["sum_open_interest_value"].where(df["sum_open_interest_value"] > 0).dropna()
     return pd.DataFrame({
-        "oi": [df["sum_open_interest"].iloc[-1]],
-        "oi_usd": [df["sum_open_interest_value"].iloc[-1]],
+        "oi": [oi.iloc[-1] if len(oi) else float("nan")],
+        "oi_usd": [oi_usd.iloc[-1] if len(oi_usd) else float("nan")],
         "top_ls": [df["count_toptrader_long_short_ratio"].mean()],
         "top_ls_pos": [df["sum_toptrader_long_short_ratio"].mean()],
         "global_ls": [df["count_long_short_ratio"].mean()],
@@ -254,7 +280,7 @@ def fetch_fng() -> pd.DataFrame:
 
 def update_all(verbose: bool = True) -> dict[str, pd.DataFrame]:
     out = {}
-    for name, fn in [("spot", fetch_spot), ("perp", fetch_perp), ("funding", fetch_funding),
+    for name, fn in [("spot", fetch_spot), ("spot_1h", fetch_spot_1h), ("perp", fetch_perp), ("funding", fetch_funding),
                      ("metrics", fetch_metrics), ("fng", fetch_fng)]:
         t = time.time()
         out[name] = fn()

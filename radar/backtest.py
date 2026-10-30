@@ -10,13 +10,30 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from .data import DATA_DIR
 from .strategy import Params, compute_signals
 
 FEES = {"spot": 0.001, "futures": 0.0005}  # per lato (taker)
+_H1: dict | None = None
 
 
-def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=None, signals: pd.DataFrame | None = None) -> pd.DataFrame:
+def hourly_bars() -> dict:
+    """Candele orarie spot (data/spot_1h.csv, se presente) per giorno: servono solo a ordinare TP1 e stop a pareggio."""
+    global _H1
+    if _H1 is None:
+        _H1 = {}
+        path = DATA_DIR / "spot_1h.csv"
+        if path.exists():
+            h = pd.read_csv(path, index_col=0, parse_dates=True)
+            for day, g in h.groupby(h.index.normalize()):
+                _H1[day] = (g["high"].values, g["low"].values)
+    return _H1
+
+
+def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=None, signals: pd.DataFrame | None = None,
+        intraday: dict | None = None) -> pd.DataFrame:
     s = compute_signals(f, p) if signals is None else signals
+    h1 = hourly_bars() if intraday is None else intraday
     if start:
         s = s[s.index >= pd.Timestamp(start)]
     if end:
@@ -93,6 +110,7 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                 break
             # 3) take profit a scaglioni
             avg_tp = (c_prev / q_prev) if (filled_today and q_prev > 0) else avg
+            tp_before = tp_hit
             while tp_hit < len(tps):
                 tp = avg_tp + sg * tps[tp_hit] * a
                 if (sg == 1 and h[j] >= tp) or (sg == -1 and l[j] <= tp):
@@ -107,6 +125,24 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
                         stop = avg * (1 + sg * 2 * fee)
                 else:
                     break
+            # 3b) stop a pareggio messo oggi dal TP1: con le barre giornaliere si controllava solo da domani, e il trade
+            # restava aperto 1-2 giorni in più (stesso PnL, ma bloccava i segnali successivi). Con le candele orarie
+            # si verifica se dopo l'ora del TP1 il prezzo è tornato sullo stop nello stesso giorno.
+            hl = h1.get(idx[j])
+            if hl is not None and not (np.isclose(hl[0].max(), h[j], rtol=1e-6) and np.isclose(hl[1].min(), l[j], rtol=1e-6)):
+                hl = None  # le candele orarie devono ricomporre la giornata (stessa fonte e stesso giorno)
+            if tp_before == 0 and tp_hit == 1 and pos > 1e-12 and hl is not None:
+                hh, ll = hl
+                tp1 = avg_tp + sg * tps[0] * a
+                k1 = int(np.argmax(hh >= tp1)) if sg == 1 else int(np.argmax(ll <= tp1))
+                after = ll[k1 + 1:] <= stop if sg == 1 else hh[k1 + 1:] >= stop
+                if after.any():
+                    realized += sg * pos * (stop - avg)
+                    fees += pos * stop * fee
+                    exit_reason = "stop_be"
+                    ev.append({"date": D(j), "type": "exit", "kind": exit_reason, "price": round(float(stop), 1),
+                               "pct": round(pos / qty * 100), "note": "stop a pareggio (stesso giorno del TP1)"})
+                    pos = 0
             # 4) trailing sul residuo dopo TP1
             best = max(best, c[j]) if sg == 1 else min(best, c[j])
             if tp_hit >= 1:
@@ -117,7 +153,7 @@ def run(f: pd.DataFrame, p: Params, market: str = "futures", start=None, end=Non
             if qty > 0:
                 mtm.append((D(j), float(realized - fees + funding + sg * pos * (c[j] - avg))))
             if pos <= 1e-12:
-                exit_reason = "tp"
+                exit_reason = exit_reason or "tp"
                 break
         still_open = pos > 1e-12 and j == n - 1 and (j - i) < p.max_hold
         if still_open:

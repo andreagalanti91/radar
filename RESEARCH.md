@@ -38,6 +38,23 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
 
+## AUDIT DEGLI ERRORI (30/10/2026, giro 9, agente K) — base solida
+Verificati dati, feature, segnali, ordine degli eventi (48 trade rifatti su candele 1h e 4h), contabilità, live.
+Errori corretti (con test in tests/test_audit.py):
+1. **Open interest a 0** nell'archivio Binance (07/03/2022, 10/07/2024, 12/07/2024) letto come calo del 100%: due segnali capit falsi
+   che spostavano tutta la sequenza e nascondevano uno stop (28/07/2024, −8,4%). Ora OI ≤ 0 = dato mancante.
+2. **Stop a pareggio nel giorno del TP1** mai controllato lo stesso giorno: trade chiusi 1–2 giorni dopo, segnali successivi persi.
+   Ora si verifica con data/spot_1h.csv (solo se le candele orarie ricompongono il giorno).
+3. **Live**: segnali notificati anche con un trade aperto (98 su 147 storici). Ora soppressi come nel backtest.
+Effetto: +57,0% → **+34,9%** (1x), 2x +115% → **+57,1%**, 49 trade, WR 81,6%, WR pulito 26,5%, DD giornaliero invariato −28,1% / −50,4%.
+Simulazione completa su 1h: +33,9% (il motore giornaliero ora è coerente).
+Dubbi aperti: (a) il MAR del gate include test e holdout, ormai non più fuori campione dopo 8 giri → serve un holdout nuovo
+(dati futuri) e un gate che usi il DD giornaliero; (b) DD sui minimi del giorno −32,8% (1x); (c) nel piano live i TP sono sul medio
+a DCA completa (TP1 ≈ +0,55 ATR) mentre il backtest usa l'ingresso: allineare; (d) un solo trade spostato cambia il risultato
+di 5–7 punti: la sequenza è fragile.
+**Lezione 16**: validare i dati grezzi prima delle feature (zeri, infiniti, salti >25%) e controllare i valori che hanno fatto
+scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i successivi.
+
 ## SOLO BTC (decisione dell'utente, 30/10/2026)
 Ogni analisi, validazione e osservazione riguarda solo BTC: niente ETH/SOL (né come banco di prova nel gate, né osservazione su carta). Validazione con periodi diversi di BTC, walk-forward, segnali presi uno per uno e barre 4h.
 

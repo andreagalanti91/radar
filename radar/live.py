@@ -56,6 +56,13 @@ def evaluate(f: pd.DataFrame, p: Params | None = None) -> dict:
     spot = spot.drop(columns=["mtm"], errors="ignore")
     open_fut = fut[fut["exit"] == "open"].to_dict("records")
     open_spot = spot[spot["exit"] == "open"].to_dict("records")
+    # coerenza con il backtest: un segnale con un trade aperto (o nel giorno di cooldown dopo l'uscita)
+    # non viene eseguito dal motore, quindi non va notificato come nuovo trade
+    if signal and len(fut):
+        last_exit = pd.to_datetime(fut["exit_date"], errors="coerce").max()
+        busy = bool(open_fut) or (pd.notna(last_exit) and last.name < last_exit + pd.Timedelta(days=p.cooldown))
+        if busy:
+            signal = None
 
     for t in (fut, spot):  # motivo del segnale per ogni trade
         if len(t):

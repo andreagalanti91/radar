@@ -82,8 +82,8 @@ class TestRiferimento(unittest.TestCase):
             self.skipTest("dati non presenti")
         t = run(build_features(load_all()), Params(), "futures", "2022-03-01", "2026-10-01")
         s = summary(t)
-        self.assertEqual(s["trades"], 48)
-        self.assertAlmostEqual(s["total_return_%"], 57.0, delta=0.3)
+        self.assertEqual(s["trades"], 49)
+        self.assertAlmostEqual(s["total_return_%"], 34.9, delta=0.3)
 
 
 if __name__ == "__main__":

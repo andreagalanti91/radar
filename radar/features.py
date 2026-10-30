@@ -46,7 +46,7 @@ def build_features(d: dict[str, pd.DataFrame]) -> pd.DataFrame:
     f["funding7"] = f["funding"].rolling(7).mean()
     f["funding_z"] = _z(f["funding7"], 180)
     if len(m):
-        oi = m["oi"].reindex(f.index)
+        oi = m["oi"].where(m["oi"] > 0).reindex(f.index)  # OI 0 = dato mancante, non un crollo del 100%
         f["oi"] = oi
         f["oi_chg7"] = oi.pct_change(7, fill_method=None)
         f["oi_chg14"] = oi.pct_change(14, fill_method=None)

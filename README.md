@@ -48,32 +48,35 @@ Regime ribassista: prezzo sotto la SMA200 e SMA50 sotto la SMA200. Gli short si 
 
 ## Risultati del backtest (mar 2022 – ott 2026, commissioni e funding inclusi)
 
-> **Correzione del 30/10/2026.** Il backtest giornaliero era troppo ottimista: quando nello stesso giorno si riempiva una
-> tranche DCA e veniva toccato il primo target, assumeva che il target arrivasse dopo il riempimento (sul prezzo medio più
-> basso). Le candele a 4 ore mostrano che spesso il massimo arriva prima. Corretto l'ordine, 3 trade "in pari" sono in
-> realtà stop pieni e la sequenza del 2022 cambia. Prima della correzione: 47 trade, +156,7% a 1x, +498,9% a 2x.
-> Un'esecuzione simulata a 4 ore dà numeri ancora un po' più bassi (circa +50% a 1x): la verità sta in quell'intervallo.
+> **Correzioni del 30/10/2026.** Due audit hanno trovato errori che rendevano il backtest troppo ottimista:
+> 1. nello stesso giorno, tranche DCA riempita e primo target: il target si calcolava sul medio dopo il riempimento
+>    (prima: 47 trade, +156,7% a 1x, +498,9% a 2x);
+> 2. l'archivio Binance ha righe con open interest a 0: il motore le leggeva come un crollo del 100% e generava due segnali falsi;
+> 3. lo stop a pareggio messo dal primo target non veniva controllato nello stesso giorno (ora si verifica sulle candele orarie).
+> Un'esecuzione completa simulata su candele orarie conferma i numeri qui sotto (+33,9% contro +34,9%).
 
 | | Train 2022–23 | Test 2024–25 | 2026 |
 |---|---|---|---|
-| Trade | 22 | 19 | 7 |
-| Win rate | 86,4% | 84,2% | 71,4% |
-| Aspettativa/trade | +0,57% | +1,93% | +0,39% |
-| Rendimento | +10,4% | +40,6% | +1,1% |
+| Trade | 21 | 20 | 10 |
+| Win rate | 85,7% | 80,0% | 70,0% |
+| Aspettativa/trade | +0,57% | +0,93% | −0,30% |
+| Rendimento | +9,9% | +16,9% | −4,8% |
 
 | Leva (futures, intero periodo) | Rendimento | Drawdown trade per trade | **Drawdown reale giornaliero** | Peggior trade |
 |---|---|---|---|---|
-| 1x | +57,0% | −18,0% | −28,1% | −12,1% |
-| 2x | +115,2% | −34,6% | −50,4% | −24,2% |
-| 3x | +156,1% | −49,6% | −67,6% | −36,4% |
+| 1x | +34,9% | −18,0% | −28,1% | −12,1% |
+| 2x | +57,1% | −34,6% | −50,4% | −24,2% |
+| 3x | +56,8% | −49,6% | −67,6% | −36,4% |
 
-Spot: 47 trade, win rate 85,1%, +52,9%, drawdown −21,2%. BTC buy & hold nello stesso periodo: +76%, drawdown −67%.
+Spot: 48 trade, +29,8%, drawdown −25,3%. BTC buy & hold nello stesso periodo: +76%, drawdown −67%.
+
+**Obiettivo in corso (giri mattina e sera):** strategia swing con DCA, win rate ≥ 70% e drawdown giornaliero ≤ 15%.
 
 ### Win rate: come leggerlo
 
 | | Standard | Sopra +1% | Pulito (senza stop e pareggi) |
 |---|---|---|---|
-| Futures mar 2022 – ott 2026 | 83,3% | 66,7% | 29,2% |
+| Futures mar 2022 – ott 2026 | 81,6% | 65,3% | 26,5% |
 
 ### Limiti
 - Il campione è di circa 50 trade: il win rate reale può scostarsi di diversi punti.
