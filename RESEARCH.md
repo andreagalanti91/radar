@@ -87,6 +87,16 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Obiettivo aggiornato dall'utente (30/10/2026, 22:30) — sostituisce i precedenti
+**Massimo rendimento con drawdown giornaliero calcolato 15–20%** (la leva/size si sceglie per stare in quel DD).
+Il **win rate si misura sull'intero periodo** e può essere più basso se il rendimento a DD 15–20% è più alto
+(nessun vincolo di WR per singolo anno o per vicino; si riporta sempre). Restano obbligatori: walk-forward positivo,
+placebo, vicini in profitto in ogni periodo, bootstrap P(DD > 20%) ≤ 15%, slippage 0,1%.
+Con questa definizione H2 (v1) soddisfa i criteri del giro 12 (tutti i vicini in profitto in ogni periodo).
+**Timeframe**: usare 1h, 4h, giornaliero e settimanale (trend/livelli settimanali, conferme 4h/1h).
+**Modulo su carta**: approvato dall'utente; segue dal vivo il campione (H2) e i candidati, su dashboard e nel resoconto.
+**Telegram**: niente messaggi orari di notte; un unico resoconto alle 7 (giro del mattino).
+
 ## Giri notturni orari (dal 30/10/2026, richiesta dell'utente) — campione/sfidante
 Ogni ora dalle 22:47 alle 06:47 (Roma) un giro breve: una linea di ricerca, un agente, test completo.
 **Campione attuale (versione di ricerca v1)**: H2 del giro 12 (WR 79%, +85,4%, DD −11,4%, MAR 7,5; fallisce solo i vicini 2022–23).
