@@ -33,7 +33,7 @@ win rate e win rate pulito); motivo dell'esito; stato BTC (prezzo, score, setup 
 prossimo tema;
 infine "<b>Idee proposte</b>": 2–3 idee numerate per i giri successivi (cosa, perché, impatto atteso), basate su quanto
 emerso nel giro, sulla roadmap e sulle lezioni apprese. Riportale anche in RESEARCH.md.
-Se il giro è stato promosso, il messaggio è quello "Aggiornamento algoritmo" descritto sopra con in più la riga SOL.
+Se il giro è stato promosso, il messaggio è quello "Aggiornamento algoritmo" descritto sopra.
 
 **Apprendimento obbligatorio a ogni giro**: aggiorna "Lezioni apprese" in RESEARCH.md con almeno una voce
 (nuova lezione, oppure conferma/smentita di una lezione esistente con i numeri del giro, oppure un errore da non ripetere).
