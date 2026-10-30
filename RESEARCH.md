@@ -55,6 +55,17 @@ di 5–7 punti: la sequenza è fragile.
 **Lezione 16**: validare i dati grezzi prima delle feature (zeri, infiniti, salti >25%) e controllare i valori che hanno fatto
 scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i successivi.
 
+## Giro 9 · ricerca di fondo (30/10/2026, solo BTC) — sintesi
+- **H, famiglie di strategie**: l'unico vantaggio stabile in tutti i periodi è il trend long/flat su media fissa SMA 50/100/200
+  (MAR 3,98 dal 2022-03, ma WR 24%, DD −33%); scegliere il "miglior" trend è rumore (walk-forward −11,5%); buy-the-dip semplici
+  e filtro SMA200 sulla strategia attuale peggiorano. 50% attuale + 50% media SMA: MAR 3,57, DD −25,7% (correlazione 0,27).
+- **I, prevedibilità**: l'unico predittore fuori campione è il flusso perp pf14z (AUC per anno 0,59–0,62, p<0,05 contro etichette
+  rimescolate; long 3/3/30 con pf14z>1: +1,0–1,6 ATR nel 2020–25, debole nel 2026). Modelli multivariati, retail L/S, funding,
+  OI, F&G, zona prevista: nessun valore aggiunto; probabilità non calibrate (Brier skill negativo).
+- **J, scala DCA**: MAE/MFE confermano stop 3 ATR e TP +1/+3; 60/40 a −1,2 ATR migliore (MAR seq. 3,17→4,62, bootstrap 64%: no).
+- **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
+  nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
+
 ## SOLO BTC (decisione dell'utente, 30/10/2026)
 Ogni analisi, validazione e osservazione riguarda solo BTC: niente ETH/SOL (né come banco di prova nel gate, né osservazione su carta). Validazione con periodi diversi di BTC, walk-forward, segnali presi uno per uno e barre 4h.
 
