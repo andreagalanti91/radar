@@ -66,6 +66,25 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Giro 10 · SERA 30/10/2026 — DCA coerente e strategie settimanali (agenti L, M) · ESITO: NON PROMUOVERE / DA APPROFONDIRE
+Base dopo l'audit: 49 trade, WR 81,6%, +34,9% 1x, DD giornaliero −28,1%; per stare a DD ≤ 15% va a 0,5x: **+17,8%, DD −14,8%** (riferimento).
+- **L, geometria DCA + size a rischio fisso** (motore 4h, 5760 configurazioni dichiarate): famiglia "A" = 2 livelli vicini
+  (40% all'apertura, 60% limit −0,5 ATR), stop stretto 1 ATR sotto l'ingresso, TP unico +1 R dal medio, rischio 3% del conto
+  (esposizione media 1,16x): **WR 73,9%, +77,4%, DD −14,8%**, positiva in ogni periodo (22–23 +26,7, 24–25 +24,0, 2026 +12,9),
+  batte 40 serie di segnali casuali, vicini WR ≥ 69,7%. MA: la scelta della geometria su 2022–23 non si trasferisce al 2024–25
+  (walk-forward fallito), bootstrap P(DD > 15%) 37%. Solo 16/1440 configurazioni hanno MAR > 1 in tutti i periodi, tutte della
+  stessa famiglia (2 livelli vicini, stop 1–1,75 ATR, TP 0,6–1 R): è il segnale strutturale.
+- **M, strategie settimanali** (motore 4h, walk-forward): solo S3 "posizionamento" (short affollati / funding negativo /
+  deleveraging, 3 limit, TP +0,5–1 ATR) supera il walk-forward con WR 89,5% e DD −9,8%, ma rende ~3%/anno, 2026 negativo e
+  molto sensibile all'esecuzione (+40% → +18% con 0,2% di slippage). Zone, mean reversion, griglia, RSI2: negativi fuori campione.
+- **Revisione**: nessuna promozione (walk-forward della geometria fallito, dubbi dell'audit aperti, stop stretto = esecuzione decisiva).
+- **Lezione 18**: WR ≥ 70% si ottiene con il rapporto TP/stop (anche ingressi casuali arrivano all'83–89%) e il DD ≤ 15% con la
+  size: il vincolo vero è l'aspettativa fuori campione. Confrontare sempre il rendimento a DD fisso (15%) e contro un placebo con la
+  stessa meccanica. Stop stretto + rischio fisso (~1,2x) vale ~4 volte lo stop largo a 0,5x a parità di DD, in-sample.
+- **Prossimi giri**: (1) congelare la famiglia A (2 livelli 0,5 ATR, stop 1 ATR, TP 1 R, rischio 2,25–3%) e seguirla in
+  osservazione su carta su BTC dal 31/10, senza riottimizzare; (2) misurare slippage di stop stretti su candele 1h/1m;
+  (3) gate nuovo: rendimento a DD 15% fisso, placebo con stessa meccanica, DD giornaliero, holdout futuro.
+
 ## SOLO BTC (decisione dell'utente, 30/10/2026)
 Ogni analisi, validazione e osservazione riguarda solo BTC: niente ETH/SOL (né come banco di prova nel gate, né osservazione su carta). Validazione con periodi diversi di BTC, walk-forward, segnali presi uno per uno e barre 4h.
 
