@@ -8,7 +8,7 @@ Segnali swing su Bitcoin (orizzonte di giorni, circa 10 trade l'anno) basati su 
 
 ## La dashboard
 
-Pensata per il telefono (si installa come app dalla schermata Home), in tema chiaro e scuro, con quattro sezioni:
+Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro, con quattro sezioni:
 
 | Sezione | Cosa trovi |
 |---|---|
@@ -64,6 +64,12 @@ BTC buy & hold nello stesso periodo: +76%, max drawdown −67%.
 - Su orizzonti brevi il sistema rende poco: in finestre di 2 mesi il raddoppio del capitale non è mai avvenuto con leva fino a 3x. Il simulatore della dashboard mostra questo calcolo per qualsiasi obiettivo.
 - Con barre giornaliere il backtest assume sempre il caso peggiore tra stop e target nello stesso giorno.
 
+## Brand
+
+<p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
+
+Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `radarsignal` in Geist bold. Palette: Signal Blue `#3D5BFF`, Pulse Violet `#8B5CFF`, Blip Mint `#5EF0C4`, Night `#07080C`. Font: Geist, Geist Mono per etichette e chip, Doto per i numeri principali. File in `brand/` (PNG pronti, sorgente HTML in `brand/src/board.html`).
+
 ## Ciclo di miglioramento
 
 Ogni ora un'iterazione automatica prova un'idea nuova e la promuove solo se supera il gate in `radar/research.py`: migliore aspettativa nel test, nessun peggioramento di drawdown e training, robustezza sulle varianti dei parametri, nessuna modifica con un trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
@@ -97,8 +103,8 @@ radar/backtest.py     simulazione con DCA, commissioni, funding
 radar/live.py         stato giornaliero, trade aperto, eventi
 radar/research.py     scorecard e gate di promozione
 radar/telegram.py     messaggi
-radar/dashboard*.py   dashboard (stile Apple HIG, light/dark, mobile)
-brand/                icona, favicon, banner
+radar/dashboard*.py   dashboard (dark-first, light/dark, mobile, installabile)
+brand/                logo, icona app, banner, brand board (sorgente in brand/src)
 ```
 
 Fonti dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear & Greed).

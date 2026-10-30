@@ -1,213 +1,232 @@
 <title>Radar Signal BTC</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Doto:wght@700;900&display=swap">
 <style>
-/* Layout: app iOS a schede. Titolo grande, liste raggruppate inset, tab bar traslucida in basso su telefono,
-   segmented control in alto su schermi larghi. Colori di sistema Apple in chiaro e scuro. */
+/* Layout: terminale dark-first. Sidebar a icone su desktop, tab bar a pillola su telefono.
+   Card con bagliore, numeri grandi in display a punti, etichette mono maiuscole. */
 :root{
-  --bg:#f2f2f7; --card:#ffffff; --fill:#e9e9ee; --fill2:#f2f2f7;
-  --label:#000000; --label2:rgba(60,60,67,.62); --label3:rgba(60,60,67,.32); --sep:rgba(60,60,67,.18);
-  --tint:#007aff; --green:#34c759; --red:#ff3b30; --orange:#ff9500; --indigo:#5856d6; --teal:#30b0c7;
-  --chrome:rgba(249,249,251,.78); --shadow:0 1px 2px rgba(0,0,0,.04),0 6px 24px rgba(0,0,0,.05);
-  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,"Segoe UI",Roboto,sans-serif;
-  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;
-  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,monospace;
-  --r-card:16px; --r-ctl:10px;
+  --bg:#07080c; --bg2:#0b0d13; --card:#101219; --card2:#151823; --raise:rgba(255,255,255,.04);
+  --line:rgba(255,255,255,.075); --line2:rgba(255,255,255,.13);
+  --label:#f3f5fb; --label2:rgba(226,232,255,.58); --label3:rgba(226,232,255,.3);
+  --tint:#4f6bff; --violet:#8b5cff; --mint:#5ef0c4; --green:#34d77b; --red:#ff5a52; --orange:#f7931a; --teal:#3cc8e6; --indigo:#7a6bff;
+  --glow-a:rgba(79,107,255,.22); --glow-b:rgba(139,92,255,.16); --glow-btc:rgba(247,147,26,.16);
+  --chrome:rgba(16,18,25,.72); --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 20px 40px -24px rgba(0,0,0,.6);
+  --font:"Geist",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --dots:"Doto","Geist Mono",ui-monospace,monospace;
+  --r-card:22px; --r-ctl:999px;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#000000; --card:#1c1c1e; --fill:#2c2c2e; --fill2:#232325;
-  --label:#ffffff; --label2:rgba(235,235,245,.62); --label3:rgba(235,235,245,.3); --sep:rgba(84,84,88,.6);
-  --tint:#0a84ff; --green:#30d158; --red:#ff453a; --orange:#ff9f0a; --indigo:#5e5ce6; --teal:#40c8e0;
-  --chrome:rgba(22,22,24,.74); --shadow:none; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#000000; --card:#1c1c1e; --fill:#2c2c2e; --fill2:#232325;
-  --label:#ffffff; --label2:rgba(235,235,245,.62); --label3:rgba(235,235,245,.3); --sep:rgba(84,84,88,.6);
-  --tint:#0a84ff; --green:#30d158; --red:#ff453a; --orange:#ff9f0a; --indigo:#5e5ce6; --teal:#40c8e0;
-  --chrome:rgba(22,22,24,.74); --shadow:none; color-scheme:dark}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#f3f4f8; --bg2:#eceef4; --card:#ffffff; --card2:#f6f7fb; --raise:rgba(11,17,48,.035);
+  --line:rgba(11,17,48,.08); --line2:rgba(11,17,48,.14);
+  --label:#0b1130; --label2:rgba(11,17,48,.58); --label3:rgba(11,17,48,.3);
+  --tint:#3550f0; --violet:#7a4dff; --mint:#0fb48a; --green:#13a356; --red:#e5372e; --orange:#e9840c; --teal:#0e9fc0; --indigo:#5b4dff;
+  --glow-a:rgba(53,80,240,.12); --glow-b:rgba(122,77,255,.08); --glow-btc:rgba(233,132,12,.1);
+  --chrome:rgba(255,255,255,.78); --shadow:0 1px 2px rgba(11,17,48,.05),0 12px 32px -16px rgba(11,17,48,.18); color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f3f4f8; --bg2:#eceef4; --card:#ffffff; --card2:#f6f7fb; --raise:rgba(11,17,48,.035);
+  --line:rgba(11,17,48,.08); --line2:rgba(11,17,48,.14);
+  --label:#0b1130; --label2:rgba(11,17,48,.58); --label3:rgba(11,17,48,.3);
+  --tint:#3550f0; --violet:#7a4dff; --mint:#0fb48a; --green:#13a356; --red:#e5372e; --orange:#e9840c; --teal:#0e9fc0; --indigo:#5b4dff;
+  --glow-a:rgba(53,80,240,.12); --glow-b:rgba(122,77,255,.08); --glow-btc:rgba(233,132,12,.1);
+  --chrome:rgba(255,255,255,.78); --shadow:0 1px 2px rgba(11,17,48,.05),0 12px 32px -16px rgba(11,17,48,.18); color-scheme:light}
 
 *{box-sizing:border-box}
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--label);font:400 1rem/1.47 var(--font);letter-spacing:-.011em;margin:0;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--label);font:400 1rem/1.5 var(--font);letter-spacing:-.01em;margin:0;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 [hidden]{display:none!important}
-.app{max-width:1080px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:24px}
-@media (max-width:819px){.app{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}}
 .num{font-variant-numeric:tabular-nums}
+.shell{display:grid;grid-template-columns:minmax(0,1fr);min-height:100dvh}
+@media (min-width:900px){.shell{grid-template-columns:232px minmax(0,1fr)}}
+.app{width:100%;max-width:1120px;margin:0 auto;padding-block:18px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px;align-content:start}
+@media (max-width:899px){.app{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}}
+@media (min-width:900px){.app{padding-left:32px;padding-right:32px;padding-block:28px 56px}}
 
-/* ---------- brand header */
-.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand .id{display:flex;align-items:center;gap:12px;min-width:0}
-.appicon{width:44px;height:44px;flex:none;filter:drop-shadow(0 4px 10px rgba(10,60,160,.28))}
-.wordmark{display:grid;line-height:1.1}
-.wordmark b{font:700 1.06rem/1.15 var(--display);letter-spacing:-.02em}
-.wordmark span{font-size:.8rem;color:var(--label2);letter-spacing:0}
-.status{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:.8rem;font-weight:600;background:var(--fill);color:var(--label2);white-space:nowrap}
-.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
-.status.long{color:var(--green);background:color-mix(in srgb,var(--green) 14%,transparent)}
-.status.short{color:var(--red);background:color-mix(in srgb,var(--red) 14%,transparent)}
-.status.open{color:var(--tint);background:color-mix(in srgb,var(--tint) 14%,transparent)}
-.hero{display:grid;gap:2px}
-.hero h1{margin:0;font:700 clamp(2.1rem,7vw,2.8rem)/1.05 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.hero p{margin:0;color:var(--label2);font-size:.92rem}
+/* ---------- logo */
+.logo{display:flex;align-items:center;gap:10px;color:var(--label);text-decoration:none}
+.logo svg{width:30px;height:30px;flex:none}
+.logo b{font:700 1.28rem/1 var(--font);letter-spacing:-.05em}
+.logo b span{color:var(--label2);font-weight:600}
+.logo small{display:block;font:500 .62rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--label3);margin-top:5px}
 
-/* ---------- navigazione */
-.segnav{display:none}
-@media (min-width:820px){
-  .segnav{display:flex;position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;justify-self:start;padding:3px;border-radius:12px;background:var(--chrome);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:0 0 0 .5px var(--sep)}
-  .tabbar{display:none!important}
+/* ---------- sidebar desktop */
+.side{display:none}
+@media (min-width:900px){
+  .side{display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100dvh;padding:28px 18px;border-right:1px solid var(--line);background:var(--bg2)}
+  .mbar{display:none!important}
 }
-.segnav a{padding:7px 18px;border-radius:9px;font-size:.88rem;font-weight:600;color:var(--label);text-decoration:none;transition:background .2s,transform .1s}
-.segnav a[aria-current="page"]{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px var(--sep)}
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px));background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-top:.5px solid var(--sep)}
-.tabbar a{display:grid;justify-items:center;gap:2px;padding:4px 0;font-size:.66rem;font-weight:600;letter-spacing:.01em;color:var(--label2);text-decoration:none}
-.tabbar svg{width:26px;height:26px}
-.tabbar a[aria-current="page"]{color:var(--tint)}
-a,button,[role="button"],.seg button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
-a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.side nav{display:grid;gap:4px}
+.cap{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--label3)}
+.side nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--label2);text-decoration:none;font-weight:500;font-size:.94rem;transition:background .15s,color .15s}
+.side nav a svg{width:20px;height:20px}
+.side nav a[aria-current="page"]{background:var(--raise);color:var(--label);box-shadow:inset 0 0 0 1px var(--line)}
+.side .promo{margin-top:auto;border-radius:18px;padding:16px;background:radial-gradient(120% 120% at 100% 100%,var(--glow-b),transparent 60%),radial-gradient(100% 100% at 0 0,var(--glow-a),transparent 60%),var(--card);border:1px solid var(--line);display:grid;gap:6px}
+.side .promo b{font-weight:600;font-size:.92rem}
+.side .promo span{font-size:.8rem;color:var(--label2)}
+
+/* ---------- top bar mobile */
+.mbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+/* ---------- chip/stato */
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 .68rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;border-radius:999px;background:var(--raise);border:1px solid var(--line);color:var(--label2);white-space:nowrap}
+.chip.on.long,.chip.long.on{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.chip.on.short{color:var(--red);border-color:color-mix(in srgb,var(--red) 40%,transparent);background:color-mix(in srgb,var(--red) 12%,transparent)}
+.status{display:inline-flex;align-items:center;gap:8px;font:500 .7rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:9px 13px;border-radius:999px;background:var(--raise);border:1px solid var(--line);color:var(--label2)}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor}
+.status.long{color:var(--green)} .status.short{color:var(--red)} .status.open{color:var(--tint)}
+
+/* ---------- hero prezzo */
+.hero{display:grid;gap:6px;padding:4px 2px}
+.hero .cap{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.hero #stateD{display:none}
+@media (min-width:900px){.hero #stateD{display:inline-flex}}
+.dp{font-family:var(--font);font-weight:700;letter-spacing:-.04em;opacity:.85}
+.hero h1{margin:0;font:900 clamp(2.9rem,12vw,4.6rem)/1 var(--dots);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero p{margin:0;color:var(--label2);font-size:.88rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 
 /* ---------- superfici */
-.view{display:grid;gap:24px;animation:fade .22s ease-out}
-@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.section{display:grid;gap:8px;min-width:0}
-.section>h2,.sh{margin:0 4px;font:700 1.3rem/1.2 var(--display);letter-spacing:-.022em;text-wrap:balance;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.sh small,.section>h2 small{font:400 .85rem var(--font);color:var(--label2);letter-spacing:0}
-.foot{margin:0 4px;font-size:.8rem;color:var(--label2);line-height:1.45}
-.card{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow);padding:16px;min-width:0}
-.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
-@media (max-width:819px){.cols{grid-template-columns:minmax(0,1fr)}}
+.view{display:grid;gap:22px;animation:fade .24s cubic-bezier(.2,.8,.2,1)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.section{display:grid;gap:10px;min-width:0}
+.sh{margin:0 4px;font:600 1.12rem/1.2 var(--font);letter-spacing:-.025em;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.sh small{font:500 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.foot{margin:0 4px;font-size:.8rem;color:var(--label2);line-height:1.5}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:18px;min-width:0;position:relative;overflow:hidden}
+.card.glow{background:radial-gradient(120% 90% at 0% 0%,var(--glow-a),transparent 55%),radial-gradient(90% 90% at 100% 100%,var(--glow-b),transparent 60%),var(--card)}
+.card.btc{background:radial-gradient(110% 90% at 0% 0%,var(--glow-btc),transparent 55%),var(--card)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:899px){.cols{grid-template-columns:minmax(0,1fr)}}
 
-/* lista raggruppata inset (stile Impostazioni) */
-.list{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow);overflow:hidden}
-.row{display:flex;align-items:center;gap:12px;min-height:46px;padding:10px 16px;position:relative}
-.row+.row::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
-.row.ic+.row.ic::before{left:58px}
-.row .k{flex:1;min-width:0}
-.row .k small{display:block;color:var(--label2);font-size:.8rem;line-height:1.35;overflow-wrap:anywhere}
-.row .v{font-variant-numeric:tabular-nums;color:var(--label2);text-align:right}
+/* lista a righe arrotondate */
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;min-height:50px;padding:11px 16px;position:relative}
+.row+.row::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;background:var(--line)}
+.row .k{flex:1;min-width:0;font-size:.94rem}
+.row .k small{display:block;color:var(--label2);font-size:.78rem;line-height:1.4;overflow-wrap:anywhere;margin-top:1px}
+.row .v{font-variant-numeric:tabular-nums;color:var(--label2);text-align:right;font-size:.94rem}
 .row .v.strong{color:var(--label);font-weight:600}
-.row input,.row select{font:500 16px var(--font);color:var(--tint);background:transparent;border:0;text-align:right;padding:4px 0;min-width:0;width:9.5em}
+.row input{font:500 16px var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:12px;text-align:right;padding:8px 12px;min-width:0;width:9.5em;font-variant-numeric:tabular-nums}
 .row input[type=date]{width:auto}
 
-/* icone setup "3D" (tile stile iOS con luce dall'alto) */
-.ico{width:30px;height:30px;flex:none;border-radius:8px;display:grid;place-items:center;color:#fff;position:relative;
-  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 78%,#fff) 0%,var(--c) 55%,color-mix(in srgb,var(--c) 82%,#000) 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.18),0 3px 8px color-mix(in srgb,var(--c) 35%,transparent)}
-.ico::after{content:"";position:absolute;inset:1px 1px 50% 1px;border-radius:7px 7px 12px 12px/7px 7px 6px 6px;background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0));pointer-events:none}
-.ico svg{width:18px;height:18px;filter:drop-shadow(0 1px 0 rgba(0,0,0,.22))}
-.ico.dim{filter:saturate(.25) brightness(1.05);opacity:.75}
-.chip{font-size:.72rem;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--fill);color:var(--label2);white-space:nowrap}
-.chip.on.long{background:var(--green);color:#fff}.chip.on.short{background:var(--red);color:#fff}
+/* icone setup: tile scura con glifo colorato e bagliore */
+.ico{width:36px;height:36px;flex:none;border-radius:12px;display:grid;place-items:center;color:var(--c);
+  background:radial-gradient(100% 100% at 30% 0%,color-mix(in srgb,var(--c) 30%,transparent),transparent 70%),var(--card2);
+  border:1px solid color-mix(in srgb,var(--c) 35%,var(--line));box-shadow:0 6px 18px -8px color-mix(in srgb,var(--c) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.08)}
+.ico svg{width:19px;height:19px}
+.ico.dim{color:var(--label3);border-color:var(--line);box-shadow:none;background:var(--raise)}
 
 /* score */
-.gauge{display:grid;gap:14px}
-.scoreline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.score{font:700 3.2rem/1 var(--display);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
-.note{color:var(--label2);font-size:.88rem}
-.meter{position:relative;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--red),var(--fill) 32%,var(--fill) 68%,var(--green))}
-.meter .tick{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;border-radius:1px;background:var(--label3)}
-.meter .needle{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.25)}
-.scale{display:flex;justify-content:space-between;font-size:.72rem;color:var(--label2)}
-.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--sep);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow)}
+.gauge{display:grid;gap:16px}
+.scoreline{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.score{font:900 3.4rem/1 var(--dots);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.note{color:var(--label2);font-size:.86rem}
+.meter{position:relative;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--raise) 33%,var(--raise) 67%,var(--green))}
+.meter .tick{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--label3)}
+.meter .needle{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--label);box-shadow:0 0 0 4px color-mix(in srgb,var(--label) 15%,transparent),0 0 18px color-mix(in srgb,var(--tint) 60%,transparent)}
+.scale{display:flex;justify-content:space-between;font:500 .64rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 @media (max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.tiles>div{background:var(--card);padding:12px 14px;display:grid;gap:2px;min-width:0}
-.tiles span{font-size:.75rem;color:var(--label2)}
-.tiles b{font:600 1.15rem/1.25 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tiles>div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 14px;display:grid;gap:3px;min-width:0}
+.tiles span{font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.tiles b{font:600 1.18rem/1.25 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .tiles small{font-size:.72rem;color:var(--label2);line-height:1.3}
 
-/* segmented control */
-.seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:2px;border-radius:9px;background:var(--fill);gap:2px}
-.seg button{font:600 .82rem var(--font);border:0;background:transparent;color:var(--label);padding:6px 12px;border-radius:7px;cursor:pointer;transition:background .2s,box-shadow .2s,transform .1s}
-.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.14),0 0 0 .5px var(--sep)}
-.seg button:disabled{opacity:.4}
-.seg button:active,.segnav a:active,.tabbar a:active{transform:scale(.96)}
+/* segmented a pillola */
+.seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:3px;border-radius:999px;background:var(--raise);border:1px solid var(--line);gap:2px}
+.seg button{font:600 .8rem var(--font);border:0;background:transparent;color:var(--label2);padding:7px 14px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s,transform .1s}
+.seg button[aria-pressed="true"]{background:var(--label);color:var(--bg)}
+.seg button:disabled{opacity:.35}
+.seg button:active,.side nav a:active,.mbar a:active,.tabbar a:active{transform:scale(.96)}
+a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+
+/* tab bar mobile: pillola flottante */
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(4,1fr);width:min(420px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+@media (min-width:900px){.tabbar{display:none!important}}
+.tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
+.tabbar svg{width:22px;height:22px}
+.tabbar a[aria-current="page"]{color:var(--label);background:var(--raise);box-shadow:inset 0 0 0 1px var(--line)}
 
 /* grafici */
-.chart{height:340px}
-.chart.small{height:130px}
-.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.78rem;color:var(--label2)}
-.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
-@media (max-width:560px){.chart{height:260px}}
+.chart{height:330px}
+.chart.small{height:120px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font:500 .66rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label2)}
+.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px}
+@media (max-width:560px){.chart{height:250px}}
 
-/* tabelle */
+/* tabelle a righe */
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-table.grid{width:100%;border-collapse:collapse;font-size:.86rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-table.grid th{font-weight:600;font-size:.72rem;color:var(--label2);text-align:right;padding:8px 10px;border-bottom:.5px solid var(--sep)}
-table.grid td{text-align:right;padding:9px 10px;border-bottom:.5px solid var(--sep)}
-table.grid tr:last-child td{border-bottom:0}
+table.grid{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:.86rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.grid th{font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3);text-align:right;padding:6px 12px}
+table.grid td{text-align:right;padding:11px 12px;background:var(--raise)}
+table.grid td:first-child{border-radius:12px 0 0 12px}
+table.grid td:last-child{border-radius:0 12px 12px 0}
 table.grid th:first-child,table.grid td:first-child{text-align:left}
 .pos{color:var(--green)} .neg{color:var(--red)}
 
-.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--sep);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow)}
+.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 @media (max-width:640px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.big>div{background:var(--card);padding:14px;display:grid;gap:2px;min-width:0}
-.big span{font-size:.75rem;color:var(--label2)}
-.big b{font:700 1.45rem/1.15 var(--display);letter-spacing:-.025em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.big>div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:4px;min-width:0}
+.big>div:first-child{background:radial-gradient(120% 120% at 0 0,var(--glow-a),transparent 60%),var(--card)}
+.big span{font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.big b{font:700 1.45rem/1.15 var(--font);letter-spacing:-.035em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 
 .prose{display:grid;gap:12px;max-width:68ch}
-.prose p,.prose li{margin:0;line-height:1.55}
+.prose p,.prose li{margin:0;line-height:1.6;color:var(--label)}
 .prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
-.prose h3{margin:8px 0 0;font:700 1.05rem var(--display);letter-spacing:-.015em}
-footer{color:var(--label2);font-size:.78rem;max-width:72ch;margin:0 4px;line-height:1.5}
+.prose h3{margin:8px 0 0;font:600 1rem var(--font);letter-spacing:-.02em}
+footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-height:1.5}
 
 @media (hover:hover) and (pointer:fine){
-  .segnav a:not([aria-current="page"]):hover{background:color-mix(in srgb,var(--label) 6%,transparent)}
-  .seg button:not([aria-pressed="true"]):hover{background:color-mix(in srgb,var(--label) 6%,transparent)}
+  .side nav a:not([aria-current="page"]):hover{background:var(--raise);color:var(--label)}
+  .seg button:not([aria-pressed="true"]):hover{color:var(--label)}
 }
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
-@media (prefers-reduced-transparency:reduce){.tabbar,.segnav{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="aiBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b3a8f"/><stop offset=".55" stop-color="#0b1f5c"/><stop offset="1" stop-color="#050d2b"/></linearGradient>
-    <radialGradient id="aiGlow" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="#2f8cff" stop-opacity=".55"/><stop offset="1" stop-color="#2f8cff" stop-opacity="0"/></radialGradient>
-    <linearGradient id="aiSweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5ef0c4" stop-opacity="0"/><stop offset="1" stop-color="#5ef0c4" stop-opacity=".85"/></linearGradient>
-    <linearGradient id="aiGloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-    <symbol id="appicon" viewBox="0 0 100 100">
-      <rect x="2" y="2" width="96" height="96" rx="22" fill="url(#aiBg)"/>
-      <rect x="2" y="2" width="96" height="96" rx="22" fill="url(#aiGlow)"/>
-      <g fill="none" stroke="#7fb4ff" stroke-opacity=".38" stroke-width="2">
-        <circle cx="50" cy="54" r="34"/><circle cx="50" cy="54" r="23"/><circle cx="50" cy="54" r="12"/>
-        <path d="M16 54h68M50 20v68" stroke-opacity=".22"/>
-      </g>
-      <path d="M50 54 L84 54 A34 34 0 0 0 74 30 Z" fill="url(#aiSweep)" transform="rotate(-38 50 54)"/>
-      <path d="M50 54 L77 33" stroke="#9ff7dd" stroke-width="2.4" stroke-linecap="round"/>
-      <circle cx="68" cy="38" r="5.2" fill="#30d158"/><circle cx="68" cy="38" r="9" fill="#30d158" fill-opacity=".25"/>
-      <circle cx="50" cy="54" r="3.4" fill="#d6e7ff"/>
-      <path d="M2 24 Q2 2 24 2 H76 Q98 2 98 24 V40 Q50 30 2 46 Z" fill="url(#aiGloss)"/>
-      <rect x="2.5" y="2.5" width="95" height="95" rx="21.5" fill="none" stroke="#fff" stroke-opacity=".18"/>
-    </symbol>
-  </defs>
-</svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="mark" viewBox="0 0 64 64"><path fill="currentColor" fill-rule="evenodd" d="M32 3a29 29 0 1 1 0 58 29 29 0 0 1 0-58Zm0 7a22 22 0 1 0 0 44 22 22 0 0 0 0-44Z"/><path fill="currentColor" d="M32 32 L42.5 13.8 A21 21 0 0 1 53 32 Z"/><circle cx="21.5" cy="40.5" r="5" fill="var(--mint)"/></symbol>
+  <symbol id="i-oggi" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 12l5-5"/></g><circle cx="8.6" cy="15.2" r="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-sim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20h17"/><path d="M4.5 15.5l4.5-5 4 3 6.5-8"/><path d="M15.5 5.5h4v4"/></g></symbol>
+  <symbol id="i-stat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="11" width="3.6" height="9" rx="1.4"/><rect x="10.2" y="5" width="3.6" height="15" rx="1.4"/><rect x="16.4" y="8" width="3.6" height="12" rx="1.4"/></g></symbol>
+  <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
+</defs></svg>
+
+<div class="shell">
+<aside class="side">
+  <a class="logo" href="#oggi"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · swing</small></span></a>
+  <nav aria-label="Sezioni">
+    <span class="cap" style="padding:0 12px 6px">Navigazione</span>
+    <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
+    <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simulatore</a>
+    <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Statistiche</a>
+    <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
+  </nav>
+  <div class="promo"><b>Alert su Telegram</b><span>Ogni nuovo segnale, tranche e target arriva su @CryptoRadarGalaBot.</span></div>
+</aside>
 
 <div class="app">
-  <header class="brand">
-    <div class="id">
-      <svg class="appicon" viewBox="0 0 100 100" role="img" aria-label="Radar Signal BTC"><use href="#appicon"/></svg>
-      <div class="wordmark"><b>Radar Signal</b><span>BTC · swing di giorni</span></div>
-    </div>
+  <header class="mbar">
+    <a class="logo" href="#oggi"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · swing</small></span></a>
     <span id="state" class="status"></span>
   </header>
 
   <div class="hero">
+    <span class="cap"><span>Bitcoin · BTC/USDT</span><span id="stateD" class="status"></span></span>
     <h1 id="price"></h1>
     <p id="sub"></p>
   </div>
 
-  <nav class="segnav" aria-label="Sezioni">
-    <a href="#oggi" data-v="oggi">Oggi</a>
-    <a href="#simulatore" data-v="simulatore">Simulatore</a>
-    <a href="#statistiche" data-v="statistiche">Statistiche</a>
-    <a href="#metodo" data-v="metodo">Metodo</a>
-  </nav>
-
-  <!-- ============ OGGI ============ -->
+<!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
     <div class="cols">
       <div class="section">
         <div class="sh">Score di flusso <small id="regime"></small></div>
-        <div class="card gauge">
+        <div class="card glow gauge">
           <div class="scoreline"><span class="score" id="score"></span><span class="note" id="scoreNote"></span></div>
           <div><div class="meter" id="meter"></div><div class="scale" style="margin-top:8px"><span>−4 short</span><span>0</span><span>long +4</span></div></div>
         </div>
@@ -224,7 +243,7 @@ footer{color:var(--label2);font-size:.78rem;max-width:72ch;margin:0 4px;line-hei
     <div class="section">
       <div class="sh">Prezzo e trade</div>
       <div class="card" style="display:grid;gap:10px">
-        <div class="legend"><span><i style="background:var(--green)"></i>long</span><span><i style="background:var(--red)"></i>short</span><span><i style="background:var(--label3)"></i>uscita</span><span><i style="background:var(--orange)"></i>SMA 200</span></div>
+        <div class="legend"><span><i style="background:var(--tint)"></i>BTC</span><span><i style="background:var(--green)"></i>long</span><span><i style="background:var(--red)"></i>short</span><span><i style="background:var(--label3)"></i>uscita</span><span><i style="background:var(--label3)"></i>SMA 200</span></div>
         <div id="pricechart" class="chart"></div>
         <span class="note">Score di flusso · soglie ±<span id="th"></span></span>
         <div id="scorechart" class="chart small"></div>
@@ -319,12 +338,13 @@ footer{color:var(--label2);font-size:.78rem;max-width:72ch;margin:0 4px;line-hei
 
   <footer>Dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear &amp; Greed). Risultati passati non garantiscono quelli futuri. Strumento di analisi, non consulenza finanziaria.</footer>
 </div>
+</div>
 
 <nav class="tabbar" aria-label="Sezioni">
-  <a href="#oggi" data-v="oggi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8.5"/><circle cx="12" cy="13" r="4.5"/><path d="M12 13l5.5-5.5"/><circle cx="12" cy="13" r="1.2" fill="currentColor"/></svg>Oggi</a>
-  <a href="#simulatore" data-v="simulatore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17"/><path d="M4.5 16l4.5-5 4 3 6.5-8"/><path d="M15.5 6h4v4"/></svg>Simulatore</a>
-  <a href="#statistiche" data-v="statistiche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="11" width="3.6" height="9" rx="1.2"/><rect x="10.2" y="5" width="3.6" height="15" rx="1.2"/><rect x="16.4" y="8" width="3.6" height="12" rx="1.2"/></svg>Statistiche</a>
-  <a href="#metodo" data-v="metodo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r="1.1" fill="currentColor" stroke="none"/></svg>Metodo</a>
+  <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
+  <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simula</a>
+  <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Stats</a>
+  <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
 </nav>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
@@ -335,6 +355,8 @@ const usd = x => x == null ? "–" : "$" + Math.round(x).toLocaleString("it-IT")
 const pct = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const sgn = x => (x > 0 ? "+" : "") + x.toFixed(2);
+// nel font a punti la punteggiatura si legge male: la rendo nel font di testo
+const dots = t => String(t).replace(/[.,]/g, m => `<span class="dp">${m}</span>`);
 
 // icone dei setup (glifo bianco su tile colorata)
 const ICON = {
@@ -345,20 +367,21 @@ const ICON = {
   sflow: ["--red", '<path d="M3 5l4 4 3.5-3L17 12.5"/><path d="M13.5 13H17V9.5"/>'],
   sfund: ["--orange", '<path d="M10 2.8c.4 2.4 3.9 3.7 3.9 7.6a3.9 3.9 0 1 1-7.8 0c0-1.6.8-2.7 1.7-3.5.2 1.3.9 2 1.6 2.2C9 7 9.4 4.6 10 2.8z"/>'],
 };
-const icon = (k, dim) => `<span class="ico${dim ? " dim" : ""}" style="--c:var(${ICON[k][0]})"><svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k][1]}</svg></span>`;
+const icon = (k, dim) => `<span class="ico${dim ? " dim" : ""}" style="--c:var(${ICON[k][0]})"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k][1]}</svg></span>`;
 
 // ---- intestazione
 const ot = R.open_trade.futures, sig = R.signal, c = R.components, P = R.params;
-$("price").textContent = usd(R.price);
+$("price").innerHTML = dots(usd(R.price));
 $("sub").textContent = `BTC · chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })} · aggiornato ogni notte`;
 const st = $("state");
 if (sig) { st.className = "status " + sig.side; st.textContent = "Segnale " + sig.side; }
 else if (ot) { st.className = "status open"; st.textContent = "Trade " + ot.side + " aperto"; }
 else { st.className = "status"; st.textContent = "In attesa"; }
+$("stateD").className = st.className; $("stateD").textContent = st.textContent;
 
 // ---- score
 $("regime").textContent = "regime " + R.regime;
-$("score").textContent = sgn(R.score);
+$("score").innerHTML = dots(sgn(R.score));
 $("score").style.color = R.score >= R.threshold ? css("--green") : R.score <= -R.threshold ? css("--red") : "";
 $("scoreNote").textContent = R.score >= R.threshold ? "sopra la soglia long"
   : R.score <= -R.threshold ? (R.regime === "ribassista" ? "sotto la soglia short" : "debole, ma lo short si attiva solo in regime ribassista")
@@ -448,15 +471,15 @@ seg("trSeg", renderTrades); renderTrades("futures");
 
 // ---- grafici
 const chartOpts = extra => Object.assign({ autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--label2"), fontFamily: css("--font"), fontSize: 11 },
-  grid: { vertLines: { visible: false }, horzLines: { color: css("--sep") } }, rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false },
+  grid: { vertLines: { visible: false }, horzLines: { color: css("--line") } }, rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false },
   crosshair: { mode: 0, vertLine: { color: css("--label3") }, horzLine: { color: css("--label3") } } }, extra || {});
 function charts() {
   if (!window.LightweightCharts) return;
   const s = R.series;
   const pc = LightweightCharts.createChart($("pricechart"), chartOpts()), sc = LightweightCharts.createChart($("scorechart"), chartOpts());
-  const candles = pc.addCandlestickSeries({ upColor: css("--green"), downColor: css("--red"), borderVisible: false, wickUpColor: css("--green"), wickDownColor: css("--red"), priceFormat: { type: "price", precision: 0, minMove: 1 } });
-  candles.setData(s.date.map((d, i) => ({ time: d, open: s.open[i], high: s.high[i], low: s.low[i], close: s.close[i] })));
-  pc.addLineSeries({ color: css("--orange"), lineWidth: 1, priceLineVisible: false, lastValueVisible: false })
+  const candles = pc.addAreaSeries({ lineColor: css("--tint"), topColor: "rgba(79,107,255,.32)", bottomColor: "rgba(79,107,255,0)", lineWidth: 2, priceLineColor: css("--tint"), priceFormat: { type: "price", precision: 0, minMove: 1 } });
+  candles.setData(s.date.map((d, i) => ({ time: d, value: s.close[i] })));
+  pc.addLineSeries({ color: css("--label3"), lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false })
     .setData(s.date.map((d, i) => ({ time: d, value: s.sma200[i] })).filter(p => p.value != null));
   const mk = [];
   R.trades.futures.forEach(t => {
@@ -509,7 +532,7 @@ function simulate() {
   tr.forEach(t => { const pnl = eq * t.pnl_pct_capital * lev / 100; eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++; out.push({ ...t, pnl, eq }); pts.push({ time: t.exit_date, value: eq }); });
   const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01), cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
-    .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
+    .map(([a, b]) => `<div><span>${a}</span><b>${dots(b)}</b></div>`).join("");
   $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, leva ${lev}x. Commissioni e funding inclusi; slippage e tasse esclusi.`;
   $("simCount").textContent = `${tr.length} trade · ${lev}x`;
   $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
@@ -534,7 +557,7 @@ function goal(cap, lev, mk) {
   const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
   const hit = res.filter(x => x >= mult).length / (res.length || 1) * 100;
   $("goalOut").innerHTML = [["Serve", `×${mult.toFixed(2)} in ${days} gg`], ["Successo storico", hit.toFixed(1) + "%"], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
-    .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
+    .map(([a, b]) => `<div><span>${a}</span><b>${dots(b)}</b></div>`).join("");
   $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x. Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
 }
 ["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
