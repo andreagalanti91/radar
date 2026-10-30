@@ -55,6 +55,14 @@ Attenzione: il drawdown attuale è misurato trade per trade; quello giornaliero 
    (il drawdown −31% a 2x viene dalle due perdite di dic 2024 – gen 2025).
 4. **Pesi e profondità della DCA**: 30/30/40 o 25/35/40 con l'ultima tranche più profonda; giudicati sulla perdita dei 3 stop.
 5. **Filtro di distribuzione** sui long (score negativo + retail long affollato anche con trend rialzista).
+6. **Trade "quasi pareggio" e "piccole vincite" (richiesta dell'utente)**: 8 trade 0–1% e 17 trade +1/+3% su 47.
+   (a) Valore: cosa succede a MAR, rendimento e drawdown (1x e 2x) se non ci fossero (controfattuale) e quanto capitale/tempo
+   bloccano (giorni in posizione che impediscono altri segnali). (b) Prevedibilità: si distinguono al momento del segnale?
+   Confronto delle feature d'ingresso (setup, score, regime, ATR, distanza dalla zona prevista, funding, OI, F&G) tra
+   piccoli/pareggi e vincite piene, con test fuori campione. (c) Se prevedibili: filtrarli o gestirli diversamente
+   (size ridotta, target più vicino, uscita anticipata). (d) Se non prevedibili: verificare se sono il "costo" che protegge
+   dai trade perdenti (lezione 2) e tenerli. Conclusione: evitarli o mantenerli, con i numeri.
+   Da affiancare al punto 1 nel giro sera 1 (secondo agente di ricerca).
 Giri del mattino: verifica operativa, segnali reali contro backtest, un solo parametro veloce collegato al piano serale.
 Domenica sera: revisione settimanale e riordino del piano.
 
