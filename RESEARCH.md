@@ -38,6 +38,11 @@ Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 
 5. Per i 2–3 risultati più promettenti: test come filtro o come nuovo setup nella strategia con la scorecard e il gate.
 6. Conclusione: cosa è favorevole e stabile, cosa no; rapporto in RESEARCH.md e su Telegram come "Giro N · RAPPORTO indicatori".
 
+## Parametri di rischio scelti dall'utente (30/10/2026, 20:30)
+Uso del **100% del capitale**, **leva massima 5x**, **long e short**, rischio per trade più alto di prima (da calibrare nei test).
+I giri misurano sempre cosa significa in drawdown giornaliero, liquidazione (margine isolato/cross) e peggior trade,
+e riportano la frontiera rendimento/DD per leva 1–5x: l'obiettivo DD ≤ 15–20% resta il vincolo dichiarato dall'utente.
+
 ## Mandato dell'utente (30/10/2026 sera) — giri autonomi di scoperta
 Due giri al giorno (07:17, 19:17) per **scoprire nuove strategie** e **migliorare ingressi e uscite**, in autonomia:
 proporre, creare, confrontare con backtest; **se passa il gate si esegue** (promozione con test, README, dashboard, Telegram).
