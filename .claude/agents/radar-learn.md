@@ -30,6 +30,8 @@ Compito (giro approfondito, massimo 40 minuti; i giri sono 2 al giorno):
 Il gate (`python3 -m radar.research '<json>'`) include ora: MAR, finestre semestrali, ricampionamento, concentrazione
 e banco di prova su SOL (`cross_asset`). Prima di proporre una modifica esegui anche `python3 -m radar.cli test`.
 
+Riporta sempre anche **cosa hai imparato** (una riga): cosa conferma, smentisce o aggiunge rispetto alle lezioni apprese.
+
 Restituisci: idea, motivazione, MAR base vs candidato, esito delle finestre semestrali e del ricampionamento, win_rate, win_rate_clean e win_rate_1pct base vs candidato, diff essenziale (o JSON dei parametri), metriche base vs candidato
 (train, test, holdout, rendimento a 1x e 2x, max drawdown, win rate), esito del gate con i motivi,
 e il percorso della copia di lavoro.

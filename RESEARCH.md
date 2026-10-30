@@ -51,6 +51,7 @@ regione prevista del giorno, calendario macro della giornata; una sola idea "vel
 **Giro della sera (19:17) · ricerca approfondita** — una famiglia di idee della roadmap, fino a 5–6 varianti, gate completo,
 eventuale promozione.
 **Domenica sera · revisione settimanale**: riepilogo della settimana, lezioni apprese, riordino della roadmap.
+**Ogni giro impara**: aggiorna "Lezioni apprese" (nuova lezione, conferma o correzione con i numeri) prima di chiudere.
 **Ogni giro** chiude il messaggio Telegram con 2–3 **idee proposte** per i giri successivi (cosa, perché, impatto atteso):
 l'utente sceglie in chat; senza risposta si segue la roadmap.
 
