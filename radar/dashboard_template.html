@@ -574,10 +574,7 @@ if (sig) {
 } else {
   const atr = c.atr;
   $("plan").innerHTML = `<div class="sh">Piano operativo <small>nessuna posizione</small></div>` +
-    `<div class="card"><p style="margin:0">Nessun setup attivo. Quando uno dei 6 setup scatta ricevi il piano completo su Telegram.</p></div>` +
-    `<p class="foot" style="margin-top:6px">Come sarebbe un long oggi, con l'ATR attuale:</p>` +
-    rows([["Entrata 1 · 40%", usd(R.price), true], ["Entrata 2 · 30%", usd(R.price - P.entry_step_atr * atr)], ["Entrata 3 · 30%", usd(R.price - 2 * P.entry_step_atr * atr)],
-      ["Stop", usd(R.price - P.stop_atr * atr), true], ["Target dal medio", `+${P.tp_atr[0]} / +${P.tp_atr[1]} ATR`], ["Leva futures", P.leverage + "x"], ["ATR 14 giorni", `${usd(atr)} · ${c.atr_pct.toFixed(1)}%`]]);
+    `<div class="card"><p style="margin:0">Nessun setup attivo. Quando uno dei 6 setup scatta ricevi il piano completo su Telegram.</p></div>`;
 }
 $("th").textContent = R.threshold;
 
