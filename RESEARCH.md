@@ -14,21 +14,57 @@ Ciclo di miglioramento automatico (ogni ora). Ogni iterazione prova un'idea, la 
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
 
-## PROSSIMO GIRO (richiesta dell'utente, 30/10/2026): valutazione profonda ETH e SOL
-Iterazione dedicata, al posto della singola idea. Non promuove nulla in automatico: produce un rapporto.
-1. Scaricare per ETHUSDT e SOLUSDT gli stessi dati di BTC (spot e perp da data.binance.vision, funding, metrics
-   OI/long-short, ultimi giorni da OKX): `radar/data.py` oggi ha `SYMBOL` fisso, va parametrizzato senza
-   rompere BTC (cache separata per simbolo, es. `data/ETHUSDT/`). SOL perp USDT-M esiste dal 2020, metrics da fine 2021.
-2. Applicare la strategia attuale **senza ritoccare i parametri** (test fuori campione puro): trade, win rate,
-   win rate pulito, aspettativa, max drawdown, rendimento 1x/2x per train 2022–23, test 2024–25, holdout 2026.
-3. Verificare la regione prevista (`radar/zones.py`) su ETH e SOL: tassi di tocco delle zone.
-4. Valutare il portafoglio: correlazione dei rendimenti dei trade e delle date di segnale con BTC; equity combinata
-   BTC+ETH+SOL con capitale diviso (es. 50/25/25) contro solo BTC: rendimento, drawdown, trade/anno.
-5. Rischi specifici: liquidità e slippage (SOL più volatile, ATR più alto), code di rischio (crolli > 20% in un giorno),
-   funding più estremi.
-6. Conclusione con raccomandazione chiara (aggiungere / non aggiungere / solo in osservazione) e, se positiva,
-   piano di integrazione (alert Telegram, dashboard multi-asset). Registrare qui il rapporto e inviarlo su Telegram
-   come "RADAR SIGNAL BTC · Valutazione ETH e SOL".
+## Valutazione ETH e SOL (completata 30/10/2026, iterazione 2)
+**Raccomandazione: ETH non aggiungere; SOL solo osservazione; BTC unico operativo.**
+
+Futures 1x, parametri di default (trade / WR / WR>1% / WR pulito / exp % / rend % / maxDD %):
+
+| Periodo | BTC | ETH | SOL |
+|---|---|---|---|
+| Train 22-23 | 20/90,0/60,0/25,0/+2,01/+46,9/−4,4 | 22/68,2/59,1/22,7/−0,78/−21,5/−45,5 | 20/95,0/95,0/45,0/+7,57/+293,8/−15,2 |
+| Test 24-25 | 19/84,2/73,7/42,1/+1,92/+40,2/−16,4 | 23/78,3/73,9/26,1/−0,03/−8,7/−35,1 | 24/75,0/70,8/33,3/+0,54/+2,2/−25,1 |
+| Holdout 2026 | 8/100/100/37,5/+2,85/+24,6/0 | 7/85,7/85,7/57,1/+3,77/+28,4/−5,8 | 12/91,7/91,7/25,0/+1,50/+17,7/−10,9 |
+| Full | 47/89,4/72,3/34,0/+2,12/+156,7/−16,4 | 52/75,0/69,2/28,8/+0,17/−8,0/−60,5 | 56/85,7/83,9/35,7/+3,26/+373,9/−31,1 |
+
+PnL per anno (% capitale, 2022→2026):
+
+| Asset | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|---|---|---|---|
+| BTC | +14,9 | +25,3 | +25,3 | +11,1 | +22,8 |
+| ETH | −14,4 | −2,7 | +2,2 | −2,8 | +26,4 |
+| SOL | +89,6 | +61,9 | +27,7 | −14,8 | +18,0 |
+
+Zone previste (`radar/zones.py`):
+
+| | BTC | ETH | SOL |
+|---|---|---|---|
+| Tocco zona acquisto | 64,9% | 66,1% | 65,9% |
+| Sotto la zona | 38,7% | 39,2% | 37,5% |
+| Tocco zona vendita | 64,1% | 62,3% | 62,6% |
+
+Portafoglio (rend / maxDD %):
+
+| Mix | Full 1x | Test 24-25 |
+|---|---|---|
+| Solo BTC | +156,7 / −16,4 | +40,2 / −16,4 |
+| 50/25/25 | +154,4 / −17,9 | +21,4 / −17,9 |
+| 34/33/33 | +149,4 / −19,3 | +15,1 / −19,3 |
+| 70/30 BTC/SOL | +229,5 / −16,1 | +31,1 / −16,1 |
+
+Correlazione pnl mensile dei trade BTC–ETH 0,31, BTC–SOL 0,07. Approssimazione: trade ordinati per data di uscita, niente mark-to-market delle posizioni simultanee.
+
+Rischi:
+
+| | BTC | ETH | SOL |
+|---|---|---|---|
+| ATR medio dal 2022 | 3,8% | 5,2% | 7,4% |
+| Giorni < −20% dal 2020 | 1 | 2 | 7 |
+| Funding max \|giornaliero\| | 0,25% | 0,53% | 17,2% |
+| Peggior trade 1x | −9,0% | −16,8% | −21,9% |
+
+Piano osservazione SOL: parametrizzare `radar/data.py` per simbolo (cache `data/<SYMBOL>/`, instId OKX dal simbolo), segnali SOL in carta su dashboard/Telegram con size ~0,5x, rivalutare dopo 10 trade fuori campione o 6 mesi (criteri: exp > +1%, DD portafoglio non peggiore di BTC solo, nessun trade < −12%). Il sizing a rischio fisso (priorità "budget per operazione") potrebbe rendere SOL integrabile.
+
+Script e dati della valutazione nella scratchpad di sessione (fetch.py, evalx.py, eval_eth_sol.json).
 
 ## Priorità dell'utente (30/10/2026, dopo l'iterazione 1) — affrontare per prime
 1. **Stop calcolato**: stop non fisso a 3 ATR dal primo ingresso ma derivato da struttura/volatilità (es. sotto il bordo profondo della zona prevista − k·ATR, minimo a 20 giorni, stop sul prezzo medio dopo ogni tranche, stop a scaglioni). Misurare perdita media e massima per trade.
@@ -49,3 +85,4 @@ Ogni variante va confrontata con il gate standard (`radar/research.py`) e riport
 
 ## Iterazioni
 - **2026-10-30 10:40 UTC · Iterazione 1 · SCARTATO** — Idea: tranche DCA 2 e 3 ai bordi della zona prevista (`radar/zones.py`: buy_hi/buy_lo long, sell_lo/sell_hi short) invece di −0,75/−1,5 ATR fissi, stop invariato. Test 2024–25: aspettativa +1,92% → +1,50%, rendimento +40,2% → +24,8%, max DD −16,4% → −25,4% (train exp +2,01 → +1,94; holdout 2026 +2,85 → +3,16; full 1x +156,7% → +130,3%, 2x +498,9% → +372,1%). Motivo: aspettativa test e drawdown peggiori — la zona è più vicina (0,66/1,33 ATR) e riempie più tranche nei trade stoppati (stop pieno −10,8% a mar 2025). Prossime: tranche più profonde (buy_lo e buy_lo − 0,5 ATR) o peso ridotto nella zona, combinare con stop sul prezzo medio (backlog 3).
+- **2026-10-30 11:40 UTC · Iterazione 2 · RAPPORTO** — Valutazione ETH/SOL con parametri invariati: ETH non aggiungere (full −8%, DD −60%, exp test −0,03%), SOL solo osservazione (full +374% ma edge concentrato nel 2022–23, test exp +0,54%, 2025 negativo, peggior trade −21,9%); nessun mix batte BTC da solo nel test. Dettagli nella sezione Valutazione ETH e SOL.
