@@ -34,7 +34,7 @@ Validazione 2021–2026 (1857 giorni): la zona di acquisto viene toccata entro 7
    (short: più in alto), valido 7 giorni.
 4. **Stop e target.** Stop a **1 ATR dall'ingresso** per tutta la posizione. Un solo **take profit a +1R** dal prezzo medio
    (R = distanza tra medio e stop). Se dopo **14 giorni** non è uscito, si chiude.
-5. **Quanto rischiare.** Si parte da un rischio base del **4,67% del capitale** per trade (variabile `RADAR_RISK`).
+5. **Quanto rischiare.** Si parte da un rischio base del **4,3% del capitale** per trade (variabile `RADAR_RISK`).
    Si guarda il **delta taker** della candela 4h di conferma (acquisti aggressivi meno vendite aggressive, media spot e perp):
    più è forte nella direzione del trade, più si rischia, da 0,5× a 2× il rischio base. I long con il prezzo settimanale sotto la
    media a 40 settimane rischiano il 40% in meno. Rischio per trade quindi tra **1,4% e 9,3%**.
@@ -57,35 +57,36 @@ Regime ribassista: prezzo sotto la SMA200 e SMA50 sotto la SMA200. Gli short si 
 
 ## Risultati v2 (mar 2022 – ott 2026, candele 4h, commissioni, funding e slippage 0,1% inclusi)
 
-Rischio base dal vivo 4,67%. Drawdown sull'equity **giornaliera** (non solo trade per trade).
+Rischio base dal vivo 4,3% (scelto il 31/10: è il massimo che tiene P(DD>20%) ≤ 15% con dati dal 2021 e slippage 0,2%). Drawdown sull'equity **giornaliera** (non solo trade per trade).
 
 | | 2022–23 (scelta dei parametri) | 2024–25 (verifica) | 2026 (verifica) | **Totale** |
 |---|---|---|---|---|
 | Trade | 49 | 38 | 18 | **105** |
 | Win rate | 77,6% | 78,9% | 83,3% | **79,0%** |
-| Rendimento | +30,3% | +56,9% | +42,7% | **+191,6%** |
-| Max drawdown giornaliero | −11,5% | −12,0% | −3,9% | **−12,0%** |
-| Aspettativa per trade | +0,57% | +1,24% | +2,03% | +1,06% |
+| Rendimento | +27,7% | +52,6% | +38,8% | **+170,5%** |
+| Max drawdown giornaliero | −10,6% | −11,1% | −3,6% | **−11,1%** |
+| Aspettativa per trade | +0,53% | +1,16% | +1,87% | +0,99% |
 
-Per anno: 2022 +15,4% (DD −9,9%) · 2023 +12,9% (−6,9%) · 2024 +10,4% (−10,8%) · 2025 +42,1% (−6,9%) · 2026 +42,7% (−3,9%).
-Win rate sopra +1% sul capitale 65,7%, profit factor 2,42, durata media 3 giorni, leva media 1,6x.
+Per anno: 2022 +14,2% · 2023 +11,8% · 2024 +9,7% · 2025 +39,2% · 2026 +38,8%.
+Win rate sopra +1% sul capitale 63,8%, profit factor 2,43, durata media 3 giorni, leva media 1,4x.
 
 **Walk-forward** (ricerca, notte 01:47): la fonte del delta taker scelta solo sul passato è la stessa in entrambe le finestre e resta
 positiva fuori campione: 2024–25 +63,2% (DD −13,4%) contro H2 senza size +37,2%; 2026 +45,9% (DD −4,2%) contro +22,7%.
 
 | 10.000 $ (size del piano v2, esposizione massima 5x) | 1x | 2x | 5x |
 |---|---|---|---|
-| Capitale finale | **29.163 $** | 60.221 $ | 128.144 $ |
-| Max drawdown giornaliero | −12,0% | −23,8% | −41,1% |
-| Peggior trade | −6,1% | −12,2% | −21,3% |
+| Capitale finale | **27.056 $** | 55.053 $ | 121.995 $ |
+| Max drawdown (giornaliero a 1x, per trade a 2x/5x) | −11,1% | −20,7% | −39,8% |
+| Peggior trade | −5,6% | −11,2% | −21,3% |
 
 2x e 5x moltiplicano la size di ogni trade con il tetto di esposizione a 5x del conto (5x solo come confronto: drawdown oltre il 40%).
 Registro dei trade in stop con l'analisi di ciascuno: [research/LOSERS.md](research/LOSERS.md).
 
 **Confronto con la strategia precedente** (segnale giornaliero, DCA a 3 tranche, stop 3 ATR, uscite a scaglioni, 49 trade):
-+34,9% a 1x con drawdown giornaliero −28,1%. v2: **+191,6% con −12,0%**.
++34,9% a 1x con drawdown giornaliero −28,1%. v2: **+170,5% con −11,1%**.
 
-**Con slippage 0,2%** (prova di stress su cui è stato validato il rischio 4,67%): +140,3%, DD −12,8%, WR 76,9%.
+**Con slippage 0,2%** al rischio 4,67% (precedente valore dal vivo): +140,3%, DD −12,8%, WR 76,9%. Dal 2021 con slippage 0,2% il
+rischio massimo che tiene la coda è 4,3%: è il valore scelto per il tool.
 Al rischio di ricerca 5,24% e slippage 0,1%: +225,8%, DD −13,5%, 10.000 $ → 32.580 $.
 
 ### Limiti (onesti)
@@ -129,7 +130,7 @@ Obiettivo: rendimento corretto per il rischio (rendimento / max drawdown). Il ga
 3. *Settings → Pages → Source: GitHub Actions*.
 4. Il workflow `Radar Signal BTC daily` gira ogni ora (notizie, calendario, dashboard, alert sui trade aperti) e alle 00:30 UTC calcola il segnale sulla candela chiusa e invia il riepilogo giornaliero.
 
-Alert inviati (tutti "RADAR SIGNAL BTC"): nuovo segnale in attesa di conferma 4h (soglia e scadenza), ingresso confermato con piano completo in dollari e leva sul capitale (`RADAR_CAPITAL`, predefinito 50.000 $; rischio base `RADAR_RISK`, predefinito 0.0467), limit DCA eseguito, take profit, stop, uscita a tempo, segnale scaduto, livelli toccati in tempo reale (controllo orario su candele 1h: soglia di conferma, limit, stop, TP), dati non aggiornati da oltre 36 ore, riepilogo giornaliero (disattivabile con `RADAR_DAILY_BRIEF=0`).
+Alert inviati (tutti "RADAR SIGNAL BTC"): nuovo segnale in attesa di conferma 4h (soglia e scadenza), ingresso confermato con piano completo in dollari e leva sul capitale (`RADAR_CAPITAL`, predefinito 50.000 $; rischio base `RADAR_RISK`, predefinito 0.043), limit DCA eseguito, take profit, stop, uscita a tempo, segnale scaduto, livelli toccati in tempo reale (controllo orario su candele 1h: soglia di conferma, limit, stop, TP), dati non aggiornati da oltre 36 ore, riepilogo giornaliero (disattivabile con `RADAR_DAILY_BRIEF=0`).
 
 ## Uso locale
 

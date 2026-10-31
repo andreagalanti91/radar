@@ -30,7 +30,7 @@ STATE_FILE = DATA_DIR / "state.json"
 BACKTEST_START = "2022-03-01"   # le metrics (long/short ratio) partono da dic 2021 + warm-up
 TEST_START = "2024-01-01"       # walk-forward: 2024–25 e 2026 fuori dalla scelta dei parametri
 LIVE_START = "2026-10-31"       # da qui i segnali reali sono quelli di v2
-RISK = float(os.environ.get("RADAR_RISK", "0.0467"))
+RISK = float(os.environ.get("RADAR_RISK", "0.043"))
 CAPITAL = float(os.environ.get("RADAR_CAPITAL", "50000"))
 PERIODS = [("2022–23", "2022-03-01", "2023-12-31"), ("2024–25", "2024-01-01", "2025-12-31"),
            ("2026", "2026-01-01", "2026-12-31"), ("Totale", "2022-03-01", "2099-12-31")]
@@ -113,13 +113,15 @@ def _period(trades: list, eq: pd.Series, a: str, b: str) -> dict:
 
 
 def _mult(trades: list, m: float, cap: float = 10000.0) -> dict:
-    """Size moltiplicata per `m` (trade per trade, senza tetto alla leva): rendimento, DD per trade, peggior trade."""
+    """Size moltiplicata per `m` trade per trade, con il tetto di esposizione a 5x del conto (come dal vivo):
+    rendimento, DD per trade, peggior trade."""
     e, peak, dd, curve = 1.0, 1.0, 0.0, []
-    for t in trades:
-        e *= 1 + m * t["pnl_pct"] / 100
+    mm = [min(m, 5.0 / t["N"]) if t.get("N") else m for t in trades]
+    for t, k in zip(trades, mm):
+        e *= 1 + k * t["pnl_pct"] / 100
         peak, dd = max(peak, e), min(dd, e / max(peak, e) - 1)
         curve.append({"date": t["exit_date"], "eq": round(e, 4)})
-    pn = [m * t["pnl_pct"] for t in trades]
+    pn = [k * t["pnl_pct"] for t, k in zip(trades, mm)]
     return {"total_return_%": round((e - 1) * 100, 1), "max_dd_%": round(dd * 100, 1),
             "worst_%": round(min(pn), 2) if pn else 0.0, "expectancy_%": round(float(np.mean(pn)), 2) if pn else 0.0,
             "final_10k": round(cap * e, 0), "curve": curve}

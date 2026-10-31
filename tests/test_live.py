@@ -55,12 +55,12 @@ class TestLiveV2(unittest.TestCase):
 
     @unittest.skipIf("RADAR_RISK" in os.environ, "rischio base personalizzato")
     def test_numeri_storici(self):
-        # v2 al rischio base dal vivo 4,67% (slippage 0,1%): 105 trade, WR 79%, +191,6%, DD giornaliero −12,0%
+        # v2 al rischio base dal vivo 4,3% (slippage 0,1%): 105 trade, WR 79%, +170,5%, DD giornaliero −11,1%
         T = self.full["stats"]["periods"]["Totale"]
         self.assertEqual(T["trades"], 105)
         self.assertAlmostEqual(T["win_rate"], 79.0, delta=0.5)
-        self.assertAlmostEqual(T["total_return_%"], 191.6, delta=3.0)
-        self.assertAlmostEqual(T["max_dd_%"], -12.0, delta=0.5)
+        self.assertAlmostEqual(T["total_return_%"], 170.5, delta=3.0)
+        self.assertAlmostEqual(T["max_dd_%"], -11.1, delta=0.5)
         for k in ("2024–25", "2026"):   # walk-forward positivo
             self.assertGreater(self.full["stats"]["periods"][k]["total_return_%"], 0)
 

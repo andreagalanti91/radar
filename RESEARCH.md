@@ -208,6 +208,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Decisione autonoma (31/10/2026, mandato dell'utente: "decidi tu") — rischio dal vivo 4,67% → **4,3%**
+Motivo: con dati dal 2021 e slippage 0,2% il rischio massimo con P(DD>20%) ≤ 15% è 4,32% (giro 13 A). Effetto (dal 2022-03,
+slippage 0,1%): +170,5% (era +191,6%), DD giornaliero −11,1% (era −12,0%), peggior trade −5,6% (era −6,1%), WR invariato 79%.
+Corretto anche il calcolo 2x/5x di dashboard e README: ora rispetta il tetto di esposizione 5x come dal vivo
+(10.000 $: 1x 27.056 $, 2x 55.053 $, 5x 121.995 $; prima 5x mostrava cifre senza tetto).
+Sfidanti su carta (non nei segnali): R1b60 (2ª tranche ridotta), meta-labeling M2, W-SMA40 filtro, D10.
+
 ### Giro 13 · 31/10/2026 mattina — imparare dagli stop, spot vs futures, confluenza, modello · NON PROMUOVERE
 - **A, regole dal registro**: R1b60 (2ª tranche DCA ridotta: nozionale ×0,444) DD −25% e perdita max −24% a parità di base,
   r_boot +245% vs +226% (+16% dal 2021), ma walk-forward 166,6 vs 168,4 (2026 peggiore) → sfidante su carta. R1 (peso solo 1ª
