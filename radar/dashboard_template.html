@@ -380,10 +380,10 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       <div class="list">
         <label class="row"><span class="k">Capitale iniziale</span><input id="simCap" type="number" inputmode="decimal" min="100" step="1000" value="50000" enterkeyhint="done"></label>
         <label class="row"><span class="k">Data di partenza</span><input id="simStart" type="date"></label>
-        <div class="row"><span class="k">Leva</span><div class="seg" id="simLev" role="group" aria-label="Leva"><button data-v="1">1x</button><button data-v="2" aria-pressed="true">2x</button><button data-v="3">3x</button><button data-v="5">5x</button></div></div>
-        <div class="row"><span class="k">Mercato</span><div class="seg" id="simMk" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button></div></div>
+        <div class="row"><span class="k">Leva</span><div class="seg" id="simLev" role="group" aria-label="Leva"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="3">3x</button><button data-v="5">5x</button></div></div>
+        
       </div>
-      <p class="foot">La leva 5x è mostrata a scopo di confronto: storicamente porta drawdown oltre il 60%. Lo spot è solo long e senza leva.</p>
+      <p class="foot">1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.</p>
     </div>
 
     <div class="big" id="simOut"></div>
@@ -412,9 +412,9 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   <!-- ============ STATISTICHE ============ -->
   <div class="view" id="v-statistiche" hidden>
     <div class="section">
-      <div class="sh">Equity vs BTC <div class="seg" id="eqSeg" role="group" aria-label="Leva"><button data-v="1">1x</button><button data-v="2" aria-pressed="true">2x</button><button data-v="3">3x</button></div></div>
+      <div class="sh">Equity vs BTC <div class="seg" id="eqSeg" role="group" aria-label="Size"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="5">5x</button></div></div>
       <div class="card" style="display:grid;gap:10px">
-        <div class="legend"><span><i style="background:var(--tint)"></i>modello futures</span><span><i style="background:var(--orange)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
+        <div class="legend"><span><i style="background:var(--tint)"></i>strategia v2</span><span><i style="background:var(--orange)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
         <div id="equity" class="chart" style="height:280px"></div>
       </div>
     </div>
@@ -430,7 +430,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <div class="section">
       <div class="sh">Storico operativo
         <span style="display:flex;gap:8px;flex-wrap:wrap">
-          <span class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Futures</button><button data-v="spot">Spot</button><button data-v="live">Reali</button></span>
+          <span class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Storico v2</button><button data-v="live">Reali</button></span>
           <span class="seg" id="resSeg" role="group" aria-label="Esito"><button data-v="all" aria-pressed="true">Tutti</button><button data-v="win">Vinti</button><button data-v="loss">Persi</button></span>
         </span>
       </div>
@@ -440,12 +440,12 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 
     <div class="cols">
       <div class="section">
-        <div class="sh">Backtest <small>da mar 2022</small></div>
+        <div class="sh">Strategia v2 <small>da mar 2022</small></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="stats"></table></div></div>
-        <p class="foot">Training: parametri scelti su mar 2022 – dic 2023. Test: gen 2024 – oggi. Commissioni e funding inclusi, senza leva.</p>
+        <p class="foot">Simulazione su candele 4h con commissioni, funding e slippage 0,1%. Parametri scelti su 2022–23; 2024–25 e 2026 sono i periodi di verifica (walk-forward). Rendimento e drawdown sull'equity giornaliera.</p>
       </div>
       <div class="section">
-        <div class="sh">Con leva</div>
+        <div class="sh">10.000 $ con size 1x · 2x · 5x</div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="lev"></table></div></div>
         <div class="sh" style="margin-top:12px">Per setup</div>
         <div class="list" id="bySetup"></div>
@@ -477,15 +477,16 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <div class="section">
       <div class="sh">Come funziona</div>
       <div class="card prose">
-        <p>Ogni notte, alla chiusura della candela giornaliera UTC, Radar Signal legge prezzo, CVD spot e perp, funding, open interest e long/short ratio. Se uno dei 6 setup scatta, prepara un piano operativo e lo invia su Telegram. Tiene una sola posizione alla volta.</p>
+        <p>Strategia <b>v2</b> (dal 31/10/2026). Ogni notte, alla chiusura della candela giornaliera UTC, Radar Signal legge prezzo, CVD spot e perp, funding, open interest e long/short ratio. Se uno dei 6 setup scatta <b>non entra subito</b>: aspetta che una candela a 4 ore chiuda oltre il massimo (short: sotto il minimo) delle due candele 4h precedenti, entro 72 ore. Solo allora entra, con un piano piccolo e preciso. Tiene una sola posizione alla volta e controlla i livelli ogni ora.</p>
         <h3>Gestione della posizione</h3>
         <ul id="ruleList"></ul>
         <h3>Limiti</h3>
         <ul>
-          <li>Circa 10 trade l'anno: in un mese può non arrivare nessun segnale.</li>
-          <li>Nessun sistema ha il 100% di segnali vincenti. Il win rate storico è intorno all'85–90%, ma le perdite valgono 3–4 vincite medie.</li>
-          <li>Con barre giornaliere il backtest assume sempre il caso peggiore tra stop e target nello stesso giorno.</li>
-          <li>La leva moltiplica guadagni e perdite. Oltre 3x una serie di stop può dimezzare il capitale.</li>
+          <li>Circa 22 trade l'anno, di pochi giorni ciascuno: in un mese può non arrivare nessuna conferma.</li>
+          <li>Win rate storico 79%, ma uno stop vale circa una vincita e mezza: contano le serie di stop.</li>
+          <li>Il vantaggio dipende dal delta taker della barra 4h di conferma: va letto subito. Il controllo è orario, quindi l'ingresso reale può arrivare fino a ~1 ora dopo la chiusura 4h.</li>
+          <li>L'archivio perp arriva con circa 1 giorno di ritardo: senza perp il delta è solo spot (regola prudente).</li>
+          <li>Il test di ricampionamento (P(DD &gt; 20%) = 15%) è al limite del criterio: il rischio base dal vivo è più basso di quello di ricerca.</li>
         </ul>
       </div>
     </div>
@@ -530,12 +531,13 @@ const ICON = {
 const icon = (k, dim) => `<span class="ico${dim ? " dim" : ""}" style="--c:var(${ICON[k][0]})"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k][1]}</svg></span>`;
 
 // ---- intestazione
-const ot = R.open_trade.futures, sig = R.signal, c = R.components, P = R.params;
+const V = R.v2, c = R.components, P = R.params;
 $("price").innerHTML = dots(usd(R.price));
 $("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
 const st = $("state");
-if (sig) { st.className = "status " + sig.side; st.textContent = "Segnale " + sig.side; }
-else if (ot) { st.className = "status open"; st.textContent = "Trade " + ot.side + " aperto"; }
+if (V.status === "conferma") { st.className = "status " + V.side; st.textContent = "Segnale " + V.side + " · conferma 4h"; }
+else if (V.status === "ingresso") { st.className = "status " + V.side; st.textContent = "Ingresso " + V.side; }
+else if (V.status === "aperto") { st.className = "status open"; st.textContent = "Trade " + V.side + " aperto"; }
 else { st.className = "status"; st.textContent = "In attesa"; }
 $("stateD").className = st.className; $("stateD").textContent = st.textContent;
 
@@ -560,49 +562,46 @@ $("kv").innerHTML = [
 
 // ---- piano operativo
 const rows = r => `<div class="list">${r.map(([k, v, strong]) => `<div class="row"><span class="k">${k}</span><span class="v${strong ? " strong" : ""}">${v}</span></div>`).join("")}</div>`;
-if (sig) {
-  $("plan").innerHTML = `<div class="sh">Piano ${sig.side} <small>${sig.side === "long" ? "spot + futures" : "solo futures"}</small></div>` +
-    `<div class="list"><div class="row ic">${icon(sig.setup)}<span class="k">${sig.setup_label}<small>setup ${sig.setup} · score ${sgn(sig.score)}</small></span></div></div>` +
-    `<div class="why"><b>Perché è scattato</b>${sig.why || ""}</div>` +
-    rows(sig.entries.map((e, i) => [`Entrata ${i + 1} · ${Math.round(e.weight * 100)}%<small>${i ? "limit, valido 7 giorni" : "all'apertura"}</small>`, usd(e.price), true])
-      .concat([["Prezzo medio se completa", usd(sig.avg_entry_if_full)], ["Stop", `${usd(sig.stop)} · −${sig.risk_pct_full}%`, true]])) +
-    rows(sig.take_profits.map((t, i) => [`Target ${i + 1} · ${Math.round(t.weight * 100)}%`, usd(t.price), true]).concat([[`Resto ${Math.round(sig.trail_weight * 100)}%`, `trailing ${sig.trail_atr} ATR`]])) +
-    rows([["Leva futures", sig.leverage + "x · isolato", true], ["Perdita max sul capitale", "−" + sig.risk_pct_capital_at_leverage + "%"]]) +
+const fmtT = d => new Date(d.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+const VP = V.plan, vhead = V.status !== "nessuno" ? `<div class="list"><div class="row ic">${icon(V.setup)}<span class="k">${V.setup_label || V.setup}<small>setup ${V.setup} · segnale del ${V.signal_date}</small></span></div></div>` +
+  `<div class="why"><b>Perché è scattato</b>${V.why || ""}</div>` : "";
+const above = V.side === "long" ? "sopra" : "sotto";
+if (V.status === "conferma") {
+  $("plan").innerHTML = `<div class="sh">Segnale ${V.side} <small>in attesa di conferma 4h</small></div>` + vhead +
+    rows([[`Conferma<small>chiusura 4h ${above} la soglia (si aggiorna a ogni barra)</small>`, usd(V.trigger), true], ["Scadenza", fmtT(V.deadline)]]) +
+    `<div class="sh" style="margin-top:6px">Piano indicativo <small>se conferma alla soglia</small></div>` +
+    rows([["Ingresso 40%<small>a mercato alla conferma</small>", usd(VP.entry), true], ["Limit 60%<small>−0,5 ATR, valido 7 giorni</small>", usd(VP.limit)],
+      ["Stop<small>1 ATR dall'ingresso</small>", usd(VP.stop), true], ["Take profit<small>+1R dal medio a DCA completa</small>", usd(VP.tp_full), true],
+      ["Rischio sul capitale", `${VP.risk_lo.toFixed(1)}–${VP.risk_hi.toFixed(1)}%`], ["Leva", `${VP.lev_lo.toFixed(1)}–${VP.lev_hi.toFixed(1)}x`]]) +
+    `<p class="foot">Rischio e leva si fissano alla conferma, dal delta taker della barra 4h. Il piano completo in dollari arriva su Telegram.</p>`;
+} else if (V.status === "ingresso" || V.status === "aperto") {
+  const tp = V.status === "aperto" ? V.tp : VP.tp_first, filled = V.status === "aperto" && V.filled[1];
+  $("plan").innerHTML = `<div class="sh">${V.status === "aperto" ? "Trade " + V.side + " aperto" : "Ingresso " + V.side + " confermato"} <small>dal ${fmtT(V.entry_time)}</small></div>` + vhead +
+    rows([["Ingresso 40%", usd(VP.entry), true], [`Limit 60%<small>${filled ? "eseguito" : "valido fino al " + fmtT(V.limit_expiry)}</small>`, usd(VP.limit)],
+      ["Stop", `${usd(VP.stop)} · −${VP.stop_pct}%`, true], [`Take profit<small>+1R dal medio${filled ? "" : "; " + usd(VP.tp_full) + " se si riempie il limit"}</small>`, usd(tp), true],
+      ["Uscita a tempo", fmtT(V.time_exit)], ["Rischio · leva", `${VP.risk.toFixed(2)}% · ${VP.lev.toFixed(2)}x isolato`, true],
+      ...(V.status === "aperto" ? [["Andamento", pct(V.pnl_pct_invested, 2) + " sul prezzo"]] : [])]) +
     `<div id="calc"></div>` +
-    `<p class="foot">I target si ricalcolano sul prezzo medio a ogni tranche. Dopo il primo target lo stop va a pareggio. Uscita entro ${sig.max_hold_days} giorni.</p>`;
-} else if (ot) {
-  const pend = ot.pending_entries.map((v, k) => ({ title: `${ot.side === "long" ? "Compra" : "Vendi short"} · limit DCA`, note: "ordine limite ancora attivo", price: usd(v) }))
-    .concat(ot.next_tps.map((v, k) => ({ title: `Target ${ot.tp_hit + k + 1}`, note: "take profit dal prezzo medio", price: usd(v), cls: "tp" })))
-    .concat([{ title: "Stop attuale", note: ot.tp_hit ? "stop a pareggio o trailing" : "stop loss iniziale", price: usd(ot.stop), cls: "stop" }]);
-  $("plan").innerHTML = `<div class="sh">Trade ${ot.side} aperto <small>dal ${ot.signal_date}</small></div>` +
-    `<div class="list"><div class="row ic">${icon(ot.setup)}<span class="k">Setup ${ot.setup}<small>${ot.tranches} tranche su 3 · prezzo medio ${usd(ot.avg_entry)} · residuo ${Math.round(ot.remaining * 100)}%</small></span><span class="v strong ${ot.pnl_pct_invested > 0 ? "pos" : "neg"}">${pct(ot.pnl_pct_invested, 2)}</span></div></div>` +
-    `<div class="why"><b>Perché è scattato</b>${ot.why || ""}</div>` +
-    `<div class="card">${timeline(ot.events, ot.side, pend)}</div>` + `<div id="calc"></div>` +
-    `<p class="foot">Il piano si aggiorna a ogni chiusura giornaliera; ogni variazione arriva su Telegram.</p>`;
+    `<p class="foot">Delta taker della barra di conferma ${sgn(V.dt || 0)} (${V.perp ? "spot + perp" : "solo spot"})${V.side === "long" && V.below_sma40w ? " · long sotto la SMA 40 settimane: size × 0,6" : ""}. Lo stato si aggiorna ogni ora sulle candele 4h chiuse.</p>`;
 } else {
-  const atr = c.atr;
   $("plan").innerHTML = `<div class="sh">Piano operativo <small>nessuna posizione</small></div>` +
-    `<div class="card"><p style="margin:0">Nessun setup attivo. Quando uno dei 6 setup scatta ricevi il piano completo su Telegram.</p></div>`;
+    `<div class="card"><p style="margin:0">Nessun segnale in corso. Quando un setup scatta alla chiusura giornaliera ricevi su Telegram la soglia di conferma 4h; all'ingresso arriva il piano completo in dollari.</p></div>`;
 }
 $("th").textContent = R.threshold;
 
 // ---- calcolatore della posizione sul capitale dell'utente (salvato solo in questo browser)
 const CALC = (() => { try { return JSON.parse(localStorage.getItem("radarCalc")) || {}; } catch (_) { return {}; } })();
-CALC.cap = CALC.cap || 50000; CALC.lev = CALC.lev || P.leverage;
+CALC.cap = CALC.cap || P.capital;
 function renderCalc() {
-  const el = $("calc"); if (!el) return;
-  const plan = sig ? { side: sig.side, entries: sig.entries, risk: sig.risk_pct_full } : ot ? { side: ot.side, entries: ot.plan.entries.map((p, i) => ({ price: p, weight: ot.plan.weights[i] })), risk: Math.abs(ot.avg_entry - ot.plan.stop) / ot.avg_entry * 100 } : null;
-  if (!plan) { el.innerHTML = ""; return; }
-  const cap = CALC.cap, lev = CALC.lev, w = plan.entries.reduce((a, e) => a + e.weight, 0);
+  const el = $("calc"); if (!el || !VP || VP.lev == null) { if (el) el.innerHTML = ""; return; }
+  const cap = CALC.cap, nz = cap * VP.lev;
   el.innerHTML = `<div class="sh" style="margin-top:6px">Sul tuo capitale <small>salvato solo su questo dispositivo</small></div>
     <div class="list">
       <label class="row"><span class="k">Capitale</span><input id="cCap" type="number" inputmode="decimal" min="100" step="1000" value="${cap}"></label>
-      <div class="row"><span class="k">Leva futures</span><div class="seg" id="cLev">${[1, 2, 3].map(l => `<button data-v="${l}" aria-pressed="${l === lev}">${l}x</button>`).join("")}</div></div>
-      ${plan.entries.map((e, i) => `<div class="row"><span class="k">Tranche ${i + 1} · ${usd(e.price)}<small>margine ${usd(cap * e.weight)}</small></span><span class="v strong">${usd(cap * lev * e.weight)}<br><small>${(cap * lev * e.weight / e.price).toFixed(4)} BTC</small></span></div>`).join("")}
-      <div class="row"><span class="k">Perdita se scatta lo stop<small>con tutte le tranche eseguite</small></span><span class="v strong neg">−${usd(cap * lev * w * plan.risk / 100)}</span></div>
+      ${[[VP.entry, VP.weights[0], "Ingresso"], [VP.limit, VP.weights[1], "Limit"]].map(([px, w, k]) => `<div class="row"><span class="k">${k} ${Math.round(w * 100)}% · ${usd(px)}<small>margine ${usd(nz * w / VP.lev)}</small></span><span class="v strong">${usd(nz * w)}<br><small>${(nz * w / px).toFixed(4)} BTC</small></span></div>`).join("")}
+      <div class="row"><span class="k">Perdita se scatta lo stop<small>con il limit eseguito</small></span><span class="v strong neg">−${usd(nz * VP.stop_pct / 100)}</span></div>
     </div>`;
-  $("cCap").addEventListener("change", e => { CALC.cap = Math.max(100, +e.target.value || 50000); saveCalc(); });
-  seg("cLev", v => { CALC.lev = +v; saveCalc(); });
+  $("cCap").addEventListener("change", e => { CALC.cap = Math.max(100, +e.target.value || P.capital); saveCalc(); });
 }
 function saveCalc() { try { localStorage.setItem("radarCalc", JSON.stringify(CALC)); } catch (_) {} renderCalc(); }
 
@@ -632,14 +631,15 @@ if (Z) {
 const on = R.checklist.filter(x => x.active).length;
 $("ckSum").textContent = on ? on + " attivi" : "nessuno attivo";
 $("checks").innerHTML = R.checklist.map(x => `<div class="row ic">${icon(x.setup, !x.active)}<span class="k">${x.label}<small>${x.detail}</small></span><span class="chip ${x.side}${x.active ? " on" : ""}">${x.active ? "attivo" : x.side}</span></div>`).join("");
-const S = R.stats;
+const S = R.stats, S_RISK = { min_: S.risk["min_%"], max_: S.risk["max_%"], avg_lev: S.periods.Totale.avg_lev };
 $("setupList").innerHTML = R.checklist.map(x => { const b = S.by_setup[x.setup] || { trades: 0, win_rate: 0 };
   return `<div class="row ic">${icon(x.setup)}<span class="k">${x.label}<small>${x.setup} · ${x.side} · ${b.trades} trade, win ${b.win_rate}%</small></span></div>`; }).join("");
 $("ruleList").innerHTML = [
-  `Entrata DCA: ${P.entry_weights.map(w => Math.round(w * 100) + "%").join(" / ")} a 0, −${P.entry_step_atr} e −${2 * P.entry_step_atr} ATR dal primo ingresso (limit validi ${P.entry_window} giorni).`,
-  `Stop a ${P.stop_atr} ATR dal primo ingresso.`,
-  `Uscita DCA: ${Math.round(P.tp_weights[0] * 100)}% a +${P.tp_atr[0]} ATR e ${Math.round(P.tp_weights[1] * 100)}% a +${P.tp_atr[1]} ATR dal prezzo medio, il resto in trailing a ${P.trail_atr} ATR. Dopo il primo target lo stop va a pareggio.`,
-  `Uscita forzata dopo ${P.max_hold} giorni. Leva consigliata sui futures: ${P.leverage}x con margine isolato.`,
+  `Segnale: uno dei 6 setup alla chiusura giornaliera UTC. Conferma: una candela 4h chiude oltre il massimo (short: sotto il minimo) delle 2 candele 4h precedenti, entro ${P.window_h} ore; altrimenti il segnale scade.`,
+  `Ingresso a 2 livelli: ${Math.round(P.weights[0] * 100)}% a mercato alla conferma, ${Math.round(P.weights[1] * 100)}% limit a −${P.step_atr} ATR (valido ${P.limit_days} giorni).`,
+  `Stop a ${P.stop_atr} ATR dall'ingresso. Take profit unico a +${P.tp_r}R dal prezzo medio (R = distanza tra medio e stop). Uscita a tempo dopo ${P.hold_days} giorni.`,
+  `Size dal rischio: si rischia il ${(P.risk * 100).toFixed(2)}% del capitale × (0,5 + 1,5 × delta taker della barra di conferma, da 0 a 0,15) → da ${S_RISK.min_}% a ${S_RISK.max_}%; × 0,6 per i long con il prezzo settimanale sotto la media a 40 settimane.`,
+  `Leva = rischio / distanza dello stop, al massimo ${P.cap}x, margine isolato. Media storica ${S_RISK.avg_lev}x.`,
 ].map(t => `<li>${t}</li>`).join("");
 
 // ---- segmented control
@@ -655,19 +655,21 @@ function seg(id, onChange) {
 }
 
 // ---- statistiche
-const cols = [["futures", "train"], ["futures", "test"], ["spot", "train"], ["spot", "test"]];
-$("stats").innerHTML = `<tr><th></th>${cols.map(([m, p]) => `<th>${m}<br>${p}</th>`).join("")}</tr>` +
-  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v + "%"], ["Win rate > +1%", "win_rate_1pct", v => v + "%"], ["Win rate pulito", "win_rate_clean", v => v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
+const cols = Object.keys(S.periods);
+$("stats").innerHTML = `<tr><th></th>${cols.map(k => `<th>${k}</th>`).join("")}</tr>` +
+  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v == null ? "–" : v + "%"], ["Win rate > +1%", "win_rate_1pct", v => v == null ? "–" : v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
    ["Media vincite", "avg_win_%", v => pct(v, 2)], ["Media perdite", "avg_loss_%", v => pct(v, 2)], ["Aspettativa", "expectancy_%", v => pct(v, 2)],
-   ["Rendimento", "total_return_%", v => pct(v, 1)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Durata media", "avg_days", v => v + " gg"]]
-  .map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(([m, p]) => { const v = S[m][p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("");
-const LV = S.leverage;
-$("lev").innerHTML = `<tr><th></th><th>1x</th><th>2x</th><th>3x</th></tr>` +
-  [["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa", "expectancy_%", v => pct(v, 2)]]
-  .map(([n, k, f]) => `<tr><td>${n}</td>${["1", "2", "3"].map(l => `<td>${f(LV[l][k])}</td>`).join("")}</tr>`).join("");
+   ["Rendimento", "total_return_%", v => pct(v, 1)], ["Max drawdown giorn.", "max_dd_%", v => pct(v, 1)], ["Leva media", "avg_lev", v => v + "x"], ["Durata media", "avg_days", v => v + " gg"]]
+  .map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(p => { const v = S.periods[p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("") +
+  `<tr><th>Per anno</th>${cols.map(() => "<th></th>").join("")}</tr>` +
+  Object.entries(S.years).map(([y, v]) => `<tr><td>${y}</td><td colspan="${cols.length}">${v.trades} trade · WR ${v.win_rate == null ? "–" : v.win_rate + "%"} · ${pct(v["total_return_%"], 1)} · DD ${pct(v["max_dd_%"], 1)}</td></tr>`).join("");
+const LV = S.leverage, LK = Object.keys(LV);
+$("lev").innerHTML = `<tr><th></th>${LK.map(l => `<th>${l}x</th>`).join("")}</tr>` +
+  [["10.000 $ diventano", "final_10k", v => usd(v)], ["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown (per trade)", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa", "expectancy_%", v => pct(v, 2)]]
+  .map(([n, k, f]) => `<tr><td>${n}</td>${LK.map(l => `<td>${f(LV[l][k])}</td>`).join("")}</tr>`).join("");
 $("bySetup").innerHTML = Object.entries(S.by_setup).map(([k, v]) => `<div class="row ic">${icon(k)}<span class="k">${k}<small>${v.side} · ${v.trades} trade</small></span><span class="v strong">${v.win_rate}% · ${pct(v["expectancy_%"], 2)}</span></div>`).join("");
 // timeline condivisa: storico e trade live
-const EXIT_LABEL = { tp1: "Take profit 1", tp2: "Take profit 2", stop: "Stop loss", stop_be: "Stop a pareggio", trail: "Trailing stop", time: "Uscita a tempo" };
+const EXIT_LABEL = { tp: "Take profit", tp1: "Take profit 1", tp2: "Take profit 2", stop: "Stop loss", stop_be: "Stop a pareggio", trail: "Trailing stop", time: "Uscita a tempo" };
 const fmtD = d => new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "2-digit" });
 function evClass(e) {
   if (e.type === "signal") return "signal";
@@ -690,18 +692,18 @@ function renderTrades() {
   $("trades").innerHTML = list.map((t, n) => {
     const pos = t.pnl_pct_capital > 0, last = t.events[t.events.length - 1];
     return `<details class="trade" data-i="${R.trades[trMk].indexOf(t)}">
-      <summary>${icon(t.setup)}<span class="t1"><b>${t.side === "long" ? "Long" : "Short"} · ${t.setup}</b><small>${fmtD(t.signal_date)} → ${t.exit_date ? fmtD(t.exit_date) : "oggi"} · ${t.days} gg · DCA ${t.tranches}/3</small></span>
+      <summary>${icon(t.setup)}<span class="t1"><b>${t.side === "long" ? "Long" : "Short"} · ${t.setup}</b><small>${fmtD(t.signal_date)} → ${t.exit_date ? fmtD(t.exit_date) : "oggi"} · ${t.days} gg · DCA ${t.tranches}/2 · leva ${t.N}x</small></span>
         <span class="res"><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b><small>${exitTag(t)}</small></span>
         <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></summary>
       <div class="body">
         <div class="why"><b>Perché è scattato</b>${t.why || ""}</div>
         <div class="tchart" id="tc-${trMk}-${n}"></div>
         ${timeline(t.events, t.side)}
-        <div class="kvs"><div><span>Prezzo medio</span><b>${usd(t.avg_entry)}</b></div><div><span>Capitale usato</span><b>${Math.round(t.invested * 100)}%</b></div>
-          <div><span>PnL sull'investito</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b></div><div><span>PnL sul capitale 1x</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_capital, 2)}</b></div></div>
-        <p class="foot" style="margin:0">Commissioni ${t.fees_pct != null ? "−" + t.fees_pct.toFixed(2) + "%" : "incluse"}${t.funding_pct ? " · funding " + pct(t.funding_pct, 2) : ""} sul capitale. Stop iniziale ${usd(t.plan.stop)}, ATR ${usd(t.plan.atr)}.</p>
+        <div class="kvs"><div><span>Prezzo medio</span><b>${usd(t.avg_entry)}</b></div><div><span>Rischio · leva</span><b>${(t.risk * 100).toFixed(2)}% · ${t.N}x</b></div>
+          <div><span>PnL sul prezzo</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b></div><div><span>PnL sul capitale</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_capital, 2)}</b></div></div>
+        <p class="foot" style="margin:0">Commissioni, funding e slippage inclusi. Stop ${usd(t.plan.stop)}, TP ${usd(t.tp)}, ATR ${usd(t.plan.atr)} · delta taker ${sgn(t.dt || 0)} (${t.perp ? "spot + perp" : "solo spot"}).</p>
       </div></details>`;
-  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali dal ${fmtD(R.live_start)}: ancora nessun trade. Qui compariranno i segnali live con lo stesso dettaglio del backtest, per confrontarli con quanto promesso dallo storico.` : "Nessun trade con questo filtro."}</p></div>`;
+  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali v2 dal ${fmtD(R.live_start)}: ancora nessun trade. Qui compariranno i trade reali con lo stesso dettaglio dello storico, per confrontarli con quanto promesso.` : "Nessun trade con questo filtro."}</p></div>`;
   $("trades").querySelectorAll("details").forEach((d, n) => d.addEventListener("toggle", () => { if (d.open) tradeChart(d.querySelector(".tchart"), R.trades[trMk][+d.dataset.i]); }, { once: true }));
 }
 function tradeChart(el, t) {
@@ -749,17 +751,14 @@ renderTrades();
 })();
 
 // anatomia del win rate
-const A = S.anatomy, tot = A.loss + A.flat + A.small + A.good;
-const parts = [["Perdite", A.loss, "var(--red)", "chiuse in perdita"], ["Quasi pareggio", A.flat, "var(--label3)", "0–1%: TP1 e poi stop a pareggio"], ["Piccole vincite", A.small, "color-mix(in srgb,var(--green) 55%,transparent)", "tra +1% e +3%"], ["Vincite piene", A.good, "var(--green)", "oltre +3%"]];
-$("anaSub").textContent = `${tot} trade futures`;
+const BE = S.by_exit, TT = S.periods.Totale, tot = TT.trades, nTp = (BE.tp || { n: 0 }).n, nSt = (BE.stop || { n: 0 }).n, nTm = (BE.time || { n: 0 }).n;
+const parts = [["Stop", nSt, "var(--red)", BE.stop ? "media " + pct(BE.stop.avg, 2) + " sul capitale" : ""], ["Uscita a tempo", nTm, "var(--label3)", BE.time ? "media " + pct(BE.time.avg, 2) : "14 giorni"], ["Take profit", nTp, "var(--green)", BE.tp ? "media " + pct(BE.tp.avg, 2) + " sul capitale" : ""]];
+$("anaSub").textContent = `${tot} trade v2`;
 $("anaBar").innerHTML = parts.map(([, n, col]) => `<i style="flex:${n};background:${col}"></i>`).join("");
-$("anaLegend").innerHTML = parts.map(([k, n, col, d]) => `<div><span><i style="background:${col}"></i>${k}</span><b>${n} · ${Math.round(n / tot * 100)}%</b><small>${d}</small></div>`).join("");
-const strict = Math.round((A.small + A.good) / tot * 100), be = A.by_exit;
-$("anaNote").textContent = `Il win rate del ${Math.round((tot - A.loss) / tot * 100)}% conta come vincita ogni trade chiuso sopra zero, commissioni comprese. ` +
-  `${A.flat} vincite sono quasi a pareggio: il prezzo ha toccato il primo target (+${P.tp_atr[0]} ATR) sul ${Math.round(P.tp_weights[0] * 100)}% della posizione e poi è tornato allo stop spostato a pareggio. ` +
-  `Contando solo i trade sopra +1% il win rate è del ${strict}%; senza contare come vincite le uscite in stop o a pareggio (solo target, trailing o tempo in profitto) è del ${S.futures.full.win_rate_clean}%. ` +
-  `Il guadagno arriva soprattutto dalle uscite a tempo (${be.time ? be.time.n : 0} trade, media ${be.time ? pct(be.time.avg, 1) : "–"}) e dal trailing stop (${be.trail ? be.trail.n : 0}, media ${be.trail ? pct(be.trail.avg, 1) : "–"}); ` +
-  `gli stop pieni sono stati ${be.stop ? be.stop.n : 0}, con media ${be.stop ? pct(be.stop.avg, 1) : "–"} sull'investito.`;
+$("anaLegend").innerHTML = parts.map(([k, n, col, d]) => `<div><span><i style="background:${col}"></i>${k}</span><b>${n} · ${Math.round(n / (tot || 1) * 100)}%</b><small>${d}</small></div>`).join("");
+$("anaNote").textContent = `Il win rate del ${TT.win_rate}% conta come vincita ogni trade chiuso sopra zero, commissioni comprese; sopra +1% sul capitale è del ${TT.win_rate_1pct}%. ` +
+  `v2 ha un solo target (+1R) e uno stop vicino (1 ATR): una vincita media vale ${pct(TT["avg_win_%"], 2)}, una perdita media ${pct(TT["avg_loss_%"], 2)} sul capitale. ` +
+  `Il guadagno nasce dal numero di target raggiunti e dalla size più grande quando il flusso taker della conferma è forte.`;
 
 // ---- grafici
 const chartOpts = extra => Object.assign({ autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--label2"), fontFamily: css("--font"), fontSize: 11 },
@@ -777,7 +776,7 @@ function charts() {
   R.trades.futures.forEach(t => {
     const L = t.side === "long";
     mk.push({ time: t.signal_date, position: L ? "belowBar" : "aboveBar", color: L ? css("--green") : css("--red"), shape: L ? "arrowUp" : "arrowDown", text: t.setup });
-    if (t.exit_date) mk.push({ time: t.exit_date, position: L ? "aboveBar" : "belowBar", color: css("--label2"), shape: "circle", text: pct(t.pnl_pct_invested, 1) });
+    if (t.exit_date && t.exit !== "open") mk.push({ time: t.exit_date, position: L ? "aboveBar" : "belowBar", color: css("--label2"), shape: "circle", text: pct(t.pnl_pct_invested, 1) });
   });
   mk.sort((a, b) => a.time < b.time ? -1 : 1); candles.setMarkers(mk);
   const line = sc.addLineSeries({ color: css("--tint"), lineWidth: 2, priceLineVisible: false });
@@ -803,17 +802,17 @@ function equity(lv) {
   const pts = [{ time: R.equity.btc[0].date, value: 1 }].concat(R.equity[lv + "x"].map(p => ({ time: p.date, value: p.eq })));
   const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time === p.time) d[d.length - 1] = p; else d.push(p); });
   eqLine.setData(d); eqChart.timeScale().fitContent();
-  $("eqNote").textContent = `capitale ×${d[d.length - 1].value.toFixed(2)} · max drawdown ${S.leverage[String(lv)]["max_dd_%"]}% · scala log`;
+  $("eqNote").textContent = `capitale ×${d[d.length - 1].value.toFixed(2)} · max drawdown ${lv === 1 ? S.periods.Totale["max_dd_%"] + "% giornaliero" : S.leverage[String(lv)]["max_dd_%"] + "% per trade"} · scala log`;
 }
-seg("eqSeg", v => equity(+v)); equity(2);
+seg("eqSeg", v => equity(+v)); equity(1);
 
 // ---- simulatore
 const firstDate = R.series.date[0];
 $("simStart").min = firstDate; $("simStart").max = R.date; $("simStart").value = firstDate;
-const sim = { lev: 2, mk: "futures" };
+const sim = { lev: 1, mk: "futures" };
 let simChart, simLine;
 const levSeg = seg("simLev", v => { sim.lev = +v; simulate(); });
-seg("simMk", v => { sim.mk = v; levSeg.disable(v === "spot"); if (v === "spot") levSeg.set(1); else levSeg.set(sim.lev); simulate(); });
+
 const closedTrades = mk => R.trades[mk].filter(t => t.exit !== "open");
 function simulate() {
   const cap = Math.max(100, +$("simCap").value || 50000), start = $("simStart").value || firstDate;
@@ -825,7 +824,7 @@ function simulate() {
   const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01), cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
-  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, leva ${lev}x. Commissioni e funding inclusi; slippage e tasse esclusi.`;
+  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`;
   $("simCount").textContent = `${tr.length} trade · ${lev}x`;
   $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
     out.slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.exit}</td><td class="${r.pnl > 0 ? "pos" : "neg"}">${(r.pnl > 0 ? "+" : "−") + usd(Math.abs(r.pnl))}</td><td>${usd(r.eq)}</td></tr>`).join("");

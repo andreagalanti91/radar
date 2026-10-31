@@ -10,7 +10,7 @@ Compito (massimo 5 minuti):
 1. `git pull` sul branch corrente, poi aggiorna i dati con
    `python3 -c "from radar.data import update_all; update_all()"`.
 2. Calcola lo stato attuale con `radar.live.evaluate(build_features(...))`: prezzo, score, regime,
-   setup attivi, trade aperto (`data/state.json`), regione prevista (`report["zone"]`).
+   setup attivi, stato della strategia v2 (`report["v2"]`: nessuno / conferma / ingresso / aperto), regione prevista (`report["zone"]`).
 3. Esegui `python3 -m radar.research` e riporta train / test / holdout.
 4. Controlla la salute: date più recenti di spot, perp, funding, metrics (devono essere di ieri o di oggi),
    buchi nei dati, valori nulli nelle feature dell'ultimo giorno.

@@ -1,8 +1,9 @@
-"""Invio alert su Telegram (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)."""
+"""Invio alert su Telegram (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID). Messaggi della strategia v2."""
 from __future__ import annotations
 
 import os
 
+import pandas as pd
 import requests
 
 
@@ -10,65 +11,118 @@ def _usd(x: float) -> str:
     return f"${x:,.0f}".replace(",", ".")
 
 
-def format_event(ev: dict, report: dict) -> str:
+def _when(ts: str) -> str:
+    """'2026-11-02 08:00:00' -> '02/11 08:00 UTC'."""
+    t = pd.Timestamp(ts)
+    return t.strftime("%d/%m %H:%M UTC")
+
+
+def _side(side: str) -> str:
+    return "🟢 LONG" if side == "long" else "🔴 SHORT"
+
+
+def _plan_lines(v: dict) -> list[str]:
+    """Piano completo di un ingresso v2: livelli, size in dollari, leva, stop, TP, tempo."""
+    p, L = v["plan"], v["side"] == "long"
+    return [
+        f"<b>Ingresso 40%</b> a mercato ~{_usd(p['entry'])}: {_usd(p['t1_usd'])} di posizione = {p['t1_btc']:.4f} BTC",
+        f"<b>Limit 60%</b> a {_usd(p['limit'])} (−0,5 ATR, "
+        + (f"valido fino al {_when(v['limit_expiry'])}" if v.get("limit_expiry") else "già eseguito")
+        + f"): {_usd(p['t2_usd'])} = {p['t2_btc']:.4f} BTC",
+        f"<b>Stop</b> {_usd(p['stop'])} (1 ATR dall'ingresso) per entrambe le parti",
+        f"<b>Take profit</b> unico +1R dal medio: {_usd(p.get('tp', p['tp_first']))} con il solo 40%, "
+        f"{_usd(p['tp_full'])} se si riempie anche il limit",
+        f"<b>Uscita a tempo</b> entro il {_when(v['time_exit'])} (14 giorni)",
+        "",
+        f"<b>Su {_usd(p['capital'])}</b>: rischio {p['risk']:.2f}% = perdita allo stop ~{_usd(p['loss_usd'])} a DCA completa · "
+        f"guadagno al TP ~{_usd(p['gain_usd'])}",
+        f"<b>Leva</b> {p['lev']:.2f}x (posizione totale {_usd(p['notional'])}, margine isolato) · "
+        f"delta taker {v.get('dt', 0):+.3f} ({'spot+perp' if v.get('perp') else 'solo spot'})"
+        + (" · long sotto la SMA 40 settimane: size × 0,6" if L and v.get("below_sma40w") else ""),
+    ]
+
+
+def format_event(ev: dict, report: dict | None = None) -> str:
     t = ev["type"]
     if t == "signal":
-        p = ev["plan"]
-        side = "🟢 LONG" if p["side"] == "long" else "🔴 SHORT"
-        mk = "spot + futures" if p["side"] == "long" else "solo futures"
-        lines = [f"<b>RADAR SIGNAL BTC · NUOVO SEGNALE {side}</b> ({mk})",
-                 f"Setup: <b>{p['setup']}</b> · {p['setup_label']}",
-                 f"Perché: {p.get('why', '')}",
-                 f"Chiusura {p['date']}: {_usd(p['price'])} · score flusso {p['score']:+.2f}", "",
-                 "<b>Entrata DCA</b>"]
-        lines += [f"  {int(e['weight']*100)}% @ {_usd(e['price'])}" + (" (open domani)" if i == 0 else " (limit, 7 gg)")
-                  for i, e in enumerate(p["entries"])]
-        lines += [f"  Prezzo medio se completa: {_usd(p['avg_entry_if_full'])}",
-                  f"<b>Stop</b>: {_usd(p['stop'])} (rischio ~{p['risk_pct_full']}% sul medio)", "",
-                  "<b>Uscita DCA</b> (sul medio a DCA completa; il bot ricalcola i target a ogni tranche)"]
-        lines += [f"  {int(tp['weight']*100)}% @ {_usd(tp['price'])}" for tp in p["take_profits"]]
-        lines += [f"  {int(p['trail_weight']*100)}% in trailing a {p['trail_atr']} ATR · max {p['max_hold_days']} gg",
-                  "Dopo il TP1 lo stop va a pareggio.", "",
-                  f"<b>Leva</b> futures consigliata {p['leverage']:g}x: perdita massima ~{p['risk_pct_capital_at_leverage']}% "
-                  f"del capitale allocato se tutte le tranche si riempiono e scatta lo stop. Usa margine isolato."]
-        cap = float(os.environ.get("RADAR_CAPITAL", "50000"))
-        lev = p["leverage"] if p["side"] == "short" else p["leverage"]
-        lines += ["", f"<b>Su {_usd(cap)} a {lev:g}x</b> (futures, margine isolato)"]
-        lines += [f"  Tranche {i+1}: {_usd(cap*lev*e['weight'])} di posizione = {cap*lev*e['weight']/e['price']:.4f} BTC · margine {_usd(cap*e['weight'])}"
-                  for i, e in enumerate(p["entries"])]
-        lines += [f"  Perdita se scatta lo stop a DCA completa: ~{_usd(cap*p['risk_pct_capital_at_leverage']/100)}"]
-        if p["side"] == "long":
-            lines += [f"  Spot (senza leva): {' / '.join(_usd(cap*e['weight']) for e in p['entries'])} · perdita max ~{_usd(cap*p['risk_pct_full']/100)}"]
+        v = ev["v2"]
+        L = v["side"] == "long"
+        lines = [f"<b>RADAR SIGNAL BTC · NUOVO SEGNALE {_side(v['side'])}</b> · in attesa di conferma 4h",
+                 f"Setup: <b>{v['setup']}</b> · {v.get('setup_label', '')}",
+                 f"Perché: {v.get('why', '')}"]
+        if v["status"] == "conferma":
+            p = v["plan"]
+            lines += ["",
+                      f"<b>Ingresso solo se una candela 4h chiude {'sopra' if L else 'sotto'} {_usd(v['trigger'])}</b> "
+                      f"(soglia attuale: {'massimo' if L else 'minimo'} delle 2 candele 4h precedenti, si aggiorna a ogni barra) "
+                      f"entro il {_when(v['deadline'])}. Altrimenti il segnale scade.",
+                      "",
+                      "Piano indicativo se la conferma arriva alla soglia:",
+                      f"  40% ~{_usd(p['entry'])} · 60% limit {_usd(p['limit'])} · stop {_usd(p['stop'])} · TP {_usd(p['tp_full'])}",
+                      f"  rischio {p['risk_lo']:.1f}–{p['risk_hi']:.1f}% del capitale (dipende dal delta taker della barra di conferma), "
+                      f"leva {p['lev_lo']:.1f}–{p['lev_hi']:.1f}x",
+                      "Riceverai il piano completo in dollari alla conferma."]
         return "\n".join(lines)
-    tr, market = ev["trade"], ev["market"]
+    if t == "entry":
+        v = ev["v2"]
+        if "plan" not in v:   # ingresso e uscita tra due controlli: solo il riepilogo
+            return (f"<b>RADAR SIGNAL BTC · INGRESSO CONFERMATO {_side(v['side'])}</b>\n"
+                    f"Ingresso {_usd(v['entry'])} alle {_when(v['entry_time'])} · stop {_usd(v['stop'])} · TP {_usd(v['tp'])}")
+        when = "ora, all'apertura 4h delle " + _when(v["entry_time"]) if v["status"] == "ingresso" else _when(v["entry_time"])
+        return "\n".join([f"<b>RADAR SIGNAL BTC · INGRESSO CONFERMATO {_side(v['side'])}</b> (futures)",
+                          f"Segnale {v['signal_date']} · setup {v['setup']} · candela 4h chiusa "
+                          f"{'sopra' if v['side'] == 'long' else 'sotto'} la soglia · ingresso {when}", ""]
+                         + _plan_lines(v))
     if t == "dca_fill":
-        return (f"<b>RADAR SIGNAL BTC · DCA eseguito</b> ({market})\nTranche riempite: {tr['tranches']}/3 · "
-                f"prezzo medio {_usd(tr['avg_entry'])} · stop {_usd(tr['stop'])}")
-    if t == "tp_hit":
-        nxt = ", ".join(_usd(x) for x in tr.get("next_tps", [])) or "trailing"
-        return (f"<b>RADAR SIGNAL BTC · Take profit {tr['tp_hit']} raggiunto</b> ({market})\n"
-                f"Stop ora a {_usd(tr['stop'])} · prossimi target: {nxt} · residuo {tr['remaining']*100:.0f}%")
-    if t == "closed":
-        emoji = "✅" if tr["pnl_pct_capital"] > 0 else "❌"
-        return (f"<b>RADAR SIGNAL BTC · Trade chiuso {emoji}</b> ({market}, {tr['side']})\n"
-                f"Uscita: {tr['exit']} · {tr['days']} gg · PnL {tr['pnl_pct_invested']:+.2f}% sull'investito")
+        v = ev["v2"]
+        p = v["plan"]
+        return (f"<b>RADAR SIGNAL BTC · Limit DCA eseguito</b> ({v['side']})\n"
+                f"60% a {_usd(p['limit'])} · prezzo medio {_usd(v['avg'])} · stop {_usd(v['stop'])} · "
+                f"nuovo TP {_usd(v['tp'])} (+1R dal medio)")
+    if t in ("tp", "stop", "time"):
+        tr = ev["trade"]
+        head = {"tp": "Take profit raggiunto ✅", "stop": "Stop loss ❌", "time": "Uscita a tempo (14 giorni)"}[t]
+        if t == "time":
+            head += " ✅" if tr["pnl_pct"] > 0 else " ❌"
+        return (f"<b>RADAR SIGNAL BTC · {head}</b> ({tr['side']}, segnale {tr['signal_date']})\n"
+                f"Uscita {_usd(tr['exit_px'])} · medio {_usd(tr['avg'])} · DCA {tr['fills']}/2 · leva {tr['N']:.2f}x\n"
+                f"Risultato {tr['pnl_pct']:+.2f}% sul capitale ({tr['pnl_pct_invested']:+.2f}% sul prezzo)")
+    if t == "expired":
+        v = ev["v2"]
+        return (f"<b>RADAR SIGNAL BTC · Segnale scaduto</b> ({v['side']}, {v['signal_date']})\n"
+                f"Nessuna chiusura 4h oltre la soglia entro 72 ore: nessun ingresso.")
     return str(ev)
+
+
+def _status_line(v: dict) -> str:
+    if v["status"] == "conferma":
+        return (f"Segnale {v['side']} del {v['signal_date']} in attesa di conferma: chiusura 4h "
+                f"{'sopra' if v['side'] == 'long' else 'sotto'} {_usd(v['trigger'])} entro il {_when(v['deadline'])}")
+    if v["status"] == "ingresso":
+        return f"Ingresso {v['side']} confermato: a mercato ~{_usd(v['plan']['entry'])}, stop {_usd(v['plan']['stop'])}"
+    if v["status"] == "aperto":
+        p = v["plan"]
+        return (f"Trade {v['side']} aperto dal {_when(v['entry_time'])} · ingresso {_usd(v['entry'])} · DCA {v['fills']}/2 · "
+                f"stop {_usd(v['stop'])} · TP {_usd(v['tp'])} · leva {p['lev']:.2f}x · {v['pnl_pct_invested']:+.2f}% sul prezzo"
+                + ("" if v["filled"][1] else f" · limit {_usd(p['limit'])} attivo"))
+    return "Nessun segnale v2 attivo"
 
 
 def daily_brief(report: dict) -> str:
     c = {k: (0.0 if v is None else v) for k, v in report["components"].items()}
-    ot = report["open_trade"]["futures"]
-    pos = (f"Trade {ot['side']} aperto dal {ot['signal_date']} · medio {_usd(ot['avg_entry'])} · stop {_usd(ot['stop'])}"
-           if ot else "Nessun trade aperto")
     active = [x["setup"] for x in report.get("checklist", []) if x["active"]]
+    T = report["stats"]["periods"]["Totale"]
     return (f"<b>RADAR SIGNAL BTC · {report['date']}</b>\nPrezzo {_usd(report['price'])} · score flusso {report['score']:+.2f} "
             f"(soglia ±{report['threshold']}) · regime {report['regime']}\n"
             f"Setup attivi: {', '.join(active) if active else 'nessuno'}\n"
+            f"<b>v2</b>: {_status_line(report['v2'])}\n"
             + (f"Regione 7g · acquisto {_usd(report['zone']['buy'][0])}–{_usd(report['zone']['buy'][1])} "
                f"(toccata {report['zone']['stats']['buy_zone_touch_%']:.0f}% delle volte) · vendita "
                f"{_usd(report['zone']['sell'][0])}–{_usd(report['zone']['sell'][1])}\n" if report.get("zone") else "")
             + f"CVD perp z {c['perp_flow_z']:+.2f} · L/S retail z {c['retail_ls_z']:+.2f} · "
-            f"funding {c['funding7_annual_pct']:.1f}%/anno · F&amp;G {c['fng']:.0f}\n{pos}")
+            f"funding {c['funding7_annual_pct']:.1f}%/anno · F&amp;G {c['fng']:.0f}\n"
+            f"Storico v2 dal 2022-03: {T['trades']} trade · WR {T['win_rate']}% · {T['total_return_%']:+.1f}% · "
+            f"DD giornaliero {T['max_dd_%']}% (rischio base {report['params']['risk'] * 100:.2f}%)")
 
 
 def send(text: str) -> bool:

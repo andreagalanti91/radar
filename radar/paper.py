@@ -112,17 +112,17 @@ def _confirm(b: _Bars, sg: int, t0: int):
     return None, None, "nofill"
 
 
-def _trade(b: _Bars, sg: int, a: float, te: int, p0: float) -> dict:
+def _trade(b: _Bars, sg: int, a: float, te: int, p0: float, slip: float = SLIP) -> dict:
     """Simula un trade per nozionale pianificato = 1; path = [(giorno, pnl mark-to-market)]."""
     levels = np.array([p0, p0 - sg * STEP * a])
     w = np.array(W)
     stop = levels[-1] - sg * STOP * a
     pavg = 1.0 / np.sum(w / levels)
     rdist = abs(pavg - stop)
-    stop_pct = rdist / pavg + 2 * FEE + SLIP
+    stop_pct = rdist / pavg + 2 * FEE + slip
     filled = np.zeros(2, bool)
     qty = cost = pos = real = fees = fund = 0.0
-    reason, path = "time", []
+    reason, path, fill_bar, exit_px = "time", [], None, None
     end = min(b.n, te + HOLD * 6)
     j = te
     for j in range(te, end):
@@ -132,22 +132,22 @@ def _trade(b: _Bars, sg: int, a: float, te: int, p0: float) -> dict:
                 continue
             lv = levels[k]
             if k == 0 and j == te:
-                px = p0 * (1 + sg * SLIP)
+                px = p0 * (1 + sg * slip)
             elif k > 0 and ((sg == 1 and b.L[j] <= lv) or (sg == -1 and b.H[j] >= lv)):
                 px = min(lv, b.O[j]) if sg == 1 else max(lv, b.O[j])
-                filled_now = True
+                filled_now, fill_bar = True, j
             else:
                 continue
             q = w[k] / px
             filled[k] = True; qty += q; pos += q; cost += q * px; fees += q * px * FEE
         avg = cost / qty
         if (sg == 1 and b.L[j] <= stop) or (sg == -1 and b.H[j] >= stop):
-            px = (min(stop, b.O[j]) if sg == 1 else max(stop, b.O[j])) * (1 - sg * SLIP)
-            real += sg * pos * (px - avg); fees += pos * px * FEE; pos = 0.0; reason = "stop"
+            px = (min(stop, b.O[j]) if sg == 1 else max(stop, b.O[j])) * (1 - sg * slip)
+            real += sg * pos * (px - avg); fees += pos * px * FEE; pos = 0.0; reason, exit_px = "stop", px
         elif not filled_now:
             x = avg + sg * TP_R * rdist
             if (sg == 1 and b.H[j] >= x) or (sg == -1 and b.L[j] <= x):
-                real += sg * pos * (x - avg); fees += pos * x * FEE; pos = 0.0; reason = "tp"
+                real += sg * pos * (x - avg); fees += pos * x * FEE; pos = 0.0; reason, exit_px = "tp", x
         if b.last_of_day[j] or j == end - 1:
             di = b.dob[j]
             if pos > 1e-12:
@@ -158,8 +158,8 @@ def _trade(b: _Bars, sg: int, a: float, te: int, p0: float) -> dict:
     # ancora in posizione a fine dati prima dei 14 giorni: trade aperto (valutato all'ultima chiusura)
     is_open = pos > 1e-12 and end == b.n and te + HOLD * 6 > b.n
     if pos > 1e-12 and not is_open:
-        px = b.C[j] * (1 - sg * SLIP)
-        real += sg * pos * (px - avg); fees += pos * px * FEE; pos = 0.0
+        px = b.C[j] * (1 - sg * slip)
+        real += sg * pos * (px - avg); fees += pos * px * FEE; pos = 0.0; exit_px = px
     pnl = real - fees + fund + (sg * pos * (b.C[j] - avg) if is_open else 0.0)
     di = b.dob[j]
     if path and path[-1][0] == di:
@@ -168,7 +168,8 @@ def _trade(b: _Bars, sg: int, a: float, te: int, p0: float) -> dict:
         path.append((di, pnl))
     out = dict(sg=sg, entry_bar=te, entry=float(p0), avg=float(avg), stop=float(stop), tp=float(avg + sg * TP_R * rdist),
                levels=levels.tolist(), filled=filled.tolist(), fills=int(filled.sum()), pnl=float(pnl),
-               reason="open" if is_open else reason, exit_bar=j, exit_day=int(di), path=path, stop_pct=float(stop_pct))
+               reason="open" if is_open else reason, exit_bar=j, exit_day=int(di), path=path, stop_pct=float(stop_pct),
+               fill_bar=fill_bar, exit_px=None if exit_px is None else float(exit_px))
     if is_open:
         out["limit_expiry"] = str(b.T[te] + pd.Timedelta(days=LIM_DAYS)) if not filled[1] else None
         out["time_exit"] = str(b.T[te] + pd.Timedelta(days=HOLD))
@@ -194,8 +195,9 @@ def dt_4h(h4: pd.DataFrame) -> pd.DataFrame:
     return d
 
 
-def v2_risk(f: pd.DataFrame, h4: pd.DataFrame):
-    """Funzione di rischio di v2: (segno, giorno del segnale, barra di conferma) -> (rischio, dettagli)."""
+def v2_risk(f: pd.DataFrame, h4: pd.DataFrame, base: float = V2_BASE):
+    """Funzione di rischio di v2: (segno, giorno del segnale, barra di conferma) -> (rischio, dettagli).
+    `base` = rischio base (ricerca 5,24%; segnali reali 4,67%, vedi radar/live.py)."""
     dt = dt_4h(h4)
     wk = f["close"].resample("W-SUN").last()
     sma = wk.rolling(V2_SMA).mean()
@@ -205,7 +207,7 @@ def v2_risk(f: pd.DataFrame, h4: pd.DataFrame):
         below = bool(len(w) and not np.isnan(sma[w[-1]]) and wk[w[-1]] < sma[w[-1]])
         x = sg * float(dt.at[tc, "mix"]) if tc in dt.index else 0.0
         m = V2_M if (sg == 1 and below) else 1.0
-        r = V2_BASE * (0.5 + V2_K * np.clip(x, 0, V2_CLIP) / V2_CLIP) * m
+        r = base * (0.5 + V2_K * np.clip(x, 0, V2_CLIP) / V2_CLIP) * m
         perp = bool(dt.at[tc, "perp_ok"]) if tc in dt.index else False
         return float(r), dict(dt=round(x, 4), below_sma40w=below, perp=perp)
     return fn
@@ -225,7 +227,7 @@ def frozen_risk(fn, saved: dict):
 
 
 def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float = 10000.0, risk: float = 0.03,
-             risk_fn=None) -> dict:
+             risk_fn=None, slip: float = SLIP) -> dict:
     """Conto dal giorno `start`: trade chiusi, eventuale trade aperto/conferma attesa, equity giornaliera, statistiche.
     Rischio fisso `risk` (H2) oppure `risk_fn(segno, giorno segnale, apertura barra 4h di conferma)` (v2)."""
     b = _Bars(h4, f)
@@ -256,7 +258,7 @@ def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float
         if st == "nofill":
             nxt = int(b.dob[min(t0 + WIN, b.n - 1)]) + COOLDOWN
             continue
-        t = _trade(b, sg, a, te, p0)
+        t = _trade(b, sg, a, te, p0, slip)
         rk, info = risk_fn(sg, d, b.T[te - 1]) if risk_fn else (risk, {})
         N = min(CAP, rk / t["stop_pct"])
         for di, v in t["path"]:
@@ -266,7 +268,10 @@ def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float
                    entry_time=str(b.T[te]), entry=round(t["entry"], 2), avg=round(t["avg"], 2), stop=round(t["stop"], 2),
                    tp=round(t["tp"], 2), fills=t["fills"], exit=t["reason"], exit_date=str(b.days[t["exit_day"]].date()),
                    N=round(N, 3), pnl_pct=round(N * t["pnl"] * 100, 2), pnl_usd=round(Es * N * t["pnl"] * capital, 2),
-                   risk=round(rk, 4), **info, pnl_unit=t["pnl"])
+                   risk=round(rk, 4), **info, pnl_unit=t["pnl"],
+                   # dettagli per i segnali reali (radar/live.py); non salvati in data/paper.json
+                   atr=round(a, 2), levels=[round(x, 2) for x in t["levels"]], exit_px=t["exit_px"],
+                   fill_time=None if t["fill_bar"] is None else str(b.T[t["fill_bar"]]), exit_time=str(b.T[t["exit_bar"]]))
         if t["reason"] == "open":
             open_pos = dict(row, status="aperto", levels=[round(x, 2) for x in t["levels"]], filled=t["filled"],
                             limit_expiry=t["limit_expiry"], time_exit=t["time_exit"],
@@ -293,12 +298,15 @@ def stats(trades: list, eq: pd.Series) -> dict:
                 ret=round(float(eq.iloc[-1] / eq.iloc[0] - 1) * 100, 1), dd=round(float((eq / eq.cummax() - 1).min()) * 100, 1))
 
 
+LIVE_KEYS = ("pnl_unit", "atr", "levels", "exit_px", "fill_time", "exit_time")
+
+
 def _account(r: dict, version: str, start: str, ref: dict) -> dict:
     eq = r["equity"]
     return dict(
         version=version, start=start, capital0=r["capital"], risk=r["risk"] if r.get("risk_fn") is None else "v2",
         capital=round(float(eq.iloc[-1]), 2) if len(eq) else r["capital"], stats=r["stats"], open=r["open"],
-        trades=[{k: v for k, v in t.items() if k != "pnl_unit"} for t in r["trades"]],
+        trades=[{k: v for k, v in t.items() if k not in LIVE_KEYS} for t in r["trades"]],
         equity=[[str(d.date()), round(float(v), 2)] for d, v in eq.items()],
         reference=dict(start=REF_START, **ref["stats"]),
     )
