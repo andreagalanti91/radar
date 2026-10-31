@@ -48,7 +48,9 @@ def _levels(report: dict) -> tuple[list[dict], str | None]:
                  "label": f"soglia di conferma 4h ({'sopra' if sg == 1 else 'sotto'})"}], since
     p = v["plan"]
     out = []
-    if st == "ingresso" or not v["filled"][1]:
+    exp = v.get("limit_expiry") or p.get("limit_expiry")
+    still_valid = not exp or pd.Timestamp.now(tz="UTC").tz_localize(None) < pd.Timestamp(exp)
+    if (st == "ingresso" or not v["filled"][1]) and still_valid:  # dopo la scadenza il limit è annullato
         out.append({"kind": "entry", "price": p["limit"], "sg": sg, "label": "limit DCA 60%"})
     out.append({"kind": "stop", "price": v.get("stop", p["stop"]), "sg": sg, "label": "stop loss"})
     out.append({"kind": "tp", "price": v.get("tp", p["tp_first"]), "sg": sg, "label": "take profit +1R"})

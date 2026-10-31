@@ -234,6 +234,19 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 09:47 — scadenza del limit della 2ª tranche (E48) · DA APPROFONDIRE (revisione), su carta
+Preregistrato: E24/E48/E72/E96 (2ª tranche annullata dopo H ore) e R48/R72 (ridotta). E48: al 4,3% +188,2% vs +170,5%, DD −8,7% vs
+−11,1%; r_boot 329,7 vs 225,9 (dal 2021 255,9 vs 181,6); placebo p 0,015/0,02; walk-forward ≥ v2 in 3 finestre; vicini E36–E72 sopra v2.
+**Revisione: DA APPROFONDIRE.** L'effetto viene da 9 trade e soprattutto dai 5 riempimenti ≥ 72 h che avevano generato l'ipotesi
+(lezione 34); i 4 nuovi (52–68 h) danno effetto nullo; quota di stop 6/9 vs 22/49 non significativa (p ≈ 0,17); con slippage 0,2% la
+riduzione del DD sparisce; il +46% a r_boot è quasi tutto leva consentita. Decisione autonoma: NON nei segnali reali; E48/E72 su carta.
+Correzione del tool trovata dalla revisione: il controllo orario sorvegliava il limit della 2ª tranche anche dopo la scadenza
+(7 giorni) → ora non lo sorveglia più (radar/intraday.py).
+**Lezione 37**: un'ipotesi trovata a posteriori e "confermata" sullo stesso campione resta un'ipotesi: separare i trade che hanno
+generato l'idea da quelli nuovi; usare statistiche del placebo che non dipendano da un solo cluster di drawdown (R medio, perdita
+media degli stop). Prossimo: quantità della 2ª tranche che scala con l'età del limit (regola continua su più trade); verifica del
+meccanismo su altri asset o BTC pre-2021 come campione indipendente.
+
 ### Giorno 31/10 · ricerche W1 e W2 — STRATEGIA SETTIMANALE (poche operazioni, grandi movimenti) · NON PROMUOVERE, W2 su carta
 - **W1, famiglie classiche** (33 configurazioni preregistrate, spot 1x long/flat dal 2021): ensemble momentum 4/8/13/26 settimane
   2,9 trade/anno, WR 29%, medio +11,2%, +278% (10.000 $ → 37.842 $), DD −43,7%, placebo p 0,04, walk-forward positivo; fallisce
