@@ -170,6 +170,12 @@ download dei klines con taker buy spot e perp nel workflow orario), delta su 1h 
   (prudente: spot da solo r_boot +206% vs mix +226%). Riprodotto sui dati al 2026-10-30: 105 trade, WR 79,0%, +225,8%, DD −13,5%,
   10.000 $ → 32.580 $ (ricerca: 32.580 $), stessi trade di H2; test di non regressione in tests/test_paper.py.
 
+### Mattino 31/10/2026 07:17 — resoconto della notte inviato su Telegram
+Notte: 10 giri (modulo su carta H2 → v2, latenza ridotta; temi trend settimanale, volume/delta taker, size continua,
+conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione: **v2** (r_boot +226%, DD −13,5%).
+Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
+priorità della ricerca.
+
 ### Notte · ora 06:47 — rischio dinamico in funzione del drawdown del conto (v2) · NON PROMUOVERE
 Preregistrato, 9 varianti (gradini −6/8/10% → ×0,7, −12/14% → ×0,5; continua ×max(0,5; 1−DD/0,20); anti-martingala ×1,2 a nuovo
 massimo). Migliore C20 continua: +262% vs v2 +226% (1,16×), DD 15,0%, P(DD>20%) 11,5%, slippage 0,2% +158% vs +140%;
