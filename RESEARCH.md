@@ -200,6 +200,21 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giorno 31/10 · ricerca L1 — solo long, controllo perdite, "quando andare long", registro degli stop · NON PROMUOVERE
+**Registro dei trade andati male: research/LOSERS.md e research/losers.csv** (una scheda per ognuno dei 22 stop di v2, con
+pattern ricorrenti e regole candidate). Ogni giro di ricerca lo legge e lo aggiorna con i nuovi stop reali.
+- Solo long: +122% vs v2 +226% (r_boot), 2026 +18% vs +49% → gli short servono (−46% di rendimento senza).
+- Controllo perdite (8 varianti preregistrate): tetto al rischio 2/3/4% (perdita max −2,1/−3,2/−4,3% ma rendimento 23–56% di v2);
+  uscita anticipata 3/6 barre (peggiora, anche la perdita max); 2° livello condizionato al delta (peggiora); stop dal medio −1R
+  (+5%, non riduce gli stop); TP di salvataggio 0,5/0,75R (peggiora). Frontiera a parità di perdita max: con tetto 3,76% e base
+  5,75% la perdita max per trade scende a −4% (10.000 $ → 21.747 $ a 1x vs 29.163 $ di v2).
+- Punteggio long (W-SMA40, RSI 4h, volatilità, funding): placebo p 0,48 → bocciato.
+- **Lezione 31**: TUTTI i 22 stop hanno riempito il 2° livello DCA (i 56 trade a un livello sono tutti TP); quasi nessuno stop era
+  andato in profitto (MFE 0,29R); 6 su 22 sono shock (Celsius, Jackson Hole, FTX, 08/2023, carry trade 08/2024, FOMC 12/2024) dove
+  lo stop stretto ha limitato il danno. Le perdite grandi sono il costo del peso sul delta taker, che però paga (terzile alto: 14%
+  di stop, +2,0% medio). Unica leva sulla perdita massima: tetto al rischio, a caro prezzo.
+- Prossimo: peso v2 solo sulla 1ª tranche (2ª a peso neutro); rischio ×0,5 entro 48h da FOMC/CPI/NFP; short ipervenduti ×0,6.
+
 ### Giorno 31/10 · ricerca s1 — short e previsione della direzione dal 2021 · NON PROMUOVERE (v2 resta il campione)
 Dati 1h spot/perp con taker scaricati dal 2020-06 (identici al repo). Nel 2021 flow/sflow non scattano (ls_z dal 03/2022) →
 v2 ridotto. v2 dal 2021 (bootstrap a blocchi, r_boot 5,07%): +199%, DD 13%; 2021 −9% (soli long fundneg/capit).
