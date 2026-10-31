@@ -234,6 +234,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 13:47 — distribuzione come setup short · TEST SENZA POTENZA
+Episodi distinti dal 2021: 7 (soglia 0,0006) e 5 (0,0009) < 8 richiesti → solo diagnostica. BTC dopo l'inizio dell'episodio:
+14 g −4,4% / −6,9% di media contro +1,1% nei giorni con funding > 0, ma quasi tutto dal crollo di maggio 2021 (−30,5%); senza,
+≈ −0,9%. Il 70% dei giorni in distribuzione è nel 2021, nessuno dal 2025. **Lezione 42**: la distribuzione è un'uscita lenta per
+lo swing settimanale, non dà abbastanza eventi per un setup a sé. Idea: BTC 2019–2020 come campione indipendente, o funding_z alto
+con pf14z negativo come peso continuo degli short v2.
+
 ### Giro W4 · 31/10 pomeriggio — portafoglio W2 spot + v2 a peso basso, freno anti-range · NON PROMUOVERE (revisione)
 Preregistrato (5 varianti). P1 20/80 e P2 25/75 passano i 5 criteri: P1 dal 2022-03 +188,0% (v2 +170,5%), DD −13,1%, MAR 14,33 (v2 15,41),
 P(DD>20%) 0,057 (0,101 con slippage 0,2%), dal 2021 +253% vs +159%, walk-forward 113,1 vs 111,8; 10.000 $ → 28.801 $ (v2 27.051 $).
