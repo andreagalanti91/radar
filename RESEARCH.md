@@ -87,6 +87,12 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Decisione dell'utente (31/10/2026): estendere v2 ad altri asset (azioni, materie prime, crypto)
+Sostituisce "SOLO BTC" per questa linea: analizzare in profondità e testare se v2 conviene su altri asset; se conviene,
+upgrade del tool con un filtro per asset. BTC resta il riferimento e il segnale principale finché un asset non passa i criteri
+(parametri v2 congelati, senza riottimizzare per asset; criteri obbligatori invariati). Fonti: Binance (spot, perp, metrics,
+taker) per le crypto e per XAU/XAG/PAXG; azioni da verificare (Yahoo risponde 429, stooq bloccato).
+
 ## Focus dell'utente (31/10/2026, mattina): limitare il drawdown imparando dai trade passati
 1. Studiare e apprendere dai trade passati (research/LOSERS.md) per limitare il drawdown: regole candidate R1 (peso v2 solo
    sulla 1ª tranche), R2 (rischio ×0,5 entro 48h da FOMC/CPI/NFP), R3 (short ipervenduti ×0,6), più nuove regole dal registro.
