@@ -234,6 +234,18 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro W4 · 31/10 pomeriggio — portafoglio W2 spot + v2 a peso basso, freno anti-range · NON PROMUOVERE (revisione)
+Preregistrato (5 varianti). P1 20/80 e P2 25/75 passano i 5 criteri: P1 dal 2022-03 +188,0% (v2 +170,5%), DD −13,1%, MAR 14,33 (v2 15,41),
+P(DD>20%) 0,057 (0,101 con slippage 0,2%), dal 2021 +253% vs +159%, walk-forward 113,1 vs 111,8; 10.000 $ → 28.801 $ (v2 27.051 $).
+Peso dinamico (P3) e freno dopo un long perso (placebo p 0,40/0,22) bocciati.
+**Revisione: NON PROMUOVERE.** Togliendo il miglior trade W2 (long 02–03/2024, +61%) P1 scende a +159,5%, sotto v2; v2 scalata allo
+stesso DD (≈1,1–1,2x) fa +197/+221% con MAR 16–17 e coda più bassa → P1 è dominato; il MAR cala in modo regolare con il peso di W2
+(10% 15,7 → 30% 11,9): il "+15 punti" si compra con il DD; i pesi 20/25% scelti dopo il 30/70 fallito; walk-forward non fuori campione
+per W2 (scelta su 2021–26); dato dal 2021 trainato dal toro 2021 di W2. Complessità operativa alta (spot+perp, due conti, ribilanciamento).
+**Lezione 41**: un componente a pochi trade e DD alto supera "v2 + X punti" solo pagando DD; confrontare sempre con v2 scalata allo
+stesso DD e con il test "senza i migliori 1–3 trade". Prossimo: aggiungere questi due controlli al gate; valutare il rischio di v2
+~4,8–5% con bootstrap e slippage 0,2%; validare W2 su campione indipendente (BTC 2017–2020).
+
 ### Approfondimento · 31/10 ore 12 — analisi tecnica codificata (TA1) e W2 eseguita in spot (W3) · NON PROMUOVERE
 - **TA1, analisi tecnica** (9 metodi tradotti in regole oggettive, 34 configurazioni preregistrate, dal 2021, perp 1x long/short):
   NON funzionano Fibonacci (WR 9–11%, 39 stop su 44), pattern grafici (doppi, triangoli; testa e spalle 0 trade con le definizioni
