@@ -234,6 +234,16 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 14:47 — validazione indipendente di W2 prima del 2021 · PROVA DEBOLE, W2 resta su carta
+Perp/funding Binance solo dal 2020-01 (nessun archivio 2019, API 451); pf14z calcolabile dal 2020-04-12. 2020: 3 trade long (+20%, +66%,
++48% aperto), W2 +195% / V1 +214%, DD −14%, MAR 13–15 vs B&H 5,6 (B&H +302%, DD −54%), placebo p 0,04 → criteri passati, ma il MAR
+vince solo perché W2 non esisteva durante il crollo di marzo; dal 13/04/2020 il B&H fa MAR 18,4 (K2 fallisce, p 0,08–0,09).
+Variante preregistrata con CVD spot al posto di pf14z (2018–2020): short 16/03–27/04/2020 a **−44,7%** (entrato dopo la capitolazione,
+stop a 2,5 ATR settimanali a +63%); sul 2021–26 la variante fa MAR 1,9 → il CVD spot non sostituisce pf14z.
+**Lezione 43**: le uscite su distribuzione di W2 si confermano fuori campione (agosto e novembre 2020 vicino ai massimi), ma W2 ha un
+rischio di coda non visto nel 2021–26: uno short di regime dopo una capitolazione può perdere ~45% a 1x. Prossimo: tetto di rischio
+per trade su W2 (esposizione = min(1, 20% / distanza stop)) o niente short dopo una settimana scesa > 2 ATR, preregistrato.
+
 ### Giro orario · 31/10 13:47 — distribuzione come setup short · TEST SENZA POTENZA
 Episodi distinti dal 2021: 7 (soglia 0,0006) e 5 (0,0009) < 8 richiesti → solo diagnostica. BTC dopo l'inizio dell'episodio:
 14 g −4,4% / −6,9% di media contro +1,1% nei giorni con funding > 0, ma quasi tutto dal crollo di maggio 2021 (−30,5%); senza,
