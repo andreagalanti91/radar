@@ -87,6 +87,16 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Focus dell'utente (31/10/2026, oggi): STRATEGIA SETTIMANALE — poche operazioni, grandi movimenti
+"Meglio 3–4 operazioni l'anno da +20/30% l'una, accettando drawdown, che 100 operazioni da 2–3%." Swing SETTIMANALI, non giornalieri.
+Cercare strategie note (online), integrare indicatori, produrre un pensiero proprio per battere il mercato; backtest dal 2021 a oggi
+(con storico settimanale dal 2017–2018 per scaldare gli indicatori) con tutto il processo di selezione (preregistrazione, walk-forward,
+placebo, vicini, bootstrap a blocchi, slippage). Metriche di riferimento: trade/anno (obiettivo 2–6), guadagno medio per trade
+(obiettivo ≥ +15–20%), rendimento annuo composto, max DD giornaliero (accettato più alto, da riportare), MAR, confronto con buy & hold
+e con v2. Spunti dalla letteratura: momentum di serie temporale settimanale su BTC (Liu–Tsyvinski 2018: 1–4 settimane), trend
+long/flat su medie settimanali (unico vantaggio stabile trovato dall'agente H, giro 9), 200W MA come zona di accumulo, indicatori
+di ciclo (MVRV, Pi Cycle) indeboliti negli ultimi cicli (Quantpedia).
+
 ## Decisione dell'utente (31/10/2026): estendere v2 ad altri asset (azioni, materie prime, crypto)
 Sostituisce "SOLO BTC" per questa linea: analizzare in profondità e testare se v2 conviene su altri asset; se conviene,
 upgrade del tool con un filtro per asset. BTC resta il riferimento e il segnale principale finché un asset non passa i criteri
