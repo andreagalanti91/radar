@@ -137,6 +137,17 @@ e il walk-forward sceglie V10+D0 peso, non D10. Al rischio massimo che tiene il 
 I pesi concentrati alzano la coda del bootstrap anche se il DD storico scende: va sempre verificato al rischio di DD 15%.
 Prossimo: peso continuo clip(DT,0,0,15) + peso W-SMA40, delta taker perp e divergenza perp−spot.
 
+### Notte · ora 00:47 — size continua di H2 (delta taker spot/perp + W-SMA40) · NON PROMUOVERE (miglior sfidante finora)
+Preregistrato, 20 combinazioni; rendimento valutato al rischio che tiene il bootstrap P(DD>20%) ≤ 15% (r_boot).
+**Mk1.5+W0.6**: rischio = 5,24% × (0,5 + 1,5·clip(DT_mix,0,0,15)/0,15) × (0,6 se long sotto la SMA 40 settimane),
+DT_mix = media delta taker spot e perp sulla barra 4h di conferma; stessi 105 trade di H2 (WR 79%).
+**r_boot +226% (H2 +124%)**, DD −13,5%, per periodo +34 / +63 / +49; placebo segnali p 0,024; pesi permutati p 0,035;
+vicini tutti in profitto (k 2,0 e clip 0,10 superano il bootstrap). NON passa il walk-forward per coerenza (train 22–23 sceglie
+la fonte spot, 22–25 il mix; entrambi positivi nel test). 10.000 $ al rischio r_boot: 32.580 $ (H2 22.460 $).
+**Lezione 23**: il delta taker come peso CONTINUO quasi raddoppia il rendimento a parità di rischio di coda; il delta perp da
+solo non basta, la media spot/perp regge meglio il bootstrap; un clip stretto concentra il rischio e fa esplodere la coda.
+Prossimo: walk-forward con fonte come unico iperparametro (k 1,5, W 0,6 fissi), tetto al rischio per trade.
+
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
   delle 2 candele 4h precedenti (short: sotto il minimo), 2 livelli 40/60 a −0,5 ATR dal prezzo di ingresso, stop 1 ATR, TP 1R,
