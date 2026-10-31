@@ -31,7 +31,7 @@ def daily() -> None:
     d = update_all()
     f = build_features(d)
     report = evaluate(f)
-    try:   # modulo su carta (H2): un errore qui non deve fermare alert e dashboard
+    try:   # modulo su carta (H2 e v2): un errore qui non deve fermare alert e dashboard
         paper.update(f)
     except Exception as e:  # noqa: BLE001
         print(f"[radar] modulo su carta non aggiornato: {e!r}")

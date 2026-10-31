@@ -278,10 +278,79 @@ def fetch_fng() -> pd.DataFrame:
     return _merge_cache("fng", out)
 
 
+# ---------------------------------------------------------------- taker buy orario (spot e perp) per v2 su carta
+def _klines_1h(df: pd.DataFrame) -> pd.DataFrame:
+    """Klines 1h (API o archivio) -> volume e taker buy base indicizzati sull'ora di apertura UTC."""
+    df = df.iloc[:, :12].copy()
+    df.columns = KLINE_COLS
+    df = df[pd.to_numeric(df["open_time"], errors="coerce").notna()]
+    ot = pd.to_numeric(df["open_time"]).astype("int64")
+    ot = ot.where(ot < 10**14, ot // 1000)  # alcuni file recenti sono in microsecondi
+    out = pd.DataFrame({"vol": pd.to_numeric(df["volume"]).values, "taker": pd.to_numeric(df["taker_buy_volume"]).values},
+                       index=pd.DatetimeIndex(pd.to_datetime(ot, unit="ms"), name="t"))
+    return out[~out.index.duplicated(keep="last")]
+
+
+def fetch_taker_1h() -> pd.DataFrame:
+    """Volume e taker buy base orari dal 2022-01 (data/taker_1h.csv: spot_vol, spot_taker, perp_vol, perp_taker).
+
+    - spot: data-api.binance.vision/api/v3/klines (col 5 volume, col 9 taker buy base), in tempo reale;
+    - perp: archivio data.binance.vision (mensile per lo storico, giornaliero per il mese in corso). L'API fapi è
+      bloccata (451) e l'archivio giornaliero arriva con ~1 giorno di ritardo: le ultime ore hanno spesso il perp
+      vuoto. Regola di v2 su carta (paper.dt_4h): se manca il perp della barra di conferma si usa il solo spot.
+    Solo ore chiuse; si riscaricano sempre le ore dall'ultimo perp disponibile per riempire i buchi.
+    """
+    path = DATA_DIR / "taker_1h.csv"
+    old = pd.read_csv(path, index_col=0, parse_dates=True) if path.exists() else None
+    t0 = pd.Timestamp("2022-01-01")
+    now = pd.Timestamp(datetime.now(timezone.utc).replace(tzinfo=None)).floor("h")  # ora in corso: esclusa
+    s_from = old["spot_vol"].dropna().index.max() - pd.Timedelta(hours=2) if old is not None else t0
+    p_last = old["perp_vol"].dropna().index.max() if old is not None and old["perp_vol"].notna().any() else None
+    p_from = (p_last - pd.Timedelta(days=1)).normalize() if p_last is not None else t0
+    # spot
+    rows, start_ms = [], int(s_from.tz_localize("UTC").timestamp() * 1000)
+    while True:
+        batch = _get("https://data-api.binance.vision/api/v3/klines",
+                     {"symbol": SYMBOL, "interval": "1h", "startTime": start_ms, "limit": 1000}).json()
+        if not batch:
+            break
+        rows += batch
+        start_ms = batch[-1][0] + 3_600_000
+        if len(batch) < 1000:
+            break
+    spot = _klines_1h(pd.DataFrame(rows)) if rows else pd.DataFrame(columns=["vol", "taker"])
+    # perp: mesi chiusi dall'archivio mensile (se manca, giorni singoli), mese in corso dai file giornalieri
+    today = _today()
+    this_month = date(today.year, today.month, 1)
+    months = [m for m in _months(p_from.date(), today) if m < this_month]
+    days = list(_days(max(p_from.date(), this_month), today))
+    frames = []
+    with ThreadPoolExecutor(8) as ex:
+        for m, df in zip(months, ex.map(lambda m: _zip_csv(f"{ARCHIVE}/monthly/klines/{SYMBOL}/1h/{SYMBOL}-1h-{m:%Y-%m}.zip", "open_time"), months)):
+            if df is not None:
+                frames.append(_klines_1h(df))
+            else:
+                days += list(_days(max(m, p_from.date()), _months_end(m)))
+    with ThreadPoolExecutor(8) as ex:
+        for df in ex.map(lambda d: _zip_csv(f"{ARCHIVE}/daily/klines/{SYMBOL}/1h/{SYMBOL}-1h-{d:%Y-%m-%d}.zip", "open_time"), days):
+            if df is not None:
+                frames.append(_klines_1h(df))
+    perp = pd.concat(frames) if frames else pd.DataFrame(columns=["vol", "taker"])
+    perp = perp[~perp.index.duplicated(keep="last")]
+    new = pd.concat([spot.add_prefix("spot_"), perp.add_prefix("perp_")], axis=1).astype(float)
+    if old is not None:
+        new = new.combine_first(old)   # i valori nuovi prevalgono, i vecchi restano dove non riscaricati
+    new = new[(new.index >= t0) & (new.index < now)].sort_index().round(4)
+    new.index.name = "t"
+    DATA_DIR.mkdir(exist_ok=True)
+    new[["spot_vol", "spot_taker", "perp_vol", "perp_taker"]].to_csv(path)
+    return new
+
+
 def update_all(verbose: bool = True) -> dict[str, pd.DataFrame]:
     out = {}
     for name, fn in [("spot", fetch_spot), ("spot_1h", fetch_spot_1h), ("perp", fetch_perp), ("funding", fetch_funding),
-                     ("metrics", fetch_metrics), ("fng", fetch_fng)]:
+                     ("metrics", fetch_metrics), ("fng", fetch_fng), ("taker_1h", fetch_taker_1h)]:
         t = time.time()
         out[name] = fn()
         if verbose:

@@ -1,7 +1,6 @@
 {
  "version": "H2 v1",
  "start": "2026-10-31",
- "updated": "2026-10-31 00:00:00",
  "capital0": 10000.0,
  "risk": 0.03,
  "capital": 10000.0,
@@ -20,5 +19,1005 @@
   "wr": 79.0,
   "ret": 85.4,
   "dd": -11.4
+ },
+ "updated": "2026-10-31 00:00:00",
+ "h2": {
+  "version": "H2 v1",
+  "start": "2026-10-31",
+  "capital0": 10000.0,
+  "risk": 0.03,
+  "capital": 10000.0,
+  "stats": {
+   "n": 0,
+   "wr": null,
+   "ret": 0.0,
+   "dd": 0.0
+  },
+  "open": null,
+  "trades": [],
+  "equity": [],
+  "reference": {
+   "start": "2022-03-01",
+   "n": 105,
+   "wr": 79.0,
+   "ret": 85.4,
+   "dd": -11.4
+  }
+ },
+ "v2": {
+  "version": "v2",
+  "start": "2026-10-31",
+  "capital0": 10000.0,
+  "risk": {
+   "base": 0.0524,
+   "k": 1.5,
+   "clip": 0.15,
+   "m_long_sotto_sma40w": 0.6,
+   "cap": 5.0
+  },
+  "capital": 10000.0,
+  "stats": {
+   "n": 0,
+   "wr": null,
+   "ret": 0.0,
+   "dd": 0.0
+  },
+  "open": null,
+  "trades": [],
+  "equity": [],
+  "reference": {
+   "start": "2022-03-01",
+   "n": 105,
+   "wr": 79.0,
+   "ret": 225.8,
+   "dd": -13.5,
+   "trades": [
+    {
+     "date": "2022-03-24",
+     "side": "long",
+     "risk": 0.0362,
+     "dt": 0.0653,
+     "perp": true,
+     "N": 1.086,
+     "pnl_pct": 1.29
+    },
+    {
+     "date": "2022-04-09",
+     "side": "short",
+     "risk": 0.0728,
+     "dt": 0.0889,
+     "perp": true,
+     "N": 2.349,
+     "pnl_pct": 2.67
+    },
+    {
+     "date": "2022-04-15",
+     "side": "short",
+     "risk": 0.0686,
+     "dt": 0.0808,
+     "perp": true,
+     "N": 2.081,
+     "pnl_pct": 2.56
+    },
+    {
+     "date": "2022-04-23",
+     "side": "long",
+     "risk": 0.0389,
+     "dt": 0.0738,
+     "perp": true,
+     "N": 1.227,
+     "pnl_pct": -3.93
+    },
+    {
+     "date": "2022-05-06",
+     "side": "short",
+     "risk": 0.0616,
+     "dt": 0.0675,
+     "perp": true,
+     "N": 1.654,
+     "pnl_pct": 2.3
+    },
+    {
+     "date": "2022-05-10",
+     "side": "long",
+     "risk": 0.0324,
+     "dt": 0.053,
+     "perp": true,
+     "N": 0.659,
+     "pnl_pct": 3.02
+    },
+    {
+     "date": "2022-05-23",
+     "side": "long",
+     "risk": 0.0383,
+     "dt": 0.0718,
+     "perp": true,
+     "N": 0.781,
+     "pnl_pct": 3.5
+    },
+    {
+     "date": "2022-05-31",
+     "side": "short",
+     "risk": 0.0457,
+     "dt": 0.0372,
+     "perp": true,
+     "N": 1.16,
+     "pnl_pct": 1.72
+    },
+    {
+     "date": "2022-06-06",
+     "side": "long",
+     "risk": 0.0157,
+     "dt": -0.005,
+     "perp": true,
+     "N": 0.401,
+     "pnl_pct": 0.57
+    },
+    {
+     "date": "2022-06-13",
+     "side": "long",
+     "risk": 0.0271,
+     "dt": 0.0363,
+     "perp": true,
+     "N": 0.458,
+     "pnl_pct": -2.73
+    },
+    {
+     "date": "2022-06-17",
+     "side": "long",
+     "risk": 0.038,
+     "dt": 0.0708,
+     "perp": true,
+     "N": 0.529,
+     "pnl_pct": 1.41
+    },
+    {
+     "date": "2022-07-05",
+     "side": "long",
+     "risk": 0.0321,
+     "dt": 0.0521,
+     "perp": true,
+     "N": 0.63,
+     "pnl_pct": 1.18
+    },
+    {
+     "date": "2022-07-09",
+     "side": "short",
+     "risk": 0.0513,
+     "dt": 0.0478,
+     "perp": true,
+     "N": 1.128,
+     "pnl_pct": 1.97
+    },
+    {
+     "date": "2022-07-13",
+     "side": "long",
+     "risk": 0.0263,
+     "dt": 0.0337,
+     "perp": true,
+     "N": 0.566,
+     "pnl_pct": 0.96
+    },
+    {
+     "date": "2022-07-20",
+     "side": "short",
+     "risk": 0.0353,
+     "dt": 0.0173,
+     "perp": true,
+     "N": 0.843,
+     "pnl_pct": 1.35
+    },
+    {
+     "date": "2022-07-27",
+     "side": "long",
+     "risk": 0.0235,
+     "dt": 0.0247,
+     "perp": true,
+     "N": 0.568,
+     "pnl_pct": 0.86
+    },
+    {
+     "date": "2022-07-30",
+     "side": "short",
+     "risk": 0.0404,
+     "dt": 0.0271,
+     "perp": true,
+     "N": 1.024,
+     "pnl_pct": 1.54
+    },
+    {
+     "date": "2022-08-08",
+     "side": "long",
+     "risk": 0.0279,
+     "dt": 0.0389,
+     "perp": true,
+     "N": 0.853,
+     "pnl_pct": 1.0
+    },
+    {
+     "date": "2022-08-19",
+     "side": "short",
+     "risk": 0.0474,
+     "dt": 0.0404,
+     "perp": true,
+     "N": 1.229,
+     "pnl_pct": 4.34
+    },
+    {
+     "date": "2022-08-27",
+     "side": "short",
+     "risk": 0.0573,
+     "dt": 0.0593,
+     "perp": true,
+     "N": 1.562,
+     "pnl_pct": -5.85
+    },
+    {
+     "date": "2022-09-04",
+     "side": "short",
+     "risk": 0.0596,
+     "dt": 0.0637,
+     "perp": true,
+     "N": 1.903,
+     "pnl_pct": 5.4
+    },
+    {
+     "date": "2022-09-09",
+     "side": "long",
+     "risk": 0.0297,
+     "dt": 0.0446,
+     "perp": true,
+     "N": 0.908,
+     "pnl_pct": 1.04
+    },
+    {
+     "date": "2022-09-16",
+     "side": "long",
+     "risk": 0.0253,
+     "dt": 0.0306,
+     "perp": true,
+     "N": 0.682,
+     "pnl_pct": -2.57
+    },
+    {
+     "date": "2022-10-04",
+     "side": "long",
+     "risk": 0.0302,
+     "dt": 0.046,
+     "perp": true,
+     "N": 0.895,
+     "pnl_pct": -3.1
+    },
+    {
+     "date": "2022-10-10",
+     "side": "short",
+     "risk": 0.0449,
+     "dt": 0.0357,
+     "perp": true,
+     "N": 1.497,
+     "pnl_pct": 1.64
+    },
+    {
+     "date": "2022-10-19",
+     "side": "short",
+     "risk": 0.042,
+     "dt": 0.0302,
+     "perp": true,
+     "N": 1.625,
+     "pnl_pct": -4.2
+    },
+    {
+     "date": "2022-11-05",
+     "side": "long",
+     "risk": 0.0264,
+     "dt": 0.0341,
+     "perp": true,
+     "N": 1.14,
+     "pnl_pct": -2.72
+    },
+    {
+     "date": "2022-12-01",
+     "side": "long",
+     "risk": 0.0206,
+     "dt": 0.0156,
+     "perp": true,
+     "N": 0.712,
+     "pnl_pct": 1.83
+    },
+    {
+     "date": "2022-12-28",
+     "side": "short",
+     "risk": 0.0404,
+     "dt": 0.0271,
+     "perp": true,
+     "N": 2.167,
+     "pnl_pct": -4.0
+    },
+    {
+     "date": "2023-01-11",
+     "side": "long",
+     "risk": 0.0319,
+     "dt": 0.0514,
+     "perp": true,
+     "N": 2.145,
+     "pnl_pct": 1.01
+    },
+    {
+     "date": "2023-03-09",
+     "side": "long",
+     "risk": 0.0399,
+     "dt": 0.0261,
+     "perp": true,
+     "N": 1.258,
+     "pnl_pct": 3.61
+    },
+    {
+     "date": "2023-03-17",
+     "side": "long",
+     "risk": 0.0468,
+     "dt": 0.0393,
+     "perp": true,
+     "N": 1.337,
+     "pnl_pct": 4.23
+    },
+    {
+     "date": "2023-03-23",
+     "side": "long",
+     "risk": 0.0326,
+     "dt": 0.0121,
+     "perp": true,
+     "N": 0.876,
+     "pnl_pct": 2.98
+    },
+    {
+     "date": "2023-04-10",
+     "side": "long",
+     "risk": 0.0693,
+     "dt": 0.0822,
+     "perp": true,
+     "N": 2.626,
+     "pnl_pct": 2.43
+    },
+    {
+     "date": "2023-04-13",
+     "side": "long",
+     "risk": 0.0377,
+     "dt": 0.022,
+     "perp": true,
+     "N": 1.526,
+     "pnl_pct": -3.91
+    },
+    {
+     "date": "2023-06-21",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0329,
+     "perp": true,
+     "N": 0.989,
+     "pnl_pct": 0.92
+    },
+    {
+     "date": "2023-06-27",
+     "side": "long",
+     "risk": 0.0351,
+     "dt": 0.017,
+     "perp": true,
+     "N": 1.406,
+     "pnl_pct": 1.21
+    },
+    {
+     "date": "2023-07-03",
+     "side": "long",
+     "risk": 0.0578,
+     "dt": 0.0602,
+     "perp": true,
+     "N": 2.457,
+     "pnl_pct": 1.99
+    },
+    {
+     "date": "2023-08-18",
+     "side": "long",
+     "risk": 0.0611,
+     "dt": 0.0666,
+     "perp": true,
+     "N": 2.622,
+     "pnl_pct": -6.18
+    },
+    {
+     "date": "2023-08-24",
+     "side": "long",
+     "risk": 0.0516,
+     "dt": 0.0485,
+     "perp": true,
+     "N": 2.337,
+     "pnl_pct": 1.74
+    },
+    {
+     "date": "2023-09-05",
+     "side": "long",
+     "risk": 0.0293,
+     "dt": 0.0059,
+     "perp": true,
+     "N": 1.376,
+     "pnl_pct": 1.0
+    },
+    {
+     "date": "2023-09-14",
+     "side": "long",
+     "risk": 0.0552,
+     "dt": 0.0554,
+     "perp": true,
+     "N": 2.576,
+     "pnl_pct": 1.89
+    },
+    {
+     "date": "2023-09-19",
+     "side": "long",
+     "risk": 0.0389,
+     "dt": 0.0243,
+     "perp": true,
+     "N": 1.896,
+     "pnl_pct": 3.25
+    },
+    {
+     "date": "2023-09-30",
+     "side": "long",
+     "risk": 0.0396,
+     "dt": 0.0256,
+     "perp": true,
+     "N": 2.264,
+     "pnl_pct": 1.3
+    },
+    {
+     "date": "2023-10-16",
+     "side": "long",
+     "risk": 0.0568,
+     "dt": 0.0585,
+     "perp": true,
+     "N": 2.751,
+     "pnl_pct": 1.94
+    },
+    {
+     "date": "2023-10-31",
+     "side": "long",
+     "risk": 0.0338,
+     "dt": 0.0146,
+     "perp": true,
+     "N": 1.432,
+     "pnl_pct": 2.95
+    },
+    {
+     "date": "2023-11-09",
+     "side": "long",
+     "risk": 0.064,
+     "dt": 0.0722,
+     "perp": true,
+     "N": 2.677,
+     "pnl_pct": -6.82
+    },
+    {
+     "date": "2023-12-02",
+     "side": "long",
+     "risk": 0.0407,
+     "dt": 0.0277,
+     "perp": true,
+     "N": 1.829,
+     "pnl_pct": 1.37
+    },
+    {
+     "date": "2023-12-05",
+     "side": "long",
+     "risk": 0.0449,
+     "dt": 0.0357,
+     "perp": true,
+     "N": 1.878,
+     "pnl_pct": 1.55
+    },
+    {
+     "date": "2024-02-08",
+     "side": "long",
+     "risk": 0.079,
+     "dt": 0.1008,
+     "perp": true,
+     "N": 3.425,
+     "pnl_pct": 2.72
+    },
+    {
+     "date": "2024-02-10",
+     "side": "long",
+     "risk": 0.0514,
+     "dt": 0.048,
+     "perp": true,
+     "N": 2.152,
+     "pnl_pct": 1.75
+    },
+    {
+     "date": "2024-02-14",
+     "side": "long",
+     "risk": 0.048,
+     "dt": 0.0416,
+     "perp": true,
+     "N": 1.969,
+     "pnl_pct": -4.99
+    },
+    {
+     "date": "2024-02-18",
+     "side": "long",
+     "risk": 0.0533,
+     "dt": 0.0517,
+     "perp": true,
+     "N": 2.292,
+     "pnl_pct": 4.58
+    },
+    {
+     "date": "2024-02-27",
+     "side": "long",
+     "risk": 0.0985,
+     "dt": 0.1379,
+     "perp": true,
+     "N": 4.321,
+     "pnl_pct": 3.38
+    },
+    {
+     "date": "2024-04-17",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0024,
+     "perp": true,
+     "N": 0.585,
+     "pnl_pct": 2.44
+    },
+    {
+     "date": "2024-05-15",
+     "side": "long",
+     "risk": 0.0628,
+     "dt": 0.0699,
+     "perp": true,
+     "N": 1.959,
+     "pnl_pct": 2.22
+    },
+    {
+     "date": "2024-07-15",
+     "side": "long",
+     "risk": 0.0837,
+     "dt": 0.1097,
+     "perp": true,
+     "N": 2.894,
+     "pnl_pct": 7.47
+    },
+    {
+     "date": "2024-07-19",
+     "side": "long",
+     "risk": 0.0371,
+     "dt": 0.0207,
+     "perp": true,
+     "N": 1.274,
+     "pnl_pct": -3.81
+    },
+    {
+     "date": "2024-07-28",
+     "side": "long",
+     "risk": 0.0644,
+     "dt": 0.0729,
+     "perp": true,
+     "N": 2.47,
+     "pnl_pct": -6.53
+    },
+    {
+     "date": "2024-08-05",
+     "side": "long",
+     "risk": 0.043,
+     "dt": 0.0321,
+     "perp": true,
+     "N": 1.019,
+     "pnl_pct": 1.57
+    },
+    {
+     "date": "2024-08-11",
+     "side": "long",
+     "risk": 0.0407,
+     "dt": 0.0276,
+     "perp": true,
+     "N": 0.997,
+     "pnl_pct": 3.76
+    },
+    {
+     "date": "2024-08-16",
+     "side": "long",
+     "risk": 0.0472,
+     "dt": 0.0402,
+     "perp": true,
+     "N": 1.157,
+     "pnl_pct": 1.72
+    },
+    {
+     "date": "2024-09-05",
+     "side": "short",
+     "risk": 0.063,
+     "dt": 0.0701,
+     "perp": true,
+     "N": 1.818,
+     "pnl_pct": -6.4
+    },
+    {
+     "date": "2024-09-14",
+     "side": "long",
+     "risk": 0.0157,
+     "dt": -0.0041,
+     "perp": true,
+     "N": 0.528,
+     "pnl_pct": -1.59
+    },
+    {
+     "date": "2024-09-19",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0017,
+     "perp": true,
+     "N": 0.913,
+     "pnl_pct": 0.9
+    },
+    {
+     "date": "2024-10-14",
+     "side": "long",
+     "risk": 0.0478,
+     "dt": 0.0412,
+     "perp": true,
+     "N": 1.942,
+     "pnl_pct": 1.63
+    },
+    {
+     "date": "2024-11-06",
+     "side": "long",
+     "risk": 0.0455,
+     "dt": 0.0369,
+     "perp": true,
+     "N": 1.773,
+     "pnl_pct": 1.52
+    },
+    {
+     "date": "2024-11-15",
+     "side": "long",
+     "risk": 0.0358,
+     "dt": 0.0182,
+     "perp": true,
+     "N": 1.173,
+     "pnl_pct": 3.16
+    },
+    {
+     "date": "2024-12-17",
+     "side": "long",
+     "risk": 0.031,
+     "dt": 0.0092,
+     "perp": true,
+     "N": 1.064,
+     "pnl_pct": -3.14
+    },
+    {
+     "date": "2025-03-03",
+     "side": "long",
+     "risk": 0.069,
+     "dt": 0.0816,
+     "perp": true,
+     "N": 1.751,
+     "pnl_pct": 2.49
+    },
+    {
+     "date": "2025-03-08",
+     "side": "long",
+     "risk": 0.0517,
+     "dt": 0.0487,
+     "perp": true,
+     "N": 1.225,
+     "pnl_pct": -5.21
+    },
+    {
+     "date": "2025-03-24",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0739,
+     "perp": true,
+     "N": 0.82,
+     "pnl_pct": -2.65
+    },
+    {
+     "date": "2025-03-31",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0458,
+     "perp": true,
+     "N": 0.883,
+     "pnl_pct": 0.93
+    },
+    {
+     "date": "2025-04-07",
+     "side": "short",
+     "risk": 0.0633,
+     "dt": 0.0708,
+     "perp": true,
+     "N": 1.801,
+     "pnl_pct": 2.36
+    },
+    {
+     "date": "2025-04-12",
+     "side": "long",
+     "risk": 0.0553,
+     "dt": 0.1259,
+     "perp": true,
+     "N": 1.505,
+     "pnl_pct": 5.01
+    },
+    {
+     "date": "2025-04-28",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0204,
+     "perp": true,
+     "N": 1.076,
+     "pnl_pct": 2.3
+    },
+    {
+     "date": "2025-05-16",
+     "side": "long",
+     "risk": 0.1048,
+     "dt": 0.1601,
+     "perp": true,
+     "N": 5.0,
+     "pnl_pct": 3.51
+    },
+    {
+     "date": "2025-06-26",
+     "side": "long",
+     "risk": 0.0352,
+     "dt": 0.0172,
+     "perp": true,
+     "N": 1.609,
+     "pnl_pct": 3.0
+    },
+    {
+     "date": "2025-07-03",
+     "side": "long",
+     "risk": 0.0373,
+     "dt": 0.0213,
+     "perp": true,
+     "N": 1.928,
+     "pnl_pct": 3.11
+    },
+    {
+     "date": "2025-07-13",
+     "side": "long",
+     "risk": 0.1048,
+     "dt": 0.1836,
+     "perp": true,
+     "N": 5.0,
+     "pnl_pct": 2.92
+    },
+    {
+     "date": "2025-10-03",
+     "side": "long",
+     "risk": 0.1048,
+     "dt": 0.1633,
+     "perp": true,
+     "N": 5.0,
+     "pnl_pct": 7.0
+    },
+    {
+     "date": "2025-10-16",
+     "side": "long",
+     "risk": 0.0262,
+     "dt": -0.0036,
+     "perp": true,
+     "N": 0.881,
+     "pnl_pct": 0.93
+    },
+    {
+     "date": "2025-11-16",
+     "side": "short",
+     "risk": 0.0563,
+     "dt": 0.0575,
+     "perp": true,
+     "N": 1.75,
+     "pnl_pct": 2.09
+    },
+    {
+     "date": "2025-11-20",
+     "side": "short",
+     "risk": 0.0912,
+     "dt": 0.1241,
+     "perp": true,
+     "N": 2.436,
+     "pnl_pct": 3.41
+    },
+    {
+     "date": "2025-11-24",
+     "side": "long",
+     "risk": 0.0157,
+     "dt": -0.0037,
+     "perp": true,
+     "N": 0.439,
+     "pnl_pct": 0.56
+    },
+    {
+     "date": "2025-11-29",
+     "side": "short",
+     "risk": 0.1029,
+     "dt": 0.1463,
+     "perp": true,
+     "N": 3.359,
+     "pnl_pct": 3.76
+    },
+    {
+     "date": "2025-12-16",
+     "side": "short",
+     "risk": 0.0401,
+     "dt": 0.0266,
+     "perp": true,
+     "N": 1.332,
+     "pnl_pct": 3.62
+    },
+    {
+     "date": "2026-01-04",
+     "side": "long",
+     "risk": 0.0513,
+     "dt": 0.1131,
+     "perp": true,
+     "N": 2.476,
+     "pnl_pct": 1.74
+    },
+    {
+     "date": "2026-01-13",
+     "side": "long",
+     "risk": 0.0559,
+     "dt": 0.128,
+     "perp": true,
+     "N": 2.702,
+     "pnl_pct": 1.89
+    },
+    {
+     "date": "2026-01-29",
+     "side": "short",
+     "risk": 0.1019,
+     "dt": 0.1445,
+     "perp": true,
+     "N": 4.231,
+     "pnl_pct": 8.96
+    },
+    {
+     "date": "2026-02-01",
+     "side": "long",
+     "risk": 0.0284,
+     "dt": 0.0403,
+     "perp": true,
+     "N": 0.938,
+     "pnl_pct": -2.87
+    },
+    {
+     "date": "2026-02-05",
+     "side": "long",
+     "risk": 0.0356,
+     "dt": 0.0632,
+     "perp": true,
+     "N": 0.797,
+     "pnl_pct": 1.3
+    },
+    {
+     "date": "2026-02-26",
+     "side": "long",
+     "risk": 0.0485,
+     "dt": 0.1044,
+     "perp": true,
+     "N": 1.322,
+     "pnl_pct": 1.75
+    },
+    {
+     "date": "2026-03-08",
+     "side": "long",
+     "risk": 0.016,
+     "dt": 0.0008,
+     "perp": true,
+     "N": 0.432,
+     "pnl_pct": 0.58
+    },
+    {
+     "date": "2026-03-27",
+     "side": "long",
+     "risk": 0.0447,
+     "dt": 0.0921,
+     "perp": true,
+     "N": 1.344,
+     "pnl_pct": 4.07
+    },
+    {
+     "date": "2026-04-06",
+     "side": "long",
+     "risk": 0.0572,
+     "dt": 0.1318,
+     "perp": true,
+     "N": 2.221,
+     "pnl_pct": 5.02
+    },
+    {
+     "date": "2026-04-13",
+     "side": "long",
+     "risk": 0.0372,
+     "dt": 0.0683,
+     "perp": true,
+     "N": 1.397,
+     "pnl_pct": 1.32
+    },
+    {
+     "date": "2026-05-24",
+     "side": "short",
+     "risk": 0.0711,
+     "dt": 0.0858,
+     "perp": true,
+     "N": 3.476,
+     "pnl_pct": 6.08
+    },
+    {
+     "date": "2026-06-02",
+     "side": "short",
+     "risk": 0.0688,
+     "dt": 0.0813,
+     "perp": true,
+     "N": 2.746,
+     "pnl_pct": 6.06
+    },
+    {
+     "date": "2026-06-28",
+     "side": "short",
+     "risk": 0.0714,
+     "dt": 0.0863,
+     "perp": true,
+     "N": 2.533,
+     "pnl_pct": 2.6
+    },
+    {
+     "date": "2026-07-22",
+     "side": "long",
+     "risk": 0.0238,
+     "dt": 0.0257,
+     "perp": true,
+     "N": 1.12,
+     "pnl_pct": -2.47
+    },
+    {
+     "date": "2026-07-29",
+     "side": "short",
+     "risk": 0.0262,
+     "dt": -0.0236,
+     "perp": true,
+     "N": 1.299,
+     "pnl_pct": 0.9
+    },
+    {
+     "date": "2026-08-08",
+     "side": "short",
+     "risk": 0.0923,
+     "dt": 0.1261,
+     "perp": true,
+     "N": 5.0,
+     "pnl_pct": 2.99
+    },
+    {
+     "date": "2026-08-12",
+     "side": "short",
+     "risk": 0.0262,
+     "dt": -0.0054,
+     "perp": true,
+     "N": 1.518,
+     "pnl_pct": -2.66
+    },
+    {
+     "date": "2026-08-19",
+     "side": "long",
+     "risk": 0.043,
+     "dt": 0.0869,
+     "perp": true,
+     "N": 2.465,
+     "pnl_pct": 3.56
+    }
+   ]
+  }
  }
 }

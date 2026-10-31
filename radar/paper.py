@@ -12,6 +12,15 @@ Regole H2 (v1), solo BTC, futures:
 - ordine prudente dentro la barra: limit, stop, poi TP (nessun TP sulla barra che riempie un limit)
 Stesso motore della ricerca (scratchpad giro 12, eng.py), riscritto senza le varianti non usate.
 La liquidazione non si modella: con esposizione ≤ 5x e stop a ~1–2 ATR non è raggiungibile.
+
+v2 (ricerca notte 01:47) = stessi trade di H2, cambia solo la size:
+  rischio = 5,24% × (0,5 + 1,5·clip(segno·DT_mix, 0, 0,15)/0,15) × m
+  m = 0,6 se long e ultima chiusura settimanale (W-SUN, settimana chiusa entro il giorno del segnale) < SMA 40 settimane, altrimenti 1
+  DT = (2·taker_buy_base − volume)/volume sulla barra 4h UTC di conferma (chiusa prima dell'ingresso), DT_mix = media spot/perp
+  leva = min(5, rischio/stop%)
+Regola dati in tempo reale: l'archivio perp arriva con ~1 giorno di ritardo; se manca il perp della barra di conferma
+DT_mix = DT spot (nella ricerca lo spot da solo dà r_boot +206% contro +226% del mix: regola prudente). Se manca lo spot si
+usa il perp; senza nessuno dei due DT = 0 (rischio minimo 0,5×).
 """
 from __future__ import annotations
 
@@ -31,6 +40,7 @@ CAP, COOLDOWN = 5.0, 1
 LIVE_START = "2026-10-31"
 REF_START = "2022-03-01"
 PAPER_FILE = DATA_DIR / "paper.json"
+V2_BASE, V2_K, V2_CLIP, V2_M, V2_SMA = 0.0524, 1.5, 0.15, 0.6, 40
 
 
 def candles_4h() -> pd.DataFrame:
@@ -131,8 +141,46 @@ def _trade(b: _Bars, sg: int, a: float, te: int, p0: float) -> dict:
     return out
 
 
-def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float = 10000.0, risk: float = 0.03) -> dict:
-    """Conto H2 dal giorno `start`: trade chiusi, eventuale trade aperto/conferma attesa, equity giornaliera, statistiche."""
+def dt_4h(h4: pd.DataFrame) -> pd.DataFrame:
+    """Delta taker (2·taker − volume)/volume per barra 4h (spot, perp, mix) da data/taker_1h.csv.
+    Una barra vale solo con 4 ore presenti; perp mancante -> spot, spot mancante -> perp, nessuno -> 0."""
+    t = pd.read_csv(DATA_DIR / "taker_1h.csv", index_col=0, parse_dates=True)
+    out = {}
+    for k in ("spot", "perp"):
+        g = t[[f"{k}_vol", f"{k}_taker"]].dropna()
+        n = g[f"{k}_vol"].resample("4h").count()
+        g = g.resample("4h").sum()[n == 4]
+        out[k] = (2 * g[f"{k}_taker"] - g[f"{k}_vol"]) / g[f"{k}_vol"]
+    d = pd.DataFrame(out).reindex(h4.index)
+    d["perp_ok"] = d.perp.notna()
+    d["perp"] = d.perp.fillna(d.spot)
+    d["spot"] = d.spot.fillna(d.perp)
+    d[["spot", "perp"]] = d[["spot", "perp"]].fillna(0)
+    d["mix"] = (d.spot + d.perp) / 2
+    return d
+
+
+def v2_risk(f: pd.DataFrame, h4: pd.DataFrame):
+    """Funzione di rischio di v2: (segno, giorno del segnale, barra di conferma) -> (rischio, dettagli)."""
+    dt = dt_4h(h4)
+    wk = f["close"].resample("W-SUN").last()
+    sma = wk.rolling(V2_SMA).mean()
+
+    def fn(sg: int, d: pd.Timestamp, tc: pd.Timestamp):
+        w = wk.index[wk.index <= d]
+        below = bool(len(w) and not np.isnan(sma[w[-1]]) and wk[w[-1]] < sma[w[-1]])
+        x = sg * float(dt.at[tc, "mix"]) if tc in dt.index else 0.0
+        m = V2_M if (sg == 1 and below) else 1.0
+        r = V2_BASE * (0.5 + V2_K * np.clip(x, 0, V2_CLIP) / V2_CLIP) * m
+        perp = bool(dt.at[tc, "perp_ok"]) if tc in dt.index else False
+        return float(r), dict(dt=round(x, 4), below_sma40w=below, perp=perp)
+    return fn
+
+
+def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float = 10000.0, risk: float = 0.03,
+             risk_fn=None) -> dict:
+    """Conto dal giorno `start`: trade chiusi, eventuale trade aperto/conferma attesa, equity giornaliera, statistiche.
+    Rischio fisso `risk` (H2) oppure `risk_fn(segno, giorno segnale, apertura barra 4h di conferma)` (v2)."""
     b = _Bars(h4, f)
     s = compute_signals(f, Params())
     s = s[(s.index >= pd.Timestamp(start)) & (s.index <= b.days[-1]) & (s.long_sig | s.short_sig)]
@@ -154,12 +202,16 @@ def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float
             open_pos = dict(status="conferma" if st == "wait" else "ingresso", side="long" if sg == 1 else "short",
                             signal_date=str(d.date()), setup=r.get("setup", ""), atr=round(a, 2), trigger=round(float(lvl), 2),
                             deadline=str(nd + pd.Timedelta(hours=4 * WIN)))
+            if st == "next" and risk_fn:   # confermato sull'ultima barra: il rischio di v2 è già noto
+                rk, info = risk_fn(sg, d, b.T[j])
+                open_pos.update(risk=round(rk, 4), **info)
             break
         if st == "nofill":
             nxt = int(b.dob[min(t0 + WIN, b.n - 1)]) + COOLDOWN
             continue
         t = _trade(b, sg, a, te, p0)
-        N = min(CAP, risk / t["stop_pct"])
+        rk, info = risk_fn(sg, d, b.T[te - 1]) if risk_fn else (risk, {})
+        N = min(CAP, rk / t["stop_pct"])
         for di, v in t["path"]:
             eq_by_day[di] = E * (1 + N * v)
         Es, E = E, E * (1 + N * t["pnl"])
@@ -167,7 +219,7 @@ def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float
                    entry_time=str(b.T[te]), entry=round(t["entry"], 2), avg=round(t["avg"], 2), stop=round(t["stop"], 2),
                    tp=round(t["tp"], 2), fills=t["fills"], exit=t["reason"], exit_date=str(b.days[t["exit_day"]].date()),
                    N=round(N, 3), pnl_pct=round(N * t["pnl"] * 100, 2), pnl_usd=round(Es * N * t["pnl"] * capital, 2),
-                   pnl_unit=t["pnl"])
+                   risk=round(rk, 4), **info, pnl_unit=t["pnl"])
         if t["reason"] == "open":
             open_pos = dict(row, status="aperto", levels=[round(x, 2) for x in t["levels"]], filled=t["filled"],
                             limit_expiry=t["limit_expiry"], time_exit=t["time_exit"],
@@ -194,19 +246,30 @@ def stats(trades: list, eq: pd.Series) -> dict:
                 ret=round(float(eq.iloc[-1] / eq.iloc[0] - 1) * 100, 1), dd=round(float((eq / eq.cummax() - 1).min()) * 100, 1))
 
 
-def update(f: pd.DataFrame) -> dict:
-    """Ricalcola il conto su carta dal LIVE_START e il riferimento storico; salva data/paper.json."""
-    h4 = candles_4h()
-    live = simulate(f, h4, LIVE_START)
-    ref = simulate(f, h4, REF_START)
-    eq = live["equity"]
-    out = dict(
-        version="H2 v1", start=LIVE_START, updated=str(h4.index[-1] + pd.Timedelta(hours=4)), capital0=live["capital"],
-        risk=live["risk"], capital=round(float(eq.iloc[-1]), 2) if len(eq) else live["capital"],
-        stats=live["stats"], open=live["open"],
-        trades=[{k: v for k, v in t.items() if k != "pnl_unit"} for t in live["trades"]],
+def _account(r: dict, version: str, start: str, ref: dict) -> dict:
+    eq = r["equity"]
+    return dict(
+        version=version, start=start, capital0=r["capital"], risk=r["risk"] if r.get("risk_fn") is None else "v2",
+        capital=round(float(eq.iloc[-1]), 2) if len(eq) else r["capital"], stats=r["stats"], open=r["open"],
+        trades=[{k: v for k, v in t.items() if k != "pnl_unit"} for t in r["trades"]],
         equity=[[str(d.date()), round(float(v), 2)] for d, v in eq.items()],
         reference=dict(start=REF_START, **ref["stats"]),
     )
+
+
+def update(f: pd.DataFrame) -> dict:
+    """Ricalcola i conti su carta H2 e v2 dal LIVE_START e i riferimenti storici; salva data/paper.json.
+    Le chiavi di primo livello restano quelle di H2 (compatibilità), i due conti sono in "h2" e "v2"."""
+    h4 = candles_4h()
+    h2 = _account(simulate(f, h4, LIVE_START), "H2 v1", LIVE_START, simulate(f, h4, REF_START))
+    out = dict(h2, updated=str(h4.index[-1] + pd.Timedelta(hours=4)), h2=h2)
+    if (DATA_DIR / "taker_1h.csv").exists():
+        fn = v2_risk(f, h4)
+        ref = simulate(f, h4, REF_START, risk_fn=fn)
+        v2 = _account(dict(simulate(f, h4, LIVE_START, risk_fn=fn), risk_fn=fn), "v2", LIVE_START, ref)
+        v2["risk"] = dict(base=V2_BASE, k=V2_K, clip=V2_CLIP, m_long_sotto_sma40w=V2_M, cap=CAP)
+        v2["reference"]["trades"] = [dict(date=t["date"], side=t["side"], risk=t["risk"], dt=t["dt"], perp=t["perp"],
+                                          N=t["N"], pnl_pct=t["pnl_pct"]) for t in ref["trades"]]
+        out["v2"] = v2
     PAPER_FILE.write_text(json.dumps(out, indent=1, default=str))
     return out

@@ -162,6 +162,13 @@ conferma; leva = min(5, rischio/stop%); con slippage reale 0,2% rischio base 4,6
 **Lezione 24**: selezionare per r_boot (rendimento al rischio che tiene la coda) rende il walk-forward coerente; il vantaggio del
 flusso taker è nella barra di conferma stessa: la latenza di esecuzione conta. Prossimo: modulo su carta anche per v2 (serve il
 download dei klines con taker buy spot e perp nel workflow orario), delta su 1h dentro la barra di conferma, rischio che scala col DD.
+- Notte · ora 02:47 — v2 aggiunta al modulo su carta (dal 31/10/2026, 10.000 $ virtuali, accanto a H2): `fetch_taker_1h` in radar/data.py
+  (data/taker_1h.csv dal 2022-01, ~2,4 MB: spot da data-api.binance.vision in tempo reale, perp dall'archivio data.binance.vision
+  mensile/giornaliero; fapi bloccata 451), `dt_4h` / `v2_risk` in radar/paper.py (stesso `simulate` di H2 con funzione di rischio),
+  data/paper.json con i conti "h2" e "v2" (rischio per trade nel riferimento storico), riquadro "Su carta · H2 e v2" in dashboard.
+  **Regola sul perp**: l'archivio perp arriva con ~1 giorno di ritardo; se manca il perp della barra 4h di conferma, DT_mix = DT spot
+  (prudente: spot da solo r_boot +206% vs mix +226%). Riprodotto sui dati al 2026-10-30: 105 trade, WR 79,0%, +225,8%, DD −13,5%,
+  10.000 $ → 32.580 $ (ricerca: 32.580 $), stessi trade di H2; test di non regressione in tests/test_paper.py.
 
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
