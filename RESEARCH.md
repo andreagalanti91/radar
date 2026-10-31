@@ -276,6 +276,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 22:47 — W2: piramide solo su rotture non estese (≤ 2 ATRw dalla SMA40) · NON PROMUOVERE
+Il filtro lascia 1 aumento su 8 nel 2021–26 (il perdente) e 0 nel 2020 e nel 2018–20: MAR 9,7 vs P50 16,0, placebo p 0,64; vicini
+1,5/2,5 uguali. **Lezione 50**: le rotture del massimo a 26 settimane sono quasi sempre > 2,7 ATRw sopra la SMA40 e la distanza non
+separa le buone dalle cattive (2021-02 e 2024-02 estese come il perdente 2019-08) → smentisce la versione operativa della lezione 49;
+con 3 episodi nel 2018–20 non si costruisce un filtro. A margine: parte del vantaggio di P50 a pari DD viene dalla size asimmetrica
+(long 0,5x, short pieni): da testare preregistrata.
+
 ### Giro orario · 31/10 21:47 — W2: piramidare sui long vincenti · NON PROMUOVERE (fallisce il campione 2018–20), su carta
 Long W2 a 0,5x/0,75x, poi 1x alla prima chiusura sopra il massimo a 26 settimane a trade aperto (13 episodi: 8 nel 2021–26, 2 nel 2020,
 3 nel 2018–20). 2021–26: P50 +379% DD −23,7% MAR 16,0 vs W2 scalata allo stesso DD +203%; placebo p 0,005; regge senza i 2 trade
