@@ -170,6 +170,15 @@ download dei klines con taker buy spot e perp nel workflow orario), delta su 1h 
   (prudente: spot da solo r_boot +206% vs mix +226%). Riprodotto sui dati al 2026-10-30: 105 trade, WR 79,0%, +225,8%, DD −13,5%,
   10.000 $ → 32.580 $ (ricerca: 32.580 $), stessi trade di H2; test di non regressione in tests/test_paper.py.
 
+### Notte · ora 06:47 — rischio dinamico in funzione del drawdown del conto (v2) · NON PROMUOVERE
+Preregistrato, 9 varianti (gradini −6/8/10% → ×0,7, −12/14% → ×0,5; continua ×max(0,5; 1−DD/0,20); anti-martingala ×1,2 a nuovo
+massimo). Migliore C20 continua: +262% vs v2 +226% (1,16×), DD 15,0%, P(DD>20%) 11,5%, slippage 0,2% +158% vs +140%;
+ma 2022–23 peggiore di v2 (+29 vs +34), walk-forward sceglie ogni volta una regola diversa, e la "f casuale" (stessi moltiplicatori
+in ordine casuale) arriva al 90° percentile → non significativo.
+**Lezione 27**: ridurre la size nel drawdown non aumenta il rendimento a parità di rischio; permette solo di alzare il rischio base
+(il limite diventa il DD storico, non la coda). Paracadute, non strumento (conferma giro 7 e giro 10 L).
+Prossimo: calibrare con DD storico fino a 20% (limite dell'utente) e usare la volatilità realizzata 30 g (anticipatrice) invece del DD.
+
 ### Notte · ora 05:47 — 12 indicatori tecnici come peso della size di v2 · NON PROMUOVERE (v2 resta il campione)
 Preregistrato (terzili a finestra espansiva, × 1,3 / × 0,7, direzione favorevole scelta a priori, Bonferroni p ≤ 0,004):
 RSI 4h/1d, MACD 4h, ADX 1d, larghezza Bollinger 1d, %B 4h, Stocastico 4h, MFI 4h, CMF 4h, pendenza OBV 4h, SuperTrend 1d,
