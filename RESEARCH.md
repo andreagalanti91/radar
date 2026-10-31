@@ -87,6 +87,16 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Focus dell'utente (31/10/2026, giro delle 12): APPRENDIMENTO DELL'ANALISI TECNICA
+"Molti analisti tecnici fanno long o short di BTC con risultati incredibili." Imparare i metodi dell'analisi tecnica discrezionale
+(struttura di mercato HH/HL–LH/LL e rottura di struttura, supporti/resistenze con cambio di ruolo, trendline, pattern grafici
+— testa e spalle, doppio massimo/minimo, triangoli, bandiere —, ritracciamenti ed estensioni di Fibonacci, divergenze RSI/MACD
+settimanali e giornaliere, Wyckoff accumulo/distribuzione, volume profile, medie 20/50/200 e 21W EMA, confluenze), TRADURLI IN
+REGOLE OGGETTIVE e testarli con il nostro processo (preregistrazione, walk-forward, placebo, vicini, bootstrap, slippage), dal 2021,
+su timeframe settimanale e giornaliero, come strategia a sé e come filtro/uscita di W2 e v2. Attenzione dichiarata: i risultati
+pubblicati dagli analisti soffrono di selezione e sopravvivenza (si vedono i trade riusciti); la regola codificata va giudicata
+contro il caso. Ogni metodo testato va annotato nelle Lezioni (cosa funziona e cosa no, con i numeri).
+
 ## Focus dell'utente (31/10/2026, oggi): STRATEGIA SETTIMANALE — poche operazioni, grandi movimenti
 "Meglio 3–4 operazioni l'anno da +20/30% l'una, accettando drawdown, che 100 operazioni da 2–3%." Swing SETTIMANALI, non giornalieri.
 Cercare strategie note (online), integrare indicatori, produrre un pensiero proprio per battere il mercato; backtest dal 2021 a oggi
