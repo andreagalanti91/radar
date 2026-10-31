@@ -170,6 +170,12 @@ download dei klines con taker buy spot e perp nel workflow orario), delta su 1h 
   (prudente: spot da solo r_boot +206% vs mix +226%). Riprodotto sui dati al 2026-10-30: 105 trade, WR 79,0%, +225,8%, DD −13,5%,
   10.000 $ → 32.580 $ (ricerca: 32.580 $), stessi trade di H2; test di non regressione in tests/test_paper.py.
 
+### Da fare (nota 02:47): latenza del modulo su carta
+data/spot_1h.csv contiene solo giorni chiusi, quindi la conferma 4h di H2/v2 viene vista fino a ~24 ore dopo (su carta il
+fill è simulato al prezzo storico, ma un alert reale arriverebbe tardi). Per l'operatività: includere nelle candele 4h anche
+le ore già chiuse del giorno in corso (solo per paper/alert, non per lo storico) e congelare il rischio v2 al momento
+dell'ingresso (oggi viene ricalcolato quando arriva il perp).
+
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
   delle 2 candele 4h precedenti (short: sotto il minimo), 2 livelli 40/60 a −0,5 ATR dal prezzo di ingresso, stop 1 ATR, TP 1R,
