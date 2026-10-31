@@ -99,7 +99,7 @@ Con questa definizione H2 (v1) soddisfa i criteri del giro 12 (tutti i vicini in
 
 ## Giri notturni orari (dal 30/10/2026, richiesta dell'utente) — campione/sfidante
 Ogni ora dalle 22:47 alle 06:47 (Roma) un giro breve: una linea di ricerca, un agente, test completo.
-**Campione attuale: v2 (notte 01:47, H2 con size su delta taker e W-SMA40)**; v1 = H2 del giro 12 (WR 79%, +85,4%, DD −11,4%, MAR 7,5; fallisce solo i vicini 2022–23).
+**Campione attuale: v2 (notte 01:47, H2 con size su delta taker e W-SMA40), nei segnali reali dal 31/10/2026**; v1 = H2 del giro 12 (WR 79%, +85,4%, DD −11,4%, MAR 7,5; fallisce solo i vicini 2022–23).
 Ogni giro prova a creare una **versione migliore** (v2, v3, …): se batte il campione su MAR a DD fisso, WR ≥ 70%, walk-forward,
 placebo e vicini, diventa il nuovo campione e si annota qui con i numeri. Nel tool entra SOLO se passa tutti i criteri del gate.
 **Catalogo notturno** (un tema per ora, a rotazione, evitando ciò che è già bocciato):
@@ -169,6 +169,25 @@ download dei klines con taker buy spot e perp nel workflow orario), delta su 1h 
   **Regola sul perp**: l'archivio perp arriva con ~1 giorno di ritardo; se manca il perp della barra 4h di conferma, DT_mix = DT spot
   (prudente: spot da solo r_boot +206% vs mix +226%). Riprodotto sui dati al 2026-10-30: 105 trade, WR 79,0%, +225,8%, DD −13,5%,
   10.000 $ → 32.580 $ (ricerca: 32.580 $), stessi trade di H2; test di non regressione in tests/test_paper.py.
+
+## PROMOZIONE v2 nei segnali reali (31/10/2026, approvata dall'utente)
+L'utente ha approvato al mattino di sostituire i segnali reali (strategia giornaliera, +34,9% DD giornaliero −28,1%) con **v2**
+(campione della notte 01:47). Solo BTC. Rischio base dal vivo **4,67%** (`RADAR_RISK`, validato con slippage 0,2%; ricerca 5,24%).
+- `radar/live.py`: il report viene dal motore v2 (`paper.simulate` con `v2_risk(base=RADAR_RISK)` su candele 4h dal vivo);
+  stati nessuno / conferma (soglia 4h e scadenza 72h) / ingresso (piano in $ su `RADAR_CAPITAL`, rischio, leva) / aperto;
+  rischio dei trade reali congelato alla conferma in data/state.json (`v2_risk_frozen`); storico v2 dal 2022-03 per statistiche
+  e dashboard. Eventi: segnale, ingresso confermato, limit eseguito, TP, stop, uscita a tempo, segnale scaduto.
+- `radar/intraday.py`: controllo orario su candele 1h di soglia di conferma, limit, stop e TP (una allerta per livello).
+- `radar/telegram.py`, dashboard, README aggiornati; il modulo su carta (H2 e v2 virtuali) resta invariato.
+  `radar/paper.py` ha solo parametri opzionali (rischio base, slippage) e dettagli dei trade non salvati in paper.json.
+- La strategia giornaliera resta in `radar/backtest.py` e `radar/research.py` come banco di ricerca.
+
+Numeri dal vivo (dati al 2026-10-30, rischio 4,67%, slippage 0,1%): 105 trade, WR 79,0%, **+191,6%, DD giornaliero −12,0%**;
+2022–23 +30,3% (DD −11,5), 2024–25 +56,9% (−12,0), 2026 +42,7% (−3,9); per anno +15,4 / +12,9 / +10,4 / +42,1 / +42,7%.
+10.000 $: 1x 29.151 $, 2x 77.479 $ (DD per trade −22,5%), 5x 835.257 $ (−53,8%). Con slippage 0,2%: +140,3%, DD −12,8%, WR 76,9%.
+Test: tests/test_live.py (stati su dati tagliati al trade del 19/08/2026: conferma → ingresso → limit → TP; numeri storici;
+slippage 0,2%; messaggi Telegram; controllo orario). Riserve note: bootstrap al limite (15,0%), dipendenza dal delta della barra
+di conferma, perp in ritardo (~1 giorno, delta solo spot), ~1 ora di ritardo sulla conferma con il controllo orario.
 
 ### Mattino 31/10/2026 07:17 — resoconto della notte inviato su Telegram
 Notte: 10 giri (modulo su carta H2 → v2, latenza ridotta; temi trend settimanale, volume/delta taker, size continua,
