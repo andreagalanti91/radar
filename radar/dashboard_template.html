@@ -286,6 +286,11 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   .side nav a:not([aria-current="page"]):hover{background:var(--raise);color:var(--label)}
   .seg button:not([aria-pressed="true"]):hover{color:var(--label)}
 }
+/* switch delle strategie: le sezioni .only-v2 / .only-w2 seguono la scelta (classe sulla .app) */
+.strat{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px}
+.strat .seg button{padding:7px 12px}
+.app.w2 .only-v2,.app:not(.w2) .only-w2{display:none!important}
+.app.w2 .w2top{order:-1}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
@@ -324,10 +329,11 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <h1 id="price"></h1>
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
+  <div class="strat"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W2</button></div></div>
 
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
-    <div class="section" id="wkSec" hidden>
+    <div class="section only-w2" id="wkSec" hidden>
       <div class="sh">Segnale settimanale · W2 <small id="wkSub"></small></div>
       <div class="tiles" id="wkKv"></div>
       <div id="wkPlan"></div>
@@ -345,7 +351,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
         <p class="foot" id="zNote" style="margin:0"></p>
       </div>
     </div>
-    <div class="cols">
+    <div class="cols only-v2">
       <div class="section">
         <div class="sh">Score di flusso <small id="regime"></small></div>
         <div class="card glow gauge">
@@ -357,19 +363,19 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       <div class="section" id="plan"></div>
     </div>
 
-    <div class="section">
+    <div class="section only-v2">
       <div class="sh">Setup <small id="ckSum"></small></div>
       <div class="list" id="checks"></div>
     </div>
 
-    <div class="section" id="paperSec" hidden>
+    <div class="section only-v2" id="paperSec" hidden>
       <div class="sh">Su carta · H2 e v2 <small id="paperSub"></small></div>
       <div class="tiles" id="paperKv"></div>
       <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="paperTr"></table></div></div>
       <p class="foot" id="paperNote"></p>
     </div>
 
-    <div class="section">
+    <div class="section only-v2">
       <div class="sh">Prezzo e trade</div>
       <div class="card" style="display:grid;gap:10px">
         <div class="legend"><span><i style="background:var(--tint)"></i>BTC</span><span><i style="background:var(--green)"></i>long</span><span><i style="background:var(--red)"></i>short</span><span><i style="background:var(--label3)"></i>uscita</span><span><i style="background:var(--label3)"></i>SMA 200</span></div>
@@ -390,7 +396,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
         <div class="row"><span class="k">Leva</span><div class="seg" id="simLev" role="group" aria-label="Leva"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="3">3x</button><button data-v="5">5x</button></div></div>
         
       </div>
-      <p class="foot">1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.</p>
+      <p class="foot" id="simFoot">1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.</p>
     </div>
 
     <div class="big" id="simOut"></div>
@@ -436,14 +442,14 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 
   <!-- ============ STATISTICHE ============ -->
   <div class="view" id="v-statistiche" hidden>
-    <div class="section">
+    <div class="section only-v2">
       <div class="sh">Equity vs BTC <div class="seg" id="eqSeg" role="group" aria-label="Size"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="5">5x</button></div></div>
       <div class="card" style="display:grid;gap:10px">
         <div class="legend"><span><i style="background:var(--tint)"></i>strategia v2</span><span><i style="background:var(--orange)"></i>BTC buy &amp; hold</span><span id="eqNote"></span></div>
         <div id="equity" class="chart" style="height:280px"></div>
       </div>
     </div>
-    <div class="section">
+    <div class="section only-v2">
       <div class="sh">Anatomia del win rate <small id="anaSub"></small></div>
       <div class="card" style="display:grid;gap:14px">
         <div class="stack" id="anaBar"></div>
@@ -452,7 +458,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       </div>
     </div>
 
-    <div class="section">
+    <div class="section only-v2">
       <div class="sh">Storico operativo
         <span style="display:flex;gap:8px;flex-wrap:wrap">
           <span class="seg" id="trSeg" role="group" aria-label="Mercato"><button data-v="futures" aria-pressed="true">Storico v2</button><button data-v="live">Reali</button></span>
@@ -463,7 +469,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       <div class="trades" id="trades"></div>
     </div>
 
-    <div class="cols">
+    <div class="cols only-v2">
       <div class="section">
         <div class="sh">Strategia v2 <small>da mar 2022</small></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="stats"></table></div></div>
@@ -477,7 +483,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       </div>
     </div>
 
-    <div class="section" id="wkStatSec" hidden>
+    <div class="section only-w2 w2top" id="wkStatSec" hidden>
       <div class="sh">Settimanale W2 <small id="wkStatSub"></small></div>
       <div class="cols">
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
@@ -569,12 +575,20 @@ const icon = (k, dim) => `<span class="ico${dim ? " dim" : ""}" style="--c:var($
 const V = R.v2, c = R.components, P = R.params;
 $("price").innerHTML = dots(usd(R.price));
 $("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
-const st = $("state");
-if (V.status === "conferma") { st.className = "status " + V.side; st.textContent = "Segnale " + V.side + " · conferma 4h"; }
-else if (V.status === "ingresso") { st.className = "status " + V.side; st.textContent = "Ingresso " + V.side; }
-else if (V.status === "aperto") { st.className = "status open"; st.textContent = "Trade " + V.side + " aperto"; }
-else { st.className = "status"; st.textContent = "In attesa"; }
-$("stateD").className = st.className; $("stateD").textContent = st.textContent;
+// strategia scelta con lo switch (salvata solo in questo browser): "v2" giornaliera, "w2" settimanale
+let STRAT = (() => { try { return localStorage.getItem("radarStrat") === "w2" && R.weekly ? "w2" : "v2"; } catch (_) { return "v2"; } })();
+function pill() {
+  const W = R.weekly; let cls = "status", txt = "In attesa";
+  if (STRAT === "w2" && W) {
+    if (W.status === "aperto" || W.status === "uscita") { cls += " " + W.side; txt = (W.side === "long" ? "Long" : "Short") + " aperto"; }
+    else if (W.status === "segnale") { cls += " " + W.side; txt = "Segnale " + W.side + " · lunedì"; }
+    else txt = "Flat";
+  } else if (V.status === "conferma") { cls += " " + V.side; txt = "Segnale " + V.side + " · conferma 4h"; }
+  else if (V.status === "ingresso") { cls += " " + V.side; txt = "Ingresso " + V.side; }
+  else if (V.status === "aperto") { cls += " open"; txt = "Trade " + V.side + " aperto"; }
+  ["state", "stateD"].forEach(id => { $(id).className = cls; $(id).textContent = txt; });
+}
+pill();
 
 // ---- score
 $("regime").textContent = "regime " + R.regime;
@@ -898,28 +912,44 @@ function equity(lv) {
 }
 seg("eqSeg", v => equity(+v)); equity(1);
 
-// ---- simulatore
-const firstDate = R.series.date[0];
-$("simStart").min = firstDate; $("simStart").max = R.date; $("simStart").value = firstDate;
-const sim = { lev: 1, mk: "futures" };
+// ---- simulatore: trade della strategia scelta (v2: storico 4h; W2: storico settimanale dal 2021, 1x o 2x)
+const firstDate = R.series.date[0], W2H = R.weekly && R.weekly.history;
+const W2_WHY = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
+const simFirst = () => STRAT === "w2" && W2H ? W2H.start : firstDate;
+$("simStart").min = simFirst(); $("simStart").max = R.date; $("simStart").value = simFirst();
+const sim = { lev: 1 };
 let simChart, simLine;
 const levSeg = seg("simLev", v => { sim.lev = +v; simulate(); });
-
-const closedTrades = mk => R.trades[mk].filter(t => t.exit !== "open");
+// trade chiusi normalizzati: data di segnale/uscita, PnL % sul capitale alla leva scelta, etichette per la tabella
+function simList(lev) {
+  if (STRAT === "w2" && W2H)   // la posizione aperta conta come chiusa all'ultima chiusura, come nello storico W2
+    return W2H.trades.map(t => ({ d0: t.entry, d1: t.exit || R.date, pnl: lev >= 2 ? (t.pnl2_pct != null ? t.pnl2_pct : t.pnl_pct * 2) : t.pnl_pct,
+      tag: t.market === "spot" && lev < 2 ? "spot" : "perp", side: t.side, exit: W2_WHY[t.reason] || t.reason }));
+  return R.trades.futures.filter(t => t.exit !== "open").map(t => ({ d0: t.signal_date, d1: t.exit_date, pnl: t.pnl_pct_capital * lev, tag: t.setup, side: t.side, exit: t.exit }));
+}
+function simLevs() {   // W2: solo 1x e 2x (come nello storico); v2: fino a 5x
+  const W = STRAT === "w2";
+  $("simLev").querySelectorAll("button").forEach(x => x.disabled = W && +x.dataset.v > 2);
+  if (W && sim.lev > 2) { sim.lev = 1; levSeg.set(1); }
+  $("simFoot").textContent = W ? "W2: 1x = long in spot e short in perp con tetto di rischio 25% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 3 trade l'anno di settimane o mesi ciascuno."
+    : "1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.";
+}
 function simulate() {
-  const cap = Math.max(100, +$("simCap").value || 50000), start = $("simStart").value || firstDate;
-  const mk = sim.mk, lev = mk === "spot" ? 1 : sim.lev;
-  const tr = closedTrades(mk).filter(t => t.signal_date >= start);
+  const W = STRAT === "w2" && W2H, cap = Math.max(100, +$("simCap").value || 50000), start = $("simStart").value || simFirst();
+  const lev = sim.lev, tr = simList(lev).filter(t => t.d0 >= start);
   let eq = cap, peak = cap, dd = 0, wins = 0;
   const out = [], pts = [{ time: start, value: cap }];
-  tr.forEach(t => { const pnl = eq * t.pnl_pct_capital * lev / 100; eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++; out.push({ ...t, pnl, eq }); pts.push({ time: t.exit_date, value: eq }); });
+  tr.forEach(t => { const pnl = eq * t.pnl / 100; eq += pnl; peak = Math.max(peak, eq); dd = Math.min(dd, eq / peak - 1); if (pnl > 0) wins++; out.push({ ...t, pnlU: pnl, eq }); pts.push({ time: t.d1, value: eq }); });
   const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01), cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
+  const avg = tr.length ? tr.reduce((a, t) => a + t.pnl, 0) / tr.length : null, perY = (tr.length / years).toFixed(1).replace(".", ",");
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
-  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`;
-  $("simCount").textContent = `${tr.length} trade · ${lev}x`;
-  $("simTrades").innerHTML = `<tr><th>Segnale</th><th>Setup</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
-    out.slice().reverse().map(r => `<tr><td>${r.signal_date}</td><td>${r.setup}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${r.exit}</td><td class="${r.pnl > 0 ? "pos" : "neg"}">${(r.pnl > 0 ? "+" : "−") + usd(Math.abs(r.pnl))}</td><td>${usd(r.eq)}</td></tr>`).join("");
+  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, ${perY} trade l'anno, guadagno medio ${pct(avg, 2)} sul capitale per trade, ` +
+    (W ? `W2 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. La posizione aperta conta come chiusa all'ultima chiusura; drawdown sulle uscite (quello giornaliero è più profondo, vedi Statistiche).`
+       : `size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`);
+  $("simCount").textContent = `${tr.length} trade · ${W ? "W2" : "v2"} · ${lev}x`;
+  $("simTrades").innerHTML = `<tr><th>${W ? "Ingresso" : "Segnale"}</th><th>${W ? "Mercato" : "Setup"}</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
+    out.slice().reverse().map(r => `<tr><td>${r.d0}</td><td>${r.tag}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${W ? `${r.d1}<br><small>${r.exit}</small>` : r.exit}</td><td class="${r.pnlU > 0 ? "pos" : "neg"}">${(r.pnlU > 0 ? "+" : "−") + usd(Math.abs(r.pnlU))}</td><td>${usd(r.eq)}</td></tr>`).join("");
   if (window.LightweightCharts) {
     if (!simChart) {
       simChart = LightweightCharts.createChart($("simChart"), chartOpts());
@@ -928,7 +958,7 @@ function simulate() {
     const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time >= p.time) d[d.length - 1].value = p.value; else d.push({ ...p }); });
     simLine.setData(d); simChart.timeScale().fitContent();
   }
-  goal(cap, lev, mk);
+  goal(cap, lev);
 }
 
 // ---- laboratorio: v2 e candidati della ricerca su 10.000 $ (data/lab.json)
@@ -973,12 +1003,12 @@ function labCurves(lv) {
   $("labNote").textContent = "I candidati su carta non generano segnali reali. Curve a gradini sulle date di uscita dei trade; 2x = size doppia trade per trade (v2 con il tetto di esposizione 5x del conto). Metriche dei candidati come nella ricerca (RESEARCH.md).";
   seg("labLev", v => labCurves(+v)); labCurves(1);
 })();
-function goal(cap, lev, mk) {
+function goal(cap, lev) {
   const target = +$("goalCap").value || cap * 2, end = $("goalDate").value || "2026-12-31";
-  const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5)), mult = target / cap, tr = closedTrades(mk), res = [];
-  for (let d = new Date(firstDate); d <= new Date(new Date(R.date) - days * 864e5); d = new Date(+d + 864e5)) {
+  const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5)), mult = target / cap, tr = simList(lev), res = [];
+  for (let d = new Date(simFirst()); d <= new Date(new Date(R.date) - days * 864e5); d = new Date(+d + 864e5)) {
     const a = d.toISOString().slice(0, 10), b = new Date(+d + days * 864e5).toISOString().slice(0, 10);
-    let x = 1; tr.forEach(t => { if (t.exit_date > a && t.exit_date <= b) x *= 1 + t.pnl_pct_capital * lev / 100; }); res.push(x);
+    let x = 1; tr.forEach(t => { if (t.d1 > a && t.d1 <= b) x *= 1 + t.pnl / 100; }); res.push(x);
   }
   const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
   const hit = res.filter(x => x >= mult).length / (res.length || 1) * 100;
@@ -987,7 +1017,19 @@ function goal(cap, lev, mk) {
   $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x. Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
 }
 ["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
-simulate();
+
+// ---- switch delle strategie: sezioni di Oggi e Statistiche, pill di stato e simulatore
+function applyStrat(prev) {
+  $("v-oggi").closest(".app").classList.toggle("w2", STRAT === "w2");
+  stratSeg.set(STRAT); pill(); simLevs();
+  const ss = $("simStart"), f0 = prev === "w2" && W2H ? W2H.start : firstDate;
+  ss.min = simFirst(); if (!ss.value || ss.value === f0 || ss.value < ss.min) ss.value = simFirst();
+  simulate();
+  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
+}
+const stratSeg = seg("stratSeg", v => { const prev = STRAT; STRAT = v; try { localStorage.setItem("radarStrat", v); } catch (_) {} applyStrat(prev); });
+if (!R.weekly) $("stratSeg").querySelector('[data-v="w2"]').disabled = true;
+applyStrat(STRAT);
 
 // ---- notizie
 const NEWS_WHY = {

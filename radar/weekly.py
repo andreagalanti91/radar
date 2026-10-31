@@ -223,6 +223,10 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
                    plan=plan(sg, float(wk["close"]), float(wk["atr"]), float(wk["ema21"]), capital))
     m1, m2 = metrics(r), metrics(r2)
     hist = [_dash(t) for t in r["trades"]] + ([_dash(o)] if o else [])
+    t2 = r2["trades"] + ([r2["open"]] if r2["open"] else [])
+    if len(t2) == len(hist):   # stessi segnali a 2x: PnL sul capitale per trade, per il simulatore della dashboard
+        for h, t in zip(hist, t2):
+            h["pnl2_pct"] = round(t["pnl"] * 100, 2)
     out["history"] = {"start": START, "trades": hist, "m1": m1, "m2": m2,
                       "final_10k_1x": round(float(r["equity"].iloc[-1]), 0), "final_10k_2x": round(float(r2["equity"].iloc[-1]), 0)}
     from .live import _clean
