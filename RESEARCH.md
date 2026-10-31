@@ -208,6 +208,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 08:47 — 2ª tranche DCA adattiva per trade · NON PROMUOVERE
+Preregistrato, 10 varianti: 2ª tranche ridotta se il limit si riempie entro 4/8 h o se il delta taker dell'ultima barra 4h chiusa
+è contrario (< −0,05/−0,10), o combinazioni. Tutte sotto v2 (r_boot 180–214 vs 226), perdita max invariata −5,59% (il trade
+peggiore, 09/11/2023, ha riempito il limit dopo 84 h), placebo p 0,55–0,88, walk-forward non migliore.
+**Lezione 34**: ribalta l'ipotesi — i riempimenti RAPIDI e con delta contrario sono le 2e tranche MIGLIORI (R +0,45/+0,58); è il
+riempimento TARDIVO (oltre 3 giorni, 5 trade, 4 stop) a precedere lo stop (indizio trovato a posteriori, da preregistrare).
+Prossimo: scadenza del limit della 2ª tranche 48–72 h invece di 7 giorni (preregistrata, placebo "stessa quota a caso").
+
 ### Decisione autonoma (31/10/2026, mandato dell'utente: "decidi tu") — rischio dal vivo 4,67% → **4,3%**
 Motivo: con dati dal 2021 e slippage 0,2% il rischio massimo con P(DD>20%) ≤ 15% è 4,32% (giro 13 A). Effetto (dal 2022-03,
 slippage 0,1%): +170,5% (era +191,6%), DD giornaliero −11,1% (era −12,0%), peggior trade −5,6% (era −6,1%), WR invariato 79%.
