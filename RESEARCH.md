@@ -87,6 +87,14 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Focus dell'utente (31/10/2026, mattina): limitare il drawdown imparando dai trade passati
+1. Studiare e apprendere dai trade passati (research/LOSERS.md) per limitare il drawdown: regole candidate R1 (peso v2 solo
+   sulla 1ª tranche), R2 (rischio ×0,5 entro 48h da FOMC/CPI/NFP), R3 (short ipervenduti ×0,6), più nuove regole dal registro.
+2. Spot vs futures, sempre in DCA: confronto onesto (spot = solo long, niente funding e liquidazione, leva 1x; futures = v2).
+3. Swing long o short: trovare la congruenza (confluenza) dei fattori per decidere quando andare a mercato.
+4. Addestrare un modello: meta-labeling dei trade v2 (probabilità TP vs stop dai valori all'ingresso) usato come PESO,
+   con walk-forward, placebo e calibrazione; niente modelli enormi (lezioni 17, 30).
+
 ## Focus dell'utente (31/10/2026): short e direzione del mercato
 "Nei periodi difficili meglio short che long": analizzare gli short e la migliore strategia per anticipare se il mercato sale o
 scende; backtest dal 2021 a oggi (1h/taker da scaricare per il 2021; metrics solo dal 12/2021). Giri orari tutto il giorno
