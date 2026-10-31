@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 21:47 — W2: piramidare sui long vincenti · NON PROMUOVERE (fallisce il campione 2018–20), su carta
+Long W2 a 0,5x/0,75x, poi 1x alla prima chiusura sopra il massimo a 26 settimane a trade aperto (13 episodi: 8 nel 2021–26, 2 nel 2020,
+3 nel 2018–20). 2021–26: P50 +379% DD −23,7% MAR 16,0 vs W2 scalata allo stesso DD +203%; placebo p 0,005; regge senza i 2 trade
+migliori; slippage 0,2% ok; 10.000 $ → 47.900 $ a 1x, 122.272 $ a 2x (DD −43%, come W2 a 1x 71.761 $). 2020: migliore. **2018–20 (CVD):
+peggiore** (MAR 2,92 vs 3,82; +149% vs +193% a pari DD): le rotture del 2019 erano picchi parabolici. **Lezione 49**: aggiungere sulla
+rottura funziona dopo una base lunga, non dopo un rialzo verticale. Prossimo: aumento solo se la rottura è entro ~1,5–2 ATRw dalla
+SMA40 (una soglia, giudicata prima sul 2018–20).
+
 ### Approfondimento · 31/10 ore 20 — analisi tecnica seconda passata (TA2) e W2 dopo un long perso (W6) · NON PROMUOVERE
 - **TA2**: pattern con tolleranze in ATR (doppi, testa e spalle, triangoli; D e W): 7/12 con < 10 trade, gli altri perdono
   (WR 31–40%, placebo 0,50–0,96) → l'obiezione "definizioni troppo strette" è smentita. Blocco di esaurimento (≥ 2 divergenze RSI
