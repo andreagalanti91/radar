@@ -722,9 +722,21 @@ function timeline(evs, side, extra) {
 }
 const exitTag = t => t.exit === "open" ? "aperto" : (EXIT_LABEL[t.exit] || t.exit);
 let trMk = "futures", trRes = "all";
+// registro dei trade reali via Telegram (data/journal.json): slippage positivo = peggio del segnale
+function jrnHtml() {
+  const J = R.journal;
+  if (!J || !J.trades.length) return `<div class="card"><p style="margin:0">Registro dei trade reali: nessun trade. Registrali dal bot Telegram con /entrato, /limit e /uscito (risposta entro un'ora).</p></div>`;
+  const h = x => x == null ? "–" : String(x).replace(".", ",") + " h", sl = x => x == null ? "–" : pct(x, 3), A = J.avg;
+  return `<div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid"><tr><th>Trade reale</th><th>Ingresso</th><th>Uscita</th><th>Risultato</th><th>Slippage ingr.</th><th>Ritardo ingr.</th><th>Slippage usc.</th></tr>` +
+    J.trades.slice().reverse().map(t => { const c = t.compare || {}, s = t.signal || {};
+      return `<tr><td>${t.strategy.toUpperCase()} ${t.side} · ${t.exchange}<br><small>${fmtD(t.entries[0].time)}</small></td><td>${usd(t.avg)}<br><small>segnale ${s.entry ? usd(s.entry) : "–"}</small></td>` +
+        `<td>${t.exit ? usd(t.exit.price) : "aperto"}<br><small>segnale ${s.exit ? usd(s.exit) : "–"}</small></td><td class="${(t.result_pct || 0) > 0 ? "pos" : "neg"}">${t.result_pct == null ? "–" : pct(t.result_pct, 2)}</td>` +
+        `<td>${sl(c.slip_entry_pct)}</td><td>${h(c.delay_entry_h)}</td><td>${sl(c.slip_exit_pct)}</td></tr>`; }).join("") +
+    `</table></div></div><p class="foot">Trade reali registrati via Telegram: ${A.n} (${A.closed} chiusi) · slippage medio ${sl(A.slip_pct)} · ritardo medio d'ingresso ${h(A.delay_entry_h)} rispetto al segnale. Slippage positivo = esecuzione peggiore del segnale.</p>`;
+}
 function renderTrades() {
   const list = R.trades[trMk].slice().reverse().filter(t => trRes === "all" || (trRes === "win" ? t.pnl_pct_capital > 0 : t.pnl_pct_capital <= 0));
-  $("trades").innerHTML = list.map((t, n) => {
+  $("trades").innerHTML = (trMk === "live" ? jrnHtml() : "") + (list.map((t, n) => {
     const pos = t.pnl_pct_capital > 0, last = t.events[t.events.length - 1];
     return `<details class="trade" data-i="${R.trades[trMk].indexOf(t)}">
       <summary>${icon(t.setup)}<span class="t1"><b>${t.side === "long" ? "Long" : "Short"} · ${t.setup}</b><small>${fmtD(t.signal_date)} → ${t.exit_date ? fmtD(t.exit_date) : "oggi"} · ${t.days} gg · DCA ${t.tranches}/2 · leva ${t.N}x</small></span>
@@ -738,7 +750,7 @@ function renderTrades() {
           <div><span>PnL sul prezzo</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b></div><div><span>PnL sul capitale</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_capital, 2)}</b></div></div>
         <p class="foot" style="margin:0">Commissioni, funding e slippage inclusi. Stop ${usd(t.plan.stop)}, TP ${usd(t.tp)}, ATR ${usd(t.plan.atr)} · delta taker ${sgn(t.dt || 0)} (${t.perp ? "spot + perp" : "solo spot"}).</p>
       </div></details>`;
-  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali v2 dal ${fmtD(R.live_start)}: ancora nessun trade. Qui compariranno i trade reali con lo stesso dettaglio dello storico, per confrontarli con quanto promesso.` : "Nessun trade con questo filtro."}</p></div>`;
+  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali v2 dal ${fmtD(R.live_start)}: ancora nessun trade. Qui compariranno i trade reali con lo stesso dettaglio dello storico, per confrontarli con quanto promesso.` : "Nessun trade con questo filtro."}</p></div>`);
   $("trades").querySelectorAll("details").forEach((d, n) => d.addEventListener("toggle", () => { if (d.open) tradeChart(d.querySelector(".tchart"), R.trades[trMk][+d.dataset.i]); }, { once: true }));
 }
 function tradeChart(el, t) {

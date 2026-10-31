@@ -22,6 +22,7 @@ from . import intraday  # noqa: E402
 from . import paper  # noqa: E402
 from . import lab  # noqa: E402
 from . import weekly  # noqa: E402
+from . import journal  # noqa: E402
 import pandas as pd  # noqa: E402
 from .liquidations import collect as collect_liquidations  # noqa: E402
 import json  # noqa: E402
@@ -30,6 +31,12 @@ from .strategy import Params  # noqa: E402
 
 
 def daily() -> None:
+    try:   # registro dei trade reali: comandi Telegram arrivati dall'ultimo giro (risposta entro un'ora)
+        n = journal.poll()
+        if n:
+            print(f"[radar] registro reale: {n} comandi Telegram eseguiti")
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] registro reale non letto: {e!r}")
     d = update_all()
     f = build_features(d)
     report = evaluate(f)
@@ -72,6 +79,10 @@ def daily() -> None:
         except Exception as e:  # noqa: BLE001
             print(f"[radar] eventi settimanali non inviati: {e!r}")
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
+    try:   # confronto dei trade reali con il segnale (prezzi e orari di v2 e W2)
+        journal.link(report)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] registro reale non collegato al segnale: {e!r}")
     try:   # Laboratorio (v2 e candidati della ricerca): un errore qui non deve fermare la dashboard
         lab.build(report)
     except Exception as e:  # noqa: BLE001

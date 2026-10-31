@@ -44,6 +44,11 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
     lf = ROOT / "data" / "lab.json"     # Laboratorio: v2 e candidati della ricerca (radar/lab.py)
     if "lab" not in report and lf.exists():
         report = dict(report, lab=json.loads(lf.read_text()))
+    jf = ROOT / "data" / "journal.json"  # registro dei trade reali via Telegram (radar/journal.py)
+    if "journal" not in report and jf.exists():
+        from .journal import averages, load
+        j = load()
+        report = dict(report, journal={"trades": j["trades"], "avg": averages(j)})
     html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str))
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)
     if standalone:

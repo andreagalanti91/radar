@@ -143,6 +143,28 @@ visto i risultati (non era tra le varianti preregistrate), per prudenza sulla co
 Pochi trade (19) vogliono dire statistiche fragili: un singolo trade cambia molto il totale. Il primo giro dal vivo mostra il long già
 aperto come "posizione in corso", non come segnale nuovo. Codice: `radar/weekly.py`.
 
+## Registro dei trade reali (Telegram)
+
+Scrivi al bot cosa hai eseguito davvero (su Bybit o OKX): il registro confronta la tua esecuzione con il segnale e i giri di
+ricerca imparano dallo slippage e dal ritardo reali. Il bot legge i messaggi **a ogni giro orario** del workflow: la conferma
+arriva **entro un'ora**. Accetta solo la chat `TELEGRAM_CHAT_ID`; gli altri messaggi vengono ignorati senza risposta.
+
+| Comando | Esempio | Cosa registra |
+|---|---|---|
+| `/entrato <prezzo> [quantità_btc] [v2\|w2] [long\|short]` | `/entrato 67.500 0,015` | ingresso (1ª tranche) |
+| `/limit <prezzo> [quantità_btc]` | `/limit 66900 0,022` | 2ª tranche (limit 60%) eseguita |
+| `/uscito <prezzo> [motivo]` | `/uscito 69100 tp` | uscita: risultato % sul prezzo |
+| `/exchange bybit\|okx` | `/exchange okx` | exchange dei trade (predefinito `bybit/okx`) |
+| `/registro` | | ultimi trade reali, slippage e ritardo medi |
+| `/aiuto` | | elenco dei comandi |
+
+Virgola o punto vanno bene (`67.500`, `67500,5`, `0,015`), maiuscole indifferenti. Se strategia o lato mancano si deducono dal
+segnale attivo (v2 o W2); con due segnali attivi o nessuno il bot chiede di specificarli. Esempio di risposta:
+`✅ Registrato ingresso long V2 a $67.134 · 0,01 BTC (bybit/okx) · id 2026-10-31-1` e
+`Segnale ingresso $67.000 · slippage +0,200% · ritardo 4,0 h` (slippage positivo = esecuzione peggiore del segnale).
+Tutto in `data/journal.json`; nella dashboard, *Storico operativo → Reali*, la tabella con slippage e ritardo medi.
+Limite: `getUpdates` non funziona se sul bot è attivo un webhook (rimuovilo con `deleteWebhook`).
+
 ## Brand
 
 <p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
@@ -193,6 +215,7 @@ radar/live.py         segnali reali v2: stato (conferma, ingresso, trade), stori
 radar/paper.py        motore v2/H2 su candele 4h e conti su carta
 radar/research.py     scorecard e gate di promozione
 radar/telegram.py     messaggi
+radar/journal.py      registro dei trade reali via Telegram (data/journal.json)
 radar/dashboard*.py   dashboard (dark-first, light/dark, mobile, installabile)
 brand/                logo, icona app, banner, social preview, brand board (sorgenti in brand/src)
 .claude/agents/       sotto-agenti del ciclo orario (scan, apprendimento, miglioramento)

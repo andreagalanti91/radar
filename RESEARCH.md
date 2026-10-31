@@ -27,8 +27,8 @@ Richiesta dell'utente: "così i giri imparano anche dalla mia esecuzione reale".
 (`/entrato`, `/limit`, `/uscito`, radar/journal.py) in **data/journal.json**: per trade strategia, lato, exchange, ingressi, uscita,
 risultato % e confronto col segnale (prezzo del segnale, slippage reale %, ritardo in ore; slippage positivo = peggio del segnale).
 - **Ogni giro legge data/journal.json e research/LOSERS.md** prima di pianificare.
-- Con **almeno 5 trade reali** il backtest usa lo **slippage reale misurato** (media di ingresso, limit e uscita del registro, mai
-  sotto lo 0,1% attuale se il valore misurato è più basso di poche unità di trade) al posto dello 0,1% fisso, e annota qui il valore.
+- Con **almeno 5 trade reali** il backtest usa lo **slippage reale misurato** (media di ingresso, limit e uscita del registro, `journal.averages`) al
+  posto dello 0,1% fisso se è più alto; se è più basso si tiene lo 0,1% finché i trade sono pochi. Annotare qui il valore usato.
   Il ritardo medio d'ingresso va confrontato con la lezione sulla latenza (il vantaggio di v2 sta nella barra di conferma).
 - **Exchange**: l'esecuzione reale è su **Bybit/OKX**, non su Binance (dati e backtest restano su Binance). Commissioni taker
   futures circa 0,055% (Bybit) / 0,05% (OKX), spot 0,1%. Funding: da verificare che sia simile a quello Binance (prima di fidarsi
