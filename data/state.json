@@ -11,5 +11,19 @@
     "deadline": null,
     "setup": null
   },
-  "v2_risk_frozen": {}
+  "v2_risk_frozen": {},
+  "weekly": {
+    "notified": [
+      "2026-08-23"
+    ],
+    "exits": [],
+    "trail_notified": 71330.98,
+    "dist_week": null,
+    "status": "aperto",
+    "signal_date": "2026-08-23",
+    "side": "long",
+    "trail": 71330.98,
+    "date": "2026-10-30"
+  },
+  "weekly_intraday_keys": []
 }
