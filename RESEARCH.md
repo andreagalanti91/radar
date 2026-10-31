@@ -276,6 +276,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 17:47 — W2: stato di range dopo un massimo come filtro dei long · NESSUN EFFETTO
+Preregistrato (6 varianti): 0 long W2 su 15 cadono in range con le soglie preregistrate (la SMA40 nel 2024-05→09 saliva ancora
++3–8% in 4 settimane). Soglie larghe (a posteriori) prendono i perdenti del 2024 ma tolgono anche le ripartenze dal range (2023-10
++40%, 2024-09 +31%, 2021-10 +31%): MAR 9–12 vs 14,5 e senza il 2024 crolla. **Lezione 46**: il range del 2024 non diventa una regola;
+la SMA40 è troppo lenta e le ripartenze dal range sono dove W2 guadagna di più. Idea: dopo un long perso, il successivo solo su nuova
+chiusura sopra il massimo a 26 settimane (casi pochi: preregistrare una sola variante).
+
 ### Giro orario · 31/10 16:47 — v2: meta-labeling con etichetta continua (R) dal 2021 · NON PROMUOVERE
 Preregistrato (GB e ridge, k 0,5/1, walk-forward semestrale, 94 trade fuori campione). Spearman ŷ–R: GB +0,08 (permutazioni p 0,19),
 ridge −0,26 (anti-predittivo); terzili non monotoni. Miglior peso G05 +205% vs v2 +182% ma con più DD (14,2 vs 12,2): v2 scalata allo
