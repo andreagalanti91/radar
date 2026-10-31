@@ -224,6 +224,16 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giorno 31/10 · ricerca ma1 — v2 su altri asset (crypto, materie prime, azioni) · NESSUN ASSET AMMESSO, tool invariato
+Parametri congelati, dal 2022-03, rischio 4,3%. BTC +170,5% (placebo p 0,003) unico che passa. XRP +37% (placebo p 0,007, short
+positivi) fallisce solo il 2024–25 (−0,8%) → su carta; BNB +12%, LINK +4%; SOL, ETH, DOGE, ADA, AVAX negativi (−28/−46%).
+Materie prime: perp XAU/XAG/CL su Binance solo dal 12/2025–04/2026, PAXG perp/metrics dal 03/2025 → storia troppo corta.
+Azioni/indici: perp Binance (TSLA, NVDA, SPY, QQQ…) solo dal 2026; Yahoo 429 → nessun dato affidabile per un backtest.
+Portafoglio di 9 asset: −16%; selezione fatta su 2022–23 crolla fuori campione (+20% vs BTC solo +112% su 2024–26).
+**Lezione 35**: l'edge di v2 è specifico di BTC: sulle alt tutti i setup di flusso/posizionamento hanno aspettativa negativa (salvo
+brk), capit scatta 298 volte (OI cala spesso, non è un flush), il delta taker non predice l'esito; la bassa correlazione non salva.
+Prossimo: XRP su carta (20 trade fuori campione); oro e azioni dal 2027 con almeno 18 mesi di metrics.
+
 ### Giro orario · 31/10 08:47 — 2ª tranche DCA adattiva per trade · NON PROMUOVERE
 Preregistrato, 10 varianti: 2ª tranche ridotta se il limit si riempie entro 4/8 h o se il delta taker dell'ultima barra 4h chiusa
 è contrario (< −0,05/−0,10), o combinazioni. Tutte sotto v2 (r_boot 180–214 vs 226), perdita max invariata −5,59% (il trade
