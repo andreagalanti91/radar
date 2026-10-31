@@ -219,3 +219,21 @@ e il TP a 1R non sono più perdite. Gli altri 5 sono qui sotto (segnati con *).
 - R3: short con RSI 4h < 30 o %B 4h < 0 alla conferma: rischio ×0,6 (preregistrare, lez. 26 a U).
 - R4: tetto al rischio 3,76% (perdita massima ~4%): già misurato in L1, costa ~45% del rendimento a 1x ma toglie la coda.
 - Già bocciate in L1: failure stop 3/6 barre, 2° livello condizionato al DT, stop più stretto dopo il 2° livello, TP di salvataggio 0,5/0,75R, punteggio long.
+## Aggiunte del giro 13 (31/10/2026)
+
+7. **Correzione di una scheda**: lo stop del 2024-12-17 (flow long) NON ha il FOMC "entro 24h dopo l'ingresso": la decisione FOMC
+   e' stata il 18/12/2024 alle 19:00 UTC, l'ingresso il 19/12 alle 12:00 UTC (17 h DOPO l'evento). Era un ingresso nella reazione al
+   FOMC, non prima. Con il calendario ufficiale (federalreserve.gov) solo 2 trade v2 su 105 hanno un FOMC nelle 48 h dopo l'ingresso
+   (2023-10-31 e 2024-11-06, entrambi TP); 8 entro +-48 h (2 stop). Il calendario FOMC non spiega gli stop di v2.
+8. **Le due tranche dei trade a DCA completa** (49 trade: 27 TP, 22 stop), in R per unita' di rischio della tranche:
+   1a tranche: TP +0,46, stop -1,43 (media -0,39); 2a tranche: TP +1,17, stop -0,74 (media +0,31). La 2a tranche da sola ha
+   aspettativa positiva: la perdita dei 22 stop nasce soprattutto dalla 1a tranche che si trova 0,71R sotto quando il limit si
+   riempie. Ridurre la 2a tranche migliora il rendimento a parita' di coda (r_boot) perche' sposta rischio sui 56 trade a un livello
+   (tutti TP, +0,89R), non perche' la 2a tranche sia cattiva. Nota: la condizione "1a in perdita oltre 0,5R" e' sempre vera al
+   riempimento del 2° livello (limit a -0,5 ATR = -0,71R).
+9. **Short ipervenduti (RSI 4h < 30 o %B 4h < 0 alla conferma)**: 7 short su 26, 3 stop (43%) contro 2 su 19 (10,5%) per gli altri
+   short; R medio 0,00 contro +0,31. Il pattern 5 del registro e' confermato nei numeri, ma con n = 7 il placebo (shuffle dei
+   x0,6 tra gli short) da' p = 0,15: indizio, non regola. Gli stessi 7 includono tre TP grandi (2022-08-19, 2026-01-29, 2026-06-02).
+10. **A parita' di coda la perdita massima per trade non scende con nessuna regola di peso** (v2 -6,8%, R1b60 -7,0%, R3 -7,4% al
+   rispettivo r_boot): le riduzioni a base fissa 4,67% vengono solo dalla minore esposizione. L'unica leva sulla perdita massima resta
+   il tetto al rischio (L1).

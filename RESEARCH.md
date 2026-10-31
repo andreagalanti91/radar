@@ -208,6 +208,22 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro 13 · 31/10/2026 mattina — imparare dagli stop, spot vs futures, confluenza, modello · NON PROMUOVERE
+- **A, regole dal registro**: R1b60 (2ª tranche DCA ridotta: nozionale ×0,444) DD −25% e perdita max −24% a parità di base,
+  r_boot +245% vs +226% (+16% dal 2021), ma walk-forward 166,6 vs 168,4 (2026 peggiore) → sfidante su carta. R1 (peso solo 1ª
+  tranche) 86–88% di v2; FOMC ±48h (calendario ufficiale; CPI/NFP non ricostruibili) e short ipervenduti ×0,6 non battono il caso.
+  **Avviso**: dal 2021 con slippage 0,2% il r_boot di v2 è 4,32%, sotto il rischio dal vivo 4,67%.
+- **A, spot vs futures** (stessi segnali e DCA, 10.000 $ dal 2022-03 a 4,67%): futures v2 29.160 $; futures solo long 20.010 $;
+  spot solo long 1x 14.410 $ (tetto 1x taglia 48 long su 82); ibrido long spot + short futures 21.050 $.
+- **B, confluenza** (5 fattori, peso o filtro k≥3): migliore +248% (1,096× v2), placebo p 0,15–0,61, il WR non cresce con k.
+- **B, meta-labeling** (TP vs stop, walk-forward semestrale): gradient boosting profondità 2 come peso +349% vs +226% (slippage 0,2%:
+  +203% vs +140%), walk-forward ≥ v2; ma AUC fuori campione 0,578 (p 0,20), non calibrato, perdita max −8,1%, appoggiato su 14 stop
+  → sfidante su carta, da confermare con più trade (2021, etichetta continua in R).
+- **Lezione 32**: la perdita dei trade a DCA completa nasce dalla 1ª tranche (−1,43R negli stop), la 2ª ha aspettativa positiva;
+  a parità di coda nessuna regola di peso riduce la perdita massima (solo il tetto al rischio). **Lezione 33**: confluenze a soglia
+  e modelli usati per separare TP/stop non battono il caso; un modello non lineare come peso può aiutare sulla grandezza dei
+  risultati, ma serve un campione più grande.
+
 ### Giorno 31/10 · ricerca L1 — solo long, controllo perdite, "quando andare long", registro degli stop · NON PROMUOVERE
 **Registro dei trade andati male: research/LOSERS.md e research/losers.csv** (una scheda per ognuno dei 22 stop di v2, con
 pattern ricorrenti e regole candidate). Ogni giro di ricerca lo legge e lo aggiorna con i nuovi stop reali.
