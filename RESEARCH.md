@@ -259,6 +259,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 16:47 — v2: meta-labeling con etichetta continua (R) dal 2021 · NON PROMUOVERE
+Preregistrato (GB e ridge, k 0,5/1, walk-forward semestrale, 94 trade fuori campione). Spearman ŷ–R: GB +0,08 (permutazioni p 0,19),
+ridge −0,26 (anti-predittivo); terzili non monotoni. Miglior peso G05 +205% vs v2 +182% ma con più DD (14,2 vs 12,2): v2 scalata allo
+stesso DD fa +224%; walk-forward sceglie v2. **Lezione 45**: con più trade e etichetta continua il vantaggio del meta-labeling del
+giro 13 sparisce: le feature all'ingresso non dicono nulla sulla grandezza del risultato oltre al peso v2 (conferma 33, 37, 41).
+Idea: decidere la 2ª tranche dal comportamento della 1ª nelle prime barre 4h (lezione 32), su campione indipendente.
+
 ### Giro orario · 31/10 15:47 — W2: rientro dopo un'uscita su trailing · TEST VUOTO
 5 uscite su trailing dal 2021 (0 nel 2020); 0 rientri in tutte e 4 le varianti: in 4 casi su 5 il regime cade entro 1–2 settimane,
 e W2 rientra già senza nuovo incrocio della EMA21 (l'unico caso, 07/2024, è l'ingresso normale finito a −15%). Il rientro cieco a k=1
