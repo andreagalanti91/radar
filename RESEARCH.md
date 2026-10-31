@@ -276,6 +276,12 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 23:47 — W2: size asimmetrica (long ridotti, short pieni) · NON PROMUOVERE
+Giudicata sui campioni non usati per l'idea: 2018–20 (CVD) perde contro W2 scalata allo stesso DD (a=0,5: +92% vs +128%; a=0,75:
++145% vs +164%); 2020 senza short → nessun test. Vince solo nel 2021–26 (dove è nata). **Lezione 51**: pesare di più gli short conviene
+solo se gli short vincono; con 2–6 short per periodo il rapporto di size non si stima; lo short post-capitolazione resta il rischio
+(−17,9% anche con R25). La size uniforme resta la scelta corretta.
+
 ### Giro orario · 31/10 22:47 — W2: piramide solo su rotture non estese (≤ 2 ATRw dalla SMA40) · NON PROMUOVERE
 Il filtro lascia 1 aumento su 8 nel 2021–26 (il perdente) e 0 nel 2020 e nel 2018–20: MAR 9,7 vs P50 16,0, placebo p 0,64; vicini
 1,5/2,5 uguali. **Lezione 50**: le rotture del massimo a 26 settimane sono quasi sempre > 2,7 ATRw sopra la SMA40 e la distanza non
