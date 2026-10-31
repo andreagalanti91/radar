@@ -276,6 +276,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 00:47 — v2: peso degli short da funding_z con pf14z < 0 · SENZA POTENZA
+Preregistrato: rischio short × clip(0,5 + k·funding_z, 0,5, 1,5) se pf14z < 0 (k = 0,5; vicini 0,35/0,75). Campione indipendente
+2020-06→12: 3 trade v2, **0 short** → test vuoto, fermato come da preregistrazione. 2021–26: 26 short, 19 toccati ma raccolti in
+2–3 regimi ribassisti (10 nel 2022, 8 fra 11/2025 e 07/2026), 4 stop con funding_z di segno misto (−1,85; +0,71; +0,35; −0,80).
+**Lezione 52**: la size degli short di v2 non si stima con il posizionamento (funding): nessun campione indipendente con short, e nel
+2021–26 gli short sono pochi regimi, non episodi. Il campione pre-2021 serve solo per regole sui long. v2 invariata.
+
 ### Giro orario · 31/10 23:47 — W2: size asimmetrica (long ridotti, short pieni) · NON PROMUOVERE
 Giudicata sui campioni non usati per l'idea: 2018–20 (CVD) perde contro W2 scalata allo stesso DD (a=0,5: +92% vs +128%; a=0,75:
 +145% vs +164%); 2020 senza short → nessun test. Vince solo nel 2021–26 (dove è nata). **Lezione 51**: pesare di più gli short conviene
