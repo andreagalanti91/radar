@@ -234,6 +234,12 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 10:47 — "distribuzione" di W2 come peso/blocco dei long v2 · NESSUN EFFETTO POSSIBILE
+Preregistrato (6 varianti). Nessuno dei 114 trade v2 dal 2021 (né i 122 segnali long grezzi, né i giorni con un long aperto) cade in
+distribuzione (funding 7 g > 0,0006/0,0009 con pf14z < 0): i due regimi sono disgiunti → test senza potenza, v2 invariata.
+**Lezione 38**: v2 è già fuori dal mercato quando il funding è alto (mercato a leva); la distribuzione è specifica dello swing
+settimanale (spiega la bassa correlazione W2–v2, 0,16). Idea aperta: distribuzione come nuovo setup short (contare prima gli episodi).
+
 ### Giro orario · 31/10 09:47 — scadenza del limit della 2ª tranche (E48) · DA APPROFONDIRE (revisione), su carta
 Preregistrato: E24/E48/E72/E96 (2ª tranche annullata dopo H ore) e R48/R72 (ridotta). E48: al 4,3% +188,2% vs +170,5%, DD −8,7% vs
 −11,1%; r_boot 329,7 vs 225,9 (dal 2021 255,9 vs 181,6); placebo p 0,015/0,02; walk-forward ≥ v2 in 3 finestre; vicini E36–E72 sopra v2.
