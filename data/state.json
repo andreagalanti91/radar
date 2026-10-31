@@ -1,9 +1,15 @@
 {
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "last_signal_date": null,
-  "open": {
-    "futures": null,
-    "spot": null
+  "intraday_keys": [],
+  "v2": {
+    "status": "nessuno",
+    "signal_date": null,
+    "side": null,
+    "fills": null,
+    "trigger": null,
+    "deadline": null,
+    "setup": null
   },
-  "intraday_keys": []
+  "v2_risk_frozen": {}
 }
