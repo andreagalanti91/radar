@@ -170,6 +170,14 @@ download dei klines con taker buy spot e perp nel workflow orario), delta su 1h 
   (prudente: spot da solo r_boot +206% vs mix +226%). Riprodotto sui dati al 2026-10-30: 105 trade, WR 79,0%, +225,8%, DD −13,5%,
   10.000 $ → 32.580 $ (ricerca: 32.580 $), stessi trade di H2; test di non regressione in tests/test_paper.py.
 
+### Notte · ora 05:47 — 12 indicatori tecnici come peso della size di v2 · NON PROMUOVERE (v2 resta il campione)
+Preregistrato (terzili a finestra espansiva, × 1,3 / × 0,7, direzione favorevole scelta a priori, Bonferroni p ≤ 0,004):
+RSI 4h/1d, MACD 4h, ADX 1d, larghezza Bollinger 1d, %B 4h, Stocastico 4h, MFI 4h, CMF 4h, pendenza OBV 4h, SuperTrend 1d,
+distanza VWAP settimanale. Nessuno batte v2 in modo significativo: migliore SuperTrend 1d contrario +231,9% vs +226% (placebo
+p 0,48); tutti i p tra 0,41 e 0,77; walk-forward incoerente.
+**Lezione 26**: gli indicatori classici non aggiungono nulla al delta taker della barra di conferma, neanche come peso. Diagnostica
+(da preregistrare, non usare): barre di conferma ipercomprate (RSI/%B 4h estremi) rendono meno — forma a U rovesciata.
+
 ### Notte · ora 03:47 — supporti e resistenze multi-timeframe su v2 · NON PROMUOVERE (v2 resta il campione)
 Preregistrato, 20 combinazioni: pivot settimanali, swing giornalieri (frattali 5 g, 60 g), livelli tondi 5.000 $; uso peso
 (× 0,6/0,8 con livello avverso entro 0,5/1 ATR, bonus × 1,2 con livello dietro) e uso target (TP al livello se < 1R).
