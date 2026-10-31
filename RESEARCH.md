@@ -87,6 +87,12 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Decisione dell'utente (31/10/2026 pomeriggio): segnale SETTIMANALE nel tool
+"Trova strategia con meno operazioni, settimanale; adesso vedo tantissime operazioni da 3/5%." L'utente accetta il drawdown in cambio
+di poche operazioni grandi: W2 (long in spot, short in perp) viene attivata come SECONDO segnale reale, settimanale, accanto a v2
+(che resta), con il rischio dichiarato (DD storico −42,6%, coda fino a −45% su un trade nel 2020). Prima dell'attivazione si testa
+il tetto di rischio per trade (lezione 43) e, se migliora la coda senza perdere il profilo, si attiva la versione con tetto.
+
 ## Focus dell'utente (31/10/2026, giro delle 12): APPRENDIMENTO DELL'ANALISI TECNICA
 "Molti analisti tecnici fanno long o short di BTC con risultati incredibili." Imparare i metodi dell'analisi tecnica discrezionale
 (struttura di mercato HH/HL–LH/LL e rottura di struttura, supporti/resistenze con cambio di ruolo, trendline, pattern grafici
