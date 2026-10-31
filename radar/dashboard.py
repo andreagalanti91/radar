@@ -41,6 +41,9 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
     pf = ROOT / "data" / "paper.json"   # conto su carta H2 (radar/paper.py), se già calcolato
     if "paper" not in report and pf.exists():
         report = dict(report, paper=json.loads(pf.read_text()))
+    lf = ROOT / "data" / "lab.json"     # Laboratorio: v2 e candidati della ricerca (radar/lab.py)
+    if "lab" not in report and lf.exists():
+        report = dict(report, lab=json.loads(lf.read_text()))
     html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str))
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)
     if standalone:

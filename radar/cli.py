@@ -20,6 +20,7 @@ from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E40
 from .news import fetch_calendar, fetch_news  # noqa: E402
 from . import intraday  # noqa: E402
 from . import paper  # noqa: E402
+from . import lab  # noqa: E402
 import pandas as pd  # noqa: E402
 from .liquidations import collect as collect_liquidations  # noqa: E402
 import json  # noqa: E402
@@ -56,6 +57,10 @@ def daily() -> None:
     if ev:
         telegram.send(intraday.format_events(ev))
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
+    try:   # Laboratorio (v2 e candidati della ricerca): un errore qui non deve fermare la dashboard
+        lab.build(report)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] laboratorio non aggiornato: {e!r}")
     out = render(report)
     print(f"[radar] {report['date']} score {report['score']:+.2f} · eventi: {[e['type'] for e in events]} · dashboard: {out}")
 

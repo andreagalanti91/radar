@@ -1,0 +1,17 @@
+{
+  "_nota": "Candidati della ricerca mostrati nel Laboratorio della dashboard (radar/lab.py). Per aggiungerne uno: CSV dei trade in research/ con colonne ingresso,lato,prezzo_ingresso,uscita,prezzo_uscita,motivo,movimento_%,pnl_capitale_% e una voce qui. status: in uso | su carta | bocciato. metrics opzionali (se mancano si ricalcolano dal CSV).",
+  "candidates": [
+    {
+      "name": "W2 settimanale (su carta)",
+      "status": "su carta",
+      "csv": "research/weekly_w2_trades.csv",
+      "rules": [
+        "Candele settimanali: long sopra la media a 40 settimane con EMA 20 in salita, short solo in regime ribassista.",
+        "Ingresso alla chiusura oltre la EMA 21 settimanale con il flusso perp nella stessa direzione; perp 1x.",
+        "Uscita alla prima tra trailing 2,5 ATR settimanali, chiusura oltre la EMA 21 o distribuzione (funding alto con flusso perp contrario)."
+      ],
+      "metrics": {"trades_per_year": 3.3, "win_rate": 68.4, "avg_trade_pct": 11.5, "total_return_pct": 448.5,
+                  "max_dd_pct": -43.6, "final_10k_1x": 54849, "final_10k_2x": 151126}
+    }
+  ]
+}

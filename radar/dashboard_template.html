@@ -407,6 +407,24 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       <div class="sh">Trade simulati <small id="simCount"></small></div>
       <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:560px;overflow-y:auto"><table class="grid" id="simTrades"></table></div></div>
     </div>
+
+    <!-- Laboratorio: v2 e candidati della ricerca su 10.000 $ (data/lab.json, radar/lab.py) -->
+    <div class="section labSec" id="laboratorio" hidden>
+      <div class="sh">Laboratorio <small id="labSub"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="labTab"></table></div></div>
+    </div>
+    <div class="section labSec" hidden>
+      <div class="sh">10.000 $ a confronto <div class="seg" id="labLev" role="group" aria-label="Size"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button></div></div>
+      <div class="card">
+        <div class="legend" id="labLegend"></div>
+        <div id="labChart" class="chart" style="height:280px"></div>
+      </div>
+    </div>
+    <div class="section labSec" hidden>
+      <div class="sh">Trade dei candidati</div>
+      <div class="trades" id="labTrades"></div>
+      <p class="foot" id="labNote"></p>
+    </div>
   </div>
 
   <!-- ============ STATISTICHE ============ -->
@@ -838,6 +856,49 @@ function simulate() {
   }
   goal(cap, lev, mk);
 }
+
+// ---- laboratorio: v2 e candidati della ricerca su 10.000 $ (data/lab.json)
+let labChart, labLines = [];
+const escL = t => String(t).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
+const LAB_EXIT = { dist: "Distribuzione", ema: "Chiusura oltre EMA 21", open: "Aperto" };
+const LAB_COL = ["--tint", "--orange", "--teal", "--violet", "--mint", "--indigo"];
+function labCurves(lv) {
+  const L = R.lab; if (!L || !window.LightweightCharts) return;
+  if (!labChart) {
+    labChart = LightweightCharts.createChart($("labChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1 } }));
+    labLines = L.candidates.map((c, i) => labChart.addLineSeries({ color: css(LAB_COL[i % LAB_COL.length]), lineWidth: i ? 2 : 3, lineType: 1, priceLineVisible: false,
+      priceFormat: { type: "price", precision: 0, minMove: 1 } }));
+  }
+  L.candidates.forEach((c, i) => {
+    const d = []; (c["curve_" + lv + "x"] || []).forEach(([t, v]) => { if (d.length && d[d.length - 1].time >= t) d[d.length - 1].value = v; else d.push({ time: t, value: v }); });
+    labLines[i].setData(d);
+  });
+  labChart.timeScale().fitContent();
+}
+(function renderLab() {
+  const L = R.lab; if (!L || !L.candidates || !L.candidates.length) return;
+  document.querySelectorAll(".labSec").forEach(el => el.hidden = false);
+  const C = L.candidates, stCls = s => s === "in uso" ? "pos" : s === "bocciato" ? "neg" : "";
+  $("labSub").textContent = `v2 e candidati della ricerca · aggiornato al ${fmtD(L.updated)}`;
+  $("labTab").innerHTML = `<tr><th>Candidato</th><th>Stato</th><th>Trade/anno</th><th>Win rate</th><th>Medio per trade</th><th>Rendimento</th><th>Max DD</th><th>10.000 $ a 1x</th><th>a 2x</th></tr>` +
+    C.map(c => { const m = c.metrics; return `<tr><td>${escL(c.name)}</td><td class="${stCls(c.status)}">${escL(c.status)}</td><td>${m.trades_per_year == null ? "–" : String(m.trades_per_year).replace(".", ",")}</td>` +
+      `<td>${m.win_rate == null ? "–" : m.win_rate + "%"}</td><td>${pct(m.avg_trade_pct, 1)}</td><td>${pct(m.total_return_pct, 1)}</td><td class="neg">${pct(m.max_dd_pct, 1)}</td>` +
+      `<td>${usd(m.final_10k_1x)}</td><td>${usd(m.final_10k_2x)}</td></tr>`; }).join("");
+  $("labLegend").innerHTML = C.map((c, i) => `<span><i style="background:var(${LAB_COL[i % LAB_COL.length]})"></i>${escL(c.name)}</span>`).join("") + `<span>scala log</span>`;
+  const sideL = x => x === "long" ? "Long" : "Short";
+  $("labTrades").innerHTML = C.map(c => `<details class="trade">
+      <summary><span class="t1"><b>${escL(c.name)}</b><small>${c.trades.length} trade · ${escL(c.status)}</small></span><span></span>
+        <span class="res"><b class="${c.metrics.total_return_pct >= 0 ? "pos" : "neg"}">${pct(c.metrics.total_return_pct, 1)}</b><small>a 1x</small></span>
+        <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></summary>
+      <div class="body">
+        <div class="why"><b>Regole</b>${(c.rules || []).map(escL).join("<br>")}</div>
+        <div class="scroll" style="max-height:420px;overflow-y:auto"><table class="grid"><tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Movimento</th><th>Sul capitale</th></tr>` +
+        c.trades.slice().reverse().map(t => `<tr><td>${t.ingresso}</td><td class="${t.lato === "long" ? "pos" : "neg"}">${sideL(t.lato)}</td><td>${usd(t.prezzo_ingresso)}</td><td>${t.uscita}</td><td>${usd(t.prezzo_uscita)}</td>` +
+          `<td>${escL(LAB_EXIT[t.motivo] || EXIT_LABEL[t.motivo] || t.motivo)}</td><td>${pct(t.movimento_pct, 1)}</td><td class="${t.pnl_capitale_pct > 0 ? "pos" : "neg"}">${pct(t.pnl_capitale_pct, 1)}</td></tr>`).join("") +
+        `</table></div></div></details>`).join("");
+  $("labNote").textContent = "I candidati su carta non generano segnali reali. Curve a gradini sulle date di uscita dei trade; 2x = size doppia trade per trade (v2 con il tetto di esposizione 5x del conto). Metriche dei candidati come nella ricerca (RESEARCH.md).";
+  seg("labLev", v => labCurves(+v)); labCurves(1);
+})();
 function goal(cap, lev, mk) {
   const target = +$("goalCap").value || cap * 2, end = $("goalDate").value || "2026-12-31";
   const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5)), mult = target / cap, tr = closedTrades(mk), res = [];
@@ -932,7 +993,7 @@ function route() {
   const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) ? v : "oggi";
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
-  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
+  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); labChart && labChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
 }
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 route();
