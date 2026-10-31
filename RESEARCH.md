@@ -87,6 +87,25 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## ATTIVAZIONE W2 settimanale (31/10/2026)
+Attivata come SECONDO segnale reale (settimanale) la versione **W2 V1 con tetto di rischio solo sugli short (S-R25)**; v2 invariata.
+- Scelta: nessuna variante preregistrata di W5 passava tutti i criteri (R25 su tutti i trade: MAR 11,94 < 14,27). S-R25 (tetto
+  R=0,25 solo sugli short, long spot 1x invariati) è una scelta **a posteriori**, per prudenza sulla coda: lo short del 16/03/2020
+  passa da −44,7% (1x) a circa −17,9%; dal 2021 cambia solo l'esposizione dei due short del 2022 e di quello del 2025.
+- Codice `radar/weekly.py`: porta pulita di /tmp/radar-work/w5/scripts/sim3.py (F1 E1 X3, ex='S', R=0,25, Rshort_only) sui dati del
+  repo (data/spot.csv giornaliero, pf14z da `features.build_features`, data/funding.csv), candele W-SUN chiuse. `simulate(f, start)`
+  storico; `evaluate(f)` stato (nessuno / segnale / aperto / uscita) con piano in $ su RADAR_CAPITAL × RADAR_WEEKLY_SHARE (1,0).
+- Numeri riprodotti esattamente (2021-01-01 → 30/10/2026): 19 trade, 3,26/anno, WR 68,4%, medio +13,4%, peggiore −18,3%, +617,6%,
+  DD giornaliero −42,6%, MAR 14,50, 10.000 $ → 71.761 $ (2x 178.309 $, DD −70%). Per anno +135,4 / +19,4 / +42,1 / +54,3 / +1,9 / +14,2%.
+  Stessi 19 ingressi, motivi ed esposizioni di research/weekly_w2_sr25_trades.csv. Posizione aperta: long spot dal 24/08/2026 a 77.812.
+- Dal vivo (`radar/cli.py daily`, in try/except): stato in data/state.json chiave "weekly"; eventi SEGNALE SETTIMANALE, trailing
+  aggiornato (spostamento > 1 ATR giornaliero), allerta distribuzione (una per settimana), USCITA SETTIMANALE (decisa per il lunedì
+  o registrata nello storico), stop toccato in tempo reale su candele 1h (una allerta per livello). Primo avvio: un solo messaggio
+  "posizione settimanale in corso". Dashboard: sezione Settimanale in Oggi e in Statistiche; Laboratorio "W2 settimanale (in uso,
+  short con tetto)". Test: tests/test_weekly.py.
+- Limiti: P(DD>40%) circa 50% (bootstrap W5); 19 trade; il flusso perp della domenica può mancare per il ritardo dell'archivio (si usa
+  l'ultimo valore disponibile della settimana, come nella ricerca) e un ricalcolo successivo potrebbe cambiare un segnale marginale.
+
 ## Decisione dell'utente (31/10/2026 pomeriggio): segnale SETTIMANALE nel tool
 "Trova strategia con meno operazioni, settimanale; adesso vedo tantissime operazioni da 3/5%." L'utente accetta il drawdown in cambio
 di poche operazioni grandi: W2 (long in spot, short in perp) viene attivata come SECONDO segnale reale, settimanale, accanto a v2

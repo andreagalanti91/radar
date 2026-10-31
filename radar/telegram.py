@@ -108,6 +108,15 @@ def _status_line(v: dict) -> str:
     return "Nessun segnale v2 attivo"
 
 
+def _weekly_line(w: dict) -> str:
+    if w["status"] in ("aperto", "uscita"):
+        return (f"{w['side']} dal {w['entry']} a {_usd(w['entry_px'])} ({w['market']}) · {w['move_pct']:+.2f}% · "
+                f"trailing {_usd(w['trail'])}" + (" · uscita all'apertura di lunedì" if w["status"] == "uscita" else ""))
+    if w["status"] == "segnale":
+        return f"segnale {w['side']} alla chiusura del {w['signal_date']}, ingresso all'apertura di lunedì"
+    return f"nessuna posizione · regime settimanale {w['regime']}"
+
+
 def daily_brief(report: dict) -> str:
     c = {k: (0.0 if v is None else v) for k, v in report["components"].items()}
     active = [x["setup"] for x in report.get("checklist", []) if x["active"]]
@@ -116,6 +125,7 @@ def daily_brief(report: dict) -> str:
             f"(soglia ±{report['threshold']}) · regime {report['regime']}\n"
             f"Setup attivi: {', '.join(active) if active else 'nessuno'}\n"
             f"<b>v2</b>: {_status_line(report['v2'])}\n"
+            + (f"<b>Settimanale W2</b>: {_weekly_line(report['weekly'])}\n" if report.get("weekly") else "")
             + (f"Regione 7g · acquisto {_usd(report['zone']['buy'][0])}–{_usd(report['zone']['buy'][1])} "
                f"(toccata {report['zone']['stats']['buy_zone_touch_%']:.0f}% delle volte) · vendita "
                f"{_usd(report['zone']['sell'][0])}–{_usd(report['zone']['sell'][1])}\n" if report.get("zone") else "")

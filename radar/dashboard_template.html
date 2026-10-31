@@ -355,6 +355,13 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
       <div class="list" id="checks"></div>
     </div>
 
+    <div class="section" id="wkSec" hidden>
+      <div class="sh">Settimanale · W2 <small id="wkSub"></small></div>
+      <div class="tiles" id="wkKv"></div>
+      <div id="wkPlan"></div>
+      <p class="foot" id="wkNote"></p>
+    </div>
+
     <div class="section" id="paperSec" hidden>
       <div class="sh">Su carta · H2 e v2 <small id="paperSub"></small></div>
       <div class="tiles" id="paperKv"></div>
@@ -468,6 +475,16 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
         <div class="sh" style="margin-top:12px">Per setup</div>
         <div class="list" id="bySetup"></div>
       </div>
+    </div>
+
+    <div class="section" id="wkStatSec" hidden>
+      <div class="sh">Settimanale W2 <small id="wkStatSub"></small></div>
+      <div class="cols">
+        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
+        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
+      </div>
+      <div class="card" style="padding:4px 6px;margin-top:12px"><div class="scroll" style="max-height:480px;overflow-y:auto"><table class="grid" id="wkTr"></table></div></div>
+      <p class="foot">Simulazione giornaliera sulle candele settimanali chiuse: long in spot 1x (0,1%/lato), short in perp con tetto di rischio 25% allo stop (0,05%/lato e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
     </div>
   </div>
 
@@ -766,6 +783,51 @@ renderTrades();
   $("paperNote").textContent = "Conti virtuali, nessun ordine reale. Riferimento storico " + A.map(([k, C]) => { const F = C.reference;
     return `${k} dal ${fmtD(F.start)}: ${F.n} trade, WR ${F.wr}%, ${pct(F.ret, 1)}, DD ${pct(F.dd, 1)}`; }).join("; ") +
     (P.v2 ? ". v2: se manca il perp della barra di conferma (archivio in ritardo di ~1 giorno) il delta taker è solo spot." : ".");
+})();
+
+// ---- segnale settimanale W2 (radar/weekly.py): stato in Oggi, storico in Statistiche
+(function renderWeekly() {
+  const W = R.weekly; if (!W) return;
+  const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
+  const mkt = (m, e) => m === "spot" ? "spot 1x" : `perp ${e.toFixed(2).replace(".", ",")}x`;
+  $("wkSec").hidden = false;
+  $("wkSub").textContent = `chiusura settimanale del ${fmtD(W.week)} · regime ${W.regime}`;
+  $("wkKv").innerHTML = [
+    ["EMA 21 settimanale", usd(W.ema21), W.price >= W.ema21 ? "prezzo sopra" : "prezzo sotto"],
+    ["SMA 40 settimane", usd(W.sma40), W.price >= W.sma40 ? "prezzo sopra" : "prezzo sotto"],
+    ["Flusso perp", sgn(W.flow) + "σ", "pf14z"],
+    ["Funding 7g", pct(W.fund7 * 100, 3), "al giorno · distribuzione oltre +0,09%"],
+  ].map(([a, b, d]) => `<div><span>${a}</span><b>${b}</b><small>${d}</small></div>`).join("");
+  if (W.status === "aperto" || W.status === "uscita") {
+    $("wkPlan").innerHTML = rows([[`Posizione ${side(W.side)}<small>dal ${fmtD(W.entry)} · ${mkt(W.market, W.expo)}</small>`, usd(W.entry_px), true],
+      ["Andamento<small>sul prezzo</small>", pct(W.move_pct, 2), true],
+      [`Trailing attuale<small>2,5 ATR settimanali dalla miglior chiusura (${usd(W.best)})</small>`, usd(W.trail), true],
+      ["Stop iniziale", usd(W.stop0)],
+      [`Su ${usd(W.capital)}<small>${W.btc.toFixed(4).replace(".", ",")} BTC · al trailing</small>`, `${usd(W.notional)} · ${W.trail_usd >= 0 ? "+" : "−"}${usd(Math.abs(W.trail_usd))}`],
+      ["Distribuzione", W.dist_now ? "condizione attiva: uscita se resta così domenica" : "non attiva"],
+      ...(W.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[W.reason] || W.reason}`, true]] : [])]);
+  } else if (W.status === "segnale") {
+    const p = W.plan;
+    $("wkPlan").innerHTML = rows([[`Segnale ${side(W.side)}<small>chiusura del ${fmtD(W.signal_date)} · ingresso all'apertura di lunedì</small>`, usd(p.entry_est), true],
+      ["Mercato", mkt(p.market, p.expo)], [`Su ${usd(p.capital)}`, `${usd(p.notional)} · ${p.btc.toFixed(4).replace(".", ",")} BTC`],
+      ["Stop iniziale<small>2,5 ATR settimanali</small>", `${usd(p.stop)} · −${String(p.stop_pct).replace(".", ",")}%`, true],
+      ["Trailing<small>dalla miglior chiusura giornaliera</small>", usd(p.trail_dist)], ["Perdita allo stop", usd(p.loss_usd)]]);
+  } else {
+    $("wkPlan").innerHTML = `<div class="card"><p style="margin:0">Nessuna posizione settimanale. Il segnale si decide alla chiusura della domenica (UTC) e si entra all'apertura del lunedì: circa 3 operazioni l'anno.</p></div>`;
+  }
+  const H = W.history, M = H.m1;
+  $("wkNote").textContent = `Secondo segnale reale, accanto a v2. Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
+  $("wkStatSec").hidden = false;
+  $("wkStatSub").textContent = `dal ${fmtD(H.start)} · ${M.n} trade`;
+  const Y = Object.keys(M.years);
+  $("wkYears").innerHTML = `<tr><th>Anno</th><th>1x</th><th>2x</th></tr>` + Y.map(y => `<tr><td>${y}</td><td class="${M.years[y] >= 0 ? "pos" : "neg"}">${pct(M.years[y], 1)}</td><td class="${H.m2.years[y] >= 0 ? "pos" : "neg"}">${pct(H.m2.years[y], 1)}</td></tr>`).join("");
+  const S = [["10.000 $ diventano", usd(H.final_10k_1x), usd(H.final_10k_2x)], ["Rendimento", pct(M.total_pct, 1), pct(H.m2.total_pct, 1)],
+    ["Max DD giornaliero", pct(M.max_dd_pct, 1), pct(H.m2.max_dd_pct, 1)], ["Peggior trade", pct(M.worst_pct, 1), pct(H.m2.worst_pct, 1)],
+    ["Medio per trade", pct(M.avg_pct, 1), pct(H.m2.avg_pct, 1)], ["Win rate", M.win_rate + "%", H.m2.win_rate + "%"], ["MAR", String(M.mar).replace(".", ","), String(H.m2.mar).replace(".", ",")]];
+  $("wkSum").innerHTML = `<tr><th></th><th>1x</th><th>2x</th></tr>` + S.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
+  $("wkTr").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Mercato</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Movimento</th><th>Sul capitale</th></tr>` +
+    H.trades.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}</td><td>${mkt(t.market, t.expo)}</td><td>${usd(t.entry_px)}</td>` +
+      `<td>${t.exit ? fmtD(t.exit) : "–"}</td><td>${usd(t.exit_px)}</td><td>${why[t.reason] || t.reason}</td><td>${pct(t.move_pct, 1)}</td><td class="${t.pnl_pct > 0 ? "pos" : "neg"}">${pct(t.pnl_pct, 1)}</td></tr>`).join("");
 })();
 
 // anatomia del win rate

@@ -2,7 +2,7 @@
 
 # Radar Signal BTC
 
-Segnali swing brevi su Bitcoin (pochi giorni per trade, circa 22 trade l'anno) basati su **order flow** e **posizionamento** dei derivati, con **conferma a 4 ore**. Dal 31/10/2026 i segnali reali usano la strategia **v2**. Ogni notte il modello legge i dati e decide se c'è un setup; ogni ora controlla se è arrivata la conferma e gestisce il trade. Tutto arriva su **Telegram** con il piano in dollari; la **dashboard** online si aggiorna da sola.
+Segnali swing brevi su Bitcoin (pochi giorni per trade, circa 22 trade l'anno) basati su **order flow** e **posizionamento** dei derivati, con **conferma a 4 ore**. Dal 31/10/2026 i segnali reali usano la strategia **v2**. Dal 31/10/2026 pomeriggio c'è anche un **secondo segnale reale, settimanale (W2)**: circa 3 operazioni l'anno, lunghe settimane o mesi (vedi [Segnale settimanale (W2)](#segnale-settimanale-w2)). Ogni notte il modello legge i dati e decide se c'è un setup; ogni ora controlla se è arrivata la conferma e gestisce il trade. Tutto arriva su **Telegram** con il piano in dollari; la **dashboard** online si aggiorna da sola.
 
 **Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot)
 
@@ -12,9 +12,9 @@ Pensata per il telefono (si installa come app dalla schermata Home), dark-first 
 
 | Sezione | Cosa trovi |
 |---|---|
-| **Oggi** | prezzo live, regione prevista a 7 giorni, score di flusso, **stato v2** (nessun segnale / in attesa di conferma 4h con soglia e scadenza / ingresso confermato / trade aperto) con piano, rischio, leva e **calcolatore in dollari sul tuo capitale**, stato dei 6 setup, conti **su carta** (H2 e v2), grafico con i trade |
+| **Oggi** | prezzo live, regione prevista a 7 giorni, score di flusso, **stato v2** (nessun segnale / in attesa di conferma 4h con soglia e scadenza / ingresso confermato / trade aperto) con piano, rischio, leva e **calcolatore in dollari sul tuo capitale**, **stato del settimanale W2** (posizione, trailing, EMA 21, distribuzione), stato dei 6 setup, conti **su carta** (H2 e v2), grafico con i trade |
 | **Simulatore** | capitale, data di partenza e size (1x = piano v2, 2x, 3x, 5x): quanto varrebbe oggi seguendo i segnali v2; quante volte un obiettivo di capitale è stato raggiunto in passato |
-| **Statistiche** | curva di equity v2 contro BTC, esiti (TP, stop, tempo), storico trade per trade (segnale, conferma, limit, uscita), **registro dei segnali reali** dal 31/10/2026, risultati per periodo e per anno, 10.000 $ a 1x/2x/5x, per setup |
+| **Statistiche** | curva di equity v2 contro BTC, esiti (TP, stop, tempo), storico trade per trade (segnale, conferma, limit, uscita), **registro dei segnali reali** dal 31/10/2026, risultati per periodo e per anno, 10.000 $ a 1x/2x/5x, per setup, **storico del settimanale W2** (trade, anni, 10.000 $ a 1x/2x); Laboratorio con v2, W2 e i candidati della ricerca |
 | **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
 | **Metodo** | regole complete e limiti del sistema |
 
@@ -103,6 +103,46 @@ Al rischio di ricerca 5,24% e slippage 0,1%: +225,8%, DD −13,5%, 10.000 $ → 
 
 La strategia giornaliera precedente resta nel codice (`radar/backtest.py`, `radar/research.py`) come banco di ricerca.
 
+## Segnale settimanale (W2)
+
+Secondo segnale reale, accanto a v2 (che non cambia). Per chi preferisce **poche operazioni grandi** a tante piccole.
+Si guarda solo la **candela settimanale** (da lunedì a domenica, chiusura UTC della domenica); si entra o si esce all'apertura del lunedì.
+
+1. **Il trend.** Long solo se la settimana chiude **sopra la media a 40 settimane** e la EMA 20 settimanale sale. Short solo in
+   trend ribassista: chiusura sotto la media a 40 settimane, media a 40 in calo su 4 settimane, EMA 20 in calo.
+2. **L'ingresso.** La settimana chiude dal lato giusto della **EMA 21 settimanale** e il flusso dei perp (CVD perp 14 giorni) va
+   nella stessa direzione.
+3. **Come.** Long in **spot, senza leva** (niente funding). Short in **perp**, con esposizione ridotta quando lo stop è lontano:
+   lo stop iniziale non costa mai più del **25% del capitale** dedicato.
+4. **L'uscita**, alla prima di tre: **trailing 2,5 ATR settimanali** dalla miglior chiusura giornaliera (controllato ogni ora);
+   chiusura settimanale oltre la EMA 21; **distribuzione** (long: funding medio 7 giorni sopra 0,09% al giorno con flusso perp
+   negativo; short: funding sotto −0,03% con flusso positivo). Stop iniziale a 2,5 ATR settimanali.
+
+Su Telegram: **SEGNALE SETTIMANALE** con il piano (spot o perp, esposizione, importi, stop, uscite), **trailing aggiornato** quando
+si sposta di oltre 1 ATR giornaliero, **allerta distribuzione**, **USCITA SETTIMANALE** con motivo e risultato, allerta in tempo
+reale se il trailing viene toccato. Importi su `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE` (predefinito 1,0 = tutto il capitale:
+**decidi tu** quanta parte dedicare al settimanale, ad esempio 0,5 per metà).
+
+| Dal 01/01/2021 al 30/10/2026 (commissioni, funding e slippage 0,1%) | W2 |
+|---|---|
+| Trade | 19 (3,3 l'anno) |
+| Win rate | 68% |
+| Guadagno medio per trade | +13,4% sul capitale |
+| Peggior trade | −18,3% |
+| Rendimento | **+617,6%** (10.000 $ → 71.761 $; a 2x 178.309 $) |
+| Max drawdown giornaliero | **−42,6%** (a 2x −70%) |
+| MAR (rendimento / DD) | 14,5 |
+
+Per anno: 2021 +135,4% · 2022 +19,4% · 2023 +42,1% · 2024 +54,3% · 2025 +1,9% · 2026 +14,2%.
+Posizione al 30/10/2026: long in spot dal 24/08/2026 a 77.812 $.
+
+**Rischio, detto chiaramente.** Il drawdown storico è **−42,6%** e nei ricampionamenti la probabilità di un drawdown oltre il 40% è
+di circa **il 50%**: è un rischio da accettare consapevolmente. Prima del 2021 uno short (16/03/2020) senza tetto avrebbe perso
+circa **−45%** in un solo trade; con il tetto sugli short la stessa operazione perde circa −18%. Il tetto è stato scelto **dopo** aver
+visto i risultati (non era tra le varianti preregistrate), per prudenza sulla coda: non migliora il rendimento, limita il caso peggiore.
+Pochi trade (19) vogliono dire statistiche fragili: un singolo trade cambia molto il totale. Il primo giro dal vivo mostra il long già
+aperto come "posizione in corso", non come segnale nuovo. Codice: `radar/weekly.py`.
+
 ## Brand
 
 <p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
@@ -159,6 +199,7 @@ brand/                logo, icona app, banner, social preview, brand board (sorg
 radar/zones.py        previsione della regione di prezzo a 7 giorni
 radar/news.py         notizie RSS classificate per impatto e calendario economico
 radar/intraday.py     controllo orario dei livelli v2 (alert in tempo reale)
+radar/weekly.py       segnale settimanale W2: storico, stato, eventi, controllo orario del trailing
 radar/liquidations.py raccolta delle liquidazioni reali OKX da oggi (data/liquidations.csv)
 radar/observe.py      osservazione su carta di altri asset (SOL)
 tests/                test del motore di backtest (python -m radar.cli test)

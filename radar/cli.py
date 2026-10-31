@@ -21,6 +21,7 @@ from .news import fetch_calendar, fetch_news  # noqa: E402
 from . import intraday  # noqa: E402
 from . import paper  # noqa: E402
 from . import lab  # noqa: E402
+from . import weekly  # noqa: E402
 import pandas as pd  # noqa: E402
 from .liquidations import collect as collect_liquidations  # noqa: E402
 import json  # noqa: E402
@@ -32,6 +33,10 @@ def daily() -> None:
     d = update_all()
     f = build_features(d)
     report = evaluate(f)
+    try:   # segnale settimanale W2: un errore qui non deve fermare v2
+        report["weekly"] = weekly.evaluate(f)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] settimanale non calcolato: {e!r}")
     try:   # modulo su carta (H2 e v2): un errore qui non deve fermare alert e dashboard
         paper.update(f)
     except Exception as e:  # noqa: BLE001
@@ -56,6 +61,16 @@ def daily() -> None:
     ev, st["intraday_keys"] = intraday.check(report, st.get("intraday_keys", []))
     if ev:
         telegram.send(intraday.format_events(ev))
+    if report.get("weekly"):
+        try:   # eventi del settimanale (dedupe in state.json, chiave "weekly") e controllo orario del trailing
+            wev, st["weekly"] = weekly.diff_events(report["weekly"], st.get("weekly"))
+            for e in wev:
+                telegram.send(weekly.format_event(e))
+            hev, st["weekly_intraday_keys"] = weekly.check_intraday(report["weekly"], st.get("weekly_intraday_keys", []))
+            if hev:
+                telegram.send(weekly.format_intraday(hev))
+        except Exception as e:  # noqa: BLE001
+            print(f"[radar] eventi settimanali non inviati: {e!r}")
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
     try:   # Laboratorio (v2 e candidati della ricerca): un errore qui non deve fermare la dashboard
         lab.build(report)
