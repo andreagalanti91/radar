@@ -179,11 +179,19 @@ sceglie v2 in entrambe le finestre. TP al livello: WR fino a 82,9% ma rendimento
 tende a superare la resistenza vicina); un pivot settimanale appena dietro l'ingresso è semmai negativo (WR 69,7% vs 83,3%).
 Conferma 6 e 18: anticipare il TP alza il WR e distrugge il rendimento.
 
-### Da fare (nota 02:47): latenza del modulo su carta
-data/spot_1h.csv contiene solo giorni chiusi, quindi la conferma 4h di H2/v2 viene vista fino a ~24 ore dopo (su carta il
-fill è simulato al prezzo storico, ma un alert reale arriverebbe tardi). Per l'operatività: includere nelle candele 4h anche
-le ore già chiuse del giorno in corso (solo per paper/alert, non per lo storico) e congelare il rischio v2 al momento
-dell'ingresso (oggi viene ricalcolato quando arriva il perp).
+### Risolto (notte 04:47): latenza del modulo su carta
+- **Candele intraday**: paper.update usa candles_4h(live=True), che accoda alle candele di data/spot_1h.csv le ore CHIUSE del
+  giorno in corso (paper.hours_after, data-api.binance.vision klines 1h, close time già passato); una barra 4h di oggi si usa
+  solo se ha 4 ore chiuse. Errore di rete -> soli dati salvati. data/spot_1h.csv, backtest e storico di riferimento invariati
+  (candles_4h() senza argomenti). taker_1h includeva già le ore chiuse di oggi per lo spot (fetch_taker_1h esclude solo l'ora
+  in corso). I segnali restano quelli della chiusura giornaliera: la conferma 4h del giorno dopo ora si vede entro ~1 ora
+  (workflow orario) invece che fino a ~24 ore dopo. Prova dal vivo alle 03:49 UTC del 31/10: lette le ore 00–02 di oggi,
+  barra 00:00 ancora incompleta e quindi esclusa (ultima barra usata 30/10 20:00).
+- **Rischio v2 congelato**: per ogni trade v2 dal vivo (dal 31/10/2026) rischio, DT, sotto SMA40w, perp e barra di conferma
+  si salvano in data/paper.json -> v2.risk_frozen ("AAAA-MM-GG lato") al primo calcolo (stato "ingresso" o trade aperto) e
+  si riusano ai giri successivi (paper.frozen_risk); lo storico dal 2022 resta ricalcolato. Json e dashboard compatibili
+  (solo una chiave in più). Test: numeri storici H2/v2 invariati, rischio congelato con DT cambiato (sintetico e su
+  simulazione 2026), candele intraday con ore finte e rete assente.
 
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo

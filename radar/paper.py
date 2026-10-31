@@ -18,6 +18,8 @@ v2 (ricerca notte 01:47) = stessi trade di H2, cambia solo la size:
   m = 0,6 se long e ultima chiusura settimanale (W-SUN, settimana chiusa entro il giorno del segnale) < SMA 40 settimane, altrimenti 1
   DT = (2·taker_buy_base − volume)/volume sulla barra 4h UTC di conferma (chiusa prima dell'ingresso), DT_mix = media spot/perp
   leva = min(5, rischio/stop%)
+Dal vivo (update): le candele 4h includono le ore chiuse del giorno in corso (candles_4h(live=True)), quindi la conferma
+si vede entro ~1 ora; il rischio v2 di ogni trade dal vivo si congela all'ingresso in data/paper.json (v2.risk_frozen).
 Regola dati in tempo reale: l'archivio perp arriva con ~1 giorno di ritardo; se manca il perp della barra di conferma
 DT_mix = DT spot (nella ricerca lo spot da solo dà r_boot +206% contro +226% del mix: regola prudente). Se manca lo spot si
 usa il perp; senza nessuno dei due DT = 0 (rischio minimo 0,5×).
@@ -25,11 +27,12 @@ usa il perp; senza nessuno dei due DT = 0 (rischio minimo 0,5×).
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 
 import numpy as np
 import pandas as pd
 
-from .data import DATA_DIR
+from .data import DATA_DIR, SYMBOL, _get
 from .strategy import Params, compute_signals
 
 FEE, SLIP = 0.0005, 0.001
@@ -43,12 +46,43 @@ PAPER_FILE = DATA_DIR / "paper.json"
 V2_BASE, V2_K, V2_CLIP, V2_M, V2_SMA = 0.0524, 1.5, 0.15, 0.6, 40
 
 
-def candles_4h() -> pd.DataFrame:
-    """Candele 4h UTC aggregate da data/spot_1h.csv; l'ultimo giorno si scarta se incompleto."""
+OHLC = {"open": "first", "high": "max", "low": "min", "close": "last"}
+
+
+def hours_after(t: pd.Timestamp) -> pd.DataFrame:
+    """Ore spot CHIUSE dopo l'ora `t` (giorno in corso) da data-api.binance.vision, solo per il paper dal vivo.
+    In caso di errore di rete restituisce un DataFrame vuoto (si ricade sui dati salvati)."""
+    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    start = int((t + pd.Timedelta(hours=1)).tz_localize("UTC").timestamp() * 1000)
+    try:
+        rows = _get("https://data-api.binance.vision/api/v3/klines",
+                    {"symbol": SYMBOL, "interval": "1h", "startTime": start, "limit": 1000}, retries=2).json()
+    except Exception as e:  # noqa: BLE001
+        print(f"[paper] ore di oggi non lette ({type(e).__name__}): solo dati salvati")
+        return pd.DataFrame(columns=list(OHLC))
+    rows = [r for r in rows if int(r[6]) < now_ms]   # close time passato: ora chiusa
+    if not rows:
+        return pd.DataFrame(columns=list(OHLC))
+    d = pd.DataFrame([r[:5] for r in rows], columns=["t", *OHLC])
+    d["t"] = pd.to_datetime(pd.to_numeric(d["t"]), unit="ms")
+    return d.set_index("t").astype(float)
+
+
+def candles_4h(live: bool = False) -> pd.DataFrame:
+    """Candele 4h UTC aggregate da data/spot_1h.csv; l'ultimo giorno si scarta se incompleto.
+    live=True (solo aggiornamento dal vivo): si accodano le ore chiuse del giorno in corso (hours_after);
+    una barra 4h di oggi si usa solo se completa (4 ore chiuse). Storico e backtest restano sul solo spot_1h."""
     h = pd.read_csv(DATA_DIR / "spot_1h.csv", index_col=0, parse_dates=True)
-    k = h.resample("4h").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
+    k = h.resample("4h").agg(OHLC).dropna()
     last = k.index[-1].normalize()
-    return k[k.index < last] if (k.index.normalize() == last).sum() < 6 else k
+    k = k[k.index < last] if (k.index.normalize() == last).sum() < 6 else k
+    if live:
+        x = hours_after(h.index[-1])
+        if len(x):
+            n = x["open"].resample("4h").count()
+            x = x.resample("4h").agg(OHLC)[n == 4].dropna()
+            k = pd.concat([k, x[x.index > k.index[-1]]])
+    return k
 
 
 class _Bars:
@@ -177,6 +211,19 @@ def v2_risk(f: pd.DataFrame, h4: pd.DataFrame):
     return fn
 
 
+def frozen_risk(fn, saved: dict):
+    """Rischio v2 congelato all'ingresso: se il trade (giorno segnale + lato) è in `saved` si riusano rischio e DT
+    salvati, altrimenti si calcola con `fn` e si aggiunge a `saved`. Così l'arrivo del perp non cambia a posteriori."""
+    def g(sg: int, d: pd.Timestamp, tc: pd.Timestamp):
+        key = f"{d.date()} {'long' if sg == 1 else 'short'}"
+        if key not in saved:
+            r, info = fn(sg, d, tc)
+            saved[key] = dict(risk=r, **info, bar=str(tc))
+        v = saved[key]
+        return float(v["risk"]), dict(dt=v["dt"], below_sma40w=v["below_sma40w"], perp=v["perp"])
+    return g
+
+
 def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float = 10000.0, risk: float = 0.03,
              risk_fn=None) -> dict:
     """Conto dal giorno `start`: trade chiusi, eventuale trade aperto/conferma attesa, equity giornaliera, statistiche.
@@ -260,13 +307,19 @@ def _account(r: dict, version: str, start: str, ref: dict) -> dict:
 def update(f: pd.DataFrame) -> dict:
     """Ricalcola i conti su carta H2 e v2 dal LIVE_START e i riferimenti storici; salva data/paper.json.
     Le chiavi di primo livello restano quelle di H2 (compatibilità), i due conti sono in "h2" e "v2"."""
-    h4 = candles_4h()
+    h4 = candles_4h(live=True)
     h2 = _account(simulate(f, h4, LIVE_START), "H2 v1", LIVE_START, simulate(f, h4, REF_START))
     out = dict(h2, updated=str(h4.index[-1] + pd.Timedelta(hours=4)), h2=h2)
     if (DATA_DIR / "taker_1h.csv").exists():
         fn = v2_risk(f, h4)
-        ref = simulate(f, h4, REF_START, risk_fn=fn)
-        v2 = _account(dict(simulate(f, h4, LIVE_START, risk_fn=fn), risk_fn=fn), "v2", LIVE_START, ref)
+        ref = simulate(f, h4, REF_START, risk_fn=fn)   # storico di riferimento: sempre ricalcolato
+        try:
+            saved = json.loads(PAPER_FILE.read_text()).get("v2", {}).get("risk_frozen", {})
+        except (OSError, ValueError):
+            saved = {}
+        live = simulate(f, h4, LIVE_START, risk_fn=frozen_risk(fn, saved))
+        v2 = _account(dict(live, risk_fn=fn), "v2", LIVE_START, ref)
+        v2["risk_frozen"] = saved   # "AAAA-MM-GG lato" -> rischio, DT, sotto SMA40w, perp, barra di conferma
         v2["risk"] = dict(base=V2_BASE, k=V2_K, clip=V2_CLIP, m_long_sotto_sma40w=V2_M, cap=CAP)
         v2["reference"]["trades"] = [dict(date=t["date"], side=t["side"], risk=t["risk"], dt=t["dt"], perp=t["perp"],
                                           N=t["N"], pnl_pct=t["pnl_pct"]) for t in ref["trades"]]
