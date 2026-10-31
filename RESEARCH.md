@@ -259,6 +259,12 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 15:47 — W2: rientro dopo un'uscita su trailing · TEST VUOTO
+5 uscite su trailing dal 2021 (0 nel 2020); 0 rientri in tutte e 4 le varianti: in 4 casi su 5 il regime cade entro 1–2 settimane,
+e W2 rientra già senza nuovo incrocio della EMA21 (l'unico caso, 07/2024, è l'ingresso normale finito a −15%). Il rientro cieco a k=1
+(+723%) è un blocco di sequenza su un solo trade (k=2–4 crollano). **Lezione 44**: le uscite su trailing di W2 cadono a fine trend;
+le seconde gambe sono già catturate. Il punto debole resta il range dopo un massimo (2024-05 → 09).
+
 ### Giro orario · 31/10 14:47 — validazione indipendente di W2 prima del 2021 · PROVA DEBOLE, W2 resta su carta
 Perp/funding Binance solo dal 2020-01 (nessun archivio 2019, API 451); pf14z calcolabile dal 2020-04-12. 2020: 3 trade long (+20%, +66%,
 +48% aperto), W2 +195% / V1 +214%, DD −14%, MAR 13–15 vs B&H 5,6 (B&H +302%, DD −54%), placebo p 0,04 → criteri passati, ma il MAR
