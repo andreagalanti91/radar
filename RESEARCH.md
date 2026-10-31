@@ -224,6 +224,25 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giorno 31/10 · ricerche W1 e W2 — STRATEGIA SETTIMANALE (poche operazioni, grandi movimenti) · NON PROMUOVERE, W2 su carta
+- **W1, famiglie classiche** (33 configurazioni preregistrate, spot 1x long/flat dal 2021): ensemble momentum 4/8/13/26 settimane
+  2,9 trade/anno, WR 29%, medio +11,2%, +278% (10.000 $ → 37.842 $), DD −43,7%, placebo p 0,04, walk-forward positivo; fallisce
+  medio ≥ 12%, Calmar ≥ 1,5 e bootstrap (P(DD>40%) 66%; passa solo a 0,6x: +144%, DD −29%). Buy & hold 23.445 $, DD −77%.
+  MOM4 da solo +623% ma i vicini +86/+181% → rumore. Funding in futures (+30%/anno nel 2021) e DCA in ingresso tolgono rendimento.
+- **W2, composita nostra** (30 configurazioni preregistrate): regime W-SMA40 + pendenza W-EMA20; ingresso con chiusura oltre W-EMA21 e
+  pf14z nella direzione; uscita alla prima tra trailing 2,5 ATR settimanali, chiusura oltre W-EMA21, **distribuzione** (funding 7 g
+  > 0,0009/giorno con pf14z < 0; specchio per gli short); short solo in regime ribassista; perp 1x.
+  **3,3 trade/anno, WR 68,4%, medio +11,5% (miglior +67%, peggior −20%), +448,5% dal 2021, DD −43,6%, 10.000 $ → 54.849 $ (2x 151.126 $,
+  DD −71%)**; per anno +102 / +35 / +25 / +44 / −2 / +14; short 5/5 vincenti; placebo p 0,01; vicini 13/13 in profitto 5 anni su 6;
+  walk-forward positivo (2023–26 +72,6%, 2025–26 +6,5% vs B&H −18%). Fallisce medio ≥ 12% (11,5) e bootstrap P(DD>40%) 67%.
+  Portafoglio 30% W2 / 70% v2 (approssimato sul mensile): +310%, DD −14,5%, correlazione 0,16. Trade: research/weekly_w2_trades.csv.
+- **Lezione 36**: nello swing settimanale il vantaggio sta nell'USCITA su distribuzione (funding alto + flusso perp che diverge):
+  porta il MAR del trend puro da 1,5 a 7,6; il filtro pf14z all'ingresso batte il caso anche su scala settimanale (conferma 17);
+  il DCA sul ritracciamento taglia i trade che corrono; il limite è il DD da range dopo un massimo (05–10/2024: tre long persi di fila).
+- **Decisione autonoma**: W2 non entra nei segnali reali (2 criteri preregistrati falliti); va su carta e nel Laboratorio come
+  "Settimanale W2". Prossimo: W2 con long su spot e short su perp a esposizione 0,6x o a volatilità costante; "distribuzione" come
+  peso/blocco dei long v2; portafoglio 30/70 validato con equity giornaliera reale e lo stesso bootstrap.
+
 ### Giorno 31/10 · ricerca ma1 — v2 su altri asset (crypto, materie prime, azioni) · NESSUN ASSET AMMESSO, tool invariato
 Parametri congelati, dal 2022-03, rischio 4,3%. BTC +170,5% (placebo p 0,003) unico che passa. XRP +37% (placebo p 0,007, short
 positivi) fallisce solo il 2024–25 (−0,8%) → su carta; BNB +12%, LINK +4%; SOL, ETH, DOGE, ADA, AVAX negativi (−28/−46%).
