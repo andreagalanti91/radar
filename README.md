@@ -73,13 +73,14 @@ Win rate sopra +1% sul capitale 65,7%, profit factor 2,42, durata media 3 giorni
 **Walk-forward** (ricerca, notte 01:47): la fonte del delta taker scelta solo sul passato è la stessa in entrambe le finestre e resta
 positiva fuori campione: 2024–25 +63,2% (DD −13,4%) contro H2 senza size +37,2%; 2026 +45,9% (DD −4,2%) contro +22,7%.
 
-| 10.000 $ (size del piano v2) | 1x | 2x | 5x |
+| 10.000 $ (size del piano v2, esposizione massima 5x) | 1x | 2x | 5x |
 |---|---|---|---|
-| Capitale finale | **29.151 $** | 77.479 $ | 835.257 $ |
-| Max drawdown | −12,0% giornaliero (−11,3% per trade) | −22,5% per trade | −53,8% per trade |
-| Peggior trade | −6,1% | −12,1% | −30,4% |
+| Capitale finale | **29.163 $** | 60.221 $ | 128.144 $ |
+| Max drawdown giornaliero | −12,0% | −23,8% | −41,1% |
+| Peggior trade | −6,1% | −12,2% | −21,3% |
 
-2x e 5x moltiplicano la size di ogni trade (5x solo come confronto: drawdown oltre il 50%).
+2x e 5x moltiplicano la size di ogni trade con il tetto di esposizione a 5x del conto (5x solo come confronto: drawdown oltre il 40%).
+Registro dei trade in stop con l'analisi di ciascuno: [research/LOSERS.md](research/LOSERS.md).
 
 **Confronto con la strategia precedente** (segnale giornaliero, DCA a 3 tranche, stop 3 ATR, uscite a scaglioni, 49 trade):
 +34,9% a 1x con drawdown giornaliero −28,1%. v2: **+191,6% con −12,0%**.
