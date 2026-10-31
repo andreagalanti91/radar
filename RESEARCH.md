@@ -234,6 +234,24 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Approfondimento · 31/10 ore 12 — analisi tecnica codificata (TA1) e W2 eseguita in spot (W3) · NON PROMUOVERE
+- **TA1, analisi tecnica** (9 metodi tradotti in regole oggettive, 34 configurazioni preregistrate, dal 2021, perp 1x long/short):
+  NON funzionano Fibonacci (WR 9–11%, 39 stop su 44), pattern grafici (doppi, triangoli; testa e spalle 0 trade con le definizioni
+  Lo–Mamaysky–Wang), trendline/retest/spring giornalieri, golden/death cross, BMSB come strategie, nessuna uscita tecnica per W2.
+  Migliore: divergenza RSI settimanale (2,1 trade/anno, WR 58%, medio +11,6%, +192%, DD −38%, placebo p 0,015) ma walk-forward fallito
+  (2018–22 MAR −0,10; 2023–26 +113% vs B&H +366%). Trendline settimanale MAR 3,37 ma walk-forward −36%. Le scelte "migliori in campione"
+  (value area MAR 16,5 nel 2018–22) diventano negative nel 2023–26. Filtro struttura settimanale su W2 passa (MAR 11,97, p 0,03) ma
+  cade sui vicini (n=1 8,4; n=3 5,8). Nota: WebSearch non disponibile all'agente, fonti da Wikipedia e letteratura classica.
+- **W3, W2 con long in spot** (regole invariate): +676% dal 2021 (vs +448% in perp), DD −42,6%, MAR 15,9, placebo p 0,01,
+  walk-forward 2024–26 +82% vs B&H a pari DD +62%; P(DD>40%) 60% (criterio 20%) → non passa. A 0,6x: +285%, DD −27,8%, P 16%, MAR 10,2
+  (sotto W2 originale per 0,05). Volatilità costante peggiore della size fissa. Portafoglio 30/70 W2spot/v2 dal 2022-03: +194,4%,
+  DD −16,4%, P(DD>20%) 0,154 (limite 0,15; 0,218 con slippage 0,2%) → manca di poco.
+- **Lezione 39**: tradotti in regole oggettive, i metodi classici dell'analisi tecnica non battono il caso su BTC (17 su 23 perdono);
+  l'eccezione (divergenza RSI settimanale) è instabile fuori campione. I risultati "incredibili" degli analisti soffrono di
+  sopravvivenza, selezione e interpretazione a posteriori: il placebo è l'arbitro. **Lezione 40**: per W2 il funding dei long in
+  perp era la zavorra principale (spot: MAR 10,3 → 15,9); ridurre la size abbassa la coda ma riporta il MAR al livello originale.
+- In Laboratorio: W2 spot e divergenza RSI settimanale. Giro W4 in corso: portafoglio 20/80–25/75 e freno anti-range su W2.
+
 ### Giro orario · 31/10 10:47 — "distribuzione" di W2 come peso/blocco dei long v2 · NESSUN EFFETTO POSSIBILE
 Preregistrato (6 varianti). Nessuno dei 114 trade v2 dal 2021 (né i 122 segnali long grezzi, né i giorni con un long aperto) cade in
 distribuzione (funding 7 g > 0,0006/0,0009 con pf14z < 0): i due regimi sono disgiunti → test senza potenza, v2 invariata.
