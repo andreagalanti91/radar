@@ -21,6 +21,19 @@ Ciclo di miglioramento automatico: **2 giri al giorno** (07:17 e 19:17 ora itali
 Regole operative: nessuna promozione mentre un trade è aperto;
 ogni promozione viene annunciata su Telegram e annotata qui.
 
+## Registro dei trade reali (31/10/2026)
+
+Richiesta dell'utente: "così i giri imparano anche dalla mia esecuzione reale". L'utente registra via Telegram i trade eseguiti
+(`/entrato`, `/limit`, `/uscito`, radar/journal.py) in **data/journal.json**: per trade strategia, lato, exchange, ingressi, uscita,
+risultato % e confronto col segnale (prezzo del segnale, slippage reale %, ritardo in ore; slippage positivo = peggio del segnale).
+- **Ogni giro legge data/journal.json e research/LOSERS.md** prima di pianificare.
+- Con **almeno 5 trade reali** il backtest usa lo **slippage reale misurato** (media di ingresso, limit e uscita del registro, mai
+  sotto lo 0,1% attuale se il valore misurato è più basso di poche unità di trade) al posto dello 0,1% fisso, e annota qui il valore.
+  Il ritardo medio d'ingresso va confrontato con la lezione sulla latenza (il vantaggio di v2 sta nella barra di conferma).
+- **Exchange**: l'esecuzione reale è su **Bybit/OKX**, non su Binance (dati e backtest restano su Binance). Commissioni taker
+  futures circa 0,055% (Bybit) / 0,05% (OKX), spot 0,1%. Funding: da verificare che sia simile a quello Binance (prima di fidarsi
+  dei costi del backtest sugli short e sulla leva, confrontare il funding storico Bybit/OKX con data/funding.csv).
+
 ## Studio indicatori tecnici (completato 30/10/2026, iterazione 5)
 Esito: nessun indicatore classico migliora la strategia. Su 59 condizioni e 165 incroci, 5 incroci stabili contro 2,9 attesi per caso (p95 7): nessuno significativo. Stabile solo il flusso perp (già nello score). RSI>70 e ADX>25 con DI− hanno edge sul mercato ma non sui trade. MACD, RSI, %B, stocastico, EMA 9/21, OBV sono ridondanti con lo score (ρ 0,6–0,9). Fibonacci, Bollinger/squeeze, proxy liquidazioni, funding/basis/F&G estremi non stabili. Testati in strategia: setup momentum (Donchian 55 + RSI>70) test exp 1,29 vs 1,92; setup short di trend (EMA21×50 + ADX>25 DI−) test exp 1,36 o ridondante: gate NO. Script: indicators.py, evalcand.py (scratchpad di sessione). Piano originale:
 1. Calcolare su BTC giornaliero (senza look-ahead): SMA 20/50/100/200 e incroci, EMA 9/21/50/200 e incroci, MACD (12,26,9: linea,
@@ -105,6 +118,10 @@ Attivata come SECONDO segnale reale (settimanale) la versione **W2 V1 con tetto 
   short con tetto)". Test: tests/test_weekly.py.
 - Limiti: P(DD>40%) circa 50% (bootstrap W5); 19 trade; il flusso perp della domenica può mancare per il ritardo dell'archivio (si usa
   l'ultimo valore disponibile della settimana, come nella ricerca) e un ricalcolo successivo potrebbe cambiare un segnale marginale.
+
+## Priorità dell'utente (31/10/2026 sera): MIGLIORARE L'ALGORITMO
+"Per adesso migliora l'algoritmo, lasciamo in secondo piano l'esecuzione vera." I giri orari si concentrano su v2 e W2 (ingressi,
+uscite, size, regime, nuove strategie confrontate allo stesso DD); niente lavoro su esecuzione/ordini reali salvo errori.
 
 ## Decisione dell'utente (31/10/2026 pomeriggio): segnale SETTIMANALE nel tool
 "Trova strategia con meno operazioni, settimanale; adesso vedo tantissime operazioni da 3/5%." L'utente accetta il drawdown in cambio
