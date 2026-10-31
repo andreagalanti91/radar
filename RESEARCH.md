@@ -276,6 +276,18 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Approfondimento · 31/10 ore 20 — analisi tecnica seconda passata (TA2) e W2 dopo un long perso (W6) · NON PROMUOVERE
+- **TA2**: pattern con tolleranze in ATR (doppi, testa e spalle, triangoli; D e W): 7/12 con < 10 trade, gli altri perdono
+  (WR 31–40%, placebo 0,50–0,96) → l'obiezione "definizioni troppo strette" è smentita. Blocco di esaurimento (≥ 2 divergenze RSI
+  settimanali consecutive): 1 episodio per lato in 9 anni, 0 nel 2017–2020; su W2 MAR 18–20 vs 14,5 ma da un solo trade (long
+  05/2021 −18% evitato) → non promosso; al massimo avviso informativo.
+- **W6**: dopo un long W2 perso, nuovo long solo su rottura del massimo a 26 settimane: 5 casi (2 fuori dal 2024); MAR 14,70 vs 14,50,
+  peggiore nel 2018–20, placebo p 0,47; DD più basso solo per minore esposizione. Il long successivo a una perdita è sempre una
+  ripartenza dal range.
+- **Lezione 48**: le regole su eventi rari (divergenze multiple, rientri, filtri dopo perdite) producono "miglioramenti" che sono un
+  solo trade; servono ≥ 8–10 episodi indipendenti. Idee: piramidare i long W2 (0,5–0,75x poi 1x sulla rottura del massimo a 26
+  settimane); allerta divergenza su più asset per raccogliere episodi.
+
 ### Giro orario · 31/10 18:47 — v2: 2ª tranche ridotta se la 1ª non è mai partita (MFE basso) · NON PROMUOVERE
 Preregistrato (L02/L04 + controlli H02/H04), 52 trade a 2 livelli dal 2021. Direzione smentita: le 2e tranche con MFE basso sono
 le MIGLIORI (riempimento rapido, lezione 34); L02/L04 sotto v2 su ogni criterio (placebo p 0,73/0,82). I controlli opposti (×0,5 se
