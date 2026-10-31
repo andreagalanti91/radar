@@ -99,7 +99,7 @@ Con questa definizione H2 (v1) soddisfa i criteri del giro 12 (tutti i vicini in
 
 ## Giri notturni orari (dal 30/10/2026, richiesta dell'utente) — campione/sfidante
 Ogni ora dalle 22:47 alle 06:47 (Roma) un giro breve: una linea di ricerca, un agente, test completo.
-**Campione attuale (versione di ricerca v1)**: H2 del giro 12 (WR 79%, +85,4%, DD −11,4%, MAR 7,5; fallisce solo i vicini 2022–23).
+**Campione attuale: v2 (notte 01:47, H2 con size su delta taker e W-SMA40)**; v1 = H2 del giro 12 (WR 79%, +85,4%, DD −11,4%, MAR 7,5; fallisce solo i vicini 2022–23).
 Ogni giro prova a creare una **versione migliore** (v2, v3, …): se batte il campione su MAR a DD fisso, WR ≥ 70%, walk-forward,
 placebo e vicini, diventa il nuovo campione e si annota qui con i numeri. Nel tool entra SOLO se passa tutti i criteri del gate.
 **Catalogo notturno** (un tema per ora, a rotazione, evitando ciò che è già bocciato):
@@ -147,6 +147,21 @@ la fonte spot, 22–25 il mix; entrambi positivi nel test). 10.000 $ al rischio 
 **Lezione 23**: il delta taker come peso CONTINUO quasi raddoppia il rendimento a parità di rischio di coda; il delta perp da
 solo non basta, la media spot/perp regge meglio il bootstrap; un clip stretto concentra il rischio e fa esplodere la coda.
 Prossimo: walk-forward con fonte come unico iperparametro (k 1,5, W 0,6 fissi), tetto al rischio per trade.
+
+### Notte · ora 01:47 — conferma preregistrata dello sfidante di size · NUOVO CAMPIONE DI RICERCA **v2** (con riserva)
+Fonte DT come unico iperparametro, selezione per r_boot: il walk-forward sceglie il **mix spot/perp in entrambe le finestre**
+(test 24–25 +63,2% DD 13,4% vs H2 +37,2%; test 2026 +45,9% DD 4,2% vs H2 +22,7%). Criteri obbligatori tutti passati:
+r_boot +226% vs +124% (1,82×), placebo p 0,024 / 0,035, vicini in profitto in ogni periodo, bootstrap 15,0% (al limite),
+slippage 0,2% (rischio 4,67%: +140% vs H2 +71%). Tetto 1,6× inutile (toglie rendimento, non abbassa la coda).
+**Riserva**: con il delta taker della barra PRIMA della conferma il vantaggio sparisce (2026 +48,6 → +11,8%; totale +122% vs
+H2 +124%): non è look-ahead (la barra di conferma chiude prima dell'ingresso), ma in tempo reale il delta va letto subito alla
+chiusura della barra 4h di conferma. Alcuni vicini (k 2,0, clip 0,12, W 0,7) sforano il bootstrap.
+**v2 = H2 con size**: rischio = 5,24% × (0,5 + 1,5·clip(segno·DT_mix,0,0,15)/0,15) × m; m = 0,6 se long e ultima chiusura
+settimanale < SMA 40 settimane, altrimenti 1; DT_mix = media spot/perp di (2·taker_buy − volume)/volume sulla barra 4h di
+conferma; leva = min(5, rischio/stop%); con slippage reale 0,2% rischio base 4,67%. 10.000 $ → 32.580 $ (DD −13,5%) vs H2 22.460 $.
+**Lezione 24**: selezionare per r_boot (rendimento al rischio che tiene la coda) rende il walk-forward coerente; il vantaggio del
+flusso taker è nella barra di conferma stessa: la latenza di esecuzione conta. Prossimo: modulo su carta anche per v2 (serve il
+download dei klines con taker buy spot e perp nel workflow orario), delta su 1h dentro la barra di conferma, rischio che scala col DD.
 
 ## Giro 12 · manuale 30/10/2026 notte — test preregistrati · ESITO: NON PROMUOVERE (miglior candidato finora: H2)
 - **A, "A + conferma 4h" robusta** (prereg. 24 combinazioni): vince **H2** = ingresso alla prima chiusura 4h oltre il massimo
