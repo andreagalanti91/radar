@@ -1,0 +1,13 @@
+{
+ "exchange": "bybit/okx",
+ "trades": [],
+ "ref": {
+  "w2": {
+   "signal_date": "2026-08-23",
+   "side": "long",
+   "entry": 77811.73,
+   "entry_time": "2026-08-24",
+   "limit": null
+  }
+ }
+}
