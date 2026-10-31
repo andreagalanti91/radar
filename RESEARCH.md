@@ -276,6 +276,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 31/10 18:47 — v2: 2ª tranche ridotta se la 1ª non è mai partita (MFE basso) · NON PROMUOVERE
+Preregistrato (L02/L04 + controlli H02/H04), 52 trade a 2 livelli dal 2021. Direzione smentita: le 2e tranche con MFE basso sono
+le MIGLIORI (riempimento rapido, lezione 34); L02/L04 sotto v2 su ogni criterio (placebo p 0,73/0,82). I controlli opposti (×0,5 se
+MFE ≥ 0,4R: rimbalzo poi ritorno tardivo) rendono +11% a r_boot ma placebo p 0,13–0,27 e sono la stessa informazione del
+"riempimento tardivo" (E48). **Lezione 47**: MFE basso al riempimento = riempimento rapido = buona 2ª tranche; il segnale debole
+negativo è il rimbalzo seguito da ritorno lento. Prossimo: regola unica età del limit + rimbalzo, solo su campione indipendente.
+
 ### Giro orario · 31/10 17:47 — W2: stato di range dopo un massimo come filtro dei long · NESSUN EFFETTO
 Preregistrato (6 varianti): 0 long W2 su 15 cadono in range con le soglie preregistrate (la SMA40 nel 2024-05→09 saliva ancora
 +3–8% in 4 settimane). Soglie larghe (a posteriori) prendono i perdenti del 2024 ma tolgono anche le ripartenze dal range (2023-10
