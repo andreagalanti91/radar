@@ -87,6 +87,11 @@ scattare ogni trade. Con ~50 trade in sequenza un segnale falso sposta tutti i s
 - **Lezione 17**: il segnale che conta è il flusso perp; il resto della differenza la fa la gestione del rischio (size, DD), non
   nuovi indicatori. Prossimi: flow guidato da pf14z, size per livello di pf14z, portafoglio a due parti, rischio fisso per trade.
 
+## Focus dell'utente (31/10/2026): short e direzione del mercato
+"Nei periodi difficili meglio short che long": analizzare gli short e la migliore strategia per anticipare se il mercato sale o
+scende; backtest dal 2021 a oggi (1h/taker da scaricare per il 2021; metrics solo dal 12/2021). Giri orari tutto il giorno
+(minuto 47, tranne 07 e 19). Usare tutte le ricerche fatte (lezioni 1–29): niente ripetizioni di idee bocciate.
+
 ## Obiettivo aggiornato dall'utente (30/10/2026, 22:30) — sostituisce i precedenti
 **Massimo rendimento con drawdown giornaliero calcolato 15–20%** (la leva/size si sceglie per stare in quel DD).
 Il **win rate si misura sull'intero periodo** e può essere più basso se il rendimento a DD 15–20% è più alto
@@ -194,6 +199,17 @@ Notte: 10 giri (modulo su carta H2 → v2, latenza ridotta; temi trend settimana
 conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione: **v2** (r_boot +226%, DD −13,5%).
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
+
+### Giorno 31/10 · ricerca r1 — volatilità realizzata come peso e seconda gamba trend · NON PROMUOVERE (v2 resta il campione)
+- **A, volatilità** (7 varianti preregistrate, vol30 e ATR% su mediana 365 g): tutte peggiorano v2 (migliore +211% vs +226%,
+  placebo p 0,68, walk-forward sceglie v2). Diagnostica: i trade deboli sono in BASSA volatilità (R +0,02, WR 70%), non in alta.
+- **B, seconda gamba**: W-SMA40 long/flat spot (corr 0,14) in portafoglio 70/30: +248% vs v2 +252% (stesso bootstrap a blocchi),
+  MAR 18,5 vs 17,3, ma 2026 +31% vs +53%, placebo p 0,10, walk-forward e vicini non passano; 50/50 non fattibile (coda).
+  Compressione→breakout solo long sul 4h: −0,5%, inutile.
+- **Lezione 28**: lo stop di H2 è già in ATR, quindi un peso di volatilità conta due volte il rischio. **Lezione 29**: la gamba trend
+  abbassa il DD ma non aumenta il rendimento al limite della coda in modo significativo. Nota di metodo: confrontare sempre con
+  lo stesso bootstrap (a blocchi sull'equity è più permissivo di quello per trade).
+- Prossimo: gamba trend a volatilità costante (rende fattibile il 50/50); peso invertito sulla bassa volatilità (preregistrato).
 
 ### Notte · ora 06:47 — rischio dinamico in funzione del drawdown del conto (v2) · NON PROMUOVERE
 Preregistrato, 9 varianti (gradini −6/8/10% → ×0,7, −12/14% → ×0,5; continua ×max(0,5; 1−DD/0,20); anti-martingala ×1,2 a nuovo
