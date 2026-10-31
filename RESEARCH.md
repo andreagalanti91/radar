@@ -200,6 +200,18 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giorno 31/10 · ricerca s1 — short e previsione della direzione dal 2021 · NON PROMUOVERE (v2 resta il campione)
+Dati 1h spot/perp con taker scaricati dal 2020-06 (identici al repo). Nel 2021 flow/sflow non scattano (ls_z dal 03/2022) →
+v2 ridotto. v2 dal 2021 (bootstrap a blocchi, r_boot 5,07%): +199%, DD 13%; 2021 −9% (soli long fundneg/capit).
+Short di v2: 26 trade, tutti sotto W-SMA40 in regime ribassista, WR 80,8%, +1,74 per trade (triplo dei long); nei ribassi
+nov 2021–dic 2022 +11,5 e ott 2025–oggi +37,8 (WR 91%). Classificatore "ribasso a 2–4 settimane" (logistica walk-forward):
+AUC 0,50–0,52, non batte il placebo circolare (p 0,16), non calibrato; pf14z da solo fa meglio (AUC 0,569, > 0,5 ogni anno).
+Gambe short dedicate (pf14z<−x, rimbalzi con delta negativo, probabilità del modello): guadagnano solo nel 2026, perdono
+2022–25, placebo non significativo; aggiunte a v2 peggiorano. Peso di regime su v2 (short ×1,5 / long ×0,67 sotto W40): 0,97× v2.
+**Lezione 30**: gli short utili esistono già in v2 (sflow/sfund sotto W-SMA40); short aggiuntivi e modelli di direzione non battono
+il caso; il punto debole di v2 è il 2021 (soli long, senza ls_z), non la mancanza di short. Prossimo: peso continuo su pf14z,
+size short ridotta quando il prezzo è molto sotto W-SMA40 (rimbalzi), sostituto di ls_z disponibile dal 2020.
+
 ### Giorno 31/10 · ricerca r1 — volatilità realizzata come peso e seconda gamba trend · NON PROMUOVERE (v2 resta il campione)
 - **A, volatilità** (7 varianti preregistrate, vol30 e ATR% su mediana 365 g): tutte peggiorano v2 (migliore +211% vs +226%,
   placebo p 0,68, walk-forward sceglie v2). Diagnostica: i trade deboli sono in BASSA volatilità (R +0,02, WR 70%), non in alta.
