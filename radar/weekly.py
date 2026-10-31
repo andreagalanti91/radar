@@ -309,7 +309,7 @@ def format_event(ev: dict) -> str:
                 f"<b>Mercato</b>: {_mkt(w, p['market'], p['expo'])}",
                 f"<b>Su {_usd(p['capital'])}</b>: posizione {_usd(p['notional'])} = {p['btc']:.4f} BTC",
                 f"<b>Stop iniziale</b> {_usd(p['stop'])} (2,5 ATR settimanali, −{p['stop_pct']:.1f}%) · perdita allo stop ~{_usd(p['loss_usd'])}",
-                f"<b>Trailing</b> a {_usd(p['trail_dist'])} (2,5 ATRw) dalla miglior chiusura giornaliera: ti avviso quando si sposta",
+                f"<b>Trailing</b>: {_usd(p['trail_dist'])} (2,5 ATRw) sotto/sopra la miglior chiusura giornaliera: ti avviso quando si sposta",
                 f"<b>EMA 21 settimanale</b> {_usd(p['ema21'])}",
                 _exits_text(w["side"]),
                 "Operazioni rare (circa 3 l'anno) e lunghe: DD storico −42,6%."])
