@@ -276,6 +276,10 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Mattino 01/11/2026 07:17 — resoconto inviato su Telegram
+Temi delle ultime 24 ore: 10 test (lezioni 49–58), nessuna promozione. Decisione autonoma: W2 resta a 1x (lezione 58). Stato: v2
+nessun segnale; W2 long dal 24/08 a 77.812 $ (trailing 71.331 $), BTC ~77.580 $; conti su carta senza trade; test OK.
+
 ### Giro orario · 01/11 06:47 — W2: robustezza alla selezione fra 31 prove (DSR, SPA, walk-forward della scelta) · FRAGILE
 Preregistrato; simulatore identico a W2 (19 trade, +617,6%, DD −42,6%). DSR 0,964 con N=31 (passa: le config sono correlate, rango
 2/31, 25/30 battono B&H allo stesso DD). Ma SPA_c contro **buy&hold p 0,44** (contro flat p 0,04); scelta su 2021-01→2023-06 e
