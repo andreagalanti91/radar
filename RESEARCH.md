@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 05:47 — v2: size crescente con il retail affollato contro il segnale (ls_z) · NON PROMUOVERE
+Walk-forward preregistrato sui 105 trade della v2 vera (train 2022-03→2024-06, test 2024-07→2026-10), b ∈ {0,25; 0,5; 1,0}.
+Spearman P–R: −0,12 nel train (segno opposto all'ipotesi), +0,12 nel test (rumore). Test: candidata b 0,5 +108,8% (DD −15,8%) contro
+v2 scalata allo stesso DD +138,9% (−30 punti); peggiora in modo monotono con b; slippage 0,2% −16 punti; placebo p 0,67; bootstrap
+a blocchi P(miglioramento) 4%. Controllo inverso +4 punti, incoerente.
+**Lezione 57**: il posizionamento perp serve a SCEGLIERE i trade (score pf14z − ls_z), non a dimensionarli: la sua intensità al
+trigger non predice la grandezza del risultato oltre al peso da DT già in v2 (conferma lezioni 41 e 45).
+
 ### Giro orario · 01/11 04:47 — W2: niente short nelle N settimane dopo una capitolazione · SENZA POTENZA
 Conteggio prima della griglia: gli short W2 (R25) sono **6 in tutto il 2018–26** (2018-10 +16,6%, 2020-03 −17,9%, 2022-01 +1,0%,
 2022-08 +8,3%, 2025-12 +11,9%, 2026-05 +5,7%). Settimane ≤ −2,5 ATRw: solo 2017-12-24 → la candidata (X 2,5, N 8) tocca 0 short.
