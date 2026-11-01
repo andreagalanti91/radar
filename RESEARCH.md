@@ -276,6 +276,22 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 01/11 — MACD 12/26/9 settimanale "compra all'incrocio, vendi all'incrocio" · NON PROMUOVERE (pagina research/macd_settimanale.html)
+Indicatore ricreato come TradingView (scarto < 1 punto; nello screenshot segnale ≈ 816 e istogramma ≈ 1.259 hanno le etichette
+scambiate). 32 incroci dal 2017 (research/weekly_macd12269_trades.csv per i trade dal 2021). S0 (chiusura domenica, esecuzione lunedì):
+dal 2021 10 trade, 10k → 32.038 $ (+220%), DD −60%, WR 60%, perdita max −19,6% (B&H 26.823 $, DD −77%; W2 71.959 $). Il trade
+dell'utente: 21/10/2024 69.101 → 10/02/2025 96.366, +39,2% (max latente +58,7%). Senza i 3 migliori trade −16%.
+Perdenti: incroci sotto zero in un ribasso (2018 ×2, 04/2022, 04/2026: circa −65 punti), incroci tardivi dopo +25–40% (08/2021,
+02/2020 −43%), whipsaw in range (06/2023). L'uscita all'incrocio restituisce circa metà del guadagno latente.
+Istogramma: rosso scuro → rosso chiaro anticipa l'incrocio rialzista di ~5 settimane e ~14% di prezzo ma è falso nel 52% dei casi;
+verde chiaro come uscita falso nel 59% e taglia i trend (S2 2021–26 +27%). Il 17% degli incroci visti a metà settimana sparisce alla
+chiusura. 17 varianti preregistrate: tutte battono B&H scalato (riferimento debole); l'unico miglioramento coerente su tutti i
+parametri e periodi è aggiungere l'uscita su chiusura sotto EMA21 (S4); S4 8/21/5: 2017–20 +783% DD −56%, 2021–26 +566% DD −27%
+(10k → 66.609 $), migliore di 17 quindi selezionata.
+**Lezione 66**: il MACD 12/26/9 settimanale è la versione più lenta della famiglia: filtro di trend che batte il buy&hold scalato
+ma regge su 3 trade e resta sotto W2. I colori dell'istogramma sono anticipi al 50%. Il MACD va affiancato da un'uscita di trend
+(EMA21) o usato come filtro d'ingresso (lezione 64), non da solo.
+
 ### Approfondimento · 01/11 ore 12 — MACD come filtro di W2 nei trend vecchi (A) e portafoglio W2 + MACD (B) · F1 SU CARTA
 Confronto rapido richiesto dall'utente (settimanale, solo long, 2021–26, 10k): W2 71.959 $ (DD −42,6%); MACD 8/21/5 incrocio 65.801 $
 (−45%); MACD 8/21/5 sopra zero / + RSI>50 59.896 $ (−28%); MACD 12/26/9 incrocio 31.982 $ (−60%); prezzo sopra SMA 40 36.892 $ (−54%),
