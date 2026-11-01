@@ -276,6 +276,15 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 06:47 — W2: robustezza alla selezione fra 31 prove (DSR, SPA, walk-forward della scelta) · FRAGILE
+Preregistrato; simulatore identico a W2 (19 trade, +617,6%, DD −42,6%). DSR 0,964 con N=31 (passa: le config sono correlate, rango
+2/31, 25/30 battono B&H allo stesso DD). Ma SPA_c contro **buy&hold p 0,44** (contro flat p 0,04); scelta su 2021-01→2023-06 e
+misurata su 2023-07→2026-10: +109% DD −42,6% contro B&H allo stesso DD +115% (fallisce); W2 nella metà B MAR 2,50, WR 50%
+(metà A 88%). 2018–20 CVD: W2 20ª su 31 (MAR 3,82, mediana 4,12). Spearman dei ranghi fra periodi 0,13–0,31.
+**Lezione 58**: il vantaggio di W2 su buy&hold sta quasi tutto nell'evitare il bear 2022; dal 07/2023 vale un B&H scalato allo
+stesso DD. Robusta è la famiglia (regime + uscita su distribuzione), non la config F1E1X3. Decisione: W2 resta attiva a **1x**
+(long spot, short R25), nessuna leva 2x; le varianti future si giudicano per media dei vicini/famiglia, non per massimo.
+
 ### Giro orario · 01/11 05:47 — v2: size crescente con il retail affollato contro il segnale (ls_z) · NON PROMUOVERE
 Walk-forward preregistrato sui 105 trade della v2 vera (train 2022-03→2024-06, test 2024-07→2026-10), b ∈ {0,25; 0,5; 1,0}.
 Spearman P–R: −0,12 nel train (segno opposto all'ipotesi), +0,12 nel test (rumore). Test: candidata b 0,5 +108,8% (DD −15,8%) contro

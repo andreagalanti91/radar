@@ -143,6 +143,12 @@ visto i risultati (non era tra le varianti preregistrate), per prudenza sulla co
 Pochi trade (19) vogliono dire statistiche fragili: un singolo trade cambia molto il totale. Il primo giro dal vivo mostra il long già
 aperto come "posizione in corso", non come segnale nuovo. Codice: `radar/weekly.py`.
 
+**Verifica di robustezza (01/11/2026).** W2 è risultata la 2ª migliore fra le 31 varianti provate e il risultato non si spiega con la
+sola fortuna della scelta. Però il vantaggio su **comprare e tenere BTC** non è statisticamente significativo: viene quasi tutto
+dall'aver evitato il crollo del 2022. Da luglio 2023 W2 rende circa quanto BTC tenuto con un'esposizione ridotta allo stesso drawdown,
+e sul 2018–20 questa variante è solo 20ª su 31. Per questo W2 si usa a **1x** (long spot, short con tetto): il 2x del simulatore
+è solo un confronto, non un consiglio. Va vista come un trend-following con meno drawdown di BTC, non come una fonte di extra-rendimento.
+
 ## Registro dei trade reali (Telegram)
 
 Scrivi al bot cosa hai eseguito davvero (su Bybit o OKX): il registro confronta la tua esecuzione con il segnale e i giri di
