@@ -276,6 +276,19 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 01/11 — volumi multi-exchange, S/R e "perché i trader sembrano guadagnare tanto" · NON PROMUOVERE
+Dati giornalieri Coinbase (dal 2015), Bitstamp, OKX spot/perp, Binance (Bybit 403). Quote spot: Binance 51–80%, Coinbase 11–23%;
+con i perp Binance pesa il 57–72% del totale. Volume relativo Binance vs aggregato: correlazione 0,97, stessi picchi nell'88% dei casi;
+volume profile aggregato = Binance (POC/VAH/VAL scarto 0,00%). Test su W2 (P0 2018–20, P1 2021–26): volume relativo sulle rotture
+(effetto a 10 giorni +3,3% vs +0,9%, sparisce a 20) e VWAP ancorato (MAR P1 11,2 contro 14,5) falliscono. Premium Coinbase: con
+Binance come riferimento debole/negativo; **z-score Coinbase−Bitstamp 7g > 0 come filtro dei long (a6)**: W2 P0 +272% DD −34,5% (W2 −13%,
+DD −72%), P1 86,7k DD −35,5% WR 81%; su v2 (non preregistrato) MAR 12,0 contro 1,94 nel gate, DD −14,8% contro −28,1%, ma è il picco
+della famiglia (varianti MAR 2,5–9,4) e il segnale cambia col riferimento. Non batte v2 scalato a pari DD (K3). Su carta da
+preregistrare (oggi z = −1,2: bloccherebbe nuovi long). Fonti sui trader retail: ESMA 74–89% dei conti CFD in perdita; day trader
+Brasile 97% in perdita dopo 300 giorni; Taiwan < 1% batte il mercato con costanza; BIS 2023: la maggior parte dei retail crypto in perdita.
+**Lezione 68**: il volume di BTC è in pratica quello di Binance; volume aggregato, volume profile e VWAP ancorato non aggiungono nulla.
+L'unica informazione nuova è il premium USD/USD (Coinbase−Bitstamp) come z-score: da confermare dal vivo, non promuovere.
+
 ### Studio dell'utente · 01/11 — Ichimoku approfondito (regole note, filtro di W2 e di v2) · NON PROMUOVERE
 Fonti web non raggiungibili nella sessione (errori TLS): regole dalla letteratura (Elliott, Patel; Lim et al. 2016). Mediana su
 9/26/52/26, 20/60/120/30, 10/30/60/30, P1 2021–26: Kumo twist 27,7k (DD −51%), breakout+Chikou 29,4k (−38%), rimbalzo Kijun 10,3k,
