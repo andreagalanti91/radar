@@ -2,9 +2,46 @@
 
 # Radar Signal BTC
 
-Segnali swing brevi su Bitcoin (pochi giorni per trade, circa 22 trade l'anno) basati su **order flow** e **posizionamento** dei derivati, con **conferma a 4 ore**. Dal 31/10/2026 i segnali reali usano la strategia **v2**. Dal 31/10/2026 pomeriggio c'è anche un **secondo segnale reale, settimanale (W2)**: circa 3 operazioni l'anno, lunghe settimane o mesi (vedi [Segnale settimanale (W2)](#segnale-settimanale-w2)). Ogni notte il modello legge i dati e decide se c'è un setup; ogni ora controlla se è arrivata la conferma e gestisce il trade. Tutto arriva su **Telegram** con il piano in dollari; la **dashboard** online si aggiorna da sola.
+Segnali di trading su **Bitcoin** con due strategie complementari, in uso con **capitale reale dal 02/11/2026**:
+
+- **W2 settimanale con filtro MACD**: poche operazioni grandi (circa 2–3 l'anno, settimane o mesi ciascuna), long in spot senza leva,
+  short in perp con tetto di rischio. Segue il trend settimanale e, nei rialzi già vecchi, rientra solo se il MACD settimanale conferma.
+- **v2 giornaliera**: swing brevi (circa 22 trade l'anno, pochi giorni ciascuno) da order flow e posizionamento dei derivati, con
+  conferma a 4 ore, ingresso in due tranche, stop e target precisi, leva massima 5x.
+
+| Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W2 + MACD | v2 | Tenere BTC |
+|---|---|---|---|
+| 10.000 $ diventano | **122.868 $** | **27.056 $** | 26.823 $ |
+| Max drawdown giornaliero | −22,7% | −11,1% | −76,6% |
+| Trade / win rate | 14 · 93% | ~105 · 79% | – |
+
+Le due strategie si muovono quasi in modo indipendente (correlazione circa 0,1): insieme il drawdown si riduce. Tutto arriva su
+**Telegram** con il piano in dollari sul capitale impostato; la **dashboard** si aggiorna da sola ogni ora con GitHub Actions.
+Come operare: [Operatività reale](#operatività-reale-dal-02112026-due-strategie). Storia della ricerca e lezioni: `RESEARCH.md`.
 
 **Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot)
+
+## Operatività reale (dal 02/11/2026): due strategie
+
+Si usano **solo due strategie**, scelte perché sono le migliori e si muovono in modo quasi indipendente (correlazione circa 0,1):
+
+| Dal 01/01/2021, 10.000 $ a 1x | Quota del capitale | Trade/anno | Win rate | 10.000 $ → | DD giornaliero |
+|---|---|---|---|---|---|
+| **W2 settimanale con filtro MACD** (spot, long; short perp con tetto) | 60% | 2,4 | 93% | 122.868 $ | −22,7% |
+| **v2 giornaliera** (perp, rischio 4,3% per trade, leva max 5x) | 40% | ~22 | 79% | 27.056 $ | −11,1% |
+
+Impostazioni (GitHub → Settings → Secrets and variables → Actions → **Variables**): `RADAR_CAPITAL` = capitale reale totale in
+dollari, `RADAR_WEEKLY_SHARE` (predefinito 0,6) e `RADAR_DAILY_SHARE` (predefinito 0,4). I piani in dollari su Telegram usano queste
+quote. Ogni trade reale va registrato con `/entrato`, `/limit`, `/uscito` (vedi sotto): serve a misurare slippage e aderenza al piano.
+Caso peggiore storico da ricordare: un crollo come il 2018 sul settimanale (−18% con il filtro MACD, −56/−72% senza).
+
+**Ogni settimana, in pratica:**
+1. **W2** (la domenica sera decide, il lunedì si esegue): all'alert *SEGNALE SETTIMANALE* compra in spot l'importo indicato e metti
+   lo stop iniziale; a ogni *trailing aggiornato* sposta lo stop; all'*USCITA SETTIMANALE* vendi all'apertura del lunedì.
+2. **v2** (qualsiasi giorno): all'alert di *conferma* apri il 40% a mercato e il limit del 60%, con stop e take profit del piano;
+   chiudi al take profit, allo stop o dopo 14 giorni come indicato.
+3. **Registro**: dopo ogni operazione `/entrato`, `/limit` o `/uscito` su Telegram. Il lunedì alle 08:41 arriva il resoconto della
+   settimana con il confronto fra trade reali e segnali.
 
 ## La dashboard
 
@@ -12,9 +49,9 @@ Pensata per il telefono (si installa come app dalla schermata Home), dark-first 
 
 | Sezione | Cosa trovi |
 |---|---|
-| **Oggi** | prezzo live, regione prevista a 7 giorni, score di flusso, **stato v2** (nessun segnale / in attesa di conferma 4h con soglia e scadenza / ingresso confermato / trade aperto) con piano, rischio, leva e **calcolatore in dollari sul tuo capitale**, **stato del settimanale W2** (posizione, trailing, EMA 21, distribuzione), stato dei 6 setup, conti **su carta** (H2 e v2), grafico con i trade |
+| **Oggi** | prezzo live, regione prevista a 7 giorni, score di flusso, **stato v2** (nessun segnale / in attesa di conferma 4h con soglia e scadenza / ingresso confermato / trade aperto) con piano, rischio, leva e **calcolatore in dollari sul tuo capitale**, **stato del settimanale W2** (posizione, trailing, EMA 21, distribuzione, **filtro MACD**: nuovi long consentiti o bloccati), stato dei 6 setup, conti **su carta** (H2 e v2), grafico con i trade |
 | **Simulatore** | capitale, data di partenza e size (1x = piano v2, 2x, 3x, 5x): quanto varrebbe oggi seguendo i segnali v2; quante volte un obiettivo di capitale è stato raggiunto in passato |
-| **Statistiche** | curva di equity v2 contro BTC, esiti (TP, stop, tempo), storico trade per trade (segnale, conferma, limit, uscita), **registro dei segnali reali** dal 31/10/2026, risultati per periodo e per anno, 10.000 $ a 1x/2x/5x, per setup, **storico del settimanale W2** (trade, anni, 10.000 $ a 1x/2x); Laboratorio con v2, W2 e i candidati della ricerca |
+| **Statistiche** | curva di equity v2 contro BTC, esiti (TP, stop, tempo), storico trade per trade (segnale, conferma, limit, uscita), **registro dei segnali reali** dal 31/10/2026, risultati per periodo e per anno, 10.000 $ a 1x/2x/5x, per setup, **storico del settimanale W2** (trade, anni, 10.000 $ a 1x/2x); Laboratorio con le due strategie in uso |
 | **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
 | **Metodo** | regole complete e limiti del sistema |
 
@@ -102,20 +139,6 @@ Al rischio di ricerca 5,24% e slippage 0,1%: +225,8%, DD −13,5%, 10.000 $ → 
 - Con stop vicino e target unico le perdite medie (−3,6% sul capitale) valgono circa una vincita e mezza (+2,3%).
 
 La strategia giornaliera precedente resta nel codice (`radar/backtest.py`, `radar/research.py`) come banco di ricerca.
-
-## Operatività reale (dal 02/11/2026): due strategie
-
-Si usano **solo due strategie**, scelte perché sono le migliori e si muovono in modo quasi indipendente (correlazione circa 0,1):
-
-| Dal 01/01/2021, 10.000 $ a 1x | Quota del capitale | Trade/anno | Win rate | 10.000 $ → | DD giornaliero |
-|---|---|---|---|---|---|
-| **W2 settimanale con filtro MACD** (spot, long; short perp con tetto) | 60% | 2,4 | 93% | 122.868 $ | −22,7% |
-| **v2 giornaliera** (perp, rischio 4,3% per trade, leva max 5x) | 40% | ~22 | 79% | 27.056 $ | −11,1% |
-
-Impostazioni (GitHub → Settings → Secrets and variables → Actions → **Variables**): `RADAR_CAPITAL` = capitale reale totale in
-dollari, `RADAR_WEEKLY_SHARE` (predefinito 0,6) e `RADAR_DAILY_SHARE` (predefinito 0,4). I piani in dollari su Telegram usano queste
-quote. Ogni trade reale va registrato con `/entrato`, `/limit`, `/uscito` (vedi sotto): serve a misurare slippage e aderenza al piano.
-Caso peggiore storico da ricordare: un crollo come il 2018 sul settimanale (−18% con il filtro MACD, −56/−72% senza).
 
 ## Segnale settimanale (W2)
 

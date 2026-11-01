@@ -329,7 +329,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <h1 id="price"></h1>
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
-  <div class="strat"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W2</button></div></div>
+  <div class="strat"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W2 + MACD</button></div></div>
 
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
@@ -823,6 +823,9 @@ renderTrades();
     ["SMA 40 settimane", usd(W.sma40), W.price >= W.sma40 ? "prezzo sopra" : "prezzo sotto"],
     ["Flusso perp", sgn(W.flow) + "σ", "pf14z"],
     ["Funding 7g", pct(W.fund7 * 100, 3), "al giorno · distribuzione oltre +0,09%"],
+    ["Filtro MACD 8/21/5", W.f1_ok ? "nuovi long consentiti" : "nuovi long bloccati",
+      (W.trend_age >= W.old_trend ? `trend vecchio (${W.trend_age} settimane sopra la SMA 40): serve MACD sopra segnale e zero` : `trend giovane (${W.trend_age} settimane): filtro non attivo`) +
+      ` · MACD ${Math.round(W.macd).toLocaleString("it-IT")} / segnale ${Math.round(W.macd_sig).toLocaleString("it-IT")}`],
   ].map(([a, b, d]) => `<div><span>${a}</span><b>${b}</b><small>${d}</small></div>`).join("");
   if (W.status === "aperto" || W.status === "uscita") {
     $("wkPlan").innerHTML = rows([[`Posizione ${side(W.side)}<small>dal ${fmtD(W.entry)} · ${mkt(W.market, W.expo)}</small>`, usd(W.entry_px), true],
@@ -842,7 +845,7 @@ renderTrades();
     $("wkPlan").innerHTML = `<div class="card"><p style="margin:0">Nessuna posizione settimanale. Il segnale si decide alla chiusura della domenica (UTC) e si entra all'apertura del lunedì: circa 3 operazioni l'anno.</p></div>`;
   }
   const H = W.history, M = H.m1;
-  $("wkNote").textContent = `Secondo segnale reale, accanto a v2. Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
+  $("wkNote").textContent = `Secondo segnale reale, accanto a v2, con filtro MACD nei trend vecchi dal 02/11/2026. Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
   $("wkStatSec").hidden = false;
   $("wkStatSub").textContent = `dal ${fmtD(H.start)} · ${M.n} trade`;
   const Y = Object.keys(M.years);

@@ -215,6 +215,8 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
            "regime": "long" if wk["close"] > wk["sma"] and wk["ema20"] > w["ema20"].iloc[-2] else
                      "short" if wk["close"] < wk["sma"] and wk["sma"] < w["sma"].iloc[-5] and wk["ema20"] < w["ema20"].iloc[-2]
                      else "neutro",
+           "trend_age": int(wk["trend_age"]), "macd": float(wk["macd"]), "macd_sig": float(wk["macd_sig"]),
+           "f1_ok": bool(wk["f1_ok"]), "old_trend": OLD_TREND,
            "capital": round(capital, 0), "share": SHARE, "status": "nessuno"}
     if o:
         sg = 1 if o["side"] == "long" else -1
