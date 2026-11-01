@@ -276,6 +276,24 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Approfondimento · 01/11 ore 12 — MACD come filtro di W2 nei trend vecchi (A) e portafoglio W2 + MACD (B) · F1 SU CARTA
+Confronto rapido richiesto dall'utente (settimanale, solo long, 2021–26, 10k): W2 71.959 $ (DD −42,6%); MACD 8/21/5 incrocio 65.801 $
+(−45%); MACD 8/21/5 sopra zero / + RSI>50 59.896 $ (−28%); MACD 12/26/9 incrocio 31.982 $ (−60%); prezzo sopra SMA 40 36.892 $ (−54%),
+SMA 50 33.468 $ (−51%), SMA 20 25.685 $ (−51%); incroci SMA 10/30, 13/34, 10/40, 20/50 non battono buy&hold a pari DD in entrambi i
+periodi (/tmp/radar-work/cmp/cmp.csv). Il MACD veloce batte le SMA perché esce prima; gli incroci fra due SMA arrivano tardi.
+- **A, F1**: nei trend ≥ 16 settimane sopra SMA40, nuovo long W2 solo con MACD > segnale e > 0. Famiglia di 54 configurazioni
+  (MACD 6–10/18–26/4–5 × età 12/16/24): mediana MAR P0 (2017-08→2020, W2 senza flusso) 7,55 contro 3,18, P1 48,9 contro 14,5; 100% delle
+  configurazioni batte W2 scalata in entrambi i periodi; bootstrap 94%/100%; slippage 0,2% ok. Centrale 8/21/5: P1 +1.129% DD −22,7%
+  (10k → 122.868 $; toglie i 5 long persi), P0 2018 da −56% a −18%. **Non passa C5**: in tutte le combinazioni il vincente 2024-02 parte
+  una settimana dopo (+61% → +42%, 69% < 75%). Su carta nel Laboratorio (research/weekly_w2_f1macd_trades.csv). F2 (MACD come uscita)
+  taglia i trend.
+- **B, portafoglio 50/50 W2 + MACD (mediana di 18)**: P1 MAR 19,5 (passa), ma P0 −514 punti contro il MACD scalato (0/18); bootstrap
+  13%/47%. NON PROMUOVERE. Controllo: v2 ha correlazione 0,09–0,13 con W2 e MACD, è lei il vero diversificatore.
+**Lezione 64**: il MACD settimanale funziona come FILTRO d'ingresso dei rientri nei trend vecchi (toglie i perdenti di W2 in P1 e il 2018
+in P0, su tutto l'altopiano), non come uscita; costa una settimana di ritardo sui rientri vincenti.
+**Lezione 65**: mescolare due momentum settimanali correlati (ρ ≈ 0,7) migliora il MAR solo se hanno qualità simile; la diversificazione
+utile viene da v2 (ρ ≈ 0,1).
+
 ### Cicli dell'utente · 01/11 — MACD + RSI settimanale e linea blu "CM Ultimate MA" (rottura e ritest) · MACD+RSI SU CARTA, linea blu NO
 Dati dal 2016 (Bitstamp + Binance), stesse regole su P0 2016–20 e P1 2021–26.
 - **Linea blu (CM_Ultimate_MA_MTF_V4, 8 tipi di media)**: "dopo il ritest sale sempre" è falso: 9 ritest long riusciti dal 2016, 5 su
