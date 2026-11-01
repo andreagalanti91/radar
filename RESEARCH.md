@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 01:47 — W2: ingresso DCA in 2 tranche (limit a −k·ATRw per 5 giorni) · NON PROMUOVERE
+Griglia preregistrata di 12 configurazioni (k 0,25/0,5/0,75 × A "a mercato al 5° giorno" / B "resta a metà" × 1ª tranche 40/50%).
+Candidata k0,5 A 50: 2021–26 +451% (DD −40,3%) contro W2 scalata allo stesso DD +546% (−94 punti); 2018–20 CVD −5 punti; bootstrap
+P(miglioramento) 10%. Sul 2021–26 perdono tutte e 12; le varianti B "vincono" sul 2018–20 solo per il trade 2020-08 (+146%).
+Limit eseguito in 4 trade su 19: i trend migliori (2021-10, 2023-10, 2024-02, 2024-09) non ritracciano.
+**Lezione 53**: sul momentum settimanale il DCA in entrata ha valore atteso negativo: entrare tardi costa prezzo, restare a metà
+costa size proprio sui vincenti. Il DCA serve dove il ritracciamento è il meccanismo del setup (v2), non su W2. Ingresso pieno al lunedì.
+
 ### Giro orario · 01/11 00:47 — v2: peso degli short da funding_z con pf14z < 0 · SENZA POTENZA
 Preregistrato: rischio short × clip(0,5 + k·funding_z, 0,5, 1,5) se pf14z < 0 (k = 0,5; vicini 0,35/0,75). Campione indipendente
 2020-06→12: 3 trade v2, **0 short** → test vuoto, fermato come da preregistrazione. 2021–26: 26 short, 19 toccati ma raccolti in
