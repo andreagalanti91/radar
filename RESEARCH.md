@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 08:47 — v2: c'è un setup peso morto? (selezione meccanica in walk-forward) · NON PROMUOVERE
+Regola preregistrata: togli il setup con E[R] ≤ 0 o contributo marginale negativo a pari DD nel train. Diretto (train 2022-03→2024-06)
+toglie **flow** (C −15) → nel test −44 punti contro v2 scalata (flow nel test C +52); inverso toglie **brk** (C −78 nel 2024–26) →
+nel test −17 punti (brk lì C +17). Bootstrap P(miglioramento) 11% / 2%, placebo p 0,64 / 0,53. Intero periodo: tutti i setup con
+E[R] > 0 e contributo positivo (flow +87, capit +92, fundneg +61, sfund +58, sflow +34, brk +6).
+**Lezione 59**: il contributo di un setup cambia segno fra le due metà (3–23 trade per setup e periodo): togliere il "peggiore" segue
+il rumore. Il portafoglio dei 6 setup si giudica intero; brk è il più debole ma resta positivo.
+
 ### Mattino 01/11/2026 07:17 — resoconto inviato su Telegram
 Temi delle ultime 24 ore: 10 test (lezioni 49–58), nessuna promozione. Decisione autonoma: W2 resta a 1x (lezione 58). Stato: v2
 nessun segnale; W2 long dal 24/08 a 77.812 $ (trailing 71.331 $), BTC ~77.580 $; conti su carta senza trade; test OK.
