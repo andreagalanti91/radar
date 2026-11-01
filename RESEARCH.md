@@ -276,6 +276,11 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Decisione dell'utente (01/11/2026, pomeriggio) — preservare i token
+Approfondimenti delle 12/20 sospesi; resoconto del mattino sostituito da un resoconto SETTIMANALE LEGGERO il lunedì alle 08:41 (senza
+sotto-agenti). Segnali reali (v2 e W2), alert Telegram e dashboard continuano da soli con GitHub Actions. Candidati su carta da seguire
+dal vivo (research/LIVE_PAPER.md): F1, MACD 8/21/5 + RSI, R2, mappa SMA30; promozione dopo ≥ 6 nuovi trade dal vivo.
+
 ### Studio dell'utente · 01/11 — MACD 12/26/9 settimanale "compra all'incrocio, vendi all'incrocio" · NON PROMUOVERE (pagina research/macd_settimanale.html)
 Indicatore ricreato come TradingView (scarto < 1 punto; nello screenshot segnale ≈ 816 e istogramma ≈ 1.259 hanno le etichette
 scambiate). 32 incroci dal 2017 (research/weekly_macd12269_trades.csv per i trade dal 2021). S0 (chiusura domenica, esecuzione lunedì):
