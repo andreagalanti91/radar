@@ -148,6 +148,10 @@ sola fortuna della scelta. Però il vantaggio su **comprare e tenere BTC** non �
 dall'aver evitato il crollo del 2022. Da luglio 2023 W2 rende circa quanto BTC tenuto con un'esposizione ridotta allo stesso drawdown,
 e sul 2018–20 questa variante è solo 20ª su 31. Per questo W2 si usa a **1x** (long spot, short con tetto): il 2x del simulatore
 è solo un confronto, non un consiglio. Va vista come un trend-following con meno drawdown di BTC, non come una fonte di extra-rendimento.
+**Caso peggiore storico (01/11/2026).** Con prezzi dal 2015 la stessa logica (con flusso spot al posto di quello perp, che prima del
+2020 non esiste) nel crollo dal massimo di gennaio 2018 avrebbe perso circa **−72%** a 1x con 5 long persi di fila. È il motivo per cui
+conviene dedicare a W2 una quota del capitale (50–70%) e seguire su carta nel Laboratorio la variante "trend giovane + niente ritest
+del top", che in quel periodo avrebbe chiuso a +147% con drawdown −18,5%.
 
 ## Registro dei trade reali (Telegram)
 
