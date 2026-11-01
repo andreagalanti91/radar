@@ -276,6 +276,22 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Approfondimento dell'utente · 01/11 — perché perdono i trade W2 (diagnosi di 25 trade 2018–26) · NON PROMUOVERE, R2 su carta
+Diagnosi con ~40 variabili all'ingresso (tabella in /tmp/radar-work/wl-d/diagnosi.csv). Perché, in breve: 2021-05 nuovo test del top
+con flusso spot negativo poi bando cinese; 2023-10-02 anticipo di 3 settimane sulla rottura ETF (costo piccolo); 2024-05/07/08 rimbalzi
+dentro il range 57–73k dopo il top di marzo (Mt.Gox, carry trade yen, settembre debole); short 2022-01 restituito dallo squeeze di
+marzo, short 2022-08 entrato tardi a 0,56x in un range di 5 mesi.
+**Costante**: tutti i 6 long persi (con 2019-08) entrano in un trend ≥ 16 settimane sopra la SMA40 (mediana 60), spesso 0,9–1,4 ATRw
+sotto un massimo recente; i 7 long entrati nelle prime 4 settimane del trend hanno vinto tutti (p 0,007, non significativo dopo 27
+test). Ma è lo stesso stato dei grandi vincenti (2020-08 +146%, 2021-01 +77%, 2024-02 +61%, 2023-10-23 +40%): long tardivi 6 perdenti
+−82% contro 5 vincenti +341%.
+Rimedi preregistrati: R1 size 0,5 nei trend vecchi (bootstrap 57%, perde nel 2018–20 dimezzando il +146%); R2 niente long sul nuovo
+test del top (X 1,5 ATRw): 2021–26 +1073%, DD −22,7%, WR 87%, bootstrap 78%, MA 0 casi nel 2018–20 e famiglia instabile (X 2,0 dimezza
+il 2024-02); R3 size 0,5 con CVD spot debole nei trend vecchi: non verificabile prima del 2021. Tutte falliscono il criterio indipendente.
+Decisione: W2 invariata; **R2 su carta nel Laboratorio** (research/weekly_w2_r2_trades.csv) per seguirla dal vivo.
+**Lezione 61**: la costante dei long persi (rientro in un trend vecchio, nuovo test del top) è reale ma è anche lo stato dei grandi
+vincenti; le regole che la tagliano vincono solo nel periodo in cui sono nate. Serve tempo dal vivo, non altri dati passati.
+
 ### Studio dell'utente · 01/11 mattina — W2: limitare le perdite (3 linee in parallelo) · NON PROMUOVERE, W2 invariata
 Richiesta: "Lavoriamo sul settimanale, studia algoritmo per limitare perdite; apprendi e metti su modello predittivo". Perdenti:
 2021-05 −18,3%, 2023-10 −3,4%, 2024-05 −13,6%, 2024-07 −15,0%, 2024-08 −11,1% (il DD −42,6% nasce dai tre del 2024).
