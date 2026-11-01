@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Test dell'utente · 01/11 — Ichimoku giornaliero e settimanale (mai testato prima) · NON PROMUOVERE (research/ichimoku_backtest.csv)
+24 regole solo long (prezzo sopra la nube; Tenkan>Kijun; TK sopra la nube; completa nube+TK+Chikou con uscita sotto Kijun) × parametri
+9/26/52, 20/60/120, 10/30/60 × giornaliero/settimanale; P0 2017–20 e P1 2021–26, commissioni e slippage 0,1%.
+Settimanale: 0/12 battono buy&hold scalato in entrambi i periodi (troppo lento: 2–8 trade, DD −53/−70%). Giornaliero: 11/12 reggono
+contro B&H scalato (riferimento debole, lezione 63); migliore "prezzo sopra la nube" 9/26/52 o 10/30/60: 2021–26 +401% DD −35/−37%,
+WR 27–29% (molte piccole perdite, pochi grandi trend), 10k → 50.100 $; TK sopra la nube 10/30/60 +289% DD −28,6%. Sotto W2 (+620%, DD
+−42,6%; a pari DD circa +480%) e sotto MACD 8/21/5 + RSI (+499%, DD −28%). Conferma lezioni 63–66: è un altro filtro di trend.
+
 ### Decisione dell'utente (01/11/2026, pomeriggio) — preservare i token
 Approfondimenti delle 12/20 sospesi; resoconto del mattino sostituito da un resoconto SETTIMANALE LEGGERO il lunedì alle 08:41 (senza
 sotto-agenti). Segnali reali (v2 e W2), alert Telegram e dashboard continuano da soli con GitHub Actions. Candidati su carta da seguire

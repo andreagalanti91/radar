@@ -1,0 +1,25 @@
+tf,par,regola,P0_n,P0_rend,P0_dd,P0_wr,P0_bh,P1_n,P1_rend,P1_dd,P1_wr,P1_bh,P1_10k,regge
+settimanale,9/26/52,prezzo sopra la nube,5,1303,-78.6,40,2174,5,171,-54.0,40,120,27100,False
+settimanale,9/26/52,TK cross (Tenkan>Kijun),4,1692,-71.8,75,1521,7,34,-70.2,57,157,13400,False
+settimanale,9/26/52,TK cross sopra la nube,4,2129,-64.2,50,1039,6,24,-66.2,50,150,12400,False
+settimanale,9/26/52,"completa (nube+TK+Chikou), uscita sotto Kijun",5,1241,-75.4,40,1832,8,25,-62.6,38,142,12500,False
+settimanale,20/60/120,prezzo sopra la nube,7,-7,-73.4,14,1655,3,69,-53.1,67,117,16900,False
+settimanale,20/60/120,TK cross (Tenkan>Kijun),3,1397,-75.6,67,1852,2,191,-53.1,100,117,29100,False
+settimanale,20/60/120,TK cross sopra la nube,5,75,-43.5,20,379,2,123,-53.1,100,117,22300,False
+settimanale,20/60/120,"completa (nube+TK+Chikou), uscita sotto Kijun",2,73,-44.6,50,401,6,83,-54.1,67,120,18300,False
+settimanale,10/30/60,prezzo sopra la nube,9,1104,-78.7,33,2190,3,188,-53.1,67,117,28800,False
+settimanale,10/30/60,TK cross (Tenkan>Kijun),3,3458,-63.7,100,1012,7,71,-68.2,71,154,17100,False
+settimanale,10/30/60,TK cross sopra la nube,6,2079,-67.0,50,1195,5,69,-57.8,60,130,16900,False
+settimanale,10/30/60,"completa (nube+TK+Chikou), uscita sotto Kijun",5,1273,-77.6,40,2064,8,37,-62.6,50,142,13700,False
+giornaliero,9/26/52,prezzo sopra la nube,32,1641,-55.8,22,689,44,402,-37.0,27,75,50200,True
+giornaliero,9/26/52,TK cross (Tenkan>Kijun),28,4873,-65.6,50,1115,50,63,-54.1,32,120,16300,False
+giornaliero,9/26/52,TK cross sopra la nube,30,4069,-48.3,40,480,37,179,-36.9,38,75,27900,True
+giornaliero,9/26/52,"completa (nube+TK+Chikou), uscita sotto Kijun",27,3551,-56.7,52,719,38,134,-38.5,42,79,23400,True
+giornaliero,20/60/120,prezzo sopra la nube,11,3171,-57.5,27,750,23,298,-45.9,35,98,39800,True
+giornaliero,20/60/120,TK cross (Tenkan>Kijun),17,1700,-70.7,47,1439,22,207,-51.5,45,113,30700,True
+giornaliero,20/60/120,TK cross sopra la nube,16,1372,-50.6,50,536,22,189,-43.4,32,91,28900,True
+giornaliero,20/60/120,"completa (nube+TK+Chikou), uscita sotto Kijun",19,1221,-56.1,32,701,24,177,-42.0,38,87,27700,True
+giornaliero,10/30/60,prezzo sopra la nube,24,2970,-50.4,33,531,38,401,-35.3,29,71,50100,True
+giornaliero,10/30/60,TK cross (Tenkan>Kijun),24,4270,-65.8,54,1126,46,124,-50.8,41,111,22400,True
+giornaliero,10/30/60,TK cross sopra la nube,22,4101,-54.6,55,649,33,289,-28.6,42,55,38900,True
+giornaliero,10/30/60,"completa (nube+TK+Chikou), uscita sotto Kijun",25,3331,-63.9,52,1025,34,147,-32.9,41,65,24700,True
