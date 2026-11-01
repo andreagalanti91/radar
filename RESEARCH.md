@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Decisione dell'utente (01/11/2026, sera) — tutte le strategie si calcolano SEMPRE dal 01/01/2021
+Ogni risultato riportato all'utente (giri, resoconti, Laboratorio, Telegram) usa il periodo 01/01/2021 → oggi come riferimento
+principale, con 10.000 $ a 1x (e 2x), DD giornaliero, WR e numero di trade; altri periodi (2017–20) solo come controllo indipendente.
+Tabella di riferimento al 01/11/2026 (10k dal 2021): W2 71.959 $ (DD −42,6%); F1 W2+MACD trend vecchi 122.868 $ (−22,7%, carta);
+W2+premium CB−Bitstamp 86.700 $ (−35,5%, carta); R2 117.751 $ (−22,7%, carta); MACD 8/21/5+RSI 59.896 $ (−28%, carta); mappa SMA30
+55.616 $ (−22,7%, carta); MACD 12/26/9 incrocio 32.038 $ (−60%); Ichimoku nube giornaliera 50.100 $ (−37%); v2 rischio 4,3% 27.056 $
+(−11,1%; vera solo dal 2022-03); buy&hold 26.823 $ (−76,6%).
+
 ### Studio dell'utente · 01/11 — volumi multi-exchange, S/R e "perché i trader sembrano guadagnare tanto" · NON PROMUOVERE
 Dati giornalieri Coinbase (dal 2015), Bitstamp, OKX spot/perp, Binance (Bybit 403). Quote spot: Binance 51–80%, Coinbase 11–23%;
 con i perp Binance pesa il 57–72% del totale. Volume relativo Binance vs aggregato: correlazione 0,97, stessi picchi nell'88% dei casi;
