@@ -276,6 +276,10 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Decisione dell'utente (01/11/2026, 09:04) — stop ai giri orari
+Giri orari di ricerca sospesi su richiesta dell'utente. Restano attivi il resoconto del mattino, gli approfondimenti delle 12 e delle 20
+e i segnali reali v2 e W2 (alert Telegram).
+
 ### Giro orario · 01/11 08:47 — v2: c'è un setup peso morto? (selezione meccanica in walk-forward) · NON PROMUOVERE
 Regola preregistrata: togli il setup con E[R] ≤ 0 o contributo marginale negativo a pari DD nel train. Diretto (train 2022-03→2024-06)
 toglie **flow** (C −15) → nel test −44 punti contro v2 scalata (flow nel test C +52); inverso toglie **brk** (C −78 nel 2024–26) →
