@@ -276,6 +276,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 04:47 — W2: niente short nelle N settimane dopo una capitolazione · SENZA POTENZA
+Conteggio prima della griglia: gli short W2 (R25) sono **6 in tutto il 2018–26** (2018-10 +16,6%, 2020-03 −17,9%, 2022-01 +1,0%,
+2022-08 +8,3%, 2025-12 +11,9%, 2026-05 +5,7%). Settimane ≤ −2,5 ATRw: solo 2017-12-24 → la candidata (X 2,5, N 8) tocca 0 short.
+X=2 tocca solo il 16/03/2020 (= NS2 già testata in W5); con il volume (z ≥ 2,5) toglie anche lo short vincente 2022-08 (+8,3%).
+**Lezione 56**: il rischio di coda degli short di W2 è un solo episodio (marzo 2020), non una classe di trade; le regole a evento
+dopo un crollo si riducono a NS2 o tolgono short vincenti. La coda degli short resta gestita dalla size (R25), non da filtri.
+
 ### Giro orario · 01/11 03:47 — v2-spot come campione indipendente 2017–20 · NON REGGE (ma v2-spot non è v2)
 Klines spot Binance 1d/4h dal 2017-08 (motore riusabile in /tmp/radar-work/h16). Proxy preregistrati: pf14z → CVD spot 14g z,
 ls_z = 0, capit/fundneg/sfund esclusi, DT spot. Coerenza 2021–26: v2-spot 67 trade, +19% (DD −16%) contro v2 vera 114 trade, +159%
