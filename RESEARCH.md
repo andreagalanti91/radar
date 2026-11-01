@@ -276,6 +276,25 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 01/11 mattina — W2: limitare le perdite (3 linee in parallelo) · NON PROMUOVERE, W2 invariata
+Richiesta: "Lavoriamo sul settimanale, studia algoritmo per limitare perdite; apprendi e metti su modello predittivo". Perdenti:
+2021-05 −18,3%, 2023-10 −3,4%, 2024-05 −13,6%, 2024-07 −15,0%, 2024-08 −11,1% (il DD −42,6% nasce dai tre del 2024).
+- **A, uscite protettive** (11 varianti preregistrate, giudizio per famiglia): stop iniziale k·ATRw, chiusura giornaliera sotto EMA21w
+  in perdita, pareggio dopo +m ATRw, stop a tempo. Δ medio a pari DD 2021–26: −93 / −123 / −36 / −194 punti; bootstrap 6–13%. Solo lo
+  stop a 1 ATRw riduce DD (−37%) e peggior trade (−14%), ma chiude in perdita le ripartenze (2021-01 +15 → −8; 2023-01 +14 → −27):
+  10k → 43.163 $ contro 71.959 $.
+- **B, size a rischio** (tetto di rischio sui long, vol targeting, freno dopo perdita, freno su DD conto): B1/B2 tagliano i grandi
+  trend (il +77% del 2021 → +35/40%), Δ −1,0/−1,2 MAR a pari DD; B3/B4 vincono nel 2021–26 solo per 2024-07/08 e perdono nel
+  2018–20 (dimezzano il +146% del 2020-08).
+- **C, modello predittivo settimanale** (437 settimane, logistica L2 + boosting, walk-forward a espansione con embargo): prevede
+  l'AMPIEZZA dei ritracciamenti (AUC 0,63 fuori campione, Brier 0,180 contro 0,185; 2018–20 AUC 0,69) ma non la direzione (IC ≈ 0).
+  Overlay ×0,5 quando p ≥ soglia: 2021–26 MAR 9,39 contro W2 scalata 12,03; placebo p 0,64; bootstrap 13%. Le settimane "a rischio"
+  sono i trend forti, dove W2 guadagna di più (+3,3% medio la settimana dopo contro +1,1%).
+**Lezione 60**: le perdite di W2 valgono 1–1,6 ATR settimanali (ATRw 9–14% del prezzo): uno stop più stretto cade nel rumore e taglia
+le ripartenze, uno più largo non scatta; regole di size sulla volatilità tagliano i grandi trend, quelle sull'equity seguono un solo
+gruppo di perdite. Un modello di rischio serve solo se prevede aspettativa negativa, non più varianza. Le perdite di W2 sono il costo
+delle ripartenze: l'unica leva che regge è la QUOTA di capitale dedicata a W2 (es. 0,7 → DD storico circa −30%), scelta dell'utente.
+
 ### Decisione dell'utente (01/11/2026, 09:04) — stop ai giri orari
 Giri orari di ricerca sospesi su richiesta dell'utente. Restano attivi il resoconto del mattino, gli approfondimenti delle 12 e delle 20
 e i segnali reali v2 e W2 (alert Telegram).
