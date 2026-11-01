@@ -276,6 +276,16 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 01/11 — Ichimoku approfondito (regole note, filtro di W2 e di v2) · NON PROMUOVERE
+Fonti web non raggiungibili nella sessione (errori TLS): regole dalla letteratura (Elliott, Patel; Lim et al. 2016). Mediana su
+9/26/52/26, 20/60/120/30, 10/30/60/30, P1 2021–26: Kumo twist 27,7k (DD −51%), breakout+Chikou 29,4k (−38%), rimbalzo Kijun 10,3k,
+nube settimanale + T>K giornaliero 14,7k: battono a volte B&H scalato, mai W2 a pari DD. Filtri di W2: sempre attivi peggiorano
+(−88/−182 punti); "nube giornaliera solo nei trend vecchi" +25 punti P1 / +151 P0 ma fragile e molto sotto F1 (+951 P1, DD −22,7%).
+Filtro long di v2 sotto la nube: dannoso (DD −13,5% → −18%, −90/−135 punti a pari DD): i long v2 sotto la nube sono migliori
+(44 trade R 0,21 contro 35 sopra R 0,18) perché capit/flow/fundneg sono setup contrarian.
+**Lezione 67**: la nube è un filtro di regime contro il buy&hold, ma non aggiunge nulla a W2 e come filtro dei rientri nei trend vecchi
+è peggiore del MACD (F1). I filtri di trend vanno tenuti lontani dai setup contrarian di v2.
+
 ### Test dell'utente · 01/11 — Ichimoku giornaliero e settimanale (mai testato prima) · NON PROMUOVERE (research/ichimoku_backtest.csv)
 24 regole solo long (prezzo sopra la nube; Tenkan>Kijun; TK sopra la nube; completa nube+TK+Chikou con uscita sotto Kijun) × parametri
 9/26/52, 20/60/120, 10/30/60 × giornaliero/settimanale; P0 2017–20 e P1 2021–26, commissioni e slippage 0,1%.
