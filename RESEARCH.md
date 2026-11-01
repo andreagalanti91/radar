@@ -276,6 +276,25 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Cicli dell'utente · 01/11 — MACD + RSI settimanale e linea blu "CM Ultimate MA" (rottura e ritest) · MACD+RSI SU CARTA, linea blu NO
+Dati dal 2016 (Bitstamp + Binance), stesse regole su P0 2016–20 e P1 2021–26.
+- **Linea blu (CM_Ultimate_MA_MTF_V4, 8 tipi di media)**: "dopo il ritest sale sempre" è falso: 9 ritest long riusciti dal 2016, 5 su
+  e 4 giù a 8 settimane (2020-01 −33%, 2022-04 −37%, 2024-07 −7%, 2026-05 −24%); sulle 32 configurazioni il ritest riuscito sale nel
+  54–55% dei casi come il tasso base delle settimane sopra la linea. 60 regole preregistrate: 0 battono B&H a pari DD in entrambi i
+  periodi; SMA20 default 2021–26 +18% DD −40%; SPA p 0,41. Il valore è stare sopra la linea, non il ritest.
+- **MACD + RSI**: stati costanti in P0 e P1: momentum, non inversione. Long con MACD > 0, MACD > segnale, RSI > 50 (istogramma in
+  salita); RSI > 70 rialzista; vendere con istogramma in calo sotto zero e RSI < 50 o RSI che scende sotto 50; incrocio MACD da solo,
+  divergenze e uscita su RSI estremo non funzionano. Regola M8/21/5-R14-T50 solo long, uscita all'incrocio: P0 12 trade +2.163% DD −44%
+  (2018 −16%), P1 10 trade +441% DD −28,3% MAR 15,6; SPA p 0,04 contro B&H a pari DD. **Revisione: SU CARTA**: riproducibile e senza
+  lookahead, ma 8/21/5 è all'82° percentile di una superficie di 2.232 combinazioni scelta guardando P1 (mediana MAR P1 10,8; solo il 21%
+  supera W2); DSR contro zero non informativo (anche B&H lo passa); 2025–26 piatto. Correlazione con W2 0,65–0,71; **portafoglio 50/50
+  W2 + MACD/RSI: P1 +565%, DD −28,4%, MAR 19,9** (W2 14,5). In Laboratorio: research/weekly_macd_rsi_trades.csv.
+**Lezione 63**: su BTC settimanale MACD/RSI sono indicatori di momentum; un MACD veloce con uscita all'incrocio batte sempre il B&H
+scalato (riferimento debole), la misura onesta è la mediana della famiglia contro W2 a pari DD (pari). Il valore aggiunto è uscire
+prima dai bear (2018) e la combinazione con W2. Il ritest di una media non prevede la direzione; "sempre" su 9 casi visti è selezione.
+Prossimo: seguire su carta il portafoglio 50/50 W2 + altopiano MACD (6–10/18–26/4–5) con criterio fissato (≥ 6 trade nuovi);
+incrocio MACD settimanale come uscita di W2 nei trend vecchi (lezione 62), preregistrato su 2017–20.
+
 ### Ricerca sistematica · 01/11 — mappa delle regole W2 (649 regole, 2018–20 e 2021–26 con le stesse regole) · NESSUNA PROMOZIONE
 Prezzi Bitstamp dal 2015 per far partire le medie: per la prima volta il 2018–20 include il crollo dal top di gennaio 2018. **W2 nella
 versione con flusso spot lì perde: −13,3%, DD −72,2%** (5 long persi di fila: −41, −29, −8, −18, −8%; il MAR 3,82 dei giri precedenti

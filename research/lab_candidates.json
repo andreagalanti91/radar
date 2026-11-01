@@ -94,6 +94,16 @@
     "Long solo se il trend ha al massimo 16 settimane e non su un nuovo test del top (R2); uscita su trailing 2 ATR settimanali o distribuzione.",
     "Ricerca sistematica su 649 regole: migliore della mappa robusta; 2018–20 +147% DD −18,5% (W2 −13%, DD −72%), 2021–26 +457% DD −22,7%. Su carta: nel 2018–20 solo 3 trade e test contro buy&hold allo stesso DD p 0,10 (lezione 62)."
    ]
+  },
+  {
+   "name": "MACD + RSI settimanale (su carta)",
+   "status": "su carta",
+   "csv": "research/weekly_macd_rsi_trades.csv",
+   "rules": [
+    "Long spot 1x quando alla chiusura della domenica MACD (8,21,5) è sopra zero e sopra la linea di segnale e RSI 14 è sopra 50.",
+    "Uscita il lunedì dopo la prima chiusura settimanale con MACD sotto la linea di segnale, o stop 2,5 ATR settimanali.",
+    "2016–20 +2.163% DD −44% (nel 2018 −16%, W2 −72%); 2021–26 +441% DD −28%. Su carta: 8/21/5 è il massimo di una famiglia rumorosa; la mediana della famiglia pareggia W2. Portafoglio 50/50 con W2: MAR 19,9 contro 14,5 (lezione 63)."
+   ]
   }
  ]
 }
