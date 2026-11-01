@@ -276,6 +276,17 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Test dell'utente · 01/11 — W2 con quota di capitale 50/60/70/80/100% (resto in liquidità, 2021-01→2026-10)
+| quota | 10k → | rendimento | annuo | DD giornaliero | MAR | peggior trade | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 50% | 30.355 | +204% | +21,0% | −23,7% | 8,6 | −9,1% | +63% | +10% | +21% | +31% | +0% | +7% |
+| 60% | 36.694 | +267% | +25,0% | −27,8% | 9,6 | −11,0% | +76% | +12% | +25% | +37% | +0% | +9% |
+| 70% | 43.958 | +340% | +28,9% | −31,8% | 10,7 | −12,8% | +91% | +14% | +29% | +42% | +1% | +10% |
+| 80% | 52.215 | +422% | +32,8% | −35,5% | 11,9 | −14,6% | +105% | +15% | +34% | +46% | +1% | +12% |
+| 100% | 71.959 | +620% | +40,3% | −42,6% | 14,5 | −18,3% | +135% | +19% | +42% | +54% | +2% | +14% |
+Il DD scende in proporzione alla quota; il MAR sale con la quota per effetto della capitalizzazione (la liquidità non rende nulla
+nel calcolo). Nessuna quota "performa meglio" in assoluto: è la scelta del drawdown accettato.
+
 ### Approfondimento dell'utente · 01/11 — perché perdono i trade W2 (diagnosi di 25 trade 2018–26) · NON PROMUOVERE, R2 su carta
 Diagnosi con ~40 variabili all'ingresso (tabella in /tmp/radar-work/wl-d/diagnosi.csv). Perché, in breve: 2021-05 nuovo test del top
 con flusso spot negativo poi bando cinese; 2023-10-02 anticipo di 3 settimane sulla rottura ETF (costo piccolo); 2024-05/07/08 rimbalzi
