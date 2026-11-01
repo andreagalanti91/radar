@@ -276,6 +276,17 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 03:47 — v2-spot come campione indipendente 2017–20 · NON REGGE (ma v2-spot non è v2)
+Klines spot Binance 1d/4h dal 2017-08 (motore riusabile in /tmp/radar-work/h16). Proxy preregistrati: pf14z → CVD spot 14g z,
+ls_z = 0, capit/fundneg/sfund esclusi, DT spot. Coerenza 2021–26: v2-spot 67 trade, +19% (DD −16%) contro v2 vera 114 trade, +159%
+(DD −11%), **solo 11 trade in comune**. Giudice 2018-01→2020-05: 12 trade, −1,2% a trade (IC 90% [−3,3; +0,8]), −14,6%; nessuna
+variante (S1–S4) ha IC che esclude lo 0; buy&hold −29%. Scoperta: la v2 vera esiste davvero solo dal **2022-03** (open interest e
+L/S retail dal 2021-12 + 90 giorni di z) — anche il "campione 2020-06→12" dei giri 52–54 era una v2 senza flow/capit/sflow.
+**Lezione 55**: il vantaggio di v2 sta tutto nei dati di posizionamento perp (L/S retail, OI, funding); lo scheletro spot (geometria,
+DCA, size da DT, filtro SMA40w) da solo non ha vantaggio né prima né dopo il 2021. v2 è validata solo sul 2022–26 dove è nata:
+il rischio 4,3% resta prudente per questo. Un test indipendente vero richiede dati perp/funding pre-2020 (es. BitMEX); per ls_z non
+esiste un sostituto storico, quindi le regole di v2 si giudicheranno soprattutto sui trade reali.
+
 ### Giro orario · 01/11 02:47 — v2: regola unica "età del limit + rimbalzo" sulla 2ª tranche · SENZA POTENZA, su carta
 Preregistrata (D 2/3/4 giorni × MFE prima del fill m 0,3/0,5R × quota q 0/0,5; candidata D3 m0,5 q0,5), giudice SOLO il campione
 indipendente 2020-06→12: 3 trade v2 (tutti long), 2 a due livelli, riempiti dopo 4h e 16h → **0 episodi** in tutta la griglia.
