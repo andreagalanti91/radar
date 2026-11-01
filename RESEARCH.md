@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro orario · 01/11 02:47 — v2: regola unica "età del limit + rimbalzo" sulla 2ª tranche · SENZA POTENZA, su carta
+Preregistrata (D 2/3/4 giorni × MFE prima del fill m 0,3/0,5R × quota q 0/0,5; candidata D3 m0,5 q0,5), giudice SOLO il campione
+indipendente 2020-06→12: 3 trade v2 (tutti long), 2 a due livelli, riempiti dopo 4h e 16h → **0 episodi** in tutta la griglia.
+Contesto 2021–26 (dove è nata l'idea): 6 trade toccati (5 stop), candidata +221% vs v2 scalata allo stesso DD +193% (+28 punti):
+sono gli stessi riempimenti tardivi di E48, quindi non è una conferma.
+**Lezione 54**: le regole sulla 2ª tranche di v2 non si validano su BTC con i dati 4h+taker disponibili (dal 2020-06): servono klines
+spot 4h dal 2017 (v2 solo spot) o i trade reali. E48/E72 restano ipotesi su carta.
+
 ### Giro orario · 01/11 01:47 — W2: ingresso DCA in 2 tranche (limit a −k·ATRw per 5 giorni) · NON PROMUOVERE
 Griglia preregistrata di 12 configurazioni (k 0,25/0,5/0,75 × A "a mercato al 5° giorno" / B "resta a metà" × 1ª tranche 40/50%).
 Candidata k0,5 A 50: 2021–26 +451% (DD −40,3%) contro W2 scalata allo stesso DD +546% (−94 punti); 2018–20 CVD −5 punti; bootstrap
