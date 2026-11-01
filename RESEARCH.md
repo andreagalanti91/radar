@@ -276,6 +276,16 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Test dell'utente · 01/11 — uscita "crollo" da pressione di vendita + volume su W2 (con F1), dal 2021 · NON PROMUOVERE
+Regola: chiusura giornaliera con pressione netta degli aggressori (taker spot+perp) z90 ≤ soglia, volume ≥ k × media 30g e candela
+≤ −d ATR → esci long all'apertura dopo (/tmp/radar-work/crash/run.py). Soglie assolute (squilibrio ≤ −5/−8/−12%): quasi mai
+attive (0–11 giorni dal 2021). Soglie relative, 18 combinazioni: le strette (vol ≥ 2×, z ≤ −1,5/−2,5) escono solo il 08/09/2021 e
+rendono +1.238% DD −21,6% contro +1.132% DD −22,7% (un solo episodio, lezione 48); le larghe (vol ≥ 1,3–1,5×) vendono sui ribassi che
+poi ripartono (2023-03, 2023-06, 2024-10) e scendono a +548/+729% con DD −33/−37%. Dopo i giorni "crollo" BTC a 30 giorni: mediana −5,5%
+ma con rimbalzi (+19% 2023-06, +6% 2024-07). Il crollo 2018 non è testabile con la pressione perp (dati dal 2020).
+**Lezione 69**: un crollo "si vede" dopo, ma il giorno di forte vendita con volume alto non distingue la capitolazione che rimbalza
+dall'inizio di un bear: come uscita aggiunge al massimo un caso; il controllo del crollo resta trailing + filtro MACD + quota capitale.
+
 ### Decisione dell'utente (01/11/2026, sera) — DUE strategie, capitale reale dal 02/11/2026 · PROMOZIONE di F1 in W2
 "Manteniamo solo due delle migliori strategie, upgrade del tool, testing con capitale reale da domani." Decisione autonoma:
 1. **W2 con filtro MACD (F1)** nei segnali reali (radar/weekly.py: nei trend ≥ 16 settimane sopra SMA40 nuovo long solo con MACD 8/21/5
