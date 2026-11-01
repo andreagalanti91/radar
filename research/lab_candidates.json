@@ -84,6 +84,16 @@
     "Toglie dal 2021 i long persi 2021-05, 2024-05, 2024-07, 2024-08; il 2023-10 rientra una settimana dopo (+22% invece di +40%).",
     "Su carta: nata guardando i perdenti del 2021–26; nel 2018–20 non scatta mai (nessuna prova indipendente) e i parametri vicini sono instabili (lezione 61)."
    ]
+  },
+  {
+   "name": "W2 mappa: SMA30 + trend giovane + R2 (su carta)",
+   "status": "su carta",
+   "csv": "research/weekly_w2_mappa_trades.csv",
+   "rules": [
+    "Regime long sopra la SMA 30 settimanale con EMA 20 in salita (short sotto, con tetto R25); ingresso su chiusura oltre la EMA 13/21 con flusso spot (CVD 14g) concorde.",
+    "Long solo se il trend ha al massimo 16 settimane e non su un nuovo test del top (R2); uscita su trailing 2 ATR settimanali o distribuzione.",
+    "Ricerca sistematica su 649 regole: migliore della mappa robusta; 2018–20 +147% DD −18,5% (W2 −13%, DD −72%), 2021–26 +457% DD −22,7%. Su carta: nel 2018–20 solo 3 trade e test contro buy&hold allo stesso DD p 0,10 (lezione 62)."
+   ]
   }
  ]
 }

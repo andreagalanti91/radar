@@ -276,6 +276,20 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Ricerca sistematica · 01/11 — mappa delle regole W2 (649 regole, 2018–20 e 2021–26 con le stesse regole) · NESSUNA PROMOZIONE
+Prezzi Bitstamp dal 2015 per far partire le medie: per la prima volta il 2018–20 include il crollo dal top di gennaio 2018. **W2 nella
+versione con flusso spot lì perde: −13,3%, DD −72,2%** (5 long persi di fila: −41, −29, −8, −18, −8%; il MAR 3,82 dei giri precedenti
+partiva da maggio 2018). Solo l'11,6% delle 432 regole batte buy&hold allo stesso DD in entrambi i periodi; 9 superano anche vicini,
+peggior trade e DD (mappa); nessuna domina W2 (più rendimento E meno DD) e SPA contro B&H allo stesso DD p 0,10–0,11.
+Migliore della mappa (SMA30, EMA13/21, trailing 2 ATRw, pendenza EMA20, CVD spot, R2, età ≤ 16 sett., distribuzione, short R25):
+2018–20 +147% DD −18,5% (3 trade, uno da +113%); 2021–26 +457% DD −22,7% MAR 20,1 (W2 +618%, DD −42,6%); DSR 0,95. **Su carta**
+nel Laboratorio (research/weekly_w2_mappa_trades.csv).
+Effetto medio dei moduli: aiutano in entrambi i periodi solo R2 (+0,8/+1,5 MAR), uscita su distribuzione (+0,5/+1,0) e trailing 3
+(+0,5/+0,3); età del trend (+2,6 / −0,2), short (−0,1 / +2,9), uscita su EMA (+0,4 / −2,1) e SMA cambiano segno.
+**Lezione 62**: W2 non ha mai superato il crollo dal top 2018 (rientra long in un trend vecchio); "trend giovane + niente ritest del
+top" dimezza il DD in entrambi i periodi ma con 13 trade in 9 anni e p ≈ 0,10 serve tempo dal vivo. Rischio W2 da comunicare: un
+2018 ripetuto costerebbe fino a −70% a 1x.
+
 ### Test dell'utente · 01/11 — W2 con quota di capitale 50/60/70/80/100% (resto in liquidità, 2021-01→2026-10)
 | quota | 10k → | rendimento | annuo | DD giornaliero | MAR | peggior trade | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
