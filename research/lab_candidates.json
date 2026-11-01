@@ -104,6 +104,16 @@
     "Uscita il lunedì dopo la prima chiusura settimanale con MACD sotto la linea di segnale, o stop 2,5 ATR settimanali.",
     "2016–20 +2.163% DD −44% (nel 2018 −16%, W2 −72%); 2021–26 +441% DD −28%. Su carta: 8/21/5 è il massimo di una famiglia rumorosa; la mediana della famiglia pareggia W2. Portafoglio 50/50 con W2: MAR 19,9 contro 14,5 (lezione 63)."
    ]
+  },
+  {
+   "name": "W2 + filtro MACD nei trend vecchi (F1, su carta)",
+   "status": "su carta",
+   "csv": "research/weekly_w2_f1macd_trades.csv",
+   "rules": [
+    "Come W2, ma nei trend vecchi (chiusura sopra la SMA 40 da almeno 16 settimane) un nuovo long entra solo se il MACD settimanale (8,21,5) è sopra la linea di segnale e sopra zero.",
+    "Uscite e short come W2. Toglie dal 2021 i 5 long persi (2021-05, 2023-10-02, 2024-05, 2024-07, 2024-08); nel 2018 da −56% a −18%.",
+    "Robusto su 54 combinazioni MACD (100% batte W2 a pari DD in 2017–20 e 2021–26), ma ritarda di una settimana il vincente 2024-02 (+61% → +42%): non passa il criterio sui grandi vincenti, quindi su carta (lezione 64)."
+   ]
   }
  ]
 }
