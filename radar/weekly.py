@@ -4,6 +4,9 @@ Regole (candele settimanali W-SUN chiuse, decisione alla chiusura UTC della dome
 - regime long  = chiusura sopra la SMA 40 settimane ed EMA 20 settimanale in salita
 - regime short = chiusura sotto la SMA 40, SMA 40 in calo su 4 settimane ed EMA 20 in calo
 - ingresso: chiusura dal lato giusto della EMA 21 settimanale e flusso perp pf14z > 0 (long) / < 0 (short)
+- filtro F1 (dal 01/11/2026, decisione dell'utente "teniamo le due strategie migliori"): nei trend vecchi
+  (chiusura sopra la SMA 40 da almeno 16 settimane) un nuovo long entra solo se MACD settimanale (8,21,5) è sopra
+  la linea di segnale e sopra zero (ricerca AP12A, lezione 64)
 - uscita alla prima: trailing 2,5 ATR settimanali dalla miglior chiusura giornaliera (controllo giornaliero);
   chiusura settimanale oltre la EMA 21; distribuzione (long: funding medio 7g > 0,0009/giorno e pf14z < 0;
   short: funding < −0,0003 e pf14z > 0). Stop iniziale 2,5 ATR settimanali dalla chiusura del segnale.
@@ -28,6 +31,7 @@ SMA, EMA_T, EMA_X, ATR_N = 40, 20, 21, 14
 STOP_K = TRAIL_K = 2.5
 FUND_HOT, FUND_COLD = 0.0009, -0.0003
 R_SHORT = 0.25                     # rischio massimo allo stop iniziale per gli short (frazione del capitale)
+OLD_TREND, MACD_P = 16, (8, 21, 5)  # filtro F1 (01/11/2026): nei trend vecchi nuovo long solo con momentum MACD ripartito
 FEE_SPOT, FEE_PERP, SLIP = 0.001, 0.0005, 0.001
 CAPITAL = float(os.environ.get("RADAR_CAPITAL", "50000"))
 SHARE = float(os.environ.get("RADAR_WEEKLY_SHARE", "1.0"))   # quota di RADAR_CAPITAL dedicata al settimanale
@@ -49,7 +53,12 @@ def weekly_bars(f: pd.DataFrame) -> pd.DataFrame:
     w["atr"] = tr.ewm(alpha=1 / ATR_N, adjust=False).mean()
     up = (c > w["sma"]) & (w["ema20"] > w["ema20"].shift(1))
     dn = (c < w["sma"]) & (w["sma"] < w["sma"].shift(4)) & (w["ema20"] < w["ema20"].shift(1))
-    w["long"] = (up & (c > w["ema21"]) & (w["flow"] > 0)).fillna(False)
+    above = (c > w["sma"]).astype(int)
+    w["trend_age"] = above.groupby((above == 0).cumsum()).cumsum()          # settimane consecutive sopra la SMA 40
+    m = c.ewm(span=MACD_P[0], adjust=False).mean() - c.ewm(span=MACD_P[1], adjust=False).mean()
+    w["macd"], w["macd_sig"] = m, m.ewm(span=MACD_P[2], adjust=False).mean()
+    w["f1_ok"] = (w["trend_age"] < OLD_TREND) | ((w["macd"] > w["macd_sig"]) & (w["macd"] > 0))
+    w["long"] = (up & (c > w["ema21"]) & (w["flow"] > 0) & w["f1_ok"]).fillna(False)
     w["short"] = (dn & (c < w["ema21"]) & (w["flow"] < 0)).fillna(False)
     w["dist_long"] = ((w["fund7"] > FUND_HOT) & (w["flow"] < 0)).fillna(False)
     w["dist_short"] = ((w["fund7"] < FUND_COLD) & (w["flow"] > 0)).fillna(False)

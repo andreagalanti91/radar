@@ -31,7 +31,7 @@ BACKTEST_START = "2022-03-01"   # le metrics (long/short ratio) partono da dic 2
 TEST_START = "2024-01-01"       # walk-forward: 2024–25 e 2026 fuori dalla scelta dei parametri
 LIVE_START = "2026-10-31"       # da qui i segnali reali sono quelli di v2
 RISK = float(os.environ.get("RADAR_RISK", "0.043"))
-CAPITAL = float(os.environ.get("RADAR_CAPITAL", "50000"))
+CAPITAL = float(os.environ.get("RADAR_CAPITAL", "50000")) * float(os.environ.get("RADAR_DAILY_SHARE", "1.0"))   # quota per v2
 PERIODS = [("2022–23", "2022-03-01", "2023-12-31"), ("2024–25", "2024-01-01", "2025-12-31"),
            ("2026", "2026-01-01", "2026-12-31"), ("Totale", "2022-03-01", "2099-12-31")]
 MULTS = (1, 2, 5)               # size moltiplicata rispetto al piano v2 (1x = piano)

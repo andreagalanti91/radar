@@ -26,18 +26,18 @@ class TestWeekly(unittest.TestCase):
 
     def test_numeri_storici(self):
         M, H = self.cur["history"]["m1"], self.cur["history"]
-        self.assertEqual(M["n"], 19)
-        self.assertAlmostEqual(M["per_year"], 3.26, delta=0.05)
-        self.assertAlmostEqual(M["win_rate"], 68.4, delta=0.5)
-        self.assertAlmostEqual(M["avg_pct"], 13.4, delta=0.3)
-        self.assertAlmostEqual(M["worst_pct"], -18.3, delta=0.3)
-        self.assertAlmostEqual(M["total_pct"], 617.6, delta=10)
-        self.assertAlmostEqual(M["max_dd_pct"], -42.6, delta=0.5)
-        self.assertAlmostEqual(M["mar"], 14.50, delta=0.3)
-        self.assertAlmostEqual(H["final_10k_1x"], 71761, delta=700)
+        self.assertEqual(M["n"], 14)          # W2 con filtro F1 (MACD 8/21/5 nei trend vecchi), dal 01/11/2026
+        self.assertAlmostEqual(M["per_year"], 2.4, delta=0.05)
+        self.assertAlmostEqual(M["win_rate"], 92.9, delta=0.5)
+        self.assertAlmostEqual(M["avg_pct"], 21.15, delta=0.3)
+        self.assertAlmostEqual(M["worst_pct"], -0.77, delta=0.3)
+        self.assertAlmostEqual(M["total_pct"], 1128.7, delta=15)
+        self.assertAlmostEqual(M["max_dd_pct"], -22.7, delta=0.5)
+        self.assertAlmostEqual(M["mar"], 49.8, delta=1)
+        self.assertAlmostEqual(H["final_10k_1x"], 122868, delta=1200)
 
     def test_trade_come_la_ricerca(self):
-        with open(ROOT / "research" / "weekly_w2_sr25_trades.csv", newline="") as fh:
+        with open(ROOT / "research" / "weekly_w2_f1macd_trades.csv", newline="") as fh:
             ref = list(csv.DictReader(fh))
         T = self.cur["history"]["trades"]
         self.assertEqual([(t["entry"], t["side"]) for t in T], [(r["ingresso"], r["lato"]) for r in ref])

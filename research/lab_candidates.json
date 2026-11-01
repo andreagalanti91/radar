@@ -2,117 +2,13 @@
  "_nota": "Candidati della ricerca mostrati nel Laboratorio della dashboard (radar/lab.py). Per aggiungerne uno: CSV dei trade in research/ con colonne ingresso,lato,prezzo_ingresso,uscita,prezzo_uscita,motivo,movimento_%,pnl_capitale_% e una voce qui. status: in uso | su carta | bocciato. metrics opzionali (se mancano si ricalcolano dal CSV).",
  "candidates": [
   {
-   "name": "W2 settimanale (in uso, short con tetto)",
+   "name": "W2 settimanale con filtro MACD (in uso dal 02/11/2026)",
    "status": "in uso",
-   "csv": "research/weekly_w2_sr25_trades.csv",
-   "rules": [
-    "Candele settimanali: long sopra la media a 40 settimane con EMA 20 in salita, short solo in regime ribassista; ingresso alla chiusura oltre la EMA 21 con il flusso perp nella stessa direzione.",
-    "Uscita alla prima tra trailing 2,5 ATR settimanali, chiusura oltre la EMA 21 o distribuzione (funding alto con flusso perp contrario).",
-    "Long in spot 1x; short in perp con esposizione limitata così che lo stop iniziale costi al massimo il 25% del capitale (radar/weekly.py)."
-   ],
-   "metrics": {
-    "trades_per_year": 3.3,
-    "win_rate": 68.4,
-    "avg_trade_pct": 13.4,
-    "total_return_pct": 617.6,
-    "max_dd_pct": -42.6,
-    "final_10k_1x": 71761,
-    "final_10k_2x": 178309
-   }
-  },
-  {
-   "name": "W2 settimanale (su carta)",
-   "status": "su carta",
-   "csv": "research/weekly_w2_trades.csv",
-   "rules": [
-    "Candele settimanali: long sopra la media a 40 settimane con EMA 20 in salita, short solo in regime ribassista.",
-    "Ingresso alla chiusura oltre la EMA 21 settimanale con il flusso perp nella stessa direzione; perp 1x.",
-    "Uscita alla prima tra trailing 2,5 ATR settimanali, chiusura oltre la EMA 21 o distribuzione (funding alto con flusso perp contrario)."
-   ],
-   "metrics": {
-    "trades_per_year": 3.3,
-    "win_rate": 68.4,
-    "avg_trade_pct": 11.5,
-    "total_return_pct": 448.5,
-    "max_dd_pct": -43.6,
-    "final_10k_1x": 54849,
-    "final_10k_2x": 151126
-   }
-  },
-  {
-   "name": "W2 settimanale, long in spot (su carta)",
-   "status": "su carta",
-   "csv": "research/weekly_w2_spot_trades.csv",
-   "rules": [
-    "Stesse regole di W2 (trend settimanale, ingresso con flusso perp, uscita su distribuzione o trailing).",
-    "Esecuzione: long in spot (niente funding), short in perp 1x."
-   ],
-   "metrics": {
-    "trades_per_year": 3.3,
-    "win_rate": 68.4,
-    "avg_trade_pct": 13.8,
-    "total_return_pct": 675.8,
-    "max_dd_pct": -42.6,
-    "final_10k_1x": 77578,
-    "final_10k_2x": 205518
-   }
-  },
-  {
-   "name": "Analisi tecnica: divergenza RSI settimanale (bocciata)",
-   "status": "bocciato",
-   "csv": "research/ta_rsi_div_weekly_trades.csv",
-   "rules": [
-    "Long/short sulla divergenza RSI14 settimanale ai pivot (impostazioni TradingView), stop oltre il pivot, uscita su inversione o trailing 3 ATR.",
-    "Migliore dei 23 metodi tecnici codificati; batte il caso ma fallisce il walk-forward (2018–22 negativo)."
-   ],
-   "metrics": {
-    "trades_per_year": 2.1,
-    "win_rate": 58.3,
-    "avg_trade_pct": 11.6,
-    "total_return_pct": 191.6,
-    "max_dd_pct": -38.2,
-    "final_10k_1x": 29165,
-    "final_10k_2x": 52184
-   }
-  },
-  {
-   "name": "W2 senza nuovo test del top (R2, su carta)",
-   "status": "su carta",
-   "csv": "research/weekly_w2_r2_trades.csv",
-   "rules": [
-    "Come W2, ma niente long se il massimo a 52 settimane è stato fatto da 2 a 26 settimane e il prezzo è entro 1,5 ATR settimanali sotto (nuovo test del top dentro un range).",
-    "Toglie dal 2021 i long persi 2021-05, 2024-05, 2024-07, 2024-08; il 2023-10 rientra una settimana dopo (+22% invece di +40%).",
-    "Su carta: nata guardando i perdenti del 2021–26; nel 2018–20 non scatta mai (nessuna prova indipendente) e i parametri vicini sono instabili (lezione 61)."
-   ]
-  },
-  {
-   "name": "W2 mappa: SMA30 + trend giovane + R2 (su carta)",
-   "status": "su carta",
-   "csv": "research/weekly_w2_mappa_trades.csv",
-   "rules": [
-    "Regime long sopra la SMA 30 settimanale con EMA 20 in salita (short sotto, con tetto R25); ingresso su chiusura oltre la EMA 13/21 con flusso spot (CVD 14g) concorde.",
-    "Long solo se il trend ha al massimo 16 settimane e non su un nuovo test del top (R2); uscita su trailing 2 ATR settimanali o distribuzione.",
-    "Ricerca sistematica su 649 regole: migliore della mappa robusta; 2018–20 +147% DD −18,5% (W2 −13%, DD −72%), 2021–26 +457% DD −22,7%. Su carta: nel 2018–20 solo 3 trade e test contro buy&hold allo stesso DD p 0,10 (lezione 62)."
-   ]
-  },
-  {
-   "name": "MACD + RSI settimanale (su carta)",
-   "status": "su carta",
-   "csv": "research/weekly_macd_rsi_trades.csv",
-   "rules": [
-    "Long spot 1x quando alla chiusura della domenica MACD (8,21,5) è sopra zero e sopra la linea di segnale e RSI 14 è sopra 50.",
-    "Uscita il lunedì dopo la prima chiusura settimanale con MACD sotto la linea di segnale, o stop 2,5 ATR settimanali.",
-    "2016–20 +2.163% DD −44% (nel 2018 −16%, W2 −72%); 2021–26 +441% DD −28%. Su carta: 8/21/5 è il massimo di una famiglia rumorosa; la mediana della famiglia pareggia W2. Portafoglio 50/50 con W2: MAR 19,9 contro 14,5 (lezione 63)."
-   ]
-  },
-  {
-   "name": "W2 + filtro MACD nei trend vecchi (F1, su carta)",
-   "status": "su carta",
    "csv": "research/weekly_w2_f1macd_trades.csv",
    "rules": [
-    "Come W2, ma nei trend vecchi (chiusura sopra la SMA 40 da almeno 16 settimane) un nuovo long entra solo se il MACD settimanale (8,21,5) è sopra la linea di segnale e sopra zero.",
-    "Uscite e short come W2. Toglie dal 2021 i 5 long persi (2021-05, 2023-10-02, 2024-05, 2024-07, 2024-08); nel 2018 da −56% a −18%.",
-    "Robusto su 54 combinazioni MACD (100% batte W2 a pari DD in 2017–20 e 2021–26), ma ritarda di una settimana il vincente 2024-02 (+61% → +42%): non passa il criterio sui grandi vincenti, quindi su carta (lezione 64)."
+    "Candele settimanali: long sopra la media a 40 settimane con EMA 20 in salita, short solo in regime ribassista; ingresso alla chiusura oltre la EMA 21 con il flusso perp nella stessa direzione.",
+    "Filtro MACD: nei trend vecchi (sopra la SMA 40 da almeno 16 settimane) un nuovo long entra solo se il MACD settimanale 8/21/5 è sopra la linea di segnale e sopra zero.",
+    "Uscita alla prima tra trailing 2,5 ATR settimanali, chiusura oltre la EMA 21 o distribuzione. Long in spot 1x; short in perp con tetto di rischio 25%."
    ]
   }
  ]

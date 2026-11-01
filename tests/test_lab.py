@@ -33,7 +33,7 @@ class TestLab(unittest.TestCase):
         L = json.loads(self.tmp.read_text())
         self.assertEqual(L["updated"], self.report["date"])
         self.assertIn("v2 (in uso)", self.by)
-        self.assertIn("W2 settimanale (su carta)", self.by)
+        self.assertIn("W2 settimanale con filtro MACD (in uso dal 02/11/2026)", self.by)
         for c in L["candidates"]:
             self.assertIn(c["status"], ("in uso", "su carta", "bocciato"))
             self.assertTrue(2 <= len(c["rules"]) <= 3)
@@ -54,8 +54,8 @@ class TestLab(unittest.TestCase):
         self.assertAlmostEqual(v["metrics"]["final_10k_2x"], lv["2"]["final_10k"], delta=2)
 
     def test_w2_coerente_col_csv(self):
-        w = self.by["W2 settimanale (su carta)"]
-        with open(ROOT / "research" / "weekly_w2_trades.csv", newline="") as fh:
+        w = self.by["W2 settimanale con filtro MACD (in uso dal 02/11/2026)"]
+        with open(ROOT / "research" / "weekly_w2_f1macd_trades.csv", newline="") as fh:
             rows = list(csv.DictReader(fh))
         p = np.array([float(r["pnl_capitale_%"]) for r in rows])
         m = w["metrics"]
@@ -77,7 +77,7 @@ class TestLab(unittest.TestCase):
         out = render(dict(self.report, lab=self.lab), Path(tempfile.mkdtemp()) / "index.html", standalone=False)
         html = out.read_text()
         self.assertIn('id="labTab"', html)
-        self.assertIn('"W2 settimanale (su carta)"', html)
+        self.assertIn('"W2 settimanale con filtro MACD (in uso dal 02/11/2026)"', html)
 
 
 if __name__ == "__main__":

@@ -276,6 +276,17 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Decisione dell'utente (01/11/2026, sera) — DUE strategie, capitale reale dal 02/11/2026 · PROMOZIONE di F1 in W2
+"Manteniamo solo due delle migliori strategie, upgrade del tool, testing con capitale reale da domani." Decisione autonoma:
+1. **W2 con filtro MACD (F1)** nei segnali reali (radar/weekly.py: nei trend ≥ 16 settimane sopra SMA40 nuovo long solo con MACD 8/21/5
+   > segnale e > 0). Dal 2021: 14 trade, WR 93%, +1.128,7% (10k → 122.868 $), DD −22,7%, MAR 49,8; a 2x 660.713 $ DD −37,3%. Promossa
+   pur avendo mancato il solo criterio C5 (ritardo di una settimana sul vincente 2024-02, 69% contro 75%): è la candidata con la prova
+   più forte (100% delle 54 combinazioni MACD batte W2 a pari DD in 2017–20 e 2021–26; 2018 da −56% a −18%). Il long aperto dal 24/08
+   non cambia.
+2. **v2 giornaliera** invariata (rischio 4,3%): la più decorrelata (ρ ≈ 0,1 con W2).
+Quote predefinite: 60% W2, 40% v2 (variabili RADAR_CAPITAL, RADAR_WEEKLY_SHARE, RADAR_DAILY_SHARE nel workflow). Laboratorio ridotto a
+v2 + W2; candidati su carta (MACD+RSI, R2, mappa SMA30, premium Coinbase) archiviati, non più seguiti. Test aggiornati (49 OK).
+
 ### Decisione dell'utente (01/11/2026, sera) — tutte le strategie si calcolano SEMPRE dal 01/01/2021
 Ogni risultato riportato all'utente (giri, resoconti, Laboratorio, Telegram) usa il periodo 01/01/2021 → oggi come riferimento
 principale, con 10.000 $ a 1x (e 2x), DD giornaliero, WR e numero di trade; altri periodi (2017–20) solo come controllo indipendente.

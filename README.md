@@ -103,6 +103,20 @@ Al rischio di ricerca 5,24% e slippage 0,1%: +225,8%, DD −13,5%, 10.000 $ → 
 
 La strategia giornaliera precedente resta nel codice (`radar/backtest.py`, `radar/research.py`) come banco di ricerca.
 
+## Operatività reale (dal 02/11/2026): due strategie
+
+Si usano **solo due strategie**, scelte perché sono le migliori e si muovono in modo quasi indipendente (correlazione circa 0,1):
+
+| Dal 01/01/2021, 10.000 $ a 1x | Quota del capitale | Trade/anno | Win rate | 10.000 $ → | DD giornaliero |
+|---|---|---|---|---|---|
+| **W2 settimanale con filtro MACD** (spot, long; short perp con tetto) | 60% | 2,4 | 93% | 122.868 $ | −22,7% |
+| **v2 giornaliera** (perp, rischio 4,3% per trade, leva max 5x) | 40% | ~22 | 79% | 27.056 $ | −11,1% |
+
+Impostazioni (GitHub → Settings → Secrets and variables → Actions → **Variables**): `RADAR_CAPITAL` = capitale reale totale in
+dollari, `RADAR_WEEKLY_SHARE` (predefinito 0,6) e `RADAR_DAILY_SHARE` (predefinito 0,4). I piani in dollari su Telegram usano queste
+quote. Ogni trade reale va registrato con `/entrato`, `/limit`, `/uscito` (vedi sotto): serve a misurare slippage e aderenza al piano.
+Caso peggiore storico da ricordare: un crollo come il 2018 sul settimanale (−18% con il filtro MACD, −56/−72% senza).
+
 ## Segnale settimanale (W2)
 
 Secondo segnale reale, accanto a v2 (che non cambia). Per chi preferisce **poche operazioni grandi** a tante piccole.
@@ -111,7 +125,9 @@ Si guarda solo la **candela settimanale** (da lunedì a domenica, chiusura UTC d
 1. **Il trend.** Long solo se la settimana chiude **sopra la media a 40 settimane** e la EMA 20 settimanale sale. Short solo in
    trend ribassista: chiusura sotto la media a 40 settimane, media a 40 in calo su 4 settimane, EMA 20 in calo.
 2. **L'ingresso.** La settimana chiude dal lato giusto della **EMA 21 settimanale** e il flusso dei perp (CVD perp 14 giorni) va
-   nella stessa direzione.
+   nella stessa direzione. **Filtro MACD (dal 02/11/2026):** nei trend vecchi (sopra la media a 40 settimane da almeno 16
+   settimane) un nuovo long entra solo se il **MACD settimanale 8/21/5** è sopra la linea di segnale e sopra zero: evita i
+   rientri sul ritest del top che fallisce (2021-05, 2024-05/07/08; nel 2018 la perdita passa da −56% a −18%).
 3. **Come.** Long in **spot, senza leva** (niente funding). Short in **perp**, con esposizione ridotta quando lo stop è lontano:
    lo stop iniziale non costa mai più del **25% del capitale** dedicato.
 4. **L'uscita**, alla prima di tre: **trailing 2,5 ATR settimanali** dalla miglior chiusura giornaliera (controllato ogni ora);
@@ -125,15 +141,18 @@ reale se il trailing viene toccato. Importi su `RADAR_CAPITAL` × `RADAR_WEEKLY_
 
 | Dal 01/01/2021 al 30/10/2026 (commissioni, funding e slippage 0,1%) | W2 |
 |---|---|
-| Trade | 19 (3,3 l'anno) |
-| Win rate | 68% |
-| Guadagno medio per trade | +13,4% sul capitale |
-| Peggior trade | −18,3% |
-| Rendimento | **+617,6%** (10.000 $ → 71.761 $; a 2x 178.309 $) |
-| Max drawdown giornaliero | **−42,6%** (a 2x −70%) |
-| MAR (rendimento / DD) | 14,5 |
+| Trade | 14 (2,4 l'anno) |
+| Win rate | 93% |
+| Guadagno medio per trade | +21,2% sul capitale |
+| Peggior trade chiuso | +1,0% (la posizione aperta è a −0,8%) |
+| Rendimento | **+1.128,7%** (10.000 $ → 122.868 $; a 2x 660.713 $) |
+| Max drawdown giornaliero | **−22,7%** (a 2x −37,3%) |
+| MAR (rendimento / DD) | 49,8 |
 
-Per anno: 2021 +135,4% · 2022 +19,4% · 2023 +42,1% · 2024 +54,3% · 2025 +1,9% · 2026 +14,2%.
+Per anno: 2021 +188,1% · 2022 +19,4% · 2023 +47,1% · 2024 +108,6% · 2025 +1,9% · 2026 +14,2%.
+Senza il filtro MACD (W2 fino al 01/11/2026): 19 trade, +617,6%, DD −42,6%. **Attenzione:** il filtro è nato guardando i perdenti
+del 2021–24; regge su tutte le 54 combinazioni MACD provate e migliora anche il 2017–20 mai visto, ma ritarda di una settimana alcuni
+rientri vincenti (2024-02: +61% → +42%). Il registro dei trade reali dirà se il vantaggio è vero.
 Posizione al 30/10/2026: long in spot dal 24/08/2026 a 77.812 $.
 
 **Rischio, detto chiaramente.** Il drawdown storico è **−42,6%** e nei ricampionamenti la probabilità di un drawdown oltre il 40% è

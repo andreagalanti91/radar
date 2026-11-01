@@ -32,6 +32,10 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # il riepilogo giornaliero parte solo con l'esecuzione delle 00:30
           RADAR_DAILY_BRIEF: ${{ github.event.schedule == '30 0 * * *' && (vars.RADAR_DAILY_BRIEF || '1') || '0' }}
+          # capitale reale (variabili del repository): piani in dollari di v2 su CAPITAL×DAILY_SHARE, di W2 su CAPITAL×WEEKLY_SHARE
+          RADAR_CAPITAL: ${{ vars.RADAR_CAPITAL || '50000' }}
+          RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0.4' }}
+          RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '0.6' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
         run: |
