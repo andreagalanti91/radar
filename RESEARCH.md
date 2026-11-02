@@ -276,6 +276,9 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Settimana chiusa 01/11/2026 — resoconto leggero inviato
+BTC 78.354 $. W2+MACD long dal 24/08 (+0,7%), trailing 71.415 $, filtro non attivo (trend 11 settimane). v2 nessun segnale. Nessun trade reale registrato. Test OK.
+
 ### Test dell'utente · 01/11 — uscita "crollo" da pressione di vendita + volume su W2 (con F1), dal 2021 · NON PROMUOVERE
 Regola: chiusura giornaliera con pressione netta degli aggressori (taker spot+perp) z90 ≤ soglia, volume ≥ k × media 30g e candela
 ≤ −d ATR → esci long all'apertura dopo (/tmp/radar-work/crash/run.py). Soglie assolute (squilibrio ≤ −5/−8/−12%): quasi mai
