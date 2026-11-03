@@ -276,6 +276,17 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Test dell'utente · 03/11 — Pure Momentum Oscillator (MisinkoMaster) e Zeiierman Trend Pressure, codice Pine fornito · NON PROMUOVERE
+Tradotti dal Pine v6 (research/indicatori_tv/ind.py, ta.ema/wma/atr come TradingView). Regole: PMO trend (change = Δ WMA45 della chiusura
+proiettata 2·close−EMA45, diviso ATR45; > +0,05 verde, < −0,05 rosso); Zeiierman bias (Z-Trend > −50 e Core verde), incrocio
+Z-Pulse/Z-Trend, rilasci di esaurimento, combinazione PMO + Zeiierman; giornaliero e settimanale, solo long e long+short (short 1x).
+Dal 2021 (10k a 1x): migliore PMO giornaliero solo long 56.300 $ (33 trade, WR 42%, DD −55%); PMO + Zeiierman giornaliero solo long
+36.000 $ (DD −34%); Zeiierman bias giornaliero 30.100 $ (DD −48%); settimanale tutti ≤ 28.500 $; incrocio Pulse/Trend giornaliero perde.
+Con le impostazioni predefinite il rilascio della pressione BASSA (segnale d'acquisto) non si è mai verificato su BTC dal 2017; il
+rilascio ALTO (vendita) 10 volte giornaliero: a 30 giorni BTC è salito 7 volte su 10. Riferimenti: W2+MACD 124.434 $ (DD −22,7%),
+v2 27.056 $ (DD −11,1%). **Lezione 70**: entrambi sono filtri di momentum/trend come MACD e Ichimoku; nessuno batte W2 né aggiunge
+un segnale d'inversione utilizzabile su BTC.
+
 ### Settimana chiusa 01/11/2026 — resoconto leggero inviato
 BTC 78.354 $. W2+MACD long dal 24/08 (+0,7%), trailing 71.415 $, filtro non attivo (trend 11 settimane). v2 nessun segnale. Nessun trade reale registrato. Test OK.
 

@@ -1,0 +1,17 @@
+tf,regola,lato,P0_n,P0_rend,P0_dd,P0_wr,P0_worst,P0_bh,P1_n,P1_rend,P1_dd,P1_wr,P1_worst,P1_bh,P1_10k,regge
+giornaliero,"PMO trend (verde=long, rosso=short/fuori)",solo long,21,2396,-72.6,52,-22.1,1585,33,463,-55.0,42,-14.3,122,56300,True
+giornaliero,"PMO trend (verde=long, rosso=short/fuori)",long+short,41,1015,-76.1,46,-37.7,1907,66,475,-53.4,41,-22.2,118,57500,False
+giornaliero,Zeiierman bias (Z-Trend>−50 e Core verde),solo long,18,3609,-48.3,33,-22.1,479,28,201,-47.6,32,-13.1,102,30100,True
+giornaliero,Zeiierman bias (Z-Trend>−50 e Core verde),long+short,36,4418,-49.1,31,-22.1,498,55,164,-49.1,27,-13.1,106,26400,True
+giornaliero,Zeiierman incrocio Pulse/Trend,solo long,22,123,-64.6,64,-23.5,1062,22,17,-62.1,64,-32.2,140,11700,False
+giornaliero,Zeiierman incrocio Pulse/Trend,long+short,45,-106,-254.8,51,-240.6,-963,45,-76,-116.9,53,-49.3,-94,2400,True
+giornaliero,PMO verde + Zeiierman bias long,solo long,18,3017,-50.5,61,-22.1,533,30,260,-34.0,40,-10.5,68,36000,True
+giornaliero,PMO verde + Zeiierman bias long,long+short,36,3445,-54.4,47,-22.1,643,55,249,-50.5,35,-16.9,110,34900,True
+settimanale,"PMO trend (verde=long, rosso=short/fuori)",solo long,4,2119,-65.0,75,-16.1,1081,7,179,-60.3,57,-9.8,136,27900,True
+settimanale,"PMO trend (verde=long, rosso=short/fuori)",long+short,7,1127,-82.1,57,-47.4,2638,13,66,-79.7,46,-35.7,163,16600,False
+settimanale,Zeiierman bias (Z-Trend>−50 e Core verde),solo long,5,1110,-75.4,40,-29.0,1840,6,57,-61.1,33,-10.2,138,15700,False
+settimanale,Zeiierman bias (Z-Trend>−50 e Core verde),long+short,10,319,-91.5,30,-42.1,4451,10,1,-68.4,30,-23.0,154,10100,False
+settimanale,Zeiierman incrocio Pulse/Trend,solo long,4,23,-68.4,50,-23.3,1280,4,185,-35.4,75,-16.0,71,28500,False
+settimanale,Zeiierman incrocio Pulse/Trend,long+short,9,485,-1508.3,33,-724.6,-963,8,208,-104.4,50,-16.0,-94,30800,True
+settimanale,PMO verde + Zeiierman bias long,solo long,5,1110,-75.4,40,-29.0,1840,6,46,-59.6,67,-9.8,134,14600,False
+settimanale,PMO verde + Zeiierman bias long,long+short,9,386,-90.1,33,-47.4,4132,9,52,-60.5,56,-13.2,136,15200,False
