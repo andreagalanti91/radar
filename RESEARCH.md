@@ -276,6 +276,13 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Giro notturno · 03/11 — convalida fuori campione di C (metà a +30%) e B′ (metà su cluster di liquidazioni) · NON CONVALIDATE
+Stessi parametri, campioni nuovi. C: ETH MAR 6,15 → 6,69 (senza il trade 2023-01 5,82), SOL 23,85 → 9,58 (taglia i due trade da +300%),
+BTC 2018–20 7,00 → 5,15 (taglia il +146% del 2020): 1/3, dipende da un trade. B′: ETH 6,15 → 9,0–11,1 ma placebo interno p 0,49–0,77,
+SOL 23,85 → 17,32 (DD −57%); anche su BTC 2021–26 il placebo interno dà p 0,43. OI ETH/SOL disponibile solo dal 2021-12.
+**Lezione 73**: le uscite parziali nate su BTC 2021–26 non reggono fuori campione: C taglia le code destre che fanno il rendimento,
+B′ non si distingue da un dimezzamento casuale negli stessi trade. W2 + MACD resta invariata; C e B′ archiviate (non più seguite).
+
 ### Confronto approfondito · 03/11 — W2+MACD contro "metà su cluster di liquidazioni" (d2) e "metà a +30%" (research/w2_vs_d2_confronto.txt)
 Dal 2021, 1x: A W2+MACD 121.989 $ (DD −22,7%, MAR 49,4, CAGR 53,5%, 30,6% dei giorni sotto −10%); B d2 originale 142.870 $ (−19,9%,
 66,9); B′ d2 con OI corretto 142.215 $ (−19,9%, 66,5, 6 tagli, 2021-08 da +7,9% a +2,9%, 2021 +168% contro +188%); C metà a +30%

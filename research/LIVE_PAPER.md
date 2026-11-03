@@ -7,3 +7,4 @@ Regola di promozione: dopo ≥ 6 nuovi trade dal vivo, confronto con W2 (e v2 pe
   **C** = vendi metà quando il trade arriva a +30% (regola semplice, applicabile a mano) e **B′** = vendi metà quando la chiusura è entro il
   4% sopra un grande gruppo stimato di liquidazioni long (OI allineato correttamente; script in /tmp/radar-work/liq e liq-rev, da rifare
   nel repo se diventa candidata). Decisione dopo 3 nuovi long: si promuove la variante che batte W2 senza dipendere da un solo trade.
+- 04/11/2026 (giro notturno): C e B′ NON convalidate fuori campione (ETH, SOL, BTC 2018–20; lezione 73): archiviate, non più seguite. Strategia reale: solo W2 + MACD.
