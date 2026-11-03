@@ -276,6 +276,23 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 03/11 — liquidazioni e open interest (proxy dal 2021), S/R da leva · d2 SU CARTA
+Dati: OI Binance USDT-M 5 minuti dal 2021-01 (recuperato anche il 2021), liquidazioni reali solo coin-margined 2023-06 → 2024-10;
+Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (calo di OI × prezzo × volume): correlazione giornaliera
+0,61 con le reali (il solo |movimento| fa 0,81), coglie il 62% delle grandi giornate.
+- Dopo una cascata di liquidazioni LONG il prezzo NON rimbalza (−1,8% a 7 giorni rispetto alla media, 0/12 combinazioni positive);
+  dopo una cascata SHORT il rialzo continua (+1,2% a 7 giorni, 12/12 positive, effetto piccolo). Long autonomo dopo capitolazione,
+  ingresso anticipato di W2, blocco con OI al massimo, uscita con OI+funding alto: tutti falliscono. Zone di liquidazione/OI come S/R:
+  reazione 55,8% contro 53,3% su livelli casuali (p 0,075, sotto soglia).
+- **d2**: vendere metà del long W2 quando la chiusura è entro il 4% sopra un grande gruppo stimato di liquidazioni long (leve 10/25/50
+  dall'aumento di OI): 10k → 142.870 $ (W2+MACD 121.989 $), DD −19,9% (−22,7%), MAR 66,9 (49,4). **Revisione: SU CARTA** — un errore
+  di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
+  2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
+  e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+**Lezione 72**: le liquidazioni stimate non segnano capitolazioni da comprare né supporti; servono al più come gestione del rischio
+(prendere metà vicino a un grande gruppo di liquidazioni long), e anche lì metà del vantaggio è una presa di profitto qualsiasi.
+Per le regole che riducono una posizione il placebo va estratto DENTRO i trade; gli orari dei dati derivati vanno controllati.
+
 ### Test dell'utente · 03/11 — W2 + MACD su ETH e SOL (parametri di BTC, nessuna ottimizzazione) · SOLO BTC
 Dati Binance spot/perp/funding (pf14z rifatto come radar/features.py). Dal 01/01/2021, 1x (senza filtro tra parentesi):
 BTC 14 trade, WR 93%, +1.120%, DD −22,7%, MAR 49,4 (14,4); ETH 16 trade, WR 56%, +251% (10k → 35.135 $), DD −40,9%, MAR 6,2 (3,2),

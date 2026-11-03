@@ -336,12 +336,32 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 .dots{display:inline-flex;gap:3px;vertical-align:middle} .dots i{width:6px;height:6px;border-radius:50%;background:var(--line2)} .dots i.on{background:var(--label2)}
 .srAll summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:10px 2px;font:600 .86rem var(--font);color:var(--tint)}
 .srAll summary::-webkit-details-marker{display:none}
-.srRow{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.srRow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
 .srRow .t{font:600 .62rem var(--mono);letter-spacing:.08em;text-transform:uppercase} .srRow.r .t{color:var(--red)} .srRow.s .t{color:var(--green)}
 .srRow .p b{font-weight:600} .srRow .p small{display:block;color:var(--label2);font-size:.72rem}
 .srRow .d{text-align:right;font-size:.82rem} .srRow .d small{display:block;color:var(--label3);font-size:.7rem}
 .srNow{display:flex;align-items:center;gap:10px;padding:8px 2px;border-top:1px solid var(--line);font:600 .8rem var(--font)}
 .srNow i{flex:1;height:2px;background:var(--label)} 
+.srMap{position:relative;height:96px;margin:4px 2px 2px}
+.srMap .ax{position:absolute;left:0;right:0;bottom:22px;height:1px;background:var(--line2)}
+.srMap .z{position:absolute;bottom:23px;border-radius:4px 4px 0 0;min-width:4px}
+.srMap .z.r{background:rgba(255,90,82,.5)} .srMap .z.s{background:rgba(52,215,123,.5)}
+.srMap .now{position:absolute;bottom:14px;top:0;width:2px;background:var(--label);transform:translateX(-1px)}
+.srMap .now b{position:absolute;top:-2px;left:6px;font:600 .7rem var(--font);white-space:nowrap;font-variant-numeric:tabular-nums}
+.srMap .tk{position:absolute;bottom:0;transform:translateX(-50%);font:500 .62rem var(--mono);color:var(--label3);white-space:nowrap}
+.sbar{display:inline-grid;grid-template-columns:54px auto;align-items:center;gap:6px;font-size:.7rem;color:var(--label2)}
+.sbar span{height:6px;border-radius:3px;background:var(--line2);overflow:hidden;display:block}
+.sbar i{display:block;height:100%;border-radius:3px}
+.r .sbar i,.srTile.r .sbar i{background:var(--red)} .s .sbar i,.srTile.s .sbar i{background:var(--green)}
+.wkChartCard{position:relative}
+.wkTools{display:flex;gap:6px;align-items:center;margin-left:auto}
+.wkTools button{font:600 .72rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;cursor:pointer;min-height:34px}
+.wkTools button[aria-pressed="true"]{background:var(--label);color:var(--card)}
+#wkChart{height:440px} #wkMacd{height:120px}
+@media (max-width:560px){#wkChart{height:400px}}
+.wkChartCard.full{position:fixed;inset:0;z-index:60;border-radius:0;margin:0!important;padding:14px 14px calc(14px + env(safe-area-inset-bottom));overflow:auto}
+.wkChartCard.full #wkChart{height:calc(100vh - 250px)} .wkChartCard.full #wkMacd{height:140px}
+body.noscroll{overflow:hidden}
 /* switch delle strategie: le sezioni .only-v2 / .only-w2 seguono la scelta (classe sulla .app) */
 .strat{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px}
 .strat .seg button{padding:7px 12px}
@@ -393,17 +413,21 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
     <div class="section only-w2" id="wkSec" hidden>
       <div class="sh">Segnale settimanale · W2 + MACD <small id="wkSub"></small></div>
       <div class="card glow wkHero" id="wkHero"></div>
-      <div class="card" style="margin-top:12px">
+      <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
+        <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
+          <div class="wkTools"><div class="seg" id="wkRange" role="group" aria-label="Periodo"><button data-v="26">6M</button><button data-v="52">1A</button><button data-v="104" aria-pressed="true">2A</button></div>
+          <button id="wkFull" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
         <div class="wkLeg" id="wkLeg"></div>
-        <div id="wkChart" class="chart" style="height:300px" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso e trailing"></div>
-        <div class="wkLeg" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span></div>
-        <div id="wkMacd" class="chart" style="height:90px" role="img" aria-label="Istogramma MACD settimanale 8/21/5"></div>
+        <div id="wkChart" class="chart" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso, trailing e supporti/resistenze"></div>
+        <div class="wkLeg" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span><span class="hov" style="color:var(--label3)">trascina per scorrere · pizzica o rotella per zoom</span></div>
+        <div id="wkMacd" class="chart" role="img" aria-label="Istogramma MACD settimanale 8/21/5"></div>
       </div>
       <div class="card sr" id="srCard" style="margin-top:12px" hidden>
         <div class="wkTop"><b style="font:600 1rem var(--font)">Supporti e resistenze</b><span class="cap" id="srSub"></span></div>
+        <div class="srMap" id="srMap" role="img" aria-label="Mappa dei supporti e resistenze rispetto al prezzo"></div>
         <div class="srTop" id="srTop"></div>
         <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
-          <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza 1–5 da tocchi, timeframe, volume e recenza. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
+          <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
       </div>
       <div class="wkGrid">
         <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
@@ -950,12 +974,19 @@ renderTrades();
   const LV = R.levels;
   if (LV && (LV.supports.length || LV.resistances.length)) {
     $("srCard").hidden = false;
-    const dots = n => `<span class="dots" aria-label="forza ${n} su 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`;
+    const word = n => n >= 4 ? "forte" : n === 3 ? "media" : "debole";
+    const dots = n => `<span class="sbar" title="forza ${n} su 5"><span><i style="width:${n * 20}%"></i></span>${word(n)}</span>`;
     const zone = o => o.lo === o.hi ? usd(o.price) : `${usd(o.lo)} – ${usd(o.hi)}`;
     const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}</b><small>${pc1(o.dist_pct)} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small></div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
     $("srTop").innerHTML = tile(LV.resistances[0], "r") + tile(LV.supports[0], "s");
+    // mappa: ogni zona è una barra sull'asse dei prezzi, alta quanto la sua forza; la linea bianca è il prezzo di oggi
+    const all = LV.supports.map(o => ({ ...o, k: "s" })).concat(LV.resistances.map(o => ({ ...o, k: "r" })));
+    const mn = Math.min(...all.map(o => o.lo), LV.price) * 0.985, mx = Math.max(...all.map(o => o.hi), LV.price) * 1.015, X = v => (v - mn) / (mx - mn) * 100;
+    const ticks = [mn, (mn + mx) / 2, mx].map((v, i) => `<span class="tk" style="left:${[4, 50, 96][i]}%">${Math.round(v / 1000)}k</span>`).join("");
+    $("srMap").innerHTML = `<div class="ax"></div>` + all.map(o => `<div class="z ${o.k}" style="left:${X(o.lo)}%;width:calc(${X(o.hi) - X(o.lo)}% + 4px);height:${10 + o.strength * 11}px" title="${o.k === "r" ? "Resistenza" : "Supporto"} ${usd(o.price)} · forza ${word(o.strength)} · ${pc1(o.dist_pct)}"></div>`).join("") +
+      `<div class="now" style="left:${X(LV.price)}%"><b>ora ${usd(LV.price)}</b></div>` + ticks;
     $("srSub").textContent = `aggiornati al ${fmtD(LV.date)}`;
-    const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i} · ${dots(o.strength)}</span><span class="p"><b>${usd(o.price)}</b><small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}</small></span><span class="d">${pc1(o.dist_pct)}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
+    const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}</small></span><span class="d">${pc1(o.dist_pct)}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
     const Rs = LV.resistances.map((o, i) => ({ ...o, i: i + 1 })), Ss = LV.supports.map((o, i) => ({ ...o, i: i + 1 }));
     $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(LV.price)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
     $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti`;
@@ -1016,12 +1047,19 @@ renderTrades();
     const sl2 = mc.addLineSeries({ color: css("--s-sma"), lineWidth: 2, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
     sl2.setData(T.map((t, i) => ({ time: t, value: c.sig[i] })).filter(p => p.value != null));
     ch.timeScale().fitContent(); mc.timeScale().fitContent();
+    ch.timeScale().applyOptions({ rightOffset: 10 });
     ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
     const leg = (i) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
       (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
       (R.levels ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
       `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}`}</span>`;
     $("wkLeg").innerHTML = leg(T.length - 1);
+    const setRange = n => { const L = T.length; ch.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - n) - 0.5, to: L - 0.5 + Math.max(4, n / 9) }); };
+    seg("wkRange", v => setRange(+v));
+    $("wkFull").onclick = () => { const on = !$("wkChartCard").classList.contains("full");
+      $("wkChartCard").classList.toggle("full", on); document.body.classList.toggle("noscroll", on);
+      $("wkFull").setAttribute("aria-pressed", on); $("wkFull").textContent = on ? "✕ Chiudi" : "⤢ Espandi"; };
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && $("wkChartCard").classList.contains("full")) $("wkFull").click(); });
     ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); });
   }, 0);
   const H = W.history, M = H.m1;
