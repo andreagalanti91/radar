@@ -276,6 +276,12 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Confronto approfondito · 03/11 — W2+MACD contro "metà su cluster di liquidazioni" (d2) e "metà a +30%" (research/w2_vs_d2_confronto.txt)
+Dal 2021, 1x: A W2+MACD 121.989 $ (DD −22,7%, MAR 49,4, CAGR 53,5%, 30,6% dei giorni sotto −10%); B d2 originale 142.870 $ (−19,9%,
+66,9); B′ d2 con OI corretto 142.215 $ (−19,9%, 66,5, 6 tagli, 2021-08 da +7,9% a +2,9%, 2021 +168% contro +188%); C metà a +30%
+137.195 $ (−19,9%, 64,0, 16% dei giorni sotto −10%). Il miglioramento di B′ su A arriva tutto dal 2023-07 in poi (MAR 15,9 contro
+8,7); nel 2021–23 B′ rende meno (278,7% contro 322,5%). Decisione invariata: d2 e C su carta.
+
 ### Studio dell'utente · 03/11 — liquidazioni e open interest (proxy dal 2021), S/R da leva · d2 SU CARTA
 Dati: OI Binance USDT-M 5 minuti dal 2021-01 (recuperato anche il 2021), liquidazioni reali solo coin-margined 2023-06 → 2024-10;
 Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (calo di OI × prezzo × volume): correlazione giornaliera
