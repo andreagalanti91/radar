@@ -276,6 +276,15 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Test dell'utente · 03/11 — W2 + MACD su ETH e SOL (parametri di BTC, nessuna ottimizzazione) · SOLO BTC
+Dati Binance spot/perp/funding (pf14z rifatto come radar/features.py). Dal 01/01/2021, 1x (senza filtro tra parentesi):
+BTC 14 trade, WR 93%, +1.120%, DD −22,7%, MAR 49,4 (14,4); ETH 16 trade, WR 56%, +251% (10k → 35.135 $), DD −40,9%, MAR 6,2 (3,2),
+peggior trade −22,8%; SOL (dal 05/2021) 21 trade, WR 48%, +1.243% (10k → 134.286 $), DD −52,1%, MAR 23,9 (9,2), 2025 −41%, senza i
+2 trade migliori ≈ −22%. Tutti battono il buy&hold scalato allo stesso DD. Portafogli a quote uguali: BTC+ETH MAR 23–27, BTC+ETH+SOL
+26–40 contro 49,4 del solo BTC. Trade in research/w2_alt/.
+**Lezione 71**: il filtro MACD migliora tutti e tre gli asset con gli stessi parametri (validazione fuori campione del filtro), ma la W2
+su ETH/SOL è molto più debole e più rischiosa: la strategia reale resta solo su BTC, le alt al massimo su carta.
+
 ### Decisione dell'utente (03/11/2026) — tool con la SOLA strategia W2 + MACD; simulatore allineato alle Statistiche
 Dashboard: solo W2 (switch e Laboratorio nascosti, sezioni v2 nascoste, Metodo riscritto per W2), filtro MACD in evidenza,
 simulatore W2 calcolato sull'equity giornaliera delle Statistiche (prima: drawdown sulle uscite dei trade, es. −34,8% contro −42,6%

@@ -1,0 +1,22 @@
+ingresso,lato,prezzo_ingresso,uscita,prezzo_uscita,motivo,esposizione,movimento_%,pnl_capitale_%,capitale_10k_1x
+2021-05-24,long,24.55,2021-07-19,26.65,chiusura settimanale oltre la EMA 21,1.0,8.56,8.33,10833.0
+2021-08-02,long,34.21,2021-09-17,138.41,"trailing 2,5 ATR settimanali",1.0,304.59,304.06,43774.0
+2021-09-27,long,135.84,2021-10-25,201.95,distribuzione (funding e flusso perp),1.0,48.67,48.42,64970.0
+2022-04-04,long,137.04,2022-04-11,110.95,chiusura settimanale oltre la EMA 21,1.0,-19.04,-19.22,52484.0
+2022-08-22,short,36.44,2022-11-14,13.19,distribuzione (funding e flusso perp),0.217,63.79,11.03,58272.0
+2022-12-19,short,12.37,2023-01-02,10.0,distribuzione (funding e flusso perp),0.145,19.16,2.45,59697.0
+2023-02-06,short,23.44,2023-02-20,24.85,chiusura settimanale oltre la EMA 21,0.327,-6.04,-2.04,58481.0
+2023-02-27,short,23.23,2023-03-13,20.21,distribuzione (funding e flusso perp),0.341,13.0,4.39,61046.0
+2023-03-27,short,20.92,2023-04-17,25.37,chiusura settimanale oltre la EMA 21,0.342,-21.25,-7.17,56667.0
+2023-04-24,short,21.45,2023-07-10,21.34,chiusura settimanale oltre la EMA 21,0.39,0.51,0.5,56953.0
+2023-07-17,long,27.44,2023-08-21,21.76,chiusura settimanale oltre la EMA 21,1.0,-20.71,-20.88,45062.0
+2023-10-02,long,23.9,2024-01-01,101.62,distribuzione (funding e flusso perp),1.0,325.18,324.59,191328.0
+2024-07-22,long,184.67,2024-08-05,138.18,chiusura settimanale oltre la EMA 21,1.0,-25.17,-25.35,142825.0
+2024-09-23,long,144.78,2024-12-09,236.78,distribuzione (funding e flusso perp),1.0,63.55,63.28,233203.0
+2025-01-20,long,252.65,2025-02-17,188.07,chiusura settimanale oltre la EMA 21,1.0,-25.56,-25.74,173187.0
+2025-05-12,long,173.37,2025-06-02,157.52,chiusura settimanale oltre la EMA 21,1.0,-9.14,-9.33,157022.0
+2025-09-01,long,200.82,2025-10-10,168.75,"trailing 2,5 ATR settimanali",1.0,-15.97,-16.16,131654.0
+2025-10-27,long,200.23,2025-11-03,187.52,chiusura settimanale oltre la EMA 21,1.0,-6.35,-6.54,123044.0
+2025-11-10,short,164.37,2026-02-09,87.08,distribuzione (funding e flusso perp),0.485,47.02,22.79,151081.0
+2026-04-06,short,81.81,2026-08-21,90.49,"trailing 2,5 ATR settimanali",0.408,-10.61,-4.29,144604.0
+2026-10-26,long,101.49,2026-11-02,94.45,chiusura settimanale oltre la EMA 21,1.0,-6.94,-7.14,134286.0

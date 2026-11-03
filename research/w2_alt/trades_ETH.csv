@@ -1,0 +1,17 @@
+ingresso,lato,prezzo_ingresso,uscita,prezzo_uscita,motivo,esposizione,movimento_%,pnl_capitale_%,capitale_10k_1x
+2021-03-08,long,1728.19,2021-04-19,2233.41,distribuzione (funding e flusso perp),1.0,29.23,29.01,12901.0
+2021-04-26,long,2322.76,2021-05-17,3578.23,distribuzione (funding e flusso perp),1.0,54.05,53.8,19841.0
+2021-08-09,long,3014.85,2021-09-06,3946.33,distribuzione (funding e flusso perp),1.0,30.9,30.67,25925.0
+2022-03-28,long,3298.95,2022-04-18,2985.08,chiusura settimanale oltre la EMA 21,1.0,-9.51,-9.7,23409.0
+2022-06-13,short,1433.41,2022-08-13,2018.3,"trailing 2,5 ATR settimanali",0.302,-40.8,-12.2,20554.0
+2022-08-22,short,1616.51,2022-09-12,1767.89,distribuzione (funding e flusso perp),0.393,-9.36,-3.9,19751.0
+2022-09-19,short,1333.18,2023-01-16,1554.07,chiusura settimanale oltre la EMA 21,0.342,-16.57,-5.38,18690.0
+2023-01-23,long,1629.06,2023-06-12,1751.02,chiusura settimanale oltre la EMA 21,1.0,7.49,7.28,20050.0
+2023-10-30,long,1796.94,2024-01-01,2279.59,distribuzione (funding e flusso perp),1.0,26.86,26.63,25390.0
+2024-01-22,long,2459.52,2024-03-11,3874.59,distribuzione (funding e flusso perp),1.0,57.53,57.28,39933.0
+2024-06-03,long,3784.7,2024-07-05,2928.3,"trailing 2,5 ATR settimanali",1.0,-22.63,-22.81,30826.0
+2024-11-11,long,3186.38,2025-02-02,2845.27,"trailing 2,5 ATR settimanali",1.0,-10.71,-10.89,27468.0
+2025-02-03,short,2866.81,2025-05-09,2462.01,"trailing 2,5 ATR settimanali",0.6,14.12,8.69,29855.0
+2025-07-14,long,2975.0,2025-10-10,3579.47,"trailing 2,5 ATR settimanali",1.0,20.32,20.1,35855.0
+2026-05-11,short,2368.89,2026-08-19,2162.46,"trailing 2,5 ATR settimanali",0.697,8.71,6.53,38196.0
+2026-08-24,long,2465.88,2026-11-02,2273.02,chiusura settimanale oltre la EMA 21,1.0,-7.82,-8.01,35135.0
