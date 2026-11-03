@@ -9,6 +9,7 @@
   --bg:#07080c; --bg2:#0b0d13; --card:#101219; --card2:#151823; --raise:rgba(255,255,255,.04);
   --line:rgba(255,255,255,.075); --line2:rgba(255,255,255,.13);
   --label:#f3f5fb; --label2:rgba(226,232,255,.58); --label3:rgba(226,232,255,.3);
+  --s-ema:#4f6bff; --s-sma:#c27015;
   --tint:#4f6bff; --violet:#8b5cff; --mint:#5ef0c4; --green:#34d77b; --red:#ff5a52; --orange:#f7931a; --teal:#3cc8e6; --indigo:#7a6bff;
   --glow-a:rgba(79,107,255,.22); --glow-b:rgba(139,92,255,.16); --glow-btc:rgba(247,147,26,.16);
   --chrome:rgba(16,18,25,.72); --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 20px 40px -24px rgba(0,0,0,.6);
@@ -19,6 +20,7 @@
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --s-ema:#3b55e6; --s-sma:#c96f10;
   --bg:#f3f4f8; --bg2:#eceef4; --card:#ffffff; --card2:#f6f7fb; --raise:rgba(11,17,48,.035);
   --line:rgba(11,17,48,.08); --line2:rgba(11,17,48,.14);
   --label:#0b1130; --label2:rgba(11,17,48,.58); --label3:rgba(11,17,48,.3);
@@ -26,6 +28,7 @@
   --glow-a:rgba(53,80,240,.12); --glow-b:rgba(122,77,255,.08); --glow-btc:rgba(233,132,12,.1);
   --chrome:rgba(255,255,255,.78); --shadow:0 1px 2px rgba(11,17,48,.05),0 12px 32px -16px rgba(11,17,48,.18); color-scheme:light}}
 :root[data-theme="light"]{
+  --s-ema:#3b55e6; --s-sma:#c96f10;
   --bg:#f3f4f8; --bg2:#eceef4; --card:#ffffff; --card2:#f6f7fb; --raise:rgba(11,17,48,.035);
   --line:rgba(11,17,48,.08); --line2:rgba(11,17,48,.14);
   --label:#0b1130; --label2:rgba(11,17,48,.58); --label3:rgba(11,17,48,.3);
@@ -286,6 +289,43 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   .side nav a:not([aria-current="page"]):hover{background:var(--raise);color:var(--label)}
   .seg button:not([aria-pressed="true"]):hover{color:var(--label)}
 }
+/* ---- segnale settimanale W2 + MACD: stato, percorso del prezzo, grafico settimanale, condizioni */
+.wkHero{display:grid;gap:14px}
+.wkTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.wkBadge{display:inline-flex;align-items:center;gap:7px;font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--line2);background:var(--raise)}
+.wkBadge i{width:8px;height:8px;border-radius:50%;background:var(--label3)}
+.wkBadge.long i{background:var(--green)} .wkBadge.short i{background:var(--red)} .wkBadge.sig i{background:var(--tint);box-shadow:0 0 0 4px rgba(79,107,255,.18)}
+.wkBig{font:650 2.4rem/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.wkBig small{display:block;font:500 .78rem var(--font);letter-spacing:0;color:var(--label2);margin-top:6px}
+.wkFacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.wkFacts div{display:grid;gap:2px;min-width:0} .wkFacts span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.wkFacts b{font:600 1rem var(--font);font-variant-numeric:tabular-nums}
+.track{position:relative;height:64px;margin:4px 8px 0}
+.track .rail{position:absolute;left:0;right:0;top:30px;height:6px;border-radius:3px;background:var(--line2)}
+.track .risk{position:absolute;top:30px;height:6px;border-radius:3px 0 0 3px;background:repeating-linear-gradient(135deg,rgba(255,90,82,.55) 0 4px,rgba(255,90,82,.2) 4px 8px)}
+.track .gain{position:absolute;top:30px;height:6px;background:rgba(52,215,123,.45)}
+.track .mk{position:absolute;top:0;transform:translateX(-50%);display:grid;justify-items:center;gap:3px;white-space:nowrap}
+.track .mk em{font:500 .6rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label3);font-style:normal}
+.track .mk i{width:2px;height:16px;background:var(--label2);border-radius:1px}
+.track .mk.now i{width:12px;height:12px;border-radius:50%;background:var(--label);box-shadow:0 0 0 3px var(--card);margin-top:2px}
+.track .mk.stop i{background:var(--red)} .track .mk b{font:600 .72rem var(--font);font-variant-numeric:tabular-nums}
+.track .mk.lo{top:38px} .track .mk.lo i{order:-1}
+.wkCush{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;color:var(--label2);flex-wrap:wrap}
+.wkCush b{color:var(--label);font-variant-numeric:tabular-nums}
+.wkLeg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--label2);margin-bottom:8px;font-variant-numeric:tabular-nums}
+.wkLeg span{display:inline-flex;align-items:center;gap:6px} .wkLeg i{width:14px;height:2px;border-radius:1px;display:inline-block}
+.wkLeg i.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)!important}
+.wkLeg .hov{margin-left:auto;color:var(--label)}
+.checks .row{min-height:46px} .checks .ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;font:700 .72rem var(--font)}
+.checks .ok .ic{background:rgba(52,215,123,.16);color:var(--green)} .checks .no .ic{background:rgba(255,90,82,.14);color:var(--red)}
+.checks .k{flex:1;min-width:0;display:grid;gap:1px} .checks .k small{color:var(--label2);font-size:.72rem}
+.checks .v{font:600 .82rem var(--font);font-variant-numeric:tabular-nums;text-align:right}
+.meter{height:5px;border-radius:3px;background:var(--line2);overflow:hidden;width:72px;margin-top:5px;margin-left:auto}
+.meter i{display:block;height:100%;border-radius:3px;background:var(--label2)}
+.meter.hot i{background:var(--red)}
+.wkGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:12px}
+@media (max-width:899px){.wkGrid{grid-template-columns:minmax(0,1fr)}}
+.wkGrid .cap2{font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3);padding:12px 16px 2px}
 /* switch delle strategie: le sezioni .only-v2 / .only-w2 seguono la scelta (classe sulla .app) */
 .strat{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px}
 .strat .seg button{padding:7px 12px}
@@ -336,8 +376,19 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   <div class="view" id="v-oggi">
     <div class="section only-w2" id="wkSec" hidden>
       <div class="sh">Segnale settimanale · W2 + MACD <small id="wkSub"></small></div>
-      <div id="wkPlan"></div>
-      <div class="tiles" id="wkKv" style="margin-top:12px"></div>
+      <div class="card glow wkHero" id="wkHero"></div>
+      <div class="card" style="margin-top:12px">
+        <div class="wkLeg" id="wkLeg"></div>
+        <div id="wkChart" class="chart" style="height:300px" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso e trailing"></div>
+        <div class="wkLeg" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span></div>
+        <div id="wkMacd" class="chart" style="height:90px" role="img" aria-label="Istogramma MACD settimanale 8/21/5"></div>
+      </div>
+      <div class="wkGrid">
+        <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
+        <div class="list checks"><div class="cap2" id="wkExitH">Uscite da sorvegliare</div><div id="wkExits"></div></div>
+      </div>
+      <div id="wkPlan" style="margin-top:12px"></div>
+      <div class="tiles" id="wkKv" hidden></div>
       <p class="foot" id="wkNote"></p>
     </div>
 
@@ -843,35 +894,97 @@ renderTrades();
   const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
   const mkt = (m, e) => m === "spot" ? "spot 1x" : `perp ${e.toFixed(2).replace(".", ",")}x`;
   $("wkSec").hidden = false;
-  $("wkSub").textContent = `chiusura settimanale del ${fmtD(W.week)} · regime ${W.regime}`;
-  $("wkKv").innerHTML = [
-    ["EMA 21 settimanale", usd(W.ema21), W.price >= W.ema21 ? "prezzo sopra" : "prezzo sotto"],
-    ["SMA 40 settimane", usd(W.sma40), W.price >= W.sma40 ? "prezzo sopra" : "prezzo sotto"],
-    ["Flusso perp", sgn(W.flow) + "σ", "pf14z"],
-    ["Funding 7g", pct(W.fund7 * 100, 3), "al giorno · distribuzione oltre +0,09%"],
-    ["Filtro MACD 8/21/5", W.f1_ok ? "nuovi long consentiti" : "nuovi long bloccati",
-      (W.trend_age >= W.old_trend ? `trend vecchio (${W.trend_age} settimane sopra la SMA 40): serve MACD sopra segnale e zero` : `trend giovane (${W.trend_age} settimane): filtro non attivo`) +
-      ` · MACD ${Math.round(W.macd).toLocaleString("it-IT")} / segnale ${Math.round(W.macd_sig).toLocaleString("it-IT")}`],
-  ].map(([a, b, d]) => `<div${a.startsWith("Filtro") ? ' style="grid-column:1/-1"' : ""}><span>${a}</span><b>${b}</b><small>${d}</small></div>`).join("");
-  if (W.status === "aperto" || W.status === "uscita") {
-    $("wkPlan").innerHTML = rows([[`Posizione ${side(W.side)}<small>dal ${fmtD(W.entry)} · ${mkt(W.market, W.expo)}</small>`, usd(W.entry_px), true],
-      ["Andamento<small>sul prezzo</small>", pct(W.move_pct, 2), true],
-      [`Trailing attuale<small>2,5 ATR settimanali dalla miglior chiusura (${usd(W.best)})</small>`, usd(W.trail), true],
-      ["Stop iniziale", usd(W.stop0)],
-      [`Su ${usd(W.capital)}<small>${W.btc.toFixed(4).replace(".", ",")} BTC · al trailing</small>`, `${usd(W.notional)} · ${W.trail_usd >= 0 ? "+" : "−"}${usd(Math.abs(W.trail_usd))}`],
-      ["Distribuzione", W.dist_now ? "condizione attiva: uscita se resta così domenica" : "non attiva"],
-      ...(W.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[W.reason] || W.reason}`, true]] : [])]);
+  $("wkSub").textContent = `chiusura del ${fmtD(W.week)} · regime ${W.regime}`;
+  const nf = x => Math.round(x).toLocaleString("it-IT"), pc1 = x => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ",") + "%";
+  const open = W.status === "aperto" || W.status === "uscita", sg = W.side === "short" ? -1 : 1;
+  const nextSun = (() => { const d = new Date(W.week); d.setDate(d.getDate() + 7); return d; })();
+  const weeksIn = open ? Math.max(1, Math.round((new Date(W.date) - new Date(W.entry)) / 6.048e8)) : 0;
+  // --- stato
+  let hero = "";
+  if (open) {
+    const val = W.notional * (1 + W.move_pct / 100), lo = Math.min(W.trail, W.entry_px, W.price), hi = Math.max(W.best, W.price, W.entry_px);
+    const pad = (hi - lo) * 0.08, L = lo - pad, H = hi + pad, X = v => ((v - L) / (H - L) * 100).toFixed(2) + "%";
+    const cush = sg * (W.price / W.trail - 1) * 100;
+    const mk = (cls, label, v, low) => `<div class="mk ${cls}${low ? " lo" : ""}" style="left:${X(v)}"><em>${label}</em><i></i>${low ? "" : `<b>${usd(v)}</b>`}</div>`;
+    hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${W.market === "spot" ? "spot 1x" : "perp " + W.expo.toFixed(2).replace(".", ",") + "x"}</span>
+        <span class="cap">dal ${fmtD(W.entry)} · ${weeksIn} settimane</span></div>
+      <div class="wkBig">${pc1(W.move_pct)}<small>andamento sul prezzo · su ${usd(W.notional)} oggi ${usd(val)} (${(val - W.notional >= 0 ? "+" : "−") + usd(Math.abs(val - W.notional))})</small></div>
+      <div class="track" aria-label="Percorso del prezzo: trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(W.price)}, massimo ${usd(W.best)}">
+        <div class="rail"></div><div class="risk" style="left:0;width:${X(W.trail)}"></div>
+        ${W.price > W.entry_px ? `<div class="gain" style="left:${X(W.entry_px)};width:calc(${X(W.price)} - ${X(W.entry_px)})"></div>` : ""}
+        ${mk("stop", "Trailing", W.trail)}${mk("", "Ingresso", W.entry_px, true)}${mk("", "Massimo", W.best, true)}${mk("now", "Ora", W.price)}</div>
+      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(-cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>`;
   } else if (W.status === "segnale") {
     const p = W.plan;
-    $("wkPlan").innerHTML = rows([[`Segnale ${side(W.side)}<small>chiusura del ${fmtD(W.signal_date)} · ingresso all'apertura di lunedì</small>`, usd(p.entry_est), true],
-      ["Mercato", mkt(p.market, p.expo)], [`Su ${usd(p.capital)}`, `${usd(p.notional)} · ${p.btc.toFixed(4).replace(".", ",")} BTC`],
-      ["Stop iniziale<small>2,5 ATR settimanali</small>", `${usd(p.stop)} · −${String(p.stop_pct).replace(".", ",")}%`, true],
-      ["Trailing<small>dalla miglior chiusura giornaliera</small>", usd(p.trail_dist)], ["Perdita allo stop", usd(p.loss_usd)]]);
+    hero = `<div class="wkTop"><span class="wkBadge sig"><i></i>Segnale ${W.side} · ingresso lunedì</span><span class="cap">chiusura del ${fmtD(W.signal_date)}</span></div>
+      <div class="wkBig">${usd(p.entry_est)}<small>prezzo di riferimento · ${p.market === "spot" ? "compra in spot 1x" : "perp " + p.expo.toFixed(2).replace(".", ",") + "x"} ${usd(p.notional)} (${p.btc.toFixed(4).replace(".", ",")} BTC)</small></div>
+      <div class="wkFacts"><div><span>Stop iniziale</span><b>${usd(p.stop)}</b></div><div><span>Rischio allo stop</span><b>−${String(p.stop_pct).replace(".", ",")}% · ${usd(p.loss_usd)}</b></div><div><span>Trailing</span><b>${usd(p.trail_dist)}</b></div></div>`;
   } else {
-    $("wkPlan").innerHTML = `<div class="card"><p style="margin:0">Nessuna posizione settimanale. Il segnale si decide alla chiusura della domenica (UTC) e si entra all'apertura del lunedì: circa 3 operazioni l'anno.</p></div>`;
+    hero = `<div class="wkTop"><span class="wkBadge"><i></i>Flat · nessuna posizione</span><span class="cap">prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>
+      <div class="wkBig">${usd(W.price)}<small>Si entra solo quando tutte le condizioni qui sotto sono verdi alla chiusura della domenica (circa 2–3 volte l'anno).</small></div>`;
   }
+  $("wkHero").innerHTML = hero;
+  // --- condizioni d'ingresso long (e filtro MACD)
+  const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
+  const c = W.chart, lastC = c.c[c.c.length - 1];
+  $("wkConds").innerHTML = [
+    chk(lastC > W.sma40, "Trend: sopra la SMA 40 settimane", `media ${usd(W.sma40)}`, pc1((lastC / W.sma40 - 1) * 100)),
+    chk(W.ema20_up, "EMA 20 settimanale in salita", "il trend accelera", W.ema20_up ? "sì" : "no"),
+    chk(lastC > W.ema21, "Chiusura sopra la EMA 21", `EMA 21 ${usd(W.ema21)}`, pc1((lastC / W.ema21 - 1) * 100)),
+    chk(W.flow > 0, "Flusso dei perp positivo", "CVD perp 14 giorni (pf14z)", sgn(W.flow) + "σ"),
+    chk(W.f1_ok, "Filtro MACD 8/21/5", W.trend_age >= W.old_trend ? `trend vecchio (${W.trend_age} sett.): serve MACD sopra segnale e zero` : `trend giovane (${W.trend_age} sett.): non serve`, W.macd > W.macd_sig ? "MACD ↑" : "MACD ↓"),
+  ].join("");
+  // --- uscite da sorvegliare (vicinanza 0–100%)
+  const meter = (f, hot) => `<div class="meter${hot ? " hot" : ""}"><i style="width:${Math.round(Math.max(0, Math.min(1, f)) * 100)}%"></i></div>`;
+  if (open) {
+    const dT = sg * (W.price / W.trail - 1), dE = sg * (lastC / W.ema21 - 1), fT = 1 - Math.min(1, dT / 0.25), fE = 1 - Math.min(1, Math.max(0, dE) / 0.25), fD = Math.max(0, W.fund7) / 0.0009;
+    $("wkExits").innerHTML = [
+      `<div class="row"><span class="k">Trailing 2,5 ATR<small>controllo orario · ${usd(W.trail)}</small></span><span class="v">${pc1(-dT * 100)}${meter(fT, fT > 0.7)}</span></div>`,
+      `<div class="row"><span class="k">Chiusura sotto la EMA 21<small>decide la domenica · ${usd(W.ema21)}</small></span><span class="v">${pc1(-dE * 100)}${meter(fE, dE < 0.03)}</span></div>`,
+      `<div class="row"><span class="k">Distribuzione<small>funding 7g sopra 0,09% e flusso negativo</small></span><span class="v">${W.dist_now ? "attiva" : (W.fund7 * 100).toFixed(3).replace(".", ",") + "%"}${meter(fD, W.dist_now)}</span></div>`,
+    ].join("");
+  } else {
+    $("wkExitH").textContent = "Uscite (con posizione aperta)";
+    $("wkExits").innerHTML = `<div class="row"><span class="k">Trailing 2,5 ATR settimanali, chiusura sotto la EMA 21 o distribuzione<small>Si attivano quando c'è una posizione aperta.</small></span></div>`;
+  }
+  // --- dettagli in dollari (sotto, in forma compatta)
+  if (open) $("wkPlan").innerHTML = rows([[`Su ${usd(W.capital)}<small>${W.btc.toFixed(4).replace(".", ",")} BTC · stop iniziale ${usd(W.stop0)}</small>`, `${usd(W.notional)}`],
+      ...(W.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[W.reason] || W.reason}`, true]] : [])]);
+  else $("wkPlan").innerHTML = "";
+  // --- grafico settimanale (candele, EMA 21, SMA 40, ingresso, trailing) + MACD
+  setTimeout(function wkCharts() {   // dopo le definizioni dei grafici (chartOpts)
+    if (!window.LightweightCharts) return;
+    const T = c.d.map(d => d), up = css("--green"), dn = css("--red");
+    const ch = LightweightCharts.createChart($("wkChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1 } }));
+    const cs = ch.addCandlestickSeries({ upColor: up, downColor: dn, borderVisible: false, wickUpColor: up, wickDownColor: dn, priceLineVisible: false, lastValueVisible: false,
+      priceFormat: { type: "price", precision: 0, minMove: 1 } });
+    cs.setData(T.map((t, i) => ({ time: t, open: c.o[i], high: c.h[i], low: c.l[i], close: c.c[i] })));
+    const line = (k, col, style) => { const s2 = ch.addLineSeries({ color: col, lineWidth: 2, lineStyle: style || 0, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      s2.setData(T.map((t, i) => ({ time: t, value: c[k][i] })).filter(p => p.value != null)); return s2; };
+    line("ema21", css("--s-ema")); line("sma40", css("--s-sma"), 2);
+    if (open) {
+      cs.createPriceLine({ price: W.trail, color: dn, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "Trailing" });
+      cs.createPriceLine({ price: W.entry_px, color: css("--label2"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Ingresso" });
+      const ew = T.find(t => t >= W.signal_date) || T[T.length - 1];
+      cs.setMarkers([{ time: ew, position: W.side === "long" ? "belowBar" : "aboveBar", color: css("--label"), shape: W.side === "long" ? "arrowUp" : "arrowDown", text: "ingresso" }]);
+    }
+    const mc = LightweightCharts.createChart($("wkMacd"), chartOpts({ timeScale: { visible: false, borderVisible: false }, rightPriceScale: { borderVisible: false, scaleMargins: { top: .1, bottom: .1 } } }));
+    const hs = mc.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
+    hs.setData(T.map((t, i) => c.macd[i] == null ? null : ({ time: t, value: c.macd[i] - c.sig[i], color: c.macd[i] >= c.sig[i] ? "rgba(52,215,123,.55)" : "rgba(255,90,82,.55)" })).filter(Boolean));
+    const ml = mc.addLineSeries({ color: css("--s-ema"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+    ml.setData(T.map((t, i) => ({ time: t, value: c.macd[i] })).filter(p => p.value != null));
+    const sl2 = mc.addLineSeries({ color: css("--s-sma"), lineWidth: 2, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+    sl2.setData(T.map((t, i) => ({ time: t, value: c.sig[i] })).filter(p => p.value != null));
+    ch.timeScale().fitContent(); mc.timeScale().fitContent();
+    ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
+    const leg = (i) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
+      (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
+      `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}`}</span>`;
+    $("wkLeg").innerHTML = leg(T.length - 1);
+    ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); });
+  }, 0);
   const H = W.history, M = H.m1;
-  $("wkNote").textContent = `Unica strategia reale (dal 03/11/2026), con filtro MACD nei trend vecchi. Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
+  $("wkNote").textContent = `Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
   $("wkStatSec").hidden = false;
   $("wkStatSub").textContent = `dal ${fmtD(H.start)} · ${M.n} trade`;
   const Y = Object.keys(M.years);

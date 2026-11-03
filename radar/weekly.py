@@ -217,6 +217,10 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
                      else "neutro",
            "trend_age": int(wk["trend_age"]), "macd": float(wk["macd"]), "macd_sig": float(wk["macd_sig"]),
            "f1_ok": bool(wk["f1_ok"]), "old_trend": OLD_TREND,
+           "ema20_up": bool(wk["ema20"] > w["ema20"].iloc[-2]),
+           "chart": {k: [None if pd.isna(v) else round(float(v), 2) for v in w[c].iloc[-104:]] for k, c in
+                     (("o", "open"), ("h", "high"), ("l", "low"), ("c", "close"), ("ema21", "ema21"), ("sma40", "sma"),
+                      ("macd", "macd"), ("sig", "macd_sig"))} | {"d": [str(x.date()) for x in w.index[-104:]]},
            "capital": round(capital, 0), "share": SHARE, "status": "nessuno"}
     if o:
         sg = 1 if o["side"] == "long" else -1
