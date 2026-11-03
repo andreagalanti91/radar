@@ -326,6 +326,22 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 .wkGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:12px}
 @media (max-width:899px){.wkGrid{grid-template-columns:minmax(0,1fr)}}
 .wkGrid .cap2{font:500 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3);padding:12px 16px 2px}
+.sr{display:grid;gap:12px}
+.srTop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.srTile{border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;gap:3px;background:var(--raise)}
+.srTile span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.srTile b{font:600 1.25rem var(--font);font-variant-numeric:tabular-nums}
+.srTile small{font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
+.srTile.r{border-left:3px solid var(--red)} .srTile.s{border-left:3px solid var(--green)}
+.dots{display:inline-flex;gap:3px;vertical-align:middle} .dots i{width:6px;height:6px;border-radius:50%;background:var(--line2)} .dots i.on{background:var(--label2)}
+.srAll summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:10px 2px;font:600 .86rem var(--font);color:var(--tint)}
+.srAll summary::-webkit-details-marker{display:none}
+.srRow{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.srRow .t{font:600 .62rem var(--mono);letter-spacing:.08em;text-transform:uppercase} .srRow.r .t{color:var(--red)} .srRow.s .t{color:var(--green)}
+.srRow .p b{font-weight:600} .srRow .p small{display:block;color:var(--label2);font-size:.72rem}
+.srRow .d{text-align:right;font-size:.82rem} .srRow .d small{display:block;color:var(--label3);font-size:.7rem}
+.srNow{display:flex;align-items:center;gap:10px;padding:8px 2px;border-top:1px solid var(--line);font:600 .8rem var(--font)}
+.srNow i{flex:1;height:2px;background:var(--label)} 
 /* switch delle strategie: le sezioni .only-v2 / .only-w2 seguono la scelta (classe sulla .app) */
 .strat{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px}
 .strat .seg button{padding:7px 12px}
@@ -382,6 +398,12 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
         <div id="wkChart" class="chart" style="height:300px" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso e trailing"></div>
         <div class="wkLeg" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span></div>
         <div id="wkMacd" class="chart" style="height:90px" role="img" aria-label="Istogramma MACD settimanale 8/21/5"></div>
+      </div>
+      <div class="card sr" id="srCard" style="margin-top:12px" hidden>
+        <div class="wkTop"><b style="font:600 1rem var(--font)">Supporti e resistenze</b><span class="cap" id="srSub"></span></div>
+        <div class="srTop" id="srTop"></div>
+        <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
+          <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza 1–5 da tocchi, timeframe, volume e recenza. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
       </div>
       <div class="wkGrid">
         <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
@@ -924,6 +946,20 @@ renderTrades();
       <div class="wkBig">${usd(W.price)}<small>Si entra solo quando tutte le condizioni qui sotto sono verdi alla chiusura della domenica (circa 2–3 volte l'anno).</small></div>`;
   }
   $("wkHero").innerHTML = hero;
+  // --- supporti e resistenze (radar/levels.py)
+  const LV = R.levels;
+  if (LV && (LV.supports.length || LV.resistances.length)) {
+    $("srCard").hidden = false;
+    const dots = n => `<span class="dots" aria-label="forza ${n} su 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`;
+    const zone = o => o.lo === o.hi ? usd(o.price) : `${usd(o.lo)} – ${usd(o.hi)}`;
+    const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}</b><small>${pc1(o.dist_pct)} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small></div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
+    $("srTop").innerHTML = tile(LV.resistances[0], "r") + tile(LV.supports[0], "s");
+    $("srSub").textContent = `aggiornati al ${fmtD(LV.date)}`;
+    const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i} · ${dots(o.strength)}</span><span class="p"><b>${usd(o.price)}</b><small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}</small></span><span class="d">${pc1(o.dist_pct)}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
+    const Rs = LV.resistances.map((o, i) => ({ ...o, i: i + 1 })), Ss = LV.supports.map((o, i) => ({ ...o, i: i + 1 }));
+    $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(LV.price)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
+    $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti`;
+  }
   // --- condizioni d'ingresso long (e filtro MACD)
   const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
   const c = W.chart, lastC = c.c[c.c.length - 1];
@@ -968,6 +1004,10 @@ renderTrades();
       const ew = T.find(t => t >= W.signal_date) || T[T.length - 1];
       cs.setMarkers([{ time: ew, position: W.side === "long" ? "belowBar" : "aboveBar", color: css("--label"), shape: W.side === "long" ? "arrowUp" : "arrowDown", text: "ingresso" }]);
     }
+    if (R.levels) {   // S/R più vicini sul grafico: 2 resistenze e 2 supporti, linee sottili punteggiate
+      R.levels.resistances.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
+      R.levels.supports.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
+    }
     const mc = LightweightCharts.createChart($("wkMacd"), chartOpts({ timeScale: { visible: false, borderVisible: false }, rightPriceScale: { borderVisible: false, scaleMargins: { top: .1, bottom: .1 } } }));
     const hs = mc.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
     hs.setData(T.map((t, i) => c.macd[i] == null ? null : ({ time: t, value: c.macd[i] - c.sig[i], color: c.macd[i] >= c.sig[i] ? "rgba(52,215,123,.55)" : "rgba(255,90,82,.55)" })).filter(Boolean));
@@ -979,6 +1019,7 @@ renderTrades();
     ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
     const leg = (i) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
       (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
+      (R.levels ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
       `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}`}</span>`;
     $("wkLeg").innerHTML = leg(T.length - 1);
     ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); });

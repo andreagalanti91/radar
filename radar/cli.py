@@ -44,6 +44,11 @@ def daily() -> None:
         report["weekly"] = weekly.evaluate(f)
     except Exception as e:  # noqa: BLE001
         print(f"[radar] settimanale non calcolato: {e!r}")
+    try:   # supporti e resistenze di BTC per la dashboard (radar/levels.py)
+        from . import levels
+        report["levels"] = levels.compute(f)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] supporti e resistenze non calcolati: {e!r}")
     try:   # modulo su carta (H2 e v2): un errore qui non deve fermare alert e dashboard
         paper.update(f)
     except Exception as e:  # noqa: BLE001
