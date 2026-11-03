@@ -276,6 +276,12 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Decisione dell'utente (03/11/2026) — tool con la SOLA strategia W2 + MACD; simulatore allineato alle Statistiche
+Dashboard: solo W2 (switch e Laboratorio nascosti, sezioni v2 nascoste, Metodo riscritto per W2), filtro MACD in evidenza,
+simulatore W2 calcolato sull'equity giornaliera delle Statistiche (prima: drawdown sulle uscite dei trade, es. −34,8% contro −42,6%
+giornaliero; ora coincidono), capitale predefinito 10.000 $. Alert Telegram di v2 spenti (RADAR_V2_ALERTS=0); W2 su tutto il capitale
+(RADAR_WEEKLY_SHARE 1,0). v2 resta nel codice.
+
 ### Test dell'utente · 03/11 — Pure Momentum Oscillator (MisinkoMaster) e Zeiierman Trend Pressure, codice Pine fornito · NON PROMUOVERE
 Tradotti dal Pine v6 (research/indicatori_tv/ind.py, ta.ema/wma/atr come TradingView). Regole: PMO trend (change = Δ WMA45 della chiusura
 proiettata 2·close−EMA45, diviso ATR45; > +0,05 verde, < −0,05 rosso); Zeiierman bias (Z-Trend > −50 e Core verde), incrocio

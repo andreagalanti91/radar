@@ -57,16 +57,18 @@ def daily() -> None:
         STATE_FILE.write_text(json.dumps(st0, indent=2, default=str))
     collect_liquidations()
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
+    # dal 03/11/2026 l'unica strategia reale è W2 + MACD: gli alert di v2 restano spenti (RADAR_V2_ALERTS=1 per riattivarli)
+    v2_on = os.environ.get("RADAR_V2_ALERTS", "0") == "1"
     events = diff_events(report)
-    for ev in events:
+    for ev in events if v2_on else []:
         telegram.send(telegram.format_event(ev, report))
-    if os.environ.get("RADAR_DAILY_BRIEF", "1") == "1":
+    if v2_on and os.environ.get("RADAR_DAILY_BRIEF", "1") == "1":
         telegram.send(telegram.daily_brief(report))
     save_state(report)
     # controllo orario degli ordini (limit DCA, stop, target) sulle candele orarie di oggi
     st = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
     ev, st["intraday_keys"] = intraday.check(report, st.get("intraday_keys", []))
-    if ev:
+    if ev and v2_on:
         telegram.send(intraday.format_events(ev))
     if report.get("weekly"):
         try:   # eventi del settimanale (dedupe in state.json, chiave "weekly") e controllo orario del trailing

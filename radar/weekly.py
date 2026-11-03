@@ -238,7 +238,11 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
     if len(t2) == len(hist):   # stessi segnali a 2x: PnL sul capitale per trade, per il simulatore della dashboard
         for h, t in zip(hist, t2):
             h["pnl2_pct"] = round(t["pnl"] * 100, 2)
+    def _eq(r_):   # equity giornaliera da 1,0 (stessa curva delle Statistiche): il simulatore la usa per rendimento e drawdown
+        e = r_["equity"] / r_["equity"].iloc[0]
+        return [round(float(v), 5) for v in e.values]
     out["history"] = {"start": START, "trades": hist, "m1": m1, "m2": m2,
+                      "eq_dates": [str(d.date()) for d in r["equity"].index], "eq1": _eq(r), "eq2": _eq(r2),
                       "final_10k_1x": round(float(r["equity"].iloc[-1]), 0), "final_10k_2x": round(float(r2["equity"].iloc[-1]), 0)}
     from .live import _clean
     return _clean(out)

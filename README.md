@@ -2,46 +2,34 @@
 
 # Radar Signal BTC
 
-Segnali di trading su **Bitcoin** con due strategie complementari, in uso con **capitale reale dal 02/11/2026**:
+Segnali di trading su **Bitcoin** con **una sola strategia, W2 settimanale + filtro MACD**, in uso con capitale reale dal
+02/11/2026 (dal 03/11/2026 è l'unica nel tool; v2 giornaliera resta nel codice, con alert spenti: `RADAR_V2_ALERTS=1` per riattivarli).
 
-- **W2 settimanale con filtro MACD**: poche operazioni grandi (circa 2–3 l'anno, settimane o mesi ciascuna), long in spot senza leva,
-  short in perp con tetto di rischio. Segue il trend settimanale e, nei rialzi già vecchi, rientra solo se il MACD settimanale conferma.
-- **v2 giornaliera**: swing brevi (circa 22 trade l'anno, pochi giorni ciascuno) da order flow e posizionamento dei derivati, con
-  conferma a 4 ore, ingresso in due tranche, stop e target precisi, leva massima 5x.
+Poche operazioni grandi (2–3 l'anno, settimane o mesi ciascuna): long in **spot senza leva**, short in perp solo in trend
+ribassista con tetto di rischio. Segue il trend settimanale e, nei rialzi già vecchi, rientra solo se il MACD settimanale conferma.
 
-| Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W2 + MACD | v2 | Tenere BTC |
-|---|---|---|---|
-| 10.000 $ diventano | **122.868 $** | **27.056 $** | 26.823 $ |
-| Max drawdown giornaliero | −22,7% | −11,1% | −76,6% |
-| Trade / win rate | 14 · 93% | ~105 · 79% | – |
+| Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W2 + MACD | Tenere BTC |
+|---|---|---|
+| 10.000 $ diventano | **~122.000 $** | ~26.800 $ |
+| Max drawdown giornaliero | −22,7% | −76,6% |
+| Trade / win rate | 14 · 93% | – |
 
-Le due strategie si muovono quasi in modo indipendente (correlazione circa 0,1): insieme il drawdown si riduce. Tutto arriva su
-**Telegram** con il piano in dollari sul capitale impostato; la **dashboard** si aggiorna da sola ogni ora con GitHub Actions.
-Come operare: [Operatività reale](#operatività-reale-dal-02112026-due-strategie). Storia della ricerca e lezioni: `RESEARCH.md`.
+Tutto arriva su **Telegram** con il piano in dollari sul capitale impostato (`RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE`, predefinito
+1,0); la **dashboard** si aggiorna da sola ogni ora con GitHub Actions. Simulatore e Statistiche usano la stessa equity giornaliera
+(rendimento e drawdown coincidono). Storia della ricerca e lezioni: `RESEARCH.md`.
 
 **Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot)
 
-## Operatività reale (dal 02/11/2026): due strategie
+## Operatività reale
 
-Si usano **solo due strategie**, scelte perché sono le migliori e si muovono in modo quasi indipendente (correlazione circa 0,1):
+Una sola strategia, **W2 + MACD**, sul capitale `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE` (GitHub → Settings → Secrets and variables →
+Actions → **Variables**). Caso peggiore storico da ricordare: un crollo come il 2018 (−18% con il filtro MACD, −56/−72% senza).
 
-| Dal 01/01/2021, 10.000 $ a 1x | Quota del capitale | Trade/anno | Win rate | 10.000 $ → | DD giornaliero |
-|---|---|---|---|---|---|
-| **W2 settimanale con filtro MACD** (spot, long; short perp con tetto) | 60% | 2,4 | 93% | 122.868 $ | −22,7% |
-| **v2 giornaliera** (perp, rischio 4,3% per trade, leva max 5x) | 40% | ~22 | 79% | 27.056 $ | −11,1% |
-
-Impostazioni (GitHub → Settings → Secrets and variables → Actions → **Variables**): `RADAR_CAPITAL` = capitale reale totale in
-dollari, `RADAR_WEEKLY_SHARE` (predefinito 0,6) e `RADAR_DAILY_SHARE` (predefinito 0,4). I piani in dollari su Telegram usano queste
-quote. Ogni trade reale va registrato con `/entrato`, `/limit`, `/uscito` (vedi sotto): serve a misurare slippage e aderenza al piano.
-Caso peggiore storico da ricordare: un crollo come il 2018 sul settimanale (−18% con il filtro MACD, −56/−72% senza).
-
-**Ogni settimana, in pratica:**
-1. **W2** (la domenica sera decide, il lunedì si esegue): all'alert *SEGNALE SETTIMANALE* compra in spot l'importo indicato e metti
-   lo stop iniziale; a ogni *trailing aggiornato* sposta lo stop; all'*USCITA SETTIMANALE* vendi all'apertura del lunedì.
-2. **v2** (qualsiasi giorno): all'alert di *conferma* apri il 40% a mercato e il limit del 60%, con stop e take profit del piano;
-   chiudi al take profit, allo stop o dopo 14 giorni come indicato.
-3. **Registro**: dopo ogni operazione `/entrato`, `/limit` o `/uscito` su Telegram. Il lunedì alle 08:41 arriva il resoconto della
-   settimana con il confronto fra trade reali e segnali.
+**In pratica:** la domenica sera si decide, il lunedì si esegue.
+1. All'alert *SEGNALE SETTIMANALE*: compra in spot l'importo indicato e metti lo stop iniziale.
+2. A ogni *trailing aggiornato*: sposta lo stop al nuovo livello (controllo orario dal tool).
+3. All'*USCITA SETTIMANALE* (EMA 21, distribuzione) vendi all'apertura del lunedì; se il trailing viene toccato, l'alert arriva subito.
+4. Registra ogni operazione su Telegram con `/entrato` e `/uscito`: il lunedì alle 08:41 arriva il resoconto con il confronto.
 
 ## La dashboard
 
