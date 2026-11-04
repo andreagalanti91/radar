@@ -276,6 +276,17 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 04/11 — S/R + confluenza di volume e flusso AL TOCCO (BTC giornaliero/settimanale, Brent) · NON FUNZIONA
+Nuovo rispetto ai test passati: zona da frattali che coincide con un nodo di volume (HVN 365 giorni) e comportamento della barra di tocco
+(assorbimento, rifiuto, delta taker concorde, divergenza CVD). 28 configurazioni preregistrate, P1 2021–26 / P0 2018–20, target 2R.
+Giornaliero: zona confluente −0,08/−0,04R contro zona NON confluente +0,08/+0,08R (la confluenza peggiora); + delta concorde +0,06/+0,02R
+(placebo 69°/38°); assorbimento/rifiuto/divergenza 2–6 casi. Settimanale: 2–42 eventi, tutto vicino a zero. Unica traccia: rottura di
+zona confluente con volume ≥ 1,5× e flusso concorde +0,21/+0,19R (placebo 88–90°, ~3 trade l'anno, +3% in 6 anni a rischio 1%).
+Come filtro di W2+MACD: niente long sotto resistenza confluente 89.041 $ (salta 2024-09 +31%); metà fuori su resistenza confluente con
+flusso contrario MAR 52,9 ma peggio del dimezzamento casuale (1,5° percentile). Brent: indistinguibile dal caso. research/sr_volume/.
+**Lezione 77**: anche guardando la reazione al tocco, supporti/resistenze con confluenza di volume non danno vantaggio su barre giornaliere
+e settimanali; ciò che resta non testabile con dati gratuiti è il book (ordini limite, iceberg) e l'intrabarra 1h/15m.
+
 ### Studio dell'utente · 04/11 — Brent: stessa strategia dell'argento (stessi parametri) · NON FUNZIONA; alert su carta attivati
 Dati Brent (Sina OIL) giornalieri dal 11/2016. Short flip primario dal 2021: 33 trade, 36% vincenti, −0,20R medio, rischio 1% → −6,6%,
 placebo 30° percentile; varianti senza filtro medie con stop più largo positive nel 2021–26 (+0,21R) ma nulle nel 2016–20. Long flip
