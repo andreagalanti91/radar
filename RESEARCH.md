@@ -276,6 +276,16 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Check dell'utente · 04/11 — W2 + MACD su top 50 crypto e 50 indici azionari (parametri identici) · PASSA SOLO BTC
+Criteri preregistrati (crypto: ≥ 8 trade, MAR ≥ 10, DD ≥ −35%, batte B&H scalato, positivo senza i 2 migliori, ≥ 3 anni; indici senza flusso:
+≥ 6 trade, MAR ≥ 3, DD ≥ −25%, batte B&H scalato dal 2021 e nel 2015–20). Crypto: 48 simulate, passa solo BTC (in campione); quasi:
+TRX (MAR 60,9, DD −42%), INJ (19,4, −42%), SOL (16,0, −52%), ETH (6,2, −41%), placebo p 0,01–0,035 (compatibili col caso su 48 prove);
+17 su 31 con storia piena perdono, DD altcoin −34%…−94%. Indici: 20 su 50 reperibili (Europa ed emergenti non Cina non disponibili
+da fonti pubbliche), 0 passano; migliore S&P 100 (MAR 4,9 dal 2021, ma −15% nel 2015–20, placebo p 0,13); USA sotto il B&H scalato,
+Cina/HK/EM in perdita. Tabelle in research/top50/.
+**Lezione 74**: il vantaggio di W2 + MACD è specifico di BTC (volatilità, trend e filtro di flusso perp): non si trasferisce né alle
+altcoin (limite = drawdown) né agli indici azionari (limite = trend troppo regolari o troppo erratici).
+
 ### Giro notturno · 03/11 — convalida fuori campione di C (metà a +30%) e B′ (metà su cluster di liquidazioni) · NON CONVALIDATE
 Stessi parametri, campioni nuovi. C: ETH MAR 6,15 → 6,69 (senza il trade 2023-01 5,82), SOL 23,85 → 9,58 (taglia i due trade da +300%),
 BTC 2018–20 7,00 → 5,15 (taglia il +146% del 2020): 1/3, dipende da un trade. B′: ETH 6,15 → 9,0–11,1 ma placebo interno p 0,49–0,77,
