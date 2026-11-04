@@ -85,6 +85,18 @@ def daily() -> None:
                 telegram.send(weekly.format_intraday(hev))
         except Exception as e:  # noqa: BLE001
             print(f"[radar] eventi settimanali non inviati: {e!r}")
+    try:   # materie prime su carta (argento, Brent): alert della strategia dell'utente "short sul ritest" (radar/commod.py)
+        from . import commod
+        cs, report["commod"] = st.get("commod", {}), {}
+        for sym in commod.ASSETS:
+            cur = commod.evaluate(sym)
+            msgs, cs[sym] = commod.diff_events(cur, cs.get(sym, {}))
+            for m_ in msgs:
+                telegram.send(m_)
+            report["commod"][sym] = {k: v for k, v in cur.items() if k != "bars_after"}
+        st["commod"] = cs
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] materie prime non monitorate: {e!r}")
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
     try:   # confronto dei trade reali con il segnale (prezzi e orari di v2 e W2)
         journal.link(report)

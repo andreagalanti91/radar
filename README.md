@@ -31,6 +31,13 @@ Actions → **Variables**). Caso peggiore storico da ricordare: un crollo come i
 3. All'*USCITA SETTIMANALE* (EMA 21, distribuzione) vendi all'apertura del lunedì; se il trailing viene toccato, l'alert arriva subito.
 4. Registra ogni operazione su Telegram con `/entrato` e `/uscito`: il lunedì alle 08:41 arriva il resoconto con il confronto.
 
+## Materie prime su carta (argento e Brent)
+
+Su richiesta dell'utente il tool segue anche la sua strategia di analisi tecnica su **argento (XAG)** e **petrolio Brent**: short sul
+ritest di un supporto rotto sotto medie ribassiste, long di rimbalzo su una zona di domanda forte (`radar/commod.py`, dati Sina
+Finance giornalieri). Alert Telegram: supporto rotto (setup attivo), prezzo dentro la zona di ritest, segnale con stop e target,
+invalidazione, esito del trade su carta. **Non è validata**: dal 2021 lo short ha perso (argento −0,54R medio, Brent −0,20R; lezioni 75–76).
+
 ## La dashboard
 
 Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:

@@ -276,6 +276,14 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 04/11 — Brent: stessa strategia dell'argento (stessi parametri) · NON FUNZIONA; alert su carta attivati
+Dati Brent (Sina OIL) giornalieri dal 11/2016. Short flip primario dal 2021: 33 trade, 36% vincenti, −0,20R medio, rischio 1% → −6,6%,
+placebo 30° percentile; varianti senza filtro medie con stop più largo positive nel 2021–26 (+0,21R) ma nulle nel 2016–20. Long flip
+2R +0,30R / 2016–20 +0,51R (variante scelta fra 26: da confermare); long di rimbalzo ≈ 0. Buy&hold 2021–26 +88% (DD −54%). research/brent/.
+**Lezione 76**: anche sul petrolio lo short sul ritest di un supporto rotto non ha vantaggio. Su richiesta dell'utente la strategia è
+seguita su carta con alert Telegram (radar/commod.py, argento e Brent: rottura, prezzo nella zona di ritest, segnale con stop/target,
+invalidazione, esito), dichiarata "non validata" in ogni messaggio.
+
 ### Studio dell'utente · 04/11 — argento: short sul ritest di un supporto rotto (dai suoi grafici) · NON FUNZIONA
 Dati XAG spot giornaliero (Sina, dal 2006; orario solo da 09/2026, versione oraria non testata). Regole oggettive preregistrate (zone da
 frattali giornalieri/settimanali come radar/levels.py, rottura con chiusura sotto la zona, ritest entro 20 giorni, medie ribassiste, stop
