@@ -276,6 +276,16 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Studio dell'utente · 04/11 — argento: short sul ritest di un supporto rotto (dai suoi grafici) · NON FUNZIONA
+Dati XAG spot giornaliero (Sina, dal 2006; orario solo da 09/2026, versione oraria non testata). Regole oggettive preregistrate (zone da
+frattali giornalieri/settimanali come radar/levels.py, rottura con chiusura sotto la zona, ritest entro 20 giorni, medie ribassiste, stop
+sopra la zona + k·ATR, target zona successiva/2R/3R/trailing). 2021–26: short flip 24 trade, 21% vincenti, −0,54R medio, rischio 1% →
+−12,2%; peggio del 96% degli short casuali nello stesso regime; tutte le 16 varianti negative; 2011–20 −0,04R. Long speculare −0,03R,
+long di rimbalzo su domanda +0,04R (42% vincenti): nessuno distinguibile dal caso. Le zone dell'utente coincidono con quelle oggettive
+(47–49, 32–34; 56,5–59 sta appena sopra la zona oggettiva 54,4–56,5). File in research/argento/.
+**Lezione 75**: anche sull'argento il trading sui soli S/R (ritest di un supporto rotto) non dà vantaggio, anzi fa peggio del caso:
+i livelli sono una mappa, non un segnale (conferma lezioni 68 e TA1).
+
 ### Check dell'utente · 04/11 — W2 + MACD su top 50 crypto e 50 indici azionari (parametri identici) · PASSA SOLO BTC
 Criteri preregistrati (crypto: ≥ 8 trade, MAR ≥ 10, DD ≥ −35%, batte B&H scalato, positivo senza i 2 migliori, ≥ 3 anni; indici senza flusso:
 ≥ 6 trade, MAR ≥ 3, DD ≥ −25%, batte B&H scalato dal 2021 e nel 2015–20). Crypto: 48 simulate, passa solo BTC (in campione); quasi:
