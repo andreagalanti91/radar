@@ -62,8 +62,8 @@ def daily() -> None:
         STATE_FILE.write_text(json.dumps(st0, indent=2, default=str))
     collect_liquidations()
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
-    # v2 riattivata il 05/11/2026 (decisione dell'utente) accanto a W2 + MACD: RADAR_V2_ALERTS=0 per spegnerla
-    v2_on = os.environ.get("RADAR_V2_ALERTS", "1") == "1"
+    # solo W2 + MACD dal 05/11/2026 (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli
+    v2_on = os.environ.get("RADAR_V2_ALERTS", "0") == "1"
     events = diff_events(report)
     for ev in events if v2_on else []:
         telegram.send(telegram.format_event(ev, report))
@@ -85,18 +85,6 @@ def daily() -> None:
                 telegram.send(weekly.format_intraday(hev))
         except Exception as e:  # noqa: BLE001
             print(f"[radar] eventi settimanali non inviati: {e!r}")
-    try:   # materie prime su carta (argento, Brent): alert della strategia dell'utente "short sul ritest" (radar/commod.py)
-        from . import commod
-        cs, report["commod"] = st.get("commod", {}), {}
-        for sym in commod.ASSETS:
-            cur = commod.evaluate(sym)
-            msgs, cs[sym] = commod.diff_events(cur, cs.get(sym, {}))
-            for m_ in msgs:
-                telegram.send(m_)
-            report["commod"][sym] = {k: v for k, v in cur.items() if k != "bars_after"}
-        st["commod"] = cs
-    except Exception as e:  # noqa: BLE001
-        print(f"[radar] materie prime non monitorate: {e!r}")
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
     try:   # confronto dei trade reali con il segnale (prezzi e orari di v2 e W2)
         journal.link(report)

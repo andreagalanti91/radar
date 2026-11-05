@@ -406,7 +406,7 @@ body.noscroll{overflow:hidden}
     <h1 id="price"></h1>
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
-  <div class="strat"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W2 + MACD</button></div></div>
+  <div class="strat" style="display:none"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W2 + MACD</button></div></div>
 
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
@@ -699,7 +699,7 @@ const V = R.v2, c = R.components, P = R.params;
 $("price").innerHTML = dots(usd(R.price));
 $("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
 // strategia scelta con lo switch (salvata solo in questo browser): "v2" giornaliera, "w2" settimanale
-let STRAT = (() => { try { return localStorage.getItem("radarStrat") === "v2" || !R.weekly ? "v2" : "w2"; } catch (_) { return R.weekly ? "w2" : "v2"; } })();   // W2 predefinita, v2 riattivata il 05/11/2026
+let STRAT = R.weekly ? "w2" : "v2";   // solo W2 + MACD dal 05/11/2026 (decisione dell'utente); v2 resta il motore dei dati di base
 function pill() {
   const W = R.weekly; let cls = "status", txt = "In attesa";
   if (STRAT === "w2" && W) {

@@ -3,7 +3,7 @@
 # Radar Signal BTC
 
 Segnali di trading su **Bitcoin** con **una sola strategia, W2 settimanale + filtro MACD**, in uso con capitale reale dal
-02/11/2026 (dal 03/11/2026 è l'unica nel tool; v2 giornaliera resta nel codice, con alert spenti: `RADAR_V2_ALERTS=1` per riattivarli).
+02/11/2026 (dal 05/11/2026 è l'unica nel tool, con il 100% del capitale; v2 giornaliera resta nel codice, con alert spenti: `RADAR_V2_ALERTS=1` per riattivarli).
 
 Poche operazioni grandi (2–3 l'anno, settimane o mesi ciascuna): long in **spot senza leva**, short in perp solo in trend
 ribassista con tetto di rischio. Segue il trend settimanale e, nei rialzi già vecchi, rientra solo se il MACD settimanale conferma.
@@ -31,22 +31,15 @@ Actions → **Variables**). Caso peggiore storico da ricordare: un crollo come i
 3. All'*USCITA SETTIMANALE* (EMA 21, distribuzione) vendi all'apertura del lunedì; se il trailing viene toccato, l'alert arriva subito.
 4. Registra ogni operazione su Telegram con `/entrato` e `/uscito`: il lunedì alle 08:41 arriva il resoconto con il confronto.
 
-## Materie prime su carta (argento e Brent)
-
-Su richiesta dell'utente il tool segue anche la sua strategia di analisi tecnica su **argento (XAG)** e **petrolio Brent**: short sul
-ritest di un supporto rotto sotto medie ribassiste, long di rimbalzo su una zona di domanda forte (`radar/commod.py`, dati Sina
-Finance giornalieri). Alert Telegram: supporto rotto (setup attivo), prezzo dentro la zona di ritest, segnale con stop e target,
-invalidazione, esito del trade su carta. **Non è validata**: dal 2021 lo short ha perso (argento −0,54R medio, Brent −0,20R; lezioni 75–76).
-
 ## La dashboard
 
 Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:
 
 | Sezione | Cosa trovi |
 |---|---|
-| **Oggi** | prezzo live, regione prevista a 7 giorni, score di flusso, **stato v2** (nessun segnale / in attesa di conferma 4h con soglia e scadenza / ingresso confermato / trade aperto) con piano, rischio, leva e **calcolatore in dollari sul tuo capitale**, **segnale settimanale W2 + MACD** (stato e percorso del prezzo fra trailing, ingresso e massimo; grafico settimanale con EMA 21, SMA 40, trailing e **supporti/resistenze più vicini**; MACD 8/21/5; condizioni d'ingresso e uscite da sorvegliare), **card dei supporti e resistenze** (più vicini, e al tocco tutti i livelli con zona, forza 1–5, tocchi e distanza; `radar/levels.py`), stato dei 6 setup, conti **su carta** (H2 e v2), grafico con i trade |
-| **Simulatore** | capitale, data di partenza e size (1x = piano v2, 2x, 3x, 5x): quanto varrebbe oggi seguendo i segnali v2; quante volte un obiettivo di capitale è stato raggiunto in passato |
-| **Statistiche** | curva di equity v2 contro BTC, esiti (TP, stop, tempo), storico trade per trade (segnale, conferma, limit, uscita), **registro dei segnali reali** dal 31/10/2026, risultati per periodo e per anno, 10.000 $ a 1x/2x/5x, per setup, **storico del settimanale W2** (trade, anni, 10.000 $ a 1x/2x); Laboratorio con le due strategie in uso |
+| **Oggi** | prezzo live, **segnale settimanale W2 + MACD** (stato, prezzo rispetto a trailing/ingresso/massimo, grafico settimanale con EMA 21, SMA 40, trailing e supporti/resistenze, MACD, condizioni di ingresso e uscita), **supporti e resistenze** più vicini con dettaglio, piano in dollari sul tuo capitale |
+| **Simulatore** | capitale e data di partenza: quanto varrebbe oggi seguendo W2 + MACD (stessa equity giornaliera delle Statistiche); quante volte un obiettivo di capitale è stato raggiunto in passato |
+| **Statistiche** | storico del settimanale W2 + MACD: curva di equity contro BTC, trade, risultati per anno, drawdown, **registro dei trade reali** |
 | **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
 | **Metodo** | regole complete e limiti del sistema |
 
