@@ -290,6 +290,15 @@ solo con rischio 1–2% per trade; la leva va usata per ridurre il margine, non 
 **In produzione su carta (05/11)**: ICHI_tk 4h su 10 crypto (spot Binance, funding ignorato) in radar/intraday_ichi.py, vista Intraday e alert Telegram; dal 2021 paniere 200 € → 1.596 € a rischio 1% (DD −22%), 8.100 € a 2% (DD −41%), 10x sul capitale intero azzerato al primo trade.
 **Rimossa (05/11, decisione dell'utente)**: guadagno troppo piccolo in assoluto per il tempo e il rischio rispetto a W2 settimanale; tolti modulo, alert, dati e vista dalla dashboard (codice nella storia git, commit 5000e34). Resta la ricerca in research/intraday/.
 
+### Studio dell'utente · 05/11 — MACD settimanale 12/26/9 long/short (flip sugli incroci) su BTC, ETH, SOL · NON ADOTTATO
+I 7 trade dell'utente su SOL sono tutti incroci del MACD settimanale, ma la regola meccanica ne produce altri 5 in perdita
+(−56%, −27%, −28%, −34%, −20%) e due uscite (30 e 95) sono minimi visti col senno di poi: ×52,6 la lista contro ×3,2 la regola
+sullo stesso periodo. Dal 2021 (10.000 $, 1x, 0,1%/lato, ingresso all'apertura del lunedì): BTC 22,2k (DD −46%) contro W2+MACD
+~122,7k (DD −22,7%) e B&H 27,8k; ETH 44,0k (DD −56%); SOL 302k (DD −82%) contro B&H 633k. Instabile: parametri 8/21/5 e 19/39/9
+azzerano SOL, dal 2024 nessuna variante guadagna su SOL, togliendo lo short 2022 i risultati si dimezzano.
+**Lezione 79**: l'incrocio MACD settimanale funziona come filtro (com'è in W2), non come strategia a sé; una lista di trade
+segnati a mano sovrastima la regola perché omette i falsi segnali. File in research/macd_flip/.
+
 ### Studio dell'utente · 04/11 — S/R + confluenza di volume e flusso AL TOCCO (BTC giornaliero/settimanale, Brent) · NON FUNZIONA
 Nuovo rispetto ai test passati: zona da frattali che coincide con un nodo di volume (HVN 365 giorni) e comportamento della barra di tocco
 (assorbimento, rifiuto, delta taker concorde, divergenza CVD). 28 configurazioni preregistrate, P1 2021–26 / P0 2018–20, target 2R.
