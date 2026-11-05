@@ -37,9 +37,6 @@ jobs:
           RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '0.6' }}
           RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0.4' }}
           RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '1' }}
-          # Intraday Ichimoku 4h su crypto (su carta): capitale d'esempio per la size negli alert, alert on/off
-          RADAR_INTRA_CAPITAL: ${{ vars.RADAR_INTRA_CAPITAL || '200' }}
-          RADAR_INTRA_ALERTS: ${{ vars.RADAR_INTRA_ALERTS || '1' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
         run: |

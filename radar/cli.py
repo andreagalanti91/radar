@@ -97,14 +97,6 @@ def daily() -> None:
         st["commod"] = cs
     except Exception as e:  # noqa: BLE001
         print(f"[radar] materie prime non monitorate: {e!r}")
-    try:   # Intraday · Ichimoku 4h su 10 crypto, su carta (radar/intraday_ichi.py): alert con dedupe in state.json, chiave "intra"
-        from . import intraday_ichi
-        report["intra"], itr = intraday_ichi.evaluate()
-        imsgs, st["intra"] = intraday_ichi.diff_events(itr, st.get("intra"), capital=report["intra"]["capital"])
-        for m_ in imsgs if os.environ.get("RADAR_INTRA_ALERTS", "1") == "1" else []:
-            telegram.send(m_)
-    except Exception as e:  # noqa: BLE001
-        print(f"[radar] intraday Ichimoku non calcolato: {e!r}")
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
     try:   # confronto dei trade reali con il segnale (prezzi e orari di v2 e W2)
         journal.link(report)

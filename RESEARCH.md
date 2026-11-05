@@ -288,6 +288,7 @@ mediano (5,2%) costa ~54% del conto: P(conto azzerato in 3 mesi) 45% su un asset
 **Lezione 78**: nell'intraday crypto conta la size, non il segnale: su 4h solo il momentum sopravvive ai costi (+0,14R) e regge
 solo con rischio 1–2% per trade; la leva va usata per ridurre il margine, non per aumentare il rischio. File in research/intraday/.
 **In produzione su carta (05/11)**: ICHI_tk 4h su 10 crypto (spot Binance, funding ignorato) in radar/intraday_ichi.py, vista Intraday e alert Telegram; dal 2021 paniere 200 € → 1.596 € a rischio 1% (DD −22%), 8.100 € a 2% (DD −41%), 10x sul capitale intero azzerato al primo trade.
+**Rimossa (05/11, decisione dell'utente)**: guadagno troppo piccolo in assoluto per il tempo e il rischio rispetto a W2 settimanale; tolti modulo, alert, dati e vista dalla dashboard (codice nella storia git, commit 5000e34). Resta la ricerca in research/intraday/.
 
 ### Studio dell'utente · 04/11 — S/R + confluenza di volume e flusso AL TOCCO (BTC giornaliero/settimanale, Brent) · NON FUNZIONA
 Nuovo rispetto ai test passati: zona da frattali che coincide con un nodo di volume (HVN 365 giorni) e comportamento della barra di tocco
