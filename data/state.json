@@ -23,7 +23,7 @@
     "signal_date": "2026-08-23",
     "side": "long",
     "trail": 71415.02,
-    "date": "2026-11-03"
+    "date": "2026-11-04"
   },
   "weekly_intraday_keys": [],
   "commod": {
@@ -36,7 +36,8 @@
     "OIL": {
       "open": [],
       "seen": [
-        "OIL:brk:2026-11-02:109.97"
+        "OIL:brk:2026-11-02:109.97",
+        "OIL:brk:2026-11-04:103.48"
       ]
     }
   }
