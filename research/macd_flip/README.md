@@ -85,3 +85,77 @@ Applicata in modo meccanico: su BTC rende meno del B&H e **5× meno di W2+MACD**
 il B&H ma con DD −56%; su SOL rende meno del B&H e dipende dal 2021. Instabile a parametri e sotto-periodi,
 short 1x su alt a rischio liquidazione. **Non adottare come strategia autonoma**; al massimo il cross MACD 1W
 resta un filtro/contesto (come già in W2+MACD). Nessuna modifica a `radar/`.
+
+## Seguito: famiglia Z — "pallino verde sotto lo zero" + EMA/SMA (`zfamily.py`)
+Chiarimento dell'utente: entra long sul cross_UP con macd<0; l'ultimo (sett. 13-apr-2026) è "ancora attivo".
+Stesse ipotesi di sopra. Regole preregistrate, identiche sui 3 asset (dettagli nel docstring di `zfamily.py`):
+Z1 long su verde<0, uscita al primo cross_DN · Z2 Z1 + short su rosso>0 (≡ R3b) · Z3 Z1 ma ingresso solo
+a close>EMA20 entro 4 settimane · Z4 uscita trend close<EMA50 (armata dopo la prima close>EMA50) o rosso>0 ·
+Z5a/Z5b Z1 solo sopra/sotto SMA200 1W (SOL senza SMA200 fino a ~giu-2024 → ripiego EMA200, poco affidabile:
+il pallino SOL di gen-2021 risulta "sopra" solo per questo) · Z6 Z4 + short speculare.
+Output: `results_z.csv`, `split_z.csv`, `vicini_z.csv`, `output_z.txt`, `trades_<ASSET>_{Z1,Z4,Z6}.csv`.
+
+### Pallini verdi sotto zero dal 2021 (prezzo = close settimanale; esito Z1 / Z4, uscita all'open lun.)
+| Asset | Pallino (dom) | Close | Z1 | Z4 |
+|---|---|---|---|---|
+| BTC | 2022-04-03 | 46.407 | −15,2% | −9,3% |
+| BTC | 2022-08-14 | 24.305 | +6,5% (giu-23) | +6,5% |
+| BTC | **2026-04-19** | 73.802 | −19,4% (uscita 29-giu-26) | −19,4% |
+| BTC | 2026-07-26 | 65.400 | **aperto +22,9%** | +17,3% (uscita 14-set) |
+| ETH | 2022-04-10 | 3.203 | −9,0% | −9,0% |
+| ETH | 2022-08-07 | 1.700 | +1,0% | +2,9% |
+| ETH | 2023-11-05 | 1.892 | +72,2% | +72,2% |
+| ETH | 2024-11-10 | 3.183 | −10,0% | −10,0% |
+| ETH | 2025-05-18 | 2.498 | +59,1% | +59,1% |
+| ETH | **2026-04-19** | 2.263 | −23,9% (uscita 15-giu-26) | −23,9% |
+| ETH | 2026-07-12 | 1.807 | **aperto +33,9%** | +33,1% (uscita 19-ott) |
+| SOL | 2021-01-10 | 3,45 | +823,5% | +823,5% |
+| SOL | 2022-07-31 | 42,35 | −55,7% (FTX) | −55,7% |
+| SOL | 2023-10-01 | 23,87 | +476,7% | +476,7% |
+| SOL | 2025-05-18 | 173,3 | +15,2% | −9,2% |
+| SOL | **2026-04-19** | 83,47 | **aperto +14,3%** (95,6 al 4-nov) | +18,7% (uscita 14-set) |
+
+Il pallino del 13-apr-2026 (chiusura 19-apr) c'è su **tutti e 3**. È ancora attivo solo su SOL; su BTC ed ETH
+un cross_DN a giugno l'ha chiuso in perdita e un nuovo pallino verde a luglio è il trade aperto oggi.
+
+### Risultati dal 2021-01-01
+| Asset | Regola | Finale $ | Rend. % | Max DD | Trade | WR | MAR |
+|---|---|---|---|---|---|---|---|
+| BTC | B&H | 27.805 | +178 | −76,6 | – | – | 0,25 |
+| BTC | W2+MACD | ~122.700 | +1127 | −22,7 | 14 | 93 | ~2,4 |
+| BTC | Z1 | 8.947 | −10,5 | −45,1 | 4 | 50 | −0,04 |
+| BTC | Z3 | 6.635 | −33,7 | −37,8 | 3 | 33 | −0,18 |
+| BTC | Z4 | 9.118 | −8,8 | −41,4 | 4 | 50 | −0,04 |
+| BTC | Z6 | 11.582 | +15,8 | −52,1 | 11 | 55 | 0,05 |
+| ETH | B&H | 32.891 | +229 | −79,3 | – | – | 0,29 |
+| ETH | Z1 | 23.117 | +131 | −44,4 | 7 | 57 | 0,35 |
+| ETH | Z3 | 19.909 | +99 | −48,2 | 5 | 40 | 0,26 |
+| ETH | Z4 | 23.382 | +134 | −44,4 | 7 | 57 | 0,35 |
+| ETH | Z6 | 25.327 | +153 | −60,8 | 14 | 57 | 0,28 |
+| SOL | B&H | 633.049 | +6231 | −96,3 | – | – | 1,07 |
+| SOL | Z1 | 311.255 | +3013 | −87,1 | 5 | 80 | 0,92 |
+| SOL | Z3 | 613.493 | +6035 | −56,2 | 3 | 100 | 1,82 |
+| SOL | Z4 | 254.597 | +2446 | −87,1 | 5 | 60 | 0,85 |
+| SOL | Z6 | 91.112 | +811 | −94,5 | 11 | 55 | 0,49 |
+
+Z2 (≡ R3b): BTC 7,0k, ETH 26,9k, SOL 150k. Regime: Z5a (sopra SMA200) ≈ Z1 su BTC/ETH (quasi tutti i pallini
+sono sopra la SMA200); Z5b (sotto) BTC 0 trade, ETH 10,2k, SOL 29k → sotto la SMA200 il segnale non aiuta.
+Gli short speculari (Z2/Z6) peggiorano SOL e aggiungono DD ovunque.
+
+### Robustezza
+- **Campione minimo**: 4–7 segnali per asset in quasi 6 anni. SOL dipende da un trade solo (gen-2021, +823%):
+  senza il migliore Z1 SOL scende a 33,7k, Z3 a 66k; Z1 ETH 13,4k; Z1 BTC 7,3k.
+- **Split 21–23 / 24–oggi (CAGR)** Z1: BTC −3,3 / −0,3; ETH 3,5 / 14,3; SOL 159,6 / 10,2. Z3: BTC −5,3 / −8,3;
+  SOL 240,7 / 5,1. Dal 2024 Z1 batte il B&H su ETH e SOL (che erano piatti), ma su BTC no (B&H +25%/anno).
+- **Parametri vicini** Z1/Z4: con 8/21/5 BTC 17–28k, con 19/39/9 13–14k (meglio di 12/26/9, che è
+  il peggiore su BTC); ETH 24–28k stabile; SOL 142–457k. Z3 è fragile: su SOL 614k → 113k / 70k.
+- Z3 su SOL "vince" (MAR 1,82) solo perché salta il pallino di lug-2022 (close sotto EMA20) → 3 trade, non
+  significativo; su BTC ed ETH Z3 è la peggiore.
+
+### Verdetto Z
+Il pallino verde sotto lo zero è un **segnale raro e rumoroso**: su BTC perde soldi in tutte le varianti
+(contro 122,7k di W2+MACD); su ETH rende meno del B&H con DD −44% (MAR leggermente migliore); su SOL batte il
+B&H solo in rapporto rischio/rendimento, grazie al 2021. Il filtro EMA20 (Z3) e l'uscita EMA50 (Z4) non danno
+un miglioramento coerente sui 3 asset. Il segnale del 13-apr-2026 è reale, ma su BTC/ETH la regola meccanica
+l'ha già chiuso in perdita (−19%/−24%); oggi Z1 è long su tutti e tre (BTC dal 27-lug, ETH dal 13-lug, SOL dal 20-apr).
+**Non adottare**; va bene al massimo come contesto discrezionale, non come strategia.

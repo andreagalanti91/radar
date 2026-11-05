@@ -298,6 +298,10 @@ sullo stesso periodo. Dal 2021 (10.000 $, 1x, 0,1%/lato, ingresso all'apertura d
 azzerano SOL, dal 2024 nessuna variante guadagna su SOL, togliendo lo short 2022 i risultati si dimezzano.
 **Lezione 79**: l'incrocio MACD settimanale funziona come filtro (com'è in W2), non come strategia a sé; una lista di trade
 segnati a mano sovrastima la regola perché omette i falsi segnali. File in research/macd_flip/.
+Seguito (famiglia Z, pallino verde sotto lo zero + EMA/SMA): 4–7 segnali per asset dal 2021; BTC in perdita in ogni variante
+(Z1 8,9k), ETH 23k (DD −44%, sotto B&H), SOL vince solo per il trade di gennaio 2021; filtri EMA20/EMA50 e short speculari non
+migliorano in modo coerente. Segnale del 13/04/2026 reale su tutti e tre (SOL ancora attivo +14%; BTC/ETH chiusi in perdita e
+rientrati a luglio, oggi +23%/+34%). Non adottato: al massimo contesto discrezionale.
 
 ### Studio dell'utente · 04/11 — S/R + confluenza di volume e flusso AL TOCCO (BTC giornaliero/settimanale, Brent) · NON FUNZIONA
 Nuovo rispetto ai test passati: zona da frattali che coincide con un nodo di volume (HVN 365 giorni) e comportamento della barra di tocco
