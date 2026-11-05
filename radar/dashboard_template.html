@@ -626,20 +626,15 @@ body.noscroll{overflow:hidden}
       <div class="sh">Backtest <small>dal 2021 · costi stimati</small></div>
       <div class="list">
         <label class="row"><span class="k">Capitale iniziale (€)</span><input id="inCap" type="number" inputmode="decimal" min="10" step="50" value="200" enterkeyhint="done"></label>
-        <div class="row"><span class="k">Rischio per trade<small>size = rischio / distanza dello stop, max 10x</small></span><div class="seg" id="inRisk" role="group" aria-label="Rischio"><button data-v="0.01" aria-pressed="true">1%</button><button data-v="0.02">2%</button><button data-v="0.05">5%</button></div></div>
+        <div class="row"><span class="k">Rischio per trade<small>size = rischio / distanza dello stop, max 10x</small></span><div class="seg" id="inRisk" role="group" aria-label="Rischio"><button data-v="0.01" aria-pressed="true">1%</button><button data-v="0.02">2%</button></div></div>
         <label class="row"><span class="k">Data di partenza</span><input id="inStart" type="date" value="2021-01-01" min="2021-01-01"></label>
-        <div class="row"><span class="k">Ambito<small id="inScopeNote"></small></span><div class="seg" id="inScope" role="group" aria-label="Ambito"><button data-v="one" aria-pressed="true">Un asset</button><button data-v="all">Paniere 10</button></div></div>
+        <div class="row"><span class="k">Ambito<small id="inScopeNote"></small></span><div class="seg" id="inScope" role="group" aria-label="Ambito"><button data-v="all" aria-pressed="true">Paniere 10</button><button data-v="one">Un asset</button></div></div>
       </div>
     </div>
     <div class="big" id="inBt"></div>
     <div class="section">
       <div class="card"><div class="legend" id="inEqLeg" style="margin-bottom:8px"></div><div id="inEq" class="chart" style="height:280px"></div></div>
       <p class="foot" id="inBtNote"></p>
-    </div>
-    <div class="section">
-      <div class="sh">Leva 10x su tutto il capitale <small>cosa sarebbe successo</small></div>
-      <div class="big" id="inX10"></div>
-      <p class="foot" id="inX10Note"></p>
     </div>
     <div class="section">
       <div class="sh">Per asset <small id="inPerSub"></small></div>
@@ -767,7 +762,8 @@ function pill() {
     if (W.status === "aperto" || W.status === "uscita") { cls += " " + W.side; txt = (W.side === "long" ? "Long" : "Short") + " aperto"; }
     else if (W.status === "segnale") { cls += " " + W.side; txt = "Segnale " + W.side + " · lunedì"; }
     else txt = "Flat";
-  } else if (V.status === "conferma") { cls += " " + V.side; txt = "Segnale " + V.side + " · conferma 4h"; }
+  } else if (!V) txt = "–";
+  else if (V.status === "conferma") { cls += " " + V.side; txt = "Segnale " + V.side + " · conferma 4h"; }
   else if (V.status === "ingresso") { cls += " " + V.side; txt = "Ingresso " + V.side; }
   else if (V.status === "aperto") { cls += " open"; txt = "Trade " + V.side + " aperto"; }
   ["state", "stateD"].forEach(id => { $(id).className = cls; $(id).textContent = txt; });
@@ -1496,29 +1492,28 @@ startLive();
   }
 
   // --- backtest con capitale (stessa logica di simulate() in radar/intraday_ichi.py)
-  const bt = { risk: +(IN.risk || 0.01), scope: IN.scope === "all" ? "all" : "one" };
+  const bt = { risk: [0.01, 0.02].includes(+IN.risk) ? +IN.risk : 0.01, scope: IN.scope === "one" ? "one" : "all" };
   $("inCap").value = IN.cap || I.capital || 200;
   if (IN.start) $("inStart").value = IN.start;
   const riskSeg = seg("inRisk", v => { bt.risk = +v; IN.risk = bt.risk; save(); runBt(); }); riskSeg.set(bt.risk);
   const scopeSeg = seg("inScope", v => { bt.scope = v; IN.scope = v; save(); runBt(); }); scopeSeg.set(bt.scope);
   ["inCap", "inStart"].forEach(id => $(id).addEventListener("change", () => { IN.cap = +$("inCap").value; IN.start = $("inStart").value; save(); runBt(); }));
-  function sim(trs, cap, risk, start, mode) {
+  function sim(trs, cap, risk, start) {
     const t0 = Date.parse(start + "T00:00:00Z") / 1000, T = trs.filter(t => t.ex && t.en >= t0).sort((x, y) => x.en - y.en || (x.a < y.a ? -1 : 1));
     const ev = []; T.forEach((t, i) => { ev.push([t.en, 1, i]); ev.push([t.ex, 0, i]); });
     ev.sort((x, y) => x[0] - y[0] || x[1] - y[1] || x[2] - y[2]);
-    let eq = cap, pk = cap, dd = 0, n = 0, w = 0, sR = 0, busy = null;
+    let eq = cap, pk = cap, dd = 0, n = 0, w = 0, sR = 0;
     const opn = new Map(), pts = [{ time: t0, value: cap }], rows = [];
     for (const [when, kind, i] of ev) {
       const t = T[i];
       if (kind === 1) {
-        if (mode === "x10") { if (eq <= 0 || (busy != null && t.en < busy)) continue; opn.set(i, [eq, 0]); busy = t.ex; continue; }
         let rO = 0, nO = 0; opn.forEach(v => { nO += v[0]; rO += v[1]; });
         if (eq <= 0 || rO + risk > 3 * risk + 1e-12) continue;
         const nz = Math.min(eq * risk / t.d, I.rule.max_lev * eq - nO); if (nz <= 0) continue;
         opn.set(i, [nz, risk]);
       } else if (opn.has(i)) {
         const [nz] = opn.get(i); opn.delete(i);
-        const a10 = t.liq ? -1 : Math.max(10 * t.net, -1), pnl = mode === "x10" ? nz * a10 : nz * t.net;
+        const pnl = nz * t.net;
         eq += pnl; n++; if (t.R > 0) w++; sR += t.R; pk = Math.max(pk, eq); dd = Math.min(dd, pk > 0 ? eq / pk - 1 : -1);
         if (pts[pts.length - 1].time >= t.ex) pts[pts.length - 1].value = eq; else pts.push({ time: t.ex, value: eq });
         rows.push({ ...t, nz, pnl, eq, lev: nz / (eq - pnl) });
@@ -1528,36 +1523,30 @@ startLive();
     if (tEnd > pts[pts.length - 1].time) pts.push({ time: tEnd, value: eq });   // la curva arriva all'ultimo trade chiuso anche dopo un azzeramento
     return { eq, ret: (eq / cap - 1) * 100, dd: dd * 100, n, wr: n ? w / n * 100 : null, mR: n ? sR / n : null, pts, rows };
   }
-  let eqCh, eqL, eqX;
+  let eqCh, eqL;
   function runBt() {
     const cap = Math.max(10, +$("inCap").value || 200), start = $("inStart").value || "2021-01-01", one = bt.scope === "one";
-    const trs = one ? TR[cur] : A.flatMap(a => TR[a]), r = sim(trs, cap, bt.risk, start), x = sim(trs, cap, bt.risk, start, "x10");
+    const trs = one ? TR[cur] : A.flatMap(a => TR[a]), r = sim(trs, cap, bt.risk, start);
     const rk = Math.round(bt.risk * 100) + "%";
     $("inScopeNote").textContent = one ? `${cur}, una posizione alla volta` : "una posizione per asset, rischio aperto totale max 3× e leva totale max 10x";
     $("inBt").innerHTML = [["Capitale finale", eur(r.eq, r.eq < 1000 ? 2 : 0), `da ${eur(cap)} · ${one ? cur : "paniere 10"} · rischio ${rk}`], ["Rendimento", pc(r.ret, 1), `max drawdown ${pc(r.dd, 1)}`],
       ["Trade · win rate", `${r.n} · ${r.wr == null ? "–" : Math.round(r.wr) + "%"}`, "trade chiusi dal " + new Date(start).toLocaleDateString("it-IT")], ["R medio", R2(r.mR), "rendimento netto / distanza dello stop"]]
       .map(([k, v, s]) => `<div><span>${k}</span><b>${v}</b><small>${s}</small></div>`).join("");
-    const bustT = x.pts.find(p => p.value <= cap * 0.01);
-    $("inX10").innerHTML = [["Capitale finale 10x", eur(x.eq, 2), `da ${eur(cap)}`], ["Rendimento", pc(x.ret, 1), `max drawdown ${pc(x.dd, 1)}`],
-      [bustT ? "Trade fino all'azzeramento" : "Trade", String(x.n), bustT ? "conto azzerato il " + fT(bustT.time).split(",")[0] : "conto mai azzerato"], ["Con rischio " + rk, eur(r.eq, r.eq < 1000 ? 2 : 0), "stessi segnali, size dal rischio"]]
-      .map(([k, v, s]) => `<div><span>${k}</span><b class="${k.startsWith("Capitale") && x.eq < cap ? "neg" : ""}">${v}</b><small>${s}</small></div>`).join("");
-    $("inX10Note").textContent = `10x su tutto il capitale: ogni trade muove il conto di 10 volte il rendimento sul prezzo, un trade alla volta${one ? "" : " nel paniere (i segnali che si sovrappongono si saltano)"}; liquidazione (conto a zero) se il prezzo va contro del 9,5% prima dello stop. Bastano poche perdite di fila: con stop a 2 ATR la distanza media è del ${(I.summary.all.n ? 100 * (A.flatMap(a => TR[a]).reduce((s, t) => s + t.d, 0) / A.flatMap(a => TR[a]).length) : 0).toFixed(1).replace(".", ",")}%, che a 10x vuol dire perdere il 40–60% del conto a ogni stop.`;
     $("inBtNote").textContent = `Size di ogni trade = capitale × ${rk} / distanza dello stop, al massimo 10x il capitale; capitale ricalcolato a ogni uscita. Costi 0,08% per lato (0,10% sulle uscite a stop), funding ignorato. ` +
       (one ? "" : "Paniere: una posizione per asset; un nuovo trade si salta se il rischio aperto supererebbe 3 volte il rischio per trade o il nozionale aperto 10 volte il capitale.");
     if (window.LightweightCharts) {
       if (!eqCh) {
         eqCh = LightweightCharts.createChart($("inEq"), chartOpts({ timeScale: { borderVisible: false } }));
         eqL = eqCh.addAreaSeries({ lineColor: css("--tint"), topColor: rgba("--tint", .25), bottomColor: rgba("--tint", 0), lineWidth: 2, lineType: 1, priceFormat: { type: "price", precision: 0, minMove: 1 } });
-        eqX = eqCh.addLineSeries({ color: css("--red"), lineWidth: 2, lineType: 1, priceLineVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
       }
-      eqL.setData(r.pts); eqX.setData(x.pts); eqCh.timeScale().fitContent();
-      $("inEqLeg").innerHTML = `<span><i style="background:var(--tint)"></i>Rischio ${rk} · ${eur(r.eq)}</span><span><i style="background:var(--red)"></i>10x tutto il capitale · ${eur(x.eq)}</span>`;
+      eqL.setData(r.pts); eqCh.timeScale().fitContent();
+      $("inEqLeg").innerHTML = `<span><i style="background:var(--tint)"></i>Rischio ${rk} · ${eur(r.eq)}</span>`;
     }
     // per asset con le stesse impostazioni
     $("inPerSub").textContent = `rischio ${rk} · ${eur(cap)} per asset · dal ${new Date(start).toLocaleDateString("it-IT")}`;
-    $("inPer").innerHTML = `<tr><th>Crypto</th><th>Capitale</th><th>Rend.</th><th>Max DD</th><th>Trade</th><th>WR</th><th>R medio</th><th>10x</th></tr>` +
-      A.map(a => { const s = sim(TR[a], cap, bt.risk, start), z = sim(TR[a], cap, bt.risk, start, "x10");
-        return `<tr><td>${a}</td><td>${eur(s.eq, 0)}</td><td class="${s.ret >= 0 ? "pos" : "neg"}">${pc(s.ret, 0)}</td><td>${pc(s.dd, 0)}</td><td>${s.n}</td><td>${s.wr == null ? "–" : Math.round(s.wr) + "%"}</td><td>${R2(s.mR)}</td><td class="${z.eq < cap ? "neg" : "pos"}">${eur(z.eq, 0)}</td></tr>`; }).join("");
+    $("inPer").innerHTML = `<tr><th>Crypto</th><th>Capitale</th><th>Rend.</th><th>Max DD</th><th>Trade</th><th>WR</th><th>R medio</th></tr>` +
+      A.map(a => { const s = sim(TR[a], cap, bt.risk, start);
+        return `<tr><td>${a}</td><td>${eur(s.eq, 0)}</td><td class="${s.ret >= 0 ? "pos" : "neg"}">${pc(s.ret, 0)}</td><td>${pc(s.dd, 0)}</td><td>${s.n}</td><td>${s.wr == null ? "–" : Math.round(s.wr) + "%"}</td><td>${R2(s.mR)}</td></tr>`; }).join("");
     $("inTrSub").textContent = `${r.rows.length} trade · ${one ? cur : "paniere"} · rischio ${rk}`;
     $("inTr").innerHTML = `<tr><th>Crypto</th><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Stop · target</th><th>Uscita</th><th>R</th><th>PnL</th><th>Capitale</th></tr>` +
       r.rows.slice().reverse().map(t => `<tr><td>${t.a}</td><td>${fT(t.en)}</td><td class="${t.dr > 0 ? "pos" : "neg"}">${side(t.dr)}</td><td>${px(t.e)}<br><small>→ ${px(t.x)}</small></td>` +

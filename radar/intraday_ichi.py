@@ -382,8 +382,8 @@ def evaluate(fetch: bool = True) -> tuple[dict, dict[str, list[dict]]]:
     rep["capital"] = cap
     rep["summary"] = dict(
         all=stats(flat), oos=stats([t for t in flat if t["entry_t"] >= pd.Timestamp("2024-01-01")]),
-        basket={f"r{int(r * 100)}": simulate(flat, cap, r) for r in (0.01, 0.02)} | {"x10": simulate(flat, cap, mode="x10")},
-        per_asset={a: {f"r{int(r * 100)}": simulate(v, cap, r) for r in (0.01, 0.02)} | {"x10": simulate(v, cap, mode="x10")}
+        basket={f"r{int(r * 100)}": simulate(flat, cap, r) for r in (0.01, 0.02)},
+        per_asset={a: {f"r{int(r * 100)}": simulate(v, cap, r) for r in (0.01, 0.02)}
                    for a, v in all_tr.items()})
     rep["updated"] = str(pd.Timestamp.utcnow().tz_localize(None).floor("min"))
     return rep, all_tr
