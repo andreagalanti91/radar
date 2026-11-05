@@ -1,0 +1,51 @@
+rank,name,symbol,mcap_bn,country,okx,bitget,hyperliquid
+1,Apple,AAPL,5079,United States,AAPL-USDT-SWAP 25x dal 2026-03-04,AAPLUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-21; io:25x dal 2026-11-02
+2,NVIDIA,NVDA,4833,United States,NVDA-USDT-SWAP 50x dal 2026-03-04,NVDAUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-12; io:25x dal 2026-10-27
+3,Microsoft,MSFT,4127,United States,MSFT-USDT-SWAP 20x dal 2026-03-04,MSFTUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-19
+4,Alphabet (Google),GOOG,3532,United States,GOOGL-USDT-SWAP 50x dal 2026-03-04,GOOGLUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-18
+5,Amazon,AMZN,2877,United States,AMZN-USDT-SWAP 20x dal 2026-02-26,AMZNUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-18
+6,TSMC,TSM,2053,Taiwan,TSM-USDT-SWAP 20x dal 2026-03-11,TSMUSDT 20x dal 2026-03-02 fee 0.060/0.020%,xyz:10x dal 2026-02-03
+7,SpaceX,SPCX,1846,United States,SPCX-USDT-SWAP 75x dal 2026-05-07,SPCXUSDT 75x dal 2026-06-09 fee 0.060/0.020%,xyz:20x dal 2026-05-17
+8,Saudi Aramco,2222.SR,1685,Saudi Arabia,,,
+9,Meta Platforms (Facebook),META,1611,United States,META-USDT-SWAP 20x dal 2026-03-04,METAUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-20
+10,Broadcom,AVGO,1554,United States,AVGO-USDT-SWAP 20x dal 2026-04-29,AVGOUSDT 20x dal 2026-02-11 fee 0.060/0.020%,xyz:10x dal 2026-06-03; para:10x dal 2026-05-21
+11,Tesla,TSLA,1523,United States,TSLA-USDT-SWAP 25x dal 2026-02-25,TSLAUSDT 100x dal 2026-02-02 fee 0.060/0.020%,xyz:20x dal 2025-11-13
+12,Eli Lilly,LLY,1263,United States,LLY-USDT-SWAP 20x dal 2026-04-27,LLYUSDT 20x dal 2026-02-02 fee 0.060/0.020%,xyz:10x dal 2026-03-25
+13,Berkshire Hathaway,BRK-B,1240,United States,BRKB-USDT-SWAP 20x dal 2026-08-06,BRKBUSDT 20x dal 2026-05-25 fee 0.060/0.020%,
+14,Walmart,WMT,1025,United States,WMT-USDT-SWAP 10x dal 2026-08-27,WMTUSDT 50x dal 2026-03-02 fee 0.060/0.020%,
+15,Samsung,005930.KS,990,South Korea,SAMSUNG-USDT-SWAP 25x dal 2026-06-10,SAMSUNGUSDT 20x dal 2026-06-02 fee 0.060/0.020%,xyz:10x dal 2026-02-20
+16,JPMorgan Chase,JPM,935,United States,JPM-USDT-SWAP 20x dal 2026-10-16,JPMUSDT 20x dal 2026-06-22 fee 0.060/0.020%,
+17,Micron Technology,MU,900,United States,MU-USDT-SWAP 50x dal 2026-03-04,MUUSDT 50x dal 2026-02-11 fee 0.060/0.020%,xyz:10x dal 2025-12-19
+18,Visa,V,816,United States,V-USDT-SWAP 20x dal 2026-10-16,VUSDT 20x dal 2026-06-15 fee 0.060/0.020%,
+19,AMD,AMD,798,United States,AMD-USDT-SWAP 25x dal 2026-03-11,AMDUSDT 20x dal 2026-04-14 fee 0.060/0.020%,xyz:10x dal 2025-12-04
+20,Exxon Mobil,XOM,690,United States,XOM-USDT-SWAP 10x dal 2026-09-10,XOMUSDT 50x dal 2026-03-10 fee 0.060/0.020%,
+21,SK Hynix,000660.KS,673,South Korea,SKHYNIX-USDT-SWAP 50x dal 2026-06-10,SKHYNIXUSDT 50x dal 2026-06-02 fee 0.060/0.020%,xyz:10x dal 2026-07-09; xyz:10x dal 2026-02-19
+22,Johnson & Johnson,JNJ,665,United States,JNJ-USDT-SWAP 10x dal 2026-07-10,,
+23,Mastercard,MA,586,United States,,MAUSDT 20x dal 2026-11-03 fee 0.060/0.020%,
+24,ASML,ASML,577,Netherlands,ASML-USDT-SWAP 20x dal 2026-06-03,ASMLUSDT 20x dal 2026-02-02 fee 0.060/0.020%,xyz:10x dal 2026-05-29
+25,AbbVie,ABBV,521,United States,ABBV-USDT-SWAP 20x dal 2026-10-22,ABBVUSDT 20x dal 2026-10-21 fee 0.060/0.020%,
+26,Tencent,TCEHY,474,China,,TENCENTUSDT 20x dal 2026-07-01 fee 0.060/0.020%,io:10x dal 2026-10-05
+27,Costco,COST,464,United States,COST-USDT-SWAP 10x dal 2026-04-27,COSTUSDT 25x dal 2026-03-02 fee 0.060/0.020%,xyz:20x dal 2026-03-25
+28,China Construction Bank,601939.SS,457,China,,,
+29,CXMT,688825.SS,451,China,CXMT-USDT-SWAP 20x dal 2026-08-18,CXMTUSDT 20x dal 2026-08-17 fee 0.060/0.020%,xyz:10x dal 2026-07-15
+30,Chevron,CVX,423,United States,,CVXSTOCKUSDT 20x dal 2026-09-15 fee 0.060/0.020%,xyz:10x dal 2026-09-17
+31,Palantir,PLTR,414,United States,PLTR-USDT-SWAP 20x dal 2026-02-26,PLTRUSDT 20x dal 2026-02-02 fee 0.060/0.020%,xyz:10x dal 2025-11-14
+32,Coca-Cola,KO,412,United States,KO-USDT-SWAP 20x dal 2026-08-10,KOUSDT 20x dal 2026-06-15 fee 0.060/0.020%,
+33,Cisco,CSCO,408,United States,CSCO-USDT-SWAP 20x dal 2026-05-19,CSCOUSDT 20x dal 2026-05-18 fee 0.060/0.020%,
+34,Roche,RO.SW,388,Switzerland,,,
+35,Procter & Gamble,PG,388,United States,,PGUSDT 20x dal 2026-10-23 fee 0.060/0.020%,
+36,Agricultural Bank of China,601288.SS,380,China,,,
+37,Oracle,ORCL,375,United States,ORCL-USDT-SWAP 20x dal 2026-03-11,ORCLUSDT 20x dal 2026-02-02 fee 0.060/0.020%,xyz:10x dal 2025-12-05
+38,Merck,MRK,371,United States,MRK-USDT-SWAP 10x dal 2026-08-27,MRKUSDT 20x dal 2026-08-20 fee 0.060/0.020%,
+39,UnitedHealth,UNH,367,United States,UNH-USDT-SWAP 20x dal 2026-07-06,UNHUSDT 20x dal 2026-02-02 fee 0.060/0.020%,
+40,ICBC,1398.HK,361,China,,,
+41,Bank of America,BAC,356,United States,BAC-USDT-SWAP 20x dal 2026-10-27,BACUSDT 20x dal 2026-06-29 fee 0.060/0.020%,
+42,Home Depot,HD,355,United States,,HDUSDT 20x dal 2026-10-09 fee 0.060/0.020%,
+43,General Electric,GE,342,United States,GE-USDT-SWAP 20x dal 2026-10-22,GEUSDT 20x dal 2026-02-02 fee 0.060/0.020%,
+44,Philip Morris International,PM,329,United States,,,
+45,Bank of China,601988.SS,327,China,,,
+46,Novartis,NVS,312,Switzerland,,NVSUSDT 20x dal 2026-09-02 fee 0.060/0.020%,
+47,Intel,INTC,310,United States,INTC-USDT-SWAP 25x dal 2026-02-26,INTCUSDT 50x dal 2026-02-02 fee 0.060/0.020%,xyz:10x dal 2025-12-03
+48,HSBC,HSBC,306,United Kingdom,,,
+49,Morgan Stanley,MS,304,United States,,,
+50,Applied Materials,AMAT,293,United States,AMAT-USDT-SWAP 20x dal 2026-05-28,AMATUSDT 20x dal 2026-04-14 fee 0.060/0.020%,xyz:10x dal 2026-06-29

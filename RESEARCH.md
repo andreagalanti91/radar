@@ -276,6 +276,18 @@ conferma v2, supporti/resistenze, 12 indicatori, rischio da drawdown). Campione:
 Test 23/23. Su carta: 0 trade. BTC 77.369 (30/10), nessun segnale. Decisioni chieste: v2 nei segnali reali, rischio base,
 priorità della ricerca.
 
+### Progetto INTRADAY dell'utente · 05/11 — perp 1h/4h, top 50 crypto e top 50 azioni, leva 10x su piccole somme
+**Azioni**: 41 su 50 hanno un perpetual (OKX, Bitget, Hyperliquid) ma nati da 11/2025–02/2026; orario gratuito senza chiave solo da
+02–04/2026 (dal 2021 solo giornaliero, Cboe): test intraday sulle azioni solo esplorativo, o con chiave gratuita (Alpaca/Polygon).
+**Crypto** (49 perp, 1h dal 2021, costi 0,08%/lato + funding reale, liquidazione a 10x; 56 regole, 27 famiglie, 24 uscite; scelta
+solo sul 2021–23, giudizio 2024–26, placebo): su 1h nulla regge (costi = 0,1–0,2R a trade). Su 4h sopravvive solo trend/momentum:
+**Ichimoku TK cross nel verso della nube**, stop 2 ATR, target 3R, max 48 barre: fuori campione +0,14R, PF 1,23, WR 37%, 86% degli asset
+positivi, tutte le 24 uscite positive, long e short simili; poi PMO 4h (+0,09R, 80%) e volume relativo momentum (+0,10R, 73%).
+Inversione (RSI/Stocastico/Bollinger/VWAP/CCI/divergenze/funding contrarian) negativa ovunque. A 10x sul capitale intero lo stop
+mediano (5,2%) costa ~54% del conto: P(conto azzerato in 3 mesi) 45% su un asset, 96% sul paniere; con rischio 1–2% per trade 0%.
+**Lezione 78**: nell'intraday crypto conta la size, non il segnale: su 4h solo il momentum sopravvive ai costi (+0,14R) e regge
+solo con rischio 1–2% per trade; la leva va usata per ridurre il margine, non per aumentare il rischio. File in research/intraday/.
+
 ### Studio dell'utente · 04/11 — S/R + confluenza di volume e flusso AL TOCCO (BTC giornaliero/settimanale, Brent) · NON FUNZIONA
 Nuovo rispetto ai test passati: zona da frattali che coincide con un nodo di volume (HVN 365 giorni) e comportamento della barra di tocco
 (assorbimento, rifiuto, delta taker concorde, divergenza CVD). 28 configurazioni preregistrate, P1 2021–26 / P0 2018–20, target 2R.

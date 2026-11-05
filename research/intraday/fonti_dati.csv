@@ -1,0 +1,11 @@
+fonte,endpoint,granularita,copertura_verificata,completezza,volumi,note
+Hyperliquid xyz (HIP-3),POST api.hyperliquid.xyz/info candleSnapshot,1h,2026-04-10 -> oggi (solo ultime 5000 candele; listing NVDA 2025-11-12),100% 24/7,si (contratti),prezzo perp; storia oltre 5000 barre non disponibile via API
+OKX,GET /api/v5/market/history-candles,1H,NVDA/AAPL 2026-03-04; TSLA 2026-02-25 -> oggi,100% 24/7,si,storia completa dal listing; serve curl (urllib 403)
+Bitget,GET /api/v2/mix/market/history-candles,1H,NVDA/TSLA 2025-08-19; AAPL 2025-08-26 -> oggi,99.5%; fino a gen-2026 ~30% barre vol=0,si,prodotto sottile prima del rilancio RWA del 2026-02-02
+Sina,US_MinKService.getMinK type=60,60m RTH (ET fine barra),2026-04-08 -> oggi (fisso ~1023 barre),7 barre/giorno,si,sottostante reale; solo ~7 mesi
+Tencent,fqkline/get day,1d,2021-01-04 -> oggi,completo,si,NON aggiustato per split (qfq non restituito per US)
+Cboe,cdn.cboe.com .../charts/historical/SYM.json,1d,2004 -> oggi (salvato dal 2021),completo,si,aggiustato per split; intraday solo giorno corrente
+Tencent minuti US,kline/mkline m60/m30/m5,-,param error,-,-,non disponibile per titoli USA
+Nasdaq API,api.nasdaq.com historical,-,timeout/stream error,-,-,non usabile da qui senza UA browser (non aggirato)
+Dukascopy,datafeed.dukascopy.com bi5,1h CFD,429 poi connection reset,-,-,rate-limit; non forzato
+Bybit / Binance fapi,-,-,bloccati per geolocalizzazione dell'ambiente,-,-,non verificabili da qui
