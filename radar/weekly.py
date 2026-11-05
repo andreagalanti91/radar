@@ -205,6 +205,7 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
     r = simulate(f)
     r2 = simulate(f, lev=2.0)
     w = r["weekly"]
+    wc = w[w.index >= pd.Timestamp(START) - pd.Timedelta(weeks=8)]   # grafico della dashboard: dal 2021 (con 8 settimane prima)
     wk, last = w.iloc[-1], f.iloc[-1]
     o, pd_ = r["open"], r["pending"]
     fund7 = float(f["funding"].fillna(0).rolling(7).mean().iloc[-1])
@@ -218,9 +219,9 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
            "trend_age": int(wk["trend_age"]), "macd": float(wk["macd"]), "macd_sig": float(wk["macd_sig"]),
            "f1_ok": bool(wk["f1_ok"]), "old_trend": OLD_TREND,
            "ema20_up": bool(wk["ema20"] > w["ema20"].iloc[-2]),
-           "chart": {k: [None if pd.isna(v) else round(float(v), 2) for v in w[c].iloc[-104:]] for k, c in
+           "chart": {k: [None if pd.isna(v) else round(float(v), 2) for v in wc[c]] for k, c in
                      (("o", "open"), ("h", "high"), ("l", "low"), ("c", "close"), ("ema21", "ema21"), ("sma40", "sma"),
-                      ("macd", "macd"), ("sig", "macd_sig"))} | {"d": [str(x.date()) for x in w.index[-104:]]},
+                      ("macd", "macd"), ("sig", "macd_sig"))} | {"d": [str(x.date()) for x in wc.index]},
            "capital": round(capital, 0), "share": SHARE, "status": "nessuno"}
     if o:
         sg = 1 if o["side"] == "long" else -1

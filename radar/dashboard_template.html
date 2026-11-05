@@ -415,7 +415,7 @@ body.noscroll{overflow:hidden}
       <div class="card glow wkHero" id="wkHero"></div>
       <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
         <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
-          <div class="wkTools"><div class="seg" id="wkRange" role="group" aria-label="Periodo"><button data-v="26">6M</button><button data-v="52">1A</button><button data-v="104" aria-pressed="true">2A</button></div>
+          <div class="wkTools"><div class="seg" id="wkRange" role="group" aria-label="Periodo"><button data-v="26">6M</button><button data-v="52">1A</button><button data-v="104">2A</button><button data-v="0" aria-pressed="true">Tutto</button></div>
           <button id="wkFull" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
         <div class="wkLeg" id="wkLeg"></div>
         <div id="wkChart" class="chart" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso, trailing e supporti/resistenze"></div>
@@ -1033,9 +1033,24 @@ renderTrades();
     if (open) {
       cs.createPriceLine({ price: W.trail, color: dn, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "Trailing" });
       cs.createPriceLine({ price: W.entry_px, color: css("--label2"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Ingresso" });
-      const ew = T.find(t => t >= W.signal_date) || T[T.length - 1];
-      cs.setMarkers([{ time: ew, position: W.side === "long" ? "belowBar" : "aboveBar", color: css("--label"), shape: W.side === "long" ? "arrowUp" : "arrowDown", text: "ingresso" }]);
     }
+    // tutti gli ingressi e le uscite di W2 dal 2021 (storico + posizione aperta): freccia all'ingresso, pallino all'uscita
+    const bar = d => T.find(t => t >= d), k = v => v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + "k" : String(Math.round(v));
+    const mks = [], ev = {};   // ev: testo per la legenda quando il cursore è sulla settimana di un ingresso o di un'uscita
+    ((W.history || {}).trades || []).forEach(t => {
+      const L = t.side === "long", be = bar(t.entry), pn = (t.pnl_pct >= 0 ? "+" : "") + Math.round(t.pnl_pct) + "%";
+      if (be) { mks.push({ time: be, position: L ? "belowBar" : "aboveBar", color: L ? up : dn, shape: L ? "arrowUp" : "arrowDown", text: (L ? "Long " : "Short ") + k(t.entry_px) });
+        ev[be] = (ev[be] ? ev[be] + " · " : "") + `<b class="${L ? "pos" : "neg"}">${L ? "Long" : "Short"} ${usd(t.entry_px)}</b> ${t.reason === "open" ? "aperto" : "→ " + pn}`; }
+      const bx = t.reason === "open" ? null : bar(t.exit);
+      if (bx) { mks.push({ time: bx, position: L ? "aboveBar" : "belowBar", color: t.pnl_pct >= 0 ? up : dn, shape: "circle", text: pn });
+        ev[bx] = (ev[bx] ? ev[bx] + " · " : "") + `<b class="${t.pnl_pct >= 0 ? "pos" : "neg"}">uscita ${usd(t.exit_px)} ${pn}</b>`; }
+    });
+    mks.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0);
+    let mkTxt = null;   // etichette solo quando c'è spazio (≥ 4 px per settimana): sul telefono con "Tutto" restano frecce e pallini
+    const setMk = () => { const r = ch.timeScale().getVisibleLogicalRange(); if (!r) return;
+      const on = ch.timeScale().width() / Math.max(1, r.to - r.from) >= 4;
+      if (on !== mkTxt) { mkTxt = on; cs.setMarkers(on ? mks : mks.map(m => ({ ...m, text: "" }))); } };
+    setMk(); ch.timeScale().subscribeVisibleLogicalRangeChange(setMk);
     if (R.levels) {   // S/R più vicini sul grafico: 2 resistenze e 2 supporti, linee sottili punteggiate
       R.levels.resistances.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
       R.levels.supports.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
@@ -1051,11 +1066,11 @@ renderTrades();
     ch.timeScale().applyOptions({ rightOffset: 10 });
     ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
     const leg = (i) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
-      (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
+      `<span style="color:var(--label2)">▲▼ ingresso · ● uscita</span>` + (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
       (R.levels ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
-      `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}`}</span>`;
+      `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}` + (ev[T[i]] ? " · " + ev[T[i]] : "")}</span>`;
     $("wkLeg").innerHTML = leg(T.length - 1);
-    const setRange = n => { const L = T.length; ch.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - n) - 0.5, to: L - 0.5 + Math.max(4, n / 9) }); };
+    const setRange = n => { const L = T.length; if (!n) { ch.timeScale().fitContent(); return; } ch.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - n) - 0.5, to: L - 0.5 + Math.max(4, n / 9) }); };
     seg("wkRange", v => setRange(+v));
     $("wkFull").onclick = () => { const on = !$("wkChartCard").classList.contains("full");
       $("wkChartCard").classList.toggle("full", on); document.body.classList.toggle("noscroll", on);

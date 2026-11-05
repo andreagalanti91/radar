@@ -37,7 +37,7 @@ Pensata per il telefono (si installa come app dalla schermata Home), dark-first 
 
 | Sezione | Cosa trovi |
 |---|---|
-| **Oggi** | prezzo live, **segnale settimanale W2 + MACD** (stato, prezzo rispetto a trailing/ingresso/massimo, grafico settimanale con EMA 21, SMA 40, trailing e supporti/resistenze, MACD, condizioni di ingresso e uscita), **supporti e resistenze** più vicini con dettaglio, piano in dollari sul tuo capitale |
+| **Oggi** | prezzo live, **segnale settimanale W2 + MACD** (stato, prezzo rispetto a trailing/ingresso/massimo, grafico settimanale dal 2021 con tutti gli ingressi e le uscite, EMA 21, SMA 40, trailing e supporti/resistenze, MACD, condizioni di ingresso e uscita), **supporti e resistenze** più vicini con dettaglio, piano in dollari sul tuo capitale |
 | **Simulatore** | capitale e data di partenza: quanto varrebbe oggi seguendo W2 + MACD (stessa equity giornaliera delle Statistiche); quante volte un obiettivo di capitale è stato raggiunto in passato |
 | **Statistiche** | storico del settimanale W2 + MACD: curva di equity contro BTC, trade, risultati per anno, drawdown, **registro dei trade reali** |
 | **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
