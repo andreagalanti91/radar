@@ -249,7 +249,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);width:min(460px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(480px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -367,6 +367,15 @@ body.noscroll{overflow:hidden}
 .strat .seg button{padding:7px 12px}
 .app.w2 .only-v2,.app:not(.w2) .only-w2{display:none!important}
 .labSec{display:none!important}
+/* Intraday · Ichimoku 4h */
+.app.intra .hero,.app.intra .strat{display:none}
+#inChart{height:440px} @media (max-width:560px){#inChart{height:360px}}
+.inTools{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.inTools b{font:600 1rem var(--font)}
+.legend i.ln{width:14px;height:2px;border-radius:1px;vertical-align:3px}
+.legend i.cl{width:12px;height:9px;border-radius:2px;vertical-align:0}
+.inWarn{border:1px solid color-mix(in srgb,var(--orange) 40%,transparent);background:color-mix(in srgb,var(--orange) 10%,var(--card))}
+.big small{font-size:.74rem;color:var(--label2);line-height:1.35}
 .app.w2 .w2top{order:-1}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
@@ -378,6 +387,7 @@ body.noscroll{overflow:hidden}
   <symbol id="i-sim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20h17"/><path d="M4.5 15.5l4.5-5 4 3 6.5-8"/><path d="M15.5 5.5h4v4"/></g></symbol>
   <symbol id="i-stat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="11" width="3.6" height="9" rx="1.4"/><rect x="10.2" y="5" width="3.6" height="15" rx="1.4"/><rect x="16.4" y="8" width="3.6" height="12" rx="1.4"/></g></symbol>
   <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="14" height="15" rx="2.5"/><path d="M17.5 8.5h2a1 1 0 0 1 1 1V17a2.5 2.5 0 0 1-5 0"/><path d="M7 9h7M7 12.5h7M7 16h4"/></g></symbol>
+  <symbol id="i-intra" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 3.5v17M12 6v13M18 4v14"/><rect x="4.2" y="7" width="3.6" height="8" rx="1"/><rect x="10.2" y="10" width="3.6" height="5.5" rx="1"/><rect x="16.2" y="6.5" width="3.6" height="7" rx="1"/></g></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
 
@@ -389,6 +399,7 @@ body.noscroll{overflow:hidden}
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simulatore</a>
     <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Statistiche</a>
+    <a href="#intraday" data-v="intraday"><svg><use href="#i-intra"/></svg>Intraday</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
     <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
   </nav>
@@ -592,6 +603,55 @@ body.noscroll{overflow:hidden}
     </div>
   </div>
 
+  <!-- ============ INTRADAY (radar/intraday_ichi.py) ============ -->
+  <div class="view" id="v-intraday" hidden>
+    <div class="section">
+      <div class="sh">Intraday · Ichimoku 4h <small id="inSub"></small></div>
+      <div class="hscroll"><div class="seg" id="inAsset" role="group" aria-label="Crypto"></div></div>
+      <div class="big" id="inState"></div>
+      <div id="inWarn"></div>
+    </div>
+    <div class="section">
+      <div class="card">
+        <div class="inTools"><b id="inTitle">Grafico 4h</b><div class="legend" id="inLeg"></div></div>
+        <div id="inChart" class="chart"></div>
+      </div>
+      <p class="foot" id="inChartNote"></p>
+    </div>
+    <div class="section">
+      <div class="sh">Ultimi segnali <small id="inSigSub"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="inSig"></table></div></div>
+    </div>
+    <div class="section">
+      <div class="sh">Backtest <small>dal 2021 · costi stimati</small></div>
+      <div class="list">
+        <label class="row"><span class="k">Capitale iniziale (€)</span><input id="inCap" type="number" inputmode="decimal" min="10" step="50" value="200" enterkeyhint="done"></label>
+        <div class="row"><span class="k">Rischio per trade<small>size = rischio / distanza dello stop, max 10x</small></span><div class="seg" id="inRisk" role="group" aria-label="Rischio"><button data-v="0.01" aria-pressed="true">1%</button><button data-v="0.02">2%</button><button data-v="0.05">5%</button></div></div>
+        <label class="row"><span class="k">Data di partenza</span><input id="inStart" type="date" value="2021-01-01" min="2021-01-01"></label>
+        <div class="row"><span class="k">Ambito<small id="inScopeNote"></small></span><div class="seg" id="inScope" role="group" aria-label="Ambito"><button data-v="one" aria-pressed="true">Un asset</button><button data-v="all">Paniere 10</button></div></div>
+      </div>
+    </div>
+    <div class="big" id="inBt"></div>
+    <div class="section">
+      <div class="card"><div class="legend" id="inEqLeg" style="margin-bottom:8px"></div><div id="inEq" class="chart" style="height:280px"></div></div>
+      <p class="foot" id="inBtNote"></p>
+    </div>
+    <div class="section">
+      <div class="sh">Leva 10x su tutto il capitale <small>cosa sarebbe successo</small></div>
+      <div class="big" id="inX10"></div>
+      <p class="foot" id="inX10Note"></p>
+    </div>
+    <div class="section">
+      <div class="sh">Per asset <small id="inPerSub"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="inPer"></table></div></div>
+    </div>
+    <div class="section">
+      <div class="sh">Trade del backtest <small id="inTrSub"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:560px;overflow-y:auto"><table class="grid" id="inTr"></table></div></div>
+      <p class="foot">Strategia su carta, non validata con trade reali: risultati con costi stimati (0,08% per lato, 0,10% sulle uscite a stop), funding ignorato. Segnali calcolati sullo spot Binance; i perp seguono lo stesso prezzo entro pochi decimi di %. Alert su Telegram a ogni nuovo segnale e uscita; l'esecuzione è manuale.</p>
+    </div>
+  </div>
+
   <div class="view" id="v-notizie" hidden>
     <div class="section">
       <div class="sh">Notizie <small id="newsUpd"></small></div>
@@ -668,8 +728,9 @@ body.noscroll{overflow:hidden}
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simula</a>
   <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Stats</a>
+  <a href="#intraday" data-v="intraday"><svg><use href="#i-intra"/></svg>Intra</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>News</a>
-  <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
+  <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Info</a>
 </nav>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
@@ -1332,13 +1393,191 @@ function startLive() {
 }
 startLive();
 
+// ---- Intraday · Ichimoku 4h su 10 crypto (radar/intraday_ichi.py): stato, grafico, segnali, backtest con capitale
+(function intraday() {
+  const I = R.intra;
+  if (!I || !I.assets || !Object.keys(I.assets).length) {
+    $("inState").innerHTML = `<div style="grid-column:1/-1"><span>Intraday</span><b>Dati non disponibili</b><small>Il modulo Ichimoku 4h non ha prodotto dati in questo aggiornamento.</small></div>`;
+    return;
+  }
+  const A = Object.keys(I.assets);
+  const IN = (() => { try { return JSON.parse(localStorage.getItem("radarIntra")) || {}; } catch (_) { return {}; } })();
+  const save = () => { try { localStorage.setItem("radarIntra", JSON.stringify(IN)); } catch (_) {} };
+  let cur = A.includes(IN.a) ? IN.a : A[0];
+  const eur = (x, d) => x == null ? "–" : (x < 0 ? "−" : "") + Math.abs(x).toLocaleString("it-IT", { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }) + " €";
+  const prec = v => v >= 10000 ? 0 : v >= 100 ? 2 : v >= 1 ? 4 : 5;
+  const px = v => v == null ? "–" : "$" + (+v).toLocaleString("it-IT", { minimumFractionDigits: prec(v), maximumFractionDigits: prec(v) });
+  const fT = s => new Date(s * 1000).toLocaleString("it-IT", { day: "2-digit", month: "short", year: "2-digit", hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
+  const R2 = x => x == null ? "–" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(2).replace(".", ",") + "R";
+  const pc = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(d).replace(".", ",") + "%";
+  const WHY = { T: "Target 3R", S: "Stop", H: "Uscita a tempo", O: "Aperto", P: "In attesa d'ingresso" };
+  const side = dr => dr > 0 ? "Long" : "Short";
+  // trade compatti: [segnale, ingresso, uscita, lato, px ingr., px usc., stop, target, motivo, R, rend. netto, dist. stop, liquidato a 10x]
+  const TR = {};
+  A.forEach(a => TR[a] = I.assets[a].trades.map(x => ({ a, sig: x[0], en: x[1], ex: x[2], dr: x[3], e: x[4], x: x[5], s: x[6], t: x[7], why: x[8], R: x[9], net: x[10], d: x[11], liq: !!x[12] })));
+  $("inSub").textContent = `${A.length} crypto · candele 4h spot Binance · aggiornato ${I.updated ? fmtT(I.updated) : ""}`;
+
+  // --- switch delle crypto
+  $("inAsset").innerHTML = A.map(a => `<button data-v="${a}" aria-pressed="${a === cur}">${a}</button>`).join("");
+  seg("inAsset", v => { cur = v; IN.a = v; save(); renderAsset(); if (bt.scope === "one") runBt(); });
+
+  // --- stato attuale
+  function renderState() {
+    const X = I.assets[cur], S = X.state, P = S.pos, L = S.last_signal, st = X.stats, o = X.oos;
+    const pos = !P ? ["Flat", "nessuna posizione su carta"]
+      : P.status === "pending" ? [`${side(P.side === "long" ? 1 : -1)} in ingresso`, `all'apertura della prossima 4h, ~${px(P.entry)}`]
+      : [`${side(P.side === "long" ? 1 : -1)} aperto`, `da ${px(P.entry)} · ${fT(P.entry_t)} · ${R2(P.R_open)} ora`];
+    $("inState").innerHTML = [
+      ["Posizione su carta", pos[0], pos[1], P ? (P.side === "long" ? "pos" : "neg") : ""],
+      ["Stop · target", P ? `${px(P.stop)}` : "–", P ? `target ${px(P.target)} · stop a −${(P.d * 100).toFixed(2).replace(".", ",")}%` + (P.time_exit_t ? ` · uscita a tempo ${fT(P.time_exit_t)}` : "") : "si fissano all'ingresso: 2 ATR e 3R"],
+      ["Ultimo segnale", L ? (L.side === "long" ? "Long" : "Short") : "–", L ? `chiusura ${fT(L.t + 14400)} a ${px(L.px)}` + (TR[cur].some(t => t.sig === L.t) ? "" : " · ignorato: c'era già una posizione aperta") : "", L ? (L.side === "long" ? "pos" : "neg") : ""],
+      [`${cur} dal 2021`, R2(st.meanR), `${st.n} trade · WR ${String(st.wr).replace(".", ",")}% · PF ${st.pf == null ? "–" : String(st.pf).replace(".", ",")} · dal 2024 ${R2(o.meanR)}`],
+    ].map(([k, v, s, c]) => `<div><span>${k}</span><b class="${c || ""}">${v}</b><small>${s}</small></div>`).join("");
+    $("inWarn").innerHTML = P && P.d >= I.rule.liq ? `<div class="card inWarn"><p style="margin:0">Stop al ${(P.d * 100).toFixed(1).replace(".", ",")}%: a 10x la liquidazione (~9,5%) arriverebbe prima dello stop. Usa una leva più bassa.</p></div>` : "";
+  }
+
+  // --- grafico 4h: candele, Tenkan, Kijun, nube (Senkou A/B), marker dei trade
+  let ch, cs, ten, kij, sa, sb, cloudHi, cloudLo, pLines = [];
+  const VIS = () => innerWidth < 600 ? 90 : 180;   // candele visibili all'apertura (si scorre per vedere i 90 giorni)
+  const rgba = (v, a) => { const h = css(v).replace("#", ""); if (h.length !== 6) return css(v); return `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4), 16)},${a})`; };
+  function renderChart() {
+    if (!window.LightweightCharts) return;
+    const X = I.assets[cur], s = X.series, p = prec(s.c[s.c.length - 1]), pf = { type: "price", precision: p, minMove: Math.pow(10, -p) };
+    if (!ch) {
+      ch = LightweightCharts.createChart($("inChart"), chartOpts({ timeScale: { borderVisible: false, timeVisible: true, secondsVisible: false, rightOffset: 4 }, localization: { locale: "it-IT" } }));
+      cloudHi = ch.addAreaSeries({ lineColor: "rgba(0,0,0,0)", lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      cloudLo = ch.addAreaSeries({ lineColor: "rgba(0,0,0,0)", topColor: css("--card"), bottomColor: css("--card"), lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      sa = ch.addLineSeries({ color: rgba("--green", .7), lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      sb = ch.addLineSeries({ color: rgba("--red", .7), lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      cs = ch.addCandlestickSeries({ upColor: css("--green"), downColor: css("--red"), borderVisible: false, wickUpColor: css("--green"), wickDownColor: css("--red") });
+      ten = ch.addLineSeries({ color: css("--tint"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      kij = ch.addLineSeries({ color: css("--orange"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      $("inLeg").innerHTML = `<span><i class="ln" style="background:var(--tint)"></i>Tenkan 9</span><span><i class="ln" style="background:var(--orange)"></i>Kijun 26</span>` +
+        `<span><i class="cl" style="background:${rgba("--green", .3)}"></i>Nube rialzista</span><span><i class="cl" style="background:${rgba("--red", .3)}"></i>Nube ribassista</span>` +
+        `<span><i style="background:var(--green)"></i>▲ Long</span><span><i style="background:var(--red)"></i>▼ Short</span><span><i style="background:var(--label2)"></i>● Uscita</span>`;
+    }
+    [cs, ten, kij, sa, sb, cloudHi, cloudLo].forEach(x => x.applyOptions({ priceFormat: pf }));
+    const T = s.t.concat(s.ft), up = rgba("--green", .22), dn = rgba("--red", .22);
+    cs.setData(s.t.map((t, i) => ({ time: t, open: s.o[i], high: s.h[i], low: s.l[i], close: s.c[i] })));
+    const line = arr => arr.map((v, i) => v == null ? null : { time: T[i], value: v }).filter(Boolean);
+    ten.setData(line(s.ten)); kij.setData(line(s.kij)); sa.setData(line(s.sa)); sb.setData(line(s.sb));
+    const hiD = [], loD = [];
+    s.sa.forEach((v, i) => { const w = s.sb[i]; if (v == null || w == null) return; const c = v >= w ? up : dn;
+      hiD.push({ time: T[i], value: Math.max(v, w), topColor: c, bottomColor: c }); loD.push({ time: T[i], value: Math.min(v, w) }); });
+    cloudHi.setData(hiD); cloudLo.setData(loD);
+    // marker: ingresso (freccia) e uscita (cerchio) dei trade nel periodo mostrato; la barra d'uscita è quella che chiude a ex
+    const t0 = s.t[0], mk = [];
+    TR[cur].forEach(t => {
+      if (t.en >= t0 && t.en <= s.t[s.t.length - 1]) mk.push({ time: t.en, position: t.dr > 0 ? "belowBar" : "aboveBar", color: t.dr > 0 ? css("--green") : css("--red"), shape: t.dr > 0 ? "arrowUp" : "arrowDown", text: t.dr > 0 ? "BUY" : "SELL" });
+      if (t.ex && t.ex - 14400 >= t0) mk.push({ time: t.ex - 14400, position: t.dr > 0 ? "aboveBar" : "belowBar", color: t.why === "T" ? css("--green") : t.why === "S" ? css("--red") : css("--label2"), shape: "circle", text: t.why === "T" ? "TP " + R2(t.R) : t.why === "S" ? "STOP " + R2(t.R) : "T " + R2(t.R) });
+    });
+    mk.sort((a, b) => a.time - b.time); cs.setMarkers(mk);
+    pLines.forEach(l => cs.removePriceLine(l)); pLines = [];
+    const P = X.state.pos;
+    if (P) {
+      pLines.push(cs.createPriceLine({ price: P.stop, color: css("--red"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "stop" }));
+      pLines.push(cs.createPriceLine({ price: P.target, color: css("--green"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "target" }));
+      pLines.push(cs.createPriceLine({ price: P.entry, color: css("--label2"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: P.status === "pending" ? "ingresso ~" : "ingresso" }));
+    }
+    $("inTitle").textContent = `${cur}/USDT · 4h`;
+    ch.timeScale().setVisibleLogicalRange({ from: s.t.length - VIS(), to: s.t.length + 28 });
+    $("inChartNote").textContent = `Ultimi ${Math.round(s.t.length / 6)} giorni di candele 4h (UTC)${s.live ? ", l'ultima è in corso" : ""}. La nube è disegnata 26 candele avanti come nell'Ichimoku classico. ` +
+      `Segnale: alla chiusura della candela la Tenkan incrocia la Kijun con il prezzo dalla stessa parte della nube; ingresso all'apertura successiva, stop 2 ATR, target 3R, uscita dopo 48 candele (8 giorni).`;
+  }
+  window.intraFit = () => { if (ch && !$("v-intraday").hidden) { const n = I.assets[cur].series.t.length; ch.timeScale().setVisibleLogicalRange({ from: n - VIS(), to: n + 28 }); } if (eqCh) eqCh.timeScale().fitContent(); };
+
+  // --- ultimi segnali (tutti gli asset)
+  function renderSignals() {
+    const all = A.flatMap(a => TR[a]).sort((x, y) => y.sig - x.sig).slice(0, 15);
+    $("inSigSub").textContent = "tutte le crypto · ultimi 15";
+    $("inSig").innerHTML = `<tr><th>Crypto</th><th>Segnale</th><th>Lato</th><th>Ingresso</th><th>Stop · target</th><th>Esito</th></tr>` +
+      all.map(t => `<tr><td>${t.a}</td><td>${fT(t.sig + 14400)}</td><td class="${t.dr > 0 ? "pos" : "neg"}">${side(t.dr)}</td><td>${px(t.e)}</td><td>${px(t.s)}<br><small>${px(t.t)}</small></td>` +
+        `<td class="${t.R == null ? "" : t.R > 0 ? "pos" : "neg"}">${t.R == null ? WHY[t.why] : R2(t.R)}<br><small>${t.R == null ? "" : WHY[t.why]}</small></td></tr>`).join("");
+  }
+
+  // --- backtest con capitale (stessa logica di simulate() in radar/intraday_ichi.py)
+  const bt = { risk: +(IN.risk || 0.01), scope: IN.scope === "all" ? "all" : "one" };
+  $("inCap").value = IN.cap || I.capital || 200;
+  if (IN.start) $("inStart").value = IN.start;
+  const riskSeg = seg("inRisk", v => { bt.risk = +v; IN.risk = bt.risk; save(); runBt(); }); riskSeg.set(bt.risk);
+  const scopeSeg = seg("inScope", v => { bt.scope = v; IN.scope = v; save(); runBt(); }); scopeSeg.set(bt.scope);
+  ["inCap", "inStart"].forEach(id => $(id).addEventListener("change", () => { IN.cap = +$("inCap").value; IN.start = $("inStart").value; save(); runBt(); }));
+  function sim(trs, cap, risk, start, mode) {
+    const t0 = Date.parse(start + "T00:00:00Z") / 1000, T = trs.filter(t => t.ex && t.en >= t0).sort((x, y) => x.en - y.en || (x.a < y.a ? -1 : 1));
+    const ev = []; T.forEach((t, i) => { ev.push([t.en, 1, i]); ev.push([t.ex, 0, i]); });
+    ev.sort((x, y) => x[0] - y[0] || x[1] - y[1] || x[2] - y[2]);
+    let eq = cap, pk = cap, dd = 0, n = 0, w = 0, sR = 0, busy = null;
+    const opn = new Map(), pts = [{ time: t0, value: cap }], rows = [];
+    for (const [when, kind, i] of ev) {
+      const t = T[i];
+      if (kind === 1) {
+        if (mode === "x10") { if (eq <= 0 || (busy != null && t.en < busy)) continue; opn.set(i, [eq, 0]); busy = t.ex; continue; }
+        let rO = 0, nO = 0; opn.forEach(v => { nO += v[0]; rO += v[1]; });
+        if (eq <= 0 || rO + risk > 3 * risk + 1e-12) continue;
+        const nz = Math.min(eq * risk / t.d, I.rule.max_lev * eq - nO); if (nz <= 0) continue;
+        opn.set(i, [nz, risk]);
+      } else if (opn.has(i)) {
+        const [nz] = opn.get(i); opn.delete(i);
+        const a10 = t.liq ? -1 : Math.max(10 * t.net, -1), pnl = mode === "x10" ? nz * a10 : nz * t.net;
+        eq += pnl; n++; if (t.R > 0) w++; sR += t.R; pk = Math.max(pk, eq); dd = Math.min(dd, pk > 0 ? eq / pk - 1 : -1);
+        if (pts[pts.length - 1].time >= t.ex) pts[pts.length - 1].value = eq; else pts.push({ time: t.ex, value: eq });
+        rows.push({ ...t, nz, pnl, eq, lev: nz / (eq - pnl) });
+      }
+    }
+    const tEnd = Math.max(0, ...trs.filter(t => t.ex).map(t => t.ex));
+    if (tEnd > pts[pts.length - 1].time) pts.push({ time: tEnd, value: eq });   // la curva arriva all'ultimo trade chiuso anche dopo un azzeramento
+    return { eq, ret: (eq / cap - 1) * 100, dd: dd * 100, n, wr: n ? w / n * 100 : null, mR: n ? sR / n : null, pts, rows };
+  }
+  let eqCh, eqL, eqX;
+  function runBt() {
+    const cap = Math.max(10, +$("inCap").value || 200), start = $("inStart").value || "2021-01-01", one = bt.scope === "one";
+    const trs = one ? TR[cur] : A.flatMap(a => TR[a]), r = sim(trs, cap, bt.risk, start), x = sim(trs, cap, bt.risk, start, "x10");
+    const rk = Math.round(bt.risk * 100) + "%";
+    $("inScopeNote").textContent = one ? `${cur}, una posizione alla volta` : "una posizione per asset, rischio aperto totale max 3× e leva totale max 10x";
+    $("inBt").innerHTML = [["Capitale finale", eur(r.eq, r.eq < 1000 ? 2 : 0), `da ${eur(cap)} · ${one ? cur : "paniere 10"} · rischio ${rk}`], ["Rendimento", pc(r.ret, 1), `max drawdown ${pc(r.dd, 1)}`],
+      ["Trade · win rate", `${r.n} · ${r.wr == null ? "–" : Math.round(r.wr) + "%"}`, "trade chiusi dal " + new Date(start).toLocaleDateString("it-IT")], ["R medio", R2(r.mR), "rendimento netto / distanza dello stop"]]
+      .map(([k, v, s]) => `<div><span>${k}</span><b>${v}</b><small>${s}</small></div>`).join("");
+    const bustT = x.pts.find(p => p.value <= cap * 0.01);
+    $("inX10").innerHTML = [["Capitale finale 10x", eur(x.eq, 2), `da ${eur(cap)}`], ["Rendimento", pc(x.ret, 1), `max drawdown ${pc(x.dd, 1)}`],
+      [bustT ? "Trade fino all'azzeramento" : "Trade", String(x.n), bustT ? "conto azzerato il " + fT(bustT.time).split(",")[0] : "conto mai azzerato"], ["Con rischio " + rk, eur(r.eq, r.eq < 1000 ? 2 : 0), "stessi segnali, size dal rischio"]]
+      .map(([k, v, s]) => `<div><span>${k}</span><b class="${k.startsWith("Capitale") && x.eq < cap ? "neg" : ""}">${v}</b><small>${s}</small></div>`).join("");
+    $("inX10Note").textContent = `10x su tutto il capitale: ogni trade muove il conto di 10 volte il rendimento sul prezzo, un trade alla volta${one ? "" : " nel paniere (i segnali che si sovrappongono si saltano)"}; liquidazione (conto a zero) se il prezzo va contro del 9,5% prima dello stop. Bastano poche perdite di fila: con stop a 2 ATR la distanza media è del ${(I.summary.all.n ? 100 * (A.flatMap(a => TR[a]).reduce((s, t) => s + t.d, 0) / A.flatMap(a => TR[a]).length) : 0).toFixed(1).replace(".", ",")}%, che a 10x vuol dire perdere il 40–60% del conto a ogni stop.`;
+    $("inBtNote").textContent = `Size di ogni trade = capitale × ${rk} / distanza dello stop, al massimo 10x il capitale; capitale ricalcolato a ogni uscita. Costi 0,08% per lato (0,10% sulle uscite a stop), funding ignorato. ` +
+      (one ? "" : "Paniere: una posizione per asset; un nuovo trade si salta se il rischio aperto supererebbe 3 volte il rischio per trade o il nozionale aperto 10 volte il capitale.");
+    if (window.LightweightCharts) {
+      if (!eqCh) {
+        eqCh = LightweightCharts.createChart($("inEq"), chartOpts({ timeScale: { borderVisible: false } }));
+        eqL = eqCh.addAreaSeries({ lineColor: css("--tint"), topColor: rgba("--tint", .25), bottomColor: rgba("--tint", 0), lineWidth: 2, lineType: 1, priceFormat: { type: "price", precision: 0, minMove: 1 } });
+        eqX = eqCh.addLineSeries({ color: css("--red"), lineWidth: 2, lineType: 1, priceLineVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
+      }
+      eqL.setData(r.pts); eqX.setData(x.pts); eqCh.timeScale().fitContent();
+      $("inEqLeg").innerHTML = `<span><i style="background:var(--tint)"></i>Rischio ${rk} · ${eur(r.eq)}</span><span><i style="background:var(--red)"></i>10x tutto il capitale · ${eur(x.eq)}</span>`;
+    }
+    // per asset con le stesse impostazioni
+    $("inPerSub").textContent = `rischio ${rk} · ${eur(cap)} per asset · dal ${new Date(start).toLocaleDateString("it-IT")}`;
+    $("inPer").innerHTML = `<tr><th>Crypto</th><th>Capitale</th><th>Rend.</th><th>Max DD</th><th>Trade</th><th>WR</th><th>R medio</th><th>10x</th></tr>` +
+      A.map(a => { const s = sim(TR[a], cap, bt.risk, start), z = sim(TR[a], cap, bt.risk, start, "x10");
+        return `<tr><td>${a}</td><td>${eur(s.eq, 0)}</td><td class="${s.ret >= 0 ? "pos" : "neg"}">${pc(s.ret, 0)}</td><td>${pc(s.dd, 0)}</td><td>${s.n}</td><td>${s.wr == null ? "–" : Math.round(s.wr) + "%"}</td><td>${R2(s.mR)}</td><td class="${z.eq < cap ? "neg" : "pos"}">${eur(z.eq, 0)}</td></tr>`; }).join("");
+    $("inTrSub").textContent = `${r.rows.length} trade · ${one ? cur : "paniere"} · rischio ${rk}`;
+    $("inTr").innerHTML = `<tr><th>Crypto</th><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Stop · target</th><th>Uscita</th><th>R</th><th>PnL</th><th>Capitale</th></tr>` +
+      r.rows.slice().reverse().map(t => `<tr><td>${t.a}</td><td>${fT(t.en)}</td><td class="${t.dr > 0 ? "pos" : "neg"}">${side(t.dr)}</td><td>${px(t.e)}<br><small>→ ${px(t.x)}</small></td>` +
+        `<td>${px(t.s)}<br><small>${px(t.t)}</small></td><td>${fT(t.ex)}<br><small>${WHY[t.why]}</small></td><td class="${t.R > 0 ? "pos" : "neg"}">${R2(t.R)}</td>` +
+        `<td class="${t.pnl > 0 ? "pos" : "neg"}">${eur(t.pnl, 2)}<br><small>leva ${t.lev.toFixed(2).replace(".", ",")}x</small></td><td>${eur(t.eq, 2)}</td></tr>`).join("");
+  }
+  function renderAsset() { renderState(); renderChart(); }
+  let done = false;
+  window.intraInit = () => { if (done) return; done = true; renderAsset(); renderSignals(); runBt(); };
+})();
+
 // ---- sezioni
-const VIEWS = ["oggi", "simulatore", "statistiche", "notizie", "metodo"];
+const VIEWS = ["oggi", "simulatore", "statistiche", "intraday", "notizie", "metodo"];
 function route() {
   const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) ? v : "oggi";
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
+  $("v-oggi").closest(".app").classList.toggle("intra", ok === "intraday");
+  if (ok === "intraday" && window.intraInit) window.intraInit();
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
-  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); labChart && labChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
+  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); labChart && labChart.timeScale().fitContent(); window.intraFit && window.intraFit(); window.refitPrice && window.refitPrice(); }, 60);
 }
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 route();

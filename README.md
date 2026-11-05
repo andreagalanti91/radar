@@ -38,6 +38,20 @@ ritest di un supporto rotto sotto medie ribassiste, long di rimbalzo su una zona
 Finance giornalieri). Alert Telegram: supporto rotto (setup attivo), prezzo dentro la zona di ritest, segnale con stop e target,
 invalidazione, esito del trade su carta. **Non è validata**: dal 2021 lo short ha perso (argento −0,54R medio, Brent −0,20R; lezioni 75–76).
 
+## Intraday · Ichimoku 4h
+
+Strategia richiesta dall'utente su **10 crypto** (BTC, ETH, SOL, BNB, XRP, DOGE, LINK, ADA, AVAX, LTC), su carta con alert Telegram
+ed esecuzione manuale (`radar/intraday_ichi.py`, vista **Intraday** della dashboard). Regola dalla ricerca intraday (RESEARCH.md,
+lezione 78): alla chiusura di una candela 4h la Tenkan (9) incrocia la Kijun (26) con il prezzo dalla stessa parte della nube
+(Senkou 52, spostamento 26) → long sopra la nube, short sotto; ingresso all'apertura successiva, stop 2 ATR14, target 3R, uscita dopo
+48 candele (8 giorni), una posizione per asset. Costi 0,08% per lato (0,10% sullo stop), funding ignorato. Fuori campione 2024–26:
++0,14R, PF 1,23, WR 37%, 86% degli asset positivi. Dati: klines **spot** 4h di Binance (data-api.binance.vision, cache in
+`data/intra/`; i perp seguono lo stesso prezzo entro pochi decimi di %). Alert: nuovo segnale (ingresso, stop, target, size per
+rischio 1% e 2% su un capitale d'esempio `RADAR_INTRA_CAPITAL`, default 200 €, leva necessaria), target, stop, uscita a tempo
+(dedupe in `data/state.json`, chiave `intra`; `RADAR_INTRA_ALERTS=0` per spegnerli). La dashboard ha grafico 4h con Ichimoku e
+trade, ultimi segnali e un backtest dal 2021 con capitale, rischio (1/2/5%, leva max 10x), un asset o il paniere, e il confronto
+con 10x sul capitale intero (che azzera il conto). **Non validata con trade reali.**
+
 ## La dashboard
 
 Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:
