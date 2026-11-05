@@ -1039,7 +1039,48 @@ Ordine dei giri serali; la pianificazione può riordinare in base ai risultati. 
 ### Fase 6 · Dati futuri (dal 2027)
 - **R12 Liquidazioni reali** raccolte da oggi; **R13** rivalutazione di SOL dopo 10 trade su carta.
 
-## Obiettivi e struttura dei giri (dal 30/10/2026)
+## Memoria dell'algoritmo principale · W2 + MACD (aggiornata 05/11/2026) — LEGGERE PER PRIMA
+Unica strategia del tool e dei segnali reali dal 05/11/2026 (decisione dell'utente: "il settimanale con grandi quantità di denaro
+e poco rischio funziona molto di più"). Tutto il resto (v2 giornaliera, intraday, materie prime) è spento o rimosso. Le sezioni
+più sotto su v2 (obiettivi WR ≥ 70%/DD ≤ 15%, roadmap R1–R13, giri a due tempi) sono storiche: valgono solo come metodo.
+
+**Regola in uso** (`radar/weekly.py`): BTC settimanale. Regime SMA40w/EMA20w; ingresso long alla chiusura sopra EMA21w con flusso
+perp pf14z > 0; filtro F1: in un trend ≥ 16 settimane sopra la SMA40 nuovo long solo con MACD(8,21,5) > segnale e > 0. Uscite:
+trailing 2,5 ATRw, chiusura settimanale sotto EMA21, distribuzione. Short in perp solo in trend ribassista, rischio max 25%.
+Long in spot 1x, ingresso pieno il lunedì, 100% di `RADAR_CAPITAL`. Dal 2021: 14 trade, WR 93%, 10k → ~122,7k, DD −22,7%.
+Posizione reale: long dal 24/08/2026 a 77.812 $, trailing 71.415 $.
+
+**Cosa funziona (non toccare senza prove forti)**
+- Il vantaggio è evitare i bear (2022) e restare nei grandi trend: le code destre fanno il rendimento (lezioni 58, 73).
+- Il MACD settimanale serve come FILTRO dei rientri nei trend vecchi, non come uscita né come strategia a sé (64, 66, 79).
+- Il flusso perp serve a scegliere i trade, non a dimensionarli (57). Ingresso pieno, niente DCA (53). 1x, niente leva (58).
+- Stop/trailing a ~2,5 ATRw: più stretti cadono nel rumore, più larghi non scattano (60).
+
+**Cosa NON funziona (già provato, non ripetere)**
+- Incroci MACD settimanali da soli, long/short a ogni pallino o solo pallino verde sotto lo zero, con o senza EMA20/50/200 e
+  SMA200: instabili, sotto W2 su BTC, sotto B&H su SOL (79). Le liste di trade segnate a mano omettono i falsi segnali.
+- Uscite parziali (73), DCA in entrata (53), size sulla volatilità o sull'equity (60), stop più stretti (60).
+- Supporti/resistenze e volume profile come segnale (68, 75–77): S/R restano solo mappa visiva in dashboard.
+- Liquidazioni stimate (72), crollo "da volume" come uscita (69), nube Ichimoku come filtro (67).
+- Altre crypto e indici azionari: il vantaggio è specifico di BTC (71, 74). Intraday: rimosso (78).
+
+**Rischi da ricordare**: un 2018 ripetuto (top seguito da bear lungo) costerebbe −18% con il filtro MACD e fino a −56/−72% senza
+(62); il campione è piccolo (14 trade) e il registro reale (`/entrato`, `/uscito`) è il vero giudice.
+
+**Preferenze dell'utente**: swing di momentum long/short sui grandi movimenti, poche operazioni con capitale grande e poco rischio;
+risultati sempre dal 01/01/2021 (10.000 $ a 1x, DD, WR, trade) con tabella; confronto con B&H e con W2 attuale; autonomia nelle
+decisioni; risparmio di token (sub-agent per le ricerche, report settimanale leggero il lunedì). L'utente guarda TradingView
+settimanale con MACD 12/26/9 (pallini), EMA20/50, EMA200, SMA200 e livelli orizzontali: le sue idee vanno tradotte in regole
+meccaniche e testate su TUTTI i segnali, non solo quelli che ricorda.
+
+**Metodo per ogni idea nuova su W2**: preregistrare ≤ 8 varianti; stessi parametri su tutto; split 2021–23 / 2024–oggi; parametri
+vicini; togliere il trade migliore; confronto a pari drawdown; promuovere solo se migliora la famiglia, non il massimo.
+
+**Idee aperte per migliorare W2** (in ordine): 1) protezione da un 2018 ripetuto (lezione 62: trend giovane + niente ritest del top,
+da confermare dal vivo); 2) gestione del trade aperto dopo grandi guadagni senza tagliare le code; 3) short più efficaci nei bear
+con lo stesso schema del filtro MACD; 4) usare il segnale MACD/EMA dell'utente come conferma visiva in dashboard, non come regola.
+
+## Obiettivi e struttura dei giri (dal 30/10/2026)  · STORICO (era v2)
 **Obiettivo (utente, 30/10/2026 sera) — sostituisce i precedenti**: strategia swing **con DCA** su BTC con
 **win rate ≥ 70%** e **max drawdown giornaliero reale ≤ 15%** (mark-to-market, a 1x; la leva si sceglie dopo in base al DD),
 massimizzando il rendimento dentro questi due vincoli. Base corretta oggi: WR 83,3%, DD giornaliero 1x −28,1%, +57%:

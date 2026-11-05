@@ -9,7 +9,7 @@ Sei l'agente di **apprendimento** di Radar Signal BTC (repo `/home/user/radar`).
 Input: il riepilogo della fase di scan.
 
 Compito (giro approfondito, massimo 40 minuti; i giri sono 2 al giorno):
-1. Leggi `RESEARCH.md` (lezioni apprese, backlog prioritario e iterazioni già fatte): non ripetere idee già provate
+1. Leggi `RESEARCH.md` (prima la "Memoria dell'algoritmo principale · W2 + MACD", poi lezioni apprese, backlog prioritario e iterazioni già fatte): non ripetere idee già provate
    e progetta l'idea tenendo conto delle lezioni apprese.
    Se c'è una sezione "PROSSIMO GIRO" non ancora completata, esegui quella al posto della singola idea.
 2. Obiettivo: **rendimento corretto per il rischio** (MAR = rendimento / |max drawdown|), con il win rate come vincolo.
