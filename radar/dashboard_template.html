@@ -366,7 +366,7 @@ body.noscroll{overflow:hidden}
 .strat{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px}
 .strat .seg button{padding:7px 12px}
 .app.w2 .only-v2,.app:not(.w2) .only-w2{display:none!important}
-.app.w2 .strat,.labSec{display:none!important}
+.labSec{display:none!important}
 .app.w2 .w2top{order:-1}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
@@ -699,7 +699,7 @@ const V = R.v2, c = R.components, P = R.params;
 $("price").innerHTML = dots(usd(R.price));
 $("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
 // strategia scelta con lo switch (salvata solo in questo browser): "v2" giornaliera, "w2" settimanale
-let STRAT = R.weekly ? "w2" : "v2";   // dal 03/11/2026 il tool usa solo la strategia settimanale W2 + MACD
+let STRAT = (() => { try { return localStorage.getItem("radarStrat") === "v2" || !R.weekly ? "v2" : "w2"; } catch (_) { return R.weekly ? "w2" : "v2"; } })();   // W2 predefinita, v2 riattivata il 05/11/2026
 function pill() {
   const W = R.weekly; let cls = "status", txt = "In attesa";
   if (STRAT === "w2" && W) {

@@ -34,8 +34,9 @@ jobs:
           RADAR_DAILY_BRIEF: ${{ github.event.schedule == '30 0 * * *' && (vars.RADAR_DAILY_BRIEF || '1') || '0' }}
           # capitale reale (variabili del repository): piani in dollari di W2 + MACD su CAPITAL×WEEKLY_SHARE
           RADAR_CAPITAL: ${{ vars.RADAR_CAPITAL || '50000' }}
-          RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '1.0' }}
-          RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '0' }}
+          RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '0.6' }}
+          RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0.4' }}
+          RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '1' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
         run: |

@@ -62,8 +62,8 @@ def daily() -> None:
         STATE_FILE.write_text(json.dumps(st0, indent=2, default=str))
     collect_liquidations()
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
-    # dal 03/11/2026 l'unica strategia reale è W2 + MACD: gli alert di v2 restano spenti (RADAR_V2_ALERTS=1 per riattivarli)
-    v2_on = os.environ.get("RADAR_V2_ALERTS", "0") == "1"
+    # v2 riattivata il 05/11/2026 (decisione dell'utente) accanto a W2 + MACD: RADAR_V2_ALERTS=0 per spegnerla
+    v2_on = os.environ.get("RADAR_V2_ALERTS", "1") == "1"
     events = diff_events(report)
     for ev in events if v2_on else []:
         telegram.send(telegram.format_event(ev, report))
