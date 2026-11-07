@@ -2,298 +2,219 @@
 
 # Radar Signal BTC
 
-Segnali di trading su **Bitcoin** con **una sola strategia, W2 settimanale + filtro MACD**, in uso con capitale reale dal
-02/11/2026 (dal 05/11/2026 è l'unica nel tool, con il 100% del capitale; v2 giornaliera resta nel codice, con alert spenti: `RADAR_V2_ALERTS=1` per riattivarli).
-
-Poche operazioni grandi (2–3 l'anno, settimane o mesi ciascuna): long in **spot senza leva**, short in perp solo in trend
-ribassista con tetto di rischio. Segue il trend settimanale e, nei rialzi già vecchi, rientra solo se il MACD settimanale conferma.
+Segnali di trading su **Bitcoin** con **una sola strategia: W2 settimanale + filtro MACD**, in uso con capitale reale dal
+02/11/2026 e unica nel tool dal 05/11/2026, sul 100% di `RADAR_CAPITAL`. Poche operazioni grandi (2–3 l'anno, settimane o
+mesi ciascuna): long in **spot senza leva**, short in perp solo in trend ribassista confermato, con tetto di rischio. Intorno
+alla strategia: dashboard aggiornata ogni ora, mappa delle liquidazioni, order book, sentinella dei wallet Hyperliquid e
+balene del giorno, tutto con alert su Telegram.
 
 | Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W2 + MACD | Tenere BTC |
 |---|---|---|
-| 10.000 $ diventano | **~122.000 $** | ~26.800 $ |
-| Max drawdown giornaliero | −22,7% | −76,6% |
+| 10.000 $ diventano | **~120.000 $** | ~26.800 $ |
+| Max drawdown giornaliero | **−22,7%** | −76,6% |
 | Trade / win rate | 14 · 93% | – |
 
-Tutto arriva su **Telegram** con il piano in dollari sul capitale impostato (`RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE`, predefinito
-1,0); la **dashboard** si aggiorna da sola ogni ora con GitHub Actions. Simulatore e Statistiche usano la stessa equity giornaliera
-(rendimento e drawdown coincidono). Storia della ricerca e lezioni: `RESEARCH.md`.
+**Posizione aperta (al 07/11/2026):** long in spot dal 24/08/2026 a 77.812 $, trailing a 71.415 $.
 
-**Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot)
+**Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot Telegram:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot) ·
+**Repository:** https://github.com/andreagalanti91/radar
+
+@CryptoRadarGalaBot è l'unico bot attivo: gli altri (ad esempio il Worker "whale-desk" di whalebot) per ora sono fermi, quindi
+gli alert della sentinella e delle balene arrivano solo da questo repository. La strategia giornaliera v2 resta nel codice con gli
+alert spenti (`RADAR_V2_ALERTS=0`); intraday e materie prime (argento, Brent) sono stati rimossi.
 
 ## Operatività reale
 
-Una sola strategia, **W2 + MACD**, sul capitale `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE` (GitHub → Settings → Secrets and variables →
-Actions → **Variables**). Caso peggiore storico da ricordare: un crollo come il 2018 (−18% con il filtro MACD, −56/−72% senza).
+Si guarda solo la **candela settimanale** (chiusura UTC della domenica): la domenica sera si decide, il lunedì si esegue.
 
-**In pratica:** la domenica sera si decide, il lunedì si esegue.
-1. All'alert *SEGNALE SETTIMANALE*: compra in spot l'importo indicato e metti lo stop iniziale.
-2. A ogni *trailing aggiornato*: sposta lo stop al nuovo livello (controllo orario dal tool).
-3. All'*USCITA SETTIMANALE* (EMA 21, distribuzione) vendi all'apertura del lunedì; se il trailing viene toccato, l'alert arriva subito.
-4. Registra ogni operazione su Telegram con `/entrato` e `/uscito`: il lunedì alle 08:41 arriva il resoconto con il confronto.
+- **Trend:** long solo con chiusura sopra la SMA 40 settimanale ed EMA 20 in salita; short solo in trend ribassista (sotto la
+  SMA 40 in calo, EMA 20 in calo).
+- **Ingresso:** chiusura dal lato giusto della EMA 21 settimanale con flusso perp (CVD 14 giorni) concorde. **Filtro MACD:** nei
+  trend vecchi (≥ 16 settimane sopra la SMA 40) un nuovo long entra solo con MACD 8/21/5 sopra il segnale e sopra zero.
+- **Uscita**, alla prima di tre: trailing 2,5 ATR settimanali (controllo orario), chiusura settimanale oltre la EMA 21,
+  distribuzione (funding alto con flusso perp contrario). Short in perp con stop che non costa mai più del 25% del capitale.
 
-## Liquidazioni, order book e wallet
+Cosa fare con gli alert:
+1. *SEGNALE SETTIMANALE*: compra in spot l'importo indicato (lunedì all'apertura) e metti lo stop iniziale.
+2. *Trailing aggiornato*: sposta lo stop al nuovo livello.
+3. *USCITA SETTIMANALE*: vendi all'apertura del lunedì; se il trailing viene toccato l'alert arriva entro l'ora.
+4. Registra ogni operazione con `/entrato` e `/uscito`: il registro confronta la tua esecuzione con il segnale.
 
-**Liquidazioni** (pagina e card in Oggi): mappa STIMATA delle liquidazioni vicine da open interest Binance + OKX (leve 10–100x,
-ricalcolata ogni ora, `radar/liqmap.py`; nel browser la parte Binance arriva all'ora corrente), prezzi di liquidazione reali delle
-balene Hyperliquid (wallet di whalebot + conti più grandi), liquidazioni live Binance/OKX e storico OKX raccolto dal 30/10/2026.
-Sul grafico settimanale i 2 cluster più vicini per lato ("Liq S" sopra, "Liq L" sotto). Ricerca (lezione 81): la mappa non dà
-vantaggio a W2, è solo contesto per le 12–24 ore successive.
-
-**Order book** (`radar/orderbook.py`): ogni ora fotografa Coinbase, Kraken, OKX e Binance spot, controlla i dati (book vuoto o
-incrociato, spread, ritardo, prezzo lontano dalle altre fonti), salva la previsione a 1h/4h prima dell'esito e ogni 4 ore riaddestra
-il modello e ne misura l'accuratezza contro due riferimenti semplici (`data/orderbook.csv`, `data/ob_model.json`). Sotto 30 casi
-etichettati la previsione resta al 50%.
-
-**Wallet** (pagina in stile Hyperdash, `radar/pages/wallet.html`): i 3 wallet della sentinella (Principale, Simile 1, Simile 2) più
-quelli di whalebot, letti in diretta da Hyperliquid: valore del conto, PnL, **prossime mosse** (ordini, TP/SL, liquidazioni vicine),
-schede Posizioni · Ordini · Storico trade · Funding · Depositi. **Alert Telegram ogni 5 minuti** (`radar/wallets.py`,
-`.github/workflows/wallets.yml`): posizione aperta, chiusa o girata, variazione di size ≥ 25% e ≥ `RADAR_WALLET_MIN` (50k $),
-ordini nuovi ≥ `RADAR_WALLET_ORDER_MIN` (100k $). Notifiche nel browser opzionali mentre la pagina è aperta.
-
-**Balene del giorno** (pagina Wallet): ogni giorno `radar/scout.py` legge la classifica e i vault di Hyperliquid (le stesse API di
-Hyperdash) e sceglie le 3 balene con almeno 1 M$, rendimento a 1 anno > 80% (time-weighted, depositi esclusi), drawdown ≤ 30%,
-crescita regolare (R² ≥ 0,75) e funding ≤ 15% del PnL (criteri preregistrati in `research/scout/PREREG.md`). Chi è scelto resta
-finché uno sfidante non lo supera del 15%. Le scelte compaiono in «Selezione giornaliera» e «Classifica balene», ricevono gli stessi
-alert Telegram della sentinella e, quando cambiano, arriva un messaggio con le nuove 3. Verifica a 7/30/90 giorni contro la mediana
-dei candidati e dei conti ≥ 1 M$ in `data/scout_track.json`; ogni 30 giorni i pesi del punteggio si correggono (al massimo 0,05).
+Caso peggiore da ricordare: un 2018 ripetuto (top seguito da bear lungo) costerebbe circa −18% con il filtro MACD, fino a
+−56/−72% senza. Con 14 trade il campione è piccolo: il registro reale è il vero giudice. Codice: `radar/weekly.py`.
 
 ## La dashboard
 
-Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:
+Pensata per il telefono (installabile dalla schermata Home), dark-first con tema chiaro, prezzo live (Binance, Coinbase di riserva).
 
 | Sezione | Cosa trovi |
 |---|---|
-| **Oggi** | prezzo live, **segnale settimanale W2 + MACD** (stato, prezzo rispetto a trailing/ingresso/massimo, grafico settimanale dal 2021 con tutti gli ingressi e le uscite, EMA 21, SMA 40, trailing e supporti/resistenze, MACD, condizioni di ingresso e uscita), **supporti e resistenze** più vicini con dettaglio, piano in dollari sul tuo capitale |
-| **Simulatore** | capitale e data di partenza: quanto varrebbe oggi seguendo W2 + MACD (stessa equity giornaliera delle Statistiche); quante volte un obiettivo di capitale è stato raggiunto in passato |
-| **Statistiche** | storico del settimanale W2 + MACD: curva di equity contro BTC, trade, risultati per anno, drawdown, **registro dei trade reali** |
-| **Notizie** | schede Impatto, Dati macro (con calendario economico della settimana, previsioni, dati precedenti e perché contano per BTC), Bitcoin, ETF e istituzionali, Regole, Derivati e on-chain |
-| **Metodo** | regole complete e limiti del sistema |
+| **Oggi** | card della posizione con un solo prezzo di riferimento (live o ultima chiusura oraria); overlay *Perché è aperta e quando si chiude* con condizioni, uscite, piano e tutti i trade W2; grafico settimanale dal 2021 con ingressi e uscite, EMA 21, SMA 40, supporti/resistenze e cluster di liquidazione più vicini; card S/R; card *Liquidazioni vicine*; *Oggi nelle notizie* |
+| **Simulatore** | capitale e data di partenza: quanto varrebbe oggi seguendo W2 + MACD (stessa equity giornaliera delle Statistiche) |
+| **Statistiche** | curva di equity contro BTC, trade, risultati per anno, drawdown, registro dei trade reali |
+| **Liquidazioni** | mappa stimata Binance + OKX, prezzi di liquidazione delle balene Hyperliquid, feed live, orari di aggiornamento per fonte, motore dell'order book |
+| **Wallet** | sentinella in stile Hyperdash dei 3 wallet (Principale, Simile 1, Simile 2) e *Balene del giorno* con criteri e track record |
+| **News** | prima il calendario economico, poi le riunioni FOMC e BCE, poi le notizie classificate per impatto |
 
-## Regione prevista
+La pagina *Metodo* (regole complete e limiti) è fuori dal menu e si apre dall'overlay della posizione. Le pagine Liquidazioni e
+Wallet stanno in `radar/pages/` (`liquidazioni.html`, `wallet.html`) e vengono incluse nella dashboard da `radar/dashboard.py`.
 
-Ogni giorno il modello stima la **regione** in cui il prezzo andrà nei prossimi 7 giorni: una **zona di acquisto** sotto il prezzo (dove piazzare ingressi DCA, spot o a leva) e una **zona di vendita** sopra (target o short). La profondità dei ritracciamenti è misurata in ATR e si usano i quantili storici nello stesso regime di trend e flusso, senza guardare al futuro (`radar/zones.py`).
+## Automazioni e alert
 
-Validazione 2021–2026 (1857 giorni): la zona di acquisto viene toccata entro 7 giorni nel **65%** dei casi, quella di vendita nel **64%**; comprare al centro della zona ha dato un ingresso in media **4,4%** migliore del prezzo di chiusura. Nel 39% dei casi il prezzo scende sotto la zona: lo stop resta necessario.
+| Quando | Workflow / modulo | Cosa fa |
+|---|---|---|
+| Ogni ora a :07 (riserva a :37) | `.github/workflows/daily.yml` → `python -m radar.cli daily` | registro Telegram, dati, segnale W2, S/R, liquidazioni, scout, order book, notizie e calendario, alert, dashboard su Pages |
+| 00:30 UTC | stesso workflow | giro sulla candela giornaliera chiusa (mai saltato) |
+| Ogni 5 minuti | `.github/workflows/wallets.yml` → `python -m radar.wallets` | alert sui wallet della sentinella e sulle balene del giorno |
+| Una volta al giorno | `radar/scout.py` (dentro il giro orario, ≥ 20 ore dall'ultimo) | scelta delle 3 balene, verifica delle scelte passate |
+| Lunedì 08:41 | resoconto su Telegram | settimana chiusa e confronto con il registro reale |
 
-## Strategia v2 in parole semplici
+Il giro di riserva a :37 esiste perché il cron di GitHub è best-effort: si ferma subito se l'ultimo giro completo è di meno di
+25 minuti fa (`data/state.json`, `last_run`). Alert della strategia (tutti "RADAR SIGNAL BTC"): segnale settimanale con piano in
+dollari, trailing aggiornato, allerta distribuzione, uscita settimanale, trailing toccato in tempo reale, dati fermi da oltre 36 ore.
 
-1. **Il segnale.** Ogni notte, alla chiusura giornaliera UTC, si controllano i 6 setup qui sotto (flusso dei perp, posizionamento,
-   funding, open interest). Se uno scatta, **non si entra subito**.
-2. **La conferma a 4 ore.** Si aspetta che una candela a 4 ore chiuda **sopra il massimo delle due candele 4h precedenti**
-   (short: sotto il minimo), entro 72 ore. Se non succede, il segnale scade. Su Telegram arriva subito la soglia e la scadenza.
-3. **L'ingresso a due livelli.** Alla conferma: **40% a mercato**, **60% con un ordine limite 0,5 ATR più in basso**
-   (short: più in alto), valido 7 giorni.
-4. **Stop e target.** Stop a **1 ATR dall'ingresso** per tutta la posizione. Un solo **take profit a +1R** dal prezzo medio
-   (R = distanza tra medio e stop). Se dopo **14 giorni** non è uscito, si chiude.
-5. **Quanto rischiare.** Si parte da un rischio base del **4,3% del capitale** per trade (variabile `RADAR_RISK`).
-   Si guarda il **delta taker** della candela 4h di conferma (acquisti aggressivi meno vendite aggressive, media spot e perp):
-   più è forte nella direzione del trade, più si rischia, da 0,5× a 2× il rischio base. I long con il prezzo settimanale sotto la
-   media a 40 settimane rischiano il 40% in meno. Rischio per trade quindi tra **1,4% e 9,3%**.
-6. **La leva** viene di conseguenza: leva = rischio / distanza dello stop, **al massimo 5x**, margine isolato (media storica 1,6x).
-
-Una sola posizione alla volta. Il rischio di ogni trade reale si fissa alla conferma e non cambia più.
-
-### I 6 setup (il segnale giornaliero)
-
-| Setup | Lato | Condizione | Logica |
-|---|---|---|---|
-| `flow` | long | z(CVD perp 14g) − z(long/short retail) > 1,5 | acquisti aggressivi sui perp + retail scettico |
-| `capit` | long | drawdown 30g < −12% e open interest −8% in 7g | flush della leva: le liquidazioni hanno ripulito il mercato |
-| `fundneg` | long | funding medio 7g < 0 | short affollati che pagano: carburante per uno squeeze |
-| `brk` | long | nuovo massimo 20g, CVD perp > +1σ, trend rialzista | breakout confermato dal flusso |
-| `sflow` | short | score < −1,5 in regime ribassista | flusso debole + retail long |
-| `sfund` | short | funding 7g > +1σ in regime ribassista | rimbalzo a leva dentro un trend ribassista |
-
-Regime ribassista: prezzo sotto la SMA200 e SMA50 sotto la SMA200. Gli short si fanno solo sui futures.
-
-## Risultati v2 (mar 2022 – ott 2026, candele 4h, commissioni, funding e slippage 0,1% inclusi)
-
-Rischio base dal vivo 4,3% (scelto il 31/10: è il massimo che tiene P(DD>20%) ≤ 15% con dati dal 2021 e slippage 0,2%). Drawdown sull'equity **giornaliera** (non solo trade per trade).
-
-| | 2022–23 (scelta dei parametri) | 2024–25 (verifica) | 2026 (verifica) | **Totale** |
-|---|---|---|---|---|
-| Trade | 49 | 38 | 18 | **105** |
-| Win rate | 77,6% | 78,9% | 83,3% | **79,0%** |
-| Rendimento | +27,7% | +52,6% | +38,8% | **+170,5%** |
-| Max drawdown giornaliero | −10,6% | −11,1% | −3,6% | **−11,1%** |
-| Aspettativa per trade | +0,53% | +1,16% | +1,87% | +0,99% |
-
-Per anno: 2022 +14,2% · 2023 +11,8% · 2024 +9,7% · 2025 +39,2% · 2026 +38,8%.
-Win rate sopra +1% sul capitale 63,8%, profit factor 2,43, durata media 3 giorni, leva media 1,4x.
-
-**Walk-forward** (ricerca, notte 01:47): la fonte del delta taker scelta solo sul passato è la stessa in entrambe le finestre e resta
-positiva fuori campione: 2024–25 +63,2% (DD −13,4%) contro H2 senza size +37,2%; 2026 +45,9% (DD −4,2%) contro +22,7%.
-
-| 10.000 $ (size del piano v2, esposizione massima 5x) | 1x | 2x | 5x |
-|---|---|---|---|
-| Capitale finale | **27.056 $** | 55.053 $ | 121.995 $ |
-| Max drawdown (giornaliero a 1x, per trade a 2x/5x) | −11,1% | −20,7% | −39,8% |
-| Peggior trade | −5,6% | −11,2% | −21,3% |
-
-2x e 5x moltiplicano la size di ogni trade con il tetto di esposizione a 5x del conto (5x solo come confronto: drawdown oltre il 40%).
-Registro dei trade in stop con l'analisi di ciascuno: [research/LOSERS.md](research/LOSERS.md).
-
-**Confronto con la strategia precedente** (segnale giornaliero, DCA a 3 tranche, stop 3 ATR, uscite a scaglioni, 49 trade):
-+34,9% a 1x con drawdown giornaliero −28,1%. v2: **+170,5% con −11,1%**.
-
-**Con slippage 0,2%** al rischio 4,67% (precedente valore dal vivo): +140,3%, DD −12,8%, WR 76,9%. Dal 2021 con slippage 0,2% il
-rischio massimo che tiene la coda è 4,3%: è il valore scelto per il tool.
-Al rischio di ricerca 5,24% e slippage 0,1%: +225,8%, DD −13,5%, 10.000 $ → 32.580 $.
-
-### Limiti (onesti)
-- **Bootstrap al limite**: al rischio di ricerca la probabilità di un drawdown oltre il 20% nei ricampionamenti è 15,0%, esattamente
-  la soglia del criterio. Per questo il rischio dal vivo è più basso (4,67%). Alcuni vicini dei parametri (k 2,0, clip 0,12, W 0,7) la sforano.
-- **Dipende dal delta della barra di conferma**: con il delta della barra precedente il vantaggio sparisce (2026 da +48,6% a +11,8%).
-  Non è un errore di look-ahead (la barra è chiusa prima dell'ingresso), ma il dato va letto subito.
-- **Latenza del perp**: l'archivio dei perp arriva con circa 1 giorno di ritardo; dal vivo il delta è spesso solo spot (regola prudente,
-  nella ricerca spot da solo rende meno del mix: +206% contro +226%).
-- **~1 ora di ritardo**: il controllo è orario, quindi l'ingresso reale avviene fino a circa un'ora dopo la chiusura 4h di conferma
-  (in simulazione: all'apertura della barra successiva). Anche i dati giornalieri dei derivati possono arrivare in ritardo.
-- 105 trade in sequenza: un trade spostato cambia il risultato di alcuni punti. Il registro reale parte dal 31/10/2026.
-- Con stop vicino e target unico le perdite medie (−3,6% sul capitale) valgono circa una vincita e mezza (+2,3%).
-
-La strategia giornaliera precedente resta nel codice (`radar/backtest.py`, `radar/research.py`) come banco di ricerca.
-
-## Segnale settimanale (W2)
-
-Secondo segnale reale, accanto a v2 (che non cambia). Per chi preferisce **poche operazioni grandi** a tante piccole.
-Si guarda solo la **candela settimanale** (da lunedì a domenica, chiusura UTC della domenica); si entra o si esce all'apertura del lunedì.
-
-1. **Il trend.** Long solo se la settimana chiude **sopra la media a 40 settimane** e la EMA 20 settimanale sale. Short solo in
-   trend ribassista: chiusura sotto la media a 40 settimane, media a 40 in calo su 4 settimane, EMA 20 in calo.
-2. **L'ingresso.** La settimana chiude dal lato giusto della **EMA 21 settimanale** e il flusso dei perp (CVD perp 14 giorni) va
-   nella stessa direzione. **Filtro MACD (dal 02/11/2026):** nei trend vecchi (sopra la media a 40 settimane da almeno 16
-   settimane) un nuovo long entra solo se il **MACD settimanale 8/21/5** è sopra la linea di segnale e sopra zero: evita i
-   rientri sul ritest del top che fallisce (2021-05, 2024-05/07/08; nel 2018 la perdita passa da −56% a −18%).
-3. **Come.** Long in **spot, senza leva** (niente funding). Short in **perp**, con esposizione ridotta quando lo stop è lontano:
-   lo stop iniziale non costa mai più del **25% del capitale** dedicato.
-4. **L'uscita**, alla prima di tre: **trailing 2,5 ATR settimanali** dalla miglior chiusura giornaliera (controllato ogni ora);
-   chiusura settimanale oltre la EMA 21; **distribuzione** (long: funding medio 7 giorni sopra 0,09% al giorno con flusso perp
-   negativo; short: funding sotto −0,03% con flusso positivo). Stop iniziale a 2,5 ATR settimanali.
-
-Su Telegram: **SEGNALE SETTIMANALE** con il piano (spot o perp, esposizione, importi, stop, uscite), **trailing aggiornato** quando
-si sposta di oltre 1 ATR giornaliero, **allerta distribuzione**, **USCITA SETTIMANALE** con motivo e risultato, allerta in tempo
-reale se il trailing viene toccato. Importi su `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE` (predefinito 1,0 = tutto il capitale:
-**decidi tu** quanta parte dedicare al settimanale, ad esempio 0,5 per metà).
-
-| Dal 01/01/2021 al 30/10/2026 (commissioni, funding e slippage 0,1%) | W2 |
-|---|---|
-| Trade | 14 (2,4 l'anno) |
-| Win rate | 93% |
-| Guadagno medio per trade | +21,2% sul capitale |
-| Peggior trade chiuso | +1,0% (la posizione aperta è a −0,8%) |
-| Rendimento | **+1.128,7%** (10.000 $ → 122.868 $; a 2x 660.713 $) |
-| Max drawdown giornaliero | **−22,7%** (a 2x −37,3%) |
-| MAR (rendimento / DD) | 49,8 |
-
-Per anno: 2021 +188,1% · 2022 +19,4% · 2023 +47,1% · 2024 +108,6% · 2025 +1,9% · 2026 +14,2%.
-Senza il filtro MACD (W2 fino al 01/11/2026): 19 trade, +617,6%, DD −42,6%. **Attenzione:** il filtro è nato guardando i perdenti
-del 2021–24; regge su tutte le 54 combinazioni MACD provate e migliora anche il 2017–20 mai visto, ma ritarda di una settimana alcuni
-rientri vincenti (2024-02: +61% → +42%). Il registro dei trade reali dirà se il vantaggio è vero.
-Posizione al 30/10/2026: long in spot dal 24/08/2026 a 77.812 $.
-
-**Rischio, detto chiaramente.** Il drawdown storico è **−42,6%** e nei ricampionamenti la probabilità di un drawdown oltre il 40% è
-di circa **il 50%**: è un rischio da accettare consapevolmente. Prima del 2021 uno short (16/03/2020) senza tetto avrebbe perso
-circa **−45%** in un solo trade; con il tetto sugli short la stessa operazione perde circa −18%. Il tetto è stato scelto **dopo** aver
-visto i risultati (non era tra le varianti preregistrate), per prudenza sulla coda: non migliora il rendimento, limita il caso peggiore.
-Pochi trade (19) vogliono dire statistiche fragili: un singolo trade cambia molto il totale. Il primo giro dal vivo mostra il long già
-aperto come "posizione in corso", non come segnale nuovo. Codice: `radar/weekly.py`.
-
-**Verifica di robustezza (01/11/2026).** W2 è risultata la 2ª migliore fra le 31 varianti provate e il risultato non si spiega con la
-sola fortuna della scelta. Però il vantaggio su **comprare e tenere BTC** non è statisticamente significativo: viene quasi tutto
-dall'aver evitato il crollo del 2022. Da luglio 2023 W2 rende circa quanto BTC tenuto con un'esposizione ridotta allo stesso drawdown,
-e sul 2018–20 questa variante è solo 20ª su 31. Per questo W2 si usa a **1x** (long spot, short con tetto): il 2x del simulatore
-è solo un confronto, non un consiglio. Va vista come un trend-following con meno drawdown di BTC, non come una fonte di extra-rendimento.
-**Caso peggiore storico (01/11/2026).** Con prezzi dal 2015 la stessa logica (con flusso spot al posto di quello perp, che prima del
-2020 non esiste) nel crollo dal massimo di gennaio 2018 avrebbe perso circa **−72%** a 1x con 5 long persi di fila. È il motivo per cui
-conviene dedicare a W2 una quota del capitale (50–70%) e seguire su carta nel Laboratorio la variante "trend giovane + niente ritest
-del top", che in quel periodo avrebbe chiuso a +147% con drawdown −18,5%.
-
-## Registro dei trade reali (Telegram)
-
-Scrivi al bot cosa hai eseguito davvero (su Bybit o OKX): il registro confronta la tua esecuzione con il segnale e i giri di
-ricerca imparano dallo slippage e dal ritardo reali. Il bot legge i messaggi **a ogni giro orario** del workflow: la conferma
-arriva **entro un'ora**. Accetta solo la chat `TELEGRAM_CHAT_ID`; gli altri messaggi vengono ignorati senza risposta.
+**Registro dei trade reali** (`radar/journal.py`, `data/journal.json`): il bot legge i comandi a ogni giro orario e risponde entro
+un'ora, solo dalla chat `TELEGRAM_CHAT_ID`.
 
 | Comando | Esempio | Cosa registra |
 |---|---|---|
-| `/entrato <prezzo> [quantità_btc] [v2\|w2] [long\|short]` | `/entrato 67.500 0,015` | ingresso (1ª tranche) |
-| `/limit <prezzo> [quantità_btc]` | `/limit 66900 0,022` | 2ª tranche (limit 60%) eseguita |
-| `/uscito <prezzo> [motivo]` | `/uscito 69100 tp` | uscita: risultato % sul prezzo |
-| `/exchange bybit\|okx` | `/exchange okx` | exchange dei trade (predefinito `bybit/okx`) |
-| `/registro` | | ultimi trade reali, slippage e ritardo medi |
-| `/aiuto` | | elenco dei comandi |
+| `/entrato <prezzo> [quantità_btc] [long\|short]` | `/entrato 77.812 0,5` | ingresso |
+| `/uscito <prezzo> [motivo]` | `/uscito 95000 trailing` | uscita e risultato |
+| `/exchange bybit\|okx` | `/exchange okx` | exchange usato |
+| `/registro` · `/aiuto` | | ultimi trade con slippage e ritardo medi · elenco comandi |
 
-Virgola o punto vanno bene (`67.500`, `67500,5`, `0,015`), maiuscole indifferenti. Se strategia o lato mancano si deducono dal
-segnale attivo (v2 o W2); con due segnali attivi o nessuno il bot chiede di specificarli. Esempio di risposta:
-`✅ Registrato ingresso long V2 a $67.134 · 0,01 BTC (bybit/okx) · id 2026-10-31-1` e
-`Segnale ingresso $67.000 · slippage +0,200% · ritardo 4,0 h` (slippage positivo = esecuzione peggiore del segnale).
-Tutto in `data/journal.json`; nella dashboard, *Storico operativo → Reali*, la tabella con slippage e ritardo medi.
-Limite: `getUpdates` non funziona se sul bot è attivo un webhook (rimuovilo con `deleteWebhook`).
+## Wallet e balene
 
-## Brand
+**Sentinella** (`radar/wallets.py`, ogni 5 minuti): legge da Hyperliquid posizioni e ordini dei 3 wallet fissi più le 3 balene
+del giorno, su tutti i DEX (principale + HIP-3), e li confronta con la fotografia precedente (cache di GitHub Actions). Alert su:
+- posizione aperta, chiusa o girata;
+- variazione di size di almeno il 25% **e** di almeno `RADAR_WALLET_MIN` (50.000 $);
+- ordini nuovi (limit, TP, stop) da almeno `RADAR_WALLET_ORDER_MIN` (100.000 $): le "prossime mosse".
 
-<p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
+Un wallet appena entrato viene solo fotografato al primo giro, senza alert.
 
-Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `radarsignal` in Geist bold. Palette: Signal Blue `#3D5BFF`, Pulse Violet `#8B5CFF`, Blip Mint `#5EF0C4`, Night `#07080C`. Font: Geist, Geist Mono per etichette e chip, Doto per i numeri principali. File in `brand/` (PNG pronti, sorgente HTML in `brand/src/board.html`).
+**Balene del giorno** (`radar/scout.py`, criteri preregistrati in `research/scout/PREREG.md`): dalla classifica e dai vault di
+Hyperliquid (le stesse API pubbliche di Hyperdash) si scelgono le 3 balene con:
 
-## Ciclo di miglioramento
+| Criterio | Soglia |
+|---|---|
+| Valore del conto | ≥ 1 M$ |
+| Rendimento a 1 anno (time-weighted, depositi esclusi) | > 80% |
+| Max drawdown | ≤ 30% |
+| Regolarità della crescita (R²) | ≥ 0,75 |
+| Funding sul PnL | ≤ 15% |
 
-Due giri al giorno (07:17 e 19:17 ora italiana) di ricerca e verifica, più i giri notturni orari "campione/sfidante" (22:47–06:47): ogni ora una linea di ricerca preregistrata prova a battere il campione (oggi v2) su rendimento a parità di rischio di coda, placebo, walk-forward e vicini dei parametri; un sistema su carta (H2 e v2, `radar/paper.py`) segue i candidati dal vivo. Al mattino un unico resoconto su Telegram. Ogni giro impara (lezioni apprese) e propone nuove idee, ciascuna affidata a un sotto-agente definito in `.claude/agents/`:
+Isteresi del 15%: chi è scelto resta finché uno sfidante non lo supera del 15%. Le scelte vengono verificate a 7/30/90 giorni
+contro la mediana dei candidati e dei conti ≥ 1 M$ (`data/scout_track.json`); ogni 30 giorni i pesi del punteggio si correggono
+(al massimo 0,05). Quando le 3 cambiano arriva un messaggio su Telegram. Scelte in `data/wallet_picks.json`.
 
-| Fase | Agente | Cosa fa |
-|---|---|---|
-| Pianificazione | `radar-plan` | legge obiettivi, roadmap, lezioni e scelte dell'utente e decide cosa studiare |
-| Scan | `radar-scan` | aggiorna i dati, controlla la salute del sistema, fotografa mercato e prestazioni recenti |
-| Apprendimento | `radar-learn` | prova una sola idea (DCA, take profit e stop a scaglioni, uso della regione prevista, nuovi setup) su una copia di lavoro e la valuta |
-| Revisione | `radar-review` | avvocato del diavolo sui candidati: overfitting, dipendenza da pochi trade, errori |
-| Miglioramento | `radar-improve` | se il gate è superato la pubblica e invia l'alert Telegram con la performance prima/dopo, altrimenti la scarta |
+## Liquidazioni e order book
 
-Obiettivo: rendimento corretto per il rischio (rendimento / max drawdown). Il gate (`radar/research.py`) richiede: MAR migliore del 5%, nessun peggioramento nel test 2024–25, nel training 2022–23 e nel 2026, miglioramento nella maggior parte dei semestri, probabilità ≥ 75% al ricampionamento, nessuna dipendenza da 1–2 trade, nessun peggioramento su SOL (banco di prova), robustezza, test automatici superati, nessun trade aperto. Il diario è in [`RESEARCH.md`](RESEARCH.md).
+**Mappa delle liquidazioni** (`radar/liqmap.py`, ogni ora): STIMA da open interest Binance USDT-M + OKX, distribuito su leve
+tipiche (10–100x) in fasce dello 0,25%; i livelli spariscono quando il prezzo li attraversa. Ogni fonte dichiara fin dove arriva il
+dato vero e quante ore sono stimate. Hyperliquid è l'unico exchange con posizioni pubbliche: per i conti più grandi si leggono i
+prezzi di liquidazione veri. Sul grafico settimanale i 2 cluster più vicini per lato. Liquidazioni reali OKX raccolte da
+`radar/liquidations.py`. Ricerca (lezione 81): nessun vantaggio per W2, è contesto per le 12–24 ore successive.
 
-## Messa online
+**Order book** (`radar/orderbook.py`, ogni ora): fotografa Coinbase, Kraken, OKX e Binance spot; scarta le fonti con book vuoto o
+incrociato, spread > 15 bps, dati vecchi o prezzo lontano dalle altre; salva la previsione a 1h/4h **prima** dell'esito e ogni
+4 ore riaddestra il modello e ne misura l'accuratezza contro due riferimenti ingenui (`data/orderbook.csv`, `data/ob_model.json`).
+Con pochi dati la previsione resta vicina al 50%, e la pagina lo dice.
 
-1. Bot Telegram da [@BotFather](https://t.me/BotFather); il token non va mai scritto nel codice.
-2. *Settings → Secrets and variables → Actions*: `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID`.
-3. *Settings → Pages → Source: GitHub Actions*.
-4. Il workflow `Radar Signal BTC daily` gira ogni ora (notizie, calendario, dashboard, alert sui trade aperti) e alle 00:30 UTC calcola il segnale sulla candela chiusa e invia il riepilogo giornaliero.
+## Ricerca
 
-Alert inviati (tutti "RADAR SIGNAL BTC"): nuovo segnale in attesa di conferma 4h (soglia e scadenza), ingresso confermato con piano completo in dollari e leva sul capitale (`RADAR_CAPITAL`, predefinito 50.000 $; rischio base `RADAR_RISK`, predefinito 0.043), limit DCA eseguito, take profit, stop, uscita a tempo, segnale scaduto, livelli toccati in tempo reale (controllo orario su candele 1h: soglia di conferma, limit, stop, TP), dati non aggiornati da oltre 36 ore, riepilogo giornaliero (disattivabile con `RADAR_DAILY_BRIEF=0`).
+Ogni idea si preregistra (≤ 8 varianti, soglie scritte prima), si testa dal 01/01/2021 su tutti i segnali con periodi separati e
+si promuove solo se migliora la famiglia di varianti, non il caso migliore. Ultime conclusioni:
+
+| Lezione | Idea | Esito | Cartella |
+|---|---|---|---|
+| 74 | W2 + MACD su top 50 crypto e indici azionari | il vantaggio è solo di BTC | `research/top50/` |
+| 75–77 | supporti/resistenze + volume e flusso al tocco | nessun vantaggio: S/R solo come mappa visiva | `research/sr_volume/` |
+| 78 | intraday perp 1h/4h, leva 10x | rimosso dal tool | `research/intraday/` |
+| 79 | MACD settimanale: flip sugli incroci, pallino verde sotto zero | scartato (instabile, sotto W2) | `research/macd_flip/` |
+| 80 | strategie short dedicate (S1–S7) | scartate (sotto gli short di W2) | `research/short_w2/` |
+| 81 | liquidazioni come calamita e confluenza con gli S/R | nessun vantaggio | `research/liquidazioni/` |
+
+Diario completo, memoria dell'algoritmo e lezioni: [`RESEARCH.md`](RESEARCH.md).
+
+## Agenti
+
+Sotto-agenti in `.claude/agents/`, ognuno con file suoi; il commit lo fa la sessione principale dopo test e render.
+
+| Agente | Ruolo |
+|---|---|
+| `radar-ui` | dashboard e pagine (`radar/dashboard_template.html`, `radar/pages/`), verifica a 400 e 1280 px, tema chiaro e scuro |
+| `radar-dati` | fonti dati e raccoglitori (prezzi, perp, OI, liquidazioni, order book, Hyperliquid, notizie) |
+| `radar-ricerca` | backtest delle idee in `research/`, mai nel tool |
+| `radar-wallet` | Hyperliquid: pagina Wallet, sentinella, balene del giorno |
+| `radar-verifica` | controllo della dashboard pubblicata, dei workflow e degli alert dopo ogni deploy |
+| `radar-plan` · `radar-scan` · `radar-learn` · `radar-review` · `radar-improve` | ciclo di ricerca: piano, fotografia dei dati, prova di un'idea, avvocato del diavolo, promozione |
+
+Giro tipo: ricerca/dati/ui in parallelo → test e render → commit → deploy → `radar-verifica`.
+
+## Configurazione
+
+*Settings → Secrets and variables → Actions*. I valori dei secret non vanno mai scritti nel codice.
+
+| Nome | Tipo | Predefinito | Uso |
+|---|---|---|---|
+| `TELEGRAM_BOT_TOKEN` | secret | – | token del bot |
+| `TELEGRAM_CHAT_ID` | secret | – | chat che riceve gli alert e da cui si accettano i comandi |
+| `RADAR_CAPITAL` | variabile | 50000 | capitale su cui si calcolano i piani in dollari |
+| `RADAR_WEEKLY_SHARE` | variabile | 1.0 | quota del capitale dedicata a W2 + MACD |
+| `RADAR_WALLET_MIN` | variabile | 50000 | variazione minima di size per un alert wallet |
+| `RADAR_WALLET_ORDER_MIN` | variabile | 100000 | valore minimo di un ordine nuovo per un alert wallet |
+| `RADAR_WALLET_ALERTS` | variabile | 1 | `0` spegne gli alert dei wallet |
+| `RADAR_V2_ALERTS` | variabile | 0 | `1` riaccende gli alert della strategia giornaliera v2 |
+
+GitHub Pages: *Settings → Pages → Source: GitHub Actions*.
 
 ## Uso locale
 
 ```bash
 pip install -r requirements.txt
-python -m radar.cli daily          # dati, segnale, alert, dashboard in site/
-python -m radar.cli backtest       # strategia giornaliera precedente (ricerca)
-python -m radar.research           # scorecard della strategia
-python -m radar.cli test-telegram  # verifica il bot
+python -m radar.cli daily            # dati, segnale, alert, dashboard in site/
+python -m radar.cli test             # test
+python -m radar.cli test-telegram    # verifica il bot
+python -m radar.wallets              # un giro della sentinella wallet
+python -m radar.scout --no-telegram  # scelta delle balene senza messaggi
 ```
 
 ## Struttura
 
 ```
-radar/data.py         download e cache incrementale (data/*.csv)
-radar/features.py     CVD spot/perp, funding, OI, long/short, basis, ATR, trend
-radar/strategy.py     6 setup, parametri, piano DCA
-radar/backtest.py     strategia giornaliera precedente (ricerca)
-radar/live.py         segnali reali v2: stato (conferma, ingresso, trade), storico, eventi
-radar/paper.py        motore v2/H2 su candele 4h e conti su carta
-radar/research.py     scorecard e gate di promozione
-radar/telegram.py     messaggi
-radar/journal.py      registro dei trade reali via Telegram (data/journal.json)
-radar/dashboard*.py   dashboard (dark-first, light/dark, mobile, installabile)
-brand/                logo, icona app, banner, social preview, brand board (sorgenti in brand/src)
-.claude/agents/       sotto-agenti del ciclo orario (scan, apprendimento, miglioramento)
-radar/zones.py        previsione della regione di prezzo a 7 giorni
-radar/news.py         notizie RSS classificate per impatto e calendario economico
-radar/intraday.py     controllo orario dei livelli v2 (alert in tempo reale)
-radar/weekly.py       segnale settimanale W2: storico, stato, eventi, controllo orario del trailing
-radar/liquidations.py raccolta delle liquidazioni reali OKX da oggi (data/liquidations.csv)
-radar/observe.py      osservazione su carta di altri asset (SOL)
-tests/                test del motore di backtest (python -m radar.cli test)
+radar/cli.py           giro orario: orchestra tutti i moduli
+radar/data.py          download e cache incrementale (data/*.csv)
+radar/features.py      CVD spot/perp, funding, OI, ATR, trend
+radar/weekly.py        W2 + MACD: storico, stato, eventi, controllo orario del trailing
+radar/levels.py        supporti e resistenze (mappa visiva)
+radar/liqmap.py        mappa stimata delle liquidazioni + prezzi di liquidazione Hyperliquid
+radar/liquidations.py  raccolta delle liquidazioni reali OKX
+radar/orderbook.py     motore dell'order book (foto, controlli, previsione, apprendimento)
+radar/wallets.py       sentinella wallet Hyperliquid (ogni 5 minuti)
+radar/scout.py         balene del giorno e verifica delle scelte
+radar/news.py          notizie, calendario economico, riunioni FOMC e BCE
+radar/journal.py       registro dei trade reali via Telegram
+radar/telegram.py      messaggi
+radar/dashboard.py     dashboard (con dashboard_template.html)
+radar/pages/           pagine Liquidazioni e Wallet
+radar/live.py, strategy.py, backtest.py, intraday.py, paper.py, lab.py, research.py, zones.py, observe.py
+                       strategia v2 e banco di ricerca (alert spenti)
+research/              studi, preregistrazioni e risultati
+tests/                 test (python -m radar.cli test)
+brand/                 logo, icone, banner, brand board (sorgenti in brand/src)
+.claude/agents/        sotto-agenti per mansione e per il ciclo di ricerca
+.github/workflows/     daily.yml (orario) e wallets.yml (5 minuti)
 ```
 
-Fonti dati: Binance (spot, perp USDT-M, open interest, long/short ratio), OKX per i giorni non ancora archiviati, alternative.me (Fear & Greed).
+Fonti dati: Binance (spot, archivio perp), OKX, Coinbase, Kraken, Hyperliquid, alternative.me, calendari ufficiali di Fed e BCE.
+
+## Brand
+
+<p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
+
+Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `radarsignal` in Geist bold. Palette: Signal Blue
+`#3D5BFF`, Pulse Violet `#8B5CFF`, Blip Mint `#5EF0C4`, Night `#07080C`. Font: Geist, Geist Mono per etichette e chip, Doto per i
+numeri principali. File in `brand/` (sorgente in `brand/src/board.html`).
 
 Strumento di analisi, non consulenza finanziaria.
