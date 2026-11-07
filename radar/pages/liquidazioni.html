@@ -56,12 +56,18 @@
 .obP>div{border-radius:16px;padding:12px 14px;background:var(--raise);border:1px solid var(--line);display:grid;gap:3px}
 .obP span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)} .obP b{font:600 1.3rem var(--font);font-variant-numeric:tabular-nums} .obP small{font-size:.72rem;color:var(--label2)}
 .lqNote{font-size:.78rem;color:var(--label2);line-height:1.5;margin:0}
+.lqAge{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.lqAge>div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 12px;display:grid;gap:2px;min-width:0}
+.lqAge span{font:500 .6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+.lqAge b{font:600 .86rem var(--font);font-variant-numeric:tabular-nums} .lqAge small{font-size:.7rem;color:var(--label2)}
+.lqAge>div.old{border-color:color-mix(in srgb,var(--orange) 55%,transparent)} .lqAge>div.old b,.lqAge>div.old small{color:var(--orange)}
 @media (max-width:560px){.lqTot{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.lqTot>div{padding:10px}.lqTot b{font-size:.86rem}.lqRow,.lqNow{grid-template-columns:52px minmax(0,1fr) 40px;gap:6px}}
 </style>
 <div class="view" id="v-liquidazioni" hidden>
   <div class="section">
     <div class="sh">Liquidazioni vicine <small id="lqSub">stima + dati reali</small></div>
     <div class="lqBar"><div class="lqSrc" id="lqSrc"></div><button type="button" class="lqBtn" id="lqRefresh">↻ Aggiorna</button></div>
+    <div class="lqAge" id="lqAge" aria-label="Aggiornamento delle fonti"></div>
     <div class="card glow lqHead" id="lqHead"><h2>Dati in caricamento…</h2></div>
     <div class="tiles lqT" id="lqTiles"></div>
   </div>
@@ -123,7 +129,9 @@
   const BIN = 0.0025, LEV = [[10, .30], [25, .30], [50, .25], [100, .15]], MM = 0.005;
   const S = { src: {}, ev: [], seen: new Set(), range: 10, timer: null, ws: [], live: null, wh: null, book: null, binMap: null, lastMap: 0, lastWh: 0, bnLive: { l: 0, s: 0, n: 0, t0: Date.now() } };
   const SRV = () => (typeof R !== "undefined" && R) ? R : {};
-  const price = () => (typeof lastPx !== "undefined" && lastPx > 0) ? lastPx : (S.livePx || (SRV().liqmap || {}).price || SRV().price);
+  // stesso prezzo di riferimento di Oggi (window.REF: live se c'è, altrimenti l'ultimo del server)
+  const price = () => (window.REF && window.REF.px > 0) ? window.REF.px : ((SRV().liqmap || {}).price || SRV().price);
+  const T = s => s == null ? null : typeof s === "number" ? s : Date.parse(String(s).replace(" ", "T") + (/(Z|[+-]\d\d:?\d\d)$/.test(String(s)) ? "" : "Z"));
   const getJ = (u, o) => fetch(u, Object.assign({ cache: "no-store" }, o || {})).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
   const timeout = (p, ms) => Promise.race([p, new Promise((_, rj) => setTimeout(() => rj(new Error("timeout")), ms))]);
 
@@ -180,7 +188,8 @@
 
   // ---------------- verdetto + tile
   function renderHead() {
-    const LM = SRV().liqmap, p = price();
+    const LM = SRV().liqmap, p = price(), RF = window.REF;
+    H("lqSub").textContent = RF ? `distanze da ${px(p)} · ${RF.live ? "live" : RF.lab}` : "stima + dati reali";
     if (!LM) { H("lqHead").innerHTML = `<h2>Mappa non ancora calcolata</h2><p>Il server la calcola ogni ora (Binance + OKX). Le liquidazioni live qui sotto funzionano comunque.</p>`; H("lqTiles").innerHTML = ""; return; }
     const B = bins(), up = clusters(B, p, "s"), dn = clusters(B, p, "l");
     const na = up.find(c => c.sig), nb = dn.find(c => c.sig);
@@ -277,7 +286,7 @@
     const addrs = [...new Set(base.map(w => w.addr))];
     if (!addrs.length) return Promise.resolve();
     return Promise.all(addrs.slice(0, 30).map(a => timeout(getJ("https://api.hyperliquid.xyz/info", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "clearinghouseState", user: a }) }), 8000).then(s => [a, s]).catch(() => [a, null])))
-      .then(res => { const ok = res.filter(r => r[1]); if (!ok.length) { S.src.hl = false; return; } S.src.hl = true;
+      .then(res => { const ok = res.filter(r => r[1]); if (!ok.length) { S.src.hl = false; return; } S.src.hl = true; S.whT = Date.now();
         const name = Object.fromEntries(base.map(w => [w.addr, w.who])), tr = Object.fromEntries(base.map(w => [w.addr, w.tracked]));
         S.wh = ok.flatMap(([a, s]) => (s.assetPositions || []).map(x => x.position).filter(q => q.coin === "BTC" && +q.szi).map(q => ({ who: name[a], addr: a, side: +q.szi > 0 ? "long" : "short", btc: Math.abs(+q.szi), ntl: Math.abs(+q.szi) * p, entry: +q.entryPx, liq: q.liquidationPx ? +q.liquidationPx : null, lev: (q.leverage || {}).value, dist: q.liquidationPx ? (+q.liquidationPx / p - 1) * 100 : null, upnl: +q.unrealizedPnl, tracked: tr[a] })))
           .sort((x, y) => (x.dist == null ? 1e9 : Math.abs(x.dist)) - (y.dist == null ? 1e9 : Math.abs(y.dist))); });
@@ -298,23 +307,26 @@
     const NB = 40, acc = new Array(NB).fill(0), wb = {}, wa = {};
     books.forEach(k => { k.b.concat(k.a).forEach(([q, s]) => { const d = q / k.mid - 1; if (Math.abs(d) > .01) return; const i = Math.min(NB - 1, Math.floor((d + .01) / .02 * NB)); acc[i] += q * s;
       if (Math.abs(d) >= .001) { const key = Math.floor(d / .0005), W = d < 0 ? wb : wa; W[key] = (W[key] || 0) + q * s; } }); });
+    // muri: fascia dello 0,05% misurata dal mid DEL BOOK stesso (non da un altro prezzo); prezzo mostrato = mid del primo book × (1 + distanza)
     out.depth = acc;
-    out.walls.b = Object.entries(wb).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k, v]) => ({ p: p * (1 + (+k + .5) * .0005), usd: v }));
-    out.walls.a = Object.entries(wa).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k, v]) => ({ p: p * (1 + (+k + .5) * .0005), usd: v }));
+    const wall = ([k, v]) => { const d = (+k + .5) * .0005; return { p: p * (1 + d), d: d * 100, usd: v }; };
+    out.walls.b = Object.entries(wb).sort((x, y) => y[1] - x[1]).slice(0, 3).map(wall).filter(w => w.d < 0);
+    out.walls.a = Object.entries(wa).sort((x, y) => y[1] - x[1]).slice(0, 3).map(wall).filter(w => w.d > 0);
     return out;
   }
   const mkBook = (b, a) => { const mid = (b[0][0] + a[0][0]) / 2; return { b, a, mid, cb: (1 - b[b.length - 1][0] / mid) * 100, ca: (a[a.length - 1][0] / mid - 1) * 100 }; };
   function liveBook() {
     const bn = getJ("https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=1000").then(j => { S.src.bnbook = true; return mkBook(j.bids.map(x => [+x[0], +x[1]]), j.asks.map(x => [+x[0], +x[1]])); }).catch(() => { S.src.bnbook = false; return null; });
     const ok = getJ("https://www.okx.com/api/v5/market/books-full?instId=BTC-USDT-SWAP&sz=5000").then(j => { const d = j.data[0]; S.src.okxbook = true; return mkBook(d.bids.map(x => [+x[0], +x[1] * .01]), d.asks.map(x => [+x[0], +x[1] * .01])); }).catch(() => { S.src.okxbook = false; return null; });
-    return Promise.all([bn, ok]).then(r => { const bk = r.filter(Boolean); if (bk.length) { S.livePx = bk[0].mid; S.book = { st: bookStats(bk, bk[0].mid), n: bk.length, names: [r[0] && "Binance", r[1] && "OKX"].filter(Boolean) }; } });
+    return Promise.all([bn, ok]).then(r => { const bk = r.filter(Boolean); if (bk.length) { S.bookT = Date.now(); S.book = { st: bookStats(bk, bk[0].mid), n: bk.length, names: [r[0] && "Binance", r[1] && "OKX"].filter(Boolean) }; } });
   }
   function renderBook() {
     const OB = SRV().orderbook, B = S.book;
     let bands, depth = null, walls;
     if (B) { bands = B.st.bands; depth = B.st.depth; walls = B.st.walls; H("obSub").textContent = `live · ${B.names.join(" + ")} perp`; }
     else if (OB && OB.now) { const n = OB.now; bands = [0.25, 0.5, 1, 2].map(b => ({ b, B: n["bid_" + b], A: n["ask_" + b], n: n["src_" + b], imb: n["imb_" + b] }));
-      walls = { b: n.wall_bid_px ? [{ p: n.wall_bid_px, usd: n.wall_bid_usd }] : [], a: n.wall_ask_px ? [{ p: n.wall_ask_px, usd: n.wall_ask_usd }] : [] };
+      walls = { b: n.wall_bid_px ? [{ p: n.wall_bid_px, d: n.wall_bid_dist, usd: n.wall_bid_usd }] : [], a: n.wall_ask_px ? [{ p: n.wall_ask_px, d: n.wall_ask_dist, usd: n.wall_ask_usd }] : [] };
+      walls.b = walls.b.filter(w => w.d == null || w.d < 0); walls.a = walls.a.filter(w => w.d == null || w.d > 0);   // la distanza del server è già dal mid del suo book
       H("obSub").textContent = `foto del server · ${OB.ts ? new Date(OB.ts.replace(" ", "T") + "Z").toLocaleString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""}`; }
     else { H("obBands").innerHTML = `<p class="lqNote">Book non disponibile.</p>`; return; }
     H("obBands").innerHTML = bands.filter(b => b.imb != null).map(b => { const v = b.imb * 100, w = Math.min(50, Math.abs(v) / 2);
@@ -322,7 +334,7 @@
       `<p class="lqNote">Squilibrio = (bid − ask) / totale entro la fascia: verde più ordini in acquisto, rosso più in vendita.</p>`;
     if (depth) { const mx = Math.max(1, ...depth); H("obDepth").innerHTML = depth.map((v, i) => `<i class="${i < depth.length / 2 ? "b" : "a"}" style="height:${v / mx * 100}%" title="${m$(v)}"></i>`).join("") + `<em></em>`; H("obDepth").parentElement.hidden = false; }
     else H("obDepth").parentElement.hidden = true;
-    const p = price(), wr = (w, k) => `<div class="row"><span class="k">${k === "b" ? "Muro in acquisto" : "Muro in vendita"}<small>${pc((w.p / p - 1) * 100, 2)} dal prezzo</small></span><span class="v strong ${k === "b" ? "pos" : "neg"}">${px(w.p)}<small style="display:block;font-weight:400;color:var(--label2)">${m$(w.usd)}</small></span></div>`;
+    const wr = (w, k) => `<div class="row"><span class="k">${k === "b" ? "Muro in acquisto" : "Muro in vendita"}<small>${w.d != null ? pc(w.d, 2) + " dal mid del book" : "foto del server"}</small></span><span class="v strong ${k === "b" ? "pos" : "neg"}">${px(w.p)}<small style="display:block;font-weight:400;color:var(--label2)">${m$(w.usd)}</small></span></div>`;
     H("obWalls").innerHTML = (walls.a.slice(0, 2).map(w => wr(w, "a")).join("") + walls.b.slice(0, 2).map(w => wr(w, "b")).join("")) || "";
   }
   function renderEngine() {
@@ -340,12 +352,31 @@
     H("obNote").innerHTML = `Ogni ora il server fotografa i book di Coinbase, Kraken, OKX e Binance spot, controlla i dati (book ordinato e non incrociato, spread, età, mid entro 0,3% dalle altre fonti) e scarta le fonti anomale. La previsione si salva prima dell'esito: l'accuratezza è tutta fuori campione. Ogni 4 ore il modello (logistica con forte regolarizzazione sugli squilibri del book) si riaddestra${OB.learned ? `, ultimo il ${new Date(OB.learned.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` : ""}. Con una foto all'ora il segnale è debole: conta solo se batte "sempre su" e il momentum per molte settimane.`;
   }
 
+  // ---------------- aggiornamento per fonte: arancione se più vecchia di 2 ore
+  function renderAge() {
+    const LM = SRV().liqmap, OB = SRV().orderbook, now = Date.now();
+    if (!LM && !OB) { H("lqAge").innerHTML = ""; return; }
+    const so = (LM && LM.sources) || {}, F = (LM && LM.feed) || {};
+    const srcT = v => v && v.ok ? (v.asof ? T(v.asof) : v.until ? T(v.until) + 36e5 : null) : null;   // until = apertura dell'ultima candela 1h
+    const ago = t => { const m = Math.max(0, Math.round((now - t) / 6e4)); return m < 60 ? `${m} min fa` : m < 2880 ? `${Math.floor(m / 60)} h ${m % 60 ? (m % 60) + " min " : ""}fa` : `${Math.round(m / 1440)} giorni fa`; };
+    const when = t => { const d = new Date(t), td = new Date(); return (d.toDateString() === td.toDateString() ? "" : d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }) + " ") + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); };
+    const L = [];
+    if (LM) {
+      L.push(["Mappa · OKX", srcT(so.okx), "OI e candele 1h"]);
+      L.push(S.binMap ? ["Mappa · Binance", S.binMap.until, "ricalcolata nel browser"] : ["Mappa · Binance", srcT(so.binance), "archivio OI giornaliero"]);
+      L.push(["Balene Hyperliquid", S.whT || T(LM.whales_asof || LM.ts), S.whT ? "live" : "dal server"]);
+      L.push(["Liquidazioni OKX", T(F.asof || LM.ts), "registro del server"]);
+    }
+    L.push(["Order book", S.bookT || T(OB && OB.ts), S.bookT ? "live" : "foto del server"]);
+    H("lqAge").innerHTML = L.map(([k, t, how]) => { const old = t == null || now - t > 72e5;
+      return `<div class="${old ? "old" : ""}"><span>${k}</span><b>${t == null ? "non disponibile" : "aggiornato " + when(t)}</b><small>${t == null ? how : ago(t) + " · " + how}</small></div>`; }).join("");
+  }
   function renderSrc() {
     const L = [["Binance live", S.src.bnws], ["OKX live", S.src.okxws || S.src.okx], ["Book", S.src.bnbook || S.src.okxbook], ["Hyperliquid", S.src.hl], ["Mappa Binance", !!S.binMap]];
     const LM = SRV().liqmap;
-    H("lqSrc").innerHTML = L.map(([k, v]) => `<span class="chip ${v ? "ok" : v === false ? "ko" : ""}">${k}</span>`).join("") + (LM ? `<span class="chip">server ${new Date(LM.ts.replace(" ", "T") + "Z").toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</span>` : "");
+    H("lqSrc").innerHTML = L.map(([k, v]) => `<span class="chip ${v ? "ok" : v === false ? "ko" : ""}">${k}</span>`).join("") + (LM ? `<span class="chip">calcolo server ${new Date(T(LM.ts)).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</span>` : "");
   }
-  function renderAll() { [renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+  function renderAll() { [renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc, renderAge].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
   async function refresh(force) {
     const btn = H("lqRefresh"); btn.disabled = true; btn.textContent = "Aggiorno…";
     const jobs = [okxRest(), liveBook()];
@@ -359,6 +390,7 @@
       if (typeof seg === "function") seg("lqRange", v => { S.range = +v; renderMap(); });
       H("lqRefresh").onclick = () => refresh(true);
       renderAll(); refresh(true);
+      if (window.onRef) window.onRef(() => { if (!H("v-liquidazioni").hidden) { try { renderHead(); renderMap(); } catch (e) { console.warn("liquidazioni", e); } } });
     },
     show() { startWS(); clearInterval(S.timer); S.timer = setInterval(() => { if (!document.hidden) refresh(false); }, 45000); },
     hide() { stopWS(); clearInterval(S.timer); },
