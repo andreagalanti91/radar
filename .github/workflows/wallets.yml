@@ -1,0 +1,46 @@
+name: Sentinella wallet (Hyperliquid)
+
+# Ogni 5 minuti: posizioni e ordini dei 3 wallet della sentinella, alert Telegram sui cambi (radar/wallets.py).
+# Lo stato fra un giro e l'altro sta nella cache di Actions, non nel repository.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: wallets
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests pandas
+      - name: Stato precedente
+        uses: actions/cache/restore@v4
+        with:
+          path: data/wallets_state.json
+          key: wallets-state-${{ github.run_id }}
+          restore-keys: wallets-state-
+      - name: Controllo wallet
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RADAR_WALLET_MIN: ${{ vars.RADAR_WALLET_MIN || '50000' }}
+          RADAR_WALLET_ORDER_MIN: ${{ vars.RADAR_WALLET_ORDER_MIN || '100000' }}
+          RADAR_WALLET_ALERTS: ${{ vars.RADAR_WALLET_ALERTS || '1' }}
+        run: python -m radar.wallets
+      - name: Salva stato
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/wallets_state.json
+          key: wallets-state-${{ github.run_id }}
