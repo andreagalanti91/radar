@@ -290,6 +290,20 @@ solo con rischio 1–2% per trade; la leva va usata per ridurre il margine, non 
 **In produzione su carta (05/11)**: ICHI_tk 4h su 10 crypto (spot Binance, funding ignorato) in radar/intraday_ichi.py, vista Intraday e alert Telegram; dal 2021 paniere 200 € → 1.596 € a rischio 1% (DD −22%), 8.100 € a 2% (DD −41%), 10x sul capitale intero azzerato al primo trade.
 **Rimossa (05/11, decisione dell'utente)**: guadagno troppo piccolo in assoluto per il tempo e il rischio rispetto a W2 settimanale; tolti modulo, alert, dati e vista dalla dashboard (codice nella storia git, commit 5000e34). Resta la ricerca in research/intraday/.
 
+### Studio dell'utente · 07/11 — liquidazioni vicine (stima Binance) come calamita e confluenza con S/R · NON FUNZIONA per W2
+Mappa = `radar/liqmap.build` (la stessa della dashboard: 21 giorni di OI orario Binance, leve 10/25/50/100x, metà long/metà short),
+una al giorno dal 2021-01 al 2026-11 (2.110 giorni); preregistrazione e script in research/liquidazioni/. T1 calamita: il cluster
+significativo più vicino (mediana ±2,5%) viene toccato entro 1/3/7 giorni quanto un livello qualsiasi alla stessa distanza
+(effetto da −0,2 a +2,1 punti, segni opposti fra 2021–23 e 2024–26): 0/6. T3 confluenza: rimbalzo al tocco 42,2% se il cluster è
+in una zona S/R contro 43,3% fuori (p 0,57): 0/2. T2 direzione: con squilibrio entro ±5% ≥ 20% il lato più pesante si tocca per
+primo nel 71,4% dei casi contro 64,9% atteso dalle distanze a 1 giorno (+6,5 punti, p < 0,001, uguale nelle due metà; placebo −0,5),
++1,8 a 3 giorni e +0,5 a 7: 1/3, la famiglia non passa. Controlli dopo il risultato: lo squilibrio ha correlazione 0,63 con il
+rendimento delle 24 ore precedenti e il solo momentum di 24 ore fa +4,1 punti; quando squilibrio e momentum sono opposti +6,9 (n 138,
+p 0,11). Le balene Hyperliquid (posizioni pubbliche) oggi sono quasi tutte short con liquidazione a +20–150%: non fanno livelli vicini.
+**Lezione 81**: le liquidazioni stimate non attirano il prezzo e non rendono più solidi supporti e resistenze; lo squilibrio
+sopra/sotto descrive le 12–24 ore successive, in gran parte come momentum di breve, e sparisce sull'orizzonte di W2 (settimane).
+Restano contesto in dashboard (pagina Liquidazioni, card in Oggi); il book orario (radar/orderbook.py) si giudica solo dal vivo.
+
 ### Studio dell'utente · 07/11 — Strategia short dedicata su BTC settimanale (S1–S7, tutti i dati) · NON ADOTTATA (solo test)
 Riferimento: i 4 short di W2 dal 2021 (tutti positivi, +29,5% composto). Dal 2021 a 1x: W2 com'è 120,4k (DD −22,7%, MAR 2,34);
 W2 long + S1 short di regime 93,2k (DD −37,8%); W2 long + S5 short sui top di distribuzione 110,9k (DD −24%, 1 solo trade);
@@ -1071,7 +1085,8 @@ Posizione reale: long dal 24/08/2026 a 77.812 $, trailing 71.415 $.
   SMA200: instabili, sotto W2 su BTC, sotto B&H su SOL (79). Le liste di trade segnate a mano omettono i falsi segnali.
 - Uscite parziali (73), DCA in entrata (53), size sulla volatilità o sull'equity (60), stop più stretti (60).
 - Supporti/resistenze e volume profile come segnale (68, 75–77): S/R restano solo mappa visiva in dashboard.
-- Liquidazioni stimate (72), crollo "da volume" come uscita (69), nube Ichimoku come filtro (67).
+- Liquidazioni stimate (72, 81: né calamita né conferma degli S/R; lo squilibrio vale al più 12–24 ore), crollo "da volume"
+  come uscita (69), nube Ichimoku come filtro (67).
 - Altre crypto e indici azionari: il vantaggio è specifico di BTC (71, 74). Intraday: rimosso (78).
 - Strategie short dedicate (regime, MACD, rimbalzo fallito, top di distribuzione, affollamento perp): sotto gli short di W2 (80).
 
