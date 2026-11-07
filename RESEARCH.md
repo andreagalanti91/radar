@@ -1106,6 +1106,20 @@ vicini; togliere il trade migliore; confronto a pari drawdown; promuovere solo s
 da confermare dal vivo); 2) gestione del trade aperto dopo grandi guadagni senza tagliare le code; 3) short più efficaci nei bear
 con lo stesso schema del filtro MACD; 4) usare il segnale MACD/EMA dell'utente come conferma visiva in dashboard, non come regola.
 
+## Errori operativi da non ripetere (aggiornata 07/11/2026)
+- Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
+  "fatto" prima di aver visto la versione pubblicata).
+- Verifiche su dati vecchi: testare la pagina con il report pubblicato più recente, non con site/ locale.
+- Grafici "imprecisi": controllare sempre a 400 px (telefono) e a 1280 px, con etichette che non si sovrappongano.
+- Tab o sezioni che puntano a pagine non ancora pubblicate: mai pubblicare un menu senza la pagina (pagine in radar/pages/).
+- Git con agenti al lavoro: niente stash/rebase sui file che un agente sta modificando; ogni agente ha file suoi, il commit lo fa
+  la sessione principale dopo test e render.
+- Ricerche: tradurre le idee dell'utente in regole meccaniche testate su TUTTI i segnali (lezione 79), placebo e periodi separati;
+  scrivere le soglie prima di guardare i risultati.
+- Dati esterni: niente scraping di siti contro i loro termini (Coinglass, Hyperdash) né User-Agent falsi; usare le API pubbliche
+  da cui quei siti prendono i dati. Chiedersi sempre da dove gira il codice (runner USA: Binance fapi e Bybit bloccati).
+- Lavoro grande: dividerlo fra agenti in parallelo con compiti e file separati; la sessione principale coordina e verifica.
+
 ## Obiettivi e struttura dei giri (dal 30/10/2026)  · STORICO (era v2)
 **Obiettivo (utente, 30/10/2026 sera) — sostituisce i precedenti**: strategia swing **con DCA** su BTC con
 **win rate ≥ 70%** e **max drawdown giornaliero reale ≤ 15%** (mark-to-market, a 1x; la leva si sceglie dopo in base al DD),
