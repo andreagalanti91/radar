@@ -249,7 +249,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(4,1fr);width:min(400px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(500px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -406,6 +406,8 @@ body.noscroll{overflow:hidden}
   <symbol id="i-oggi" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 12l5-5"/></g><circle cx="8.6" cy="15.2" r="1.6" fill="currentColor"/></symbol>
   <symbol id="i-sim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20h17"/><path d="M4.5 15.5l4.5-5 4 3 6.5-8"/><path d="M15.5 5.5h4v4"/></g></symbol>
   <symbol id="i-stat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="11" width="3.6" height="9" rx="1.4"/><rect x="10.2" y="5" width="3.6" height="15" rx="1.4"/><rect x="16.4" y="8" width="3.6" height="12" rx="1.4"/></g></symbol>
+  <symbol id="i-liq" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c3 3.6 5.5 6.6 5.5 10a5.5 5.5 0 0 1-11 0c0-3.4 2.5-6.4 5.5-10Z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.4"/></g></symbol>
+  <symbol id="i-wal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 9.5h17M15.5 14h2"/><path d="M6 6l9-2.5L16.5 6"/></g></symbol>
   <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="14" height="15" rx="2.5"/><path d="M17.5 8.5h2a1 1 0 0 1 1 1V17a2.5 2.5 0 0 1-5 0"/><path d="M7 9h7M7 12.5h7M7 16h4"/></g></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
@@ -418,6 +420,8 @@ body.noscroll{overflow:hidden}
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simulatore</a>
     <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Statistiche</a>
+    <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquidazioni</a>
+    <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
   </nav>
   <div class="promo"><b>Alert su Telegram</b><span>Segnale settimanale, trailing aggiornato e uscite arrivano su @CryptoRadarGalaBot.</span></div>
@@ -658,6 +662,8 @@ body.noscroll{overflow:hidden}
     </div>
   </div>
 
+  <!--__PAGES__-->
+
   <div class="view" id="v-metodo" hidden>
     <div class="section only-w2">
       <div class="sh">Come funziona · W2 + MACD</div>
@@ -714,6 +720,8 @@ body.noscroll{overflow:hidden}
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simula</a>
   <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Stats</a>
+  <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquid.</a>
+  <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>News</a>
 </nav>
 
@@ -1447,10 +1455,13 @@ function startLive() {
 startLive();
 
 // ---- sezioni
-const VIEWS = ["oggi", "simulatore", "statistiche", "notizie", "metodo"];
+const VIEWS = ["oggi", "simulatore", "statistiche", "liquidazioni", "wallet", "notizie", "metodo"];
 function route() {
   const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) ? v : "oggi";
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
+  // pagine in file separati (radar/pages/*.html): si registrano in window.PAGES e si inizializzano alla prima visita
+  const PG = (window.PAGES || {})[ok]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
+  Object.entries(window.PAGES || {}).forEach(([k, P]) => { if (k !== ok && P._done && P.hide) try { P.hide(); } catch (_) {} });
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
   setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); labChart && labChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
 }

@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = Path(__file__).with_name("dashboard_template.html")
+PAGES = Path(__file__).with_name("pages")   # pagine separate (Liquidazioni, Wallet): HTML + script che si registra in window.PAGES
 BRAND = ROOT / "brand"
 MANIFEST = {
     "name": "Radar Signal BTC", "short_name": "Radar Signal", "start_url": "./#oggi", "display": "standalone",
@@ -49,7 +50,8 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
         from .journal import averages, load
         j = load()
         report = dict(report, journal={"trades": j["trades"], "avg": averages(j)})
-    html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str))
+    pages = "\n".join(f.read_text() for f in sorted(PAGES.glob("*.html"))) if PAGES.exists() else ""
+    html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str)).replace("<!--__PAGES__-->", pages)
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)
     if standalone:
         for name in ("icon.svg", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
