@@ -765,8 +765,8 @@ const V = R.v2, c = R.components, P = R.params;
 const hhmm = t => new Date(t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
 const REF = window.REF = (() => {
   const tC = Date.parse(R.date + "T00:00:00Z") + 864e5, LQ = R.liqmap, so = (LQ && LQ.sources) || {};
-  const s = [so.okx, so.binance].find(x => x && x.ok && (x.asof || x.until));
-  const tL = s ? (s.asof ? Date.parse(s.asof.replace(" ", "T") + "Z") : Date.parse(s.until.replace(" ", "T") + "Z") + 36e5) : 0;
+  const s = [so.okx, so.binance].find(x => x && x.ok && (x.as_of || x.until));
+  const tL = s ? (s.as_of ? Date.parse(s.as_of.replace(" ", "T") + "Z") : Date.parse(s.until.replace(" ", "T") + "Z") + 36e5) : 0;
   if (LQ && LQ.price > 0 && tL > tC) return { px: LQ.price, live: false, t: tL, lab: `chiusura 1h delle ${hhmm(tL)}` };
   return { px: R.price, live: false, t: tC, lab: `chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}` };
 })();
@@ -1322,13 +1322,17 @@ function simulate() {
     const base = E[i0]; peak = cap; dd = 0; pts = [];
     for (let i = i0; i < D.length; i++) { const v = cap * E[i] / base; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); pts.push({ time: D[i], value: v }); }
     eq = pts[pts.length - 1].value;
+    // righe della tabella lette sulla stessa curva: l'ultima riga coincide con "Capitale oggi" (prima: PnL arrotondati composti, scarto di qualche $)
+    const at = (d, strict) => { let v = cap; for (const p of pts) { if (strict ? p.time < d : p.time <= d) v = p.value; else break; } return v; };
+    out.forEach(r => { r.eq = at(r.d1); r.pnlU = r.eq - at(r.d0, true); });
+    wins = out.filter(r => r.pnlU > 0).length;
   }
   const years = Math.max((new Date(R.date) - new Date(start)) / 3.156e10, 0.01), cagr = (Math.pow(eq / cap, 1 / years) - 1) * 100;
   const avg = tr.length ? tr.reduce((a, t) => a + t.pnl, 0) / tr.length : null, perY = (tr.length / years).toFixed(1).replace(".", ",");
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
   $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, ${perY} trade l'anno, guadagno medio ${pct(avg, 2)} sul capitale per trade, ` +
-    (W ? `W2 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento e drawdown giorno per giorno come nelle Statistiche (la posizione aperta è valutata all'ultimo prezzo); nella tabella il PnL di ogni trade.`
+    (W ? `W2 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento, drawdown e colonna Capitale giorno per giorno come nelle Statistiche: la posizione aperta è valutata alla chiusura giornaliera del ${R.weekly.date || R.date}, non al prezzo live.`
        : `size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`);
   $("simCount").textContent = `${tr.length} trade · ${W ? "W2" : "v2"} · ${lev}x`;
   $("simTrades").innerHTML = `<tr><th>${W ? "Ingresso" : "Segnale"}</th><th>${W ? "Mercato" : "Setup"}</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +

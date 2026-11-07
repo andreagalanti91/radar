@@ -170,9 +170,9 @@
 #v-wallet .wl-pk .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline;min-width:0}
 #v-wallet .wl-pk .t b{font:650 .95rem var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #v-wallet .wl-pk .t span{font:600 .9rem var(--font);font-variant-numeric:tabular-nums}
-#v-wallet .wl-pk .m{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+#v-wallet .wl-pk .m{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 @media (max-width:560px){#v-wallet .wl-pk .m{grid-template-columns:repeat(3,minmax(0,1fr))}}
-#v-wallet .wl-pk .m div{display:grid;gap:1px;min-width:0}
+#v-wallet .wl-pk .m div{display:grid;gap:1px;min-width:0;align-content:end}
 #v-wallet .wl-pk .m small{font:500 .58rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
 #v-wallet .wl-pk .m b{font:600 .88rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
 #v-wallet .wl-pk .y{font-size:.76rem;color:var(--label2);line-height:1.45}
@@ -433,7 +433,7 @@ async function loadOv() {
     const net = (ch?.assetPositions || []).reduce((s, { position: p }) => s + sgn(+p.szi) * +p.positionValue, 0);
     S.ov[w.a] = { t: Date.now(), eq, d24: lastOf(day?.pnlHistory), net };
   }));
-  if (S.visible) renderOv();
+  if (S.visible) { renderOv(); renderScout(); }
 }
 
 /* ─────────── render: intestazione ─────────── */
@@ -823,10 +823,14 @@ function addPicks() {
 }
 const p0 = (x, d = 0) => fin(x) ? nf(x * 100, d) + "%" : "–";
 const r2f = (x) => fin(x) ? nf(x, 2) : "–";
-function pkMetrics(m) {
+// valore del conto ora: dai dati live del wallet (se caricati) o dalla panoramica del gruppo
+const liveEq = (a) => { a = String(a || "").toLowerCase(); const d = S.data[a]; if (d && fin(d.eq)) return d.eq; const o = S.ov[a]; return o && !o.err && fin(o.eq) ? o.eq : null; };
+function pkMetrics(m, a) {
+  const now = liveEq(a);
   return `<div class="m"><div><small>1 anno</small><b class="${tone(m.ret_1y)}">${pc(m.ret_1y, 0)}</b></div>
     <div><small>Max DD</small><b>${p0(m.dd)}</b></div><div><small>R²</small><b>${r2f(m.r2)}</b></div>
-    <div><small>Funding</small><b>${fin(m.fund_pnl) ? p0(m.fund_pnl, 1) : "–"}</b></div><div><small>Valore</small><b>${m$(m.value)}</b></div></div>`;
+    <div><small>Funding</small><b>${fin(m.fund_pnl) ? p0(m.fund_pnl, 1) : "–"}</b></div><div><small>Valore alla scelta</small><b>${m$(m.value)}</b></div>
+    <div><small>Valore ora</small><b>${now != null ? m$(now) : "–"}</b></div></div>`;
 }
 function renderScout() {
   const sc = SC(), sec = el("wlScoutSec");
@@ -836,7 +840,7 @@ function renderScout() {
   el("wlScSub").textContent = `${sc.date} · ${sn.analyzed ?? "–"} wallet analizzati`;
   const picks = sc.picks.map((p) => `<button type="button" data-a="${esc(p.address)}" aria-pressed="${p.address === S.sel}">
       <span class="t"><b>${esc(p.name)}${p.kind === "vault" ? ` <span class="rl tp">vault</span>` : ""}</b><span>${fin(p.score) ? nf(p.score, 0) : "–"}<span class="mut" style="font-weight:500">/100</span></span></span>
-      ${pkMetrics(p.metrics || {})}
+      ${pkMetrics(p.metrics || {}, p.address)}
       <span class="y">${esc(short(p.address))} · in selezione dal ${esc(p.since || sc.date)}${p.display ? " · " + esc(p.display) : ""}${p.leader_of ? " · leader del vault " + esc(p.leader_of) : ""}${fin(p.metrics?.lev) ? " · leva attuale " + lev(p.metrics.lev) : ""}</span></button>`).join("");
   const run = (sc.runners_up || []).map((p) => { const m = p.metrics || {};
     return `<tr><td><a href="https://hyperdash.com/address/${esc(p.address)}" target="_blank" rel="noopener">${esc(p.kind === "vault" ? p.name : short(p.address))}</a><small>${p.fails && p.fails.length ? esc(p.fails.join(", ")) : "passa i filtri"}</small></td>
@@ -855,7 +859,7 @@ function renderScout() {
     ${sc.picks.length < 3 ? `<p class="neg">Solo ${sc.picks.length} wallet passano anche i filtri allentati: i posti vuoti restano vuoti.</p>` : ""}
     <div class="wl-pk">${picks || `<p>Nessun wallet passa i filtri oggi.</p>`}</div>
     <h4>Riserve</h4>
-    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Funding</th><th>Valore</th></tr></thead><tbody>${run || `<tr><td colspan="7">–</td></tr>`}</tbody></table></div>
+    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Funding</th><th>Valore alla scelta</th></tr></thead><tbody>${run || `<tr><td colspan="7">–</td></tr>`}</tbody></table></div>
     <h4>Verifica delle scelte</h4>
     <div class="scroll"><table class="grid"><thead><tr><th>Dopo</th><th>Scelte</th><th>Chi passava</th><th>Conti ≥ 1M</th><th>DD scelte</th><th>Batte ≥ 1M</th></tr></thead><tbody>${hz}</tbody></table></div>
     ${past ? `<ul>${past}</ul>` : ""}

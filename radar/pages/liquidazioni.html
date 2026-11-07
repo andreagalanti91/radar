@@ -357,13 +357,15 @@
     const LM = SRV().liqmap, OB = SRV().orderbook, now = Date.now();
     if (!LM && !OB) { H("lqAge").innerHTML = ""; return; }
     const so = (LM && LM.sources) || {}, F = (LM && LM.feed) || {};
-    const srcT = v => v && v.ok ? (v.asof ? T(v.asof) : v.until ? T(v.until) + 36e5 : null) : null;   // until = apertura dell'ultima candela 1h
+    const srcT = v => v && v.ok ? ((v.as_of || v.asof) ? T(v.as_of || v.asof) : v.until ? T(v.until) + 36e5 : null) : null;   // as_of = chiusura dell'ultima ora; until = sua apertura
+    const hm2 = t => new Date(t).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    const est = v => v && v.extended_h > 0 && v.oi_until ? `OI stimato dopo ${hm2(T(v.oi_until) + 36e5)} (${v.extended_h} ore da ${v.extended_with === "okx" || !v.extended_with ? "OKX" : v.extended_with})` : "archivio OI giornaliero";
     const ago = t => { const m = Math.max(0, Math.round((now - t) / 6e4)); return m < 60 ? `${m} min fa` : m < 2880 ? `${Math.floor(m / 60)} h ${m % 60 ? (m % 60) + " min " : ""}fa` : `${Math.round(m / 1440)} giorni fa`; };
     const when = t => { const d = new Date(t), td = new Date(); return (d.toDateString() === td.toDateString() ? "" : d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }) + " ") + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); };
     const L = [];
     if (LM) {
       L.push(["Mappa · OKX", srcT(so.okx), "OI e candele 1h"]);
-      L.push(S.binMap ? ["Mappa · Binance", S.binMap.until, "ricalcolata nel browser"] : ["Mappa · Binance", srcT(so.binance), "archivio OI giornaliero"]);
+      L.push(S.binMap ? ["Mappa · Binance", S.binMap.until, "ricalcolata nel browser"] : ["Mappa · Binance", srcT(so.binance), est(so.binance)]);
       L.push(["Balene Hyperliquid", S.whT || T(LM.whales_asof || LM.ts), S.whT ? "live" : "dal server"]);
       L.push(["Liquidazioni OKX", T(F.asof || LM.ts), "registro del server"]);
     }
