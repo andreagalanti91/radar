@@ -1119,6 +1119,10 @@ con lo stesso schema del filtro MACD; 4) usare il segnale MACD/EMA dell'utente c
 - Dati esterni: niente scraping di siti contro i loro termini (Coinglass, Hyperdash) né User-Agent falsi; usare le API pubbliche
   da cui quei siti prendono i dati. Chiedersi sempre da dove gira il codice (runner USA: Binance fapi e Bybit bloccati).
 - Lavoro grande: dividerlo fra agenti in parallelo con compiti e file separati; la sessione principale coordina e verifica.
+- Agenti per mansione (.claude/agents/): **radar-ui** (dashboard e pagine), **radar-dati** (fonti e raccoglitori), **radar-ricerca**
+  (backtest in research/, mai nel tool), **radar-wallet** (Hyperliquid, sentinella, balene), **radar-verifica** (controllo della
+  pagina pubblicata dopo ogni deploy). Giro tipo: ricerca/dati/ui in parallelo → test e render → commit della sessione principale
+  → deploy → radar-verifica.
 
 ## Obiettivi e struttura dei giri (dal 30/10/2026)  · STORICO (era v2)
 **Obiettivo (utente, 30/10/2026 sera) — sostituisce i precedenti**: strategia swing **con DCA** su BTC con
