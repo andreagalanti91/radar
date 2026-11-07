@@ -17,7 +17,7 @@ from .dashboard import render  # noqa: E402
 from .data import load_all, update_all  # noqa: E402
 from .features import build_features  # noqa: E402
 from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E402
-from .news import fetch_calendar, fetch_news  # noqa: E402
+from .news import fetch_calendar, fetch_central_banks, fetch_news  # noqa: E402
 from . import intraday  # noqa: E402
 from . import paper  # noqa: E402
 from . import lab  # noqa: E402
@@ -62,6 +62,7 @@ def daily() -> None:
         STATE_FILE.write_text(json.dumps(st0, indent=2, default=str))
     collect_liquidations()
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
+    report["banks"] = fetch_central_banks()   # prossime riunioni Fed (FOMC) e BCE
     # solo W2 + MACD dal 05/11/2026 (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli
     v2_on = os.environ.get("RADAR_V2_ALERTS", "0") == "1"
     events = diff_events(report)

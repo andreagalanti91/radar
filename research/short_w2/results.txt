@@ -1,0 +1,113 @@
+Dati: spot 2019-09-01→2026-11-06 · pf14z da 2020-04-12 · funding da 2020-01-01 · OI/LS da 2021-12-01 · F&G da 2019-09-01 · storia lunga da 2014-01-01 (Bitstamp → Binance 2017-08-17)
+Episodi ribassisti (regime base ≥ 8 sett.): 2014-10-05→2015-06-28 39s calo -66%; 2015-08-09→2015-10-04 9s calo -26%; 2018-05-20→2019-03-31 46s calo -72%; 2020-03-01→2020-04-19 8s calo -47%; 2021-12-19→2023-01-08 56s calo -75%; 2025-11-16→2026-08-16 40s calo -52%
+
+== W2 così com'è dal 2021 (riferimento)
+regola            finale $    rend%     DD%   n   WR +medio -medio    MAR  TiM  -best%
+W2 (tutto)         120,444   1104.4   -22.7  14   93   22.8   -2.7   2.34   61   578.5
+  short W2: n 4, WR 100%, contributo composto 29.5%, + medio 6.8%
+   2022-01-03→2022-03-28 expo 0.639 pnl +1.0% (ema)
+   2022-08-15→2023-01-16 expo 0.556 pnl +8.3% (ema)
+   2025-12-01→2026-04-27 expo 0.894 pnl +11.9% (ema)
+   2026-05-25→2026-08-20 expo 1.0 pnl +5.7% (trail)
+
+== Standalone short dal 2021, size R25
+regola            finale $    rend%     DD%   n   WR +medio -medio    MAR  TiM  -best%
+S0                  12,914     29.1   -15.1   4  100    6.7   None    0.3   22    15.5
+S1                  10,972      9.7   -29.6   8   50   14.2   -9.7   0.05   34   -18.1
+S2                   8,879    -11.2   -30.0   7   29   23.5  -10.1  -0.07   30   -32.2
+S3                   9,180     -8.2   -32.9   5   40   19.7  -13.7  -0.04   24   -25.5
+S4                  10,665      6.6   -14.7   2  100    3.3   None   0.08    9     0.4
+S5                  12,488     24.9   -11.2   1  100   24.9   None   0.35    3     0.0
+S6                   8,414    -15.9   -26.8   6   33   20.8  -12.7  -0.11   26   -34.0
+S7                  10,199      2.0   -25.8   7   29   21.0   -6.8   0.01   30   -21.3
+
+== Combinato con i long W2 (short W2 sostituiti), size R25
+regola            finale $    rend%     DD%   n   WR +medio -medio    MAR  TiM  -best%
+W2 così com'è      120,444   1104.4   -22.7  14   93   22.8   -2.7   2.34   61   578.5
+S0+W2L             120,110   1101.1   -22.7  14   93   22.8   -2.7   2.34   61   576.6
+S1+W2L              96,607    866.1   -34.8  17   71   26.2   -7.2   1.36   71   444.2
+S2+W2L              72,408    624.1   -34.8  17   59   30.4   -7.9   1.16   68   307.9
+S3+W2L              73,776    637.8   -34.8  16   69   27.7  -10.9   1.17   63   315.6
+S4+W2L              99,188    891.9   -23.1  12   92   25.1   -2.7   2.08   48   458.8
+S5+W2L             104,133    941.3   -24.0  12   83   29.5   -6.5   2.05   42   486.6
+S6+W2L              69,004    590.0   -28.9  16   62   30.0   -9.3   1.36   65   288.7
+S7+W2L              86,305    763.1   -27.9  17   59   30.4   -5.5    1.6   68   386.2
+
+== Standalone short dal 2021, size 1x
+regola            finale $    rend%     DD%   n   WR +medio -medio    MAR  TiM  -best%
+S0                  13,950     39.5   -21.0   4  100    8.8   None   0.28   22    21.4
+S1                  10,062      0.6   -40.5   8   50   18.9  -14.6    0.0   34   -33.7
+S2                   7,800    -22.0   -36.4   7   29   32.1  -14.6  -0.11   30   -47.0
+S3                   9,355     -6.4   -40.6   5   40   28.6  -17.0  -0.03   24   -33.3
+S4                  10,692      6.9   -20.0   2  100    3.4   None   0.06    9     0.7
+S5                  13,295     33.0   -14.4   1  100   33.0   None   0.35    3     0.0
+S6                   6,546    -34.5   -42.1   6   33   29.7  -20.6  -0.17   26   -54.7
+S7                   9,352     -6.5   -36.4   7   29   29.1  -10.5  -0.03   30   -35.6
+
+== Combinato con i long W2 (short W2 sostituiti), size 1x
+regola            finale $    rend%     DD%   n   WR +medio -medio    MAR  TiM  -best%
+W2 così com'è      120,444   1104.4   -22.7  14   93   22.8   -2.7   2.34   61   578.5
+S0+W2L             129,747   1197.5   -24.9  14   93   23.5   -2.7   2.21   61   630.9
+S1+W2L              93,203    832.0   -37.8  17   71   27.8  -10.2   1.23   71   425.0
+S2+W2L              63,609    536.1   -37.8  17   59   32.2  -11.1   0.98   68   258.3
+S3+W2L              75,182    651.8   -37.8  16   69   29.3  -12.8   1.09   63   323.5
+S4+W2L              99,443    894.4   -29.0  12   92   25.2   -2.7   1.66   48   460.2
+S5+W2L             110,868   1008.7   -24.0  12   83   30.3   -6.5   2.12   42   524.6
+S6+W2L              53,683    436.8   -39.2  16   62   31.7  -14.5   0.85   65   202.4
+S7+W2L              79,137    691.4   -31.6  17   59   32.0   -8.2   1.35   68   345.8
+
+== Split (10.000 $ da capo in ogni periodo; 2018-20 su storia lunga, flusso = CVD spot proxy, funding 0)
+regola                                   2018-20                           2021-23                         2024-oggi
+W2 solo R25       -4.2% DD -25.9 n 2 MAR -0.06       9.5% DD -13.4 n 2 MAR  0.23      18.3% DD -14.8 n 2 MAR  0.41
+S0 solo R25       -4.3% DD -25.9 n 2 MAR -0.06       9.3% DD -13.4 n 2 MAR  0.23      18.1% DD -14.8 n 2 MAR  0.41
+S1 solo R25        2.7% DD -20.8 n 5 MAR  0.04      16.7% DD -22.6 n 4 MAR  0.23      -6.0% DD -28.7 n 4 MAR -0.07
+S2 solo R25      -28.5% DD -34.5 n 5 MAR -0.31      14.6% DD -19.0 n 3 MAR  0.25     -22.5% DD -28.7 n 4 MAR  -0.3
+S3 solo R25        0.0% DD   0.0 n 0 MAR  None      23.2% DD  -7.1 n 1 MAR  1.02     -25.5% DD -28.3 n 4 MAR -0.35
+S4 solo R25       -7.6% DD -24.7 n 2 MAR -0.11       0.4% DD -13.2 n 1 MAR  0.01       6.2% DD -14.7 n 1 MAR  0.15
+S5 solo R25        0.0% DD   0.0 n 0 MAR  None      24.9% DD -11.2 n 1 MAR  0.69       0.0% DD   0.0 n 0 MAR  None
+S6 solo R25      -10.7% DD -20.0 n 3 MAR -0.18       2.4% DD -20.8 n 3 MAR  0.04     -17.8% DD -26.8 n 3 MAR -0.25
+S7 solo R25      -32.0% DD -39.7 n 4 MAR  -0.3      13.5% DD -19.0 n 3 MAR  0.23     -10.1% DD -25.8 n 4 MAR -0.14
+W2 combo R25     117.6% DD -48.1 n 9 MAR  0.62     406.2% DD -22.7 n 8 MAR  3.17     138.4% DD -21.6 n 6 MAR  1.65
+S0 combo R25     117.4% DD -48.1 n 9 MAR  0.61     405.6% DD -22.7 n 8 MAR  3.17     138.0% DD -21.6 n 6 MAR  1.65
+S1 combo R25     127.5% DD -53.8 n12 MAR  0.59     430.1% DD -22.7 n 9 MAR  3.29      82.6% DD -34.8 n 8 MAR  0.68
+S2 combo R25      58.3% DD -54.8 n12 MAR   0.3     382.3% DD -22.7 n 9 MAR  3.05      50.4% DD -34.8 n 8 MAR  0.44
+S3 combo R25     127.2% DD -47.6 n 7 MAR  0.66     410.6% DD -22.7 n 8 MAR  3.19      44.8% DD -34.8 n 8 MAR   0.4
+S4 combo R25     110.0% DD -48.1 n 9 MAR  0.58     364.3% DD -23.1 n 7 MAR  2.89     114.0% DD -21.6 n 5 MAR  1.42
+S5 combo R25     127.2% DD -47.6 n 7 MAR  0.66     417.7% DD -24.0 n 8 MAR  3.04     101.5% DD -21.6 n 4 MAR  1.29
+S6 combo R25     103.0% DD -49.3 n10 MAR  0.54     330.7% DD -22.7 n 9 MAR  2.77      60.5% DD -28.9 n 7 MAR  0.63
+S7 combo R25      54.5% DD -51.7 n11 MAR   0.3     377.4% DD -22.7 n 9 MAR  3.02      81.2% DD -27.9 n 8 MAR  0.83
+W2 solo 1x       -29.2% DD -52.6 n 2 MAR -0.21      16.9% DD -19.4 n 2 MAR  0.28      19.8% DD -14.8 n 2 MAR  0.44
+S0 solo 1x       -29.4% DD -52.7 n 2 MAR -0.21      16.7% DD -19.4 n 2 MAR  0.27      19.6% DD -14.8 n 2 MAR  0.44
+S1 solo 1x       -24.3% DD -43.1 n 5 MAR -0.21      13.9% DD -40.5 n 4 MAR  0.11     -11.7% DD -34.3 n 4 MAR -0.12
+S2 solo 1x       -71.3% DD -72.1 n 5 MAR -0.47      10.4% DD -36.4 n 3 MAR  0.09     -29.4% DD -34.3 n 4 MAR -0.34
+S3 solo 1x         0.0% DD   0.0 n 0 MAR  None      40.3% DD -10.7 n 1 MAR  1.12     -33.3% DD -34.4 n 4 MAR -0.39
+S4 solo 1x       -30.0% DD -52.9 n 2 MAR -0.21       0.7% DD -19.8 n 1 MAR  0.01       6.2% DD -14.7 n 1 MAR  0.15
+S5 solo 1x         0.0% DD   0.0 n 0 MAR  None      33.0% DD -14.4 n 1 MAR  0.69       0.0% DD   0.0 n 0 MAR  None
+S6 solo 1x       -24.6% DD -35.7 n 3 MAR -0.25     -13.7% DD -42.1 n 3 MAR -0.11     -24.1% DD -30.0 n 3 MAR -0.31
+S7 solo 1x       -69.2% DD -74.3 n 4 MAR -0.44       8.9% DD -36.4 n 3 MAR  0.08     -14.1% DD -28.4 n 4 MAR -0.18
+W2 combo 1x       60.8% DD -54.8 n 9 MAR  0.31     440.4% DD -24.8 n 8 MAR  3.04     141.4% DD -21.8 n 6 MAR  1.66
+S0 combo 1x       60.3% DD -54.9 n 9 MAR  0.31     439.4% DD -24.9 n 8 MAR  3.04     141.0% DD -21.9 n 6 MAR  1.66
+S1 combo 1x       67.7% DD -68.7 n12 MAR  0.27     444.5% DD -31.6 n 9 MAR  2.41      71.5% DD -37.8 n 8 MAR  0.55
+S2 combo 1x      -36.4% DD -76.8 n12 MAR -0.18     364.6% DD -31.6 n 9 MAR  2.12      37.2% DD -37.8 n 8 MAR  0.31
+S3 combo 1x      127.2% DD -47.6 n 7 MAR  0.66     481.5% DD -22.7 n 8 MAR  3.53      29.5% DD -37.8 n 8 MAR  0.25
+S4 combo 1x       59.0% DD -54.9 n 9 MAR  0.31     365.5% DD -29.0 n 7 MAR  2.32     114.0% DD -21.6 n 5 MAR  1.42
+S5 combo 1x      127.2% DD -47.6 n 7 MAR  0.66     451.2% DD -24.0 n 8 MAR   3.2     101.5% DD -21.6 n 4 MAR  1.29
+S6 combo 1x       71.4% DD -56.0 n10 MAR  0.35     262.9% DD -39.2 n 9 MAR  1.37      48.2% DD -32.0 n 7 MAR  0.46
+S7 combo 1x      -30.0% DD -76.2 n11 MAR -0.15     358.2% DD -31.6 n 9 MAR   2.1      73.1% DD -30.5 n 8 MAR   0.7
+
+== Parametri vicini (combinato con long W2, R25): MAR 2021-oggi | MAR 2018-20
+S0: base:2.34|0.61  sma35:1.97|1.12  sma45:1.74|0.57  ema18:1.48|0.61  ema24:2.43|0.57  trail2:2.39|0.64  trail3:2.3|0.59  macd6:2.34|0.61  macd10:2.34|0.61
+S1: base:1.36|0.59  sma35:1.27|0.96  sma45:1.73|0.35  ema18:1.06|0.54  ema24:1.42|0.56  trail2:1.36|0.62  trail3:1.34|0.57  macd6:1.36|0.59  macd10:1.36|0.59
+S2: base:1.16|0.3  sma35:0.98|0.63  sma45:1.38|0.14  ema18:0.88|0.3  ema24:1.22|0.26  trail2:1.17|0.32  trail3:1.13|0.28  macd6:1.21|0.3  macd10:1.98|0.36
+S3: base:1.17|0.66  sma35:1.08|0.95  sma45:1.57|0.57  ema18:0.89|0.66  ema24:1.23|0.66  trail2:1.18|0.66  trail3:1.14|0.66  macd6:1.17|0.66  macd10:1.49|0.66
+S6: base:1.36|0.54  sma35:1.1|0.9  sma45:1.25|0.35  ema18:1.02|0.54  ema24:1.32|0.54  trail2:1.56|0.56  trail3:1.18|0.52  macd6:1.4|0.54  macd10:1.44|0.57
+S7: base:1.6|0.3  sma35:1.2|0.56  sma45:1.44|0.19  ema18:1.18|0.3  ema24:1.7|0.3  trail2:1.72|0.38  trail3:1.8|0.18  macd6:1.62|0.3  macd10:1.79|0.35
+
+== Placebo (500 prove: k ingressi casuali fra le settimane di regime base, stesse uscite di S1, standalone R25)
+S0: rend 29.1% vs placebo mediana -5.4% (p95 33.8%), p = 0.090
+S1: rend 9.7% vs placebo mediana -2.4% (p95 35.3%), p = 0.280
+S2: rend -11.2% vs placebo mediana -2.5% (p95 38.6%), p = 0.646
+S3: rend -8.2% vs placebo mediana -2.3% (p95 34.6%), p = 0.602
+S4: rend 6.6% vs placebo mediana -5.8% (p95 30.9%), p = 0.258
+S6: rend -15.9% vs placebo mediana -6.9% (p95 32.9%), p = 0.710
+S7: rend 2.0% vs placebo mediana -3.5% (p95 30.3%), p = 0.398

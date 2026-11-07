@@ -162,3 +162,43 @@ def fetch_calendar() -> list[dict]:
                     "impact": {"High": "alto", "Medium": "medio"}.get(x["impact"], "basso"),
                     "forecast": x.get("forecast") or "", "previous": x.get("previous") or "", "note": note})
     return sorted(out, key=lambda e: e["date"])
+
+
+FOMC_URL = "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+ECB_URL = "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html"
+_MONTHS = {m: i for i, m in enumerate(["January", "February", "March", "April", "May", "June", "July", "August", "September",
+                                       "October", "November", "December"], 1)}
+
+
+def fetch_central_banks(n: int = 6) -> list[dict]:
+    """Prossime riunioni di politica monetaria di Fed (FOMC) ed BCE, dai calendari ufficiali. Data = giorno della decisione."""
+    import datetime as dt
+    today, out = dt.date.today(), []
+    try:   # Fed: sezioni "2026 FOMC Meetings", mese + "17-18*" (asterisco = proiezioni economiche e conferenza più seguita)
+        h = requests.get(FOMC_URL, timeout=15, headers={"User-Agent": "RadarSignal/1.0"}).text
+        for y in re.finditer(r"(\d{4}) FOMC Meetings", h):
+            seg = h[y.end():y.end() + 20000].split("FOMC Meetings")[0]
+            for mon, days in re.findall(r"fomc-meeting__month[^>]*>\s*<strong>([^<]+)</strong>.*?fomc-meeting__date[^>]*>([^<]+)<", seg, re.S):
+                mon = mon.split("/")[-1].strip()
+                d_end = re.findall(r"\d+", days)
+                if mon not in _MONTHS or not d_end:
+                    continue
+                d = dt.date(int(y.group(1)), _MONTHS[mon], int(d_end[-1]))
+                if d >= today:
+                    out.append({"bank": "Fed", "title": "FOMC · decisione sui tassi" + (" e proiezioni" if "*" in days else ""),
+                                "date": d.isoformat(), "time": "20:00", "impact": "alto",
+                                "note": "Tassi USA e conferenza stampa di Powell: l'evento macro che muove di più BTC."})
+    except Exception as e:  # noqa: BLE001
+        print(f"[news] FOMC: {type(e).__name__}")
+    try:   # BCE: solo le riunioni di politica monetaria seguite da conferenza stampa (giorno della decisione)
+        h = requests.get(ECB_URL, timeout=15, headers={"User-Agent": "RadarSignal/1.0"}).text
+        for d, t in re.findall(r"<dt[^>]*>\s*(\d{2}/\d{2}/\d{4})\s*</dt>\s*<dd[^>]*>(.*?)</dd>", h, re.S):
+            t = re.sub(r"<[^>]+>", "", t).lower()
+            if "monetary policy meeting" in t and "non-monetary" not in t and "press conference" in t:
+                dd = dt.datetime.strptime(d, "%d/%m/%Y").date()
+                if dd >= today:
+                    out.append({"bank": "BCE", "title": "BCE · decisione sui tassi", "date": dd.isoformat(), "time": "14:15",
+                                "impact": "medio", "note": "Tassi dell'area euro: effetto su BTC soprattutto attraverso il dollaro."})
+    except Exception as e:  # noqa: BLE001
+        print(f"[news] BCE: {type(e).__name__}")
+    return sorted(out, key=lambda e: e["date"])[:n]

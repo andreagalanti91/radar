@@ -249,7 +249,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);width:min(460px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(4,1fr);width:min(400px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -300,16 +300,45 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 .wkFacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .wkFacts div{display:grid;gap:2px;min-width:0} .wkFacts span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
 .wkFacts b{font:600 1rem var(--font);font-variant-numeric:tabular-nums}
-.track{position:relative;height:64px;margin:4px 8px 0}
-.track .rail{position:absolute;left:0;right:0;top:30px;height:6px;border-radius:3px;background:var(--line2)}
-.track .risk{position:absolute;top:30px;height:6px;border-radius:3px 0 0 3px;background:repeating-linear-gradient(135deg,rgba(255,90,82,.55) 0 4px,rgba(255,90,82,.2) 4px 8px)}
-.track .gain{position:absolute;top:30px;height:6px;background:rgba(52,215,123,.45)}
-.track .mk{position:absolute;top:0;transform:translateX(-50%);display:grid;justify-items:center;gap:3px;white-space:nowrap}
-.track .mk em{font:500 .6rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label3);font-style:normal}
-.track .mk i{width:2px;height:16px;background:var(--label2);border-radius:1px}
-.track .mk.now i{width:12px;height:12px;border-radius:50%;background:var(--label);box-shadow:0 0 0 3px var(--card);margin-top:2px}
-.track .mk.stop i{background:var(--red)} .track .mk b{font:600 .72rem var(--font);font-variant-numeric:tabular-nums}
-.track .mk.lo{top:38px} .track .mk.lo i{order:-1}
+.track{position:relative;height:100px;margin:4px 12px 0}
+.track .rail{position:absolute;left:0;right:0;top:46px;height:6px;border-radius:3px;background:var(--line2)}
+.track .risk{position:absolute;top:46px;height:6px;border-radius:3px 0 0 3px;background:repeating-linear-gradient(135deg,rgba(255,90,82,.55) 0 4px,rgba(255,90,82,.2) 4px 8px)}
+.track .gain{position:absolute;top:46px;height:6px;background:rgba(52,215,123,.45)}
+.track .loss{position:absolute;top:46px;height:6px;background:rgba(255,90,82,.35)}
+.track .pt{position:absolute;top:49px;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);background:var(--label2);box-shadow:0 0 0 3px var(--card);z-index:1}
+.track .pt.now{width:16px;height:16px;background:var(--label);z-index:2}
+.track .pt.stop{background:var(--red)} .track .pt.best{background:var(--green)}
+.track .lab{position:absolute;display:grid;gap:1px;white-space:nowrap;transform:translateX(-50%);text-align:center}
+.track .lab.l{transform:none;text-align:left} .track .lab.r{transform:translateX(-100%);text-align:right}
+.track .lab.up{top:0} .track .lab.dn{top:64px}
+.track .lab em{font:500 .6rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label3);font-style:normal}
+.track .lab b{font:600 .74rem var(--font);font-variant-numeric:tabular-nums}
+.track .lab.now b{font-size:.84rem}
+.nw{white-space:nowrap}
+.wkMore{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line2);background:var(--fill);color:var(--label);font:600 .9rem var(--font);cursor:pointer;text-align:left}
+.wkMore small{display:block;font:500 .74rem var(--font);color:var(--label2);margin-top:2px}
+.wkMore:hover{border-color:var(--tint)}
+dialog.dlg{width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 40px);padding:0;border:1px solid var(--line2);border-radius:22px;background:var(--bg);color:var(--label);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+dialog.dlg::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.dlgHead{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;background:var(--chrome);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.dlgHead b{font:650 1.05rem var(--font)} .dlgHead button{border:0;background:var(--fill);color:var(--label);border-radius:999px;padding:7px 12px;font:600 .82rem var(--font);cursor:pointer}
+.dlgBody{padding:14px 16px 20px;display:grid;gap:14px}
+.dlgBody h3{margin:4px 0 0;font:600 .95rem var(--font)}
+.dlgBody .prose p{margin:.3em 0}
+.todayN{display:grid;gap:8px}
+.todayN .ev{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--fill)}
+.todayN .ev .tm{font:600 .82rem var(--mono);font-variant-numeric:tabular-nums}
+.todayN .ev b{font:600 .86rem var(--font)} .todayN .ev small{display:block;color:var(--label2);font-size:.74rem}
+.todayN a.n{display:block;padding:10px 12px;border-radius:12px;background:var(--fill);color:var(--label);text-decoration:none}
+.todayN a.n b{font:600 .86rem var(--font)} .todayN a.n small{display:block;color:var(--label2);font-size:.72rem;margin-top:2px}
+.todayN .more{justify-self:start;color:var(--tint);font:600 .84rem var(--font);text-decoration:none;padding:2px 2px}
+.banks{display:grid;gap:8px}
+.banks .bk{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.banks .bk .d{font:650 1.1rem/1 var(--font);text-align:center;min-width:44px} .banks .bk .d small{display:block;font:500 .66rem var(--mono);text-transform:uppercase;color:var(--label2);margin-top:3px}
+.banks .bk b{font:600 .9rem var(--font)} .banks .bk .s{display:block;color:var(--label2);font-size:.76rem;margin-top:2px}
+.banks .bk .cd{font:600 .78rem var(--mono);color:var(--label2);white-space:nowrap}
+.banks .bk.soon{border-color:color-mix(in srgb,var(--orange) 55%,transparent)} .banks .bk.soon .cd{color:var(--orange)}
+.calPast{margin-top:8px} .calPast summary{cursor:pointer;color:var(--label2);font:600 .82rem var(--font);padding:6px 2px}
 .wkCush{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;color:var(--label2);flex-wrap:wrap}
 .wkCush b{color:var(--label);font-variant-numeric:tabular-nums}
 .wkLeg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--label2);margin-bottom:8px;font-variant-numeric:tabular-nums}
@@ -390,7 +419,6 @@ body.noscroll{overflow:hidden}
     <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simulatore</a>
     <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Statistiche</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
-    <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
   </nav>
   <div class="promo"><b>Alert su Telegram</b><span>Segnale settimanale, trailing aggiornato e uscite arrivano su @CryptoRadarGalaBot.</span></div>
 </aside>
@@ -411,7 +439,7 @@ body.noscroll{overflow:hidden}
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
     <div class="section only-w2" id="wkSec" hidden>
-      <div class="sh">Segnale settimanale · W2 + MACD <small id="wkSub"></small></div>
+      <div class="sh">Posizione · W2 + MACD <small id="wkSub"></small></div>
       <div class="card glow wkHero" id="wkHero"></div>
       <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
         <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
@@ -429,6 +457,10 @@ body.noscroll{overflow:hidden}
         <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
           <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
       </div>
+      <dialog class="dlg" id="wkDlg" aria-labelledby="wkDlgT">
+        <div class="dlgHead"><b id="wkDlgT">Perché la posizione è aperta e quando si chiude</b><button type="button" id="wkDlgX">Chiudi</button></div>
+        <div class="dlgBody">
+          <div class="card prose" id="wkWhy"></div>
       <div class="wkGrid">
         <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
         <div class="list checks"><div class="cap2" id="wkExitH">Uscite da sorvegliare</div><div id="wkExits"></div></div>
@@ -436,9 +468,19 @@ body.noscroll{overflow:hidden}
       <div id="wkPlan" style="margin-top:12px"></div>
       <div class="tiles" id="wkKv" hidden></div>
       <p class="foot" id="wkNote"></p>
+          <h3>Tutti i trade W2 dal 2021 <small class="cap" id="wkTrN"></small></h3>
+          <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkTrAll"></table></div></div>
+          <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
+        </div>
+      </dialog>
     </div>
 
-    <div class="section">
+    <div class="section" id="todaySec" hidden>
+      <div class="sh">Oggi nelle notizie <small id="todaySub"></small></div>
+      <div class="todayN" id="todayN"></div>
+    </div>
+
+    <div class="section" hidden>
       <div class="sh">Regione prevista <small id="zoneH"></small></div>
       <div class="card glow zone">
         <div class="ladder" id="ladder"></div>
@@ -593,6 +635,15 @@ body.noscroll{overflow:hidden}
   </div>
 
   <div class="view" id="v-notizie" hidden>
+    <div class="section" id="calSec">
+      <div class="sh">Calendario economico <small>ora italiana</small></div>
+      <div class="cap2" style="margin:2px 0 8px">Prossimi dati macro · settimana in corso</div>
+      <div class="cal" id="cal"></div>
+      <details class="calPast" id="calPastW" hidden><summary id="calPastS">Già usciti questa settimana</summary><div class="cal" id="calPast"></div></details>
+      <div class="cap2" style="margin:16px 0 8px">Banche centrali · prossime riunioni</div>
+      <div class="banks" id="banks"></div>
+      <p class="foot">Dati macro: calendario ForexFactory (solo la settimana in corso; USA impatto medio e alto, area euro, Cina e Giappone impatto alto). Riunioni: calendari ufficiali di Federal Reserve e BCE, data e ora della decisione. Gli eventi ad alto impatto muovono spesso BTC nell'ora successiva: meglio non aprire o spostare posizioni a ridosso dell'uscita.</p>
+    </div>
     <div class="section">
       <div class="sh">Notizie <small id="newsUpd"></small></div>
       <div class="hscroll"><div class="seg" id="newsSeg" role="group" aria-label="Categoria">
@@ -600,11 +651,6 @@ body.noscroll{overflow:hidden}
         <button data-v="etf">ETF e istituzionali</button><button data-v="regolamentazione">Regole</button><button data-v="derivati">Derivati e on-chain</button><button data-v="tutte">Tutte</button>
       </div></div>
       <p class="foot" id="newsWhy"></p>
-    </div>
-    <div class="section" id="calSec" hidden>
-      <div class="sh">Calendario economico <small>settimana in corso · ora italiana</small></div>
-      <div class="cal" id="cal"></div>
-      <p class="foot">Fonte: calendario ForexFactory. Previsione = consenso degli analisti; il dato effettivo esce all'orario indicato. Gli eventi ad alto impatto muovono spesso BTC nell'ora successiva: meglio non aprire leva a ridosso dell'uscita.</p>
     </div>
     <div class="section">
       <div class="news" id="newsList"></div>
@@ -669,7 +715,6 @@ body.noscroll{overflow:hidden}
   <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simula</a>
   <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Stats</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>News</a>
-  <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Metodo</a>
 </nav>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
@@ -952,14 +997,23 @@ renderTrades();
     const val = W.notional * (1 + W.move_pct / 100), lo = Math.min(W.trail, W.entry_px, W.price), hi = Math.max(W.best, W.price, W.entry_px);
     const pad = (hi - lo) * 0.08, L = lo - pad, H = hi + pad, X = v => ((v - L) / (H - L) * 100).toFixed(2) + "%";
     const cush = sg * (W.price / W.trail - 1) * 100;
-    const mk = (cls, label, v, low) => `<div class="mk ${cls}${low ? " lo" : ""}" style="left:${X(v)}"><em>${label}</em><i></i>${low ? "" : `<b>${usd(v)}</b>`}</div>`;
+    const pts = [["stop", "Trailing", W.trail], ["entry", "Ingresso", W.entry_px], ["best", "Massimo", W.best], ["now", "Ora", W.price]];
+    // righe delle etichette: "Ora" sempre sopra; le altre sopra se lontane da quelle già sopra (≥ 24%), altrimenti sotto
+    const xs = v => (v - L) / (H - L) * 100, up = [xs(W.price)], row = {};
+    pts.filter(q => q[0] !== "now").sort((a, b) => xs(a[2]) - xs(b[2])).forEach(q => { const x = xs(q[2]);
+      if (up.every(u => Math.abs(u - x) >= 30)) { row[q[0]] = "up"; up.push(x); } else row[q[0]] = "dn"; });
+    row.now = "up";
+    const lab = q => { const x = xs(q[2]), al = x < 10 ? " l" : x > 90 ? " r" : "";
+      return `<div class="lab ${row[q[0]]}${al}${q[0] === "now" ? " now" : ""}" style="left:${x.toFixed(2)}%">${row[q[0]] === "up" ? `<em>${q[1]}</em><b>${usd(q[2])}</b>` : `<b>${usd(q[2])}</b><em>${q[1]}</em>`}</div>`; };
+    const dot = q => `<i class="pt ${q[0]}" style="left:${xs(q[2]).toFixed(2)}%"></i>`;
+    const diff = val - W.notional;
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${W.market === "spot" ? "spot 1x" : "perp " + W.expo.toFixed(2).replace(".", ",") + "x"}</span>
         <span class="cap">dal ${fmtD(W.entry)} · ${weeksIn} settimane</span></div>
-      <div class="wkBig">${pc1(W.move_pct)}<small>andamento sul prezzo · su ${usd(W.notional)} oggi ${usd(val)} (${(val - W.notional >= 0 ? "+" : "−") + usd(Math.abs(val - W.notional))})</small></div>
-      <div class="track" aria-label="Percorso del prezzo: trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(W.price)}, massimo ${usd(W.best)}">
+      <div class="wkBig">${pc1(W.move_pct)}<small>dall'ingresso a ${usd(W.entry_px)} · su ${usd(W.notional)} oggi <span class="nw">${usd(val)} (${(diff >= 0 ? "+" : "−") + usd(Math.abs(diff))})</span></small></div>
+      <div class="track" role="img" aria-label="Percorso del prezzo: trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(W.price)}, massimo ${usd(W.best)}">
         <div class="rail"></div><div class="risk" style="left:0;width:${X(W.trail)}"></div>
-        ${W.price > W.entry_px ? `<div class="gain" style="left:${X(W.entry_px)};width:calc(${X(W.price)} - ${X(W.entry_px)})"></div>` : ""}
-        ${mk("stop", "Trailing", W.trail)}${mk("", "Ingresso", W.entry_px, true)}${mk("", "Massimo", W.best, true)}${mk("now", "Ora", W.price)}</div>
+        ${W.price >= W.entry_px ? `<div class="gain" style="left:${X(W.entry_px)};width:calc(${X(W.price)} - ${X(W.entry_px)})"></div>` : `<div class="loss" style="left:${X(W.price)};width:calc(${X(W.entry_px)} - ${X(W.price)})"></div>`}
+        ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
       <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(-cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>`;
   } else if (W.status === "segnale") {
     const p = W.plan;
@@ -970,7 +1024,24 @@ renderTrades();
     hero = `<div class="wkTop"><span class="wkBadge"><i></i>Flat · nessuna posizione</span><span class="cap">prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>
       <div class="wkBig">${usd(W.price)}<small>Si entra solo quando tutte le condizioni qui sotto sono verdi alla chiusura della domenica (circa 2–3 volte l'anno).</small></div>`;
   }
+  hero += `<button type="button" class="wkMore" id="wkMore"><span>${open ? "Perché è aperta e quando si chiude" : W.status === "segnale" ? "Perché c'è il segnale e come si esegue" : "Cosa serve per entrare"}<small>condizioni, uscite, piano in dollari e tutti i trade dal 2021</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
   $("wkHero").innerHTML = hero;
+  // --- overlay con condizioni, uscite, piano e storico (prima erano in pagina)
+  const dlg = $("wkDlg");
+  $("wkMore").onclick = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); };
+  $("wkDlgX").onclick = () => dlg.close ? dlg.close() : dlg.removeAttribute("open");
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+  $("wkRules").addEventListener("click", () => dlg.close && dlg.close());
+  $("wkDlgT").textContent = open ? "Perché la posizione è aperta e quando si chiude" : W.status === "segnale" ? "Il segnale di questa settimana" : "Cosa serve per entrare";
+  $("wkWhy").innerHTML = open
+    ? `<p><b>Perché è aperta.</b> Alla chiusura del ${fmtD(W.signal_date || W.entry)} BTC ha chiuso ${W.side === "long" ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${W.side === "long" ? "rialzista (sopra la SMA 40)" : "ribassista (sotto la SMA 40)"}, il flusso dei perp nella stessa direzione${W.side === "long" ? " e il filtro MACD a posto" : ""}: ingresso all'apertura del lunedì ${fmtD(W.entry)} a ${usd(W.entry_px)}.</p>
+       <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo tocca il trailing a ${usd(W.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${W.side === "long" ? "sotto" : "sopra"} la EMA 21, oggi ${usd(W.ema21)} (si esce il lunedì); un segnale di distribuzione (funding alto con flusso che si gira). Il trailing sale con il prezzo e non scende mai.</p>`
+    : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>`;
+  const HT = (W.history || {}).trades || [];
+  $("wkTrN").textContent = `${HT.length} trade`;
+  $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
+    HT.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}<br><small>${mkt(t.market, t.expo)}</small></td><td>${usd(t.entry_px)}</td>` +
+      `<td>${t.reason === "open" ? "aperto" : fmtD(t.exit) + "<br><small>" + usd(t.exit_px) + "</small>"}</td><td>${why[t.reason] || t.reason}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pc1(t.pnl_pct)}</td></tr>`).join("");
   // --- supporti e resistenze (radar/levels.py)
   const LV = R.levels;
   if (LV && (LV.supports.length || LV.resistances.length)) {
@@ -1286,39 +1357,66 @@ const NEWS_WHY = {
   derivati: "Liquidazioni, leva, opzioni, balene e miner: il posizionamento che il modello legge anche nei dati.",
   tutte: "Tutte le notizie degli ultimi giorni, dalla più recente.",
 };
-let NEWS = R.news || [], CAL = R.calendar || [], newsTab = "impatto";
+let NEWS = R.news || [], CAL = R.calendar || [], BANKS = R.banks || [], newsTab = "impatto";
 const ago = d => { const m = Math.round((Date.now() - new Date(d)) / 6e4); return m < 60 ? `${Math.max(m, 1)} min fa` : m < 1440 ? `${Math.round(m / 60)} h fa` : `${Math.round(m / 1440)} g fa`; };
 const esc = t => String(t).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 const TAGN = { macro: "macro", regolamentazione: "regole", etf: "etf", derivati: "derivati", bitcoin: "btc" };
 function renderNews() {
   $("newsWhy").textContent = NEWS_WHY[newsTab];
-  $("calSec").hidden = newsTab !== "macro" && newsTab !== "impatto";
   let list = NEWS;
   if (newsTab === "impatto") list = NEWS.filter(n => n.level !== "basso").slice().sort((a, b) => (b.impact - a.impact) || (a.date < b.date ? 1 : -1));
   else if (newsTab !== "tutte") list = NEWS.filter(n => n.tabs.includes(newsTab));
   $("newsList").innerHTML = list.slice(0, 40).map(n => `<a class="nitem" href="${esc(n.link)}" target="_blank" rel="noopener">
       <span class="meta"><span>${esc(n.source)}</span><span>${ago(n.date)}</span>${n.level !== "basso" ? `<span class="imp ${n.level}">impatto ${n.level}</span>` : ""}${n.tabs.filter(t => t !== newsTab).map(t => `<span>#${TAGN[t]}</span>`).join("")}</span>
       <b>${esc(n.title)}</b>${n.summary ? `<p>${esc(n.summary)}</p>` : ""}</a>`).join("") || `<div class="card"><p style="margin:0">Nessuna notizia in questa categoria negli ultimi giorni.</p></div>`;
-  // calendario: in "Impatto" solo gli eventi ad alto impatto
-  const cal = newsTab === "impatto" ? CAL.filter(e => e.impact === "alto") : CAL;
-  const now = Date.now(), nextIdx = cal.findIndex(e => new Date(e.date) > now);
-  let day = "";
-  $("cal").innerHTML = cal.map((e, k) => {
-    const d = new Date(e.date), dl = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
-    const head = dl !== day ? `<div class="cday">${(day = dl)}</div>` : "";
-    const past = d < now, nums = [e.forecast && `previsto ${e.forecast}`, e.previous && `precedente ${e.previous}`].filter(Boolean).join(" · ");
-    return head + `<details class="cev${past ? " past" : ""}${k === nextIdx ? " next" : ""}"><summary>
-      <span class="tm">${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}<small>${e.country}</small></span>
-      <span class="ti"><b>${esc(e.title)}</b><small>${[nums || (past ? "" : "senza previsione"), past ? "uscito" : k === nextIdx ? "prossimo" : ""].filter(Boolean).join(" · ")}</small></span>
-      <span class="imp ${e.impact}">${e.impact}</span></summary>${e.note ? `<div class="note">${esc(e.note)}</div>` : ""}</details>`;
-  }).join("") || `<div class="card"><p style="margin:0">Calendario non disponibile in questo momento.</p></div>`;
+  renderCal(); renderToday();
   const newest = NEWS.length ? NEWS[0].date : null;
   $("newsUpd").textContent = newest ? `ultima ${ago(newest)}` : "";
+}
+// calendario: prima i prossimi eventi (il prossimo evidenziato), quelli già usciti in fondo e chiusi; poi le banche centrali
+const dKey = d => new Date(d).toLocaleDateString("it-IT", { timeZone: "Europe/Rome" });
+function calRows(list, nextIdx) {
+  let day = "";
+  return list.map((e, k) => {
+    const d = new Date(e.date), dl = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Rome" });
+    const head = dl !== day ? `<div class="cday">${(day = dl)}</div>` : "";
+    const past = d < Date.now(), nums = [e.forecast && `previsto ${e.forecast}`, e.previous && `precedente ${e.previous}`].filter(Boolean).join(" · ");
+    return head + `<details class="cev${past ? " past" : ""}${k === nextIdx ? " next" : ""}"><summary>
+      <span class="tm">${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}<small>${e.country}</small></span>
+      <span class="ti"><b>${esc(e.title)}</b><small>${[nums || (past ? "" : "senza previsione"), k === nextIdx ? "prossimo" : ""].filter(Boolean).join(" · ")}</small></span>
+      <span class="imp ${e.impact}">${e.impact}</span></summary>${e.note ? `<div class="note">${esc(e.note)}</div>` : ""}</details>`;
+  }).join("");
+}
+const bankDate = b => new Date(b.date + "T" + b.time + ":00" + (/^\d{4}-(0[4-9]|10)/.test(b.date) ? "+02:00" : "+01:00"));
+function renderCal() {
+  const now = Date.now(), up = CAL.filter(e => new Date(e.date) >= now), past = CAL.filter(e => new Date(e.date) < now);
+  $("cal").innerHTML = calRows(up, 0) || `<div class="card"><p style="margin:0">${CAL.length ? "Nessun altro dato in uscita questa settimana." : "Calendario non disponibile in questo momento."}</p></div>`;
+  $("calPastW").hidden = !past.length; $("calPastS").textContent = `Già usciti questa settimana (${past.length})`; $("calPast").innerHTML = calRows(past, -1);
+  $("banks").innerHTML = BANKS.map((b, k) => { const d = bankDate(b), days = Math.ceil((d - now) / 864e5);
+    return `<div class="bk${days <= 7 ? " soon" : ""}"><div class="d">${d.toLocaleDateString("it-IT", { day: "numeric", timeZone: "Europe/Rome" })}<small>${d.toLocaleDateString("it-IT", { month: "short", timeZone: "Europe/Rome" })}</small></div>
+      <div><b>${esc(b.title)}</b><span class="s">${b.time} · ${esc(b.note)}</span></div><span class="cd">${days <= 0 ? "oggi" : days === 1 ? "domani" : "tra " + days + " g"}</span></div>`; }).join("")
+    || `<div class="card"><p style="margin:0">Riunioni non disponibili in questo momento.</p></div>`;
+}
+// Oggi: eventi macro di oggi e domani, riunione di banca centrale entro 7 giorni, 3 notizie a impatto più alto delle ultime 24 ore
+function renderToday() {
+  const now = Date.now(), t0 = dKey(now), t1 = dKey(now + 864e5);
+  const ev = CAL.filter(e => [t0, t1].includes(dKey(e.date)) && e.impact === "alto" || dKey(e.date) === t0 && e.impact === "medio");
+  const bk = BANKS.filter(b => bankDate(b) >= now - 3.6e6 && bankDate(b) - now < 7 * 864e5);
+  const nw = NEWS.filter(n => now - new Date(n.date) < 864e5 && n.level !== "basso").slice().sort((a, b) => b.impact - a.impact).slice(0, 3);
+  const nws = nw.length ? nw : NEWS.slice(0, 2);
+  const evH = ev.map(e => { const d = new Date(e.date), past = d < now;
+    return `<div class="ev"><span class="tm">${dKey(e.date) === t0 ? "" : "dom. "}${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}</span><span><b>${esc(e.title)}</b><small>${e.country}${e.forecast ? " · previsto " + esc(e.forecast) : ""}${past ? " · uscito" : ""}</small></span><span class="imp ${e.impact}">${e.impact}</span></div>`; }).join("");
+  const bkH = bk.map(b => { const d = bankDate(b), days = Math.ceil((d - now) / 864e5);
+    return `<div class="ev"><span class="tm">${b.time}</span><span><b>${esc(b.title)}</b><small>${days <= 0 ? "oggi" : days === 1 ? "domani" : "tra " + days + " giorni"} · ${d.toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" })}</small></span><span class="imp alto">alto</span></div>`; }).join("");
+  const nH = nws.map(n => `<a class="n" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><small>${esc(n.source)} · ${ago(n.date)}${n.level !== "basso" ? " · impatto " + n.level : ""}</small></a>`).join("");
+  $("todaySec").hidden = !(evH || bkH || nH);
+  $("todaySub").textContent = evH || bkH ? "dati e riunioni in arrivo" : "nessun dato macro importante oggi";
+  $("todayN").innerHTML = evH + bkH + nH + `<a class="more" href="#notizie">Calendario completo e tutte le notizie →</a>`;
 }
 seg("newsSeg", v => { newsTab = v; renderNews(); });
 renderNews();
 // sulla pagina pubblicata le notizie si ricaricano ogni 10 minuti senza rigenerare la dashboard
-setInterval(() => fetch("news.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(j => { if (j && j.news) { NEWS = j.news; CAL = j.calendar || CAL; renderNews(); } }).catch(() => {}), 6e5);
+setInterval(() => fetch("news.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(j => { if (j && j.news) { NEWS = j.news; CAL = j.calendar || CAL; BANKS = j.banks || BANKS; renderNews(); } }).catch(() => {}), 6e5);
 
 // ---- prezzo live (Binance in tempo reale, Coinbase come riserva). Se la rete è bloccata resta la chiusura.
 let lastPx = R.price;

@@ -290,6 +290,16 @@ solo con rischio 1–2% per trade; la leva va usata per ridurre il margine, non 
 **In produzione su carta (05/11)**: ICHI_tk 4h su 10 crypto (spot Binance, funding ignorato) in radar/intraday_ichi.py, vista Intraday e alert Telegram; dal 2021 paniere 200 € → 1.596 € a rischio 1% (DD −22%), 8.100 € a 2% (DD −41%), 10x sul capitale intero azzerato al primo trade.
 **Rimossa (05/11, decisione dell'utente)**: guadagno troppo piccolo in assoluto per il tempo e il rischio rispetto a W2 settimanale; tolti modulo, alert, dati e vista dalla dashboard (codice nella storia git, commit 5000e34). Resta la ricerca in research/intraday/.
 
+### Studio dell'utente · 07/11 — Strategia short dedicata su BTC settimanale (S1–S7, tutti i dati) · NON ADOTTATA (solo test)
+Riferimento: i 4 short di W2 dal 2021 (tutti positivi, +29,5% composto). Dal 2021 a 1x: W2 com'è 120,4k (DD −22,7%, MAR 2,34);
+W2 long + S1 short di regime 93,2k (DD −37,8%); W2 long + S5 short sui top di distribuzione 110,9k (DD −24%, 1 solo trade);
+S1–S7 da sole tra −0% e +33%. Placebo (ingressi casuali nello stesso regime): nessuna regola nuova lo batte (p 0,26–0,71).
+Senza il filtro "SMA40 in discesa" si va short nelle correzioni dei rialzi (2021-06/09, 2024-09, 2025-04). Variante D1 (short W2
+senza filtro di flusso, scelta dopo i risultati): 152k con lo stesso DD, ma il vantaggio è un trade (rientro maggio 2022) e nel
+2018–20 è peggiore (MAR 0,33 contro 0,62). Solo 4 bear indipendenti dal 2018 (2 dal 2021): campione minimo.
+**Lezione 80**: gli short di W2 (regime ribassista confermato + EMA21 + flusso) sono già la versione migliore; regole short più
+aggressive comprano rumore. D1 al massimo su carta. File in research/short_w2/.
+
 ### Studio dell'utente · 05/11 — MACD settimanale 12/26/9 long/short (flip sugli incroci) su BTC, ETH, SOL · NON ADOTTATO
 I 7 trade dell'utente su SOL sono tutti incroci del MACD settimanale, ma la regola meccanica ne produce altri 5 in perdita
 (−56%, −27%, −28%, −34%, −20%) e due uscite (30 e 95) sono minimi visti col senno di poi: ×52,6 la lista contro ×3,2 la regola
@@ -1063,6 +1073,7 @@ Posizione reale: long dal 24/08/2026 a 77.812 $, trailing 71.415 $.
 - Supporti/resistenze e volume profile come segnale (68, 75–77): S/R restano solo mappa visiva in dashboard.
 - Liquidazioni stimate (72), crollo "da volume" come uscita (69), nube Ichimoku come filtro (67).
 - Altre crypto e indici azionari: il vantaggio è specifico di BTC (71, 74). Intraday: rimosso (78).
+- Strategie short dedicate (regime, MACD, rimbalzo fallito, top di distribuzione, affollamento perp): sotto gli short di W2 (80).
 
 **Rischi da ricordare**: un 2018 ripetuto (top seguito da bear lungo) costerebbe −18% con il filtro MACD e fino a −56/−72% senza
 (62); il campione è piccolo (14 trade) e il registro reale (`/entrato`, `/uscito`) è il vero giudice.

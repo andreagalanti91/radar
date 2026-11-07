@@ -56,5 +56,5 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
             shutil.copy(BRAND / name, out.parent / name)
         (out.parent / "manifest.webmanifest").write_text(json.dumps(MANIFEST, indent=1))
         # notizie anche come file separato: la pagina le ricarica senza dover essere rigenerata
-        (out.parent / "news.json").write_text(json.dumps({"news": report.get("news", []), "calendar": report.get("calendar", [])}))
+        (out.parent / "news.json").write_text(json.dumps({"news": report.get("news", []), "calendar": report.get("calendar", []), "banks": report.get("banks", [])}))
     return out

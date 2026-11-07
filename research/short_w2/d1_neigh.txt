@@ -1,0 +1,7 @@
+base: MAR 2.62 | 0.33 · rend21 1420.3% DD -22.7
+sma35: MAR 2.44 | 1.02 · rend21 1213.9% DD -22.7
+sma45: MAR 1.49 | 0.46 · rend21 877.3% DD -32.0
+ema18: MAR 1.65 | 0.24 · rend21 1019.2% DD -31.0
+ema24: MAR 2.71 | 0.16 · rend21 1542.0% DD -22.7
+trail2: MAR 2.67 | 0.36 · rend21 1487.9% DD -22.7
+trail3: MAR 2.57 | 0.31 · rend21 1366.6% DD -22.7

@@ -1,0 +1,27 @@
+2021-oggi  D1 W2-regime senza flusso    solo     14,095    41.0% DD  -14.7 n  4 WR 100 MAR 0.41
+2021-oggi  D1 W2-regime senza flusso    combo   131,093  1210.9% DD  -22.7 n 14 WR 93 MAR 2.44
+    2021-12-20→2022-03-28 +0.4% ema | 2022-05-16→2023-01-16 +18.2% ema | 2025-12-01→2026-04-27 +11.8% ema | 2026-05-18→2026-08-20 +6.2% trail
+2021-oggi  D2 D1+MACD                   solo     10,815     8.2% DD  -23.4 n  4 WR 50 MAR 0.06
+2021-oggi  D2 D1+MACD                   combo   100,587   905.9% DD  -25.6 n 14 WR 79 MAR 1.89
+    2022-01-10→2022-03-28 -6.5% ema | 2022-05-16→2023-01-16 +18.2% ema | 2025-12-01→2026-04-27 +11.8% ema | 2026-06-08→2026-08-20 -12.5% trail
+2021-oggi  S0 (W2 short, fee 0,1%)      solo     12,914    29.1% DD  -15.1 n  4 WR 100 MAR 0.3
+2021-oggi  S0 (W2 short, fee 0,1%)      combo   120,110  1101.1% DD  -22.7 n 14 WR 93 MAR 2.34
+    2022-01-03→2022-03-28 +1.0% ema | 2022-08-15→2023-01-16 +8.3% ema | 2025-12-01→2026-04-27 +11.8% ema | 2026-05-25→2026-08-20 +5.6% trail
+2021-23    D1 W2-regime senza flusso    solo     11,869    18.7% DD  -13.9 n  2 WR 100 MAR 0.42
+2021-23    D1 W2-regime senza flusso    combo    54,885   448.9% DD  -22.7 n  8 WR 100 MAR 3.38
+2021-23    D2 D1+MACD                   solo     11,054    10.5% DD  -15.0 n  2 WR 50 MAR 0.23
+2021-23    D2 D1+MACD                   combo    51,115   411.1% DD  -22.7 n  8 WR 88 MAR 3.19
+2021-23    S0 (W2 short, fee 0,1%)      solo     10,934     9.3% DD  -13.4 n  2 WR 100 MAR 0.23
+2021-23    S0 (W2 short, fee 0,1%)      combo    50,559   405.6% DD  -22.7 n  8 WR 100 MAR 3.17
+2024-oggi  D1 W2-regime senza flusso    solo     11,875    18.8% DD  -14.7 n  2 WR 100 MAR 0.42
+2024-oggi  D1 W2-regime senza flusso    combo    23,933   139.3% DD  -21.6 n  6 WR 83 MAR 1.66
+2024-oggi  D2 D1+MACD                   solo      9,784    -2.2% DD  -23.4 n  2 WR 50 MAR -0.03
+2024-oggi  D2 D1+MACD                   combo    19,718    97.2% DD  -25.6 n  6 WR 67 MAR 1.05
+2024-oggi  S0 (W2 short, fee 0,1%)      solo     11,811    18.1% DD  -14.8 n  2 WR 100 MAR 0.41
+2024-oggi  S0 (W2 short, fee 0,1%)      combo    23,804   138.0% DD  -21.6 n  6 WR 83 MAR 1.65
+2018-20    D1 W2-regime senza flusso    solo      9,468    -5.3% DD  -24.3 n  2 WR 50 MAR -0.07
+2018-20    D1 W2-regime senza flusso    combo    21,512   115.1% DD  -48.6 n  9 WR 67 MAR 0.6
+2018-20    D2 D1+MACD                   solo      9,168    -8.3% DD  -27.3 n  2 WR 50 MAR -0.1
+2018-20    D2 D1+MACD                   combo    20,830   108.3% DD  -47.6 n  9 WR 67 MAR 0.58
+2018-20    S0 (W2 short, fee 0,1%)      solo      9,567    -4.3% DD  -25.9 n  2 WR 50 MAR -0.06
+2018-20    S0 (W2 short, fee 0,1%)      combo    21,736   117.4% DD  -48.1 n  9 WR 67 MAR 0.61
