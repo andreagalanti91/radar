@@ -183,6 +183,13 @@
     const top = Math.max(0, ...pk.map(i => band[i]));
     return pk.map(i => ({ price: x[i][0], usd: band[i], dist: (x[i][0] / p - 1) * 100, sig: band[i] >= .3 * top, rel: top ? band[i] / top : 0 }));
   }
+  // squilibrio entro ±5% dal prezzo di riferimento: unica funzione, usata anche dalla card "Liquidazioni vicine" di Oggi
+  function imb5(B, p) {
+    const sum = f => B.filter(b => Math.abs(b[0] / p - 1) <= .05).reduce((a, b) => a + f(b), 0);
+    const sA = sum(b => b[0] > p ? b[2] : 0), lB = sum(b => b[0] < p ? b[1] : 0);
+    return { sA, lB, imb: sA + lB ? (sA - lB) / (sA + lB) * 100 : 0 };
+  }
+  window.liqImb5 = () => { const LM = SRV().liqmap; if (!LM || !LM.bins) return null; return imb5(bins(), price()); };
   const srOf = p => { const LV = SRV().levels; if (!LV) return null;
     for (const [key, t] of [["resistances", "R"], ["supports", "S"]]) { const i = (LV[key] || []).findIndex(o => o.lo * .995 <= p && p <= o.hi * 1.005); if (i >= 0) return t + (i + 1); } return null; };
 
@@ -193,8 +200,7 @@
     if (!LM) { H("lqHead").innerHTML = `<h2>Mappa non ancora calcolata</h2><p>Il server la calcola ogni ora (Binance + OKX). Le liquidazioni live qui sotto funzionano comunque.</p>`; H("lqTiles").innerHTML = ""; return; }
     const B = bins(), up = clusters(B, p, "s"), dn = clusters(B, p, "l");
     const na = up.find(c => c.sig), nb = dn.find(c => c.sig);
-    const sum = (f) => B.filter(b => Math.abs(b[0] / p - 1) <= .05).reduce((a, b) => a + f(b), 0);
-    const sA = sum(b => b[0] > p ? b[2] : 0), lB = sum(b => b[0] < p ? b[1] : 0), imb = sA + lB ? (sA - lB) / (sA + lB) * 100 : 0;
+    const { sA, lB, imb } = imb5(B, p);
     const LV = SRV().levels || {}, r3 = (LV.resistances || []).find(o => o.strength >= 3 && o.price > p), s3 = (LV.supports || []).find(o => o.strength >= 3 && o.price < p);
     const hiZ = [na && na.price, r3 && r3.price].filter(Boolean).sort((a, b) => a - b)[0], loZ = [nb && nb.price, s3 && s3.price].filter(Boolean).sort((a, b) => b - a)[0];
     const near = [na, nb].filter(Boolean).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist))[0];

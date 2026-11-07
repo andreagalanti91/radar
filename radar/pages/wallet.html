@@ -412,7 +412,7 @@ function renderOv() {
   el("wlOv").innerHTML = list.map((w) => {
     const o = S.data[w.a] ? ovFrom(S.data[w.a]) : S.ov[w.a];
     const body = !o ? `<span class="v">${SK(60)}</span><small>${SK(80)}</small>` : o.err ? `<span class="v">–</span><small>non disponibile</small>` :
-      `<span class="v">${m$(o.eq)}</span><small><span class="${tone(o.d24)}">${s$(o.d24)} 24h</span> · ${o.net ? (o.net > 0 ? "netto long " : "netto short ") + m$(Math.abs(o.net)) : "flat"}</small>`;
+      `<span class="v">${m$(o.eq)}</span><small><span class="${tone(o.d24)}">${s$(o.d24)} 24h</span> · ${o.lite ? "posizioni in caricamento" : o.net ? (o.net > 0 ? "netto long " : "netto short ") + m$(Math.abs(o.net)) : "flat"}</small>`;
     return `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}"><span class="t"><span>${esc(w.n)}</span><span class="cap">${esc(g === "P" ? "Del giorno" : GROUPS[g].split(" ·")[0])}</span></span>${body}</button>`;
   }).join("");
 }
@@ -425,7 +425,7 @@ function ovFrom(d) {
 async function loadOv() {
   const g = W().g;
   await Promise.all(WL.filter((w) => w.g === g && w.a !== S.sel).map(async (w) => {
-    if (S.ov[w.a] && !S.ov[w.a].err && Date.now() - S.ov[w.a].t < OV_EVERY - 5e3) return;
+    if (S.ov[w.a] && !S.ov[w.a].err && !S.ov[w.a].lite && Date.now() - S.ov[w.a].t < OV_EVERY - 5e3) return;
     const [ch, port, spot] = await Promise.all([q("clearinghouseState", w.a), q("portfolio", w.a), q("spotClearinghouseState", w.a)]);
     if (!ch && !port) { S.ov[w.a] = { err: true, t: Date.now() }; return; }
     const day = portKey(port, "day");
@@ -434,6 +434,26 @@ async function loadOv() {
     S.ov[w.a] = { t: Date.now(), eq, d24: lastOf(day?.pnlHistory), net };
   }));
   if (S.visible) { renderOv(); renderScout(); }
+}
+// "Valore ora" delle 3 balene del giorno anche senza selezionarle: solo il valore del conto, una richiesta "portfolio" per balena
+// (ultimo punto di accountValueHistory, la stessa fonte del "Valore alla scelta"; perp + spot da soli lo sottostimano molto),
+// una alla volta, al massimo ogni 3 minuti, saltato se Hyperliquid sta già rallentando (429)
+let pickBusy = false;
+async function loadPickEq() {
+  const sc = SC(); if (!sc || !S.visible || pickBusy || backoff > 2 || document.hidden) return;
+  const sec = el("wlScoutSec"); if (!sec || sec.hidden) return;
+  pickBusy = true;
+  try {
+    for (const p of sc.picks) {
+      const a = String(p.address || "").toLowerCase(), o = S.ov[a];
+      if (!byA[a] || (S.data[a] && fin(S.data[a].eq)) || (o && !o.err && Date.now() - o.t < OV_EVERY - 5e3)) continue;
+      const day = portKey(await q("portfolio", a), "day"), eq = lastOf(day?.accountValueHistory);
+      if (fin(eq)) S.ov[a] = { t: Date.now(), lite: true, eq, d24: lastOf(day?.pnlHistory) };
+      if (S.visible) renderScout();
+      if (backoff > 2) break;
+      await new Promise((r) => setTimeout(r, 400));
+    }
+  } finally { pickBusy = false; }
 }
 
 /* ─────────── render: intestazione ─────────── */
@@ -887,7 +907,7 @@ function schedule() {
   const loop = () => { S.timers[0] = setTimeout(async () => { if (!document.hidden) await refresh(false); loop(); }, REFRESH * backoff); };
   loop();
   S.timers[1] = setInterval(tickAgo, 1000);
-  S.timers[2] = setInterval(() => { if (!document.hidden) { loadOv(); loadDesk(); } }, 60e3);
+  S.timers[2] = setInterval(() => { if (!document.hidden) { loadOv(); loadDesk(); loadPickEq(); } }, 60e3);
 }
 function stopTimers() { clearTimeout(S.timers[0]); clearInterval(S.timers[1]); clearInterval(S.timers[2]); S.timers = []; }
 function select(a) {
@@ -937,7 +957,7 @@ function bind() {
 window.PAGES = window.PAGES || {};
 window.PAGES.wallet = {
   init() { addPicks(); bind(); renderAll(); renderAlert(); },
-  show() { S.visible = true; renderAll(); renderAlert(); tickAgo(); refresh(false); loadOv(); loadDesk(); schedule(); setTimeout(() => chart && chart.timeScale().fitContent(), 80); },
+  show() { S.visible = true; renderAll(); renderAlert(); tickAgo(); refresh(false); loadOv(); loadDesk(); loadPickEq(); schedule(); setTimeout(() => chart && chart.timeScale().fitContent(), 80); },
   hide() { S.visible = false; stopTimers(); },
 };
 // le notifiche scelte restano attive a pagina aperta anche se si parte da un'altra sezione

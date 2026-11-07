@@ -1035,7 +1035,7 @@ renderTrades();
     const best = sg > 0 ? Math.max(W.best, px) : Math.min(W.best, px);
     const lo = Math.min(W.trail, W.entry_px, px, best), hi = Math.max(W.trail, W.entry_px, px, best);
     const pad = (hi - lo) * 0.08, L = lo - pad, H = hi + pad, X = v => ((v - L) / (H - L) * 100).toFixed(2) + "%";
-    const cush = sg * (px / W.trail - 1) * 100;
+    const cush = (W.trail / px - 1) * 100;   // movimento dal prezzo di riferimento al trailing (− per i long, + per gli short)
     const pts = [["stop", "Trailing", W.trail], ["entry", "Ingresso", W.entry_px], ["best", sg > 0 ? "Massimo" : "Minimo", best], ["now", "Ora", px]];
     // righe delle etichette: "Ora" sempre sopra; le altre sopra se lontane da quelle già sopra (≥ 30%), altrimenti sotto
     const xs = v => (v - L) / (H - L) * 100, up = [xs(px)], row = {};
@@ -1052,7 +1052,7 @@ renderTrades();
         <div class="${move >= 0 ? "gain" : "loss"}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></div>
         ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
       <div class="wkPx"><span class="live${r.live ? " on" : ""}">${r.live ? "prezzo live" : "prezzo · " + r.lab}</span> <b>${usd(px)}</b></div>
-      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(-cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>`;
+      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>`;
   };
   if (open) {
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${W.market === "spot" ? "spot 1x" : "perp " + W.expo.toFixed(2).replace(".", ",") + "x"}</span>
@@ -1120,8 +1120,10 @@ renderTrades();
     const drawLq = () => { $("lqCardTop").innerHTML = tl(LQ.nearest_above, "lu") + tl(LQ.nearest_below, "ld");
       $("lqCardSub").textContent = `stima · distanze da ${usd(REF.px)} (${REF.live ? "live" : REF.lab})`; };
     drawLq(); window.onRef(drawLq);
-    const im = LQ.imb5 ? LQ.imb5.pct : 0;
-    $("lqCardNote").textContent = `Entro ±5%: ${Math.abs(im) < 15 ? "in equilibrio" : im > 0 ? "più short sopra" : "più long sotto"} (${pc1(im)}). Contesto, non segnale.`;
+    // squilibrio ±5%: stessa funzione, stessa mappa e stesso prezzo della pagina Liquidazioni (window.liqImb5), arrotondato all'intero
+    const drawIm = () => { const L5 = window.liqImb5 ? window.liqImb5() : null, im = L5 ? L5.imb : (LQ.imb5 ? LQ.imb5.pct : 0);
+      $("lqCardNote").textContent = `Entro ±5%: ${Math.abs(im) < 15 ? "in equilibrio" : im > 0 ? "più short sopra" : "più long sotto"} (${(im > 0 ? "+" : im < 0 ? "−" : "") + Math.abs(im).toFixed(0) + "%"}). Contesto, non segnale.`; };
+    drawIm(); window.onRef(drawIm); window.addEventListener("lq:clusters", drawIm);
   }
   // --- condizioni d'ingresso long (e filtro MACD)
   const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
@@ -1136,11 +1138,13 @@ renderTrades();
   // --- uscite da sorvegliare (vicinanza 0–100%)
   const meter = (f, hot) => `<div class="meter${hot ? " hot" : ""}"><i style="width:${Math.round(Math.max(0, Math.min(1, f)) * 100)}%"></i></div>`;
   if (open) {
-    const dE = sg * (lastC / W.ema21 - 1), fE = 1 - Math.min(1, Math.max(0, dE) / 0.25), fD = Math.max(0, W.fund7) / 0.0009;
-    const drawEx = () => { const dT = sg * (REF.px / W.trail - 1), fT = 1 - Math.min(1, dT / 0.25);
+    const fD = Math.max(0, W.fund7) / 0.0009;
+    // distanze sempre dal prezzo di riferimento (live quando c'è): movimento necessario per arrivare al livello
+    const drawEx = () => { const mT = W.trail / REF.px - 1, dT = -sg * mT, fT = 1 - Math.min(1, Math.max(0, dT) / 0.25);
+      const mE = W.ema21 / REF.px - 1, dE = -sg * mE, fE = 1 - Math.min(1, Math.max(0, dE) / 0.25), past = dE < 0;
     $("wkExits").innerHTML = [
-      `<div class="row"><span class="k">Trailing 2,5 ATR<small>controllo orario · ${usd(W.trail)}</small></span><span class="v">${pc1(-dT * 100)}${meter(fT, fT > 0.7)}</span></div>`,
-      `<div class="row"><span class="k">Chiusura sotto la EMA 21<small>decide la domenica · ${usd(W.ema21)}</small></span><span class="v">${pc1(-dE * 100)}${meter(fE, dE < 0.03)}</span></div>`,
+      `<div class="row"><span class="k">Trailing 2,5 ATR<small>controllo orario · ${usd(W.trail)}</small></span><span class="v">${pc1(mT * 100)}${meter(fT, fT > 0.7)}</span></div>`,
+      `<div class="row"><span class="k">Chiusura ${sg > 0 ? "sotto" : "sopra"} la EMA 21<small>${usd(W.ema21)} · ${past ? `<b style="color:var(--orange)">oggi ${sg > 0 ? "sotto" : "sopra"}: conta la chiusura di domenica</b>` : "(decide la chiusura di domenica)"}</small></span><span class="v"${past ? ' style="color:var(--orange)"' : ""}>${pc1(mE * 100)}${meter(fE, dE < 0.03)}</span></div>`,
       `<div class="row"><span class="k">Distribuzione<small>funding 7g sopra 0,09% e flusso negativo</small></span><span class="v">${W.dist_now ? "attiva" : (W.fund7 * 100).toFixed(3).replace(".", ",") + "%"}${meter(fD, W.dist_now)}</span></div>`,
     ].join(""); };
     drawEx(); window.onRef(drawEx);
