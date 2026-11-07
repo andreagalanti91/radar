@@ -34,7 +34,7 @@
 .lqLeg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:-1px}
 .lqTot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .lqTot>div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:grid;gap:4px;min-width:0}
-.lqTot span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.lqTot>div>span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
 .lqTot b{font:600 1rem var(--font);font-variant-numeric:tabular-nums} .lqTot small{font-size:.7rem;color:var(--label2)}
 .lsBar{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--line2)} .lsBar i:first-child{background:var(--red)} .lsBar i:last-child{background:var(--green)}
 .lqHours{display:flex;align-items:flex-end;gap:1px;height:70px;margin:4px 2px 0}
@@ -215,7 +215,7 @@
     const LV = SRV().levels || {}, zs = [...(LV.resistances || []).map((o, i) => ({ ...o, t: "R" + (i + 1), k: "r" })), ...(LV.supports || []).map((o, i) => ({ ...o, t: "S" + (i + 1), k: "s" }))];
     const WH = (S.wh || LM.whales || []).filter(w => w.liq);
     const html = rows.map((r, i) => { const z = zs.find(o => o.hi >= r.a && o.lo <= r.b), wh = WH.filter(w => w.liq >= r.a && w.liq < r.b);
-      const isSig = r.v >= .3 * mx && r.v > 0, lab = isSig ? `<b style="left:${(r.v / mx * 100).toFixed(1)}%">${m$(r.v)}</b>` : "";
+      const isSig = r.v >= .3 * mx && r.v > 0, wd = r.v / mx * 100, lab = isSig ? (wd > 72 ? `<b style="right:${(100 - wd).toFixed(1)}%;padding-right:6px;color:#fff">${m$(r.v)}</b>` : `<b style="left:${wd.toFixed(1)}%">${m$(r.v)}</b>`) : "";
       const tag = [z ? `<span class="${z.k}">${z.t}</span>` : "", wh.length ? `<span class="w">HL</span>` : ""].filter(Boolean).join(" ");
       const ttl = `${px(r.a)}–${px(r.b)} · ${r.up ? "short" : "long"} stimati ${m$(r.v)}${z ? " · zona " + z.t : ""}${wh.length ? " · Hyperliquid: " + wh.map(w => w.who + " " + w.side + " " + m$(w.ntl)).join(", ") : ""}`;
       return (i === 20 ? `<div class="lqNow"><b>${px(p)}</b><i></i><span>ora</span></div>` : "") +
@@ -263,7 +263,7 @@
       return `<div><span>${lab}</span><b><span class="neg">${m$(v.l)}</span> / <span class="pos">${m$(v.s)}</span></b><div class="lsBar"><i style="width:${v.l / tt * 100}%"></i><i style="width:${v.s / tt * 100}%"></i></div><small>${sub}</small></div>`; };
     H("lqTot").innerHTML = box("OKX · 1 ora", win(1), "long / short liquidati") + box("OKX · 4 ore", win(4), "long / short") + box("OKX · 24 ore", t24, "registro del server + live") ;
     H("lqLiveSub").textContent = `Binance da ${Math.round((now - S.bnLive.t0) / 6e4)} min: ${m$(S.bnLive.l)} long / ${m$(S.bnLive.s)} short`;
-    H("lqEv").innerHTML = ev.slice(0, 30).map(e => `<div class="row"><span class="x">${e.x}</span><span class="lqSide ${e.side}">${e.side === "l" ? "long liq." : "short liq."}</span><span class="k">${m$(e.usd)}<small>${e.btc.toFixed(e.btc >= 1 ? 2 : 4).replace(".", ",")} BTC a ${px(e.p)}</small></span><span class="v">${hm(e.t)}<small style="display:block;font-size:.7rem;color:var(--label3)">${new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</small></span></div>`).join("") ||
+    H("lqEv").innerHTML = ev.slice(0, 15).map(e => `<div class="row"><span class="x">${e.x}</span><span class="lqSide ${e.side}">${e.side === "l" ? "long liq." : "short liq."}</span><span class="k">${m$(e.usd)}<small>${e.btc.toFixed(e.btc >= 1 ? 2 : 4).replace(".", ",")} BTC a ${px(e.p)}</small></span><span class="v">${hm(e.t)}<small style="display:block;font-size:.7rem;color:var(--label3)">${new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</small></span></div>`).join("") ||
       `<div class="row"><span class="k">Nessuna liquidazione ricevuta<small>Le fonti live non rispondono da questa rete: restano i dati raccolti dal server.</small></span></div>`;
     H("lqEvNote").innerHTML = `Binance (WebSocket forceOrder) trasmette solo dal vivo e al massimo una liquidazione al secondo per contratto: niente storico. OKX dà le ultime liquidazioni via API${F && F.since ? `; il server le raccoglie ogni ora dal ${new Date(F.since.replace(" ", "T") + "Z").toLocaleDateString("it-IT", { day: "numeric", month: "long" })} (data/liquidations.csv)` : ""}. Long liquidati = vendite forzate (spingono giù), short liquidati = acquisti forzati.`;
     if (F && F.hours) { const mx = Math.max(1, ...F.hours.map(h => h[1] + h[2]));

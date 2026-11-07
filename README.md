@@ -31,6 +31,25 @@ Actions → **Variables**). Caso peggiore storico da ricordare: un crollo come i
 3. All'*USCITA SETTIMANALE* (EMA 21, distribuzione) vendi all'apertura del lunedì; se il trailing viene toccato, l'alert arriva subito.
 4. Registra ogni operazione su Telegram con `/entrato` e `/uscito`: il lunedì alle 08:41 arriva il resoconto con il confronto.
 
+## Liquidazioni, order book e wallet
+
+**Liquidazioni** (pagina e card in Oggi): mappa STIMATA delle liquidazioni vicine da open interest Binance + OKX (leve 10–100x,
+ricalcolata ogni ora, `radar/liqmap.py`; nel browser la parte Binance arriva all'ora corrente), prezzi di liquidazione reali delle
+balene Hyperliquid (wallet di whalebot + conti più grandi), liquidazioni live Binance/OKX e storico OKX raccolto dal 30/10/2026.
+Sul grafico settimanale i 2 cluster più vicini per lato ("Liq S" sopra, "Liq L" sotto). Ricerca (lezione 81): la mappa non dà
+vantaggio a W2, è solo contesto per le 12–24 ore successive.
+
+**Order book** (`radar/orderbook.py`): ogni ora fotografa Coinbase, Kraken, OKX e Binance spot, controlla i dati (book vuoto o
+incrociato, spread, ritardo, prezzo lontano dalle altre fonti), salva la previsione a 1h/4h prima dell'esito e ogni 4 ore riaddestra
+il modello e ne misura l'accuratezza contro due riferimenti semplici (`data/orderbook.csv`, `data/ob_model.json`). Sotto 30 casi
+etichettati la previsione resta al 50%.
+
+**Wallet** (pagina in stile Hyperdash, `radar/pages/wallet.html`): i 3 wallet della sentinella (Principale, Simile 1, Simile 2) più
+quelli di whalebot, letti in diretta da Hyperliquid: valore del conto, PnL, **prossime mosse** (ordini, TP/SL, liquidazioni vicine),
+schede Posizioni · Ordini · Storico trade · Funding · Depositi. **Alert Telegram ogni 5 minuti** (`radar/wallets.py`,
+`.github/workflows/wallets.yml`): posizione aperta, chiusa o girata, variazione di size ≥ 25% e ≥ `RADAR_WALLET_MIN` (50k $),
+ordini nuovi ≥ `RADAR_WALLET_ORDER_MIN` (100k $). Notifiche nel browser opzionali mentre la pagina è aperta.
+
 ## La dashboard
 
 Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:
