@@ -4,6 +4,9 @@ name: Sentinella wallet (Hyperliquid)
 # Lo stato fra un giro e l'altro sta nella cache di Actions, non nel repository.
 on:
   schedule:
+    # cron di GitHub = best-effort: sotto carico i giri slittano o saltano e un orario nuovo può impiegare tempo ad attivarsi.
+    # Niente seconda riga sfalsata: raddoppierebbe i giri (~576/giorno) senza garanzie; il controllo usa solo lo stato in cache,
+    # quindi un giro saltato si recupera al successivo (gli alert confrontano con l'ultima fotografia salvata).
     - cron: "*/5 * * * *"
   workflow_dispatch:
 
