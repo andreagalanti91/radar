@@ -1,0 +1,2 @@
+ts,mid,spread_bps,micro_bps,n_src,bid_0.25,ask_0.25,imb_0.25,src_0.25,bid_0.5,ask_0.5,imb_0.5,src_0.5,bid_1,ask_1,imb_1,src_1,bid_2,ask_2,imb_2,src_2,wall_bid_px,wall_bid_usd,wall_bid_dist,wall_ask_px,wall_ask_usd,wall_ask_dist,sources,dropped,p_1h,p_4h
+2026-11-07 08:53:12,76112.85,0.008,-0.001,5,69657081.0,79898463.0,-0.0685,5,94225160.0,116032747.0,-0.1037,5,53742939.0,62425499.0,-0.0747,4,14544763.0,25090671.0,-0.2661,1,76018.0,15029914.0,-0.125,76284.0,14250828.0,0.225,"binance_spot,coinbase,kraken,okx_perp,okx_spot",,0.5,0.5
