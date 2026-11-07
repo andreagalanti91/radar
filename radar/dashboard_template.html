@@ -1456,8 +1456,10 @@ startLive();
 
 // ---- sezioni
 const VIEWS = ["oggi", "simulatore", "statistiche", "liquidazioni", "wallet", "notizie", "metodo"];
+document.querySelectorAll('a[data-v]').forEach(a => { if (!$("v-" + a.dataset.v)) a.hidden = true; });   // tab senza pagina: nascosto
+if ([...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length < 6) document.querySelector(".tabbar").style.gridTemplateColumns = `repeat(${[...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length},1fr)`;
 function route() {
-  const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) ? v : "oggi";
+  const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) && $("v-" + v) ? v : "oggi";   // pagina non ancora presente → Oggi
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
   // pagine in file separati (radar/pages/*.html): si registrano in window.PAGES e si inizializzano alla prima visita
   const PG = (window.PAGES || {})[ok]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
