@@ -67,6 +67,11 @@ def daily() -> None:
         report["liqmap"] = liqmap.update(report.get("levels"), DATA_DIR)
     except Exception as e:  # noqa: BLE001
         print(f"[radar] mappa delle liquidazioni non calcolata: {e!r}")
+    try:   # scout balene Hyperliquid: una volta al giorno (≥ 20 ore dall'ultimo giro), i 3 wallet da seguire (radar/scout.py)
+        from . import scout
+        report["scout"] = scout.daily(DATA_DIR)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] scout balene non aggiornato: {e!r}")
     try:   # motore del book: foto, controlli dei dati, previsione 1h/4h, apprendimento ogni 4 ore (radar/orderbook.py)
         from . import orderbook
         report["orderbook"] = orderbook.update(DATA_DIR)

@@ -50,6 +50,9 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
         from .journal import averages, load
         j = load()
         report = dict(report, journal={"trades": j["trades"], "avg": averages(j)})
+    if "scout" not in report and (ROOT / "data" / "wallet_picks.json").exists():   # balene del giorno (radar/scout.py)
+        from .scout import summary
+        report = dict(report, scout=summary(ROOT / "data"))
     pages = "\n".join(f.read_text() for f in sorted(PAGES.glob("*.html"))) if PAGES.exists() else ""
     html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str)).replace("<!--__PAGES__-->", pages)
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)

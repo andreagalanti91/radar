@@ -6,7 +6,7 @@
   <div class="section">
     <div class="sh">Wallet · sentinella <small><span class="live" id="wlLive">caricamento</span></small></div>
     <div class="wl-pick">
-      <div class="hscroll"><div class="seg" id="wlSeg" role="group" aria-label="Wallet"></div></div>
+      <div class="hscroll"><div class="wl-seg2"><div class="seg" id="wlSeg" role="group" aria-label="Sentinella"></div><div class="seg" id="wlSegP" role="group" aria-label="Selezione giornaliera" hidden></div></div></div>
       <label class="wl-more"><span class="cap">Altri</span><select id="wlMore" aria-label="Altri wallet"></select></label>
     </div>
     <div class="wl-ov" id="wlOv" aria-label="Panoramica del gruppo"></div>
@@ -48,6 +48,11 @@
     <div class="card"><div class="tl" id="wlAct"></div></div>
   </div>
 
+  <div class="section" id="wlScoutSec" hidden>
+    <div class="sh">Classifica balene <small id="wlScSub"></small></div>
+    <div class="card wl-sc" id="wlScout"></div>
+  </div>
+
   <div class="section">
     <div class="sh">Alert <small id="wlAlSub"></small></div>
     <div class="wl-alerts" id="wlAlert"></div>
@@ -58,7 +63,7 @@
 </div>
 
 <style>
-#v-wallet .wl-pick{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
+#v-wallet .wl-pick{min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
 #v-wallet .wl-pick .hscroll{flex:1 1 auto;min-width:0;margin:0}
 #v-wallet .wl-more{display:inline-flex;align-items:center;gap:8px}
 #v-wallet select{font:600 .8rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:8px 30px 8px 12px;max-width:62vw;
@@ -70,6 +75,7 @@
 #v-wallet .wl-ov button{all:unset;cursor:pointer;display:grid;gap:3px;padding:11px 13px;border-radius:16px;background:var(--card);border:1px solid var(--line);min-width:0;box-sizing:border-box}
 #v-wallet .wl-ov button[aria-pressed="true"]{border-color:color-mix(in srgb,var(--tint) 60%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--tint) 14%,transparent)}
 #v-wallet .wl-ov .t{display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 .88rem var(--font)}
+#v-wallet .wl-ov .t .cap{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #v-wallet .wl-ov .v{font:600 1.02rem var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 #v-wallet .wl-ov small{font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #v-wallet .wl-hero{display:grid;gap:10px}
@@ -153,6 +159,26 @@
 @media (min-width:900px){#v-wallet .wl-toast{bottom:24px}}
 #v-wallet .wl-toast div{pointer-events:auto;padding:12px 14px;border-radius:16px;background:var(--chrome);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5);font-size:.86rem;animation:fade .24s}
 #v-wallet .wl-toast b{display:block;font-size:.9rem}
+#v-wallet .wl-seg2{display:inline-flex;gap:8px;align-items:center}
+#v-wallet .wl-seg2 .cap{white-space:nowrap}
+#v-wallet .wl-sc{display:grid;gap:14px}
+#v-wallet .wl-sc p{margin:0;font-size:.86rem;line-height:1.55;color:var(--label2)}
+#v-wallet .wl-sc ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.84rem;line-height:1.5;color:var(--label2)}
+#v-wallet .wl-pk{display:grid;gap:8px}
+#v-wallet .wl-pk button{all:unset;cursor:pointer;display:grid;gap:6px;padding:12px 13px;border-radius:16px;background:var(--raise);border:1px solid var(--line);box-sizing:border-box;min-width:0}
+#v-wallet .wl-pk button[aria-pressed="true"]{border-color:color-mix(in srgb,var(--tint) 60%,transparent)}
+#v-wallet .wl-pk .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline;min-width:0}
+#v-wallet .wl-pk .t b{font:650 .95rem var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#v-wallet .wl-pk .t span{font:600 .9rem var(--font);font-variant-numeric:tabular-nums}
+#v-wallet .wl-pk .m{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media (max-width:560px){#v-wallet .wl-pk .m{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#v-wallet .wl-pk .m div{display:grid;gap:1px;min-width:0}
+#v-wallet .wl-pk .m small{font:500 .58rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+#v-wallet .wl-pk .m b{font:600 .88rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+#v-wallet .wl-pk .y{font-size:.76rem;color:var(--label2);line-height:1.45}
+#v-wallet .wl-sc a{color:var(--label);text-decoration:none;font-weight:600}
+#v-wallet .wl-sc td.wrap{white-space:normal;text-align:left;font-size:.8rem}
+#v-wallet .wl-sc h4{margin:0;font:600 .8rem var(--font);color:var(--label)}
 </style>
 
 <script>
@@ -173,7 +199,7 @@ const WL = [
   { a: "0xc7290b4b308431a985fa9e3e8a335c2f7650517c", n: "Ribassista", g: "B", note: "Whale Desk · short di lungo periodo, solo lettura" },
   { a: "0x9c16bc8f1104e4d2f72267eb981fa12de7cc4a6f", n: "Inversore", g: "B", note: "Whale Desk · rare inversioni su BTC, solo lettura" },
 ];
-const GROUPS = { S: "Sentinella", A: "Cluster · Gruppo A", C: "Copy diretto · Gruppo C", B: "Lettura · Gruppo B" };
+const GROUPS = { S: "Sentinella", P: "Selezione giornaliera", A: "Cluster · Gruppo A", C: "Copy diretto · Gruppo C", B: "Lettura · Gruppo B" };
 const HL = "https://api.hyperliquid.xyz/info";
 const DESK = "https://whale-desk.square-shape-0876.workers.dev/state";
 const REFRESH = 45e3, FULL_EVERY = 5 * 60e3, OV_EVERY = 3 * 60e3, DESK_EVERY = 2 * 60e3, FUND_EVERY = 30 * 60e3;
@@ -373,10 +399,12 @@ const DIR_IT = { "Open Long": "Apre long", "Open Short": "Apre short", "Close Lo
 
 /* ─────────── render: selettore e panoramica ─────────── */
 function renderPicker() {
-  const prim = WL.filter((w) => w.g === "S");
+  const prim = WL.filter((w) => w.g === "S"), pk = WL.filter((w) => w.g === "P");
   el("wlSeg").innerHTML = prim.map((w) => `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}">${esc(w.n)}</button>`).join("");
+  el("wlSegP").hidden = !pk.length;
+  el("wlSegP").innerHTML = pk.map((w) => `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}" title="${esc(GROUPS.P)}">${esc(w.n)}</button>`).join("");
   const others = ["A", "C", "B"].map((g) => `<optgroup label="${esc(GROUPS[g])}">${WL.filter((w) => w.g === g).map((w) => `<option value="${w.a}"${w.a === S.sel ? " selected" : ""}>${esc(w.n)}</option>`).join("")}</optgroup>`).join("");
-  el("wlMore").innerHTML = `<option value=""${W().g === "S" ? " selected" : ""}>Whale Desk…</option>` + others;
+  el("wlMore").innerHTML = `<option value=""${W().g === "S" || W().g === "P" ? " selected" : ""}>Whale Desk…</option>` + others;
   renderOv();
 }
 function renderOv() {
@@ -385,7 +413,7 @@ function renderOv() {
     const o = S.data[w.a] ? ovFrom(S.data[w.a]) : S.ov[w.a];
     const body = !o ? `<span class="v">${SK(60)}</span><small>${SK(80)}</small>` : o.err ? `<span class="v">–</span><small>non disponibile</small>` :
       `<span class="v">${m$(o.eq)}</span><small><span class="${tone(o.d24)}">${s$(o.d24)} 24h</span> · ${o.net ? (o.net > 0 ? "netto long " : "netto short ") + m$(Math.abs(o.net)) : "flat"}</small>`;
-    return `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}"><span class="t"><span>${esc(w.n)}</span><span class="cap">${esc(GROUPS[g].split(" ·")[0])}</span></span>${body}</button>`;
+    return `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}"><span class="t"><span>${esc(w.n)}</span><span class="cap">${esc(g === "P" ? "Del giorno" : GROUPS[g].split(" ·")[0])}</span></span>${body}</button>`;
   }).join("");
 }
 const portKey = (port, k) => (Array.isArray(port) ? port.find(([x]) => x === k)?.[1] : null);
@@ -689,6 +717,8 @@ function renderAlert() {
   el("wlAlert").innerHTML = `
   <div class="card"><h3>Telegram · sentinella <span class="wl-st na">fuori da questa pagina</span></h3>
     <p>Il monitor di bot.andreagalanti.it segue <b>Principale, Simile 1 e Simile 2</b> e manda su Telegram le <b>entrate da 50.000 $ in su</b>, con 1–3 minuti di ritardo. Aumenti e riduzioni della size non avvisano; gli ordini in attesa nemmeno. Il suo stato non è leggibile da qui (il file dati non consente l'accesso da altri siti).</p></div>
+  ${SC() && SC().picks.length ? `<div class="card"><h3>Telegram · balene del giorno <span class="wl-st ok">ogni 5 minuti</span></h3>
+    <p>Lo stesso controllo della sentinella (GitHub Actions, radar/wallets.py) segue anche <b>${SC().picks.map((p) => esc(p.name)).join(", ")}</b>: posizioni nuove, chiuse o girate e ordini grandi. Quando la selezione cambia arriva un messaggio con le nuove 3 e il perché.</p></div>` : ""}
   <div class="card"><h3>Telegram · Whale Desk ${deskSt}</h3>
     <p>Worker Cloudflare, gira ogni minuto anche a pagina chiusa. Segue Cluster-1/2/3, Petroliere, Rotatore, Ribassista e Inversore (non i 3 della sentinella).</p>
     <ul>
@@ -775,7 +805,63 @@ async function alertAction(k) {
 }
 
 /* ─────────── ciclo ─────────── */
-function renderAll() { renderPicker(); renderHero(); renderNext(); renderPerf(); renderTabs(); renderAct(); }
+function renderAll() { renderPicker(); renderHero(); renderNext(); renderPerf(); renderTabs(); renderAct(); renderScout(); }
+
+/* ─────────── selezione giornaliera: le 3 balene di radar/scout.py (R.scout, dalla dashboard) ─────────── */
+const SC = () => (typeof R !== "undefined" && R && R.scout && Array.isArray(R.scout.picks)) ? R.scout : null;
+function addPicks() {
+  const sc = SC(); if (!sc) return;
+  for (const p of sc.picks) {
+    const a = String(p.address || "").toLowerCase();
+    if (!/^0x[0-9a-f]{40}$/.test(a) || byA[a]) continue;
+    const w = { a, n: p.name || short(a), g: "P", note: p.why ? `Selezione del ${sc.date}: ${p.why}` : "Selezione giornaliera", pick: p };
+    WL.push(w); byA[a] = w;
+  }
+  const st = store.get("radarWl.sel", null);
+  if (st && byA[st]) S.sel = st;
+  if (store.get("radarWl.alert", null) == null) AL.wallets = [...new Set([...AL.wallets, ...WL.filter((w) => w.g === "P").map((w) => w.a)])];
+}
+const p0 = (x, d = 0) => fin(x) ? nf(x * 100, d) + "%" : "–";
+const r2f = (x) => fin(x) ? nf(x, 2) : "–";
+function pkMetrics(m) {
+  return `<div class="m"><div><small>1 anno</small><b class="${tone(m.ret_1y)}">${pc(m.ret_1y, 0)}</b></div>
+    <div><small>Max DD</small><b>${p0(m.dd)}</b></div><div><small>R²</small><b>${r2f(m.r2)}</b></div>
+    <div><small>Funding</small><b>${fin(m.fund_pnl) ? p0(m.fund_pnl, 1) : "–"}</b></div><div><small>Valore</small><b>${m$(m.value)}</b></div></div>`;
+}
+function renderScout() {
+  const sc = SC(), sec = el("wlScoutSec");
+  if (!sc) { sec.hidden = true; return; }
+  sec.hidden = false;
+  const c = sc.criteria || {}, th = sc.thresholds || {}, tk = sc.track || {}, sn = sc.scanned || {};
+  el("wlScSub").textContent = `${sc.date} · ${sn.analyzed ?? "–"} wallet analizzati`;
+  const picks = sc.picks.map((p) => `<button type="button" data-a="${esc(p.address)}" aria-pressed="${p.address === S.sel}">
+      <span class="t"><b>${esc(p.name)}${p.kind === "vault" ? ` <span class="rl tp">vault</span>` : ""}</b><span>${fin(p.score) ? nf(p.score, 0) : "–"}<span class="mut" style="font-weight:500">/100</span></span></span>
+      ${pkMetrics(p.metrics || {})}
+      <span class="y">${esc(short(p.address))} · in selezione dal ${esc(p.since || sc.date)}${p.display ? " · " + esc(p.display) : ""}${p.leader_of ? " · leader del vault " + esc(p.leader_of) : ""}${fin(p.metrics?.lev) ? " · leva attuale " + lev(p.metrics.lev) : ""}</span></button>`).join("");
+  const run = (sc.runners_up || []).map((p) => { const m = p.metrics || {};
+    return `<tr><td><a href="https://hyperdash.com/address/${esc(p.address)}" target="_blank" rel="noopener">${esc(p.kind === "vault" ? p.name : short(p.address))}</a><small>${p.fails && p.fails.length ? esc(p.fails.join(", ")) : "passa i filtri"}</small></td>
+      <td>${fin(p.score) ? nf(p.score, 0) : "–"}</td><td class="${tone(m.ret_1y)}">${pc(m.ret_1y, 0)}</td><td>${p0(m.dd)}</td><td>${r2f(m.r2)}</td><td>${fin(m.fund_pnl) ? p0(m.fund_pnl, 1) : "–"}</td><td>${m$(m.value)}</td></tr>`; }).join("");
+  const hz = ["7", "30", "90"].map((h) => { const x = tk[h] || {};
+    return x.n ? `<tr><td>${h} giorni<small>${x.n} selezioni valutate</small></td><td class="${tone(x.pick)}">${pc(x.pick, 1)}</td><td>${pc(x.passed, 1)}</td><td>${pc(x.bench, 1)}</td><td>${p0(x.dd)}</td><td>${p0(x.beat_bench)}</td></tr>`
+      : `<tr><td>${h} giorni</td><td colspan="5" class="mut wrap">in attesa: prima verifica ${h} giorni dopo la prima selezione</td></tr>`; }).join("");
+  const past = (sc.past || []).filter((x) => x.since !== sc.date).map((x) => `<li>${esc(x.name)} (${esc(short(x.address))}) dal ${esc(x.since)}: <b class="${tone(x.ret)}">${pc(x.ret, 1)}</b>${x.active ? "" : " · uscita"}</li>`).join("");
+  const rej = Object.entries(sc.rejected || {}).filter(([, n]) => n > 0).map(([k, n]) => `${esc(k)} ${n}`).join(" · ");
+  el("wlScout").innerHTML = `
+    <p>Ogni giorno lo scout legge la classifica di Hyperliquid (le stesse API di Hyperdash: classifica e copytrading/vault) e sceglie le 3 balene con crescita più alta e regolare. Criteri preregistrati:</p>
+    <ul><li>almeno ${m$(c.min_value || 1e6)} nel conto, ${c.hist_days || 300}+ giorni di storia, attivo negli ultimi 30 giorni, almeno metà del PnL dai perp;</li>
+      <li>rendimento a 1 anno &gt; ${p0(th.ret)} (time-weighted: depositi e prelievi non contano), max drawdown ≤ ${p0(th.dd)}, R² della crescita ≥ ${r2f(th.r2)}, funding pagato ≤ ${p0(th.fund)} del PnL;</li>
+      <li>punteggio 0–100: rendimento/drawdown 40%, regolarità (R²) 25%, periodi positivi 20%, funding basso 15%; chi è scelto resta finché uno sfidante non lo supera del ${p0(c.margin || 0.15)}.</li></ul>
+    ${sc.relaxed && sc.relaxed.length ? `<p class="neg">Filtri allentati oggi (passavano meno di 3 wallet): ${esc(sc.relaxed.join(", "))}.</p>` : ""}
+    ${sc.picks.length < 3 ? `<p class="neg">Solo ${sc.picks.length} wallet passano anche i filtri allentati: i posti vuoti restano vuoti.</p>` : ""}
+    <div class="wl-pk">${picks || `<p>Nessun wallet passa i filtri oggi.</p>`}</div>
+    <h4>Riserve</h4>
+    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Funding</th><th>Valore</th></tr></thead><tbody>${run || `<tr><td colspan="7">–</td></tr>`}</tbody></table></div>
+    <h4>Verifica delle scelte</h4>
+    <div class="scroll"><table class="grid"><thead><tr><th>Dopo</th><th>Scelte</th><th>Chi passava</th><th>Conti ≥ 1M</th><th>DD scelte</th><th>Batte ≥ 1M</th></tr></thead><tbody>${hz}</tbody></table></div>
+    ${past ? `<ul>${past}</ul>` : ""}
+    <p class="foot" style="margin:0">Rendimenti dopo la scelta: media delle 3 scelte contro la mediana di chi passava i filtri lo stesso giorno e di un campione fisso di conti ≥ $1M. Pesi del punteggio aggiornati al massimo ogni 30 giorni, solo con almeno 30 osservazioni.
+    Analizzati ${sn.analyzed ?? "–"} wallet su ${sn.leaderboard_1m ?? "–"} conti ≥ $1M e ${sn.vaults_1m ?? "–"} vault; passano ${sn.passed ?? "–"}.${rej ? ` Scartati per primo filtro mancato: ${rej}.` : ""} Storia annua a punti ogni ~14 giorni: il drawdown dentro le due settimane si vede solo nell'ultimo mese. Non è un consiglio di investimento.</p>`;
+}
 function tickAgo() {
   const d = D(), lv = el("wlLive"); if (!lv) return;
   if (!d) { lv.className = "live"; lv.textContent = S.err ? "non disponibile" : "caricamento"; return; }
@@ -846,7 +932,7 @@ function bind() {
 
 window.PAGES = window.PAGES || {};
 window.PAGES.wallet = {
-  init() { bind(); renderAll(); renderAlert(); },
+  init() { addPicks(); bind(); renderAll(); renderAlert(); },
   show() { S.visible = true; renderAll(); renderAlert(); tickAgo(); refresh(false); loadOv(); loadDesk(); schedule(); setTimeout(() => chart && chart.timeScale().fitContent(), 80); },
   hide() { S.visible = false; stopTimers(); },
 };

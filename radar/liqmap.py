@@ -299,6 +299,17 @@ def _hl(body: dict):
     return r.json()
 
 
+_LB: dict = {}   # classifica scaricata in questo processo (la usano anche radar/scout.py e la cache qui sotto)
+
+
+def hl_leaderboard(max_age_s: float = 3600) -> list[dict]:
+    """Classifica completa di Hyperliquid (~40 MB, ~48k conti), una sola volta per processo/ora."""
+    if not _LB.get("rows") or time.time() - _LB["ts"] > max_age_s:
+        rows = _get(HL_LB, timeout=90).json().get("leaderboardRows", [])
+        _LB.update(rows=rows, ts=time.time())
+    return _LB["rows"]
+
+
 def hl_accounts(cache_path, max_age_h: float = 24) -> dict[str, str]:
     """Indirizzi da leggere: wallet di whalebot + i TOP_ACCOUNTS conti più grandi della classifica (cache giornaliera)."""
     names = dict(WHALEBOT)
@@ -308,8 +319,7 @@ def hl_accounts(cache_path, max_age_h: float = 24) -> dict[str, str]:
         c = {}
     if not c.get("ts") or time.time() - c["ts"] > max_age_h * 3600:
         try:
-            rows = _get(HL_LB, timeout=90).json().get("leaderboardRows", [])
-            rows = sorted(rows, key=lambda r: -float(r.get("accountValue") or 0))[:TOP_ACCOUNTS]
+            rows = sorted(hl_leaderboard(), key=lambda r: -float(r.get("accountValue") or 0))[:TOP_ACCOUNTS]
             c = {"ts": time.time(), "accounts": [[r["ethAddress"], r.get("displayName")] for r in rows]}
             cache_path.write_text(json.dumps(c))
         except Exception as e:  # noqa: BLE001

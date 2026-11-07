@@ -1,6 +1,8 @@
 """Alert Telegram sui wallet della sentinella (Hyperliquid): posizioni e ordini, confronto fra due fotografie.
 
-Gira ogni 5 minuti (.github/workflows/wallets.yml). Per ogni wallet legge posizioni e ordini aperti su tutti i DEX di
+Gira ogni 5 minuti (.github/workflows/wallets.yml). Wallet: i 3 fissi della sentinella + le 3 balene scelte ogni giorno da
+radar/scout.py (data/wallet_picks.json, salvato nel repository dal workflow orario). Un wallet appena entrato fra le scelte
+viene solo fotografato al primo giro, senza alert. Per ogni wallet legge posizioni e ordini aperti su tutti i DEX di
 Hyperliquid (principale + HIP-3) e li confronta con la fotografia precedente (data/wallets_state.json, conservata nella
 cache di GitHub Actions). Alert su:
 - posizione nuova, chiusa o girata; variazione di size di almeno il 25% e di RADAR_WALLET_MIN dollari (default 50k);
@@ -26,13 +28,48 @@ WALLETS = [
     ("0x99967871e6c4f9a5185abc57edede9e9540191f6", "Simile 1"),
     ("0x807a2e2e469df84b299da5f90f15dda4380daca1", "Simile 2"),
 ]
+PICKS = STATE.with_name("wallet_picks.json")   # le 3 balene scelte ogni giorno da radar/scout.py (file nel repository)
+
+
+def watched() -> list[tuple[str, str]]:
+    """Sentinella (fissa) + le 3 balene del giorno, se il file delle scelte c'è (il workflow orario lo salva in data/)."""
+    out = list(WALLETS)
+    try:
+        picks = json.loads(PICKS.read_text()).get("picks", []) if PICKS.exists() else []
+    except Exception as e:  # noqa: BLE001
+        print(f"[wallet] scelte del giorno non lette: {e!r}")
+        picks = []
+    have = {a for a, _ in out}
+    for p in picks:
+        a = str(p.get("address", "")).lower()
+        if a.startswith("0x") and a not in have:
+            out.append((a, f"{p.get('name') or a[:8]} · selezione giornaliera"))
+            have.add(a)
+    return out
+
+
 MIN_POS = float(os.environ.get("RADAR_WALLET_MIN", "50000"))
 MIN_ORD = float(os.environ.get("RADAR_WALLET_ORDER_MIN", "100000"))
 CHANGE = 0.25
 PAGE = "https://andreagalanti91.github.io/radar/#wallet"
 
 
+_W: list[tuple[float, int]] = []   # (istante, peso) delle richieste dell'ultimo minuto
+BUDGET = 1000                      # Hyperliquid: ~1200 di peso al minuto per IP; 6 wallet × 11 DEX superano il limite senza freno
+
+
+def _throttle(w: int) -> None:
+    while True:
+        now = time.time()
+        _W[:] = [x for x in _W if now - x[0] < 60]
+        if sum(x[1] for x in _W) + w <= BUDGET:
+            _W.append((now, w))
+            return
+        time.sleep(1)
+
+
 def _post(body: dict):
+    _throttle(2 if body.get("type") in ("clearinghouseState", "spotClearinghouseState", "allMids") else 20)
     for k in range(3):
         r = requests.post(API, json=body, timeout=20)
         if r.status_code == 429:
@@ -101,7 +138,7 @@ def run() -> None:
     dexes = [""] + [d["name"] for d in _post({"type": "perpDexs"}) if d]
     old = json.loads(STATE.read_text()) if STATE.exists() else None
     new, msgs = {}, []
-    for addr, name in WALLETS:
+    for addr, name in watched():
         try:
             new[addr] = snapshot(addr, dexes)
         except Exception as e:  # noqa: BLE001

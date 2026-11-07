@@ -50,6 +50,13 @@ schede Posizioni · Ordini · Storico trade · Funding · Depositi. **Alert Tele
 `.github/workflows/wallets.yml`): posizione aperta, chiusa o girata, variazione di size ≥ 25% e ≥ `RADAR_WALLET_MIN` (50k $),
 ordini nuovi ≥ `RADAR_WALLET_ORDER_MIN` (100k $). Notifiche nel browser opzionali mentre la pagina è aperta.
 
+**Balene del giorno** (pagina Wallet): ogni giorno `radar/scout.py` legge la classifica e i vault di Hyperliquid (le stesse API di
+Hyperdash) e sceglie le 3 balene con almeno 1 M$, rendimento a 1 anno > 80% (time-weighted, depositi esclusi), drawdown ≤ 30%,
+crescita regolare (R² ≥ 0,75) e funding ≤ 15% del PnL (criteri preregistrati in `research/scout/PREREG.md`). Chi è scelto resta
+finché uno sfidante non lo supera del 15%. Le scelte compaiono in «Selezione giornaliera» e «Classifica balene», ricevono gli stessi
+alert Telegram della sentinella e, quando cambiano, arriva un messaggio con le nuove 3. Verifica a 7/30/90 giorni contro la mediana
+dei candidati e dei conti ≥ 1 M$ in `data/scout_track.json`; ogni 30 giorni i pesi del punteggio si correggono (al massimo 0,05).
+
 ## La dashboard
 
 Pensata per il telefono (si installa come app dalla schermata Home), dark-first con tema chiaro. Il prezzo è **live** (Binance in tempo reale, Coinbase come riserva); dati, notizie e dashboard si aggiornano ogni ora. Sezioni:
