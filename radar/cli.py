@@ -102,6 +102,8 @@ def daily() -> None:
                 telegram.send(weekly.format_intraday(hev))
         except Exception as e:  # noqa: BLE001
             print(f"[radar] eventi settimanali non inviati: {e!r}")
+    # fine del giro pesante: lo legge il controllo del workflow (daily.yml) per saltare un secondo giro entro 25 minuti
+    st["last_run"] = pd.Timestamp.utcnow().tz_localize(None).isoformat(timespec="seconds")
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
     try:   # confronto dei trade reali con il segnale (prezzi e orari di v2 e W2)
         journal.link(report)
