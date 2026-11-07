@@ -1,0 +1,367 @@
+<!-- ============ LIQUIDAZIONI (radar/pages/liquidazioni.html) ============
+     Server (ogni ora, radar/liqmap.py e radar/orderbook.py): mappa stimata Binance + OKX, balene Hyperliquid, storico OKX raccolto,
+     motore del book. Browser (ogni 45 s e con "Aggiorna"): liquidazioni live Binance/OKX, book Binance futures + OKX, posizioni
+     Hyperliquid, mappa Binance ricalcolata fino all'ora corrente. Se una fonte non risponde restano i dati del server. -->
+<style>
+.lqBar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lqBtn{font:600 .8rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:36px}
+.lqBtn:active{transform:scale(.97)} .lqBtn[disabled]{opacity:.5}
+.lqSrc{display:flex;flex-wrap:wrap;gap:6px}
+.lqSrc .chip.ok{color:var(--green)} .lqSrc .chip.ko{color:var(--label3);text-decoration:line-through}
+.lqHead{display:grid;gap:6px}
+.lqHead h2{margin:0;font:600 1.35rem/1.25 var(--font);letter-spacing:-.03em}
+.lqHead p{margin:0;color:var(--label2);font-size:.88rem;line-height:1.5}
+.lqT .up b{color:var(--teal)} .lqT .dn b{color:var(--violet)}
+.imbBar{position:relative;height:8px;border-radius:4px;background:var(--line2);overflow:hidden;margin-top:4px}
+.imbBar i{position:absolute;top:0;bottom:0}
+.imbBar em{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:var(--label);transform:translateX(-1px)}
+.lqMapCard{padding:14px 12px}
+.lqLadder{display:grid;gap:1px;font-variant-numeric:tabular-nums}
+.lqRow{display:grid;grid-template-columns:62px minmax(0,1fr) 46px;align-items:center;gap:8px;height:13px;position:relative}
+.lqRow .px{font:500 .62rem var(--mono);color:var(--label3);text-align:right;letter-spacing:.02em}
+.lqRow .bar{position:relative;height:100%}
+.lqRow .bar i{position:absolute;left:0;top:1px;bottom:1px;border-radius:0 4px 4px 0;min-width:1px}
+.lqRow.up .bar i{background:color-mix(in srgb,var(--teal) 70%,transparent)} .lqRow.dn .bar i{background:color-mix(in srgb,var(--violet) 70%,transparent)}
+.lqRow.sig .bar i{box-shadow:0 0 10px -2px currentColor} .lqRow.up.sig{color:var(--teal)} .lqRow.dn.sig{color:var(--violet)}
+.lqRow .bar b{position:absolute;top:-1px;font:600 .6rem var(--mono);color:var(--label);white-space:nowrap;padding-left:5px}
+.lqRow .tag{font:600 .56rem var(--mono);letter-spacing:.06em;text-align:left;white-space:nowrap;overflow:hidden}
+.lqRow.zr{background:linear-gradient(90deg,transparent 62px,rgba(255,90,82,.07) 62px)} .lqRow.zs{background:linear-gradient(90deg,transparent 62px,rgba(52,215,123,.08) 62px)}
+.lqRow .tag .r{color:var(--red)} .lqRow .tag .s{color:var(--green)} .lqRow .tag .w{color:var(--orange)}
+.lqNow{display:grid;grid-template-columns:62px minmax(0,1fr) 46px;gap:8px;align-items:center;margin:3px 0}
+.lqNow b{font:700 .66rem var(--mono);text-align:right;color:var(--label)} .lqNow i{height:2px;background:var(--label);box-shadow:0 0 10px var(--tint);border-radius:1px}
+.lqNow span{font:500 .58rem var(--mono);color:var(--label2);letter-spacing:.06em;text-transform:uppercase}
+.lqLeg{display:flex;flex-wrap:wrap;gap:4px 14px;font:500 .64rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);margin:10px 2px 0}
+.lqLeg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.lqTot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.lqTot>div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:grid;gap:4px;min-width:0}
+.lqTot span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.lqTot b{font:600 1rem var(--font);font-variant-numeric:tabular-nums} .lqTot small{font-size:.7rem;color:var(--label2)}
+.lsBar{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--line2)} .lsBar i:first-child{background:var(--red)} .lsBar i:last-child{background:var(--green)}
+.lqHours{display:flex;align-items:flex-end;gap:1px;height:70px;margin:4px 2px 0}
+.lqHours div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;min-width:1px;height:100%}
+.lqHours i{display:block;width:100%} .lqHours .s{background:color-mix(in srgb,var(--green) 75%,transparent)} .lqHours .l{background:color-mix(in srgb,var(--red) 75%,transparent)}
+.lqEv .row{min-height:42px;padding:8px 14px} .lqEv .lqSide{font:600 .6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:999px;white-space:nowrap}
+.lqEv .lqSide.l{color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent)} .lqEv .lqSide.s{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.lqEv .x{font:500 .6rem var(--mono);color:var(--label3);letter-spacing:.06em;text-transform:uppercase;width:52px;flex:none}
+.obBands{display:grid;gap:8px}
+.obBand{display:grid;grid-template-columns:52px minmax(0,1fr) 54px;gap:8px;align-items:center;font-variant-numeric:tabular-nums}
+.obBand span{font:500 .62rem var(--mono);color:var(--label3)} .obBand b{font:600 .78rem var(--font);text-align:right}
+.obBand .dv{position:relative;height:12px;border-radius:6px;background:var(--raise);border:1px solid var(--line)}
+.obBand .dv i{position:absolute;top:1px;bottom:1px;border-radius:5px} .obBand .dv em{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--label2)}
+.obDepth{position:relative;height:90px;margin:8px 2px 2px;display:flex;align-items:flex-end;gap:1px}
+.obDepth i{flex:1;min-width:1px;border-radius:2px 2px 0 0} .obDepth i.b{background:color-mix(in srgb,var(--green) 60%,transparent)} .obDepth i.a{background:color-mix(in srgb,var(--red) 55%,transparent)}
+.obDepth em{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--label);transform:translateX(-1px)}
+.obAx{display:flex;justify-content:space-between;font:500 .6rem var(--mono);color:var(--label3);margin:2px}
+.obP{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.obP>div{border-radius:16px;padding:12px 14px;background:var(--raise);border:1px solid var(--line);display:grid;gap:3px}
+.obP span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)} .obP b{font:600 1.3rem var(--font);font-variant-numeric:tabular-nums} .obP small{font-size:.72rem;color:var(--label2)}
+.lqNote{font-size:.78rem;color:var(--label2);line-height:1.5;margin:0}
+@media (max-width:560px){.lqTot{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.lqTot>div{padding:10px}.lqTot b{font-size:.86rem}.lqRow,.lqNow{grid-template-columns:52px minmax(0,1fr) 40px;gap:6px}}
+</style>
+<div class="view" id="v-liquidazioni" hidden>
+  <div class="section">
+    <div class="sh">Liquidazioni vicine <small id="lqSub">stima + dati reali</small></div>
+    <div class="lqBar"><div class="lqSrc" id="lqSrc"></div><button type="button" class="lqBtn" id="lqRefresh">↻ Aggiorna</button></div>
+    <div class="card glow lqHead" id="lqHead"><h2>Dati in caricamento…</h2></div>
+    <div class="tiles lqT" id="lqTiles"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Mappa delle liquidazioni <small id="lqMapSub"></small></div>
+    <div class="card lqMapCard">
+      <div class="wkTop" style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="cap">sopra: short da liquidare · sotto: long</span>
+        <div class="seg" id="lqRange" role="group" aria-label="Ampiezza"><button data-v="5">±5%</button><button data-v="10" aria-pressed="true">±10%</button><button data-v="15">±15%</button></div></div>
+      <div class="lqLadder" id="lqLadder" role="img" aria-label="Mappa delle liquidazioni stimate sopra e sotto il prezzo"></div>
+      <div class="lqLeg"><span><i style="background:var(--teal)"></i>short liquidabili</span><span><i style="background:var(--violet)"></i>long liquidabili</span><span><i style="background:rgba(255,90,82,.35)"></i>zona R</span><span><i style="background:rgba(52,215,123,.4)"></i>zona S</span><span style="color:var(--orange)">HL = balena Hyperliquid</span></div>
+    </div>
+    <p class="foot" id="lqMapNote"></p>
+  </div>
+
+  <div class="section">
+    <div class="sh">Liquidazioni in tempo reale <small id="lqLiveSub"></small></div>
+    <div class="lqTot" id="lqTot"></div>
+    <div class="card" style="padding:14px"><div class="wkTop" style="display:flex;justify-content:space-between"><b style="font:600 .92rem var(--font)">Ultime 72 ore · OKX</b><span class="cap" id="lqHoursSub"></span></div>
+      <div class="lqHours" id="lqHours" role="img" aria-label="Liquidazioni orarie: rosso long, verde short"></div>
+      <div class="lqLeg"><span><i style="background:var(--red)"></i>long liquidati (vendite forzate)</span><span><i style="background:var(--green)"></i>short liquidati (acquisti forzati)</span></div></div>
+    <div class="list lqEv" id="lqEv"></div>
+    <p class="foot" id="lqEvNote"></p>
+  </div>
+
+  <div class="section">
+    <div class="sh">Balene Hyperliquid · BTC <small id="lqWhSub"></small></div>
+    <div class="list" id="lqWh"></div>
+    <p class="foot">Prezzi di liquidazione VERI: Hyperliquid è l'unico exchange con posizioni pubbliche. Conti seguiti da whalebot + i più grandi della classifica; posizioni in margine incrociato: il prezzo di liquidazione si sposta con il resto del conto.</p>
+  </div>
+
+  <div class="section">
+    <div class="sh">Order book <small id="obSub"></small></div>
+    <div class="card" style="display:grid;gap:12px">
+      <div class="obBands" id="obBands"></div>
+      <div><div class="obDepth" id="obDepth" role="img" aria-label="Profondità del book entro ±1%"></div><div class="obAx"><span>−1%</span><span>mid</span><span>+1%</span></div></div>
+      <div class="list" id="obWalls" style="box-shadow:none"></div>
+    </div>
+    <div class="card" style="display:grid;gap:12px">
+      <div class="wkTop" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font:600 .98rem var(--font)">Motore del book · direzione a breve</b><span class="cap" id="obEngSub"></span></div>
+      <div class="obP" id="obP"></div>
+      <div class="scroll"><table class="grid" id="obTrack"></table></div>
+      <div class="lqSrc" id="obChecks"></div>
+      <p class="lqNote" id="obNote"></p>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  window.PAGES = window.PAGES || {};
+  const H = id => document.getElementById(id);
+  const f0 = x => Math.round(x).toLocaleString("it-IT");
+  const px = x => x == null ? "–" : "$" + f0(x);
+  const m$ = x => { if (x == null) return "–"; const a = Math.abs(x), s = a >= 1e9 ? (a / 1e9).toFixed(2) + "B" : a >= 1e6 ? (a / 1e6).toFixed(1) + "M" : a >= 1e3 ? Math.round(a / 1e3) + "k" : String(Math.round(a)); return "$" + s.replace(".", ","); };
+  const pc = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(d).replace(".", ",") + "%";
+  const kk = x => x ? (x / 1000).toFixed(1).replace(".", ",") + "k" : "–";
+  const hm = t => new Date(t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const BIN = 0.0025, LEV = [[10, .30], [25, .30], [50, .25], [100, .15]], MM = 0.005;
+  const S = { src: {}, ev: [], seen: new Set(), range: 10, timer: null, ws: [], live: null, wh: null, book: null, binMap: null, lastMap: 0, lastWh: 0, bnLive: { l: 0, s: 0, n: 0, t0: Date.now() } };
+  const SRV = () => (typeof R !== "undefined" && R) ? R : {};
+  const price = () => (typeof lastPx !== "undefined" && lastPx > 0) ? lastPx : (S.livePx || (SRV().liqmap || {}).price || SRV().price);
+  const getJ = (u, o) => fetch(u, Object.assign({ cache: "no-store" }, o || {})).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  const timeout = (p, ms) => Promise.race([p, new Promise((_, rj) => setTimeout(() => rj(new Error("timeout")), ms))]);
+
+  // ---------------- mappa: stessa logica di radar/liqmap.py (build) per ricalcolare Binance fino all'ora corrente
+  function build(K) {   // K: [{h,l,c,oi}] orari
+    const lo = Math.min(...K.map(k => k.l)) * 0.4, n = Math.ceil(Math.log(Math.max(...K.map(k => k.h)) * 2.2 / lo) / Math.log1p(BIN)) + 2;
+    const bin = p => Math.floor(Math.log(p / lo) / Math.log1p(BIN));
+    const L = new Float64Array(n), Sh = new Float64Array(n);
+    for (let i = 1; i < K.length; i++) {
+      const bl = bin(K[i].l), bh = bin(K[i].h);
+      L.fill(0, Math.max(0, bl)); Sh.fill(0, 0, Math.min(n, bh + 1));
+      const d = K[i].oi - K[i - 1].oi;
+      if (d < 0 && K[i - 1].oi > 0) { const k = Math.max(0, 1 + d / K[i - 1].oi); for (let j = 0; j < n; j++) { L[j] *= k; Sh[j] *= k; } }
+      else if (d > 0) { const tp = (K[i].h + K[i].l + K[i].c) / 3;
+        LEV.forEach(([lv, w]) => { const jl = bin(tp * (1 - 1 / lv + MM)), js = bin(tp * (1 + 1 / lv - MM));
+          if (jl >= 0 && jl < n && jl < bl) L[jl] += d * .5 * w; if (js >= 0 && js < n && js > bh) Sh[js] += d * .5 * w; }); }
+    }
+    return { lo, L, Sh, at: p => { const j = bin(p); return j >= 0 && j < n ? [L[j], Sh[j]] : [0, 0]; } };
+  }
+  function regrid(m, grid) {   // somma le fasce della mappa m nelle fasce (prezzi) della griglia del server
+    const out = grid.map(() => [0, 0]), e = grid.map(p => p / Math.sqrt(1 + BIN)); e.push(grid[grid.length - 1] * Math.sqrt(1 + BIN));
+    for (let j = 0; j < m.L.length; j++) { const p = m.lo * Math.pow(1 + BIN, j + .5); if (p < e[0] || p >= e[e.length - 1]) continue;
+      let k = 0; while (k < grid.length - 1 && p >= e[k + 1]) k++; out[k][0] += m.L[j]; out[k][1] += m.Sh[j]; }
+    return out;
+  }
+  async function binanceMap() {   // OI orario e candele orarie Binance USDT-M (dal browser, se l'API risponde)
+    const [oi, kl] = await Promise.all([getJ("https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=1h&limit=500"),
+      getJ("https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=500")]);
+    const O = new Map(oi.map(o => [+o.timestamp, +o.sumOpenInterestValue]));
+    const K = kl.map(k => ({ t: +k[0], h: +k[2], l: +k[3], c: +k[4], oi: O.get(+k[0] + 3.6e6) })).filter(k => k.oi > 0);   // OI alla chiusura dell'ora
+    if (K.length < 200) throw new Error("pochi dati");
+    return { m: build(K), until: K[K.length - 1].t + 3.6e6 };
+  }
+  function bins() {   // fasce correnti: server, con Binance sostituita dal ricalcolo live se disponibile
+    const LM = SRV().liqmap; if (!LM || !LM.bins) return [];
+    const B = LM.bins.map(b => [b[0], b[1], b[2]]);
+    const bs = (LM.bins_src || {}).binance;
+    if (S.binMap && bs) { const live = regrid(S.binMap.m, B.map(b => b[0]));
+      B.forEach((b, i) => { b[1] += live[i][0] - bs[i][0]; b[2] += live[i][1] - bs[i][1]; }); }
+    const p = price();   // col prezzo live: i long sopra il prezzo e gli short sotto sono già stati liquidati
+    B.forEach(b => { if (b[0] >= p) b[1] = 0; if (b[0] <= p) b[2] = 0; b[1] = Math.max(0, b[1]); b[2] = Math.max(0, b[2]); });
+    return B;
+  }
+  function clusters(B, p, side, rng = 0.10) {   // come liqmap.clusters: picchi della somma su 3 fasce, dal più vicino
+    const k = side === "s" ? 2 : 1, x = B.filter(b => (side === "s" ? b[0] > p : b[0] < p) && Math.abs(b[0] / p - 1) <= rng);
+    if (side === "l") x.reverse();
+    const band = x.map((b, i) => (x[i - 1] ? x[i - 1][k] : 0) + b[k] + (x[i + 1] ? x[i + 1][k] : 0));
+    const pk = band.map((v, i) => v > 0 && (i === 0 || v >= band[i - 1]) && (i === band.length - 1 || v > band[i + 1]) ? i : -1).filter(i => i >= 0);
+    const top = Math.max(0, ...pk.map(i => band[i]));
+    return pk.map(i => ({ price: x[i][0], usd: band[i], dist: (x[i][0] / p - 1) * 100, sig: band[i] >= .3 * top, rel: top ? band[i] / top : 0 }));
+  }
+  const srOf = p => { const LV = SRV().levels; if (!LV) return null;
+    for (const [key, t] of [["resistances", "R"], ["supports", "S"]]) { const i = (LV[key] || []).findIndex(o => o.lo * .995 <= p && p <= o.hi * 1.005); if (i >= 0) return t + (i + 1); } return null; };
+
+  // ---------------- verdetto + tile
+  function renderHead() {
+    const LM = SRV().liqmap, p = price();
+    if (!LM) { H("lqHead").innerHTML = `<h2>Mappa non ancora calcolata</h2><p>Il server la calcola ogni ora (Binance + OKX). Le liquidazioni live qui sotto funzionano comunque.</p>`; H("lqTiles").innerHTML = ""; return; }
+    const B = bins(), up = clusters(B, p, "s"), dn = clusters(B, p, "l");
+    const na = up.find(c => c.sig), nb = dn.find(c => c.sig);
+    const sum = (f) => B.filter(b => Math.abs(b[0] / p - 1) <= .05).reduce((a, b) => a + f(b), 0);
+    const sA = sum(b => b[0] > p ? b[2] : 0), lB = sum(b => b[0] < p ? b[1] : 0), imb = sA + lB ? (sA - lB) / (sA + lB) * 100 : 0;
+    const LV = SRV().levels || {}, r3 = (LV.resistances || []).find(o => o.strength >= 3 && o.price > p), s3 = (LV.supports || []).find(o => o.strength >= 3 && o.price < p);
+    const hiZ = [na && na.price, r3 && r3.price].filter(Boolean).sort((a, b) => a - b)[0], loZ = [nb && nb.price, s3 && s3.price].filter(Boolean).sort((a, b) => b - a)[0];
+    const near = [na, nb].filter(Boolean).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist))[0];
+    const big = Math.abs(imb) >= 15 ? (imb > 0 ? "Più short da liquidare sopra" : "Più long da liquidare sotto") : "Liquidazioni in equilibrio";
+    const why = near ? `Il cluster significativo più vicino è <b>${near === na ? "sopra" : "sotto"} a ${px(near.price)}</b> (${pc(near.dist)}, ${m$(near.usd)} stimati)${srOf(near.price) ? `, <b>in confluenza con ${srOf(near.price)}</b>` : ""}.` : "Nessun cluster significativo entro ±10%.";
+    H("lqHead").innerHTML = `<span class="cap">Lettura · contesto, non segnale</span><h2>${big} <span style="color:var(--label2);font-weight:500">entro ±5%: ${pc(imb, 0)}</span></h2>
+      <p>${why} Zona probabile finché non si rompe: <b>${px(loZ)} – ${px(hiZ)}</b> (primo cluster o S/R forte per lato).</p>
+      <p style="font-size:.78rem">Nei test dal 2021 (lezione 81) il prezzo non raggiunge i cluster stimati più spesso di un livello qualsiasi alla stessa distanza; lo squilibrio dice qualcosa solo sulle 12–24 ore successive (lato pesante toccato per primo +6–12 punti oltre l'atteso), in gran parte perché segue il movimento delle ultime 24 ore, e niente a 3–7 giorni. Usala per sapere dove possono partire accelerazioni, stop e prese di profitto, non per W2.</p>`;
+    const t = (cls, lab, c, extra) => `<div class="${cls}"><span>${lab}</span><b>${c ? px(c.price) : "–"}</b><small>${c ? pc(c.dist) + " · " + m$(c.usd) : "nessuno entro ±10%"}${c && srOf(c.price) ? " · " + srOf(c.price) : ""}</small>${extra || ""}</div>`;
+    const bigA = up.slice().sort((a, b) => b.usd - a.usd)[0], bigB = dn.slice().sort((a, b) => b.usd - a.usd)[0];
+    const w = Math.min(50, Math.abs(imb) / 2);
+    H("lqTiles").innerHTML = t("up", "Sopra · più vicino", na) + t("dn", "Sotto · più vicino", nb) +
+      `<div><span>Squilibrio ±5%</span><b style="color:${imb > 0 ? "var(--teal)" : "var(--violet)"}">${pc(imb, 0)}</b><small>short ${m$(sA)} · long ${m$(lB)}</small><div class="imbBar"><i style="left:${imb > 0 ? 50 : 50 - w}%;width:${w}%;background:${imb > 0 ? "var(--teal)" : "var(--violet)"}"></i><em></em></div></div>` +
+      t("up", "Sopra · più grande", bigA) + t("dn", "Sotto · più grande", bigB) +
+      `<div><span>Zona probabile</span><b style="font-size:1rem">${kk(loZ)} – ${kk(hiZ)}</b><small>da cluster e S/R forti</small></div>`;
+    window.dispatchEvent(new CustomEvent("lq:clusters", { detail: { up, dn } }));
+  }
+
+  // ---------------- mappa a scala verticale
+  function renderMap() {
+    const LM = SRV().liqmap; if (!LM) { H("lqLadder").innerHTML = `<p class="lqNote">Mappa non disponibile.</p>`; return; }
+    const p = price(), rg = S.range / 100, step = S.range / 100 / 20, B = bins().filter(b => Math.abs(b[0] / p - 1) <= rg);
+    const rows = [];   // 20 righe sopra e 20 sotto, ampiezza step
+    for (let i = 19; i >= -20; i--) { const a = p * (1 + i * step), b = p * (1 + (i + 1) * step);
+      const v = B.filter(x => x[0] >= a && x[0] < b).reduce((s, x) => s + (i >= 0 ? x[2] : x[1]), 0); rows.push({ a, b, mid: (a + b) / 2, v, up: i >= 0 }); }
+    const mx = Math.max(1, ...rows.map(r => r.v)), sig = rows.filter(r => r.v >= .3 * mx);
+    const LV = SRV().levels || {}, zs = [...(LV.resistances || []).map((o, i) => ({ ...o, t: "R" + (i + 1), k: "r" })), ...(LV.supports || []).map((o, i) => ({ ...o, t: "S" + (i + 1), k: "s" }))];
+    const WH = (S.wh || LM.whales || []).filter(w => w.liq);
+    const html = rows.map((r, i) => { const z = zs.find(o => o.hi >= r.a && o.lo <= r.b), wh = WH.filter(w => w.liq >= r.a && w.liq < r.b);
+      const isSig = r.v >= .3 * mx && r.v > 0, lab = isSig ? `<b style="left:${(r.v / mx * 100).toFixed(1)}%">${m$(r.v)}</b>` : "";
+      const tag = [z ? `<span class="${z.k}">${z.t}</span>` : "", wh.length ? `<span class="w">HL</span>` : ""].filter(Boolean).join(" ");
+      const ttl = `${px(r.a)}–${px(r.b)} · ${r.up ? "short" : "long"} stimati ${m$(r.v)}${z ? " · zona " + z.t : ""}${wh.length ? " · Hyperliquid: " + wh.map(w => w.who + " " + w.side + " " + m$(w.ntl)).join(", ") : ""}`;
+      return (i === 20 ? `<div class="lqNow"><b>${px(p)}</b><i></i><span>ora</span></div>` : "") +
+        `<div class="lqRow ${r.up ? "up" : "dn"}${isSig ? " sig" : ""}${z ? " z" + z.k : ""}" title="${esc(ttl)}"><span class="px">${i % 2 === 0 || isSig ? f0(r.mid) : ""}</span><span class="bar"><i style="width:${(r.v / mx * 100).toFixed(1)}%"></i>${lab}</span><span class="tag">${tag}</span></div>`; }).join("");
+    H("lqLadder").innerHTML = html;
+    const src = LM.sources || {}, s = Object.entries(src).filter(([, v]) => v.ok).map(([k, v]) => `${k === "okx" ? "OKX" : "Binance"} fino alle ${new Date(v.until.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}`);
+    if (S.binMap) s.unshift(`Binance ricalcolata dal browser fino alle ${new Date(S.binMap.until).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}`);
+    H("lqMapSub").textContent = "stima · " + (LM.params ? LM.params.lookback_days + " giorni di OI" : "");
+    H("lqMapNote").innerHTML = `STIMA, non dati reali: ogni aumento di open interest delle ultime ${LM.params ? LM.params.lookback_days : 21} giorni è trattato come posizioni nuove, metà long e metà short, con leve 10x (30%), 25x (30%), 50x (25%), 100x (15%) e margine 0,5%; un livello sparisce quando il prezzo lo attraversa. Fonti: ${s.join(" · ") || "–"}. Barre più lunghe = più $ che verrebbero liquidati in quella fascia (${(step * 100).toFixed(2).replace(".", ",")}% per riga).`;
+  }
+
+  // ---------------- liquidazioni live
+  function addEv(e) { const k = e.x + Math.floor(e.t / 1000) + e.side + (+e.p).toFixed(1); if (S.seen.has(k)) return false; S.seen.add(k); S.ev.push(e); return true; }
+  function okxRest() {   // ultime liquidazioni BTC-USDT-SWAP eseguite (OKX tiene le più recenti)
+    return getJ("https://www.okx.com/api/v5/public/liquidation-orders?instType=SWAP&uly=BTC-USDT&state=filled&limit=100").then(j => {
+      ((j.data || [])[0] || {}).details.forEach(d => { const btc = +d.sz * 0.01; addEv({ x: "OKX", t: +d.ts, side: d.posSide === "long" ? "l" : "s", btc, p: +d.bkPx, usd: btc * +d.bkPx }); });
+      S.src.okx = true; }).catch(() => { S.src.okx = false; });
+  }
+  function startWS() {
+    if (S.ws.length) return;
+    try { const b = new WebSocket("wss://fstream.binance.com/ws/btcusdt@forceOrder");
+      b.onopen = () => { S.src.bnws = true; renderSrc(); };
+      b.onmessage = m => { const o = JSON.parse(m.data).o; if (!o) return; const btc = +o.z || +o.q, p = +o.ap || +o.p, side = o.S === "SELL" ? "l" : "s";
+        if (addEv({ x: "Binance", t: +o.T, side, btc, p, usd: btc * p })) { S.bnLive[side] += btc * p; S.bnLive.n++; renderLive(); } };
+      b.onerror = () => { S.src.bnws = false; renderSrc(); }; S.ws.push(b); } catch (_) { S.src.bnws = false; }
+    try { const o = new WebSocket("wss://ws.okx.com:8443/ws/v5/public");
+      o.onopen = () => { o.send(JSON.stringify({ op: "subscribe", args: [{ channel: "liquidation-orders", instType: "SWAP" }] })); S.src.okxws = true; renderSrc(); };
+      o.onmessage = m => { if (m.data === "pong") return; const j = JSON.parse(m.data); (j.data || []).forEach(x => { if (!/^BTC-USDT?-SWAP$/.test(x.instId)) return;
+        x.details.forEach(d => { const usdC = x.instId === "BTC-USD-SWAP", btc = usdC ? +d.sz * 100 / +d.bkPx : +d.sz * 0.01;
+          if (addEv({ x: "OKX", t: +d.ts, side: d.posSide === "long" ? "l" : "s", btc, p: +d.bkPx, usd: btc * +d.bkPx })) renderLive(); }); }); };
+      o.onerror = () => { S.src.okxws = false; renderSrc(); };
+      o._ping = setInterval(() => { try { o.readyState === 1 && o.send("ping"); } catch (_) {} }, 25000); S.ws.push(o); } catch (_) { S.src.okxws = false; }
+  }
+  function stopWS() { S.ws.forEach(w => { try { clearInterval(w._ping); w.close(); } catch (_) {} }); S.ws = []; }
+  function renderLive() {
+    const F = (SRV().liqmap || {}).feed, now = Date.now();
+    const srv = ((F && F.events) || []).map(e => ({ x: "OKX", t: Date.parse(e[0].replace(" ", "T") + "Z"), side: e[1] === "long" ? "l" : "s", btc: e[2], p: e[3], usd: e[4], srv: 1 }));
+    srv.forEach(addEv);
+    const ev = S.ev.slice().sort((a, b) => b.t - a.t);
+    const win = h => { const x = ev.filter(e => e.x === "OKX" && now - e.t <= h * 3.6e6); return { l: x.filter(e => e.side === "l").reduce((a, e) => a + e.usd, 0), s: x.filter(e => e.side === "s").reduce((a, e) => a + e.usd, 0), n: x.length }; };
+    const T = F && F.totals ? F.totals : {};
+    // 1h e 4h dagli eventi OKX più recenti (REST + WS + server); 24h dal registro del server (raccolta oraria) + gli eventi live più recenti
+    const t24 = T["24h"] ? { l: Math.max(T["24h"].long, win(24).l), s: Math.max(T["24h"].short, win(24).s) } : win(24);
+    const box = (lab, v, sub) => { const tt = v.l + v.s || 1;
+      return `<div><span>${lab}</span><b><span class="neg">${m$(v.l)}</span> / <span class="pos">${m$(v.s)}</span></b><div class="lsBar"><i style="width:${v.l / tt * 100}%"></i><i style="width:${v.s / tt * 100}%"></i></div><small>${sub}</small></div>`; };
+    H("lqTot").innerHTML = box("OKX · 1 ora", win(1), "long / short liquidati") + box("OKX · 4 ore", win(4), "long / short") + box("OKX · 24 ore", t24, "registro del server + live") ;
+    H("lqLiveSub").textContent = `Binance da ${Math.round((now - S.bnLive.t0) / 6e4)} min: ${m$(S.bnLive.l)} long / ${m$(S.bnLive.s)} short`;
+    H("lqEv").innerHTML = ev.slice(0, 30).map(e => `<div class="row"><span class="x">${e.x}</span><span class="lqSide ${e.side}">${e.side === "l" ? "long liq." : "short liq."}</span><span class="k">${m$(e.usd)}<small>${e.btc.toFixed(e.btc >= 1 ? 2 : 4).replace(".", ",")} BTC a ${px(e.p)}</small></span><span class="v">${hm(e.t)}<small style="display:block;font-size:.7rem;color:var(--label3)">${new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</small></span></div>`).join("") ||
+      `<div class="row"><span class="k">Nessuna liquidazione ricevuta<small>Le fonti live non rispondono da questa rete: restano i dati raccolti dal server.</small></span></div>`;
+    H("lqEvNote").innerHTML = `Binance (WebSocket forceOrder) trasmette solo dal vivo e al massimo una liquidazione al secondo per contratto: niente storico. OKX dà le ultime liquidazioni via API${F && F.since ? `; il server le raccoglie ogni ora dal ${new Date(F.since.replace(" ", "T") + "Z").toLocaleDateString("it-IT", { day: "numeric", month: "long" })} (data/liquidations.csv)` : ""}. Long liquidati = vendite forzate (spingono giù), short liquidati = acquisti forzati.`;
+    if (F && F.hours) { const mx = Math.max(1, ...F.hours.map(h => h[1] + h[2]));
+      H("lqHours").innerHTML = F.hours.map(h => `<div title="${esc(new Date(h[0].replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit" }) + " · long " + m$(h[1]) + " · short " + m$(h[2]))}"><i class="s" style="height:${h[2] / mx * 100}%"></i><i class="l" style="height:${h[1] / mx * 100}%"></i></div>`).join("");
+      const big = (F.largest || [])[0]; H("lqHoursSub").textContent = big ? `più grande 7g: ${m$(big[2])} ${big[1]} a ${px(big[3])}` : ""; }
+  }
+
+  // ---------------- balene Hyperliquid
+  function whales() {
+    const LM = SRV().liqmap || {}, base = LM.whales || [], p = price();
+    const addrs = [...new Set(base.map(w => w.addr))];
+    if (!addrs.length) return Promise.resolve();
+    return Promise.all(addrs.slice(0, 30).map(a => timeout(getJ("https://api.hyperliquid.xyz/info", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "clearinghouseState", user: a }) }), 8000).then(s => [a, s]).catch(() => [a, null])))
+      .then(res => { const ok = res.filter(r => r[1]); if (!ok.length) { S.src.hl = false; return; } S.src.hl = true;
+        const name = Object.fromEntries(base.map(w => [w.addr, w.who])), tr = Object.fromEntries(base.map(w => [w.addr, w.tracked]));
+        S.wh = ok.flatMap(([a, s]) => (s.assetPositions || []).map(x => x.position).filter(q => q.coin === "BTC" && +q.szi).map(q => ({ who: name[a], addr: a, side: +q.szi > 0 ? "long" : "short", btc: Math.abs(+q.szi), ntl: Math.abs(+q.szi) * p, entry: +q.entryPx, liq: q.liquidationPx ? +q.liquidationPx : null, lev: (q.leverage || {}).value, dist: q.liquidationPx ? (+q.liquidationPx / p - 1) * 100 : null, upnl: +q.unrealizedPnl, tracked: tr[a] })))
+          .sort((x, y) => (x.dist == null ? 1e9 : Math.abs(x.dist)) - (y.dist == null ? 1e9 : Math.abs(y.dist))); });
+  }
+  function renderWh() {
+    const LM = SRV().liqmap || {}, W = S.wh || (LM.whales || []).map(w => ({ ...w, dist: w.dist_pct }));
+    H("lqWhSub").textContent = `${W.length} posizioni BTC · ${LM.whale_accounts || 0} conti letti${S.wh ? " · live" : " · dati del server"}`;
+    H("lqWh").innerHTML = W.slice(0, 12).map(w => `<div class="row"><span class="chip" style="color:${w.side === "long" ? "var(--green)" : "var(--red)"}">${w.side}</span><span class="k">${esc(w.who || "?")}${w.tracked ? ` <span class="cap" style="color:var(--tint)">whalebot</span>` : ""}<small>${w.btc.toFixed(1).replace(".", ",")} BTC · ${m$(w.ntl)} · ingresso ${px(w.entry)} · ${w.lev || "?"}x</small></span><span class="v strong">${w.liq ? px(w.liq) : "—"}<small style="display:block;font-weight:400;color:var(--label2)">${w.dist != null ? pc(w.dist) : "niente liquidazione"}</small></span></div>`).join("") ||
+      `<div class="row"><span class="k">Nessuna posizione BTC fra i conti letti</span></div>`;
+  }
+
+  // ---------------- order book live (Binance futures + OKX perp), riserva: foto oraria del server
+  function bookStats(books, p) {
+    const bands = [0.1, 0.25, 0.5, 1], out = { bands: [], depth: [], walls: { b: [], a: [] } };
+    bands.forEach(b => { let B = 0, A = 0, n = 0; books.forEach(k => { if (k.cb < b || k.ca < b) return; n++;
+      k.b.forEach(([q, s]) => { if (q >= k.mid * (1 - b / 100)) B += q * s; }); k.a.forEach(([q, s]) => { if (q <= k.mid * (1 + b / 100)) A += q * s; }); });
+      out.bands.push({ b, B, A, n, imb: B + A ? (B - A) / (B + A) : null }); });
+    const NB = 40, acc = new Array(NB).fill(0), wb = {}, wa = {};
+    books.forEach(k => { k.b.concat(k.a).forEach(([q, s]) => { const d = q / k.mid - 1; if (Math.abs(d) > .01) return; const i = Math.min(NB - 1, Math.floor((d + .01) / .02 * NB)); acc[i] += q * s;
+      if (Math.abs(d) >= .001) { const key = Math.floor(d / .0005), W = d < 0 ? wb : wa; W[key] = (W[key] || 0) + q * s; } }); });
+    out.depth = acc;
+    out.walls.b = Object.entries(wb).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k, v]) => ({ p: p * (1 + (+k + .5) * .0005), usd: v }));
+    out.walls.a = Object.entries(wa).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k, v]) => ({ p: p * (1 + (+k + .5) * .0005), usd: v }));
+    return out;
+  }
+  const mkBook = (b, a) => { const mid = (b[0][0] + a[0][0]) / 2; return { b, a, mid, cb: (1 - b[b.length - 1][0] / mid) * 100, ca: (a[a.length - 1][0] / mid - 1) * 100 }; };
+  function liveBook() {
+    const bn = getJ("https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=1000").then(j => { S.src.bnbook = true; return mkBook(j.bids.map(x => [+x[0], +x[1]]), j.asks.map(x => [+x[0], +x[1]])); }).catch(() => { S.src.bnbook = false; return null; });
+    const ok = getJ("https://www.okx.com/api/v5/market/books-full?instId=BTC-USDT-SWAP&sz=5000").then(j => { const d = j.data[0]; S.src.okxbook = true; return mkBook(d.bids.map(x => [+x[0], +x[1] * .01]), d.asks.map(x => [+x[0], +x[1] * .01])); }).catch(() => { S.src.okxbook = false; return null; });
+    return Promise.all([bn, ok]).then(r => { const bk = r.filter(Boolean); if (bk.length) { S.livePx = bk[0].mid; S.book = { st: bookStats(bk, bk[0].mid), n: bk.length, names: [r[0] && "Binance", r[1] && "OKX"].filter(Boolean) }; } });
+  }
+  function renderBook() {
+    const OB = SRV().orderbook, B = S.book;
+    let bands, depth = null, walls;
+    if (B) { bands = B.st.bands; depth = B.st.depth; walls = B.st.walls; H("obSub").textContent = `live · ${B.names.join(" + ")} perp`; }
+    else if (OB && OB.now) { const n = OB.now; bands = [0.25, 0.5, 1, 2].map(b => ({ b, B: n["bid_" + b], A: n["ask_" + b], n: n["src_" + b], imb: n["imb_" + b] }));
+      walls = { b: n.wall_bid_px ? [{ p: n.wall_bid_px, usd: n.wall_bid_usd }] : [], a: n.wall_ask_px ? [{ p: n.wall_ask_px, usd: n.wall_ask_usd }] : [] };
+      H("obSub").textContent = `foto del server · ${OB.ts ? new Date(OB.ts.replace(" ", "T") + "Z").toLocaleString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""}`; }
+    else { H("obBands").innerHTML = `<p class="lqNote">Book non disponibile.</p>`; return; }
+    H("obBands").innerHTML = bands.filter(b => b.imb != null).map(b => { const v = b.imb * 100, w = Math.min(50, Math.abs(v) / 2);
+      return `<div class="obBand"><span>±${String(b.b).replace(".", ",")}%</span><div class="dv" title="bid ${m$(b.B)} · ask ${m$(b.A)}"><em></em><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? "var(--green)" : "var(--red)"}"></i></div><b class="${v >= 0 ? "pos" : "neg"}">${pc(v, 0)}</b></div>`; }).join("") +
+      `<p class="lqNote">Squilibrio = (bid − ask) / totale entro la fascia: verde più ordini in acquisto, rosso più in vendita.</p>`;
+    if (depth) { const mx = Math.max(1, ...depth); H("obDepth").innerHTML = depth.map((v, i) => `<i class="${i < depth.length / 2 ? "b" : "a"}" style="height:${v / mx * 100}%" title="${m$(v)}"></i>`).join("") + `<em></em>`; H("obDepth").parentElement.hidden = false; }
+    else H("obDepth").parentElement.hidden = true;
+    const p = price(), wr = (w, k) => `<div class="row"><span class="k">${k === "b" ? "Muro in acquisto" : "Muro in vendita"}<small>${pc((w.p / p - 1) * 100, 2)} dal prezzo</small></span><span class="v strong ${k === "b" ? "pos" : "neg"}">${px(w.p)}<small style="display:block;font-weight:400;color:var(--label2)">${m$(w.usd)}</small></span></div>`;
+    H("obWalls").innerHTML = (walls.a.slice(0, 2).map(w => wr(w, "a")).join("") + walls.b.slice(0, 2).map(w => wr(w, "b")).join("")) || "";
+  }
+  function renderEngine() {
+    const OB = SRV().orderbook;
+    if (!OB) { H("obP").innerHTML = `<p class="lqNote">Motore non ancora avviato.</p>`; return; }
+    const P = OB.pred || {}, TR = OB.track || {}, M = OB.model || {};
+    const pt = (hz, lab) => { const v = P[hz]; const n = (M[hz] || {}).n || 0;
+      return `<div><span>Prob. rialzo ${lab}</span><b class="${v > .52 ? "pos" : v < .48 ? "neg" : ""}">${v == null ? "–" : Math.round(v * 100) + "%"}</b><small>${n < 30 ? `in apprendimento: ${n}/30 casi` : `${n} casi · ${v > .52 ? "lieve spinta su" : v < .48 ? "lieve spinta giù" : "nessuna lettura"}`}</small></div>`; };
+    H("obP").innerHTML = pt("1h", "1 ora") + pt("4h", "4 ore");
+    H("obEngSub").textContent = `foto oraria · ${OB.rows || 0} foto dal ${OB.since ? new Date(OB.since.replace(" ", "T") + "Z").toLocaleDateString("it-IT", { day: "numeric", month: "short" }) : "–"}`;
+    const cell = v => v == null ? "–" : String(v).replace(".", ",") + "%";
+    H("obTrack").innerHTML = `<tr><th>Orizzonte</th><th>Casi</th><th>Modello</th><th>Sempre su</th><th>Momentum</th></tr>` +
+      ["1h", "4h"].map(hz => { const t = TR[hz] || {}; return `<tr><td>${hz}</td><td>${t.n || 0}</td><td>${cell(t.model_acc)}${t.model_n ? ` <small>(${t.model_n})</small>` : ""}</td><td>${cell(t.always_up_acc)}</td><td>${cell(t.momentum_acc)}</td></tr>`; }).join("");
+    H("obChecks").innerHTML = Object.entries(OB.checks || {}).map(([k, v]) => `<span class="chip ${v === "ok" ? "ok" : "ko"}" title="${esc(v)}">${k.replace("_", " ")} ${v === "ok" ? "✓" : "✕"}</span>`).join("");
+    H("obNote").innerHTML = `Ogni ora il server fotografa i book di Coinbase, Kraken, OKX e Binance spot, controlla i dati (book ordinato e non incrociato, spread, età, mid entro 0,3% dalle altre fonti) e scarta le fonti anomale. La previsione si salva prima dell'esito: l'accuratezza è tutta fuori campione. Ogni 4 ore il modello (logistica con forte regolarizzazione sugli squilibri del book) si riaddestra${OB.learned ? `, ultimo il ${new Date(OB.learned.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` : ""}. Con una foto all'ora il segnale è debole: conta solo se batte "sempre su" e il momentum per molte settimane.`;
+  }
+
+  function renderSrc() {
+    const L = [["Binance live", S.src.bnws], ["OKX live", S.src.okxws || S.src.okx], ["Book", S.src.bnbook || S.src.okxbook], ["Hyperliquid", S.src.hl], ["Mappa Binance", !!S.binMap]];
+    const LM = SRV().liqmap;
+    H("lqSrc").innerHTML = L.map(([k, v]) => `<span class="chip ${v ? "ok" : v === false ? "ko" : ""}">${k}</span>`).join("") + (LM ? `<span class="chip">server ${new Date(LM.ts.replace(" ", "T") + "Z").toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</span>` : "");
+  }
+  function renderAll() { [renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+  async function refresh(force) {
+    const btn = H("lqRefresh"); btn.disabled = true; btn.textContent = "Aggiorno…";
+    const jobs = [okxRest(), liveBook()];
+    if (force || Date.now() - S.lastMap > 3e5) { S.lastMap = Date.now(); jobs.push(timeout(binanceMap(), 12000).then(m => { S.binMap = m; }).catch(() => {})); }
+    if (force || Date.now() - S.lastWh > 6e4) { S.lastWh = Date.now(); jobs.push(whales()); }
+    await Promise.allSettled(jobs.map(j => timeout(j, 15000)));
+    renderAll(); btn.disabled = false; btn.textContent = "↻ Aggiorna";
+  }
+  window.PAGES.liquidazioni = {
+    init() {
+      if (typeof seg === "function") seg("lqRange", v => { S.range = +v; renderMap(); });
+      H("lqRefresh").onclick = () => refresh(true);
+      renderAll(); refresh(true);
+    },
+    show() { startWS(); clearInterval(S.timer); S.timer = setInterval(() => { if (!document.hidden) refresh(false); }, 45000); },
+    hide() { stopWS(); clearInterval(S.timer); },
+  };
+})();
+</script>

@@ -61,6 +61,17 @@ def daily() -> None:
         st0["stale_alert"] = str(pd.Timestamp.utcnow().date())
         STATE_FILE.write_text(json.dumps(st0, indent=2, default=str))
     collect_liquidations()
+    from .data import DATA_DIR
+    try:   # mappa delle liquidazioni vicine (stima Binance + OKX) e balene Hyperliquid (radar/liqmap.py)
+        from . import liqmap
+        report["liqmap"] = liqmap.update(report.get("levels"), DATA_DIR)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] mappa delle liquidazioni non calcolata: {e!r}")
+    try:   # motore del book: foto, controlli dei dati, previsione 1h/4h, apprendimento ogni 4 ore (radar/orderbook.py)
+        from . import orderbook
+        report["orderbook"] = orderbook.update(DATA_DIR)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] book non aggiornato: {e!r}")
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
     report["banks"] = fetch_central_banks()   # prossime riunioni Fed (FOMC) e BCE
     # solo W2 + MACD dal 05/11/2026 (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli

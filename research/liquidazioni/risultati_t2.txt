@@ -1,0 +1,10 @@
+squilibrio ≥ 10% · 1g: n 988, effetto +5.0 pt (p 0.001)
+squilibrio ≥ 20% · 1g: n 801, effetto +6.5 pt (p 0.000)
+squilibrio ≥ 30% · 1g: n 632, effetto +7.8 pt (p 0.000)
+squilibrio ≥ 40% · 1g: n 466, effetto +7.6 pt (p 0.000)
+placebo (lato a caso) · 1g: n 801, effetto -0.5 pt (p 0.778)
+riferimento banale: inversione delle ultime 24h · 1g (negativo = il momentum vince): n 1233, effetto -4.1 pt (p 0.003)
+squilibrio ≥ 20% quando è OPPOSTO al momentum delle 24h · 1g: n 138, effetto +6.9 pt (p 0.106)
+squilibrio ≥ 20% quando è OPPOSTO al momentum delle 24h · 3g: n 221, effetto +3.0 pt (p 0.381)
+squilibrio ≥ 20% · 12h: n 461, effetto +11.7 pt (p 0.000)
+correlazione squilibrio ↔ rendimento delle 24h precedenti: +0.63

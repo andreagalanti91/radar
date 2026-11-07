@@ -1,0 +1,19 @@
+Giorni con mappa: 2110 (2021-01-23 → 2026-11-02); cluster sig. sopra in 100%, sotto in 100%
+Distanza mediana del cluster sig. più vicino: sopra 2.58%, sotto -2.34%
+
+T1 · calamita: tocco del cluster sig. più vicino entro H contro un livello alla stessa distanza (giorni qualsiasi)
+  sopra 1g: n 2107, toccato 30.8%, controllo 30.8%, effetto -0.0 pt (p 0.981); P1 +3.9 · P2 -4.1
+  sopra 3g: n 2107, toccato 51.6%, controllo 51.3%, effetto +0.3 pt (p 0.794); P1 +4.8 · P2 -4.3
+  sopra 7g: n 2107, toccato 66.7%, controllo 65.5%, effetto +1.2 pt (p 0.262); P1 +5.0 · P2 -2.8
+  sotto 1g: n 2109, toccato 32.6%, controllo 32.8%, effetto -0.2 pt (p 0.889); P1 +3.8 · P2 -4.2
+  sotto 3g: n 2109, toccato 54.3%, controllo 52.9%, effetto +1.5 pt (p 0.176); P1 +6.0 · P2 -3.2
+  sotto 7g: n 2109, toccato 68.9%, controllo 66.8%, effetto +2.1 pt (p 0.044); P1 +5.6 · P2 -1.6
+
+T2 · direzione: con squilibrio ≥ 20% il prezzo tocca prima il lato più pesante più dell'atteso dalle distanze?
+  1g: n 801, lato pesante per primo 71.4%, atteso 64.9%, effetto +6.5 pt (p 0.000); P1 +6.3 · P2 +6.7
+  3g: n 1158, lato pesante per primo 66.0%, atteso 64.1%, effetto +1.8 pt (p 0.198); P1 +1.3 · P2 +2.5
+  7g: n 1308, lato pesante per primo 64.5%, atteso 64.0%, effetto +0.5 pt (p 0.708); P1 +0.4 · P2 +0.7
+
+T3 · confluenza con S/R: rimbalzo dopo il primo tocco di un cluster sig. (entro 7 giorni)
+  tocchi 2858: confluenti 1361 rimbalzo 42.2%, non confluenti 1497 rimbalzo 43.3%, effetto -1.0 pt (perm. p 0.566); P1 -1.2 · P2 -0.9
+  S/R da soli (zona più vicina toccata): n 1606, rimbalzo 35.9%; cluster confluenti 42.2%: differenza +6.4 pt

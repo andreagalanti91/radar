@@ -378,6 +378,10 @@ dialog.dlg::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px
 .srMap .now{position:absolute;bottom:14px;top:0;width:2px;background:var(--label);transform:translateX(-1px)}
 .srMap .now b{position:absolute;top:-2px;left:6px;font:600 .7rem var(--font);white-space:nowrap;font-variant-numeric:tabular-nums}
 .srMap .tk{position:absolute;bottom:0;transform:translateX(-50%);font:500 .62rem var(--mono);color:var(--label3);white-space:nowrap}
+.lqCard{display:block;color:inherit;text-decoration:none}
+.srTile.lu{border-left:3px solid var(--teal)} .srTile.ld{border-left:3px solid var(--violet)}
+.srTile.lu b{color:var(--teal)} .srTile.ld b{color:var(--violet)}
+.lqCard .more{font:600 .8rem var(--font);color:var(--tint)}
 .sbar{display:inline-grid;grid-template-columns:54px auto;align-items:center;gap:6px;font-size:.7rem;color:var(--label2)}
 .sbar span{height:6px;border-radius:3px;background:var(--line2);overflow:hidden;display:block}
 .sbar i{display:block;height:100%;border-radius:3px}
@@ -461,6 +465,11 @@ body.noscroll{overflow:hidden}
         <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
           <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
       </div>
+      <a class="card lqCard" id="lqCard" href="#liquidazioni" style="margin-top:12px" hidden>
+        <div class="wkTop"><b style="font:600 1rem var(--font)">Liquidazioni vicine</b><span class="cap" id="lqCardSub">stima · Binance + OKX</span></div>
+        <div class="srTop" id="lqCardTop" style="margin-top:10px"></div>
+        <div class="wkTop" style="margin-top:10px;align-items:center"><span class="foot" id="lqCardNote" style="margin:0"></span><span class="more">Mappa completa →</span></div>
+      </a>
       <dialog class="dlg" id="wkDlg" aria-labelledby="wkDlgT">
         <div class="dlgHead"><b id="wkDlgT">Perché la posizione è aperta e quando si chiude</b><button type="button" id="wkDlgX">Chiudi</button></div>
         <div class="dlgBody">
@@ -1071,6 +1080,16 @@ renderTrades();
     $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(LV.price)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
     $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti`;
   }
+  // --- liquidazioni vicine (stima del server, radar/liqmap.py): cluster significativo più vicino sopra e sotto
+  const LQ = R.liqmap;
+  if (LQ && (LQ.nearest_above || LQ.nearest_below)) {
+    $("lqCard").hidden = false;
+    const mm = x => x >= 1e9 ? "$" + (x / 1e9).toFixed(2).replace(".", ",") + "B" : "$" + Math.round(x / 1e6) + "M";
+    const tl = (o, k) => `<div class="srTile ${k}"><span>${k === "lu" ? "Sopra · short da liquidare" : "Sotto · long da liquidare"}</span><b>${o ? usd(o.price) : "–"}</b><small>${o ? pc1(o.dist_pct) + " · " + mm(o.usd) + (o.sr ? " · vicino a " + o.sr : "") : "nessuno entro ±10%"}</small></div>`;
+    $("lqCardTop").innerHTML = tl(LQ.nearest_above, "lu") + tl(LQ.nearest_below, "ld");
+    const im = LQ.imb5 ? LQ.imb5.pct : 0;
+    $("lqCardNote").textContent = `Entro ±5%: ${Math.abs(im) < 15 ? "in equilibrio" : im > 0 ? "più short sopra" : "più long sotto"} (${pc1(im)}). Contesto, non segnale.`;
+  }
   // --- condizioni d'ingresso long (e filtro MACD)
   const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
   const c = W.chart, lastC = c.c[c.c.length - 1];
@@ -1134,6 +1153,10 @@ renderTrades();
       R.levels.resistances.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
       R.levels.supports.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
     }
+    if (R.liqmap) {   // cluster di liquidazione stimati più vicini (significativi): 2 sopra e 2 sotto, linee punteggiate viola/azzurre
+      (R.liqmap.above || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--teal"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq S" }));
+      (R.liqmap.below || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--violet"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq L" }));
+    }
     const mc = LightweightCharts.createChart($("wkMacd"), chartOpts({ timeScale: { visible: false, borderVisible: false }, rightPriceScale: { borderVisible: false, scaleMargins: { top: .1, bottom: .1 } } }));
     const hs = mc.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
     hs.setData(T.map((t, i) => c.macd[i] == null ? null : ({ time: t, value: c.macd[i] - c.sig[i], color: c.macd[i] >= c.sig[i] ? "rgba(52,215,123,.55)" : "rgba(255,90,82,.55)" })).filter(Boolean));
@@ -1147,6 +1170,7 @@ renderTrades();
     const leg = (i) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
       `<span style="color:var(--label2)">▲▼ ingresso · ● uscita</span>` + (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
       (R.levels ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
+      (R.liqmap ? `<span style="color:var(--violet)"><i class="dash" style="background:var(--violet)"></i><span style="color:var(--label2)">liquidazioni stimate (Liq L long · Liq S short)</span></span>` : "") +
       `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}` + (ev[T[i]] ? " · " + ev[T[i]] : "")}</span>`;
     $("wkLeg").innerHTML = leg(T.length - 1);
     const setRange = n => { const L = T.length; if (!n) { ch.timeScale().fitContent(); return; } ch.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - n) - 0.5, to: L - 0.5 + Math.max(4, n / 9) }); };
