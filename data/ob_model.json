@@ -4,7 +4,7 @@
    "n": 0
   },
   "4h": {
-   "n": 1
+   "n": 3
   }
  },
  "track": {
@@ -12,17 +12,17 @@
    "n": 0
   },
   "4h": {
-   "n": 1,
-   "up_rate": 0.0,
+   "n": 3,
+   "up_rate": 33.3,
    "model_acc": null,
    "model_n": 0,
-   "always_up_acc": 0.0,
-   "momentum_acc": 100.0,
+   "always_up_acc": 33.3,
+   "momentum_acc": 66.7,
    "brier": 0.25,
    "brier_05": 0.25
   }
  },
- "learned": "2026-11-07 16:37:01",
+ "learned": "2026-11-07 20:29:17",
  "history": [
   {
    "t": "2026-11-07 08:53:12",
@@ -61,6 +61,22 @@
     "model_n": 0,
     "always_up_acc": 0.0,
     "momentum_acc": 100.0,
+    "brier": 0.25,
+    "brier_05": 0.25
+   }
+  },
+  {
+   "t": "2026-11-07 20:29:17",
+   "1h": {
+    "n": 0
+   },
+   "4h": {
+    "n": 3,
+    "up_rate": 33.3,
+    "model_acc": null,
+    "model_n": 0,
+    "always_up_acc": 33.3,
+    "momentum_acc": 66.7,
     "brier": 0.25,
     "brier_05": 0.25
    }
