@@ -126,3 +126,25 @@ class TestPaperLive(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestPaperSenzaTrade(unittest.TestCase):
+    """Regressione: senza trade dal LIVE_START eq_by_day è vuoto e simulate() falliva con
+    TypeError("Invalid value '[]' for dtype 'float64'") (ogni giro orario)."""
+
+    def test_equity_piatta_senza_trade(self):
+        import numpy as np
+        from radar import paper
+        idx = pd.date_range("2026-10-25", periods=6 * 10, freq="4h")
+        p = np.linspace(70000, 71000, len(idx))
+        h4 = pd.DataFrame(dict(open=p, high=p + 50, low=p - 50, close=p), index=idx)
+        days = pd.date_range("2026-10-25", periods=10, freq="D")
+        f = pd.DataFrame(dict(funding=0.0, close=70000.0, atr=1000.0), index=days)
+        sig = pd.DataFrame(dict(long_sig=False, short_sig=False, atr=1000.0), index=days)
+        with mock.patch.object(paper, "compute_signals", return_value=sig):
+            r = paper.simulate(f, h4, "2026-10-31")
+        self.assertEqual(r["trades"], [])
+        self.assertIsNone(r["open"])
+        self.assertEqual(len(r["equity"]), 4)
+        self.assertTrue((r["equity"] == 10000.0).all())
+        self.assertEqual(r["stats"]["ret"], 0.0)

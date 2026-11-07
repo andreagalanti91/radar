@@ -8,7 +8,9 @@ Metodo standard delle "heatmap" di liquidazione, ricalcolato ogni ora:
    posizioni aperte si riducono in proporzione (chiusure);
 4. il risultato è una mappa in $ per fasce di prezzo dello 0,25%: sotto il prezzo i long da liquidare, sopra gli short.
 Fonti: Binance USDT-M (OI a 5 minuti dall'archivio data.binance.vision, fino a ieri: l'API fapi è bloccata dagli USA) e OKX
-BTC-USDT-SWAP (OI orario fino all'ora corrente). È una STIMA: leve e lati veri delle posizioni non sono pubblici.
+BTC-USDT-SWAP (OI orario fino all'ora corrente). Le ore dopo la fine dell'archivio Binance si coprono con le candele spot
+Binance (data-api.binance.vision, fino all'ora chiusa) e un OI Binance STIMATO dalle variazioni % dell'OI OKX (extend_oi):
+la fonte dichiara sempre fin dove arriva l'OI vero ("oi_until") e quante ore sono stimate ("extended_h"). È una STIMA: leve e lati veri delle posizioni non sono pubblici.
 Hyperliquid è l'unico exchange dove le posizioni sono pubbliche: per i conti più grandi (classifica) e i wallet seguiti da
 whalebot si leggono i prezzi di liquidazione VERI delle posizioni BTC.
 La ricerca (research/liquidazioni, lezione 81) non trova un vantaggio di trading nella mappa: è contesto, non segnale.
@@ -84,6 +86,32 @@ def build(h: pd.DataFrame, leverage=LEVERAGE, mm: float = MM, long_share: float 
                 if 0 <= js < n and js > bh[i]:
                     S[js] += d * (1 - long_share) * w
     return {"base": base, "long": L, "short": S}
+
+
+def extend_oi(b: pd.DataFrame, ref: pd.DataFrame | None, max_h: int = 48) -> tuple[pd.DataFrame, dict]:
+    """Prolunga l'OI di `b` (candele con oi_usd vuoto dopo la fine dell'archivio) con le variazioni % dell'OI di `ref`.
+
+    oi_b(t) = oi_b(ultima ora vera) × oi_ref(t) / oi_ref(ultima ora vera); solo ore consecutive presenti in `ref`, al massimo
+    `max_h`. Nessuna ora inventata: dove manca `ref` la serie si ferma. Ritorna (candele, info con "oi_until" e "extended_h").
+    """
+    b = b.dropna(subset=["high", "low", "close"])
+    real = b["oi_usd"].dropna()
+    if real.empty:
+        raise ValueError("nessun open interest")
+    last = real.index[-1]
+    head, tail = b.loc[:last].dropna(), b.loc[b.index > last]
+    info = {"oi_until": str(last), "extended_h": 0}
+    if ref is None or not len(ref) or not len(tail) or last not in ref.index or not ref.at[last, "oi_usd"] > 0:
+        return head, info
+    est = ref["oi_usd"].reindex(tail.index) * (float(real.iloc[-1]) / float(ref.at[last, "oi_usd"]))
+    gap = est.isna().to_numpy()
+    n = min(int(gap.argmax()) if gap.any() else len(est), max_h)
+    if n == 0:
+        return head, info
+    tail = tail.iloc[:n].copy()
+    tail["oi_usd"] = est.iloc[:n].to_numpy()
+    info.update(extended_h=n, extended_with="okx")
+    return pd.concat([head, tail]), info
 
 
 def window(m: dict, price: float, rng: float = RANGE) -> pd.DataFrame:
@@ -267,7 +295,8 @@ def okx_hourly(hours: int = LOOKBACK_H + 24) -> pd.DataFrame:
 
 
 def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
-    """Binance USDT-M: OI a 5 minuti dall'archivio giornaliero (fino a ieri) e candele orarie spot (data-api.binance.vision)."""
+    """Binance USDT-M: OI a 5 minuti dall'archivio giornaliero (fino a ieri) e candele orarie spot (data-api.binance.vision).
+    Le candele arrivano fino all'ultima ora chiusa; dopo la fine dell'archivio oi_usd resta vuoto (vedi extend_oi)."""
     def day(d: date):
         try:
             r = _s.get(f"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-{d:%Y-%m-%d}.zip", timeout=30)
@@ -288,9 +317,12 @@ def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
     oi = v.where(v > 0).groupby(m["t"].dt.floor("h")).last()   # ultimo valore dentro l'ora (≤ chiusura): nessun dato dal futuro
     start = int((pd.Timestamp(oi.index.min())).timestamp() * 1000)
     kl = _get("https://data-api.binance.vision/api/v3/klines", {"symbol": "BTCUSDT", "interval": "1h", "startTime": start, "limit": 1000}).json()
+    now_ms = time.time() * 1000
+    kl = [r for r in kl if int(r[6]) < now_ms]   # solo ore chiuse
     k = pd.DataFrame([[pd.to_datetime(r[0], unit="ms"), float(r[2]), float(r[3]), float(r[4])] for r in kl], columns=["t", "high", "low", "close"]).set_index("t")
     k["oi_usd"] = oi.reindex(k.index).ffill(limit=2)
-    return k.dropna()
+    k.loc[k.index > oi.dropna().index.max(), "oi_usd"] = np.nan   # dopo l'archivio nessun OI vero (niente ffill)
+    return k
 
 
 def _hl(body: dict):
@@ -343,21 +375,38 @@ def hl_states(addrs: list[str]) -> dict[str, dict]:
 def update(levels: dict | None, data_dir) -> dict:
     """Calcola la mappa (Binance + OKX), le balene Hyperliquid e i totali delle liquidazioni raccolte. Fallisce in modo morbido."""
     maps, src = [], {}
-    price = None
+    price, okx = None, None
+    now = pd.Timestamp.utcnow().tz_localize(None)
     for name, fn in (("okx", okx_hourly), ("binance", binance_hourly)):
         try:
             h = fn()
+            info = {}
+            if name == "okx":
+                okx = h
+                info = {"oi_until": str(h.index[-1]), "extended_h": 0}
+            else:   # ore dopo la fine dell'archivio Binance: OI stimato dalle variazioni OKX (dichiarato in extended_h)
+                h, info = extend_oi(h, okx)
             h = h.iloc[-LOOKBACK_H:]
             m = build(h)
-            if name == "okx" or price is None:
-                price = float(h["close"].iloc[-1]) if price is None else price
-            src[name] = {"ok": True, "until": str(h.index[-1]), "hours": int(len(h)), "oi_usd": round(float(h["oi_usd"].iloc[-1]), 0)}
+            if price is None:
+                price = float(h["close"].iloc[-1])
+            asof = h.index[-1] + pd.Timedelta(hours=1)   # chiusura dell'ultima ora usata
+            src[name] = {"ok": True, "until": str(h.index[-1]), "as_of": str(asof), "age_h": round((now - asof) / pd.Timedelta(hours=1), 1),
+                         "hours": int(len(h)), "oi_usd": round(float(h["oi_usd"].iloc[-1]), 0), **info}
+            if src[name]["age_h"] > 3:
+                print(f"[liqmap] {name}: dati vecchi di {src[name]['age_h']} ore (fino a {asof})")
+            if info.get("extended_h"):
+                print(f"[liqmap] {name}: OI vero fino a {info['oi_until']}, {info['extended_h']} ore stimate con OKX")
             maps.append((name, m))
         except Exception as e:  # noqa: BLE001
             src[name] = {"ok": False, "error": type(e).__name__}
             print(f"[liqmap] {name} non disponibile: {e!r}")
     if not maps:
         raise RuntimeError("nessuna fonte per la mappa delle liquidazioni")
+    if src.get("okx", {}).get("ok") and src.get("binance", {}).get("ok"):   # controllo di coerenza fra le fonti
+        r = src["binance"]["oi_usd"] / src["okx"]["oi_usd"] if src["okx"]["oi_usd"] else float("nan")
+        if not 0.5 <= r <= 20:
+            print(f"[liqmap] OI Binance/OKX incoerente (rapporto {r:.2f}): controllare le fonti")
     ws = [window(m, price, RANGE + 0.02) for _, m in maps]
     w = combine(ws)
     w = w[(w["price"] - price).abs() <= RANGE * price].reset_index(drop=True)
@@ -373,6 +422,8 @@ def update(levels: dict | None, data_dir) -> dict:
     out = summarize(w, price, levels, whales)
     out.update({
         "ts": str(pd.Timestamp.utcnow().tz_localize(None).floor("min")), "sources": src,
+        # "as of" per fonte (chiusura dell'ultima ora usata) e fin dove arriva l'OI vero: etichette della pagina
+        "as_of": {k: {"data": v["as_of"], "oi": v["oi_until"], "estimated_h": v["extended_h"]} for k, v in src.items() if v.get("ok")},
         "bins": [[round(p, 0), round(l, 0), round(s, 0)] for p, l, s in zip(w["price"], w["long"], w["short"])],
         "bins_src": {k: [[round(l, 0), round(s, 0)] for l, s in zip(x["long"], x["short"])] for k, x in per.items()},
         "whales": whales[:30], "whale_accounts": n_acc,

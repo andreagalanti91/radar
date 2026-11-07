@@ -282,8 +282,12 @@ def simulate(f: pd.DataFrame, h4: pd.DataFrame, start=LIVE_START, capital: float
     eq = pd.Series(np.nan, index=range(d0, len(b.days)))
     if len(eq):
         eq.iloc[0] = 1.0
-        e = pd.Series(eq_by_day)
-        eq.loc[e.index[e.index >= d0]] = e[e.index >= d0]
+        # senza trade dal giorno `start` eq_by_day è vuoto: pd.Series({}) è object e l'assegnazione fallisce
+        # (TypeError "Invalid value '[]' for dtype 'float64'" con pandas recenti), quindi si salta
+        e = pd.Series(eq_by_day, dtype=float)
+        e = e[e.index >= d0]
+        if len(e):
+            eq.loc[e.index.astype(int)] = e.values
         eq = eq.ffill()
     eq.index = b.days[d0:]
     return dict(trades=trades, open=open_pos, equity=eq * capital, stats=stats(trades, eq), capital=capital, risk=risk)

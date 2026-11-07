@@ -54,6 +54,50 @@ class TestLiqMap(unittest.TestCase):
         self.assertEqual(s["nearest_below"]["price"], 96)
         self.assertEqual(s["zone"]["lo"], 96)
 
+    def test_estensione_oi_con_okx(self):
+        # Binance: OI vero fino alle 05:00, candele fino alle 09:00; OKX fino alle 08:00 -> 3 ore stimate, poi stop
+        b = hours([100] * 10, [1000] * 6 + [np.nan] * 4)
+        okx = hours([100] * 9, [500, 500, 500, 500, 500, 500, 550, 600, 500])
+        h, info = liqmap.extend_oi(b, okx)
+        self.assertEqual(info["oi_until"], "2026-01-01 05:00:00")
+        self.assertEqual(info["extended_h"], 3); self.assertEqual(info["extended_with"], "okx")
+        self.assertEqual(str(h.index[-1]), "2026-01-01 08:00:00")
+        self.assertEqual(list(h["oi_usd"].iloc[-3:]), [1100.0, 1200.0, 1000.0])   # variazioni % di OKX, scala Binance
+        # senza OKX (o OKX senza l'ora di aggancio) non si inventa nulla
+        h2, info2 = liqmap.extend_oi(b, None)
+        self.assertEqual(info2["extended_h"], 0); self.assertEqual(str(h2.index[-1]), "2026-01-01 05:00:00")
+        h3, info3 = liqmap.extend_oi(b, okx.iloc[7:])
+        self.assertEqual(info3["extended_h"], 0); self.assertEqual(len(h3), 6)
+        # buco in OKX: ci si ferma prima del buco; tetto max_h
+        okx2 = okx.copy(); okx2.iloc[7, okx2.columns.get_loc("oi_usd")] = np.nan
+        self.assertEqual(liqmap.extend_oi(b, okx2)[1]["extended_h"], 1)
+        self.assertEqual(liqmap.extend_oi(b, okx, max_h=2)[1]["extended_h"], 2)
+        with self.assertRaises(ValueError):
+            liqmap.extend_oi(hours([100] * 3, [np.nan] * 3), okx)
+
+    def test_update_fonti_con_as_of(self):
+        # giro completo senza rete: Binance prolungata con OKX, "as of" per fonte; una fonte rotta non ferma la mappa
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+        now = pd.Timestamp.utcnow().tz_localize(None).floor("h")
+        t = pd.date_range(end=now - pd.Timedelta(hours=1), periods=48, freq="h")
+        p = np.full(48, 100.0)
+        okx = pd.DataFrame({"high": p * 1.001, "low": p * 0.999, "close": p, "oi_usd": np.linspace(500, 600, 48)}, index=t)
+        bn = okx.copy(); bn["oi_usd"] = np.r_[np.linspace(1000, 1100, 38), [np.nan] * 10]
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(liqmap, "okx_hourly", return_value=okx), \
+                mock.patch.object(liqmap, "binance_hourly", return_value=bn), mock.patch.object(liqmap, "hl_accounts", return_value={}):
+            o = liqmap.update(None, Path(d))
+        b = o["sources"]["binance"]
+        self.assertEqual(b["extended_h"], 10); self.assertEqual(b["until"], str(t[-1])); self.assertEqual(b["oi_until"], str(t[37]))
+        self.assertEqual(o["as_of"]["binance"], {"data": str(now), "oi": str(t[37]), "estimated_h": 10})
+        self.assertEqual(o["as_of"]["okx"]["estimated_h"], 0)
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(liqmap, "okx_hourly", side_effect=OSError("giù")), \
+                mock.patch.object(liqmap, "binance_hourly", return_value=bn), mock.patch.object(liqmap, "hl_accounts", return_value={}):
+            o = liqmap.update(None, Path(d))
+        self.assertFalse(o["sources"]["okx"]["ok"]); self.assertEqual(o["sources"]["binance"]["extended_h"], 0)
+        self.assertNotIn("okx", o["as_of"]); self.assertEqual(o["as_of"]["binance"]["oi"], str(t[37]))
+
     def test_combine_somma_le_fonti(self):
         a = pd.DataFrame({"price": [99.0, 100.0, 101.0], "long": [1, 0, 0], "short": [0, 0, 2]})
         b = pd.DataFrame({"price": [99.01, 101.02], "long": [3, 0], "short": [0, 4]})
