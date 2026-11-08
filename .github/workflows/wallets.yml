@@ -1,6 +1,6 @@
 name: Sentinella wallet (Hyperliquid)
 
-# Ogni 5 minuti: posizioni e ordini dei 3 wallet della sentinella, alert Telegram sui cambi (radar/wallets.py).
+# Ogni 5 minuti: posizioni e ordini dei 3 wallet osservati (data/wallets_watch.json), alert Telegram sui cambi (radar/wallets.py).
 # Lo stato fra un giro e l'altro sta nella cache di Actions, non nel repository.
 on:
   schedule:
