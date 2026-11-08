@@ -3,6 +3,7 @@ legge i messaggi nuovi (getUpdates), salva in data/journal.json e risponde con u
 
 Comandi: /entrato <prezzo> [quantità_btc] [v2|w2] [long|short] · /limit <prezzo> [quantità_btc] · /uscito <prezzo> [motivo]
          /exchange bybit|okx · /registro · /aiuto
+         Wallet osservati (radar/wallets.py.command): /osservati · /candidati · /sostituisci <posto> <id> · /conferma <posto> · /scarta <id>
 Si accettano solo i messaggi della chat TELEGRAM_CHAT_ID (gli altri si ignorano senza risposta). Offset di getUpdates in
 data/state.json (chiave "tg_offset"). Il confronto col segnale (prezzo, slippage %, ritardo in ore) si completa con
 link(report) dopo il calcolo del segnale: i giri di ricerca usano lo slippage reale misurato (RESEARCH.md).
@@ -207,9 +208,13 @@ def _cmp_text(t: dict) -> str:
 
 def handle(text: str, when: str, j: dict, state: dict) -> str:
     """Esegue un comando sul registro j (modificato sul posto) e restituisce la risposta."""
+    from . import wallets   # lista dei 3 wallet osservati: /osservati /candidati /sostituisci /conferma /scarta
+    w = wallets.command(text, when[:10])
+    if w is not None:
+        return w
     cmd, a = parse(text)
     if cmd in ("aiuto", "help", "start"):
-        return HELP
+        return HELP + "\n\n" + wallets.HELP_W
     if cmd == "exchange":
         ex = next((w.lower() for w in a["words"] if w.lower() in ("bybit", "okx")), None)
         if not ex:

@@ -61,15 +61,61 @@
 .lqAge span{font:500 .6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
 .lqAge b{font:600 .86rem var(--font);font-variant-numeric:tabular-nums} .lqAge small{font-size:.7rem;color:var(--label2)}
 .lqAge>div.old{border-color:color-mix(in srgb,var(--orange) 55%,transparent)} .lqAge>div.old b,.lqAge>div.old small{color:var(--orange)}
+/* ---- telefono: card riassuntive + pannelli */
+.lqM{display:none}
+.lqBox{display:contents}
+#v-liquidazioni [hidden],.lqSheet [hidden]{display:none!important}
+.lqSheet{display:grid;gap:14px;min-width:0}
+.lqSheet .lqBox{display:grid;gap:12px;min-width:0}
+.lqSheet .sh.dup{font-size:0;margin-bottom:-6px} .lqSheet .sh.dup small{font-size:.66rem}
+.lqSheet .lqEv .x{width:auto}
+.lqSheet h3{margin:2px 0 -4px;font:600 .92rem var(--font)}
+.tapCard.lqMC{display:grid;gap:10px;padding:15px 16px}
+.lqMC .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.lqMC .hd b{font:600 1rem var(--font);letter-spacing:-.02em}
+.lqMC h2{margin:0;font:600 1.22rem/1.25 var(--font);letter-spacing:-.03em}
+.lqMC p{margin:0;color:var(--label2);font-size:.84rem;line-height:1.4}
+.lqMC p b{color:var(--label);font-variant-numeric:tabular-nums}
+.lqZone{display:grid;gap:5px;margin-top:2px}
+.lqZone .tr{position:relative;height:6px;border-radius:3px;background:linear-gradient(90deg,color-mix(in srgb,var(--violet) 55%,transparent),var(--line2) 50%,color-mix(in srgb,var(--teal) 55%,transparent))}
+.lqZone .tr i{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--label);box-shadow:0 0 0 3px var(--card)}
+.lqZone .ax{display:flex;justify-content:space-between;gap:8px;font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
+.lqZone .ax b{display:block;font:600 .9rem var(--font);color:var(--label)} .lqZone .ax>span:last-child{text-align:right}
+.lqMini{display:grid;gap:9px}
+.lqMini>div{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-variant-numeric:tabular-nums}
+.lqMini span{font-size:.76rem;color:var(--label2)} .lqMini b{font:600 .92rem var(--font)} .lqMini b small{font:500 .74rem var(--font);color:var(--label2);margin-left:6px}
+.lqMini em{grid-column:2/4;height:6px;border-radius:3px;background:var(--line2);overflow:hidden;font-style:normal}
+.lqMini em i{display:block;height:100%;border-radius:3px}
+.lqMini .v{font:600 .86rem var(--font);text-align:right}
+.lqDuo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lqDuo>div{display:grid;gap:2px;min-width:0} .lqDuo span{font-size:.76rem;color:var(--label2)} .lqDuo b{font:600 1.15rem var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.lqDuo>div:last-child{text-align:right}
+.lqDuo small{font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
+.tapCard.lqMSrc{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:16px}
+.lqMSrc .t{flex:1;min-width:0;font:500 .86rem var(--font)} .lqMSrc .t small{display:block;font-size:.74rem;color:var(--label2)}
+.lqDot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 20%,transparent)}
+.lqDot.old{background:var(--orange);box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 20%,transparent)}
+.lqLink{justify-self:start;margin:0 4px;padding:6px 0;border:0;background:none;color:var(--tint);font:600 .82rem var(--font);cursor:pointer}
+.lqCl .row{min-height:44px;padding:8px 14px;gap:10px} .lqCl .k{min-width:0} .lqCl .rb{flex:1;max-width:90px;height:6px;border-radius:3px;background:var(--line2);overflow:hidden} .lqCl .rb i{display:block;height:100%}
+@media (max-width:700px){.lqD{display:none!important}.lqM{display:grid}.lqMapCard{padding:12px 10px}}
 @media (max-width:560px){.lqTot{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.lqTot>div{padding:10px}.lqTot b{font-size:.86rem}.lqRow,.lqNow{grid-template-columns:52px minmax(0,1fr) 40px;gap:6px}}
 </style>
 <div class="view" id="v-liquidazioni" hidden>
-  <div class="section">
+  <!-- telefono (≤ 700 px): una card riassuntiva per blocco, dettagli nel pannello dal basso (openSheet). Desktop: sezioni .lqD invariate. -->
+  <div class="section lqM">
+    <button type="button" class="card glow tapCard lqMC" id="lqMVerd" aria-haspopup="dialog"></button>
+  </div>
+  <div class="section lqD">
     <div class="sh">Liquidazioni vicine <small id="lqSub">stima + dati reali</small></div>
-    <div class="lqBar"><div class="lqSrc" id="lqSrc"></div><button type="button" class="lqBtn" id="lqRefresh">↻ Aggiorna</button></div>
-    <div class="lqAge" id="lqAge" aria-label="Aggiornamento delle fonti"></div>
-    <div class="card glow lqHead" id="lqHead"><h2>Dati in caricamento…</h2></div>
-    <div class="tiles lqT" id="lqTiles"></div>
+    <div class="lqBox" id="lqSrcBox">
+      <div class="lqBar"><div class="lqSrc" id="lqSrc"></div><button type="button" class="lqBtn" id="lqRefresh">↻ Aggiorna</button></div>
+      <div class="lqAge" id="lqAge" aria-label="Aggiornamento delle fonti"></div>
+      <p class="lqNote" id="lqEngLine" hidden></p>
+    </div>
+    <div class="lqBox" id="lqHeadBox">
+      <div class="card glow lqHead" id="lqHead"><h2>Dati in caricamento…</h2></div>
+      <div class="tiles lqT" id="lqTiles"></div>
+    </div>
   </div>
 
   <div class="section">
@@ -80,33 +126,49 @@
       <div class="lqLadder" id="lqLadder" role="img" aria-label="Mappa delle liquidazioni stimate sopra e sotto il prezzo"></div>
       <div class="lqLeg"><span><i style="background:var(--teal)"></i>short liquidabili</span><span><i style="background:var(--violet)"></i>long liquidabili</span><span><i style="background:rgba(255,90,82,.35)"></i>zona R</span><span><i style="background:rgba(52,215,123,.4)"></i>zona S</span><span style="color:var(--orange)">HL = balena Hyperliquid</span></div>
     </div>
-    <p class="foot" id="lqMapNote"></p>
+    <p class="foot lqD" id="lqMapNote"></p>
+    <button type="button" class="lqLink lqM" id="lqMapHow">Come si legge la mappa ›</button>
   </div>
 
-  <div class="section">
-    <div class="sh">Liquidazioni in tempo reale <small id="lqLiveSub"></small></div>
-    <div class="lqTot" id="lqTot"></div>
-    <div class="card" style="padding:14px"><div class="wkTop" style="display:flex;justify-content:space-between"><b style="font:600 .92rem var(--font)">Ultime 72 ore · OKX</b><span class="cap" id="lqHoursSub"></span></div>
-      <div class="lqHours" id="lqHours" role="img" aria-label="Liquidazioni orarie: rosso long, verde short"></div>
-      <div class="lqLeg"><span><i style="background:var(--red)"></i>long liquidati (vendite forzate)</span><span><i style="background:var(--green)"></i>short liquidati (acquisti forzati)</span></div></div>
-    <div class="list lqEv" id="lqEv"></div>
-    <p class="foot" id="lqEvNote"></p>
+  <div class="section lqM">
+    <button type="button" class="card tapCard lqMC" id="lqMCl" aria-haspopup="dialog"></button>
+    <button type="button" class="card tapCard lqMC" id="lqMLive" aria-haspopup="dialog"></button>
+    <button type="button" class="card tapCard lqMC" id="lqMBook" aria-haspopup="dialog"></button>
+    <button type="button" class="card tapCard lqMC" id="lqMEng" aria-haspopup="dialog" hidden></button>
+    <button type="button" class="card tapCard lqMSrc" id="lqMSrc" aria-haspopup="dialog"></button>
   </div>
 
-  <div class="section">
-    <div class="sh">Balene Hyperliquid · BTC <small id="lqWhSub"></small></div>
-    <div class="list" id="lqWh"></div>
-    <p class="foot">Prezzi di liquidazione VERI: Hyperliquid è l'unico exchange con posizioni pubbliche. Conti seguiti da whalebot + i più grandi della classifica; posizioni in margine incrociato: il prezzo di liquidazione si sposta con il resto del conto.</p>
-  </div>
-
-  <div class="section">
-    <div class="sh">Order book <small id="obSub"></small></div>
-    <div class="card" style="display:grid;gap:12px">
-      <div class="obBands" id="obBands"></div>
-      <div><div class="obDepth" id="obDepth" role="img" aria-label="Profondità del book entro ±1%"></div><div class="obAx"><span>−1%</span><span>mid</span><span>+1%</span></div></div>
-      <div class="list" id="obWalls" style="box-shadow:none"></div>
+  <div class="section lqD">
+    <div class="lqBox" id="lqLiveBox">
+      <div class="sh dup">Liquidazioni in tempo reale <small id="lqLiveSub"></small></div>
+      <div class="lqTot" id="lqTot"></div>
+      <div class="card" style="padding:14px"><div class="wkTop" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font:600 .92rem var(--font)">Ultime 72 ore · OKX</b><span class="cap" id="lqHoursSub"></span></div>
+        <div class="lqHours" id="lqHours" role="img" aria-label="Liquidazioni orarie: rosso long, verde short"></div>
+        <div class="lqLeg"><span><i style="background:var(--red)"></i>long liquidati (vendite forzate)</span><span><i style="background:var(--green)"></i>short liquidati (acquisti forzati)</span></div></div>
+      <div class="list lqEv" id="lqEv"></div>
+      <p class="foot" id="lqEvNote"></p>
     </div>
-    <div class="card" style="display:grid;gap:12px">
+  </div>
+
+  <div class="section lqD">
+    <div class="lqBox" id="lqWhBox">
+      <div class="sh">Balene Hyperliquid · BTC <small id="lqWhSub"></small></div>
+      <div class="list" id="lqWh"></div>
+      <p class="foot">Prezzi di liquidazione VERI: Hyperliquid è l'unico exchange con posizioni pubbliche. Conti seguiti da whalebot + i più grandi della classifica; posizioni in margine incrociato: il prezzo di liquidazione si sposta con il resto del conto.</p>
+    </div>
+  </div>
+
+  <div class="section lqD">
+    <div class="lqBox" id="obBookBox">
+      <div class="sh dup">Order book <small id="obSub"></small></div>
+      <div class="card" style="display:grid;gap:12px">
+        <div class="obBands" id="obBands"></div>
+        <div><div class="obDepth" id="obDepth" role="img" aria-label="Profondità del book entro ±1%"></div><div class="obAx"><span>−1%</span><span>mid</span><span>+1%</span></div></div>
+        <div class="list" id="obWalls" style="box-shadow:none"></div>
+      </div>
+    </div>
+    <!-- motore di direzione: visibile SOLO se funziona (≥ 30 previsioni fuori campione e batte "sempre su" e momentum di ≥ 3 punti) -->
+    <div class="card" id="obEng" style="display:grid;gap:12px" hidden>
       <div class="wkTop" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font:600 .98rem var(--font)">Motore del book · direzione a breve</b><span class="cap" id="obEngSub"></span></div>
       <div class="obP" id="obP"></div>
       <div class="scroll"><table class="grid" id="obTrack"></table></div>
@@ -128,6 +190,8 @@
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const BIN = 0.0025, LEV = [[10, .30], [25, .30], [50, .25], [100, .15]], MM = 0.005;
   const S = { src: {}, ev: [], seen: new Set(), range: 10, timer: null, ws: [], live: null, wh: null, book: null, binMap: null, lastMap: 0, lastWh: 0, bnLive: { l: 0, s: 0, n: 0, t0: Date.now() } };
+  const shown = el => !!el && el.getClientRects().length > 0;   // visibile ora (sezione desktop o pannello aperto)
+  const hhmm = t => new Date(t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
   const SRV = () => (typeof R !== "undefined" && R) ? R : {};
   // stesso prezzo di riferimento di Oggi (window.REF: live se c'è, altrimenti l'ultimo del server)
   const price = () => (window.REF && window.REF.px > 0) ? window.REF.px : ((SRV().liqmap || {}).price || SRV().price);
@@ -197,7 +261,7 @@
   function renderHead() {
     const LM = SRV().liqmap, p = price(), RF = window.REF;
     H("lqSub").textContent = RF ? `distanze da ${px(p)} · ${RF.live ? "live" : RF.lab}` : "stima + dati reali";
-    if (!LM) { H("lqHead").innerHTML = `<h2>Mappa non ancora calcolata</h2><p>Il server la calcola ogni ora (Binance + OKX). Le liquidazioni live qui sotto funzionano comunque.</p>`; H("lqTiles").innerHTML = ""; return; }
+    if (!LM) { S.cl = null; H("lqHead").innerHTML = `<h2>Mappa non ancora calcolata</h2><p>Il server la calcola ogni ora (Binance + OKX). Le liquidazioni live qui sotto funzionano comunque.</p>`; H("lqTiles").innerHTML = ""; return; }
     const B = bins(), up = clusters(B, p, "s"), dn = clusters(B, p, "l");
     const na = up.find(c => c.sig), nb = dn.find(c => c.sig);
     const { sA, lB, imb } = imb5(B, p);
@@ -212,6 +276,7 @@
     const t = (cls, lab, c, extra) => `<div class="${cls}"><span>${lab}</span><b>${c ? px(c.price) : "–"}</b><small>${c ? pc(c.dist) + " · " + m$(c.usd) : "nessuno entro ±10%"}${c && srOf(c.price) ? " · " + srOf(c.price) : ""}</small>${extra || ""}</div>`;
     const bigA = up.slice().sort((a, b) => b.usd - a.usd)[0], bigB = dn.slice().sort((a, b) => b.usd - a.usd)[0];
     const w = Math.min(50, Math.abs(imb) / 2);
+    S.cl = { up, dn, na, nb, imb, sA, lB, loZ, hiZ, big, bigA, bigB, p };
     H("lqTiles").innerHTML = t("up", "Sopra · più vicino", na) + t("dn", "Sotto · più vicino", nb) +
       `<div><span>Squilibrio ±5%</span><b style="color:${imb > 0 ? "var(--teal)" : "var(--violet)"}">${pc(imb, 0)}</b><small>short ${m$(sA)} · long ${m$(lB)}</small><div class="imbBar"><i style="left:${imb > 0 ? 50 : 50 - w}%;width:${w}%;background:${imb > 0 ? "var(--teal)" : "var(--violet)"}"></i><em></em></div></div>` +
       t("up", "Sopra · più grande", bigA) + t("dn", "Sotto · più grande", bigB) +
@@ -276,6 +341,10 @@
     const t24 = T["24h"] ? { l: Math.max(T["24h"].long, win(24).l), s: Math.max(T["24h"].short, win(24).s) } : win(24);
     const box = (lab, v, sub) => { const tt = v.l + v.s || 1;
       return `<div><span>${lab}</span><b><span class="neg">${m$(v.l)}</span> / <span class="pos">${m$(v.s)}</span></b><div class="lsBar"><i style="width:${v.l / tt * 100}%"></i><i style="width:${v.s / tt * 100}%"></i></div><small>${sub}</small></div>`; };
+    const okx = ev.filter(e => e.x === "OKX"), lastBig = okx.find(e => e.usd >= 1e5) || okx.slice(0, 50).sort((a, b) => b.usd - a.usd)[0];
+    S.live = { h1: win(1), h4: win(4), last: lastBig };
+    renderMLive();
+    if (!shown(H("lqTot"))) return;   // telefono a pannello chiuso: niente lista né istogramma
     H("lqTot").innerHTML = box("OKX · 1 ora", win(1), "long / short liquidati") + box("OKX · 4 ore", win(4), "long / short") + box("OKX · 24 ore", t24, "registro del server + live") ;
     H("lqLiveSub").textContent = `Binance da ${Math.round((now - S.bnLive.t0) / 6e4)} min: ${m$(S.bnLive.l)} long / ${m$(S.bnLive.s)} short`;
     H("lqEv").innerHTML = ev.slice(0, 15).map(e => `<div class="row"><span class="x">${e.x}</span><span class="lqSide ${e.side}">${e.side === "l" ? "long liq." : "short liq."}</span><span class="k">${m$(e.usd)}<small>${e.btc.toFixed(e.btc >= 1 ? 2 : 4).replace(".", ",")} BTC a ${px(e.p)}</small></span><span class="v">${hm(e.t)}<small style="display:block;font-size:.7rem;color:var(--label3)">${new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</small></span></div>`).join("") ||
@@ -298,6 +367,7 @@
           .sort((x, y) => (x.dist == null ? 1e9 : Math.abs(x.dist)) - (y.dist == null ? 1e9 : Math.abs(y.dist))); });
   }
   function renderWh() {
+    if (!shown(H("lqWh"))) return;
     const LM = SRV().liqmap || {}, W = S.wh || (LM.whales || []).map(w => ({ ...w, dist: w.dist_pct }));
     H("lqWhSub").textContent = `${W.length} posizioni BTC · ${LM.whale_accounts || 0} conti letti${S.wh ? " · live" : " · dati del server"}`;
     H("lqWh").innerHTML = W.slice(0, 12).map(w => `<div class="row"><span class="chip" style="color:${w.side === "long" ? "var(--green)" : "var(--red)"}">${w.side}</span><span class="k">${esc(w.who || "?")}${w.tracked ? ` <span class="cap" style="color:var(--tint)">whalebot</span>` : ""}<small>${w.btc.toFixed(1).replace(".", ",")} BTC · ${m$(w.ntl)} · ingresso ${px(w.entry)} · ${w.lev || "?"}x</small></span><span class="v strong">${w.liq ? px(w.liq) : "—"}<small style="display:block;font-weight:400;color:var(--label2)">${w.dist != null ? pc(w.dist) : "niente liquidazione"}</small></span></div>`).join("") ||
@@ -326,15 +396,23 @@
     const ok = getJ("https://www.okx.com/api/v5/market/books-full?instId=BTC-USDT-SWAP&sz=5000").then(j => { const d = j.data[0]; S.src.okxbook = true; return mkBook(d.bids.map(x => [+x[0], +x[1] * .01]), d.asks.map(x => [+x[0], +x[1] * .01])); }).catch(() => { S.src.okxbook = false; return null; });
     return Promise.all([bn, ok]).then(r => { const bk = r.filter(Boolean); if (bk.length) { S.bookT = Date.now(); S.book = { st: bookStats(bk, bk[0].mid), n: bk.length, names: [r[0] && "Binance", r[1] && "OKX"].filter(Boolean) }; } });
   }
-  function renderBook() {
+  function bookData() {
     const OB = SRV().orderbook, B = S.book;
-    let bands, depth = null, walls;
-    if (B) { bands = B.st.bands; depth = B.st.depth; walls = B.st.walls; H("obSub").textContent = `live · ${B.names.join(" + ")} perp`; }
+    let bands, depth = null, walls, sub;
+    if (B) { bands = B.st.bands; depth = B.st.depth; walls = B.st.walls; sub = `live · ${B.names.join(" + ")} perp`; }
     else if (OB && OB.now) { const n = OB.now; bands = [0.25, 0.5, 1, 2].map(b => ({ b, B: n["bid_" + b], A: n["ask_" + b], n: n["src_" + b], imb: n["imb_" + b] }));
       walls = { b: n.wall_bid_px ? [{ p: n.wall_bid_px, d: n.wall_bid_dist, usd: n.wall_bid_usd }] : [], a: n.wall_ask_px ? [{ p: n.wall_ask_px, d: n.wall_ask_dist, usd: n.wall_ask_usd }] : [] };
       walls.b = walls.b.filter(w => w.d == null || w.d < 0); walls.a = walls.a.filter(w => w.d == null || w.d > 0);   // la distanza del server è già dal mid del suo book
-      H("obSub").textContent = `foto del server · ${OB.ts ? new Date(OB.ts.replace(" ", "T") + "Z").toLocaleString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""}`; }
-    else { H("obBands").innerHTML = `<p class="lqNote">Book non disponibile.</p>`; return; }
+      sub = `foto del server · ${OB.ts ? new Date(OB.ts.replace(" ", "T") + "Z").toLocaleString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""}`; }
+    else return null;
+    return { bands, depth, walls, sub };
+  }
+  function renderBook() {
+    renderMBook();
+    if (!shown(H("obBands"))) return;
+    const D = bookData();
+    if (!D) { H("obBands").innerHTML = `<p class="lqNote">Book non disponibile.</p>`; return; }
+    const { bands, depth, walls } = D; H("obSub").textContent = D.sub;
     H("obBands").innerHTML = bands.filter(b => b.imb != null).map(b => { const v = b.imb * 100, w = Math.min(50, Math.abs(v) / 2);
       return `<div class="obBand"><span>±${String(b.b).replace(".", ",")}%</span><div class="dv" title="bid ${m$(b.B)} · ask ${m$(b.A)}"><em></em><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? "var(--green)" : "var(--red)"}"></i></div><b class="${v >= 0 ? "pos" : "neg"}">${pc(v, 0)}</b></div>`; }).join("") +
       `<p class="lqNote">Squilibrio = (bid − ask) / totale entro la fascia: verde più ordini in acquisto, rosso più in vendita.</p>`;
@@ -343,8 +421,22 @@
     const wr = (w, k) => `<div class="row"><span class="k">${k === "b" ? "Muro in acquisto" : "Muro in vendita"}<small>${w.d != null ? pc(w.d, 2) + " dal mid del book" : "foto del server"}</small></span><span class="v strong ${k === "b" ? "pos" : "neg"}">${px(w.p)}<small style="display:block;font-weight:400;color:var(--label2)">${m$(w.usd)}</small></span></div>`;
     H("obWalls").innerHTML = (walls.a.slice(0, 2).map(w => wr(w, "a")).join("") + walls.b.slice(0, 2).map(w => wr(w, "b")).join("")) || "";
   }
+  // il motore di direzione si mostra SOLO se funziona: stessa regola di radar/orderbook.py verdict()
+  // (≥ 30 previsioni fuori campione con posizione e accuratezza ≥ max(sempre su, momentum) + 3 punti, su almeno un orizzonte)
+  function engVerdict() {
+    const OB = SRV().orderbook; if (!OB) return { works: false, n: 0, need: 30 };
+    if (OB.verdict) return OB.verdict;
+    const per = ["1h", "4h"].map(hz => { const t = (OB.track || {})[hz] || {}, bs = [t.always_up_acc, t.momentum_acc].filter(v => v != null);
+      return { ok: (t.model_n || 0) >= 30 && t.model_acc != null && bs.length > 0 && t.model_acc >= Math.max(...bs) + 3, n: t.n || 0 }; });
+    return { works: per.some(x => x.ok), n: Math.max(0, ...per.map(x => x.n)), need: 30 };
+  }
   function renderEngine() {
-    const OB = SRV().orderbook;
+    const OB = SRV().orderbook, V = engVerdict();
+    H("obEng").hidden = !V.works;
+    const ln = H("lqEngLine"); ln.hidden = V.works;
+    ln.textContent = V.works ? "" : (V.n < (V.need || 30) ? `Motore di direzione in addestramento: ${V.n}/${V.need || 30} casi.` : `Motore di direzione nascosto: con ${V.n} casi non batte ancora "sempre su" e il momentum.`);
+    renderMEng(V);
+    if (!V.works || !shown(H("obP"))) return;
     if (!OB) { H("obP").innerHTML = `<p class="lqNote">Motore non ancora avviato.</p>`; return; }
     const P = OB.pred || {}, TR = OB.track || {}, M = OB.model || {};
     const pt = (hz, lab) => { const v = P[hz]; const n = (M[hz] || {}).n || 0;
@@ -359,15 +451,13 @@
   }
 
   // ---------------- aggiornamento per fonte: arancione se più vecchia di 2 ore
-  function renderAge() {
+  function ages() {
     const LM = SRV().liqmap, OB = SRV().orderbook, now = Date.now();
-    if (!LM && !OB) { H("lqAge").innerHTML = ""; return; }
+    if (!LM && !OB) return [];
     const so = (LM && LM.sources) || {}, F = (LM && LM.feed) || {};
     const srcT = v => v && v.ok ? ((v.as_of || v.asof) ? T(v.as_of || v.asof) : v.until ? T(v.until) + 36e5 : null) : null;   // as_of = chiusura dell'ultima ora; until = sua apertura
     const hm2 = t => new Date(t).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
     const est = v => v && v.extended_h > 0 && v.oi_until ? `OI stimato dopo ${hm2(T(v.oi_until) + 36e5)} (${v.extended_h} ore da ${v.extended_with === "okx" || !v.extended_with ? "OKX" : v.extended_with})` : "archivio OI giornaliero";
-    const ago = t => { const m = Math.max(0, Math.round((now - t) / 6e4)); return m < 60 ? `${m} min fa` : m < 2880 ? `${Math.floor(m / 60)} h ${m % 60 ? (m % 60) + " min " : ""}fa` : `${Math.round(m / 1440)} giorni fa`; };
-    const when = t => { const d = new Date(t), td = new Date(); return (d.toDateString() === td.toDateString() ? "" : d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }) + " ") + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); };
     const L = [];
     if (LM) {
       L.push(["Mappa · OKX", srcT(so.okx), "OI e candele 1h"]);
@@ -376,6 +466,14 @@
       L.push(["Liquidazioni OKX", T(F.asof || LM.ts), "registro del server"]);
     }
     L.push(["Order book", S.bookT || T(OB && OB.ts), S.bookT ? "live" : "foto del server"]);
+    return L;
+  }
+  function renderAge() {
+    renderMSrc();
+    if (!shown(H("lqAge"))) return;
+    const now = Date.now(), L = ages();
+    const ago = t => { const m = Math.max(0, Math.round((now - t) / 6e4)); return m < 60 ? `${m} min fa` : m < 2880 ? `${Math.floor(m / 60)} h ${m % 60 ? (m % 60) + " min " : ""}fa` : `${Math.round(m / 1440)} giorni fa`; };
+    const when = t => { const d = new Date(t), td = new Date(); return (d.toDateString() === td.toDateString() ? "" : d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }) + " ") + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); };
     H("lqAge").innerHTML = L.map(([k, t, how]) => { const old = t == null || now - t > 72e5;
       return `<div class="${old ? "old" : ""}"><span>${k}</span><b>${t == null ? "non disponibile" : "aggiornato " + when(t)}</b><small>${t == null ? how : ago(t) + " · " + how}</small></div>`; }).join("");
   }
@@ -384,7 +482,92 @@
     const LM = SRV().liqmap;
     H("lqSrc").innerHTML = L.map(([k, v]) => `<span class="chip ${v ? "ok" : v === false ? "ko" : ""}">${k}</span>`).join("") + (LM ? `<span class="chip">calcolo server ${new Date(T(LM.ts)).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</span>` : "");
   }
-  function renderAll() { [renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc, renderAge].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+
+  // ---------------- telefono: card riassuntive (una lettura per blocco) e pannelli con i dettagli
+  const card = (title, more, body) => `<div class="hd"><b>${title}</b><span class="more">${more} ›</span></div>${body}`;
+  const k$ = x => x == null ? "–" : "$" + (x / 1000).toFixed(1).replace(".", ",") + "k";
+  function renderMVerd() {
+    const el = H("lqMVerd"); if (!shown(el)) return;
+    const C = S.cl;
+    if (!C) { el.innerHTML = card("Liquidazioni", "Dettagli", `<p>Mappa non ancora calcolata: il server la aggiorna ogni ora.</p>`); return; }
+    let zone = "";
+    if (C.loZ && C.hiZ) { const a = (C.loZ / C.p - 1) * 100, b = (C.hiZ / C.p - 1) * 100, pos = Math.max(4, Math.min(96, -a / (b - a) * 100));
+      zone = `<div class="lqZone"><p>Zona probabile finché non si rompe</p><div class="tr"><i style="left:${pos.toFixed(1)}%"></i></div>
+        <div class="ax"><span><b>${px(C.loZ)}</b>${pc(a)}</span><span><b>${px(C.hiZ)}</b>${pc(b)}</span></div></div>`; }
+    el.innerHTML = `<h2>${C.big}</h2><p>Squilibrio entro ±5%: <b style="color:${C.imb > 0 ? "var(--teal)" : "var(--violet)"}">${pc(C.imb, 0)}</b> <span class="more" style="float:right;color:var(--tint);font-weight:600">Perché ›</span></p>${zone}`;
+  }
+  function renderMCl() {
+    const el = H("lqMCl"); if (!shown(el)) return;
+    const C = S.cl; if (!C) { el.hidden = true; return; } el.hidden = false;
+    const top = Math.max(1, ...[C.na, C.nb, C.bigA, C.bigB].filter(Boolean).map(c => c.usd));
+    const row = (lab, c, col) => `<div><span>${lab}</span><b>${c ? px(c.price) : "–"}<small>${c ? pc(c.dist) : "nessuno entro ±10%"}</small></b><span class="v">${c ? m$(c.usd) : ""}</span><em><i style="width:${c ? (c.usd / top * 100).toFixed(1) : 0}%;background:${col}"></i></em></div>`;
+    const bg = [C.bigA, C.bigB].filter(Boolean).sort((a, b) => b.usd - a.usd)[0];
+    el.innerHTML = card("Cluster vicini", "Tutti", `<div class="lqMini">${row("Sopra", C.na, "var(--teal)")}${row("Sotto", C.nb, "var(--violet)")}</div>` +
+      (bg ? `<p>Il più grande: <b>${m$(bg.usd)}</b> a ${px(bg.price)} (${pc(bg.dist)})</p>` : ""));
+  }
+  function renderMLive() {
+    const el = H("lqMLive"); if (!shown(el) || !S.live) return;
+    const v = S.live.h1, tt = v.l + v.s, e = S.live.last;
+    el.innerHTML = card("In tempo reale", "Feed", `<p>Ultima ora, OKX</p><div class="lqDuo"><div><span>Long liquidati</span><b class="neg">${m$(v.l)}</b></div><div><span>Short liquidati</span><b class="pos">${m$(v.s)}</b></div></div>
+      <div class="lsBar"><i style="width:${tt ? v.l / tt * 100 : 50}%"></i><i style="width:${tt ? v.s / tt * 100 : 50}%"></i></div>` +
+      (e ? `<p>${e.usd >= 1e5 ? "Ultima grande" : "La più grande recente"}: <b>${m$(e.usd)}</b> ${e.side === "l" ? "long" : "short"} alle ${hhmm(e.t)}${Date.now() - e.t > 864e5 ? " del " + new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" }) : ""}</p>` : `<p>Nessuna liquidazione ricevuta nell'ultima ora.</p>`));
+  }
+  function renderMBook() {
+    const el = H("lqMBook"); if (!shown(el)) return;
+    const D = bookData(); if (!D) { el.innerHTML = card("Order book", "Book", `<p>Book non disponibile.</p>`); return; }
+    const b1 = D.bands.find(b => b.b === 1 && b.imb != null) || D.bands.filter(b => b.imb != null).slice(-1)[0];
+    const v = b1 ? b1.imb * 100 : 0, w = Math.min(50, Math.abs(v) / 2);
+    const near = (L, sgn) => L.filter(x => x.d == null || Math.sign(x.d) === sgn).sort((x, y) => Math.abs(x.d || 0) - Math.abs(y.d || 0))[0];
+    const wa = near(D.walls.a, 1), wb = near(D.walls.b, -1);
+    el.innerHTML = card("Order book", "Book", `<p>${Math.abs(v) < 5 ? "Acquisti e vendite in equilibrio" : v > 0 ? "Più ordini in acquisto" : "Più ordini in vendita"} entro ±${b1 ? String(b1.b).replace(".", ",") : 1}%: <b class="${v >= 0 ? "pos" : "neg"}">${pc(v, 0)}</b></p>
+      <div class="obBand" style="grid-template-columns:1fr"><div class="dv"><em></em><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? "var(--green)" : "var(--red)"}"></i></div></div>
+      <div class="lqDuo"><div><span>Muro in acquisto</span><b class="pos">${wb ? k$(wb.p) : "–"}</b><small>${wb ? (wb.d != null ? pc(wb.d, 2) + " · " : "") + m$(wb.usd) : ""}</small></div><div><span>Muro in vendita</span><b class="neg">${wa ? k$(wa.p) : "–"}</b><small>${wa ? (wa.d != null ? pc(wa.d, 2) + " · " : "") + m$(wa.usd) : ""}</small></div></div>`);
+  }
+  function renderMEng(V) {
+    const el = H("lqMEng"); el.hidden = !V.works; if (!V.works || !shown(el)) return;
+    const P = (SRV().orderbook || {}).pred || {}, f = v => v == null ? "–" : Math.round(v * 100) + "%";
+    el.innerHTML = card("Direzione a breve", "Dettagli", `<div class="lqDuo"><div><span>Prob. rialzo 1 ora</span><b>${f(P["1h"])}</b></div><div><span>Prob. rialzo 4 ore</span><b>${f(P["4h"])}</b></div></div>`);
+  }
+  function renderMSrc() {
+    const el = H("lqMSrc"); if (!shown(el)) return;
+    const now = Date.now(), L = ages(), ok = L.filter(x => x[1] != null), old = L.filter(x => x[1] == null || now - x[1] > 72e5).length;
+    const last = ok.length ? Math.max(...ok.map(x => x[1])) : null;
+    el.innerHTML = `<i class="lqDot${old ? " old" : ""}"></i><span class="t">${last ? `Dati aggiornati alle ${hhmm(last)}` : "Dati in caricamento"}<small>${old ? `${old} ${old === 1 ? "fonte in ritardo" : "fonti in ritardo"}` : "tutte le fonti aggiornate"}</small></span><span class="more" style="color:var(--tint);font:600 .82rem var(--font)">Fonti ›</span>`;
+  }
+  function renderMobile() { [renderMVerd, renderMCl, renderMLive, renderMBook, renderMSrc].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+
+  // pannello: sposta i nodi della versione desktop dentro openSheet e li rimette al loro posto alla chiusura
+  function restore() { (S.moved || []).forEach(([n, m]) => { if (m.parentNode) m.replaceWith(n); }); S.moved = null; }
+  // il pannello condiviso deve stare fuori dalle viste nascoste, altrimenti da questa pagina non si vede
+  const sheetHome = () => { const d = H("sheet"); if (d && d.parentNode !== document.body) document.body.appendChild(d); };
+  function sheet(title, ids, pre, render) {
+    restore(); sheetHome();
+    const wrap = document.createElement("div"); wrap.className = "lqSheet";
+    if (pre) wrap.insertAdjacentHTML("beforeend", pre);
+    S.moved = ids.map(id => { const n = H(id), m = document.createComment(id); n.replaceWith(m); wrap.appendChild(n); return [n, m]; });
+    window.openSheet(title, wrap, restore);
+    (render || []).forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } });
+  }
+  function clusterList() {
+    const C = S.cl; if (!C) return "";
+    const top = Math.max(1, ...C.up.concat(C.dn).map(c => c.usd));
+    const L = (arr, col) => arr.slice(0, 8).map(c => `<div class="row"><span class="k">${px(c.price)}<small>${pc(c.dist)}${srOf(c.price) ? " · zona " + srOf(c.price) : ""}${c.sig ? "" : " · minore"}</small></span><span class="rb"><i style="width:${(c.usd / top * 100).toFixed(1)}%;background:${col}"></i></span><span class="v strong">${m$(c.usd)}</span></div>`).join("") || `<div class="row"><span class="k">Nessuno entro ±10%</span></div>`;
+    return `<h3>Sopra il prezzo: short da liquidare</h3><div class="list lqCl">${L(C.up, "var(--teal)")}</div><h3>Sotto il prezzo: long da liquidare</h3><div class="list lqCl">${L(C.dn, "var(--violet)")}</div>
+      <p class="lqNote">Cluster = picco della stima entro ±10% dal prezzo (${px(C.p)}), dal più vicino. Prezzi di liquidazione veri delle balene qui sotto.</p>`;
+  }
+  function wireMobile() {
+    H("lqMVerd").onclick = () => sheet("Lettura delle liquidazioni", ["lqHeadBox"]);
+    H("lqMCl").onclick = () => sheet("Cluster vicini", ["lqWhBox"], clusterList(), [renderWh]);
+    H("lqMLive").onclick = () => sheet("Liquidazioni in tempo reale", ["lqLiveBox"], "", [renderLive]);
+    H("lqMBook").onclick = () => sheet("Order book", ["obBookBox"], "", [renderBook]);
+    H("lqMEng").onclick = () => sheet("Direzione a breve", ["obEng"], "", [renderEngine]);
+    H("lqMSrc").onclick = () => sheet("Fonti dei dati", ["lqSrcBox"], "", [renderSrc, renderAge]);
+    H("lqMapHow").onclick = () => sheetHome() || window.openSheet("Come si legge la mappa", `<p class="lqNote">Ogni riga è una fascia di prezzo: sopra il prezzo attuale gli short che verrebbero liquidati (azzurro), sotto i long (viola). Barre più lunghe = più dollari liquidati in quella fascia. R e S sono le zone di resistenza e supporto; HL una balena Hyperliquid con prezzo di liquidazione vero.</p><p class="lqNote">${H("lqMapNote").innerHTML}</p>`);
+  }
+
+  function renderAll() {
+    if (S.moved && !(H("sheet") || {}).open) restore();
+    [renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc, renderAge, renderMobile].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
   async function refresh(force) {
     const btn = H("lqRefresh"); btn.disabled = true; btn.textContent = "Aggiorno…";
     const jobs = [okxRest(), liveBook()];
@@ -397,11 +580,13 @@
     init() {
       if (typeof seg === "function") seg("lqRange", v => { S.range = +v; renderMap(); });
       H("lqRefresh").onclick = () => refresh(true);
+      wireMobile();
+      matchMedia("(max-width:700px)").addEventListener("change", () => { if (!H("v-liquidazioni").hidden) renderAll(); });
       renderAll(); refresh(true);
-      if (window.onRef) window.onRef(() => { if (!H("v-liquidazioni").hidden) { try { renderHead(); renderMap(); } catch (e) { console.warn("liquidazioni", e); } } });
+      if (window.onRef) window.onRef(() => { if (!H("v-liquidazioni").hidden) { try { renderHead(); renderMap(); renderMVerd(); renderMCl(); } catch (e) { console.warn("liquidazioni", e); } } });
     },
-    show() { startWS(); clearInterval(S.timer); S.timer = setInterval(() => { if (!document.hidden) refresh(false); }, 45000); },
-    hide() { stopWS(); clearInterval(S.timer); },
+    show() { renderAll(); startWS(); clearInterval(S.timer); S.timer = setInterval(() => { if (!document.hidden) refresh(false); }, 45000); },
+    hide() { stopWS(); clearInterval(S.timer); if (S.moved) window.closeSheet(); },
   };
 })();
 </script>

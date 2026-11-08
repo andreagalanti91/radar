@@ -212,6 +212,25 @@ def evaluate(df: pd.DataFrame) -> dict:
     return res
 
 
+WORKS_MIN_N = 30                 # verdetto "funziona?": almeno 30 previsioni fuori campione in cui il modello prende posizione
+WORKS_MARGIN = 3.0               # e accuratezza ≥ max(sempre su, momentum) + 3 punti
+
+
+def verdict(track: dict) -> dict:
+    """Il motore funziona? Sì solo se, su almeno un orizzonte, ha ≥ 30 previsioni fuori campione con posizione e batte
+    entrambi i riferimenti (sempre su, momentum) di almeno 3 punti. La dashboard lo mostra solo in quel caso."""
+    per, best = {}, None
+    for hz in HORIZONS:
+        t = (track or {}).get(hz) or {}
+        n, acc, lab = int(t.get("model_n") or 0), t.get("model_acc"), int(t.get("n") or 0)
+        base = max([v for v in (t.get("always_up_acc"), t.get("momentum_acc")) if v is not None], default=None)
+        ok = n >= WORKS_MIN_N and acc is not None and base is not None and acc >= base + WORKS_MARGIN
+        per[hz] = {"ok": bool(ok), "n": lab, "n_pos": n, "need": WORKS_MIN_N, "edge": round(acc - base, 1) if acc is not None and base is not None else None}
+        if best is None or lab > best:
+            best = lab
+    return {"works": any(v["ok"] for v in per.values()), "n": best or 0, "need": WORKS_MIN_N, "margin": WORKS_MARGIN, "per": per}   # n = casi etichettati
+
+
 def learn(df: pd.DataFrame) -> dict:
     """Riaddestra la logistica su tutte le foto con esito noto; ritorna il modello per orizzonte."""
     model = {}
@@ -293,7 +312,7 @@ def update(data_dir, now: pd.Timestamp | None = None) -> dict:
     cur = row or (df.iloc[-1].to_dict() if len(df) else {})
     pred = {hz: cur.get(f"p_{hz}") for hz in HORIZONS}
     return {"ts": cur.get("ts"), "mid": cur.get("mid"), "now": {k: cur.get(k) for k in cur if k.startswith(("imb_", "bid_", "ask_", "wall_", "spread", "micro", "n_src", "src_"))},
-            "pred": pred, "checks": status, "track": state.get("track", {}), "learned": state.get("learned"),
+            "pred": pred, "checks": status, "track": state.get("track", {}), "verdict": verdict(state.get("track", {})), "learned": state.get("learned"),
             "model": {hz: {"n": (state.get("model") or {}).get(hz, {}).get("n", 0), "w": (state.get("model") or {}).get(hz, {}).get("w")} for hz in HORIZONS},
             "feats": FEATS, "rows": int(len(df)), "since": str(df["ts"].iloc[0]) if len(df) else None,
             "per_source": {k: {"mid": round(v["mid"], 1), "spread_bps": round(v["spread_bps"], 2), "imb_0.5": (round((v["bid_0.5"] - v["ask_0.5"]) / (v["bid_0.5"] + v["ask_0.5"]), 3) if v.get("bid_0.5") else None)} for k, v in per.items()}}

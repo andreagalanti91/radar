@@ -10,7 +10,11 @@ Strategia preregistrata in research/scout/PREREG.md (soglie, punteggio, isteresi
 4. verifica: fotografie giornaliere (valore, PnL allTime dalla classifica) delle scelte, di chi ha passato i filtri e di un
    campione di conti ≥ $1M → rendimento a 7/30/90 giorni (data/scout_track.json); ogni 30 giorni, con abbastanza dati,
    piccolo aggiustamento dei pesi verso le componenti che hanno previsto il rendimento successivo.
-Uscite: data/wallet_picks.json (letto da cli → report["scout"], dalla pagina Wallet e da radar/wallets.py per gli alert).
+5. lista osservata (data/wallets_watch.json, esattamente 3 wallet): lo scout NON la cambia. Ogni giorno rianalizza i 3
+   osservati e propone fino a 3 candidati che ne battono chiaramente uno (punteggio +15%, oppure l'osservato non passa i
+   filtri), con il confronto affiancato; un candidato nuovo arriva su Telegram e l'utente approva con /sostituisci
+   (radar/wallets.py.command, letto da radar/journal.py). Le "scelte" Balena 1–3 restano solo per la verifica a 7/30/90 giorni.
+Uscite: data/wallet_picks.json e data/wallets_watch.json (lette da cli → report["scout"] e dalla pagina Wallet).
 Uso: python -m radar.scout [--force] [--no-telegram]
 """
 from __future__ import annotations
@@ -24,13 +28,14 @@ from pathlib import Path
 
 import requests
 
-from . import telegram
+from . import telegram, wallets
 from .liqmap import HL_API, hl_leaderboard
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 PICKS = "wallet_picks.json"
 TRACK = "scout_track.json"
+WATCH = "wallets_watch.json"   # i 3 wallet osservati e i candidati (radar/wallets.py)
 VAULTS = "https://stats-data.hyperliquid.xyz/Mainnet/vaults"
 PAGE = "https://andreagalanti91.github.io/radar/#wallet"
 DAY = 86400_000
@@ -47,6 +52,7 @@ TH0 = {"ret": 0.80, "dd": 0.30, "r2": 0.75, "fund": 0.15}
 RELAX = [("r2", 0.65), ("dd", 0.35), ("fund", 0.20), ("ret", 0.60)]   # un passo alla volta, in quest'ordine
 WEIGHTS0 = {"calmar": 0.40, "r2": 0.25, "pos": 0.20, "fund": 0.15}
 N_PICKS, N_RUNNERS, MARGIN = 3, 7, 0.15
+N_CAND, DISMISS_DAYS = 3, 30   # al massimo 3 candidati al giorno; un candidato scartato non torna per 30 giorni
 N_FUND = 20             # funding e verifica solo per i migliori (costano richieste)
 N_BENCH = 120           # campione fisso di conti ≥ $1M per il confronto
 HORIZONS = (7, 30, 90)
@@ -168,7 +174,11 @@ def metrics(port, now_ms: int) -> dict:
     if len(pp) >= 2:
         j0 = _anchor(pp, seg[0][0])
         perp_y = pp[-1][2] - pp[j0][2]
+    mo = points(P.get("month", {}))   # ultimi 30 giorni a punti fitti: rendimento e volume recenti (confronto dei candidati)
+    ret30 = (index_of(mo)[-1] - 1) if len(mo) >= 2 else None
+    vlm30 = float((P.get("month") or {}).get("vlm") or 0)
     return {
+        "ret_30d": ret30, "vlm_30d": vlm30,
         "ok": True, "history_days": round(hist, 1), "span_days": round(span, 1), "max_gap_days": round(max(gaps) if gaps else 0, 1),
         "negative": any(p[1] < -1 for p in seg), "ret_1y": ret, "dd": max(dds), "dd_1y": dds[0], "r2": r2_log(ts, idx),
         "pos": (sum(r > 0 for r in rs) / len(rs)) if rs else 0.0, "underwater_days": round(underwater_days(ts, idx), 1),
@@ -263,6 +273,89 @@ def slots(new: list[str], old: dict[str, int], n: int = N_PICKS) -> dict[str, in
         if a not in keep:
             keep[a] = free.pop(0)
     return keep
+
+
+def beats(c: dict, w: dict, margin: float = MARGIN) -> str | None:
+    """Motivo per cui il candidato c (passa i filtri) batte chiaramente il wallet osservato w, oppure None.
+    Isteresi come per le scelte: punteggio oltre (1 + margin) × quello dell'osservato, oppure l'osservato non passa i filtri
+    (e il candidato ha comunque un punteggio più alto)."""
+    if c.get("fails") or c.get("score") is None or w.get("score") is None:
+        return None
+    if w.get("fails"):
+        if c["score"] > w["score"]:
+            return (f"{w.get('name', 'l’osservato')} non passa i filtri ({', '.join(LABEL.get(f, f) for f in w['fails'])}); "
+                    f"punteggio {c['score']:.0f} contro {w['score']:.0f}")
+        return None
+    if c["score"] > w["score"] * (1 + margin):
+        return f"punteggio {c['score']:.0f} contro {w['score']:.0f} (+{(c['score'] / w['score'] - 1) * 100:.0f}%, soglia +{margin * 100:.0f}%)"
+    return None
+
+
+def pick_candidates(watch: list[dict], ranked: list[dict], dismissed: set[str] = frozenset(), n: int = N_CAND,
+                    margin: float = MARGIN) -> list[dict]:
+    """Fino a n candidati fra chi passa i filtri (ranked: dict con address, score, fails; dal punteggio più alto). Ognuno va
+    contro il posto più debole che batte (prima chi non passa i filtri, poi il punteggio più basso), preferendo un posto
+    non ancora preso da un altro candidato. watch: [{slot, address, name, score, fails}]."""
+    have = {w["address"] for w in watch}
+    out, used = [], set()
+    for c in sorted(ranked, key=lambda c: -(c.get("score") or 0)):
+        if c["address"] in have or c["address"] in dismissed:
+            continue
+        ok = [(w, r) for w in watch if (r := beats(c, w, margin))]
+        if not ok:
+            continue
+        ok.sort(key=lambda x: (not x[0].get("fails"), x[0].get("score") or 0))
+        w, r = next((x for x in ok if x[0]["slot"] not in used), ok[0])
+        used.add(w["slot"])
+        out.append({"address": c["address"], "slot": w["slot"], "reason": r})
+        if len(out) >= n:
+            break
+    return out
+
+
+def cand_id(a: str, taken: set[str]) -> str:
+    """Id breve del candidato per i comandi Telegram: 4 cifre esadecimali dell'indirizzo (6 se già prese)."""
+    k = a[2:6]
+    return k if k not in taken else a[2:8]
+
+
+def _fills(api, a: str, now_ms: int) -> float | None:
+    try:
+        return round(fills_per_day(api.post({"type": "userFills", "user": a, "aggregateByTime": True}, 20) or [], now_ms), 2)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def update_watch(watch: dict, by: dict, passing: list[dict], today: str, entry, fills=None) -> list[dict]:
+    """Aggiorna le metriche dei 3 osservati e i candidati (sul posto). Ritorna i candidati da notificare (mai notificati)."""
+    wl = []
+    for x in watch["slots"]:
+        m = by.get(x["address"])
+        if not m or not m.get("ok"):
+            continue
+        x.update(score=m["score"], fails=[LABEL[f] for f in m["fails"]], metrics=_slim(m), checked=today, curve=m.get("curve", [])[-30:],
+                 why=why(m))
+        wl.append({"slot": x["slot"], "address": x["address"], "name": x["name"], "score": m["score"], "fails": m["fails"]})
+    watch["dismissed"] = {a: d for a, d in (watch.get("dismissed") or {}).items() if _days(d, today) < DISMISS_DAYS}
+    found = pick_candidates(wl, [m for m in passing if m.get("ok")], set(watch["dismissed"]))
+    prevc = {c["address"]: c for c in watch.get("candidates", [])}
+    out, taken = [], set()
+    for f in found:
+        a, m = f["address"], by[f["address"]]
+        vs = watch["slots"][f["slot"] - 1]
+        if m.get("fills_day") is None and fills:
+            m["fills_day"] = fills(a)
+        e = entry(m)
+        cid = prevc.get(a, {}).get("id") or cand_id(a, taken)
+        taken.add(cid)
+        out.append({"id": cid, "address": a, "name": e["name"] if e["kind"] == "vault" else f"Balena {cid}", "display": m.get("display"),
+                    "kind": e["kind"], "leader_of": e.get("leader_of"), "slot": f["slot"], "vs_name": vs["name"], "vs_address": vs["address"],
+                    "reason": f["reason"], "score": m["score"], "vs_score": vs.get("score"), "metrics": _slim(m), "vs_metrics": vs.get("metrics") or {},
+                    "fails": [], "vs_fails": vs.get("fails", []), "why": e["why"], "curve": e["curve"], "vs_curve": vs.get("curve", []),
+                    "date": today, "first": prevc.get(a, {}).get("first") or today, "notified": prevc.get(a, {}).get("notified")})
+    watch["candidates"] = out
+    watch["updated"] = today
+    return [c for c in out if not c.get("notified")]
 
 
 def chain_return(seq: list[tuple[float, float]]) -> tuple[float, float]:
@@ -448,6 +541,41 @@ def cross_check(api: Api, a: str, dexes: list[str], perp_value: float | None) ->
     return {"ch_value": av, "check_ok": ok, "lev": ntl / av if av > 0 else 0.0, "exposure": ntl}
 
 
+def fills_per_day(fills: list[dict], now_ms: int) -> float:
+    """Operazioni (fill aggregati) al giorno negli ultimi 30 giorni; userFills dà al massimo 2.000 fill: se il tetto è pieno
+    si divide per il tratto davvero coperto."""
+    ts = [int(f.get("time") or 0) for f in fills or []]
+    rec = [t for t in ts if t >= now_ms - 30 * DAY]
+    if not rec:
+        return 0.0
+    span = 30.0 if len(ts) < 2000 else max((now_ms - min(ts)) / DAY, 1 / 24)
+    return len(rec) / min(30.0, span)
+
+
+def profile(api: Api, a: str, now_ms: int, dexes: list[str], lb: dict | None = None) -> dict:
+    """Tutte le metriche dello scout per un solo indirizzo (wallet osservati e confronto dei candidati): storia `portfolio`,
+    funding, verifica del valore e leva attuale, attività. lb = riga compatta della classifica, se c'è (coerenza e attività)."""
+    port = api.post({"type": "portfolio", "user": a}, 20)
+    m = metrics(port, now_ms)
+    m["address"] = a
+    if not m.get("ok"):
+        m.setdefault("value", (lb or {}).get("value_lb"))
+        return m
+    lbp = (lb or {}).get("pnl_lb")
+    m["coherent"] = None if lbp is None else abs(m["pnl_all"] - lbp) <= max(0.10 * abs(lbp), 50_000)
+    m["active"] = (m.get("vlm_30d") or 0) > 0
+    ent, t0, t1 = fetch_funding(api, a, now_ms)
+    if t1 - t0 >= 30 * DAY:
+        m.update(funding_stats(ent, pnl_between(port, t0, t1), m["avg_cap"] * (t1 - t0) / (365 * DAY)))
+        m["fund_days"] = round((t1 - t0) / DAY)
+    m.update(cross_check(api, a, dexes, m.get("perp_value")))
+    try:
+        m["fills_day"] = round(fills_per_day(api.post({"type": "userFills", "user": a, "aggregateByTime": True}, 20) or [], now_ms), 2)
+    except Exception:  # noqa: BLE001
+        m["fills_day"] = None
+    return m
+
+
 def _load(p: Path, default):
     try:
         return json.loads(p.read_text()) if p.exists() else default
@@ -549,7 +677,7 @@ def track_summary(track: dict) -> dict:
 # ------------------------------------------------------------------ giro completo
 def _slim(c: dict) -> dict:
     keys = ("ret_1y", "dd", "dd_1y", "r2", "pos", "underwater_days", "fund_pnl", "fund_cap", "funding_net", "fund_days", "value", "pnl_1y",
-            "perp_share", "lev", "history_days", "check_ok", "ch_value", "perp_value")
+            "perp_share", "lev", "history_days", "check_ok", "ch_value", "perp_value", "ret_30d", "vlm_30d", "fills_day")
     m = {k: (None if isinstance(c.get(k), float) and not math.isfinite(c[k]) else (round(c[k], 4) if isinstance(c.get(k), float) else c.get(k))) for k in keys}
     return m
 
@@ -586,14 +714,20 @@ def run(data_dir: Path = DATA, send: bool = True, now_ms: int | None = None, log
         if a not in have:
             cands.insert(0, {"address": a, "value_lb": v["tvl"], "display": None, "roi_all": None, "roi_month": None, "pnl_lb": None, "vlm_month": None, "vault": True})
             have.add(a)
-    for p in prev.get("picks", []):        # le scelte attuali si rianalizzano sempre (isteresi)
-        a = p["address"]
-        if a not in have and a in lbmap:
-            r = next(r for r in rows if r["ethAddress"].lower() == a)
-            w = {k: {kk: float(vv or 0) for kk, vv in d.items()} for k, d in r.get("windowPerformances", [])}
-            cands.append({"address": a, "value_lb": lbmap[a][0], "display": r.get("displayName"), "roi_all": w["allTime"]["roi"], "roi_month": w["month"]["roi"],
-                          "pnl_lb": w["allTime"]["pnl"], "vlm_month": w["month"]["vlm"], "vault": a in vinfo})
-            have.add(a)
+    watch = wallets.load_watch(data_dir / WATCH)
+    wset = {x["address"].lower() for x in watch["slots"]} | {o["address"] for o in ((watch.get("review") or {}).get("options") or [])}
+    rowmap = {r["ethAddress"].lower(): r for r in rows}
+    # le scelte attuali (isteresi) e i 3 wallet osservati (confronto con i candidati) si rianalizzano sempre
+    for a in [p["address"] for p in prev.get("picks", [])] + sorted(wset):
+        if a in have:
+            continue
+        r = rowmap.get(a)
+        if r is None and a not in wset:
+            continue
+        w = {k: {kk: float(vv or 0) for kk, vv in d.items()} for k, d in (r or {}).get("windowPerformances", [])}
+        cands.append({"address": a, "value_lb": lbmap[a][0] if r else None, "display": (r or {}).get("displayName"), "roi_all": w.get("allTime", {}).get("roi"),
+                      "roi_month": w.get("month", {}).get("roi"), "pnl_lb": w.get("allTime", {}).get("pnl"), "vlm_month": w.get("month", {}).get("vlm"), "vault": a in vinfo})
+        have.add(a)
     log(f"[scout] classifica {len(rows)} conti, {len(big)} ≥ $1M · vault ≥ $1M {len(vinfo)} · candidati {len(cands)}")
     analyzed, ports = [], {}
     for i, c in enumerate(cands):
@@ -610,9 +744,9 @@ def run(data_dir: Path = DATA, send: bool = True, now_ms: int | None = None, log
             m["coherent"] = None if lbp is None else abs(m["pnl_all"] - lbp) <= max(0.10 * abs(lbp), 50_000)
             if m["coherent"] is False:
                 log(f"[scout] storia incoerente {c['address']}: PnL portfolio {m['pnl_all']:,.0f} vs classifica {lbp:,.0f}")
-        m["active"] = True if c.get("vlm_month") is None else c["vlm_month"] > 0
+        m["active"] = (m.get("vlm_30d") or 0) > 0 if c.get("vlm_month") is None else c["vlm_month"] > 0
         if m.get("value") is None:
-            m["value"] = c["value_lb"]
+            m["value"] = c["value_lb"] or 0
         analyzed.append(m)
         if (i + 1) % 25 == 0:
             log(f"[scout] {i + 1}/{len(cands)} analizzati ({time.time() - t_start:.0f} s)")
@@ -621,9 +755,13 @@ def run(data_dir: Path = DATA, send: bool = True, now_ms: int | None = None, log
     core = [m for m in analyzed if not [f for f in fails(m, loosest) if f not in ("fund", "check")]]
     core.sort(key=lambda m: -score(m, W))
     dexes = [""] + [d["name"] for d in (api.post({"type": "perpDexs"}, 20) or []) if d]
-    for m in core[:N_FUND]:
+    top = core[:N_FUND]
+    extra = [m for m in analyzed if m["address"] in wset and m.get("ok") and m not in top]   # osservati: sempre verificati
+    for m in top + extra:
         a = m["address"]
         try:
+            if a in wset:
+                m["fills_day"] = round(fills_per_day(api.post({"type": "userFills", "user": a, "aggregateByTime": True}, 20) or [], now_ms), 2)
             ent, t0, t1 = fetch_funding(api, a, now_ms)
             if t1 - t0 >= 30 * DAY:   # meno di 30 giorni letti: funding non verificato
                 m.update(funding_stats(ent, pnl_between(ports[a], t0, t1), m["avg_cap"] * (t1 - t0) / (365 * DAY)))
@@ -632,7 +770,8 @@ def run(data_dir: Path = DATA, send: bool = True, now_ms: int | None = None, log
         except Exception as e:  # noqa: BLE001
             log(f"[scout] funding/verifica {a}: {e!r}")
     for m in core[N_FUND:]:
-        m["fund_skipped"] = True
+        if m["address"] not in wset:
+            m["fund_skipped"] = True
     # livello di allentamento: il primo con almeno 3 wallet che passano
     level, passing = 0, []
     for level in range(len(RELAX) + 1):
@@ -704,48 +843,34 @@ def run(data_dir: Path = DATA, send: bool = True, now_ms: int | None = None, log
     data_dir.mkdir(parents=True, exist_ok=True)
     (data_dir / PICKS).write_text(json.dumps(out, indent=1, default=str))
     (data_dir / TRACK).write_text(json.dumps(track, separators=(",", ":"), default=str))
-    if changed or not prev.get("picks"):
-        msg = message(out, first=not prev.get("picks"))
-        if send:
-            telegram.send(msg)
-        else:
+    # candidati per la lista osservata: nessuna sostituzione automatica, l'utente approva via Telegram (/sostituisci)
+    new_c = update_watch(watch, by, passing, today, entry, lambda a: _fills(api, a, now_ms))
+    wallets.save_watch(watch, data_dir / WATCH)
+    if new_c:
+        msg = "\n\n".join(wallets.candidate_text(c) for c in new_c)
+        if send and telegram.send(msg):
+            for c in new_c:
+                c["notified"] = today
+            wallets.save_watch(watch, data_dir / WATCH)
+        elif not send:
             log(msg)
     log(f"[scout] fatto in {time.time() - t_start:.0f} s · livello {level} · passano {len(passing)} · scelte: {[p['name'] for p in picks]}")
     return out
 
 
-def _usd(x):
-    return "–" if x is None else (f"${x / 1e6:.1f}M" if abs(x) >= 1e6 else f"${x / 1e3:.0f}k").replace(".", ",")
-
-
-def message(out: dict, first: bool = False) -> str:
-    L = [f"<b>RADAR · BALENE HYPERLIQUID</b> · {'prima selezione' if first else 'cambio della selezione'} del {out['date']}"]
-    for p in out["picks"]:
-        m = p["metrics"]
-        L.append(f"\n<b>{p['name']}</b> <code>{p['address'][:6]}…{p['address'][-4:]}</code> · {_usd(m.get('value'))}"
-                 + (" · nuova" if not p.get("kept") else ""))
-        L.append(f"Perché: {p['why']}")
-    h = out["history"][-1] if out.get("history") else {}
-    if h.get("out"):
-        L.append(f"\nEscono: {', '.join(h['out'])}")
-    if out.get("relaxed"):
-        L.append(f"Filtri allentati (pochi wallet passano): {', '.join(out['relaxed'])}")
-    if len(out["picks"]) < N_PICKS:
-        L.append(f"Solo {len(out['picks'])} wallet passano i filtri: i posti vuoti restano vuoti.")
-    L.append(f"\nAnalizzati {out['scanned']['analyzed']} wallet ≥ $1M, passano {out['scanned']['passed']}. Alert su posizioni e ordini attivi."
-             f"\n<a href=\"{PAGE}\">Apri la pagina Wallet</a>")
-    return "\n".join(L)
-
-
 def summary(data_dir: Path = DATA) -> dict | None:
     """Versione compatta per report["scout"] (dashboard)."""
     d = _load(data_dir / PICKS, None)
+    w = wallets.load_watch(data_dir / WATCH)
+    watch = {k: w.get(k) for k in ("updated", "slots", "candidates", "review")}
+    watch["history"] = (w.get("history") or [])[-10:]
     if not d:
-        return None
+        return {"watch": watch, "picks": [], "date": w.get("updated")}
     keep = ("version", "ts", "date", "level", "relaxed", "thresholds", "weights", "picks", "runners_up", "scanned", "rejected",
             "prefilter_rejected", "track", "past")
     s = {k: d.get(k) for k in keep}
     s["history"] = d.get("history", [])[-10:]
+    s["watch"] = watch
     s["criteria"] = {"min_value": MIN_VALUE, "hist_days": HIST_DAYS, "perp_share": PERP_SHARE, "th0": TH0, "relax": RELAX, "margin": MARGIN}
     return s
 

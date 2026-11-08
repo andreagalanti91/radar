@@ -1,8 +1,9 @@
-"""Alert Telegram sui wallet della sentinella (Hyperliquid): posizioni e ordini, confronto fra due fotografie.
+"""Wallet osservati (esattamente 3) e alert Telegram su di loro (Hyperliquid): posizioni e ordini, confronto fra due fotografie.
 
-Gira ogni 5 minuti (.github/workflows/wallets.yml). Wallet: i 3 fissi della sentinella + le 3 balene scelte ogni giorno da
-radar/scout.py (data/wallet_picks.json, salvato nel repository dal workflow orario). Un wallet appena entrato fra le scelte
-viene solo fotografato al primo giro, senza alert. Per ogni wallet legge posizioni e ordini aperti su tutti i DEX di
+Lista osservata: data/wallets_watch.json (posti 1–3). La cambia solo l'utente, via Telegram (/sostituisci, /conferma, gestiti
+qui da command() e chiamati da radar/journal.py durante il giro orario); radar/scout.py propone i candidati ma non sostituisce.
+Gira ogni 5 minuti (.github/workflows/wallets.yml). Un wallet appena entrato nella lista viene solo fotografato al primo giro,
+senza alert. Per ogni wallet legge posizioni e ordini aperti su tutti i DEX di
 Hyperliquid (principale + HIP-3) e li confronta con la fotografia precedente (data/wallets_state.json, conservata nella
 cache di GitHub Actions). Alert su:
 - posizione nuova, chiusa o girata; variazione di size di almeno il 25% e di RADAR_WALLET_MIN dollari (default 50k);
@@ -12,8 +13,11 @@ Primo avvio (nessuno stato salvato): registra e non invia nulla.
 """
 from __future__ import annotations
 
+import html
 import json
+import math
 import os
+import re
 import time
 from pathlib import Path
 
@@ -23,29 +27,46 @@ from . import telegram
 
 API = "https://api.hyperliquid.xyz/info"
 STATE = Path(__file__).resolve().parents[1] / "data" / "wallets_state.json"
+WATCH = STATE.with_name("wallets_watch.json")   # i 3 wallet osservati e i candidati (file nel repository)
+# lista iniziale (se il file manca): Principale e Simile 1 scelti dall'utente, il terzo posto è da approvare
 WALLETS = [
     ("0xd4c1f7e8d876c4749228d515473d36f919583d1d", "Principale"),
     ("0x99967871e6c4f9a5185abc57edede9e9540191f6", "Simile 1"),
     ("0x807a2e2e469df84b299da5f90f15dda4380daca1", "Simile 2"),
 ]
-PICKS = STATE.with_name("wallet_picks.json")   # le 3 balene scelte ogni giorno da radar/scout.py (file nel repository)
+N_SLOTS = 3
+_ADDR = re.compile(r"^0x[0-9a-f]{40}$")
 
 
-def watched() -> list[tuple[str, str]]:
-    """Sentinella (fissa) + le 3 balene del giorno, se il file delle scelte c'è (il workflow orario lo salva in data/)."""
-    out = list(WALLETS)
+def default_watch() -> dict:
+    return {"version": 1, "updated": None, "candidates": [], "dismissed": {}, "history": [], "review": None,
+            "slots": [{"slot": i + 1, "address": a, "name": n, "status": "confermato" if i < 2 else "provvisorio"} for i, (a, n) in enumerate(WALLETS)]}
+
+
+def load_watch(path: Path | None = None) -> dict:
+    path = path or WATCH
     try:
-        picks = json.loads(PICKS.read_text()).get("picks", []) if PICKS.exists() else []
+        w = json.loads(path.read_text()) if path.exists() else None
     except Exception as e:  # noqa: BLE001
-        print(f"[wallet] scelte del giorno non lette: {e!r}")
-        picks = []
-    have = {a for a, _ in out}
-    for p in picks:
-        a = str(p.get("address", "")).lower()
-        if a.startswith("0x") and a not in have:
-            out.append((a, f"{p.get('name') or a[:8]} · selezione giornaliera"))
-            have.add(a)
-    return out
+        print(f"[wallet] lista osservata non letta: {e!r}")
+        w = None
+    w = w or default_watch()
+    for k, v in default_watch().items():
+        w.setdefault(k, v)
+    slots = {int(x["slot"]): x for x in w.get("slots", []) if _ADDR.match(str(x.get("address", "")).lower())}
+    w["slots"] = [slots.get(i) or default_watch()["slots"][i - 1] for i in range(1, N_SLOTS + 1)]   # sempre 3 posti
+    return w
+
+
+def save_watch(w: dict, path: Path | None = None) -> None:
+    path = path or WATCH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(w, indent=1, default=str))
+
+
+def watched(path: Path | None = None) -> list[tuple[str, str]]:
+    """Solo i 3 wallet della lista osservata, nell'ordine dei posti."""
+    return [(x["address"].lower(), x["name"]) for x in load_watch(path)["slots"]]
 
 
 MIN_POS = float(os.environ.get("RADAR_WALLET_MIN", "50000"))
@@ -132,6 +153,143 @@ def diff(name: str, old: dict, new: dict) -> list[str]:
     if len(no) > 6:
         out.append(f"… e altri {len(no) - 6} ordini nuovi sopra {_usd(MIN_ORD)}")
     return [f"<b>{name}</b>"] + out if out else []
+
+
+# ------------------------------------------------------------------ candidati e approvazione (Telegram)
+def _pc(x, d=0, sign=True) -> str:
+    if x is None or (isinstance(x, float) and not math.isfinite(x)):
+        return "–"
+    v = f"{x * 100:{'+' if sign else ''}.{d}f}%".replace(".", ",")
+    return v.replace("-", "−")
+
+
+def _m(x) -> str:
+    return "–" if x is None else _usd(x)
+
+
+def _act(m: dict) -> str:
+    f = m.get("fills_day")
+    lv = m.get("lev")
+    a = "–" if f is None else (f"{f:,.0f}".replace(",", ".") if f >= 10 else f"{f:.1f}".replace(".", ",")) + "/g"
+    return a + ("" if lv is None else f" · {lv:.1f}x".replace(".", ","))
+
+
+# (etichetta, funzione) delle righe del confronto: le stesse metriche dello scout (radar/scout.py)
+ROWS = [("Punteggio", lambda m, sc: "–" if sc is None else f"{sc:.0f}"),
+        ("Rend. 1 anno", lambda m, sc: _pc(m.get("ret_1y"))),
+        ("Max drawdown", lambda m, sc: _pc(m.get("dd"), sign=False)),
+        ("R² crescita", lambda m, sc: "–" if m.get("r2") is None else f"{m['r2']:.2f}".replace(".", ",")),
+        ("Periodi +", lambda m, sc: _pc(m.get("pos"), sign=False)),
+        ("Funding/PnL", lambda m, sc: _pc(m.get("fund_pnl"), 1, sign=False)),
+        ("Valore", lambda m, sc: _m(m.get("value"))),
+        ("Ultimi 30g", lambda m, sc: _pc(m.get("ret_30d"), 1)),
+        ("Attività, leva", lambda m, sc: _act(m))]
+
+
+def compare_text(c: dict) -> str:
+    """Confronto affiancato candidato / wallet che sostituirebbe, in <pre> (Telegram, HTML)."""
+    a, b = c.get("metrics") or {}, c.get("vs_metrics") or {}
+    w = 14
+    head = f"{'':{w}} {'candidato':>11} {c.get('vs_name', 'attuale')[:11]:>11}"
+    lines = [head] + [f"{lab:{w}} {fn(a, c.get('score')):>11} {fn(b, c.get('vs_score')):>11}" for lab, fn in ROWS]
+    return "<pre>" + html.escape("\n".join(lines)) + "</pre>"
+
+
+def candidate_text(c: dict, new: bool = True) -> str:
+    adr = c["address"]
+    return "\n".join([
+        f"<b>{'RADAR · WALLET · nuovo candidato' if new else 'Candidato'} {c['id']}</b> per il posto {c['slot']} (al posto di <b>{html.escape(c.get('vs_name', ''))}</b>)",
+        f"<code>{adr}</code>" + (f" · {html.escape(c['display'])}" if c.get("display") else ""),
+        f"Perché: {html.escape(c.get('reason', ''))}",
+        compare_text(c),
+        f"Approva: <code>/sostituisci {c['slot']} {c['id']}</code> · scarta: <code>/scarta {c['id']}</code> · elenco: /candidati",
+        f"<a href=\"https://hyperdash.com/address/{adr}\">Hyperdash</a> · <a href=\"{PAGE}\">pagina Wallet</a>"])
+
+
+def _find(w: dict, key: str) -> tuple[dict | None, str]:
+    """Candidato (o alternativa del posto in revisione) per id, prefisso o indirizzo."""
+    k = key.lower().removeprefix("#")
+    pool = [("cand", c) for c in w.get("candidates", [])] + [("review", o) for o in ((w.get("review") or {}).get("options") or [])]
+    hit = [(t, c) for t, c in pool if c.get("id", "").lower() == k or c["address"].lower() == k or (len(k) >= 4 and c["address"].lower().startswith(k if k.startswith("0x") else "0x" + k))]
+    return (hit[0][1], hit[0][0]) if hit else (None, "")
+
+
+def _slot_line(x: dict) -> str:
+    st = " · <i>provvisorio, da approvare</i>" if x.get("status") == "provvisorio" else ""
+    sc = f" · punti {x['score']:.0f}" if isinstance(x.get("score"), (int, float)) else ""
+    return f"{x['slot']}. <b>{html.escape(x['name'])}</b> <code>{x['address'][:6]}…{x['address'][-4:]}</code>{sc}{st}"
+
+
+HELP_W = ("<b>Wallet osservati</b>\n/osservati · i 3 wallet seguiti\n/candidati · candidati dello scout con il confronto\n"
+          "/sostituisci 3 8bae [nome] · mette il candidato 8bae al posto 3\n/conferma 3 · conferma un posto provvisorio\n/scarta 8bae · scarta un candidato per 30 giorni")
+COMMANDS = ("osservati", "candidati", "sostituisci", "conferma", "scarta")
+
+
+def command(text: str, today: str, path: Path | None = None) -> str | None:
+    """Comandi Telegram della lista osservata. None se il comando non è di questo modulo (lo gestisce radar/journal.py)."""
+    parts = text.strip().split()
+    if not parts or not parts[0].startswith("/"):
+        return None
+    cmd = parts[0][1:].split("@")[0].lower()
+    if cmd not in COMMANDS:
+        return None
+    w, args = load_watch(path), parts[1:]
+    if cmd == "osservati":
+        return "<b>Wallet osservati</b>\n" + "\n".join(_slot_line(x) for x in w["slots"]) + f"\n\nCandidati in attesa: {len(w['candidates'])} (/candidati)"
+    if cmd == "candidati":
+        cs = w["candidates"]
+        rv = w.get("review") or {}
+        out = [candidate_text(c, new=False) for c in cs]
+        if rv.get("options"):
+            out.append(f"<b>Posto {rv['slot']} provvisorio</b>: {html.escape(rv.get('note', ''))}\nConferma: <code>/conferma {rv['slot']}</code> · alternative: "
+                       + ", ".join(f"{html.escape(o['name'])} <code>/sostituisci {rv['slot']} {o['id']}</code>" for o in rv["options"]))
+        return "\n\n".join(out) if out else "Nessun candidato: i 3 wallet osservati restano i migliori secondo lo scout. /osservati per la lista."
+    if cmd == "conferma":
+        n = int(args[0]) if args and args[0].isdigit() else 0
+        if not 1 <= n <= N_SLOTS:
+            return "Scrivi /conferma 1, 2 o 3."
+        x = w["slots"][n - 1]
+        x["status"] = "confermato"
+        x["since"] = x.get("since") or today
+        if (w.get("review") or {}).get("slot") == n:
+            w["review"] = None
+        w["updated"] = today
+        save_watch(w, path)
+        return f"✅ Posto {n} confermato: {html.escape(x['name'])}."
+    if cmd == "scarta":
+        if not args:
+            return "Scrivi /scarta seguito dall'id del candidato (es. /scarta 8bae)."
+        c, _ = _find(w, args[0])
+        if not c:
+            return f"Nessun candidato «{html.escape(args[0])}». /candidati per l'elenco."
+        w["dismissed"][c["address"]] = today
+        w["candidates"] = [x for x in w["candidates"] if x["address"] != c["address"]]
+        w["updated"] = today
+        save_watch(w, path)
+        return f"Candidato {c.get('id')} scartato: non verrà riproposto per 30 giorni."
+    # sostituisci <posto> <id> [nome]
+    if len(args) < 2 or not args[0].isdigit() or not 1 <= int(args[0]) <= N_SLOTS:
+        return "Formato: /sostituisci &lt;posto 1-3&gt; &lt;id candidato&gt; [nome], es. /sostituisci 3 8bae. /candidati per l'elenco."
+    n = int(args[0])
+    c, kind = _find(w, args[1])
+    if not c:
+        return f"Nessun candidato «{html.escape(args[1])}». /candidati per l'elenco."
+    if any(x["address"] == c["address"] for x in w["slots"]):
+        return f"{html.escape(c['name'])} è già fra gli osservati."
+    old = w["slots"][n - 1]
+    name = " ".join(args[2:])[:24] or c.get("name") or f"Balena {c['id']}"
+    w["slots"][n - 1] = {"slot": n, "address": c["address"], "name": name, "status": "confermato", "since": today,
+                         "score": c.get("score"), "metrics": c.get("metrics"), "fails": c.get("fails", []), "checked": c.get("date")}
+    w["history"].append({"date": today, "slot": n, "out": [old["address"], old["name"]], "in": [c["address"], name], "via": "telegram"})
+    w["history"] = w["history"][-60:]
+    # i candidati confrontati con il wallet uscito vanno rifatti: li ricalcola lo scout al prossimo giro
+    w["candidates"] = [x for x in w["candidates"] if x["address"] != c["address"] and x.get("slot") != n]
+    if (w.get("review") or {}).get("slot") == n:
+        w["review"] = None
+    w["updated"] = today
+    save_watch(w, path)
+    return (f"✅ Posto {n}: <b>{html.escape(name)}</b> <code>{c['address'][:6]}…{c['address'][-4:]}</code> al posto di {html.escape(old['name'])}.\n"
+            f"Alert attivi dal prossimo controllo (il primo giro registra senza avvisare).\n" + "\n".join(_slot_line(x) for x in w["slots"]))
 
 
 def run() -> None:

@@ -1,0 +1,1052 @@
+{
+ "version": 1,
+ "updated": "2026-11-08",
+ "candidates": [],
+ "dismissed": {},
+ "history": [],
+ "review": {
+  "slot": 3,
+  "date": "2026-11-08",
+  "chosen": "0x8bae3527e5a33fa0cf184f37bc112d071463ab6d",
+  "note": "Balena 8bae (ex Balena 2): +1.201% in un anno, drawdown 8%, R\u00b2 0,98, leva 4,3x, posizioni aperte. Simile 2 resta lontana (48 punti contro 91: rendimento 1 anno +61%, drawdown 49%, PnL quasi tutto fuori dai perp). Balena 1 ha un punteggio simile (92) ma oggi \u00e8 flat: poco da seguire.",
+  "rows": [
+   {
+    "address": "0xcb02837caaee310c178501855b63bf7f4f4b1f8b",
+    "name": "Balena 1",
+    "score": 91.99,
+    "fails": [],
+    "metrics": {
+     "ret_1y": 2.1183,
+     "dd": 0.0248,
+     "dd_1y": 0.0179,
+     "r2": 0.9501,
+     "pos": 0.7273,
+     "underwater_days": 31.4,
+     "fund_pnl": 0.0006,
+     "fund_cap": 0.0006,
+     "funding_net": -745.0447,
+     "fund_days": 365,
+     "value": 1732467.1566,
+     "pnl_1y": 1191399.5152,
+     "perp_share": 0.7659,
+     "lev": 0.0,
+     "history_days": 430.5,
+     "check_ok": true,
+     "ch_value": 1228922.1212,
+     "perp_value": 1228922.1212,
+     "ret_30d": -0.0051,
+     "vlm_30d": 14558079.98,
+     "fills_day": 43.6
+    },
+    "group": "scout"
+   },
+   {
+    "address": "0x8bae3527e5a33fa0cf184f37bc112d071463ab6d",
+    "name": "Balena 2",
+    "score": 91.27,
+    "fails": [],
+    "metrics": {
+     "ret_1y": 12.0108,
+     "dd": 0.0842,
+     "dd_1y": 0.0842,
+     "r2": 0.9757,
+     "pos": 0.7636,
+     "underwater_days": 35.0,
+     "fund_pnl": 0.0279,
+     "fund_cap": 0.0686,
+     "funding_net": -291181.8762,
+     "fund_days": 365,
+     "value": 3204430.7548,
+     "pnl_1y": 10425405.6383,
+     "perp_share": 1.0005,
+     "lev": 4.3527,
+     "history_days": 479.4,
+     "check_ok": true,
+     "ch_value": 1978.8106,
+     "perp_value": 1978.8106,
+     "ret_30d": 0.2398,
+     "vlm_30d": 19388630.08,
+     "fills_day": 6.2
+    },
+    "group": "scout"
+   },
+   {
+    "address": "0x888e000c78b8f1aada5b3c99f880794907b76d77",
+    "name": "Balena 3",
+    "score": 84.98,
+    "fails": [],
+    "metrics": {
+     "ret_1y": 7.5134,
+     "dd": 0.2611,
+     "dd_1y": 0.2611,
+     "r2": 0.9471,
+     "pos": 0.6415,
+     "underwater_days": 77.0,
+     "fund_pnl": 0.052,
+     "fund_cap": 0.1429,
+     "funding_net": -85869.4359,
+     "fund_days": 82,
+     "value": 3400023.593,
+     "pnl_1y": 4892703.3046,
+     "perp_share": 0.8947,
+     "lev": 1.8054,
+     "history_days": 675.5,
+     "check_ok": true,
+     "ch_value": 830096.222,
+     "perp_value": 830458.6221,
+     "ret_30d": 0.3956,
+     "vlm_30d": 21320843.83,
+     "fills_day": 66.03
+    },
+    "group": "scout"
+   },
+   {
+    "address": "0x237152b038d88f4156a0cd71090462de7e3f0883",
+    "name": "Cluster-1",
+    "score": 75.71,
+    "fails": [
+     "storia corta o con buchi"
+    ],
+    "metrics": {
+     "ret_1y": 24.8543,
+     "dd": 0.2204,
+     "dd_1y": 0.2204,
+     "r2": 0.8452,
+     "pos": 0.5455,
+     "underwater_days": 28.0,
+     "fund_pnl": 0.0745,
+     "fund_cap": 0.0558,
+     "funding_net": -584971.7705,
+     "fund_days": 365,
+     "value": 11707654.5191,
+     "pnl_1y": 7707654.9191,
+     "perp_share": 1.0,
+     "lev": 9.9332,
+     "history_days": 129.5,
+     "check_ok": true,
+     "ch_value": 2698708.6077,
+     "perp_value": 2707108.6077,
+     "ret_30d": -0.1451,
+     "vlm_30d": 64231483.82,
+     "fills_day": 1.03
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0xbd1c84113c6deb5044be0c2221f9e9403811ff0e",
+    "name": "Cluster-2",
+    "score": 72.89,
+    "fails": [
+     "storia corta o con buchi"
+    ],
+    "metrics": {
+     "ret_1y": 10.7529,
+     "dd": 0.263,
+     "dd_1y": 0.2619,
+     "r2": 0.8076,
+     "pos": 0.5758,
+     "underwater_days": 28.0,
+     "fund_pnl": 0.09,
+     "fund_cap": 0.053,
+     "funding_net": -449453.2184,
+     "fund_days": 365,
+     "value": 8994972.0609,
+     "pnl_1y": 4994972.2609,
+     "perp_share": 1.0,
+     "lev": 13.2171,
+     "history_days": 129.5,
+     "check_ok": true,
+     "ch_value": 1656360.7421,
+     "perp_value": 1656360.7421,
+     "ret_30d": -0.1624,
+     "vlm_30d": 66946969.86,
+     "fills_day": 3.47
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0xbd334a55db91617545e8d1b09941e036ad8e4200",
+    "name": "Petroliere",
+    "score": 65.72,
+    "fails": [
+     "storia corta o con buchi",
+     "drawdown alto",
+     "crescita irregolare (R\u00b2)"
+    ],
+    "metrics": {
+     "ret_1y": 5.2267,
+     "dd": 0.5163,
+     "dd_1y": 0.5163,
+     "r2": 0.7499,
+     "pos": 0.5625,
+     "underwater_days": 41.9,
+     "fund_pnl": 0.0468,
+     "fund_cap": 0.0345,
+     "funding_net": -245275.9086,
+     "fund_days": 365,
+     "value": 8543774.3939,
+     "pnl_1y": 5149961.9439,
+     "perp_share": 1.0001,
+     "lev": 11.1924,
+     "history_days": 122.5,
+     "check_ok": true,
+     "ch_value": 2011155.0137,
+     "perp_value": 2010799.1756,
+     "ret_30d": 0.0017,
+     "vlm_30d": 56204367.65,
+     "fills_day": 63.33
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0xc7290b4b308431a985fa9e3e8a335c2f7650517c",
+    "name": "Ribassista",
+    "score": 59.82,
+    "fails": [
+     "inattivo da 30 giorni",
+     "drawdown alto",
+     "crescita irregolare (R\u00b2)"
+    ],
+    "metrics": {
+     "ret_1y": 3.5825,
+     "dd": 0.5168,
+     "dd_1y": 0.5168,
+     "r2": 0.6166,
+     "pos": 0.5893,
+     "underwater_days": 112.0,
+     "fund_pnl": 0.0,
+     "fund_cap": 0.0,
+     "funding_net": 485621.0456,
+     "fund_days": 365,
+     "value": 2608296.109,
+     "pnl_1y": 6317175.6463,
+     "perp_share": 0.9953,
+     "lev": 1.9476,
+     "history_days": 402.5,
+     "check_ok": true,
+     "ch_value": 1546202.0501,
+     "perp_value": 1545828.0501,
+     "ret_30d": 0.487,
+     "vlm_30d": 0.0,
+     "fills_day": 0.0
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0xd4c1f7e8d876c4749228d515473d36f919583d1d",
+    "name": "Principale",
+    "score": 53.81,
+    "fails": [
+     "drawdown alto",
+     "crescita irregolare (R\u00b2)"
+    ],
+    "metrics": {
+     "ret_1y": 6.2402,
+     "dd": 0.9164,
+     "dd_1y": 0.9164,
+     "r2": 0.0011,
+     "pos": 0.5902,
+     "underwater_days": 129.4,
+     "fund_pnl": 0.0,
+     "fund_cap": 0.0,
+     "funding_net": 819139.7329,
+     "fund_days": 87,
+     "value": 4902499.366,
+     "pnl_1y": 14475121.1961,
+     "perp_share": 0.8018,
+     "lev": 5.5794,
+     "history_days": 472.5,
+     "check_ok": true,
+     "ch_value": 4126406.0809,
+     "perp_value": 4125169.4301,
+     "ret_30d": 1.5326,
+     "vlm_30d": 568108089.06,
+     "fills_day": 11449.89
+    },
+    "group": "osservato"
+   },
+   {
+    "address": "0x9c16bc8f1104e4d2f72267eb981fa12de7cc4a6f",
+    "name": "Inversore",
+    "score": 49.22,
+    "fails": [
+     "drawdown alto",
+     "crescita irregolare (R\u00b2)"
+    ],
+    "metrics": {
+     "ret_1y": 5.0466,
+     "dd": 0.9199,
+     "dd_1y": 0.9199,
+     "r2": 0.069,
+     "pos": 0.4828,
+     "underwater_days": 150.4,
+     "fund_pnl": 0.0,
+     "fund_cap": 0.0,
+     "funding_net": 103256.7964,
+     "fund_days": 365,
+     "value": 1301047.6949,
+     "pnl_1y": 4226417.8455,
+     "perp_share": 1.0,
+     "lev": 6.2482,
+     "history_days": 570.5,
+     "check_ok": true,
+     "ch_value": 822078.899,
+     "perp_value": 822395.1557,
+     "ret_30d": 1.1823,
+     "vlm_30d": 7000825.35,
+     "fills_day": 6.0
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0x807a2e2e469df84b299da5f90f15dda4380daca1",
+    "name": "Simile 2",
+    "score": 48.57,
+    "fails": [
+     "PnL non dai perp",
+     "rendimento 1 anno basso",
+     "drawdown alto"
+    ],
+    "metrics": {
+     "ret_1y": 0.6138,
+     "dd": 0.4945,
+     "dd_1y": 0.4945,
+     "r2": 0.7536,
+     "pos": 0.5152,
+     "underwater_days": 196.0,
+     "fund_pnl": 0.0001,
+     "fund_cap": 0.0001,
+     "funding_net": -1164.3748,
+     "fund_days": 365,
+     "value": 10595487.0103,
+     "pnl_1y": 8906647.999,
+     "perp_share": -0.0036,
+     "lev": 1.8288,
+     "history_days": 703.5,
+     "check_ok": true,
+     "ch_value": 181465.0656,
+     "perp_value": 181465.0656,
+     "ret_30d": -0.0861,
+     "vlm_30d": 3280891.53,
+     "fills_day": 0.63
+    },
+    "group": "sentinella"
+   },
+   {
+    "address": "0x2d99fe0f36c1aebd28a1a2c0e82e8ca13c2ea351",
+    "name": "Rotatore",
+    "score": 37.09,
+    "fails": [
+     "rendimento 1 anno basso",
+     "crescita irregolare (R\u00b2)"
+    ],
+    "metrics": {
+     "ret_1y": 0.6179,
+     "dd": 0.2915,
+     "dd_1y": 0.2915,
+     "r2": 0.5553,
+     "pos": 0.4909,
+     "underwater_days": 73.5,
+     "fund_pnl": 0.0544,
+     "fund_cap": 0.0385,
+     "funding_net": -300198.3321,
+     "fund_days": 365,
+     "value": 4986788.975,
+     "pnl_1y": 5142808.1221,
+     "perp_share": 1.0,
+     "lev": 1.4939,
+     "history_days": 409.5,
+     "check_ok": true,
+     "ch_value": 2745807.442,
+     "perp_value": 2745807.442,
+     "ret_30d": -0.0548,
+     "vlm_30d": 9203378.12,
+     "fills_day": 9.47
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0xec7f9f5b31b8f5da6ac6c0973bbd496e16f9df39",
+    "name": "Cluster-3",
+    "score": 30.83,
+    "fails": [
+     "storia corta o con buchi",
+     "drawdown alto",
+     "crescita irregolare (R\u00b2)",
+     "funding alto (o non verificato)"
+    ],
+    "metrics": {
+     "ret_1y": 1.8007,
+     "dd": 0.4775,
+     "dd_1y": 0.4775,
+     "r2": 0.2414,
+     "pos": 0.5152,
+     "underwater_days": 38.4,
+     "fund_pnl": 0.3165,
+     "fund_cap": 0.0717,
+     "funding_net": -466224.6515,
+     "fund_days": 365,
+     "value": 5476827.2614,
+     "pnl_1y": 1474984.1814,
+     "perp_share": 1.0,
+     "lev": 10.9761,
+     "history_days": 129.5,
+     "check_ok": true,
+     "ch_value": 1212998.2526,
+     "perp_value": 1212998.2526,
+     "ret_30d": -0.3126,
+     "vlm_30d": 13533513.42,
+     "fills_day": 0.33
+    },
+    "group": "whale desk"
+   },
+   {
+    "address": "0x99967871e6c4f9a5185abc57edede9e9540191f6",
+    "name": "Simile 1",
+    "score": 9.71,
+    "fails": [
+     "inattivo da 30 giorni",
+     "rendimento 1 anno basso",
+     "drawdown alto",
+     "crescita irregolare (R\u00b2)",
+     "funding alto (o non verificato)"
+    ],
+    "metrics": {
+     "ret_1y": -0.1633,
+     "dd": 0.7065,
+     "dd_1y": 0.7065,
+     "r2": 0.0,
+     "pos": 0.4857,
+     "underwater_days": 374.5,
+     "fund_pnl": null,
+     "fund_cap": 0.0097,
+     "funding_net": -64216.8963,
+     "fund_days": 365,
+     "value": 12601267.9384,
+     "pnl_1y": -1969459.4587,
+     "perp_share": null,
+     "lev": 0.8232,
+     "history_days": 703.5,
+     "check_ok": true,
+     "ch_value": 9200648.8318,
+     "perp_value": 9201259.4334,
+     "ret_30d": 0.5783,
+     "vlm_30d": 0.0,
+     "fills_day": 0.0
+    },
+    "group": "osservato"
+   }
+  ],
+  "options": [
+   {
+    "id": "cb02",
+    "address": "0xcb02837caaee310c178501855b63bf7f4f4b1f8b",
+    "name": "Balena cb02",
+    "was": "Balena 1",
+    "score": 91.99,
+    "metrics": {
+     "ret_1y": 2.1183,
+     "dd": 0.0248,
+     "dd_1y": 0.0179,
+     "r2": 0.9501,
+     "pos": 0.7273,
+     "underwater_days": 31.4,
+     "fund_pnl": 0.0006,
+     "fund_cap": 0.0006,
+     "funding_net": -745.0447,
+     "fund_days": 365,
+     "value": 1732467.1566,
+     "pnl_1y": 1191399.5152,
+     "perp_share": 0.7659,
+     "lev": 0.0,
+     "history_days": 430.5,
+     "check_ok": true,
+     "ch_value": 1228922.1212,
+     "perp_value": 1228922.1212,
+     "ret_30d": -0.0051,
+     "vlm_30d": 14558079.98,
+     "fills_day": 43.6
+    },
+    "fails": []
+   },
+   {
+    "id": "888e",
+    "address": "0x888e000c78b8f1aada5b3c99f880794907b76d77",
+    "name": "Balena 888e",
+    "was": "Balena 3",
+    "score": 84.98,
+    "metrics": {
+     "ret_1y": 7.5134,
+     "dd": 0.2611,
+     "dd_1y": 0.2611,
+     "r2": 0.9471,
+     "pos": 0.6415,
+     "underwater_days": 77.0,
+     "fund_pnl": 0.052,
+     "fund_cap": 0.1429,
+     "funding_net": -85869.4359,
+     "fund_days": 82,
+     "value": 3400023.593,
+     "pnl_1y": 4892703.3046,
+     "perp_share": 0.8947,
+     "lev": 1.8054,
+     "history_days": 675.5,
+     "check_ok": true,
+     "ch_value": 830096.222,
+     "perp_value": 830458.6221,
+     "ret_30d": 0.3956,
+     "vlm_30d": 21320843.83,
+     "fills_day": 66.03
+    },
+    "fails": []
+   },
+   {
+    "id": "2371",
+    "address": "0x237152b038d88f4156a0cd71090462de7e3f0883",
+    "name": "Cluster-1",
+    "was": "Cluster-1",
+    "score": 75.71,
+    "metrics": {
+     "ret_1y": 24.8543,
+     "dd": 0.2204,
+     "dd_1y": 0.2204,
+     "r2": 0.8452,
+     "pos": 0.5455,
+     "underwater_days": 28.0,
+     "fund_pnl": 0.0745,
+     "fund_cap": 0.0558,
+     "funding_net": -584971.7705,
+     "fund_days": 365,
+     "value": 11707654.5191,
+     "pnl_1y": 7707654.9191,
+     "perp_share": 1.0,
+     "lev": 9.9332,
+     "history_days": 129.5,
+     "check_ok": true,
+     "ch_value": 2698708.6077,
+     "perp_value": 2707108.6077,
+     "ret_30d": -0.1451,
+     "vlm_30d": 64231483.82,
+     "fills_day": 1.03
+    },
+    "fails": [
+     "storia corta o con buchi"
+    ]
+   },
+   {
+    "id": "807a",
+    "address": "0x807a2e2e469df84b299da5f90f15dda4380daca1",
+    "name": "Simile 2",
+    "was": "Simile 2",
+    "score": 48.57,
+    "metrics": {
+     "ret_1y": 0.6138,
+     "dd": 0.4945,
+     "dd_1y": 0.4945,
+     "r2": 0.7536,
+     "pos": 0.5152,
+     "underwater_days": 196.0,
+     "fund_pnl": 0.0001,
+     "fund_cap": 0.0001,
+     "funding_net": -1164.3748,
+     "fund_days": 365,
+     "value": 10595487.0103,
+     "pnl_1y": 8906647.999,
+     "perp_share": -0.0036,
+     "lev": 1.8288,
+     "history_days": 703.5,
+     "check_ok": true,
+     "ch_value": 181465.0656,
+     "perp_value": 181465.0656,
+     "ret_30d": -0.0861,
+     "vlm_30d": 3280891.53,
+     "fills_day": 0.63
+    },
+    "fails": [
+     "PnL non dai perp",
+     "rendimento 1 anno basso",
+     "drawdown alto"
+    ]
+   }
+  ]
+ },
+ "slots": [
+  {
+   "slot": 1,
+   "address": "0xd4c1f7e8d876c4749228d515473d36f919583d1d",
+   "name": "Principale",
+   "status": "confermato",
+   "since": "2026-11-08",
+   "score": 53.81,
+   "fails": [
+    "drawdown alto",
+    "crescita irregolare (R\u00b2)"
+   ],
+   "metrics": {
+    "ret_1y": 6.2402,
+    "dd": 0.9164,
+    "dd_1y": 0.9164,
+    "r2": 0.0011,
+    "pos": 0.5902,
+    "underwater_days": 129.4,
+    "fund_pnl": 0.0,
+    "fund_cap": 0.0,
+    "funding_net": 819139.7329,
+    "fund_days": 87,
+    "value": 4902499.366,
+    "pnl_1y": 14475121.1961,
+    "perp_share": 0.8018,
+    "lev": 5.5794,
+    "history_days": 472.5,
+    "check_ok": true,
+    "ch_value": 4126406.0809,
+    "perp_value": 4125169.4301,
+    "ret_30d": 1.5326,
+    "vlm_30d": 568108089.06,
+    "fills_day": 11449.89
+   },
+   "checked": "2026-11-08",
+   "curve": [
+    [
+     1781739480,
+     11.8466
+    ],
+    [
+     1782338280,
+     14.9541
+    ],
+    [
+     1782950280,
+     17.8338
+    ],
+    [
+     1783547880,
+     10.8697
+    ],
+    [
+     1784153880,
+     6.8129
+    ],
+    [
+     1784759880,
+     7.1485
+    ],
+    [
+     1785368076,
+     9.2055
+    ],
+    [
+     1785968280,
+     8.6343
+    ],
+    [
+     1786579080,
+     9.3212
+    ],
+    [
+     1787179052,
+     10.4362
+    ],
+    [
+     1787786591,
+     3.0614
+    ],
+    [
+     1788387894,
+     4.4157
+    ],
+    [
+     1788992440,
+     2.5283
+    ],
+    [
+     1789600680,
+     2.9592
+    ],
+    [
+     1790201002,
+     1.4913
+    ],
+    [
+     1790812680,
+     1.5402
+    ],
+    [
+     1791412680,
+     2.1296
+    ],
+    [
+     1791498831,
+     2.5227
+    ],
+    [
+     1791762411,
+     2.2382
+    ],
+    [
+     1791847080,
+     2.6778
+    ],
+    [
+     1792019382,
+     2.8819
+    ],
+    [
+     1792448107,
+     3.2747
+    ],
+    [
+     1792538177,
+     3.1538
+    ],
+    [
+     1792622280,
+     2.6638
+    ],
+    [
+     1792885080,
+     4.2276
+    ],
+    [
+     1793317758,
+     5.3669
+    ],
+    [
+     1793727485,
+     6.1873
+    ],
+    [
+     1793890197,
+     5.935
+    ],
+    [
+     1793933848,
+     6.461
+    ],
+    [
+     1794129632,
+     7.3358
+    ]
+   ],
+   "note": "scelto dall'utente"
+  },
+  {
+   "slot": 2,
+   "address": "0x99967871e6c4f9a5185abc57edede9e9540191f6",
+   "name": "Simile 1",
+   "status": "confermato",
+   "since": "2026-11-08",
+   "score": 9.71,
+   "fails": [
+    "inattivo da 30 giorni",
+    "rendimento 1 anno basso",
+    "drawdown alto",
+    "crescita irregolare (R\u00b2)",
+    "funding alto (o non verificato)"
+   ],
+   "metrics": {
+    "ret_1y": -0.1633,
+    "dd": 0.7065,
+    "dd_1y": 0.7065,
+    "r2": 0.0,
+    "pos": 0.4857,
+    "underwater_days": 374.5,
+    "fund_pnl": null,
+    "fund_cap": 0.0097,
+    "funding_net": -64216.8963,
+    "fund_days": 365,
+    "value": 12601267.9384,
+    "pnl_1y": -1969459.4587,
+    "perp_share": null,
+    "lev": 0.8232,
+    "history_days": 703.5,
+    "check_ok": true,
+    "ch_value": 9200648.8318,
+    "perp_value": 9201259.4334,
+    "ret_30d": 0.5783,
+    "vlm_30d": 0.0,
+    "fills_day": 0.0
+   },
+   "checked": "2026-11-08",
+   "curve": [
+    [
+     1768434840,
+     0.5118
+    ],
+    [
+     1769642040,
+     0.6036
+    ],
+    [
+     1770244440,
+     0.6151
+    ],
+    [
+     1770854040,
+     0.6149
+    ],
+    [
+     1772058840,
+     0.5874
+    ],
+    [
+     1773273240,
+     0.7715
+    ],
+    [
+     1774481640,
+     0.8913
+    ],
+    [
+     1775691240,
+     0.8808
+    ],
+    [
+     1776898440,
+     0.9525
+    ],
+    [
+     1778110440,
+     0.9346
+    ],
+    [
+     1779318840,
+     0.9108
+    ],
+    [
+     1780528440,
+     0.8336
+    ],
+    [
+     1781738040,
+     0.6104
+    ],
+    [
+     1782341640,
+     0.8127
+    ],
+    [
+     1782944040,
+     0.6162
+    ],
+    [
+     1783548840,
+     0.8126
+    ],
+    [
+     1784760840,
+     0.689
+    ],
+    [
+     1785364440,
+     0.9314
+    ],
+    [
+     1785968040,
+     0.6707
+    ],
+    [
+     1787180040,
+     0.5725
+    ],
+    [
+     1788390840,
+     0.5745
+    ],
+    [
+     1789601640,
+     0.3834
+    ],
+    [
+     1790201640,
+     0.2935
+    ],
+    [
+     1790811240,
+     0.4639
+    ],
+    [
+     1791501240,
+     0.5277
+    ],
+    [
+     1792022040,
+     0.673
+    ],
+    [
+     1792707240,
+     0.7498
+    ],
+    [
+     1793318040,
+     0.7867
+    ],
+    [
+     1793931240,
+     0.8425
+    ],
+    [
+     1794129640,
+     0.8328
+    ]
+   ],
+   "note": "scelto dall'utente"
+  },
+  {
+   "slot": 3,
+   "address": "0x8bae3527e5a33fa0cf184f37bc112d071463ab6d",
+   "name": "Balena 8bae",
+   "status": "provvisorio",
+   "since": "2026-11-08",
+   "note": "provvisorio, da approvare: miglior punteggio del confronto per il posto 3 (era Balena 2 dello scout)",
+   "score": 91.27,
+   "fails": [],
+   "metrics": {
+    "ret_1y": 12.0108,
+    "dd": 0.0842,
+    "dd_1y": 0.0842,
+    "r2": 0.9757,
+    "pos": 0.7636,
+    "underwater_days": 35.0,
+    "fund_pnl": 0.0279,
+    "fund_cap": 0.0686,
+    "funding_net": -291181.8762,
+    "fund_days": 365,
+    "value": 3204430.7548,
+    "pnl_1y": 10425405.6383,
+    "perp_share": 1.0005,
+    "lev": 4.3527,
+    "history_days": 479.4,
+    "check_ok": true,
+    "ch_value": 1978.8106,
+    "perp_value": 1978.8106,
+    "ret_30d": 0.2398,
+    "vlm_30d": 19388630.08,
+    "fills_day": 6.2
+   },
+   "checked": "2026-11-08",
+   "curve": [
+    [
+     1778106240,
+     5.2745
+    ],
+    [
+     1778713440,
+     5.2483
+    ],
+    [
+     1779314640,
+     5.1867
+    ],
+    [
+     1779920640,
+     5.3199
+    ],
+    [
+     1780530240,
+     5.1389
+    ],
+    [
+     1781130240,
+     4.872
+    ],
+    [
+     1781735040,
+     5.1726
+    ],
+    [
+     1782343440,
+     5.0879
+    ],
+    [
+     1782947040,
+     5.4164
+    ],
+    [
+     1783548240,
+     5.6583
+    ],
+    [
+     1784155440,
+     6.3848
+    ],
+    [
+     1784761440,
+     6.0042
+    ],
+    [
+     1785366240,
+     6.3548
+    ],
+    [
+     1785968640,
+     6.6237
+    ],
+    [
+     1786573440,
+     6.9305
+    ],
+    [
+     1787183040,
+     7.2462
+    ],
+    [
+     1787786640,
+     9.4264
+    ],
+    [
+     1788387840,
+     9.4883
+    ],
+    [
+     1788991440,
+     9.5689
+    ],
+    [
+     1789597440,
+     9.3999
+    ],
+    [
+     1790205840,
+     9.4267
+    ],
+    [
+     1790804640,
+     9.975
+    ],
+    [
+     1791411840,
+     11.014
+    ],
+    [
+     1791847440,
+     11.0638
+    ],
+    [
+     1792279440,
+     10.6323
+    ],
+    [
+     1792706640,
+     10.6672
+    ],
+    [
+     1793142240,
+     10.8563
+    ],
+    [
+     1793558640,
+     12.2153
+    ],
+    [
+     1793823840,
+     13.3379
+    ],
+    [
+     1794129695,
+     13.2375
+    ]
+   ]
+  }
+ ]
+}
