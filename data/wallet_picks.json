@@ -1,7 +1,7 @@
 {
  "version": 1,
- "ts": 1794043460,
- "date": "2026-11-07",
+ "ts": 1794119738,
+ "date": "2026-11-08",
  "level": 0,
  "relaxed": [],
  "thresholds": {
@@ -24,28 +24,28 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 92.07,
+   "score": 92.36,
    "metrics": {
-    "ret_1y": 2.14,
-    "dd": 0.0252,
-    "dd_1y": 0.0167,
-    "r2": 0.9517,
-    "pos": 0.7273,
-    "underwater_days": 24.4,
+    "ret_1y": 2.1228,
+    "dd": 0.0248,
+    "dd_1y": 0.0179,
+    "r2": 0.9502,
+    "pos": 0.7455,
+    "underwater_days": 31.4,
     "fund_pnl": 0.0006,
     "fund_cap": 0.0006,
-    "funding_net": -743.4833,
+    "funding_net": -745.0447,
     "fund_days": 365,
-    "value": 1739153.2066,
-    "pnl_1y": 1198085.5652,
-    "perp_share": 0.7616,
+    "value": 1734389.5373,
+    "pnl_1y": 1193321.8959,
+    "perp_share": 0.7646,
     "lev": 0.0,
-    "history_days": 429.5,
+    "history_days": 430.4,
     "check_ok": true,
     "ch_value": 1228922.1212,
     "perp_value": 1228922.1212
    },
-   "why": "+214% in un anno (time-weighted), drawdown max 3%, R\u00b2 0,95, 73% dei periodi di 2 settimane positivi, funding 0,1% del PnL, leva attuale 0,0x",
+   "why": "+212% in un anno (time-weighted), drawdown max 2%, R\u00b2 0,95, 75% dei periodi di 2 settimane positivi, funding 0,1% del PnL, leva attuale 0,0x",
    "fails": [],
    "curve": [
     [
@@ -137,40 +137,40 @@
      3.1912
     ],
     [
-     1791324360,
-     3.1987
+     1791416760,
+     3.1792
     ],
     [
-     1791756360,
-     3.1818
+     1791843960,
+     3.1621
     ],
     [
-     1792194360,
-     3.1452
+     1792273560,
+     3.134
     ],
     [
-     1792619160,
-     3.1584
+     1792707960,
+     3.1365
     ],
     [
-     1793054760,
-     3.1515
+     1793139960,
+     3.1748
     ],
     [
-     1793432760,
-     3.2012
+     1793519160,
+     3.1977
     ],
     [
-     1793814360,
-     3.1814
+     1793899560,
+     3.144
     ],
     [
-     1794043212,
-     3.1538
+     1794119482,
+     3.1451
     ]
    ],
    "since": "2026-11-07",
-   "kept": false
+   "kept": true
   },
   {
    "slot": 2,
@@ -181,26 +181,26 @@
    "leader_of": null,
    "score": 91.27,
    "metrics": {
-    "ret_1y": 12.1034,
+    "ret_1y": 12.0217,
     "dd": 0.0842,
     "dd_1y": 0.0842,
     "r2": 0.9757,
     "pos": 0.7636,
     "underwater_days": 35.0,
     "fund_pnl": 0.0279,
-    "fund_cap": 0.0687,
-    "funding_net": -291317.5589,
+    "fund_cap": 0.0686,
+    "funding_net": -291181.5519,
     "fund_days": 365,
-    "value": 3204671.9346,
-    "pnl_1y": 10425646.818,
+    "value": 3204429.529,
+    "pnl_1y": 10425404.4125,
     "perp_share": 1.0005,
-    "lev": 3.9794,
-    "history_days": 478.4,
+    "lev": 4.3299,
+    "history_days": 479.3,
     "check_ok": true,
-    "ch_value": 2225.8584,
-    "perp_value": 2213.2402
+    "ch_value": 1992.2205,
+    "perp_value": 1982.4064
    },
-   "why": "+1210% in un anno (time-weighted), drawdown max 8%, R\u00b2 0,98, 76% dei periodi di 2 settimane positivi, funding 2,8% del PnL, leva attuale 4,0x",
+   "why": "+1202% in un anno (time-weighted), drawdown max 8%, R\u00b2 0,98, 76% dei periodi di 2 settimane positivi, funding 2,8% del PnL, leva attuale 4,3x",
    "fails": [],
    "curve": [
     [
@@ -320,12 +320,12 @@
      13.3379
     ],
     [
-     1794043151,
-     13.2385
+     1794119368,
+     13.2374
     ]
    ],
    "since": "2026-11-07",
-   "kept": false
+   "kept": true
   },
   {
    "slot": 3,
@@ -334,28 +334,28 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 84.81,
+   "score": 84.98,
    "metrics": {
-    "ret_1y": 7.5754,
+    "ret_1y": 7.5246,
     "dd": 0.2611,
     "dd_1y": 0.2611,
-    "r2": 0.947,
+    "r2": 0.9471,
     "pos": 0.6415,
     "underwater_days": 77.0,
-    "fund_pnl": 0.0537,
-    "fund_cap": 0.1459,
-    "funding_net": -88696.4396,
-    "fund_days": 83,
-    "value": 3404833.6302,
-    "pnl_1y": 4897513.3418,
-    "perp_share": 0.8907,
-    "lev": 1.8662,
-    "history_days": 674.5,
+    "fund_pnl": 0.052,
+    "fund_cap": 0.1427,
+    "funding_net": -85869.4359,
+    "fund_days": 82,
+    "value": 3402162.7472,
+    "pnl_1y": 4894842.4588,
+    "perp_share": 0.8934,
+    "lev": 1.8151,
+    "history_days": 675.4,
     "check_ok": true,
-    "ch_value": 814921.2103,
-    "perp_value": 815198.8825
+    "ch_value": 827283.4069,
+    "perp_value": 826158.2715
    },
-   "why": "+758% in un anno (time-weighted), drawdown max 26%, R\u00b2 0,95, 64% dei periodi di 2 settimane positivi, funding 5,4% del PnL, leva attuale 1,9x",
+   "why": "+752% in un anno (time-weighted), drawdown max 26%, R\u00b2 0,95, 64% dei periodi di 2 settimane positivi, funding 5,2% del PnL, leva attuale 1,8x",
    "fails": [],
    "curve": [
     [
@@ -475,15 +475,168 @@
      8.5815
     ],
     [
-     1794043149,
-     8.6491
+     1794119369,
+     8.6423
     ]
    ],
    "since": "2026-11-07",
-   "kept": false
+   "kept": true
   }
  ],
  "runners_up": [
+  {
+   "slot": null,
+   "address": "0xe113311f35a53b196c0ab3ed31ad0bf937cc5c07",
+   "name": "0xe113\u20265c07",
+   "kind": "conto",
+   "display": null,
+   "leader_of": null,
+   "score": 84.34,
+   "metrics": {
+    "ret_1y": 1.9144,
+    "dd": 0.1297,
+    "dd_1y": 0.1297,
+    "r2": 0.917,
+    "pos": 0.6129,
+    "underwater_days": 84.0,
+    "fund_pnl": 0.0,
+    "fund_cap": 0.0,
+    "funding_net": 73795.1272,
+    "fund_days": 365,
+    "value": 1038827.0706,
+    "pnl_1y": 1355151.0492,
+    "perp_share": 0.8345,
+    "lev": 8.6115,
+    "history_days": 787.3,
+    "check_ok": true,
+    "ch_value": 69655.4317,
+    "perp_value": 69713.0859
+   },
+   "why": "+191% in un anno (time-weighted), drawdown max 13%, R\u00b2 0,92, 61% dei periodi di 2 settimane positivi, funding 0,0% del PnL, leva attuale 8,6x",
+   "fails": [],
+   "curve": [
+    [
+     1764198120,
+     1.262
+    ],
+    [
+     1765410120,
+     1.2879
+    ],
+    [
+     1766614920,
+     1.331
+    ],
+    [
+     1767828120,
+     1.3358
+    ],
+    [
+     1768428120,
+     1.3251
+    ],
+    [
+     1769641320,
+     1.2954
+    ],
+    [
+     1770244920,
+     1.4704
+    ],
+    [
+     1771458120,
+     1.7124
+    ],
+    [
+     1772059320,
+     1.7506
+    ],
+    [
+     1773266520,
+     1.987
+    ],
+    [
+     1774482120,
+     2.0872
+    ],
+    [
+     1775685720,
+     2.0203
+    ],
+    [
+     1776900120,
+     1.8633
+    ],
+    [
+     1778103720,
+     1.8808
+    ],
+    [
+     1779320520,
+     2.2722
+    ],
+    [
+     1780530120,
+     2.7779
+    ],
+    [
+     1781736120,
+     2.7761
+    ],
+    [
+     1782946920,
+     2.6682
+    ],
+    [
+     1784157720,
+     2.7183
+    ],
+    [
+     1785368520,
+     2.4177
+    ],
+    [
+     1786578120,
+     2.4962
+    ],
+    [
+     1787786520,
+     2.9368
+    ],
+    [
+     1788390120,
+     2.9428
+    ],
+    [
+     1789597320,
+     2.8864
+    ],
+    [
+     1790204520,
+     3.1709
+    ],
+    [
+     1791409320,
+     3.0685
+    ],
+    [
+     1792102920,
+     2.9713
+    ],
+    [
+     1792795320,
+     2.8778
+    ],
+    [
+     1793482920,
+     3.1601
+    ],
+    [
+     1794119550,
+     2.995
+    ]
+   ]
+  },
   {
    "slot": null,
    "address": "0x054a01da80ee37d5220af5471b1eedbdcd2cdb2f",
@@ -491,28 +644,28 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 82.93,
+   "score": 82.49,
    "metrics": {
-    "ret_1y": 0.8951,
+    "ret_1y": 0.8912,
     "dd": 0.047,
     "dd_1y": 0.047,
-    "r2": 0.8848,
-    "pos": 0.6038,
+    "r2": 0.8849,
+    "pos": 0.5849,
     "underwater_days": 70.0,
-    "fund_pnl": 0.02,
-    "fund_cap": 0.0127,
-    "funding_net": -15914.9519,
+    "fund_pnl": 0.0201,
+    "fund_cap": 0.0128,
+    "funding_net": -16031.9343,
     "fund_days": 365,
-    "value": 1659650.9372,
-    "pnl_1y": 796456.9329,
-    "perp_share": 0.9507,
-    "lev": 6.3599,
-    "history_days": 688.5,
+    "value": 1658770.1166,
+    "pnl_1y": 795576.1122,
+    "perp_share": 0.9525,
+    "lev": 6.2412,
+    "history_days": 689.4,
     "check_ok": true,
-    "ch_value": 48539.5906,
-    "perp_value": 48580.8106
+    "ch_value": 49073.3847,
+    "perp_value": 49112.5647
    },
-   "why": "+90% in un anno (time-weighted), drawdown max 5%, R\u00b2 0,88, 60% dei periodi di 2 settimane positivi, funding 2,0% del PnL, leva attuale 6,4x",
+   "why": "+89% in un anno (time-weighted), drawdown max 5%, R\u00b2 0,88, 58% dei periodi di 2 settimane positivi, funding 2,0% del PnL, leva attuale 6,2x",
    "fails": [],
    "curve": [
     [
@@ -632,8 +785,8 @@
      1.8993
     ],
     [
-     1794043202,
-     1.8997
+     1794119424,
+     1.8987
     ]
    ]
   },
@@ -644,28 +797,28 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 80.54,
+   "score": 80.58,
    "metrics": {
-    "ret_1y": 1.2631,
+    "ret_1y": 1.2664,
     "dd": 0.1031,
     "dd_1y": 0.1031,
-    "r2": 0.8889,
+    "r2": 0.8892,
     "pos": 0.6071,
     "underwater_days": 70.0,
     "fund_pnl": 0.0,
     "fund_cap": 0.0,
-    "funding_net": 38611.5695,
+    "funding_net": 38121.6717,
     "fund_days": 86,
-    "value": 1878480.0232,
-    "pnl_1y": 1084614.8971,
-    "perp_share": 0.6615,
-    "lev": 3.4498,
-    "history_days": 1087.4,
+    "value": 1885104.023,
+    "pnl_1y": 1091238.8969,
+    "perp_share": 0.6765,
+    "lev": 3.2751,
+    "history_days": 1088.3,
     "check_ok": true,
-    "ch_value": 532024.0234,
-    "perp_value": 531461.2104
+    "ch_value": 553284.8924,
+    "perp_value": 552215.9713
    },
-   "why": "+126% in un anno (time-weighted), drawdown max 10%, R\u00b2 0,89, 61% dei periodi di 2 settimane positivi, funding 0,0% del PnL, leva attuale 3,4x",
+   "why": "+127% in un anno (time-weighted), drawdown max 10%, R\u00b2 0,89, 61% dei periodi di 2 settimane positivi, funding 0,0% del PnL, leva attuale 3,3x",
    "fails": [],
    "curve": [
     [
@@ -781,8 +934,161 @@
      2.3247
     ],
     [
-     1794043152,
-     2.3063
+     1794119372,
+     2.3143
+    ]
+   ]
+  },
+  {
+   "slot": null,
+   "address": "0x2fcb6898d5a0623de19c3691904927685014c4d8",
+   "name": "0x2fcb\u2026c4d8",
+   "kind": "conto",
+   "display": null,
+   "leader_of": null,
+   "score": 75.33,
+   "metrics": {
+    "ret_1y": 1.2488,
+    "dd": 0.1525,
+    "dd_1y": 0.1525,
+    "r2": 0.9125,
+    "pos": 0.5283,
+    "underwater_days": 63.0,
+    "fund_pnl": 0.0,
+    "fund_cap": 0.0,
+    "funding_net": 5754.028,
+    "fund_days": 86,
+    "value": 3167508.2033,
+    "pnl_1y": 2860955.4766,
+    "perp_share": 0.8629,
+    "lev": 0.8393,
+    "history_days": 598.3,
+    "check_ok": true,
+    "ch_value": 1011129.2993,
+    "perp_value": 1010753.3719
+   },
+   "why": "+125% in un anno (time-weighted), drawdown max 15%, R\u00b2 0,91, 53% dei periodi di 2 settimane positivi, funding 0,0% del PnL, leva attuale 0,8x",
+   "fails": [],
+   "curve": [
+    [
+     1776897360,
+     1.5495
+    ],
+    [
+     1777504560,
+     1.6527
+    ],
+    [
+     1778109360,
+     1.5606
+    ],
+    [
+     1778711760,
+     1.4007
+    ],
+    [
+     1779316560,
+     1.6822
+    ],
+    [
+     1779923760,
+     1.7154
+    ],
+    [
+     1780528560,
+     1.7669
+    ],
+    [
+     1781132160,
+     1.8388
+    ],
+    [
+     1781736960,
+     1.7677
+    ],
+    [
+     1782339360,
+     1.9022
+    ],
+    [
+     1782942960,
+     1.9661
+    ],
+    [
+     1783551360,
+     1.9847
+    ],
+    [
+     1784157360,
+     1.9817
+    ],
+    [
+     1784758560,
+     1.9444
+    ],
+    [
+     1785369360,
+     1.9641
+    ],
+    [
+     1785969360,
+     1.9386
+    ],
+    [
+     1786575360,
+     1.9049
+    ],
+    [
+     1787182560,
+     1.967
+    ],
+    [
+     1787782560,
+     2.0243
+    ],
+    [
+     1788387360,
+     2.0806
+    ],
+    [
+     1788990960,
+     2.0511
+    ],
+    [
+     1789598160,
+     2.0385
+    ],
+    [
+     1790200560,
+     2.1449
+    ],
+    [
+     1790805360,
+     2.1247
+    ],
+    [
+     1791416160,
+     2.1236
+    ],
+    [
+     1792020960,
+     2.097
+    ],
+    [
+     1792620960,
+     2.0846
+    ],
+    [
+     1793144160,
+     2.1469
+    ],
+    [
+     1793663760,
+     2.2855
+    ],
+    [
+     1794119549,
+     2.2606
     ]
    ]
   },
@@ -793,28 +1099,28 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 74.26,
+   "score": 72.99,
    "metrics": {
-    "ret_1y": 2.2217,
+    "ret_1y": 2.0661,
     "dd": 0.2572,
     "dd_1y": 0.2572,
-    "r2": 0.9291,
-    "pos": 0.537,
+    "r2": 0.9281,
+    "pos": 0.5185,
     "underwater_days": 84.0,
-    "fund_pnl": 0.0271,
-    "fund_cap": 0.0667,
-    "funding_net": -167431.4969,
+    "fund_pnl": 0.027,
+    "fund_cap": 0.0665,
+    "funding_net": -166900.7857,
     "fund_days": 90,
-    "value": 6656153.5792,
-    "pnl_1y": 13572797.3139,
-    "perp_share": 0.5574,
-    "lev": 5.3565,
-    "history_days": 688.5,
+    "value": 6350687.2087,
+    "pnl_1y": 13267330.9433,
+    "perp_share": 0.5485,
+    "lev": 5.8335,
+    "history_days": 689.4,
     "check_ok": true,
-    "ch_value": 2729658.0485,
-    "perp_value": 2727212.7642
+    "ch_value": 2436974.6121,
+    "perp_value": 2438984.1532
    },
-   "why": "+222% in un anno (time-weighted), drawdown max 26%, R\u00b2 0,93, 54% dei periodi di 2 settimane positivi, funding 2,7% del PnL, leva attuale 5,4x",
+   "why": "+207% in un anno (time-weighted), drawdown max 26%, R\u00b2 0,93, 52% dei periodi di 2 settimane positivi, funding 2,7% del PnL, leva attuale 5,8x",
    "fails": [],
    "curve": [
     [
@@ -934,163 +1240,8 @@
      3.1536
     ],
     [
-     1794043206,
-     3.2366
-    ]
-   ]
-  },
-  {
-   "slot": null,
-   "address": "0x7eb9026d0183942458bd4660371c3cc0a2df3beb",
-   "name": "0x7eb9\u20263beb",
-   "kind": "conto",
-   "display": null,
-   "leader_of": null,
-   "score": 55.87,
-   "metrics": {
-    "ret_1y": 1.0681,
-    "dd": 0.2493,
-    "dd_1y": 0.2493,
-    "r2": 0.7203,
-    "pos": 0.4821,
-    "underwater_days": 133.0,
-    "fund_pnl": 0.0166,
-    "fund_cap": 0.0105,
-    "funding_net": -45299.6589,
-    "fund_days": 365,
-    "value": 5233997.3202,
-    "pnl_1y": 2710624.6142,
-    "perp_share": 0.6631,
-    "lev": 0.0,
-    "history_days": 373.5,
-    "check_ok": null,
-    "ch_value": 0.0,
-    "perp_value": 0.0
-   },
-   "why": "+107% in un anno (time-weighted), drawdown max 25%, R\u00b2 0,72, 48% dei periodi di 2 settimane positivi, funding 1,7% del PnL, leva attuale 0,0x",
-   "fails": [
-    "crescita irregolare (R\u00b2)"
-   ],
-   "curve": [
-    [
-     1778715000,
-     1.7039
-    ],
-    [
-     1779315000,
-     1.7605
-    ],
-    [
-     1779923400,
-     1.7724
-    ],
-    [
-     1780530600,
-     1.7721
-    ],
-    [
-     1781135400,
-     1.5159
-    ],
-    [
-     1781740200,
-     1.7428
-    ],
-    [
-     1782339000,
-     1.5931
-    ],
-    [
-     1782943800,
-     1.5907
-    ],
-    [
-     1783552200,
-     1.6792
-    ],
-    [
-     1784153400,
-     1.7603
-    ],
-    [
-     1784759400,
-     1.7956
-    ],
-    [
-     1785366600,
-     1.636
-    ],
-    [
-     1785972600,
-     1.6407
-    ],
-    [
-     1786572600,
-     1.6098
-    ],
-    [
-     1787178600,
-     1.7546
-    ],
-    [
-     1787783400,
-     2.0416
-    ],
-    [
-     1788385800,
-     2.0416
-    ],
-    [
-     1788997800,
-     2.0725
-    ],
-    [
-     1789599000,
-     2.0883
-    ],
-    [
-     1790200200,
-     2.0883
-    ],
-    [
-     1790809800,
-     2.0852
-    ],
-    [
-     1791330600,
-     2.1276
-    ],
-    [
-     1791671400,
-     2.1603
-    ],
-    [
-     1792015800,
-     2.2096
-    ],
-    [
-     1792367400,
-     2.1885
-    ],
-    [
-     1792708200,
-     2.1544
-    ],
-    [
-     1793053800,
-     2.1118
-    ],
-    [
-     1793400600,
-     2.0856
-    ],
-    [
-     1793727000,
-     2.0815
-    ],
-    [
-     1794043323,
-     2.0742
+     1794119427,
+     3.0881
     ]
    ]
   },
@@ -1101,28 +1252,28 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 83.37,
+   "score": 82.99,
    "metrics": {
-    "ret_1y": 11.1719,
+    "ret_1y": 10.1505,
     "dd": 0.4737,
     "dd_1y": 0.4737,
-    "r2": 0.8491,
-    "pos": 0.5455,
+    "r2": 0.849,
+    "pos": 0.5273,
     "underwater_days": 154.0,
     "fund_pnl": null,
     "fund_cap": null,
     "funding_net": null,
     "fund_days": null,
-    "value": 2709674.1908,
-    "pnl_1y": 2233440.536,
-    "perp_share": 1.0002,
+    "value": 2495953.9349,
+    "pnl_1y": 2019720.28,
+    "perp_share": 1.0003,
     "lev": null,
-    "history_days": 499.4,
+    "history_days": 500.3,
     "check_ok": null,
     "ch_value": null,
-    "perp_value": 523000.1728
+    "perp_value": 514825.7011
    },
-   "why": "+1117% in un anno (time-weighted), drawdown max 47%, R\u00b2 0,85, 55% dei periodi di 2 settimane positivi, funding \u2013 del PnL",
+   "why": "+1015% in un anno (time-weighted), drawdown max 47%, R\u00b2 0,85, 53% dei periodi di 2 settimane positivi, funding \u2013 del PnL",
    "fails": [
     "drawdown alto",
     "funding alto (o non verificato)"
@@ -1245,8 +1396,8 @@
      11.6051
     ],
     [
-     1794043207,
-     12.2925
+     1794119428,
+     11.323
     ]
    ]
   },
@@ -1257,9 +1408,9 @@
    "kind": "conto",
    "display": null,
    "leader_of": null,
-   "score": 80.15,
+   "score": 80.25,
    "metrics": {
-    "ret_1y": 4.9328,
+    "ret_1y": 4.9758,
     "dd": 0.3742,
     "dd_1y": 0.3742,
     "r2": 0.8515,
@@ -1269,16 +1420,16 @@
     "fund_cap": null,
     "funding_net": null,
     "fund_days": null,
-    "value": 1763244.8356,
-    "pnl_1y": 1182886.8856,
-    "perp_share": 0.7615,
+    "value": 1783026.7674,
+    "pnl_1y": 1202668.8174,
+    "perp_share": 0.7654,
     "lev": null,
-    "history_days": 345.5,
+    "history_days": 346.4,
     "check_ok": null,
     "ch_value": null,
-    "perp_value": 935483.3979
+    "perp_value": 955265.3376
    },
-   "why": "+493% in un anno (time-weighted), drawdown max 37%, R\u00b2 0,85, 64% dei periodi di 2 settimane positivi, funding \u2013 del PnL",
+   "why": "+498% in un anno (time-weighted), drawdown max 37%, R\u00b2 0,85, 64% dei periodi di 2 settimane positivi, funding \u2013 del PnL",
    "fails": [
     "drawdown alto",
     "funding alto (o non verificato)"
@@ -1401,196 +1552,40 @@
      5.388
     ],
     [
-     1794043323,
-     5.394
-    ]
-   ]
-  },
-  {
-   "slot": null,
-   "address": "0x9b864dde6ed1c21608b1665a0ac0faa4f7e36e6e",
-   "name": "0x9b86\u20266e6e",
-   "kind": "conto",
-   "display": null,
-   "leader_of": null,
-   "score": 75.73,
-   "metrics": {
-    "ret_1y": 8.5446,
-    "dd": 0.5115,
-    "dd_1y": 0.5115,
-    "r2": 0.7553,
-    "pos": 0.5102,
-    "underwater_days": 154.0,
-    "fund_pnl": null,
-    "fund_cap": null,
-    "funding_net": null,
-    "fund_days": null,
-    "value": 1640289.3653,
-    "pnl_1y": 2515987.1173,
-    "perp_share": 0.8485,
-    "lev": null,
-    "history_days": 947.5,
-    "check_ok": null,
-    "ch_value": null,
-    "perp_value": 1317782.5234
-   },
-   "why": "+854% in un anno (time-weighted), drawdown max 51%, R\u00b2 0,76, 51% dei periodi di 2 settimane positivi, funding \u2013 del PnL",
-   "fails": [
-    "drawdown alto",
-    "funding alto (o non verificato)"
-   ],
-   "curve": [
-    [
-     1775692320,
-     0.8108
-    ],
-    [
-     1776293520,
-     0.9324
-    ],
-    [
-     1776898320,
-     0.9247
-    ],
-    [
-     1777501920,
-     0.9211
-    ],
-    [
-     1778109120,
-     1.5089
-    ],
-    [
-     1778709120,
-     1.3107
-    ],
-    [
-     1779922320,
-     1.8054
-    ],
-    [
-     1781129520,
-     1.5492
-    ],
-    [
-     1781734320,
-     2.6544
-    ],
-    [
-     1782944958,
-     2.2364
-    ],
-    [
-     1784155920,
-     4.1968
-    ],
-    [
-     1784764320,
-     2.7019
-    ],
-    [
-     1785367920,
-     2.487
-    ],
-    [
-     1785973920,
-     2.2994
-    ],
-    [
-     1786577520,
-     2.0503
-    ],
-    [
-     1787181120,
-     2.3025
-    ],
-    [
-     1787782245,
-     4.0074
-    ],
-    [
-     1788995520,
-     9.0849
-    ],
-    [
-     1790200320,
-     12.8434
-    ],
-    [
-     1790809920,
-     11.3628
-    ],
-    [
-     1791324720,
-     9.9716
-    ],
-    [
-     1791762720,
-     8.7266
-    ],
-    [
-     1792018320,
-     6.6784
-    ],
-    [
-     1792625520,
-     9.2058
-    ],
-    [
-     1792795920,
-     7.016
-    ],
-    [
-     1793145120,
-     9.2193
-    ],
-    [
-     1793662320,
-     6.8087
-    ],
-    [
-     1793742720,
-     8.4053
-    ],
-    [
-     1793976720,
-     10.309
-    ],
-    [
-     1794043270,
-     9.6314
+     1794119547,
+     5.4546
     ]
    ]
   }
  ],
  "scanned": {
-  "leaderboard": 48346,
-  "leaderboard_1m": 2686,
+  "leaderboard": 48235,
+  "leaderboard_1m": 2620,
   "vaults_1m": 16,
   "candidates": 166,
   "analyzed": 166,
-  "funding_checked": 7,
-  "passed": 6,
-  "api_calls": 287,
-  "seconds": 327
+  "funding_checked": 8,
+  "passed": 8,
+  "api_calls": 314,
+  "seconds": 377
  },
  "prefilter_rejected": {
-  "pnl_roi": 1347,
-  "month": 224,
-  "inactive": 716,
-  "turnover": 42,
+  "pnl_roi": 1324,
+  "month": 205,
+  "inactive": 692,
+  "turnover": 40,
   "system": 7,
-  "beyond_top": 184
+  "beyond_top": 186
  },
  "rejected": {
-  "valore < $1M": 7,
-  "storia corta o con buchi": 14,
-  "storia incoerente con la classifica": 7,
+  "valore < $1M": 5,
+  "storia corta o con buchi": 17,
+  "storia incoerente con la classifica": 6,
   "inattivo da 30 giorni": 0,
-  "PnL non dai perp": 86,
-  "rendimento 1 anno basso": 20,
-  "drawdown alto": 24,
-  "crescita irregolare (R\u00b2)": 2,
+  "PnL non dai perp": 83,
+  "rendimento 1 anno basso": 24,
+  "drawdown alto": 23,
+  "crescita irregolare (R\u00b2)": 0,
   "funding alto (o non verificato)": 0,
   "verifica valore fallita": 0
  },
@@ -1625,21 +1620,21 @@
    "address": "0xcb02837caaee310c178501855b63bf7f4f4b1f8b",
    "since": "2026-11-07",
    "name": "Balena 1",
-   "ret": 0.0,
+   "ret": -0.0034,
    "active": true
   },
   {
    "address": "0x8bae3527e5a33fa0cf184f37bc112d071463ab6d",
    "since": "2026-11-07",
    "name": "Balena 2",
-   "ret": 0.0,
+   "ret": -0.0001,
    "active": true
   },
   {
    "address": "0x888e000c78b8f1aada5b3c99f880794907b76d77",
    "since": "2026-11-07",
    "name": "Balena 3",
-   "ret": 0.0,
+   "ret": -0.0017,
    "active": true
   }
  ],
@@ -1654,5 +1649,5 @@
    "n": 0
   }
  },
- "changed": true
+ "changed": false
 }
