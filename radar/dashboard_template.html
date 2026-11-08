@@ -72,6 +72,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ---------- top bar mobile */
 .mbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mbarR{display:inline-flex;align-items:center;gap:8px}
+.reload{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:var(--fill);color:var(--label);cursor:pointer;padding:0;flex:none}
+.reload svg{width:18px;height:18px}
+.reload:hover{border-color:var(--tint)} .reload:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.reload.spin svg{animation:rspin .8s linear infinite}
+@keyframes rspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.reload.spin svg{animation:none;opacity:.5}}
 
 /* ---------- chip/stato */
 .chip{display:inline-flex;align-items:center;gap:6px;font:500 .68rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;border-radius:999px;background:var(--raise);border:1px solid var(--line);color:var(--label2);white-space:nowrap}
@@ -512,11 +519,11 @@ body.noscroll{overflow:hidden}
 <div class="app">
   <header class="mbar">
     <a class="logo" href="#oggi"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · settimanale</small></span></a>
-    <span id="state" class="status"></span>
+    <span class="mbarR"><span id="state" class="status"></span><button type="button" class="reload" title="Aggiorna dati e pagina" aria-label="Aggiorna dati e pagina" onclick="hardReload(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
   </header>
 
   <div class="hero">
-    <span class="cap"><span>Bitcoin · BTC/USDT</span><span id="stateD" class="status"></span></span>
+    <span class="cap"><span>Bitcoin · BTC/USDT</span><span class="mbarR"><span id="stateD" class="status"></span><button type="button" class="reload" title="Aggiorna dati e pagina" aria-label="Aggiorna dati e pagina" onclick="hardReload(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></span>
     <h1 id="price"></h1>
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
@@ -823,6 +830,15 @@ body.noscroll{overflow:hidden}
 <script>
 const R = /*__DATA__*/null;
 const $ = id => document.getElementById(id);
+// Pulsante in alto a destra: svuota le cache del browser (Cache Storage e service worker, se presenti) e ricarica la pagina
+// pubblicata senza cache, cioè con gli ultimi dati dell'aggiornamento orario. Le parti live si riaprono da sole.
+window.hardReload = async btn => {
+  document.querySelectorAll(".reload").forEach(b => { b.classList.add("spin"); b.disabled = true; });
+  try { if (window.caches) for (const k of await caches.keys()) await caches.delete(k); } catch (_) {}
+  try { if (navigator.serviceWorker) for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister(); } catch (_) {}
+  try { await fetch(location.pathname + "?r=" + Date.now(), { cache: "reload" }); await fetch("news.json?r=" + Date.now(), { cache: "reload" }); } catch (_) {}
+  const u = new URL(location.href); u.searchParams.set("r", Date.now()); location.replace(u.toString());
+};
 // Pannello generico: openSheet(titolo, html | nodo, onClose). Su telefono sale dal basso (CSS .dlg). Chiusura: pulsante, tap fuori, Esc.
 window.openSheet = (title, content, onClose) => {
   const d = $("sheet"), b = $("sheetB"); $("sheetT").textContent = title;
