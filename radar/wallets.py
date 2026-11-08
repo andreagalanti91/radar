@@ -198,7 +198,8 @@ def compare_text(c: dict) -> str:
 def candidate_text(c: dict, new: bool = True) -> str:
     adr = c["address"]
     return "\n".join([
-        f"<b>{'RADAR · WALLET · nuovo candidato' if new else 'Candidato'} {c['id']}</b> per il posto {c['slot']} (al posto di <b>{html.escape(c.get('vs_name', ''))}</b>)",
+        f"<b>{'RADAR · WALLET · nuovo candidato' if new else 'Candidato'}: {html.escape(c.get('name') or c['id'])}</b> (id {c['id']}) "
+        f"per il posto {c['slot']}, al posto di <b>{html.escape(c.get('vs_name', ''))}</b>",
         f"<code>{adr}</code>" + (f" · {html.escape(c['display'])}" if c.get("display") else ""),
         f"Perché: {html.escape(c.get('reason', ''))}",
         compare_text(c),

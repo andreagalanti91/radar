@@ -3,16 +3,17 @@
      Legge i dati pubblici di Hyperliquid direttamente dal browser (api.hyperliquid.xyz/info, CORS aperto), come whalebot.
      Si registra in window.PAGES.wallet: init alla prima visita di #wallet, show/hide fermano e riavviano i timer. -->
 <div class="view" id="v-wallet" hidden>
-  <div class="section">
-    <div class="sh">Wallet · sentinella <small><span class="live" id="wlLive">caricamento</span></small></div>
-    <div class="wl-pick">
-      <div class="hscroll"><div class="wl-seg2"><div class="seg" id="wlSeg" role="group" aria-label="Sentinella"></div><div class="seg" id="wlSegP" role="group" aria-label="Selezione giornaliera" hidden></div></div></div>
-      <label class="wl-more"><span class="cap">Altri</span><select id="wlMore" aria-label="Altri wallet"></select></label>
-    </div>
-    <div class="wl-ov" id="wlOv" aria-label="Panoramica del gruppo"></div>
+  <div class="section wl-top">
+    <div class="sh wl-dk">Wallet osservati <small><span class="live" id="wlLive">caricamento</span></small></div>
+    <div class="seg wl-sw" id="wlSeg" role="tablist" aria-label="Wallet osservati"></div>
+    <div class="wl-ov wl-dk" id="wlOv" aria-label="I 3 wallet osservati"></div>
   </div>
 
-  <div class="section">
+  <div class="section wl-mob">
+    <button class="card tapCard wl-mini" id="wlMini" type="button" aria-label="Dettagli del conto"></button>
+  </div>
+
+  <div class="section wl-dk">
     <div class="card glow wl-hero" id="wlHero"></div>
     <div class="big" id="wlKpi"></div>
   </div>
@@ -22,16 +23,19 @@
     <div class="card wl-next" id="wlNext"></div>
   </div>
 
-  <div class="section">
+  <div class="section wl-perf" id="wlPerfSec">
     <div class="sh">Andamento <small id="wlPerfSub">fonte: portfolio Hyperliquid</small></div>
-    <div class="tiles wl-pnl" id="wlPnl"></div>
-    <div class="card" style="display:grid;gap:10px">
-      <div class="wl-bar">
-        <div class="seg" id="wlMetric" role="group" aria-label="Grafico"><button data-v="pnl" aria-pressed="true">PnL</button><button data-v="av">Valore conto</button></div>
-        <div class="seg" id="wlRange" role="group" aria-label="Periodo"><button data-v="day">24h</button><button data-v="week">7g</button><button data-v="month" aria-pressed="true">30g</button><button data-v="allTime">Tutto</button></div>
+    <button class="card tapCard wl-mob wl-pmini" id="wlPerfMini" type="button" aria-expanded="false"></button>
+    <div class="wl-pbody">
+      <div class="tiles wl-pnl" id="wlPnl"></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="wl-bar">
+          <div class="seg" id="wlMetric" role="group" aria-label="Grafico"><button data-v="pnl" aria-pressed="true">PnL</button><button data-v="av">Valore conto</button></div>
+          <div class="seg" id="wlRange" role="group" aria-label="Periodo"><button data-v="day">24h</button><button data-v="week">7g</button><button data-v="month" aria-pressed="true">30g</button><button data-v="allTime">Tutto</button></div>
+        </div>
+        <div id="wlChart" class="chart wl-chart" role="img" aria-label="Andamento del conto"></div>
+        <div class="legend" id="wlChartLeg"></div>
       </div>
-      <div id="wlChart" class="chart wl-chart" role="img" aria-label="Andamento del conto"></div>
-      <div class="legend" id="wlChartLeg"></div>
     </div>
   </div>
 
@@ -40,7 +44,7 @@
     <div class="hscroll"><div class="seg wl-tabs" id="wlTabs" role="tablist" aria-label="Tabelle"></div></div>
     <div class="wl-filters" id="wlFilt"></div>
     <div class="card wl-tbl"><div class="scroll" id="wlTable"></div></div>
-    <p class="foot" id="wlTabNote"></p>
+    <p class="foot wl-dk" id="wlTabNote"></p>
   </div>
 
   <div class="section">
@@ -48,24 +52,22 @@
     <div class="card"><div class="tl" id="wlAct"></div></div>
   </div>
 
-  <div class="section" id="wlScoutSec" hidden>
-    <div class="sh">Classifica balene <small id="wlScSub"></small></div>
-    <div class="card wl-sc" id="wlScout"></div>
+  <div class="section" id="wlCandSec">
+    <div class="sh">Candidati <small id="wlCandSub"></small></div>
+    <div class="wl-cand" id="wlCand"></div>
   </div>
 
   <div class="section">
     <div class="sh">Alert <small id="wlAlSub"></small></div>
-    <div class="wl-alerts" id="wlAlert"></div>
+    <button class="card tapCard wl-mob wl-almini" id="wlAlMini" type="button"></button>
+    <div class="wl-alerts wl-dk" id="wlAlert"></div>
   </div>
 
-  <p class="foot">Dati pubblici di Hyperliquid letti da questa pagina, sola lettura. Aggiornamento ogni 45 secondi mentre la pagina è aperta (giro completo dei DEX HIP-3 ogni 5 minuti, per restare nei limiti dell'API). Seguire un wallet non garantisce gli stessi risultati: non è un consiglio di investimento.</p>
+  <p class="foot wl-dk">Dati pubblici di Hyperliquid letti da questa pagina, sola lettura. Aggiornamento ogni 45 secondi mentre la pagina è aperta (giro completo dei DEX HIP-3 ogni 5 minuti, per restare nei limiti dell'API). L'analisi delle prossime mosse è costruita da regole fisse su posizioni, ordini e fill: non legge le intenzioni del trader. Seguire un wallet non garantisce gli stessi risultati: non è un consiglio di investimento.</p>
   <div class="wl-toast" id="wlToast" role="status" aria-live="polite"></div>
 </div>
 
 <style>
-#v-wallet .wl-pick{min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
-#v-wallet .wl-pick .hscroll{flex:1 1 auto;min-width:0;margin:0}
-#v-wallet .wl-more{display:inline-flex;align-items:center;gap:8px}
 #v-wallet select{font:600 .8rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:8px 30px 8px 12px;max-width:62vw;
   appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--label2) 50%),linear-gradient(135deg,var(--label2) 50%,transparent 50%);
   background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat}
@@ -159,8 +161,6 @@
 @media (min-width:900px){#v-wallet .wl-toast{bottom:24px}}
 #v-wallet .wl-toast div{pointer-events:auto;padding:12px 14px;border-radius:16px;background:var(--chrome);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5);font-size:.86rem;animation:fade .24s}
 #v-wallet .wl-toast b{display:block;font-size:.9rem}
-#v-wallet .wl-seg2{display:inline-flex;gap:8px;align-items:center}
-#v-wallet .wl-seg2 .cap{white-space:nowrap}
 #v-wallet .wl-sc{display:grid;gap:14px}
 #v-wallet .wl-sc p{margin:0;font-size:.86rem;line-height:1.55;color:var(--label2)}
 #v-wallet .wl-sc ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.84rem;line-height:1.5;color:var(--label2)}
@@ -179,30 +179,92 @@
 #v-wallet .wl-sc a{color:var(--label);text-decoration:none;font-weight:600}
 #v-wallet .wl-sc td.wrap{white-space:normal;text-align:left;font-size:.8rem}
 #v-wallet .wl-sc h4{margin:0;font:600 .8rem var(--font);color:var(--label)}
+/* selettore: i 3 wallet osservati */
+#v-wallet .wl-sw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;box-sizing:border-box}
+#v-wallet .wl-sw button{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-wallet .wl-sw button i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);margin-left:6px;vertical-align:middle}
+#v-wallet .wl-tag{display:inline-flex;align-items:center;gap:5px;font:600 .72rem var(--font);color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent);border-radius:999px;padding:3px 9px;white-space:nowrap}
+#v-wallet .wl-mob{display:none}
+/* prossime mosse: analisi */
+#v-wallet .wl-ab{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+#v-wallet .wl-ab li{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:10px;align-items:baseline;padding:7px 0;font-size:.9rem;line-height:1.45}
+#v-wallet .wl-ab li+li{border-top:1px solid var(--line)}
+#v-wallet .wl-ab li>span{font-size:.78rem;color:var(--label2)}
+#v-wallet .wl-ab li.warn b{color:var(--orange)} #v-wallet .wl-ab li.bad b{color:var(--red)}
+#v-wallet .wl-deep{justify-self:start}
+#v-wallet .wl-an{display:grid;gap:14px}
+#v-wallet .wl-an h3{margin:2px 0 0;font:600 .95rem var(--font)}
+#v-wallet .wl-an ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.88rem;line-height:1.45}
+#v-wallet .wl-an li.warn::marker{color:var(--orange)} #v-wallet .wl-an li.bad::marker{color:var(--red)} #v-wallet .wl-an li.ok::marker{color:var(--green)}
+#v-wallet .wl-an .scroll{margin:0}
+#v-wallet .wl-an .foot{margin:0}
+/* candidati */
+#v-wallet .wl-cand{display:grid;gap:10px}
+#v-wallet .wl-cand .card{display:grid;gap:8px}
+#v-wallet .wl-cand .t{display:flex;justify-content:space-between;align-items:center;gap:10px;min-width:0}
+#v-wallet .wl-cand .t b{font:650 .98rem var(--font);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-wallet .wl-cand .y{font-size:.82rem;color:var(--label2);line-height:1.45}
+#v-wallet .wl-kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+#v-wallet .wl-kv div{display:grid;gap:1px;min-width:0}
+#v-wallet .wl-kv small{font-size:.72rem;color:var(--label3)}
+#v-wallet .wl-kv b{font:600 .92rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+#v-wallet .wl-cmd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#v-wallet .wl-cmd code{font:600 .86rem var(--mono);background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--label)}
+#v-wallet table.grid td.win,#v-wallet table.grid td.win b{color:var(--green)}
+#v-wallet .wl-cmp td:first-child{white-space:nowrap}
+/* righe compatte delle tabelle (telefono) */
+#v-wallet .wl-li{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;width:100%;padding:10px 12px;align-items:center}
+#v-wallet .wl-li+.wl-li{border-top:1px solid var(--line)}
+#v-wallet .wl-li b{font-weight:600;font-size:.92rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-wallet .wl-li small{font-size:.76rem;color:var(--label2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-wallet .wl-li .r{text-align:right;font-variant-numeric:tabular-nums}
+#v-wallet .wl-li .r b{display:block}
+#v-wallet .wl-mini{display:grid;gap:8px}
+#v-wallet .wl-mini .v{font:900 2.1rem/1 var(--dots);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#v-wallet .wl-mini .s{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#v-wallet .wl-mini .s div{display:grid;gap:1px;min-width:0}
+#v-wallet .wl-mini .s small,#v-wallet .wl-pmini small,#v-wallet .wl-almini small{font-size:.74rem;color:var(--label2)}
+#v-wallet .wl-mini .s b{font:600 1rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+#v-wallet .wl-mini .h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.78rem;color:var(--label2)}
+#v-wallet .wl-pmini,#v-wallet .wl-almini{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#v-wallet .wl-pmini>span,#v-wallet .wl-almini>span{display:grid;gap:1px;min-width:0}
+@media (max-width:700px){
+  #v-wallet .wl-dk{display:none!important}
+  #v-wallet .wl-mob{display:block}
+  #v-wallet .wl-mini,#v-wallet .wl-pmini,#v-wallet .wl-almini{display:grid}
+  #v-wallet .wl-pmini,#v-wallet .wl-almini{display:flex}
+  #v-wallet .wl-top{padding-top:0}
+  #v-wallet .sh small{display:none}
+  #v-wallet .wl-perf:not(.open) .wl-pbody{display:none}
+  #v-wallet .wl-perf .wl-pbody{display:grid;gap:10px}
+  #v-wallet .wl-next .wl-mv,#v-wallet .wl-next .wl-plan,#v-wallet .wl-next .wl-moreb,#v-wallet .wl-next>.foot{display:none}
+  #v-wallet .wl-ab li{grid-template-columns:minmax(0,1fr);gap:0;padding:8px 0}
+  #v-wallet .wl-tbl{padding:0}
+  #v-wallet .rl,#v-wallet .sd{text-transform:none;letter-spacing:0;font-family:var(--font);font-size:.72rem}
+  #v-wallet .wl-kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #v-wallet .wl-filters select{max-width:100%}
+}
 </style>
 
 <script>
 (() => {
 "use strict";
-/* ─────────── wallet seguiti ───────────
-   Sentinella = i 3 wallet di bot.andreagalanti.it/#wallet (m/wallets.json: main, w1, w2).
-   Gruppi A/B/C = i wallet del Worker whale-desk (whalebot/worker.js, WALLETS), che manda già gli alert Telegram. */
-const WL = [
-  { a: "0xd4c1f7e8d876c4749228d515473d36f919583d1d", n: "Principale", g: "S", note: "Il riferimento della sentinella: migliaia di operazioni al giorno, leva ~4,6x" },
-  { a: "0x99967871e6c4f9a5185abc57edede9e9540191f6", n: "Simile 1", g: "S", note: "Dalla classifica: PnL e ROI simili al Principale, poche operazioni, leva bassa" },
-  { a: "0x807a2e2e469df84b299da5f90f15dda4380daca1", n: "Simile 2", g: "S", note: "Dalla classifica: meno di un'operazione al giorno, leva ~1,9x" },
-  { a: "0x237152b038d88f4156a0cd71090462de7e3f0883", n: "Cluster-1", g: "A", note: "Whale Desk · swing e trade tattici, riferimento del Cluster" },
-  { a: "0xbd1c84113c6deb5044be0c2221f9e9403811ff0e", n: "Cluster-2", g: "A", note: "Whale Desk · replica Cluster-1" },
-  { a: "0xec7f9f5b31b8f5da6ac6c0973bbd496e16f9df39", n: "Cluster-3", g: "A", note: "Whale Desk · solo swing, a volte entra prima" },
-  { a: "0xbd334a55db91617545e8d1b09941e036ad8e4200", n: "Petroliere", g: "C", note: "Whale Desk · HYPE e petrolio HIP-3, copy diretto" },
-  { a: "0x2d99fe0f36c1aebd28a1a2c0e82e8ca13c2ea351", n: "Rotatore", g: "C", note: "Whale Desk · BTC e alt, copy diretto" },
-  { a: "0xc7290b4b308431a985fa9e3e8a335c2f7650517c", n: "Ribassista", g: "B", note: "Whale Desk · short di lungo periodo, solo lettura" },
-  { a: "0x9c16bc8f1104e4d2f72267eb981fa12de7cc4a6f", n: "Inversore", g: "B", note: "Whale Desk · rare inversioni su BTC, solo lettura" },
+/* ─────────── i 3 wallet osservati ───────────
+   La lista sta in data/wallets_watch.json (R.scout.watch, dalla dashboard). La cambia solo l'utente via Telegram
+   (/sostituisci, /conferma): radar/scout.py propone i candidati, mostrati nella sezione Candidati. */
+const WL0 = [
+  { a: "0xd4c1f7e8d876c4749228d515473d36f919583d1d", n: "Principale", note: "Il riferimento della sentinella: migliaia di operazioni al giorno" },
+  { a: "0x99967871e6c4f9a5185abc57edede9e9540191f6", n: "Simile 1", note: "Dalla classifica: PnL e ROI simili al Principale, poche operazioni, leva bassa" },
+  { a: "0x807a2e2e469df84b299da5f90f15dda4380daca1", n: "Simile 2", note: "Dalla classifica: meno di un'operazione al giorno", status: "provvisorio" },
 ];
-const GROUPS = { S: "Sentinella", P: "Selezione giornaliera", A: "Cluster · Gruppo A", C: "Copy diretto · Gruppo C", B: "Lettura · Gruppo B" };
+const WV = () => (typeof R !== "undefined" && R && R.scout && R.scout.watch) || null;
+const WL = (() => {
+  const sl = (WV() && Array.isArray(WV().slots)) ? WV().slots.filter((x) => /^0x[0-9a-f]{40}$/.test(String(x.address || "").toLowerCase())) : [];
+  if (sl.length !== 3) return WL0.map((w, i) => Object.assign({ slot: i + 1, status: "confermato" }, w));
+  return sl.map((x) => ({ a: x.address.toLowerCase(), n: x.name, slot: x.slot, status: x.status || "confermato", note: x.note || "", x }));
+})();
 const HL = "https://api.hyperliquid.xyz/info";
-const DESK = "https://whale-desk.square-shape-0876.workers.dev/state";
-const REFRESH = 45e3, FULL_EVERY = 5 * 60e3, OV_EVERY = 3 * 60e3, DESK_EVERY = 2 * 60e3, FUND_EVERY = 30 * 60e3;
+const REFRESH = 45e3, FULL_EVERY = 5 * 60e3, OV_EVERY = 3 * 60e3, FUND_EVERY = 30 * 60e3;
 const STABLES = new Set(["USDC", "USDT0", "USDH", "USDE", "USDT"]);
 const AGG_MS = 2 * 60e3;                // come il Worker: fill della stessa coin entro 2 minuti = una mossa
 const byA = Object.fromEntries(WL.map((w) => [w.a, w]));
@@ -254,7 +316,7 @@ const S = {
   sel: byA[store.get("radarWl.sel", WL[0].a)] ? store.get("radarWl.sel", WL[0].a) : WL[0].a,
   tab: store.get("radarWl.tab", "pos"), metric: "pnl", range: "month",
   sort: {}, trCoin: "", trN: 120, movN: 40, ordAll: false,
-  data: {}, ov: {}, desk: null, deskErr: null, deskAt: 0, err: null, loading: null,
+  data: {}, ov: {}, err: null, loading: null, perfOpen: false,
   timers: [], visible: false,
 };
 let DEXS = null, chart = null, series = null;
@@ -398,22 +460,17 @@ function byOrder(fills) {
 const DIR_IT = { "Open Long": "Apre long", "Open Short": "Apre short", "Close Long": "Chiude long", "Close Short": "Chiude short", "Long > Short": "Long → short", "Short > Long": "Short → long", "Buy": "Compra", "Sell": "Vende" };
 
 /* ─────────── render: selettore e panoramica ─────────── */
+const prov = (w) => w.status === "provvisorio";
 function renderPicker() {
-  const prim = WL.filter((w) => w.g === "S"), pk = WL.filter((w) => w.g === "P");
-  el("wlSeg").innerHTML = prim.map((w) => `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}">${esc(w.n)}</button>`).join("");
-  el("wlSegP").hidden = !pk.length;
-  el("wlSegP").innerHTML = pk.map((w) => `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}" title="${esc(GROUPS.P)}">${esc(w.n)}</button>`).join("");
-  const others = ["A", "C", "B"].map((g) => `<optgroup label="${esc(GROUPS[g])}">${WL.filter((w) => w.g === g).map((w) => `<option value="${w.a}"${w.a === S.sel ? " selected" : ""}>${esc(w.n)}</option>`).join("")}</optgroup>`).join("");
-  el("wlMore").innerHTML = `<option value=""${W().g === "S" || W().g === "P" ? " selected" : ""}>Whale Desk…</option>` + others;
+  el("wlSeg").innerHTML = WL.map((w) => `<button role="tab" data-a="${w.a}" aria-pressed="${w.a === S.sel}" aria-selected="${w.a === S.sel}"${prov(w) ? ' title="Provvisorio, da approvare"' : ""}>${esc(w.n)}${prov(w) ? "<i></i>" : ""}</button>`).join("");
   renderOv();
 }
 function renderOv() {
-  const g = W().g, list = WL.filter((w) => w.g === g);
-  el("wlOv").innerHTML = list.map((w) => {
+  el("wlOv").innerHTML = WL.map((w) => {
     const o = S.data[w.a] ? ovFrom(S.data[w.a]) : S.ov[w.a];
     const body = !o ? `<span class="v">${SK(60)}</span><small>${SK(80)}</small>` : o.err ? `<span class="v">–</span><small>non disponibile</small>` :
-      `<span class="v">${m$(o.eq)}</span><small><span class="${tone(o.d24)}">${s$(o.d24)} 24h</span> · ${o.lite ? "posizioni in caricamento" : o.net ? (o.net > 0 ? "netto long " : "netto short ") + m$(Math.abs(o.net)) : "flat"}</small>`;
-    return `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}"><span class="t"><span>${esc(w.n)}</span><span class="cap">${esc(g === "P" ? "Del giorno" : GROUPS[g].split(" ·")[0])}</span></span>${body}</button>`;
+      `<span class="v">${m$(o.eq)}</span><small><span class="${tone(o.d24)}">${s$(o.d24)} 24h</span>, ${o.net ? (o.net > 0 ? "netto long " : "netto short ") + m$(Math.abs(o.net)) : "flat"}</small>`;
+    return `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}"><span class="t"><span>${esc(w.n)}</span>${prov(w) ? `<span class="wl-tag">da approvare</span>` : `<span class="cap">Posto ${w.slot}</span>`}</span>${body}</button>`;
   }).join("");
 }
 const portKey = (port, k) => (Array.isArray(port) ? port.find(([x]) => x === k)?.[1] : null);
@@ -423,9 +480,9 @@ function ovFrom(d) {
   return { eq: d.eq, d24: lastOf(day?.pnlHistory), net: d.pos.reduce((s, p) => s + p.dir * p.ntl, 0) };
 }
 async function loadOv() {
-  const g = W().g;
-  await Promise.all(WL.filter((w) => w.g === g && w.a !== S.sel).map(async (w) => {
-    if (S.ov[w.a] && !S.ov[w.a].err && !S.ov[w.a].lite && Date.now() - S.ov[w.a].t < OV_EVERY - 5e3) return;
+  if (isMob()) return;   // telefono: la panoramica dei 3 non si vede, niente richieste in più
+  await Promise.all(WL.filter((w) => w.a !== S.sel).map(async (w) => {
+    if (S.ov[w.a] && !S.ov[w.a].err && Date.now() - S.ov[w.a].t < OV_EVERY - 5e3) return;
     const [ch, port, spot] = await Promise.all([q("clearinghouseState", w.a), q("portfolio", w.a), q("spotClearinghouseState", w.a)]);
     if (!ch && !port) { S.ov[w.a] = { err: true, t: Date.now() }; return; }
     const day = portKey(port, "day");
@@ -433,33 +490,21 @@ async function loadOv() {
     const net = (ch?.assetPositions || []).reduce((s, { position: p }) => s + sgn(+p.szi) * +p.positionValue, 0);
     S.ov[w.a] = { t: Date.now(), eq, d24: lastOf(day?.pnlHistory), net };
   }));
-  if (S.visible) { renderOv(); renderScout(); }
+  if (S.visible) renderOv();
 }
-// "Valore ora" delle 3 balene del giorno anche senza selezionarle: solo il valore del conto, una richiesta "portfolio" per balena
-// (ultimo punto di accountValueHistory, la stessa fonte del "Valore alla scelta"; perp + spot da soli lo sottostimano molto),
-// una alla volta, al massimo ogni 3 minuti, saltato se Hyperliquid sta già rallentando (429)
-let pickBusy = false;
-async function loadPickEq() {
-  const sc = SC(); if (!sc || !S.visible || pickBusy || backoff > 2 || document.hidden) return;
-  const sec = el("wlScoutSec"); if (!sec || sec.hidden) return;
-  pickBusy = true;
-  try {
-    for (const p of sc.picks) {
-      const a = String(p.address || "").toLowerCase(), o = S.ov[a];
-      if (!byA[a] || (S.data[a] && fin(S.data[a].eq)) || (o && !o.err && Date.now() - o.t < OV_EVERY - 5e3)) continue;
-      const day = portKey(await q("portfolio", a), "day"), eq = lastOf(day?.accountValueHistory);
-      if (fin(eq)) S.ov[a] = { t: Date.now(), lite: true, eq, d24: lastOf(day?.pnlHistory) };
-      if (S.visible) renderScout();
-      if (backoff > 2) break;
-      await new Promise((r) => setTimeout(r, 400));
-    }
-  } finally { pickBusy = false; }
+const isMob = () => (typeof window.isMobile === "function" ? window.isMobile() : matchMedia("(max-width:700px)").matches);
+// pannello (openSheet del template): i pulsanti dentro usano gli stessi gestori della pagina
+function sheet(title, html) {
+  const n = document.createElement("div"); n.className = "wl-sheet"; n.id = "wlSheet"; n.innerHTML = html;
+  n.addEventListener("click", onClick); n.addEventListener("change", onChange);
+  if (typeof window.openSheet === "function") window.openSheet(title, n);
+  return n;
 }
 
 /* ─────────── render: intestazione ─────────── */
 function renderHero() {
   const w = W(), d = D();
-  const head = `<div class="top"><div><span class="cap">${esc(GROUPS[w.g])}</span><h2>${esc(w.n)}</h2><span class="note">${esc(w.note)}</span></div>
+  const head = `<div class="top"><div><span class="cap">Posto ${w.slot}</span><h2>${esc(w.n)} ${prov(w) ? `<span class="wl-tag">provvisorio, da approvare</span>` : ""}</h2><span class="note">${esc(w.note)}</span></div>
     <div class="wl-addr"><code title="${w.a}">${short(w.a)}</code><button class="wl-btn" data-copy="${w.a}" type="button">Copia</button>
     <a class="wl-btn" href="https://hyperdash.com/address/${w.a}" target="_blank" rel="noopener">Hyperdash ↗</a>
     <a class="wl-btn" href="https://hypurrscan.io/address/${w.a}" target="_blank" rel="noopener">Hypurrscan ↗</a></div></div>`;
@@ -482,6 +527,26 @@ function renderHero() {
       <div class="wl-split">${gross ? `<i style="width:${(L / gross * 100).toFixed(1)}%;background:var(--green)"></i><i style="flex:1;background:var(--red)"></i>` : ""}</div></div>`;
 }
 const errBox = () => `<div class="wl-err"><b>Hyperliquid non risponde</b><span class="note">${esc(S.err || "")} · riprovo da solo tra ${Math.round(REFRESH * backoff / 1000)} s.</span><button class="wl-btn" type="button" data-retry>Riprova ora</button></div>`;
+
+// telefono: un solo riquadro con valore, PnL 24h ed esposizione netta; tocco → dettagli del conto
+function renderMini() {
+  const w = W(), d = D(), b = el("wlMini");
+  const st = `<span class="live${d && !S.err && (Date.now() - d.t) < 120e3 ? " on" : ""}" id="wlLive2">${d ? "aggiornato " + ago(d.t) : S.err ? "non disponibile" : "caricamento"}</span>`;
+  const tag = prov(w) ? `<span class="wl-tag">provvisorio, da approvare</span>` : `<span class="more">Dettagli</span>`;
+  if (!d) { b.innerHTML = `<span class="h">${st}${tag}</span>${S.err ? `<span class="neg">Hyperliquid non risponde: riprovo da solo.</span>` : `<div class="wl-sk" style="height:34px;width:55%"></div>${SK(70)}`}`; return; }
+  const net = d.pos.reduce((s, p) => s + p.dir * p.ntl, 0), gross = d.pos.reduce((s, p) => s + p.ntl, 0), d24 = lastOf(portKey(d.port, "day")?.pnlHistory);
+  b.innerHTML = `<span class="h">${st}${tag}</span><span class="v">${m$(d.eq)}</span>
+    <span class="s"><div><small>PnL 24h</small><b class="${tone(d24)}">${s$(d24)}</b></div>
+    <div><small>Esposizione netta</small><b class="${tone(net)}">${net ? (net > 0 ? "Long " : "Short ") + m$(Math.abs(net)) : "Flat"}</b></div></span>
+    <small class="mut" style="font-size:.76rem">Leva ${lev(gross / (d.eq || 1))}, ${d.pos.length} posizioni, ${d.ord.length} ordini</small>`;
+}
+function openAccount() {
+  const w = W(), d = D();
+  renderHero();
+  const html = `<div class="card glow wl-hero">${el("wlHero").innerHTML}</div><div class="big">${el("wlKpi").innerHTML}</div>
+    ${w.x && w.x.metrics ? `<h3>Metriche dello scout</h3>${cmpTable([["Questo wallet", w.x]])}` : ""}`;
+  sheet(w.n, d ? html : `<p>Dati in caricamento.</p>`);
+}
 
 /* ─────────── render: prossime mosse ─────────── */
 const posTxt = (q, c) => (Math.abs(q) < 1e-9 ? "flat" : `${q > 0 ? "long" : "short"} ${qty(q)} ${esc(bare(c))}`);
@@ -513,36 +578,132 @@ function planLines(d) {
     return { v, html: `<b>${coinH(coin)}</b> · prezzo ${px(mark)} — ` + [...parts.map((p) => p.html), prot.length ? `Protezioni: ${prot.join(", ")}.` : ""].filter(Boolean).join(" ") };
   }).sort((a, b) => b.v - a.v);
 }
+/* ─────────── analisi: regole fisse su posizioni, ordini, fill e funding ───────────
+   Non legge le intenzioni del trader: descrive com'è messo, cosa succede se scattano gli ordini, i limiti e le prove. */
+const MOVES = [-0.10, -0.05, 0.05, 0.10];
+function scenario(d, x) {
+  // movimento uniforme di x su tutte le coin (le crypto si muovono insieme; HIP-3 e stablecoin no: è un limite dichiarato)
+  const pnl = d.pos.reduce((s, p) => s + p.dir * p.ntl * x, 0);
+  const hit = d.ord.filter((o) => (x < 0 ? o.dist <= 0 && o.dist >= x : o.dist >= 0 && o.dist <= x));
+  const posN = {}; for (const p of d.pos) posN[p.coin] = p.dir * p.ntl;
+  let buy = 0, sell = 0;
+  for (const o of hit) {
+    const cur = posN[o.coin] || 0, red = o.reduce || o.rk === "tp" || o.rk === "sl";
+    let dv = o.dir * o.val;
+    if (red) dv = sgn(cur) && sgn(cur) !== o.dir ? o.dir * Math.min(o.val, Math.abs(cur)) : 0;
+    posN[o.coin] = cur + dv; if (dv > 0) buy += dv; else sell -= dv;
+  }
+  const net = Object.values(posN).reduce((s, v) => s + v, 0), gross = Object.values(posN).reduce((s, v) => s + Math.abs(v), 0);
+  const eq = d.eq + pnl;
+  return { x, pnl, eq, hit: hit.length, buy, sell, net, lev: eq > 0 ? gross / eq : Infinity };
+}
+function analyze(d) {
+  const eq = d.eq || 1, gross = d.pos.reduce((s, p) => s + p.ntl, 0), net = d.pos.reduce((s, p) => s + p.dir * p.ntl, 0);
+  const L = gross ? d.pos.filter((p) => p.dir > 0).reduce((s, p) => s + p.ntl, 0) : 0, levE = gross / eq;
+  const top = d.pos[0], topSh = top ? top.ntl / (gross || 1) : 0;
+  const now = Date.now(), f24 = d.fills.filter((f) => f.time > now - 864e5), mv24 = movesOf(f24);
+  const maker = f24.length ? f24.filter((f) => !f.crossed).length / f24.length : 0;
+  const realized = f24.reduce((s, f) => s + +f.closedPnl - +f.fee, 0);
+  const flow = {}; for (const e of mv24) flow[e.coin] = (flow[e.coin] || 0) + e.buy * e.vwap;
+  const flows = Object.entries(flow).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
+  const fund = d.funding.filter((r) => (r.delta || {}).type === "funding"), fund7 = fund.reduce((s, r) => s + +r.delta.usdc, 0);
+  const fundY = fund7 / eq * 365 / 7;
+  const liq = d.pos.filter((p) => p.liq && p.mark).map((p) => Object.assign({ ld: Math.abs(p.liq / p.mark - 1) }, p)).sort((a, b) => a.ld - b.ld);
+  const stops = new Set(d.ord.filter((o) => o.rk === "sl").map((o) => o.coin));
+  const naked = d.pos.filter((p) => p.ntl >= 0.05 * eq && !stops.has(p.coin));
+  const losers = d.pos.filter((p) => p.upnl < -0.02 * eq).sort((a, b) => a.upnl - b.upnl);
+  const entry = d.ord.filter((o) => o.rk === "in" || (o.rk === "out" && !o.reduce)).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist));
+  const near = entry.filter((o) => Math.abs(o.dist) <= 0.03);
+  const p30 = portKey(d.port, "month"), pnl30 = lastOf(p30?.pnlHistory), av30 = p30?.accountValueHistory?.[0] ? +p30.accountValueHistory[0][1] : null;
+  const grid = f24.length > 300 && maker > 0.6 && d.ord.filter((o) => o.dir > 0).length && d.ord.filter((o) => o.dir < 0).length;
+  const tilt = gross ? Math.abs(net) / gross : 0;
+  const nm = (c) => esc(bare(c));
+
+  // assetto
+  const setup = !d.pos.length ? "Flat: nessuna posizione aperta."
+    : tilt > 0.6 ? `Netto ${net > 0 ? "long" : "short"} ${m$(Math.abs(net))} (${lev(Math.abs(net) / eq)} il conto): punta al ${net > 0 ? "rialzo" : "ribasso"}.`
+    : tilt > 0.25 ? `Sbilanciato ${net > 0 ? "long" : "short"}: netto ${m$(Math.abs(net))} su ${m$(gross)} di esposizione.`
+    : `Quasi bilanciato: ${m$(gross)} lordi, netto ${s$(net)}. Più un book coperto che una scommessa.`;
+  const style = grid ? `Opera come una griglia di ordini limit (${nf(maker * 100)}% dei fill senza attraversare lo spread, ${nf(f24.length)} fill in 24h): conta il netto, non il singolo ordine.`
+    : f24.length > 100 ? `Molto attivo: ${nf(f24.length)} fill in 24h, ${nf(maker * 100)}% limit.` : f24.length ? `Poco attivo: ${f24.length} fill in 24h.` : "Nessun fill nelle ultime 24 ore: tiene le posizioni.";
+  // prossime mosse probabili
+  const plans = planLines(d).slice(0, 3);
+  const nextAb = near.length ? `${near[0].dir > 0 ? "Compra" : "Vende"} ${nm(near[0].coin)} ${m$(near[0].val)} a ${px(near[0].price)} (${pc(near[0].dist, 2)})${near.length > 1 ? `, altri ${near.length - 1} ordini entro il 3%` : ""}.`
+    : entry.length ? `Ordini lontani: il primo è ${entry[0].dir > 0 ? "acquisto" : "vendita"} ${nm(entry[0].coin)} a ${pc(entry[0].dist, 1)}.`
+    : flows.length ? `Nessun ordine in attesa: entra a mercato. Ultime 24h ${flows[0][1] > 0 ? "compra" : "vende"} soprattutto ${nm(flows[0][0])} (${s$(flows[0][1])}).`
+    : "Nessun ordine in attesa e nessuna mossa recente.";
+  // scenari
+  const sc = d.pos.length ? MOVES.map((x) => scenario(d, x)) : [];
+  // limiti e guardrail: [classe, testo]
+  const guard = [];
+  if (liq.length) { const l = liq[0], c = l.ld < 0.1 ? "bad" : l.ld < 0.25 ? "warn" : "ok";
+    guard.push([c, `Liquidazione più vicina: ${nm(l.coin)} a ${px(l.liq)}, ${pc(l.liq / l.mark - 1)} dal prezzo${l.levType === "isolated" ? " (isolata)" : " (cross: margine condiviso)"}.`]); }
+  else if (d.pos.length) guard.push(["ok", "Nessun prezzo di liquidazione: margine ampio rispetto alle posizioni."]);
+  if (d.pos.length) guard.push([levE > 5 ? "bad" : levE > 3 ? "warn" : "ok", `Leva effettiva ${lev(levE)} (esposizione ${m$(gross)} su ${m$(d.eq)}); margine usato ${pcu(d.margin / eq)}.`]);
+  if (top) guard.push([top.ntl / eq > 1.5 ? "warn" : "ok", `Concentrazione: ${nm(top.coin)} è il ${pcu(topSh)} dell'esposizione (${lev(top.ntl / eq)} il conto).`]);
+  if (fund.length) guard.push([fundY < -0.1 ? "bad" : fundY < -0.03 ? "warn" : "ok", `Funding 7 giorni ${s$(fund7)} (${pc(fundY, 1)} l'anno sul conto, ${fund7 >= 0 ? "incassato" : "pagato"}).`]);
+  if (d.pos.length) guard.push([naked.length ? "warn" : "ok", naked.length ? `Senza stop nel book: ${naked.slice(0, 4).map((p) => nm(p.coin)).join(", ")}${naked.length > 4 ? ` e altre ${naked.length - 4}` : ""} (stop mentali o a mercato: non si vedono).` : "Ogni posizione rilevante ha uno stop nel book."]);
+  // problemi
+  const prob = [];
+  for (const g of guard) if (g[0] !== "ok") prob.push(g);
+  for (const p of losers.slice(0, 2)) prob.push([p.upnl < -0.08 * eq ? "bad" : "warn", `${nm(p.coin)} ${p.dir > 0 ? "long" : "short"} perde ${m$(Math.abs(p.upnl))} (${pc(p.upnl / eq)} del conto).`]);
+  if (sc.length) { const w = sc.reduce((a, b) => (b.pnl < a.pnl ? b : a)); if (w.pnl < -0.15 * eq) prob.push(["bad", `Con ${pc(w.x, 0)} su tutto il conto scende di ${pc(w.pnl / eq, 0)}.`]); }
+  if (pnl30 != null && av30 > 0 && pnl30 / av30 < -0.1) prob.push(["warn", `Ultimi 30 giorni ${s$(pnl30)} (${pc(pnl30 / av30)}).`]);
+  // prove
+  const ev = [
+    `24 ore: ${nf(f24.length)} fill, ${mv24.length} mosse, PnL chiuso netto di commissioni ${s$(realized)}.`,
+    flows.length ? `Flusso 24h per coin: ${flows.slice(0, 3).map(([c, v]) => `${nm(c)} ${s$(v)}`).join(", ")} (positivo = comprato).` : null,
+    `Long ${m$(L)}, short ${m$(gross - L)}, PnL non realizzato ${s$(d.pos.reduce((s, p) => s + p.upnl, 0))}.`,
+    d.ord.length ? `${d.ord.length} ordini nel book per ${m$(d.ord.reduce((s, o) => s + o.val, 0))}: ${d.ord.filter((o) => o.rk === "in").length} per entrare o aumentare, ${d.ord.filter((o) => o.rk === "out").length} per ridurre, ${d.ord.filter((o) => o.rk === "tp" || o.rk === "sl").length} TP o stop.` : "Nessun ordine nel book.",
+    pnl30 != null ? `PnL 30 giorni ${s$(pnl30)}${av30 > 0 ? ` (${pc(pnl30 / av30)} sul valore di partenza)` : ""}.` : null,
+  ].filter(Boolean);
+  const worst = prob.find((x) => x[0] === "bad") || prob[0];
+  const limAb = liq.length ? `Liquidazione ${nm(liq[0].coin)} a ${pc(liq[0].liq / liq[0].mark - 1, 0)}, leva ${lev(levE)}.` : d.pos.length ? `Leva ${lev(levE)}, nessuna liquidazione vicina.` : "Nessun rischio aperto.";
+  const ab = [["Assetto", setup, ""], ["Prossima mossa", nextAb, ""], ["Limite", limAb, liq.length && liq[0].ld < 0.1 ? "bad" : levE > 5 ? "warn" : ""],
+    ["Da guardare", worst ? worst[1] : "Nessun problema evidente nei dati.", worst ? worst[0] : ""]];
+  const li = (x) => `<li class="${x[0]}">${x[1]}</li>`;
+  const deep = `<div class="wl-an">
+    <h3>Com'è impostato</h3><ul><li>${setup}</li><li>${style}</li>${top ? `<li>Posizioni principali: ${d.pos.slice(0, 4).map((p) => `${p.dir > 0 ? "long" : "short"} ${nm(p.coin)} ${m$(p.ntl)}`).join(", ")}.</li>` : ""}</ul>
+    <h3>Prossime mosse probabili</h3><ul><li>${nextAb}</li>${plans.map((p) => `<li>${p.html}</li>`).join("")}</ul>
+    ${sc.length ? `<h3>Come può evolvere</h3>
+    <div class="scroll"><table class="grid"><thead><tr><th>Se il mercato fa</th><th>PnL</th><th>Conto</th><th>Ordini</th><th>Netto dopo</th><th>Leva</th></tr></thead><tbody>
+    ${sc.map((r) => `<tr><td>${pc(r.x, 0)}</td><td class="${tone(r.pnl)}">${s$(r.pnl)}<small>${pc(r.pnl / eq, 1)}</small></td><td>${m$(r.eq)}</td><td>${r.hit}<small>${r.hit ? `+${m$(r.buy)} / −${m$(r.sell)}` : "nessuno"}</small></td><td>${r.net ? (r.net > 0 ? "long " : "short ") + m$(Math.abs(r.net)) : "flat"}</td><td>${fin(r.lev) ? lev(r.lev) : "–"}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="foot">Stesso movimento su tutte le coin, ordini eseguiti per intero al prezzo indicato. Le coin HIP-3 (azioni, materie prime) di solito non seguono le crypto.</p>` : ""}
+    <h3>Limiti e guardrail</h3><ul>${guard.map(li).join("") || "<li>Nessuna posizione aperta.</li>"}</ul>
+    <h3>Problemi</h3><ul>${prob.map(li).join("") || `<li class="ok">Nessuno evidente nei dati di ora.</li>`}</ul>
+    <h3>Prove</h3><ul>${ev.map((x) => `<li>${x}</li>`).join("")}</ul>
+    <p class="foot">Regole fisse su posizioni, ordini, fill e funding di Hyperliquid, aggiornate ${ago(d.t)}. Gli ordini si possono cancellare in ogni momento; stop e uscite a mercato non si vedono prima.</p></div>`;
+  return { ab, deep };
+}
 function renderNext() {
   const d = D();
   if (!d) { el("wlNext").innerHTML = S.err && !d ? `<p class="wl-sum">Dati non disponibili.</p>` : SK(90) + SK(70) + SK(80); el("wlNextSub").textContent = ""; return; }
-  const ord = d.ord, inN = ord.filter((o) => o.rk === "in").length, outN = ord.filter((o) => o.rk === "out").length, prN = ord.length - inN - outN;
-  el("wlNextSub").textContent = ord.length ? `${ord.length} ordini · ${m$(ord.reduce((a, o) => a + o.val, 0))}` : "nessun ordine nel book";
-  const mv = movesOf(d.fills.filter((f) => f.time > Date.now() - 3600e3));
-  const buy = mv.reduce((a, e) => a + Math.max(0, e.buy) * e.vwap, 0), sell = mv.reduce((a, e) => a + Math.max(0, -e.buy) * e.vwap, 0);
-  const lines = [summary(d)];
-  lines.push(ord.length ? `Nel book: <b>${inN}</b> ${inN === 1 ? "ordine" : "ordini"} per aprire o aumentare, <b>${outN}</b> per ridurre o chiudere, <b>${prN}</b> take profit/stop. Il più vicino: <b>${esc(ord[0].rl.toLowerCase())} ${esc(bare(ord[0].coin))}</b> a ${px(ord[0].price)} (${pc(ord[0].dist, 2)} dal prezzo).`
-    : `Nessun ordine in attesa: entra ed esce a mercato, quindi le mosse si vedono solo quando succedono (in «Ultime mosse», qui sotto, e nelle notifiche).`);
-  if (mv.length) lines.push(`Nell'ultima ora: ${mv.length} ${mv.length === 1 ? "mossa" : "mosse"} su ${new Set(mv.map((e) => bare(e.coin))).size} coin, comprati ${m$(buy)} e venduti ${m$(sell)}.`);
-  const near = d.pos.filter((p) => p.liq).map((p) => Object.assign({ ld: Math.abs(p.liq / p.mark - 1) }, p)).sort((a, b) => a.ld - b.ld);
+  const ord = d.ord, A = analyze(d);
+  S.deep = A.deep;
+  el("wlNextSub").textContent = ord.length ? `${ord.length} ordini, ${m$(ord.reduce((a, o) => a + o.val, 0))}` : "nessun ordine nel book";
   const rows = ord.slice(0, S.ordAll ? 40 : 6).map((o) => `<div class="r"><span class="rl ${o.rk}">${esc(o.rl)}</span>
       <span class="c"><b>${act(o.dir)} ${coinH(o.coin)} · ${m$(o.val)}</b><small>${esc(o.type)}${o.reduce ? " · solo riduzione" : ""} · ${qty(o.sz)} @ ${px(o.price)}</small></span>
       <span class="d"><b class="${Math.abs(o.dist) < 0.01 ? "" : "mut"}">${pc(o.dist, 2)}</b><small>dal prezzo</small></span></div>`);
+  const near = d.pos.filter((p) => p.liq).map((p) => Object.assign({ ld: Math.abs(p.liq / p.mark - 1) }, p)).sort((a, b) => a.ld - b.ld);
   const liqRows = near.filter((p) => p.ld < 0.3).map((p) => `<div class="r"><span class="rl liq">Liquidazione</span>
       <span class="c"><b>${side(p.dir)} ${coinH(p.coin)} · ${m$(p.ntl)}</b><small>liquidazione a ${px(p.liq)} · prezzo ${px(p.mark)}</small><div class="wl-meter"><i style="width:${Math.max(4, 100 - p.ld / 0.3 * 100).toFixed(0)}%;background:var(--red)"></i></div></span>
       <span class="d"><b class="neg">${pc(p.liq / p.mark - 1, 1)}</b><small>distanza</small></span></div>`);
-  const plans = planLines(d).slice(0, 4);
-  el("wlNext").innerHTML = `<p class="wl-sum">${lines.join(" ")}</p>
+  el("wlNext").innerHTML = `<ul class="wl-ab">${A.ab.map(([k, v, c]) => `<li class="${c}"><span>${k}</span><b style="font-weight:500">${v}</b></li>`).join("")}</ul>
+    <button class="wl-btn wl-deep" type="button" data-deep>Approfondimento: scenari, limiti, prove</button>
     ${rows.length || liqRows.length ? `<div class="wl-mv">${liqRows.join("")}${rows.join("")}</div>` : ""}
-    ${ord.length > 6 ? `<button class="wl-moreb" type="button" data-ordall>${S.ordAll ? "Mostra i 6 più vicini" : `Mostra tutti i ${ord.length} ordini per distanza`}</button>` : ""}
-    ${plans.length ? `<ul class="wl-plan">${plans.map((p) => `<li>${p.html}</li>`).join("")}</ul>` : ""}
-    ${!liqRows.length && near.length ? `<p class="foot" style="margin:0">Liquidazione più vicina: ${coinH(near[0].coin)} a ${px(near[0].liq)} (${pc(near[0].liq / near[0].mark - 1)} dal prezzo). Le posizioni in cross condividono il margine.</p>` : ""}`;
+    ${ord.length > 6 ? `<button class="wl-moreb" type="button" data-ordall>${S.ordAll ? "Mostra i 6 più vicini" : `Mostra tutti i ${ord.length} ordini per distanza`}</button>` : ""}`;
 }
 
 /* ─────────── render: andamento ─────────── */
 const RANGES = { day: "24h", week: "7 giorni", month: "30 giorni", allTime: "Totale" };
 function renderPerf() {
   const d = D(), port = d && d.port;
+  const pm = (k) => { const r = portKey(port, k), v = lastOf(r?.pnlHistory); return `<b class="${tone(v)}" style="font-weight:600">${port ? s$(v) : "…"}</b>`; };
+  el("wlPerfSec").classList.toggle("open", S.perfOpen);
+  el("wlPerfMini").setAttribute("aria-expanded", String(S.perfOpen));
+  el("wlPerfMini").innerHTML = `<span><small>PnL 7 giorni, 30 giorni, totale</small><span>${pm("week")} · ${pm("month")} · ${pm("allTime")}</span></span><span class="more">${S.perfOpen ? "Chiudi" : "Grafico"}</span>`;
+  if (isMob() && !S.perfOpen) return;   // telefono: il grafico si disegna solo quando lo si apre
   el("wlPnl").innerHTML = Object.entries(RANGES).map(([k, l]) => {
     const r = portKey(port, k), pnl = lastOf(r?.pnlHistory), av0 = r?.accountValueHistory?.[0] ? +r.accountValueHistory[0][1] : null;
     return `<div><span>PnL ${l}</span><b class="${tone(pnl)}">${port ? s$(pnl) : SK(70)}</b><small>${port ? (k !== "allTime" && av0 > 0 ? pc(pnl / av0) + " · " : "") + "volume " + m$(+r?.vlm) : ""}</small></div>`;
@@ -577,20 +738,33 @@ const onTheme = () => { if (!chart) return; try { chart.applyOptions(typeof char
 mq.addEventListener ? mq.addEventListener("change", onTheme) : mq.addListener && mq.addListener(onTheme);
 
 /* ─────────── render: tabelle ─────────── */
-const TABS = [["pos", "Posizioni"], ["ord", "Ordini aperti"], ["trade", "Storico trade"], ["fund", "Funding"], ["mov", "Depositi e prelievi"]];
+const TABS = [["pos", "Posizioni", "Posizioni"], ["ord", "Ordini aperti", "Ordini"], ["trade", "Storico trade", "Storico"], ["fund", "Funding", "Funding"], ["mov", "Depositi e prelievi", "Depositi"]];
+// telefono: righe compatte (titolo, sotto, valore, nota), tutti i campi nel pannello al tocco
+function put(t, rows, C, more) {
+  if (!isMob()) { el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(rows)}</table>${more || ""}`; return; }
+  S.mRows = { cols: t.cols, rows };
+  el("wlTable").innerHTML = rows.map((r, i) => { const [a, b, c, d2, cl] = C(r);
+    return `<button class="wl-li" type="button" data-row="${i}"><b>${a}</b><span class="r"><b class="${cl || ""}">${c}</b></span><small>${b}</small><small class="r">${d2 || ""}</small></button>`; }).join("") + (more || "");
+}
+function openRow(i) {
+  const m = S.mRows, r = m && m.rows[i]; if (!r) return;
+  const strip = (h) => String(h).replace(/<small>/g, " <small>");
+  sheet(TABS.find((x) => x[0] === S.tab)[1], `<div class="list">${m.cols.map((c) => `<div class="row"><span class="k">${c.l}</span><span class="v strong ${c.c ? c.c(r) : ""}">${strip(c.f(r))}</span></div>`).join("")}</div>`);
+}
 function table(id, cols, rows, def) {
   const st = S.sort[id] || (S.sort[id] = { k: def[0], d: def[1] });
   const c = cols.find((x) => x.k === st.k) || cols[0];
   const val = (r) => { const v = c.v ? c.v(r) : r[c.k]; return v == null || (typeof v === "number" && !isFinite(v)) ? -Infinity : v; };
   rows = rows.slice().sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * st.d; });
-  return { rows, head: `<tr>${cols.map((x) => `<th class="${x.v || x.k ? "s" : ""}" data-t="${id}" data-k="${x.k}"${x.k === st.k ? ` aria-sort="${st.d > 0 ? "ascending" : "descending"}"` : ""}>${x.l}</th>`).join("")}</tr>`,
+  return { rows, cols, head: `<tr>${cols.map((x) => `<th class="${x.v || x.k ? "s" : ""}" data-t="${id}" data-k="${x.k}"${x.k === st.k ? ` aria-sort="${st.d > 0 ? "ascending" : "descending"}"` : ""}>${x.l}</th>`).join("")}</tr>`,
     body: (rs) => rs.map((r) => `<tr>${cols.map((x) => `<td class="${x.c ? x.c(r) : ""}">${x.f(r)}</td>`).join("")}</tr>`).join("") };
 }
 const empty = (t, s) => `<div class="wl-empty"><b>${t}</b>${s || ""}</div>`;
 function renderTabs() {
   const d = D();
   const n = d ? { pos: d.pos.length, ord: d.ord.length, trade: null, fund: null, mov: null } : {};
-  el("wlTabs").innerHTML = TABS.map(([k, l]) => `<button role="tab" data-tab="${k}" aria-pressed="${k === S.tab}" aria-selected="${k === S.tab}">${l}${n[k] ? `<em>${n[k]}</em>` : ""}</button>`).join("");
+  const mob = isMob();
+  el("wlTabs").innerHTML = TABS.map(([k, l, ls]) => `<button role="tab" data-tab="${k}" aria-pressed="${k === S.tab}" aria-selected="${k === S.tab}">${mob ? ls : l}${n[k] ? `<em>${n[k]}</em>` : ""}</button>`).join("");
   el("wlFilt").innerHTML = ""; el("wlTabNote").textContent = ""; el("wlTabSub").textContent = "";
   if (!d) { el("wlTable").innerHTML = `<div style="padding:14px;display:grid;gap:10px">${SK(90)}${SK(80)}${SK(85)}</div>`; return; }
   const eq = d.eq || 1;
@@ -608,7 +782,7 @@ function renderTabs() {
       { k: "liq", l: "Liquidazione", f: (p) => p.liq ? `${px(p.liq)}<small>${pc(p.liq / p.mark - 1)}</small>` : "–", v: (p) => p.liq ? Math.abs(p.liq / p.mark - 1) : null },
       { k: "fund", l: "Funding", f: (p) => s$(-p.fund), c: (p) => tone(-p.fund), v: (p) => -p.fund },
     ], d.pos, ["ntl", -1]);
-    el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(t.rows)}</table>`;
+    put(t, t.rows, (p) => [`${side(p.dir)} ${coinH(p.coin)}`, `${p.lev ?? "–"}x, entrata ${px(p.entry)}`, m$(p.ntl), `PnL <span class="${tone(p.upnl)}">${s$(p.upnl)}</span>`]);
     el("wlTabNote").textContent = "Funding: cumulato da quando la posizione è aperta (positivo = incassato). ROE = PnL sul margine della posizione. Tocca un'intestazione per ordinare.";
   } else if (S.tab === "ord") {
     if (!d.ord.length) { el("wlTable").innerHTML = empty("Nessun ordine aperto", "Nessun limit, take profit o stop nel book su nessun DEX."); return; }
@@ -622,7 +796,7 @@ function renderTabs() {
       { k: "val", l: "Valore", f: (o) => m$(o.val) },
       { k: "t", l: "Inserito", f: (o) => o.t ? `${dt(o.t)}<small>${ago(o.t)}</small>` : "–" },
     ], d.ord, ["dist", 1]);
-    el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(t.rows)}</table>`;
+    put(t, t.rows, (o) => [`${act(o.dir)} ${coinH(o.coin)}`, `${esc(o.rl)}, ${px(o.price)}`, m$(o.val), pc(o.dist, 2)]);
     el("wlTabNote").textContent = "Distanza dal prezzo attuale. Ruolo rispetto alla posizione sulla stessa coin: nuova entrata, aumenta, riduce o chiude, take profit, stop, entrata a innesco.";
   } else if (S.tab === "trade") {
     const all = byOrder(d.fills.filter((f) => !S.trCoin || f.coin === S.trCoin));
@@ -639,7 +813,9 @@ function renderTabs() {
       { k: "pnl", l: "PnL chiuso", f: (o) => Math.abs(o.pnl) > 0.005 ? s$(o.pnl) : "–", c: (o) => tone(o.pnl) },
       { k: "fee", l: "Commissioni", f: (o) => m$(o.fee) },
     ], all, ["t", -1]);
-    el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(t.rows.slice(0, S.trN))}</table>${t.rows.length > S.trN ? `<button class="wl-moreb" type="button" data-trmore>Mostra altri (${t.rows.length - S.trN})</button>` : ""}`;
+    const trN = isMob() ? Math.min(S.trN, S.trN === 120 ? 30 : S.trN) : S.trN;
+    put(t, t.rows.slice(0, trN), (o) => [`${coinH(o.coin)} <span class="${o.side > 0 ? "pos" : "neg"}" style="font-weight:500">${esc(DIR_IT[o.dirTxt] || o.dirTxt || (o.side > 0 ? "Compra" : "Vende"))}</span>`, `${dt(o.t)}, ${px(o.px)}`, m$(o.val),
+      Math.abs(o.pnl) > 0.005 ? `<span class="${tone(o.pnl)}">${s$(o.pnl)}</span>` : ""], t.rows.length > trN ? `<button class="wl-moreb" type="button" data-trmore>Mostra altri (${t.rows.length - trN})</button>` : "");
     const span = d.fills.length ? d.fills[d.fills.length - 1].time - d.fills[0].time : 0;
     el("wlTabSub").textContent = `${all.length} ordini eseguiti`;
     el("wlTabNote").textContent = `Fill raggruppati per ordine (stesso id): ultimi ${d.fills.length} fill, ${dur(span)} di storico. Il PnL chiuso è al lordo delle commissioni.`;
@@ -658,7 +834,7 @@ function renderTabs() {
       { k: "avg", l: "Tasso medio /h", f: (o) => pc(o.avg, 4) },
       { k: "lastRate", l: "Ultimo tasso", f: (o) => `${pc(o.lastRate, 4)}<small>${o.last ? ago(o.last) : ""}</small>` },
     ], rows, ["usd", 1]);
-    el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(t.rows)}</table>`;
+    put(t, t.rows, (o) => [coinH(o.coin), `${o.n} pagamenti, ultimo ${pc(o.lastRate, 4)}/h`, s$(o.usd), "", tone(o.usd)]);
     el("wlTabNote").textContent = `Funding orario degli ultimi 7 giorni per coin: positivo = incassato, negativo = pagato. Totale ${s$(tot)}.`;
   } else if (S.tab === "mov") {
     if (!d.ledger) { el("wlTable").innerHTML = `<div style="padding:14px;display:grid;gap:10px">${SK(80)}${SK(60)}</div>`; loadLedger(S.sel); return; }
@@ -680,7 +856,8 @@ function renderTabs() {
       { k: "amt", l: "Importo", f: (r) => r.internal ? m$(r.amt) : s$(r.amt), c: (r) => r.internal ? "" : tone(r.amt) },
       { k: "det", l: "Dettaglio", f: (r) => `<span class="mut">${esc(r.det)}</span>` },
     ], rows, ["t", -1]);
-    el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(t.rows.slice(0, S.movN))}</table>${t.rows.length > S.movN ? `<button class="wl-moreb" type="button" data-movmore>Mostra altri (${t.rows.length - S.movN})</button>` : ""}`;
+    put(t, t.rows.slice(0, S.movN), (r) => [esc(r.label), `${dt(r.t)}${r.det ? ", " + esc(r.det) : ""}`, r.internal ? m$(r.amt) : s$(r.amt), "", r.internal ? "" : tone(r.amt)],
+      t.rows.length > S.movN ? `<button class="wl-moreb" type="button" data-movmore>Mostra altri (${t.rows.length - S.movN})</button>` : "");
     el("wlTabNote").textContent = "Depositi, prelievi e trasferimenti degli ultimi 30 giorni (registro non-funding di Hyperliquid). Spiegano salti del valore del conto che non sono PnL.";
   }
 }
@@ -694,76 +871,49 @@ async function loadLedger(a) {
 
 /* ─────────── render: ultime mosse ─────────── */
 function renderAct() {
-  const d = D(), w = W();
+  const d = D();
   let evs = null, src = "";
-  const deskEv = S.desk && (S.desk.eventi || []).filter((e) => e.w === w.a);
-  if (deskEv && deskEv.length) { evs = deskEv.map((e) => ({ coin: e.coin, start: e.start, end: e.end, t0: e.t0, t1: e.t1, type: e.type, vwap: e.vwap, ntl: e.ntl, dval: Math.abs(e.end - e.start) * e.vwap, pnl: e.pnl, n: e.nf })); src = "dal Worker Whale Desk"; }
-  else if (d) { const mv = movesOf(d.fills), big = mv.filter((e) => e.dval >= 10000 || ((e.type === "APERTURA" || e.type === "CHIUSURA" || e.type === "INVERSIONE") && Math.max(e.ntl, Math.abs(e.start) * e.vwap) >= 10000));
+  if (d) { const mv = movesOf(d.fills), big = mv.filter((e) => e.dval >= 10000 || ((e.type === "APERTURA" || e.type === "CHIUSURA" || e.type === "INVERSIONE") && Math.max(e.ntl, Math.abs(e.start) * e.vwap) >= 10000));
     evs = (big.length >= 3 ? big : mv).slice().sort((x, y) => y.t1 - x.t1).slice(0, 40); src = big.length >= 3 ? "dai fill · mosse da 10k $ in su" : "dai fill"; }
   el("wlActSub").textContent = src;
   if (!evs) { el("wlAct").innerHTML = SK(80) + SK(60); return; }
   if (!evs.length) { el("wlAct").innerHTML = `<p class="note" style="margin:0">Nessuna mossa negli ultimi fill.</p>`; return; }
-  el("wlAct").innerHTML = evs.slice(0, 15).map((e) => { const k = EVC[e.type] || ["", ""], delta = e.end - e.start;
+  el("wlAct").innerHTML = evs.slice(0, isMob() ? 6 : 15).map((e) => { const k = EVC[e.type] || ["", ""], delta = e.end - e.start;
     const sub = e.type === "CHIUSURA" ? `${qty(e.start)} chiusi @ ${px(e.vwap)}${Math.abs(e.pnl) >= 1 ? ` · PnL ${s$(e.pnl)}` : ""}`
       : `${delta > 0 ? "+" : "−"}${qty(delta)} @ ${px(e.vwap)} → ${posTxt(e.end, e.coin)}${(e.type === "RIDUZIONE" || e.type === "INVERSIONE") && Math.abs(e.pnl) >= 1 ? ` · PnL ${s$(e.pnl)}` : ""}`;
     return `<div class="ev ${k[0]}"><span class="dot"></span><span class="what"><b>${esc(evTitle(e))}${dexOf(e.coin) ? `<span class="dx">${esc(dexOf(e.coin))}</span>` : ""}</b><small>${sub}${e.n > 1 ? ` · ${e.n} fill` : ""}</small></span>
       <span class="px">${m$(e.dval)}<small>${hm(e.t1)} · ${ago(e.t1)}</small></span></div>`; }).join("");
 }
 
-/* ─────────── Whale Desk /state ─────────── */
-async function loadDesk() {
-  if (Date.now() - S.deskAt < DESK_EVERY - 5e3) return;
-  S.deskAt = Date.now();
-  try {
-    const ac = new AbortController(), to = setTimeout(() => ac.abort(), 8000);
-    const r = await fetch(DESK, { cache: "no-store", signal: ac.signal }).finally(() => clearTimeout(to));
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const j = await r.json(); if (!j || !Array.isArray(j.wallet)) throw new Error("formato inatteso");
-    S.desk = j; S.deskErr = null; (j.eventi || []).sort((x, y) => y.t1 - x.t1);
-  } catch (e) { S.deskErr = e.name === "AbortError" ? "timeout" : String(e.message || e); }
-  if (S.visible) { renderAlert(); renderAct(); }
-}
-
 /* ─────────── alert ─────────── */
-const AL = Object.assign({ on: false, min: 50000, wallets: WL.filter((w) => w.g === "S").map((w) => w.a) }, store.get("radarWl.alert", {}));
+const AL = Object.assign({ on: false, min: 50000, wallets: WL.map((w) => w.a) }, store.get("radarWl.alert", {}));
 const saveAL = () => store.set("radarWl.alert", AL);
 const canNotify = () => typeof Notification === "function";
-function renderAlert() {
-  const dk = S.desk, perm = canNotify() ? Notification.permission : "n/d";
-  const deskSt = dk ? `<span class="wl-st ok">attivo · ${dk.pronto ? "pronto" : "in avvio"}</span>` : S.deskErr ? `<span class="wl-st ko">non raggiungibile</span>` : `<span class="wl-st">verifica…</span>`;
-  const sig = dk ? (dk.segnali || []).slice(0, 4) : [];
-  const lastEv = dk && (dk.eventi || [])[0];
-  el("wlAlSub").textContent = AL.on && perm === "granted" ? "notifiche del browser attive" : "";
-  el("wlAlert").innerHTML = `
-  <div class="card"><h3>Telegram · sentinella <span class="wl-st na">fuori da questa pagina</span></h3>
-    <p>Il monitor di bot.andreagalanti.it segue <b>Principale, Simile 1 e Simile 2</b> e manda su Telegram le <b>entrate da 50.000 $ in su</b>, con 1–3 minuti di ritardo. Aumenti e riduzioni della size non avvisano; gli ordini in attesa nemmeno. Il suo stato non è leggibile da qui (il file dati non consente l'accesso da altri siti).</p></div>
-  ${SC() && SC().picks.length ? `<div class="card"><h3>Telegram · balene del giorno <span class="wl-st ok">ogni 5 minuti</span></h3>
-    <p>Lo stesso controllo della sentinella (GitHub Actions, radar/wallets.py) segue anche <b>${SC().picks.map((p) => esc(p.name)).join(", ")}</b>: posizioni nuove, chiuse o girate e ordini grandi. Quando la selezione cambia arriva un messaggio con le nuove 3 e il perché.</p></div>` : ""}
-  <div class="card"><h3>Telegram · Whale Desk ${deskSt}</h3>
-    <p>Worker Cloudflare, gira ogni minuto anche a pagina chiusa. Segue Cluster-1/2/3, Petroliere, Rotatore, Ribassista e Inversore (non i 3 della sentinella).</p>
-    <ul>
-      <li><b>Ogni mossa</b> (apertura, aumento, riduzione, chiusura, inversione) di ogni wallet: fill della stessa coin entro 2 minuti in un solo messaggio, da 1.000 $ in su, con leva, PnL e durata.</li>
-      <li><b>Cluster confermato</b>: 2 dei 3 Cluster fanno la stessa mossa sulla stessa coin entro 30 minuti → segnale di copy (metà leva, stop −10% con pre-alert a −5%).</li>
-      <li><b>Copy diretto</b>: Petroliere o Rotatore aprono da 1M $ in su → segnale di copy (un quarto della leva, stop −20%).</li>
-      <li><b>Consenso</b> (Cluster e un altro wallet nella stessa direzione) e <b>conflitto</b> (Cluster contro il Ribassista), su posizioni da 10.000 $.</li>
-      <li><b>Inversione di regime</b>: Ribassista o Inversore chiudono o girano una posizione BTC/ETH aperta da oltre 30 giorni.</li>
-      <li><b>Rischio</b>: equity di Cluster o Copy −10% in 24 ore, funding del copy oltre lo 0,5%; report «salute dei wallet» il lunedì alle 08:00 UTC.</li>
-    </ul>
-    ${dk ? `<p>Ultimo stato ${ago(dk.t)} · ${(dk.eventi || []).length} eventi in memoria${lastEv ? ` · ultimo: ${esc(lastEv.n)} ${esc(evTitle(lastEv))} ${ago(lastEv.t1)}` : ""}.</p>
-      ${sig.length ? `<div class="list">${sig.map((s) => `<div class="row"><span class="k">${esc(s.txt || s.type)}<small>${esc(s.type)} · ${s.t ? ago(s.t) : ""}</small></span></div>`).join("")}</div>` : ""}`
-      : S.deskErr ? `<p>Lo stato pubblico (/state) non risponde ora (${esc(S.deskErr)}): se il Worker è fermo non arrivano nemmeno gli alert Telegram.</p>` : ""}
-  </div>
+function alertHtml() {
+  const perm = canNotify() ? Notification.permission : "n/d";
+  return `
+  <div class="card"><h3>Telegram <span class="wl-st ok">ogni 5 minuti</span></h3>
+    <p>Il controllo su GitHub (radar/wallets.py) segue <b>${WL.map((w) => esc(w.n)).join(", ")}</b>: posizioni nuove, chiuse o girate, variazioni di size da 50.000 $ e almeno il 25%, ordini nuovi da 100.000 $. Non avvisa a ogni fill. Un wallet appena entrato viene solo registrato al primo giro.</p>
+    <p>Quando lo scout trova un candidato migliore arriva un messaggio con il confronto: approvi tu con /sostituisci.</p></div>
   <div class="card"><h3>Notifiche in questo browser <span class="wl-st ${AL.on && perm === "granted" ? "ok" : perm === "denied" ? "ko" : ""}">${AL.on && perm === "granted" ? "attive" : perm === "denied" ? "bloccate" : "spente"}</span></h3>
-    <p>Mentre questa pagina è aperta (anche su un'altra sezione) controlla ogni minuto i wallet scelti e avvisa per <b>nuovi fill</b> e <b>nuovi ordini nel book</b> (le prossime mosse), sopra la soglia. Funziona solo a pagina aperta; su iPhone serve aggiungere il sito alla schermata Home.</p>
+    <p>Mentre la pagina è aperta controlla ogni minuto i wallet scelti: <b>nuovi fill</b> e <b>nuovi ordini</b> sopra la soglia. Su iPhone serve aggiungere il sito alla schermata Home.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <button class="wl-btn ${AL.on ? "on" : ""}" type="button" data-al="toggle">${AL.on ? "Disattiva" : "Attiva notifiche"}</button>
       <button class="wl-btn" type="button" data-al="test">Prova</button>
       <div class="seg" role="group" aria-label="Soglia">${[10000, 50000, 250000, 1000000].map((v) => `<button type="button" data-almin="${v}" aria-pressed="${AL.min === v}">${m$(v)}</button>`).join("")}</div>
     </div>
-    ${!canNotify() ? `<p class="neg">Questo browser non supporta le notifiche: gli avvisi compaiono solo dentro la pagina.</p>` : perm === "denied" ? `<p class="neg">Le notifiche sono bloccate nelle impostazioni del sito: gli avvisi compaiono solo dentro la pagina.</p>` : ""}
-    <div class="list">${WL.map((w) => `<label class="row"><input type="checkbox" data-alw="${w.a}"${AL.wallets.includes(w.a) ? " checked" : ""}><span class="k">${esc(w.n)}<small>${esc(GROUPS[w.g])}</small></span></label>`).join("")}</div>
-    <p id="wlAlLog">${watch.last ? `Ultimo controllo ${ago(watch.last)}${watch.err ? " · " + esc(watch.err) : ""}.` : ""}</p>
+    ${!canNotify() ? `<p class="neg">Questo browser non supporta le notifiche: gli avvisi compaiono solo dentro la pagina.</p>` : perm === "denied" ? `<p class="neg">Le notifiche sono bloccate nelle impostazioni del sito.</p>` : ""}
+    <div class="list">${WL.map((w) => `<label class="row"><input type="checkbox" data-alw="${w.a}"${AL.wallets.includes(w.a) ? " checked" : ""}><span class="k">${esc(w.n)}<small>Posto ${w.slot}</small></span></label>`).join("")}</div>
+    <p class="wlAlLog">${watch.last ? `Ultimo controllo ${ago(watch.last)}${watch.err ? ", " + esc(watch.err) : ""}.` : ""}</p>
   </div>`;
+}
+function renderAlert() {
+  const perm = canNotify() ? Notification.permission : "n/d", on = AL.on && perm === "granted";
+  el("wlAlSub").textContent = on ? "notifiche del browser attive" : "";
+  el("wlAlert").innerHTML = alertHtml();
+  el("wlAlMini").innerHTML = `<span><b>Telegram ogni 5 minuti</b><small>Notifiche del browser ${on ? "attive" : "spente"}</small></span><span class="more">Imposta</span>`;
+  const sh = document.getElementById("wlSheet");
+  if (sh && sh.dataset.k === "alert" && sh.isConnected) sh.innerHTML = `<div class="wl-alerts">${alertHtml()}</div>`;
 }
 function toast(title, body) {
   const box = el("wlToast"); if (!box || document.hidden) return;
@@ -806,7 +956,7 @@ async function watchTick() {
     } catch (e) { watch.err = `${w.n}: ${e.message || e}`; }
   }
   watch.last = Date.now();
-  const lg = el("wlAlLog"); if (lg) lg.textContent = `Ultimo controllo ${ago(watch.last)}${watch.err ? " · " + watch.err : ""}.`;
+  document.querySelectorAll(".wlAlLog").forEach((lg) => { lg.textContent = `Ultimo controllo ${ago(watch.last)}${watch.err ? ", " + watch.err : ""}.`; });
 }
 function watchStart() {
   clearInterval(watch.timer); watch.timer = 0;
