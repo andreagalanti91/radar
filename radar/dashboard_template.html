@@ -415,6 +415,70 @@ body.noscroll{overflow:hidden}
 .app.w2 .only-v2,.app:not(.w2) .only-w2{display:none!important}
 .labSec{display:none!important}
 .app.w2 .w2top{order:-1}
+/* ---- telefono (≤ 700 px): "un colpo d'occhio per schermata". .mOnly esiste solo sul telefono, .mHide solo da 701 px in su
+   (dentro un pannello, .inSheet, torna visibile). Il desktop non cambia. */
+@media (min-width:701px){.mOnly{display:none!important}}
+.lvRows{display:grid;margin-top:10px}
+.lvRow{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.lvRow:first-child{border-top:0}
+.lvRow i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.lvRow span{font-size:.86rem;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvRow b{font:600 .92rem var(--font)} .lvRow em{font-style:normal;font-size:.8rem;color:var(--label2);min-width:52px;text-align:right}
+.lvNow{display:flex;align-items:center;gap:8px;padding:6px 0;font:600 .78rem var(--font);color:var(--label);font-variant-numeric:tabular-nums}
+.lvNow::after{content:"";flex:1;height:2px;border-radius:1px;background:var(--label)}
+.tapHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.tapHead b{font:600 1rem var(--font)}
+.tdRow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;margin-top:10px}
+.tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
+.tdRow b{font:600 .9rem/1.35 var(--font);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tdRow small{display:block;color:var(--label2);font-size:.74rem;margin-top:2px}
+/* Statistiche W2 sul telefono: riassunto, anni a barre, trade come lista */
+.wkSumM{display:grid;gap:12px}
+.wkSumM .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.wkSumM .kpi{font:700 2.1rem/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.wkSumM .kpi small{display:block;font:500 .8rem var(--font);letter-spacing:0;color:var(--label2);margin-top:6px}
+.wkSumM .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.wkSumM .facts div{display:grid;gap:1px;padding:9px 10px;border-radius:12px;background:var(--raise)}
+.wkSumM .facts span{font-size:.72rem;color:var(--label2)} .wkSumM .facts b{font:600 .98rem var(--font);font-variant-numeric:tabular-nums}
+.yBars{display:grid;gap:2px}
+.yBar{display:grid;grid-template-columns:40px minmax(0,1fr) 68px;gap:10px;align-items:center;min-height:34px;font-variant-numeric:tabular-nums}
+.yBar span{font-size:.86rem;color:var(--label2)} .yBar b{font:600 .88rem var(--font);text-align:right}
+.yBar .tr{position:relative;height:10px;border-radius:5px;background:var(--raise)}
+.yBar .tr i{position:absolute;top:0;bottom:0;border-radius:5px}
+.trM{display:grid}
+.trM button{display:grid;grid-template-columns:minmax(0,1fr) auto auto 12px;gap:10px;align-items:center;width:100%;min-height:52px;padding:10px 16px;border:0;border-top:1px solid var(--line);background:none;color:var(--label);font:inherit;text-align:left;cursor:pointer}
+.trM button:first-child{border-top:0}
+.trM .d b{font:600 .92rem var(--font);display:block} .trM .d small{font-size:.74rem;color:var(--label2)}
+.trM .sd{font:600 .7rem var(--font);padding:3px 8px;border-radius:999px}
+.trM .sd.long{color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)} .trM .sd.short{color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent)}
+.trM .r{font:600 .95rem var(--font);font-variant-numeric:tabular-nums;min-width:62px;text-align:right}
+.trM .ch{color:var(--label3);font-size:1.1rem}
+.kvList .row{min-height:44px}
+@media (max-width:700px){
+  .mHide:not(.inSheet){display:none!important}
+  .hero>.cap,#sub{display:none}
+  #wkSec>.sh{display:none}
+  .wkHero{gap:12px}
+  .wkHero>.wkTop{display:none}
+  .wkBig{font-size:2.6rem}
+  .track{height:84px;margin:0 8px}
+  .track .lab.dn{top:62px}
+  .wkMore small{display:none}
+  #wkLeg>span:not(.hov){display:none}
+  #wkLeg{display:block;margin-bottom:4px}
+  #wkLeg:not(.act){display:none}
+  #wkLeg .hov{display:block;margin-left:0;font-size:.72rem;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #wkChartCard .wkTop>b{display:none}
+  #wkChartCard .wkTools{margin-left:0;width:100%;justify-content:space-between}
+  .wkMacdCap{display:none!important}
+  #wkChart{height:340px} #wkMacd{height:80px}
+  #todaySec>.sh{display:none}
+  .app:has(#v-oggi:not([hidden]))>footer{display:none}
+  #wkStatSec>.sh small,#wkStatSec>.foot{display:none}
+  #simFoot,#v-simulatore .sh small{display:none}
+  #simTrades td:first-child,#simTrades th:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
+  #simTrades td:first-child{background:color-mix(in srgb,var(--label) 4%,var(--card))}
+}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
@@ -466,20 +530,21 @@ body.noscroll{overflow:hidden}
       <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
         <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
           <div class="wkTools"><div class="seg" id="wkRange" role="group" aria-label="Periodo"><button data-v="26">6M</button><button data-v="52">1A</button><button data-v="104">2A</button><button data-v="0" aria-pressed="true">Tutto</button></div>
-          <button id="wkFull" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
+          <button id="wkLegB" class="mOnly" type="button">Legenda</button><button id="wkFull" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
         <div class="wkLeg" id="wkLeg"></div>
         <div id="wkChart" class="chart" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso, trailing e supporti/resistenze"></div>
-        <div class="wkLeg" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span><span class="hov" style="color:var(--label3)">trascina per scorrere · pizzica o rotella per zoom</span></div>
+        <div class="wkLeg wkMacdCap" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span><span class="hov" style="color:var(--label3)">trascina per scorrere · pizzica o rotella per zoom</span></div>
         <div id="wkMacd" class="chart" role="img" aria-label="Istogramma MACD settimanale 8/21/5"></div>
       </div>
-      <div class="card sr" id="srCard" style="margin-top:12px" hidden>
+      <button type="button" class="card tapCard mOnly" id="lvCard" style="margin-top:12px" hidden aria-haspopup="dialog"></button>
+      <div class="card sr mHide" id="srCard" style="margin-top:12px" hidden>
         <div class="wkTop"><b style="font:600 1rem var(--font)">Supporti e resistenze</b><span class="cap" id="srSub"></span></div>
         <div class="srMap" id="srMap" role="img" aria-label="Mappa dei supporti e resistenze rispetto al prezzo"></div>
         <div class="srTop" id="srTop"></div>
         <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
           <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
       </div>
-      <a class="card lqCard" id="lqCard" href="#liquidazioni" style="margin-top:12px" hidden>
+      <a class="card lqCard mHide" id="lqCard" href="#liquidazioni" style="margin-top:12px" hidden>
         <div class="wkTop"><b style="font:600 1rem var(--font)">Liquidazioni vicine</b><span class="cap" id="lqCardSub">stima · Binance + OKX</span></div>
         <div class="srTop" id="lqCardTop" style="margin-top:10px"></div>
         <div class="wkTop" style="margin-top:10px;align-items:center"><span class="foot" id="lqCardNote" style="margin:0"></span><span class="more">Mappa completa →</span></div>
@@ -505,7 +570,8 @@ body.noscroll{overflow:hidden}
 
     <div class="section" id="todaySec" hidden>
       <div class="sh">Oggi nelle notizie <small id="todaySub"></small></div>
-      <div class="todayN" id="todayN"></div>
+      <button type="button" class="card tapCard mOnly" id="todayCard" aria-haspopup="dialog"></button>
+      <div class="todayN mHide" id="todayN"></div>
     </div>
 
     <div class="section" hidden>
@@ -653,12 +719,16 @@ body.noscroll{overflow:hidden}
 
     <div class="section only-w2 w2top" id="wkStatSec" hidden>
       <div class="sh">Settimanale W2 <small id="wkStatSub"></small></div>
-      <div class="cols">
+      <div class="card wkSumM mOnly" id="wkSumM"></div>
+      <div class="card mOnly" id="wkYearsM"><div class="tapHead" style="margin-bottom:8px"><b>Anno per anno</b><small class="note" id="wkYearsMLev"></small></div><div class="yBars" id="wkYearsMB"></div></div>
+      <div class="sh mOnly" style="margin-top:6px">Tutti i trade <small id="wkTrMN"></small></div>
+      <div class="list mOnly"><div class="trM" id="wkTrM"></div></div>
+      <div class="cols mHide" id="wkStatTabs">
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
       </div>
-      <div class="card" style="padding:4px 6px;margin-top:12px"><div class="scroll" style="max-height:480px;overflow-y:auto"><table class="grid" id="wkTr"></table></div></div>
-      <p class="foot">Simulazione giornaliera sulle candele settimanali chiuse: long in spot 1x (0,1%/lato), short in perp con tetto di rischio 25% allo stop (0,05%/lato e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
+      <div class="card mHide" style="padding:4px 6px;margin-top:12px"><div class="scroll" style="max-height:480px;overflow-y:auto"><table class="grid" id="wkTr"></table></div></div>
+      <p class="foot" id="wkStatFoot">Simulazione giornaliera sulle candele settimanali chiuse: long in spot 1x (0,1%/lato), short in perp con tetto di rischio 25% allo stop (0,05%/lato e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
     </div>
   </div>
 
@@ -756,14 +826,24 @@ const $ = id => document.getElementById(id);
 // Pannello generico: openSheet(titolo, html | nodo, onClose). Su telefono sale dal basso (CSS .dlg). Chiusura: pulsante, tap fuori, Esc.
 window.openSheet = (title, content, onClose) => {
   const d = $("sheet"), b = $("sheetB"); $("sheetT").textContent = title;
+  if (d._onClose) { const f = d._onClose; d._onClose = null; try { f(); } catch (_) {} }   // pannello già aperto: rimette a posto il contenuto precedente
   b.innerHTML = ""; if (typeof content === "string") b.innerHTML = content; else if (content) b.appendChild(content);
   d._onClose = onClose || null; if (d.showModal) { if (!d.open) d.showModal(); } else d.setAttribute("open", ""); b.scrollTop = 0; return b;
 };
 window.closeSheet = () => { const d = $("sheet"); if (d.close) d.close(); else d.removeAttribute("open"); };
 window.isMobile = () => matchMedia("(max-width:700px)").matches;
 document.addEventListener("DOMContentLoaded", () => {});
-setTimeout(() => { const d = $("sheet"); if (!d) return; $("sheetX").onclick = closeSheet; d.addEventListener("click", e => { if (e.target === d) closeSheet(); });
-  d.addEventListener("close", () => { if (d._onClose) try { d._onClose(); } catch (_) {} }); }, 0);
+setTimeout(() => { const d = $("sheet"); if (!d) return; $("sheetX").onclick = closeSheet;
+  document.body.appendChild(d);   // il pannello è dichiarato dentro Oggi: lo porto nel body perché funzioni anche dalle altre viste (Oggi nascosta) d.addEventListener("click", e => { if (e.target === d) closeSheet(); });
+  d.addEventListener("close", () => { const f = d._onClose; d._onClose = null; if (f) try { f(); } catch (_) {} }); }, 0);
+// telefono: sposta blocchi già disegnati nella pagina dentro il pannello e li rimette al loro posto alla chiusura
+// (restano vivi: si aggiornano col prezzo live come in pagina). .inSheet li rende visibili anche se .mHide.
+window.sheetNodes = (title, nodes) => {
+  const wrap = document.createElement("div"); wrap.style.cssText = "display:grid;gap:12px;min-width:0";
+  const back = nodes.filter(Boolean).filter(n => n.parentNode || (wrap.appendChild(n), false)).map(n => { const ph = document.createComment("sheet"); n.parentNode.insertBefore(ph, n);
+    const mt = n.style.marginTop; n.style.marginTop = "0"; n.classList.add("inSheet"); wrap.appendChild(n); return [n, ph, mt]; });
+  openSheet(title, wrap, () => back.forEach(([n, ph, mt]) => { n.classList.remove("inSheet"); n.style.marginTop = mt; ph.replaceWith(n); }));
+};
 const usd = x => x == null ? "–" : "$" + Math.round(x).toLocaleString("it-IT");
 const pct = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -796,6 +876,8 @@ const REF = window.REF = (() => {
 })();
 const REF_SUBS = []; let refT = 0, refTimer = null;
 window.onRef = f => REF_SUBS.push(f);
+// passaggio telefono ↔ desktop (rotazione, finestra ridimensionata): ridisegna i blocchi che hanno una versione compatta
+matchMedia("(max-width:700px)").addEventListener("change", () => REF_SUBS.forEach(f => { try { f(REF); } catch (e) { console.error(e); } }));
 function refNotify() {   // al massimo ogni 5 s
   const go = () => { refT = Date.now(); refTimer = null; REF_SUBS.forEach(f => { try { f(REF); } catch (e) { console.error(e); } }); };
   if (Date.now() - refT >= 5000) go(); else if (!refTimer) refTimer = setTimeout(go, 5000 - (Date.now() - refT));
@@ -1060,7 +1142,8 @@ renderTrades();
     const lo = Math.min(W.trail, W.entry_px, px, best), hi = Math.max(W.trail, W.entry_px, px, best);
     const pad = (hi - lo) * 0.08, L = lo - pad, H = hi + pad, X = v => ((v - L) / (H - L) * 100).toFixed(2) + "%";
     const cush = (W.trail / px - 1) * 100;   // movimento dal prezzo di riferimento al trailing (− per i long, + per gli short)
-    const pts = [["stop", "Trailing", W.trail], ["entry", "Ingresso", W.entry_px], ["best", sg > 0 ? "Massimo" : "Minimo", best], ["now", "Ora", px]];
+    const M = isMobile();   // telefono: solo trailing, ingresso e ora; una riga sotto la traccia
+    const pts = [["stop", "Trailing", W.trail], ["entry", "Ingresso", W.entry_px], ["best", sg > 0 ? "Massimo" : "Minimo", best], ["now", "Ora", px]].filter(q => !M || q[0] !== "best");
     // righe delle etichette: "Ora" sempre sopra; le altre sopra se lontane da quelle già sopra (≥ 30%), altrimenti sotto
     const xs = v => (v - L) / (H - L) * 100, up = [xs(px)], row = {};
     pts.filter(q => q[0] !== "now").sort((a, b) => xs(a[2]) - xs(b[2])).forEach(q => { const x = xs(q[2]);
@@ -1070,6 +1153,12 @@ renderTrades();
       return `<div class="lab ${row[q[0]]}${al}${q[0] === "now" ? " now" : ""}" style="left:${x.toFixed(2)}%">${row[q[0]] === "up" ? `<em>${q[1]}</em><b>${usd(q[2])}</b>` : `<b>${usd(q[2])}</b><em>${q[1]}</em>`}</div>`; };
     const dot = q => `<i class="pt ${q[0]}" style="left:${xs(q[2]).toFixed(2)}%"></i>`;
     const a = Math.min(px, W.entry_px), b = Math.max(px, W.entry_px);
+    if (M) return `<div class="wkBig">${pc1(move)}<small>${W.side === "long" ? "Long" : "Short"} dall'ingresso a ${usd(W.entry_px)} · ${weeksIn} settimane</small></div>
+      <div class="track" role="img" aria-label="Trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(px)}">
+        <div class="rail"></div><div class="risk" style="${sg > 0 ? `left:0;width:${X(W.trail)}` : `left:${X(W.trail)};right:0`}"></div>
+        <div class="${move >= 0 ? "gain" : "loss"}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></div>
+        ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
+      <div class="wkCush"><span>Trailing a <b>${pc1(cush)}</b> dal prezzo${W.trail_usd >= 0 ? ", in guadagno" : ""}</span></div>`;
     return `<div class="wkBig">${pc1(move)}<small>dall'ingresso a ${usd(W.entry_px)} · su ${usd(W.notional)} oggi <span class="nw">${usd(val)} (${(diff >= 0 ? "+" : "−") + usd(Math.abs(diff))})</span></small></div>
       <div class="track" role="img" aria-label="Percorso del prezzo: trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(px)}, ${sg > 0 ? "massimo" : "minimo"} ${usd(best)}">
         <div class="rail"></div><div class="risk" style="${sg > 0 ? `left:0;width:${X(W.trail)}` : `left:${X(W.trail)};right:0`}"></div>
@@ -1149,6 +1238,20 @@ renderTrades();
       $("lqCardNote").textContent = `Entro ±5%: ${Math.abs(im) < 15 ? "in equilibrio" : im > 0 ? "più short sopra" : "più long sotto"} (${(im > 0 ? "+" : im < 0 ? "−" : "") + Math.abs(im).toFixed(0) + "%"}). Contesto, non segnale.`; };
     drawIm(); window.onRef(drawIm); window.addEventListener("lq:clusters", drawIm);
   }
+  // --- telefono: S/R e liquidazioni in UNA scheda "Livelli vicini" (il più vicino sopra e sotto per tipo); tocco → pannello con le schede complete
+  if ((LV && (LV.supports.length || LV.resistances.length)) || (LQ && (LQ.nearest_above || LQ.nearest_below))) {
+    const drawLv = () => {
+      const it = [], px = REF.px;
+      if (LV) { if (LV.resistances[0]) it.push(["Resistenza", LV.resistances[0].price, "--red"]); if (LV.supports[0]) it.push(["Supporto", LV.supports[0].price, "--green"]); }
+      if (LQ) { if (LQ.nearest_above) it.push(["Liquidazioni short", LQ.nearest_above.price, "--teal"]); if (LQ.nearest_below) it.push(["Liquidazioni long", LQ.nearest_below.price, "--violet"]); }
+      it.sort((a, b) => b[1] - a[1]);
+      const row = q => `<div class="lvRow" style="--c:var(${q[2]})"><i></i><span>${q[0]}</span><b>${usd(q[1])}</b><em>${pc1((q[1] / px - 1) * 100)}</em></div>`;
+      $("lvCard").innerHTML = `<div class="tapHead"><b>Livelli vicini</b><span class="more">Dettagli ›</span></div><div class="lvRows">` +
+        it.filter(q => q[1] >= px).map(row).join("") + `<div class="lvNow">ora ${usd(px)}</div>` + it.filter(q => q[1] < px).map(row).join("") + `</div>`;
+    };
+    $("lvCard").hidden = false; drawLv(); window.onRef(drawLv);
+    $("lvCard").onclick = () => { const d = $("srCard").querySelector(".srAll"); if (d) d.open = true; sheetNodes("Livelli vicini", [$("srCard"), $("lqCard")]); };
+  }
   // --- condizioni d'ingresso long (e filtro MACD)
   const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
   const c = W.chart, lastC = c.c[c.c.length - 1];
@@ -1212,11 +1315,12 @@ renderTrades();
       const on = ch.timeScale().width() / Math.max(1, r.to - r.from) >= 4;
       if (on !== mkTxt) { mkTxt = on; cs.setMarkers(on ? mks : mks.map(m => ({ ...m, text: "" }))); } };
     setMk(); ch.timeScale().subscribeVisibleLogicalRangeChange(setMk);
+    const MB = isMobile(), nLv = MB ? 1 : 2;   // telefono: meno linee, etichette dell'asse leggibili
     if (R.levels) {   // S/R più vicini sul grafico: 2 resistenze e 2 supporti, linee sottili punteggiate
-      R.levels.resistances.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
-      R.levels.supports.slice(0, 2).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
+      R.levels.resistances.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
+      R.levels.supports.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
     }
-    if (R.liqmap) {   // cluster di liquidazione stimati più vicini (significativi): 2 sopra e 2 sotto, linee punteggiate viola/azzurre
+    if (R.liqmap && !MB) {   // cluster di liquidazione stimati più vicini (significativi): 2 sopra e 2 sotto, linee punteggiate viola/azzurre
       (R.liqmap.above || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--teal"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq S" }));
       (R.liqmap.below || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--violet"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq L" }));
     }
@@ -1230,19 +1334,23 @@ renderTrades();
     ch.timeScale().fitContent(); mc.timeScale().fitContent();
     ch.timeScale().applyOptions({ rightOffset: 10 });
     ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
-    const leg = (i) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
+    const leg = (i, noHov) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
       `<span style="color:var(--label2)">▲▼ ingresso · ● uscita</span>` + (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
       (R.levels ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
-      (R.liqmap ? `<span style="color:var(--violet)"><i class="dash" style="background:var(--violet)"></i><span style="color:var(--label2)">liquidazioni stimate (Liq L long · Liq S short)</span></span>` : "") +
-      `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}` + (ev[T[i]] ? " · " + ev[T[i]] : "")}</span>`;
+      (R.liqmap && !MB ? `<span style="color:var(--violet)"><i class="dash" style="background:var(--violet)"></i><span style="color:var(--label2)">liquidazioni stimate (Liq L long · Liq S short)</span></span>` : "") +
+      (noHov ? "" : `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}` + (ev[T[i]] ? " · " + ev[T[i]] : "")}</span>`);
     $("wkLeg").innerHTML = leg(T.length - 1);
     const setRange = n => { const L = T.length; if (!n) { ch.timeScale().fitContent(); return; } ch.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - n) - 0.5, to: L - 0.5 + Math.max(4, n / 9) }); };
-    seg("wkRange", v => setRange(+v));
+    const rg = seg("wkRange", v => setRange(+v));
+    if (MB) { rg.set(52); setRange(52); }   // telefono: si parte dall'ultimo anno
+    $("wkLegB").onclick = () => openSheet("Legenda del grafico", `<div class="wkLeg" style="display:grid;gap:10px;font-size:.86rem">${leg(null, true)}<span><i style="background:var(--s-ema)"></i>MACD 8/21/5: barre verdi sopra il segnale, rosse sotto</span></div>
+      <p class="foot" style="margin:0">Trascina per scorrere, pizzica per lo zoom, tocca una candela per leggerne i valori. Sul telefono il grafico mostra solo la resistenza e il supporto più vicini; le liquidazioni sono nella scheda Livelli vicini.</p>`);
     $("wkFull").onclick = () => { const on = !$("wkChartCard").classList.contains("full");
       $("wkChartCard").classList.toggle("full", on); document.body.classList.toggle("noscroll", on);
-      $("wkFull").setAttribute("aria-pressed", on); $("wkFull").textContent = on ? "✕ Chiudi" : "⤢ Espandi"; };
+      $("wkFull").setAttribute("aria-pressed", on); $("wkFull").textContent = on ? "✕ Chiudi" : MB ? "⤢" : "⤢ Espandi"; };
+    if (MB) { $("wkFull").textContent = "⤢"; $("wkFull").setAttribute("aria-label", "Schermo intero"); }
     document.addEventListener("keydown", e => { if (e.key === "Escape" && $("wkChartCard").classList.contains("full")) $("wkFull").click(); });
-    ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); });
+    ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); $("wkLeg").classList.toggle("act", i >= 0); });   // telefono: la riga dei valori compare solo toccando il grafico
   }, 0);
   const H = W.history, M = H.m1;
   $("wkNote").textContent = `Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
@@ -1257,6 +1365,35 @@ renderTrades();
   $("wkTr").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Mercato</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Movimento</th><th>Sul capitale</th></tr>` +
     H.trades.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}</td><td>${mkt(t.market, t.expo)}</td><td>${usd(t.entry_px)}</td>` +
       `<td>${t.exit ? fmtD(t.exit) : "–"}</td><td>${usd(t.exit_px)}</td><td>${why[t.reason] || t.reason}</td><td>${pct(t.move_pct, 1)}</td><td class="${t.pnl_pct > 0 ? "pos" : "neg"}">${pct(t.pnl_pct, 1)}</td></tr>`).join("");
+  // --- telefono: un riassunto (1x / 2x), gli anni come barre, i trade come lista; dettagli e tabelle complete nei pannelli
+  let mLev = 1;
+  const pnlL = t => mLev === 2 ? (t.pnl2_pct != null ? t.pnl2_pct : t.pnl_pct * 2) : t.pnl_pct;
+  const wks = t => Math.max(1, Math.round((new Date(t.exit || R.date) - new Date(t.entry)) / 6.048e8));
+  const drawStatM = () => {
+    const X2 = mLev === 2 ? H.m2 : M, fin = mLev === 2 ? H.final_10k_2x : H.final_10k_1x;
+    $("wkSumM").innerHTML = `<div class="top"><div class="kpi ${X2.total_pct >= 0 ? "pos" : "neg"}">${pc1(X2.total_pct)}<small>dal ${fmtD(H.start)}: 10.000 $ diventano ${usd(fin)}</small></div>
+        <div class="seg" role="group" aria-label="Esposizione">${[1, 2].map(l => `<button type="button" data-l="${l}" aria-pressed="${l === mLev}">${l}x</button>`).join("")}</div></div>
+      <div class="facts"><div><span>Vinti</span><b>${String(X2.win_rate).replace(".", ",")}%</b></div><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div></div>
+      <button type="button" class="wkMore" id="wkSumMore"><span>Tutte le metriche</span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
+    $("wkSumM").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { mLev = +b.dataset.l; drawStatM(); });
+    $("wkSumMore").onclick = () => sheetNodes("Metriche W2 dal " + fmtD(H.start), [$("wkStatTabs"), $("wkStatFoot")]);
+    const Yv = Y.map(y => (mLev === 2 ? H.m2 : M).years[y]), lo = Math.min(0, ...Yv), hi = Math.max(0, ...Yv), sp = (hi - lo) || 1;
+    $("wkYearsMLev").textContent = mLev + "x";
+    $("wkYearsMB").innerHTML = Y.map((y, i) => { const v = Yv[i], col = v >= 0 ? "var(--green)" : "var(--red)";
+      return `<div class="yBar"><span>${y}</span><span class="tr"><i style="left:${((Math.min(v, 0) - lo) / sp * 100).toFixed(1)}%;width:${Math.max(1, Math.abs(v) / sp * 100).toFixed(1)}%;background:${col}"></i></span><b class="${v >= 0 ? "pos" : "neg"}">${pc1(v)}</b></div>`; }).join("");
+    $("wkTrMN").textContent = `${H.trades.length} · sul capitale a ${mLev}x`;
+    $("wkTrM").innerHTML = H.trades.map((t, i) => [t, i]).reverse().map(([t, i]) => { const v = pnlL(t);
+      return `<button type="button" data-i="${i}"><span class="d"><b>${fmtD(t.entry)}</b><small>${t.reason === "open" ? "aperto da " : ""}${wks(t)} sett. · ${mkt(t.market, t.expo)}</small></span>
+        <span class="sd ${t.side}">${side(t.side)}</span><span class="r ${v >= 0 ? "pos" : "neg"}">${pc1(v)}</span><span class="ch" aria-hidden="true">›</span></button>`; }).join("");
+    $("wkTrM").querySelectorAll("button").forEach(b => b.onclick = () => { const t = H.trades[+b.dataset.i], o = t.reason === "open";
+      const r = (k, v, cls) => `<div class="row"><span class="k">${k}</span><span class="v strong${cls ? " " + cls : ""}">${v}</span></div>`;
+      openSheet(`${side(t.side)} del ${fmtD(t.entry)}`, `<div class="list kvList">` +
+        r("Ingresso", usd(t.entry_px)) + (o ? r("Stato", "aperto") : r("Uscita", `${fmtD(t.exit)} · ${usd(t.exit_px)}`) + r("Motivo dell'uscita", why[t.reason] || t.reason)) +
+        r("Mercato", mkt(t.market, t.expo)) + r("Durata", wks(t) + " settimane") + r("Movimento del prezzo", pc1(t.move_pct)) +
+        r("Sul capitale a 1x", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + r("Sul capitale a 2x", pc1(t.pnl2_pct != null ? t.pnl2_pct : t.pnl_pct * 2), (t.pnl2_pct ?? t.pnl_pct) >= 0 ? "pos" : "neg") + `</div>` +
+        (o ? `<p class="foot" style="margin:0">La posizione aperta è valutata all'ultima chiusura giornaliera.</p>` : "")); });
+  };
+  drawStatM();
 })();
 
 // anatomia del win rate
@@ -1511,6 +1648,19 @@ function renderToday() {
   $("todaySec").hidden = !(evH || bkH || nH);
   $("todaySub").textContent = evH || bkH ? "dati e riunioni in arrivo" : "nessun dato macro importante oggi";
   $("todayN").innerHTML = evH + bkH + nH + `<a class="more" href="#notizie">Calendario completo e tutte le notizie →</a>`;
+  // telefono: una scheda sola, il prossimo evento importante e la notizia principale; tocco → pannello con tutto
+  const nx = CAL.filter(e => new Date(e.date) >= now && e.impact === "alto").map(e => ({ d: new Date(e.date), t: e.title }))
+    .concat(BANKS.map(b => ({ d: bankDate(b), t: b.title })).filter(x => x.d >= now)).sort((x, y) => x.d - y.d)[0]
+    || CAL.filter(e => new Date(e.date) >= now && e.impact === "medio").map(e => ({ d: new Date(e.date), t: e.title }))[0];
+  const when = d => { const k = dKey(d), hm = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
+    return (k === t0 ? "oggi" : k === t1 ? "domani" : d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", timeZone: "Europe/Rome" })) + " " + hm; };
+  const top = nws[0];
+  $("todayCard").innerHTML = `<div class="tapHead"><b>Oggi nelle notizie</b><span class="more">Tutto ›</span></div>` +
+    (nx ? `<div class="tdRow"><span class="tm">${when(nx.d)}</span><b>${esc(nx.t)}</b></div>` : "") +
+    (top ? `<div class="tdRow"><span class="tm" style="color:var(--label3)">${ago(top.date).replace(" fa", "")}</span><span><b>${esc(top.title)}</b><small>${esc(top.source)}</small></span></div>` : "");
+  $("todayCard").onclick = () => { const up = CAL.filter(e => new Date(e.date) >= Date.now() && e.impact === "alto").slice(0, 3), x = document.createElement("div");
+    x.className = "cal"; x.innerHTML = up.length ? `<div class="cday" style="margin-top:0">Prossimi dati importanti</div>` + calRows(up, 0) : "";
+    sheetNodes("Oggi nelle notizie", [up.length ? x : null, $("todayN")]); };
 }
 seg("newsSeg", v => { newsTab = v; renderNews(); });
 renderNews();
@@ -1559,6 +1709,6 @@ function route() {
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
   setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); labChart && labChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
 }
-window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
+window.addEventListener("hashchange", () => { const sh = $("sheet"); if (sh && sh.open) closeSheet(); route(); window.scrollTo({ top: 0 }); });
 route();
 </script>
