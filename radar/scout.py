@@ -283,7 +283,9 @@ def beats(c: dict, w: dict, margin: float = MARGIN) -> str | None:
         return None
     if w.get("fails"):
         if c["score"] > w["score"]:
-            return (f"{w.get('name', 'l’osservato')} non passa i filtri ({', '.join(LABEL.get(f, f) for f in w['fails'])}); "
+            fl = [LABEL.get(f, f) for f in w["fails"]]
+            more = f" e altri {len(fl) - 2}" if len(fl) > 2 else ""
+            return (f"{w.get('name', 'l’osservato')} non passa i filtri ({', '.join(fl[:2])}{more}); "
                     f"punteggio {c['score']:.0f} contro {w['score']:.0f}")
         return None
     if c["score"] > w["score"] * (1 + margin):

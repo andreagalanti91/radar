@@ -167,11 +167,8 @@ def _m(x) -> str:
     return "–" if x is None else _usd(x)
 
 
-def _act(m: dict) -> str:
-    f = m.get("fills_day")
-    lv = m.get("lev")
-    a = "–" if f is None else (f"{f:,.0f}".replace(",", ".") if f >= 10 else f"{f:.1f}".replace(".", ",")) + "/g"
-    return a + ("" if lv is None else f" · {lv:.1f}x".replace(".", ","))
+def _num(x, d=1) -> str:
+    return "–" if x is None else (f"{x:,.0f}".replace(",", ".") if x >= 100 else f"{x:.{d}f}".replace(".", ","))
 
 
 # (etichetta, funzione) delle righe del confronto: le stesse metriche dello scout (radar/scout.py)
@@ -183,15 +180,16 @@ ROWS = [("Punteggio", lambda m, sc: "–" if sc is None else f"{sc:.0f}"),
         ("Funding/PnL", lambda m, sc: _pc(m.get("fund_pnl"), 1, sign=False)),
         ("Valore", lambda m, sc: _m(m.get("value"))),
         ("Ultimi 30g", lambda m, sc: _pc(m.get("ret_30d"), 1)),
-        ("Attività, leva", lambda m, sc: _act(m))]
+        ("Fill/giorno", lambda m, sc: _num(m.get("fills_day"))),
+        ("Leva ora", lambda m, sc: "–" if m.get("lev") is None else f"{m['lev']:.1f}x".replace(".", ","))]
 
 
 def compare_text(c: dict) -> str:
     """Confronto affiancato candidato / wallet che sostituirebbe, in <pre> (Telegram, HTML)."""
     a, b = c.get("metrics") or {}, c.get("vs_metrics") or {}
-    w = 14
-    head = f"{'':{w}} {'candidato':>11} {c.get('vs_name', 'attuale')[:11]:>11}"
-    lines = [head] + [f"{lab:{w}} {fn(a, c.get('score')):>11} {fn(b, c.get('vs_score')):>11}" for lab, fn in ROWS]
+    w = 12   # 12 + 2 colonne da 10: ~34 caratteri, entra nella larghezza di Telegram sul telefono
+    head = f"{'':{w}} {'candidato'[:10]:>10} {c.get('vs_name', 'attuale')[:10]:>10}"
+    lines = [head] + [f"{lab:{w}} {fn(a, c.get('score')):>10} {fn(b, c.get('vs_score')):>10}" for lab, fn in ROWS]
     return "<pre>" + html.escape("\n".join(lines)) + "</pre>"
 
 
