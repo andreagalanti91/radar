@@ -1106,6 +1106,12 @@ vicini; togliere il trade migliore; confronto a pari drawdown; promuovere solo s
 da confermare dal vivo); 2) gestione del trade aperto dopo grandi guadagni senza tagliare le code; 3) short più efficaci nei bear
 con lo stesso schema del filtro MACD; 4) usare il segnale MACD/EMA dell'utente come conferma visiva in dashboard, non come regola.
 
+## Registro settimanale (resoconto del lunedì)
+- **09/11/2026** · Chiusura 08/11 $74.851 sotto EMA21 $76.596 → **USCITA W2** all'apertura di lunedì (~$74.757 su Coinbase):
+  long dal 24/08 a $77.812, circa −3,9% sul prezzo (−4% con i costi), uscita per EMA 21 prima del trailing ($71.129). Filtro MACD ok
+  (trend 12 settimane, F1 non attivo), regime neutro. Storico dal 2021: 10.000 $ → ~118.900 $, 14 trade, WR 92,9%, DD −22,7%.
+  Registro reale vuoto (nessun /entrato). Alert di uscita inviato dal giro delle 00:48 (nessun errore Telegram nei log).
+
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
