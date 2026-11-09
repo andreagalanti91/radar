@@ -304,6 +304,18 @@ p 0,11). Le balene Hyperliquid (posizioni pubbliche) oggi sono quasi tutte short
 sopra/sotto descrive le 12–24 ore successive, in gran parte come momentum di breve, e sparisce sull'orizzonte di W2 (settimane).
 Restano contesto in dashboard (pagina Liquidazioni, card in Oggi); il book orario (radar/orderbook.py) si giudica solo dal vivo.
 
+### Ciclo intraday 2 · 09/11 — BTC, ETH, SOL, 1h–4h, leva 2–5x, 10k, long e short · NON ADOTTATO
+Dati e motore comuni (research/intraday2/), regole preregistrate (PIANO.md), scelta sul 2021–23 e giudizio sul 2024→oggi.
+A (trend e rotture 4h, 8 varianti): nessuna passa; la migliore del 2021–23 è la peggiore dopo; solo l'incrocio Ichimoku TK ha un
+vantaggio reale ma sottile (PF 1,10). B (ritracciamenti 1h, 8): tutte negative, i costi (~0,12R) mangiano tutto. C (flusso e
+derivati, 8): nessuna; l'OI in aumento aiuta un po' il momentum ma non basta. D (uscite e leva su Ichimoku): E4 (stop 2 ATR, metà a
++2R, pareggio, trailing 3 ATR) passa 7/7 sul 2024→oggi (10k → 29k dal 2021, DD −17,6%); la "costante" 5%/10% prende profitto troppo
+presto (16k); la leva fissa 2–5x porta il DD a −66/−96%, conta il rischio per trade. La revisione critica la boccia: 2024→oggi già
+visto, ~2.700 configurazioni provate, con ingresso 1h dopo l'alert o slippage 0,2% scende sotto soglia, sul 2020 e su alt nuove PF ≈ 1.
+**Lezione 82**: nell'intraday a mano su BTC/ETH/SOL non c'è un vantaggio che regga a costi e ritardi reali; le uscite non creano un
+vantaggio, lo raccolgono (trailing sui vincenti > target fissi vicini); la leva si governa con il rischio per trade, non con il
+moltiplicatore. Un fuori campione già visto non basta: serve un test su dati mai usati e i costi dell'esecuzione manuale nel piano.
+
 ### Studio dell'utente · 07/11 — Strategia short dedicata su BTC settimanale (S1–S7, tutti i dati) · NON ADOTTATA (solo test)
 Riferimento: i 4 short di W2 dal 2021 (tutti positivi, +29,5% composto). Dal 2021 a 1x: W2 com'è 120,4k (DD −22,7%, MAR 2,34);
 W2 long + S1 short di regime 93,2k (DD −37,8%); W2 long + S5 short sui top di distribuzione 110,9k (DD −24%, 1 solo trade);
@@ -1089,6 +1101,8 @@ Posizione reale: long dal 24/08/2026 a 77.812 $, trailing 71.415 $.
   come uscita (69), nube Ichimoku come filtro (67).
 - Altre crypto e indici azionari: il vantaggio è specifico di BTC (71, 74). Intraday: rimosso (78).
 - Strategie short dedicate (regime, MACD, rimbalzo fallito, top di distribuzione, affollamento perp): sotto gli short di W2 (80).
+- Intraday a mano su BTC/ETH/SOL (rotture 4h, ritracciamenti 1h, flusso e derivati, uscite a gradini): nessun vantaggio dopo costi
+  e ritardi reali (78, 82). Da riprovare solo con esecuzione automatica e test su dati mai visti.
 
 **Rischi da ricordare**: un 2018 ripetuto (top seguito da bear lungo) costerebbe −18% con il filtro MACD e fino a −56/−72% senza
 (62); il campione è piccolo (14 trade) e il registro reale (`/entrato`, `/uscito`) è il vero giudice.
