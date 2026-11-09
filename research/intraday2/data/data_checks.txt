@@ -1,0 +1,39 @@
+# intraday2 data build 2026-11-09 08:33 UTC (raw cache: /tmp/claude-0/-home-user-radar/4f01d4b8-8442-5751-908f-fb8502af4b0c/scratchpad/raw)
+## BTCUSDT
+  BTCUSDT klines: 1 files not available: ['BTCUSDT-1h-2026-11-08.zip']
+  BTCUSDT 1h: 54192 rows, 0 duplicates removed, monotonic=True, 2020-09-01 00:00:00+00:00 -> 2026-11-07 23:00:00+00:00
+  BTCUSDT 1h: 1 gaps >1h (missing 24 bars); 2026-10-29 00:00 (25h)
+  BTCUSDT 1h: OHLC inconsistencies=0, zero-volume bars=1, |1h log-ret|>15%: none
+  BTCUSDT gap 2026-10-27 23:00 -> 2026-10-29 00:00: 24 bars missing, 24 filled from OKX
+  BTCUSDT 1h: 54216 rows, 0 duplicates removed, monotonic=True, 2020-09-01 00:00:00+00:00 -> 2026-11-07 23:00:00+00:00
+  BTCUSDT 1h: 0 gaps >1h (missing 0 bars); 
+  BTCUSDT 1h: OHLC inconsistencies=0, zero-volume bars=1, |1h log-ret|>15%: none
+  BTCUSDT funding: 26 OKX rows appended after 2026-10-31 16:00:00+00:00 (Binance monthly not yet published)
+  BTCUSDT funding: 6782 rows 2020-09-01 00:00:00+00:00 -> 2026-11-09 08:00:00+00:00, dup=0, intervals={8: 6782}, gaps>8h=0, |rate|>0.5%: 0, mean=0.000100
+  BTCUSDT metrics(1h): 43288 rows 2021-11-30 23:00:00+00:00 -> 2026-11-08 23:00:00+00:00, gaps>1h=1, NaN top_acc_ls=7675, NaN oi=0
+## ETHUSDT
+  ETHUSDT klines: 1 files not available: ['ETHUSDT-1h-2026-11-08.zip']
+  ETHUSDT 1h: 54192 rows, 0 duplicates removed, monotonic=True, 2020-09-01 00:00:00+00:00 -> 2026-11-07 23:00:00+00:00
+  ETHUSDT 1h: 1 gaps >1h (missing 24 bars); 2026-10-29 00:00 (25h)
+  ETHUSDT 1h: OHLC inconsistencies=0, zero-volume bars=1, |1h log-ret|>15%: 2021-05-19 12:00
+  ETHUSDT gap 2026-10-27 23:00 -> 2026-10-29 00:00: 24 bars missing, 24 filled from OKX
+  ETHUSDT 1h: 54216 rows, 0 duplicates removed, monotonic=True, 2020-09-01 00:00:00+00:00 -> 2026-11-07 23:00:00+00:00
+  ETHUSDT 1h: 0 gaps >1h (missing 0 bars); 
+  ETHUSDT 1h: OHLC inconsistencies=0, zero-volume bars=1, |1h log-ret|>15%: 2021-05-19 12:00
+  ETHUSDT funding: 26 OKX rows appended after 2026-10-31 16:00:00+00:00 (Binance monthly not yet published)
+  ETHUSDT funding: 6782 rows 2020-09-01 00:00:00+00:00 -> 2026-11-09 08:00:00+00:00, dup=0, intervals={8: 6782}, gaps>8h=0, |rate|>0.5%: 0, mean=0.000110
+  ETHUSDT metrics(1h): 43288 rows 2021-11-30 23:00:00+00:00 -> 2026-11-08 23:00:00+00:00, gaps>1h=1, NaN top_acc_ls=7675, NaN oi=0
+## SOLUSDT
+  SOLUSDT klines: 1 files not available: ['SOLUSDT-1h-2026-11-08.zip']
+  SOLUSDT 1h: 53753 rows, 0 duplicates removed, monotonic=True, 2020-09-14 07:00:00+00:00 -> 2026-11-07 23:00:00+00:00
+  SOLUSDT 1h: 3 gaps >1h (missing 144 bars); 2022-03-01 00:00 (73h), 2022-04-03 00:00 (49h), 2026-10-29 00:00 (25h)
+  SOLUSDT 1h: OHLC inconsistencies=0, zero-volume bars=1, |1h log-ret|>15%: 2021-01-07 00:00, 2021-05-19 12:00, 2021-05-19 13:00, 2021-06-22 14:00, 2021-09-07 14:00, 2022-05-11 12:00, 2022-11-09 08:00, 2022-11-09 15:00, 2022-11-10 03:00, 2022-11-14 06:00
+  SOLUSDT gap 2022-02-25 23:00 -> 2022-03-01 00:00: 72 bars missing, 72 filled from OKX
+  SOLUSDT gap 2022-03-31 23:00 -> 2022-04-03 00:00: 48 bars missing, 48 filled from OKX
+  SOLUSDT gap 2026-10-27 23:00 -> 2026-10-29 00:00: 24 bars missing, 24 filled from OKX
+  SOLUSDT 1h: 53897 rows, 0 duplicates removed, monotonic=True, 2020-09-14 07:00:00+00:00 -> 2026-11-07 23:00:00+00:00
+  SOLUSDT 1h: 0 gaps >1h (missing 0 bars); 
+  SOLUSDT 1h: OHLC inconsistencies=0, zero-volume bars=1, |1h log-ret|>15%: 2021-01-07 00:00, 2021-05-19 12:00, 2021-05-19 13:00, 2021-06-22 14:00, 2021-09-07 14:00, 2022-05-11 12:00, 2022-11-09 08:00, 2022-11-09 15:00, 2022-11-10 03:00, 2022-11-14 06:00
+  SOLUSDT funding: 26 OKX rows appended after 2026-10-31 16:00:00+00:00 (Binance monthly not yet published)
+  SOLUSDT funding: 6819 rows 2020-09-13 16:00:00+00:00 -> 2026-11-09 08:00:00+00:00, dup=0, intervals={8: 6718, 2: 99, 4: 2}, gaps>8h=0, |rate|>0.5%: 26, mean=0.000003
+  SOLUSDT metrics(1h): 43288 rows 2021-11-30 23:00:00+00:00 -> 2026-11-08 23:00:00+00:00, gaps>1h=1, NaN top_acc_ls=7675, NaN oi=0
