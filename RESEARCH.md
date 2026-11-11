@@ -1165,6 +1165,16 @@ W2 dal vivo 103k, DD −22,7%, MAR 2,16; nel 2018–20 26,8k (DD −36%) contro 
 **Lezione 85**: W2 non si batte sul rendimento dal 2021 con i dati disponibili; si può comprare robustezza (tetto di rischio,
 cricchetto, flusso mediato) pagando ~17% del risultato. Da applicare solo su ordine dell'utente. File: research/sfida_w3/REPORT.md.
 
+### Censimento dei 15 indicatori comuni + indici + schema multi-timeframe · 11/11/2026 · NEGATIVO
+Stesso metro per tutti (parametri da manuale, settimanale, dal 2021 e 2014–20): EMA 20/50/200, MACD, RSI, ADX, Bollinger, ATR,
+VWAP, Volume Profile, OBV, CVD, Fibonacci, Ichimoku, Stochastic RSI, OI, funding; Nasdaq, S&P 500, dollaro, VIX. Da soli: 12–30k
+con DD −45/−75% (buy & hold 25k). Come filtro di W2: nessuno migliora in entrambi i periodi; quelli neutri non cambiano trade.
+Voto di 13 indicatori: 28,9k, DD −55%; con il CVD perp: 32,1k, DD −27%. Schema intraday 1D/4H/1H del file dell'utente: 18
+combinazioni, tutte in perdita (PF 0,58–0,94). Liquidazioni: contano come meccanismo, non come segnale con dati stimati.
+**Lezione 86**: gli indicatori comuni di prezzo e volume e gli indici azionari/dollaro non aggiungono informazione a W2; l'unica
+informazione che separa è il flusso dei perpetual. Non ancora provati e con logica diversa: cash and carry (per la liquidità da
+flat) e liquidity sweep meccanico su 1h/4h. File: research/censimento/REPORT.md.
+
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
