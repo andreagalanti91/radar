@@ -1,0 +1,3 @@
+T1 long: MAR 8.0 rend 291.6% · placebo mediana MAR 0.23 rend 15% · p(MAR≥regola) 0.047 · p(rend≥regola) 0.057
+T2 long: MAR 5.95 rend 247.2% · placebo mediana MAR 0.21 rend 14% · p(MAR≥regola) 0.050 · p(rend≥regola) 0.060
+T4m long: MAR 7.87 rend 286.6% · placebo mediana MAR 0.20 rend 13% · p(MAR≥regola) 0.037 · p(rend≥regola) 0.037

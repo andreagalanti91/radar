@@ -40,8 +40,10 @@ Cosa fare con gli alert:
 3. *USCITA SETTIMANALE*: vendi all'apertura del lunedì; se il trailing viene toccato l'alert arriva entro l'ora.
 4. Registra ogni operazione con `/entrato` e `/uscito`: il registro confronta la tua esecuzione con il segnale.
 
-Caso peggiore da ricordare: un 2018 ripetuto (top seguito da bear lungo) costerebbe circa −18% con il filtro MACD, fino a
-−56/−72% senza. Con 14 trade il campione è piccolo: il registro reale è il vero giudice. Codice: `radar/weekly.py`.
+Caso peggiore da ricordare: un ingresso long vicino a un top (come il 07/01/2018) può perdere circa −40% in un solo trade,
+perché lo stop iniziale di 2,5 ATR settimanali può valere il 40% del prezzo. Attese realistiche (revisione dell'11/11/2026): il
+backtest è il massimo di una famiglia di risultati; per i prossimi anni è ragionevole attendersi circa +15/+35% l'anno con
+drawdown intorno a −30% (uno su quattro oltre −40%).
 
 ## La dashboard
 

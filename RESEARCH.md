@@ -1104,8 +1104,13 @@ Posizione reale: long dal 24/08/2026 a 77.812 $, trailing 71.415 $.
 - Intraday a mano su BTC/ETH/SOL (rotture 4h, ritracciamenti 1h, flusso e derivati, uscite a gradini): nessun vantaggio dopo costi
   e ritardi reali (78, 82). Da riprovare solo con esecuzione automatica e test su dati mai visti.
 
-**Rischi da ricordare**: un 2018 ripetuto (top seguito da bear lungo) costerebbe −18% con il filtro MACD e fino a −56/−72% senza
-(62); il campione è piccolo (14 trade) e il registro reale (`/entrato`, `/uscito`) è il vero giudice.
+**Rischi da ricordare** (corretti dalla revisione del 11/11/2026): un ingresso long vicino a un top non è coperto: il 07/01/2018
+la regola compra a 16.150 $ e perde −41% in un solo trade (stop iniziale 2,5 ATRw = 40% del prezzo; il filtro MACD blocca solo i
+rientri successivi; nessun filtro a 200 giorni o mensile lo evita). Anno 2018: −14/−33% secondo la data di partenza, DD −48%; senza
+filtro MACD fino a −54/−72%. Il "−18%" scritto in precedenza era sbagliato. I long non hanno tetto di rischio (gli short sì, 25%).
+**Attese realistiche** (studio di robustezza): il backtest 10k → ~119k è il massimo di una famiglia (mediana dei parametri vicini
+~100k; mediana dei 7 giorni di chiusura settimanale 55k; "come dal vivo" con il flusso del sabato 103k; walk-forward 60k, DD −39%).
+Per i prossimi 3 anni: CAGR mediano ~+31% (10°–90° percentile −3%/+88%), DD mediano −31%, uno su quattro oltre −40%.
 
 **Preferenze dell'utente**: swing di momentum long/short sui grandi movimenti, poche operazioni con capitale grande e poco rischio;
 risultati sempre dal 01/01/2021 (10.000 $ a 1x, DD, WR, trade) con tabella; confronto con B&H e con W2 attuale; autonomia nelle
@@ -1125,6 +1130,24 @@ con lo stesso schema del filtro MACD; 4) usare il segnale MACD/EMA dell'utente c
   long dal 24/08 a $77.812, circa −3,9% sul prezzo (−4% con i costi), uscita per EMA 21 prima del trailing ($71.129). Filtro MACD ok
   (trend 12 settimane, F1 non attivo), regime neutro. Storico dal 2021: 10.000 $ → ~118.900 $, 14 trade, WR 92,9%, DD −22,7%.
   Registro reale vuoto (nessun /entrato). Alert di uscita inviato dal giro delle 00:48 (nessun errore Telegram nei log).
+
+## Revisione completa del progetto · 11/11/2026 (codice, robustezza, migliorie, analisi tecnica, operatività)
+File: research/w2_robustezza/, research/w2_migliorie/, research/ta_settimanale/. Sintesi:
+- **Codice (bug da correggere)**: 1) dal vivo la decisione usa il flusso perp del SABATO (quello della domenica non c'è ancora al
+  primo giro del lunedì), il backtest quello della domenica: "come dal vivo" 13 trade e 103k invece di 14 e 118,6k; 2) un segnale
+  che cambia dopo la revisione dei dati non viene riconciliato; 3) l'alert è segnato come inviato prima dell'invio (se Telegram
+  fallisce è perso); 4) il trailing può allentarsi quando l'ATR sale (54 volte; il cricchetto non cambia nessun trade storico);
+  5) lo stop comunicato all'utente può differire da quello sorvegliato; 6) la conferma finale dell'uscita (prezzo reale) è
+  scartata come doppione; 7) i test girano prima del giro e bloccano gli alert se falliscono. Nessun look-ahead in medie, MACD, ATR.
+- **Operatività**: i workflow girano ogni ~2,5 ore (massimo ~10 h), non ogni ora; i wallet ogni ~6 ore, non 5 minuti; nessun
+  segno di vita periodico; una fonte dati non usata da W2 può fermare tutto il giro; fallimenti silenziosi. Token mai nel repository.
+- **Lezione 83**: dieci migliorie preregistrate di W2 (uscita EMA21 più lenta/veloce, rientri, runner, leva nel regime migliore,
+  cricchetto, tetto di rischio sui long) e otto regole di analisi tecnica settimanale/mensile (200 giorni + MACD, Faber 10 mesi,
+  MACD/RSI mensili, Mayer, volume): nessuna rende di più in modo robusto. I guadagni apparenti vengono da un episodio (2021) e si
+  rovesciano nel 2018–20. Unico guadagno gratuito: far rendere la liquidità da flat (+~2 punti l'anno). Il tetto di rischio R25
+  sui long è un'assicurazione (2018: −41% → −25%, DD −48% → −32%) che costa il 22% dal 2021: scelta di rischio dell'utente.
+  200 giorni e MACD sopra lo zero sono quasi la stessa informazione (accordo 86–94%); il MACD sotto il segnale precede la rottura
+  della 200 giorni di ~6 settimane ai top (9 su 9). Utili come contesto in dashboard, non come regole.
 
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
