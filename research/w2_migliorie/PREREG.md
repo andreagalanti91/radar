@@ -54,3 +54,11 @@ resta ≥ baseline senza il trade migliore; (7) per M5 placebo p < 0,10.
 **Su carta**: passa (2) e (4) ma cade su (1), (3) o (5). **Respingere**: tutto il resto. M1: "materiale" se aggiunge ≥ 0,5 punti
 di CAGR senza cambiare DD in peggio; è una nota operativa (dove tenere la liquidità), non una regola del segnale.
 Nessuna soglia verrà spostata dopo aver visto i risultati; ogni analisi aggiunta dopo sarà marcata "post-hoc".
+
+## Aggiunta dell'11/11/2026 (coordinatore) — scritta DOPO i risultati di M1–M9, PRIMA di quelli di M10
+- **M10 tetto di rischio sui long**: esposizione long = min(1, R / (2,5·ATRw/chiusura)) con **R = 0,25** (principale, uguale agli
+  short) e R = 0,20 (vicino); il resto resta in liquidità (senza rendimento). Logica: lo stop iniziale può valere il 40% del prezzo
+  (long del 07/01/2018: −41%). È una regola di rischio: si giudica su DD e perdita peggiore 2018–20 e sul costo 2021→oggi a pari DD.
+  Stesse soglie di sopra; in più "adottare come protezione" solo se nel 2021→oggi costa < 5% del capitale finale.
+- **Baseline "come dal vivo"** (audit del codice): flusso perp del sabato (pf14z spostato di un giorno). Si riportano i delta dei
+  candidati anche contro questa baseline; nessuna soglia nuova.
