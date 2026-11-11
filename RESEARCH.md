@@ -1183,6 +1183,12 @@ combinazioni, tutte in perdita (PF 0,58–0,94). Liquidazioni: contano come mecc
 informazione che separa è il flusso dei perpetual. Non ancora provati e con logica diversa: cash and carry (per la liquidità da
 flat) e liquidity sweep meccanico su 1h/4h. File: research/censimento/REPORT.md.
 
+### W3 sulle top 10 crypto per capitalizzazione · 12/11/2026 · non generalizza
+**Lezione 87**: applicata senza modifiche alle top 10 di oggi (BTC, ETH, BNB, XRP, SOL, TRX, HYPE, ZEC, XMR, DOGE; dal 2021),
+W3 batte il buy & hold in MAR in entrambe le metà solo su BTC, ETH e DOGE (DOGE perché il buy & hold ha perso il 90%). Sulle altre
+WR 19–43% e DD −40/−88%. Il paniere dei 10 dimezza il DD (−15,7%) ma fa 33k contro 78k di BTC da solo (MAR 1,44 contro 2,00).
+Il vantaggio resta specifico di BTC; ETH al massimo una seconda gamba piccola (50/50: 56,6k, DD −20,2%). File: research/top10_w3/README.md.
+
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
