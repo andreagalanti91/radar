@@ -131,4 +131,4 @@ class TestWeekly(unittest.TestCase):
         html = render(report, Path(tempfile.mkdtemp()) / "index.html", standalone=False).read_text()
         for k in ('id="wkSec"', 'id="wkStatSec"', "renderWeekly", '"weekly"'):
             self.assertIn(k, html)
-        self.assertIn("Settimanale W2", daily_brief(report))
+        self.assertIn("Settimanale W3", daily_brief(report))

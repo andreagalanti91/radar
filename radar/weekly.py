@@ -261,7 +261,22 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
     return _clean(out)
 
 
+
 # ---------------------------------------------------------------- eventi Telegram (dedupe sullo stato salvato)
+#
+# Ogni evento porta le sue "marcature" (ev["mark"]): si applicano allo stato SOLO se Telegram conferma l'invio
+# (send_events). Un invio fallito lascia lo stato com'era e l'evento si ripropone al giro dopo.
+# Chiavi separate (data della domenica del segnale):
+#   notified        segnale annunciato          entered    ingresso eseguito comunicato
+#   exit_announced  uscita annunciata (lunedì)  exit_done  uscita eseguita comunicata (prezzo reale e risultato)
+#   pending_signal / pending_exit: annunci non ancora eseguiti, da ritirare se i dati rivisti non li confermano più
+#   trail_notified / trail_sig: ultimo stop comunicato all'utente e posizione a cui si riferisce
+
+TRAIL_STEP = 0.005     # nuovo avviso del trailing quando sale (long) / scende (short) di almeno lo 0,5% del prezzo
+RECENT_DAYS = 7        # ingressi/uscite più vecchi di così (giri saltati a lungo, primo avvio) si registrano senza messaggio
+W3_TEXT = "Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo storico −21% · " \
+          "al massimo il 25% del capitale a rischio allo stop iniziale."
+
 
 def _usd(x: float) -> str:
     return f"${x:,.0f}".replace(",", ".")
@@ -272,123 +287,296 @@ def _pos_key(s: dict | None) -> str | None:
     return (s or {}).get("signal_date") if (s or {}).get("status") in ("segnale", "aperto", "uscita") else None
 
 
-def diff_events(cur: dict, prev: dict | None) -> tuple[list[dict], dict]:
-    """(eventi nuovi, stato da salvare). prev=None = primo avvio dal vivo: la posizione già aperta si mostra
+def _sg(side: str | None) -> int:
+    return 1 if side == "long" else -1
+
+
+def _norm_state(prev: dict) -> dict:
+    """Stato salvato -> stato di lavoro (con migrazione dal formato a una sola lista "exits")."""
+    old = "exit_done" not in prev
+    return {"notified": list(prev.get("notified", [])),
+            # vecchio formato: "exits" mescolava uscita annunciata ed eseguita -> annunciata; la conferma eseguita
+            # (prezzo reale e risultato) parte ancora se l'uscita è recente
+            "exit_announced": list(prev.get("exit_announced", prev.get("exits", []))),
+            "exit_done": list(prev.get("exit_done", [])),
+            "entered": list(prev.get("entered", prev.get("notified", []) if old else [])),
+            "pending_signal": prev.get("pending_signal"), "pending_exit": prev.get("pending_exit"),
+            "trail_notified": prev.get("trail_notified"),
+            "trail_sig": prev.get("trail_sig", prev.get("signal_date") if old else None),
+            "dist_week": prev.get("dist_week"), "side": prev.get("side")}
+
+
+def apply_marks(st: dict, ev: dict) -> dict:
+    """Applica allo stato le marcature di un evento inviato con successo."""
+    for op, field, val in ev.get("mark", []):
+        if op == "add":
+            if val not in st.setdefault(field, []):
+                st[field].append(val)
+            st[field] = st[field][-30:]
+        elif op == "remove":
+            st[field] = [x for x in st.get(field, []) if x != val]
+        else:
+            st[field] = val
+    return st
+
+
+def _recent(day: str | None, today: str) -> bool:
+    return bool(day) and (pd.Timestamp(today) - pd.Timestamp(day)).days <= RECENT_DAYS
+
+
+def _why_not_signal(cur: dict, side: str | None) -> str:
+    """Perché un segnale annunciato non è più valido sui dati attuali (W3: regime, EMA 21, flusso, filtro MACD)."""
+    why, L = [], side == "long"
+    c = (cur.get("chart") or {}).get("c") or [None]
+    close = c[-1]
+    if cur.get("regime") != side:
+        why.append(f"regime settimanale ora {cur.get('regime')}")
+    if close is not None and cur.get("ema21") is not None and ((close <= cur["ema21"]) if L else (close >= cur["ema21"])):
+        why.append(f"chiusura settimanale {_usd(close)} {'sotto' if L else 'sopra'} la EMA 21 ({_usd(cur['ema21'])})")
+    if cur.get("flow") is not None and ((cur["flow"] <= 0) if L else (cur["flow"] >= 0)):
+        why.append(f"flusso perp ora {cur['flow']:+.2f}σ")
+    if L and cur.get("f1_ok") is False:
+        why.append("filtro MACD dei trend vecchi non soddisfatto")
+    return "; ".join(why) or "i dati rivisti non confermano più la decisione"
+
+
+def pending_events(cur: dict, prev: dict | None) -> tuple[list[dict], dict]:
+    """(eventi da inviare, stato di base). Lo stato di base NON contiene le marcature degli eventi: si aggiungono
+    con apply_marks solo dopo un invio riuscito. prev=None = primo avvio dal vivo: la posizione già aperta si mostra
     come "in corso" con un solo messaggio informativo, senza rimandarla come segnale nuovo."""
-    ev, k = [], _pos_key(cur)
-    if prev is None:
-        prev = {"notified": [k] if k and cur["status"] != "segnale" else [], "exits": []}
-        if cur["status"] in ("aperto", "uscita"):
-            ev.append({"type": "w_info", "w": cur})
-            prev["trail_notified"] = cur.get("trail")
-    st = {"notified": list(prev.get("notified", [])), "exits": list(prev.get("exits", [])),
-          "trail_notified": prev.get("trail_notified"), "dist_week": prev.get("dist_week")}
-    pk = _pos_key(prev) if prev.get("status") else None
-    # uscita della posizione precedente (chiusa nello storico) o decisa per la prossima apertura
-    if pk and pk not in st["exits"] and pk != k:
-        t = next((x for x in cur["history"]["trades"] if x["signal"] == pk and x["reason"] != "open"), None)
-        if t:
-            ev.append({"type": "w_exit", "trade": t, "w": cur})
-            st["exits"].append(pk)
-    if cur["status"] == "uscita" and k not in st["exits"]:
-        ev.append({"type": "w_exit_next", "w": cur})
-        st["exits"].append(k)
-    # segnale nuovo (anche se visto già entrato, se un giro è saltato)
-    if k and k not in st["notified"]:
-        ev.append({"type": "w_signal", "w": cur})
-        st["notified"].append(k)
-        st["trail_notified"] = cur["plan"]["stop"] if cur["status"] == "segnale" else cur.get("trail")
-        st["dist_week"] = None
-    elif cur["status"] == "aperto":
-        tn, atr_d = st.get("trail_notified"), cur.get("atr_d") or 0.0
-        if tn is None:
-            st["trail_notified"] = cur["trail"]
-        elif abs(cur["trail"] - tn) > atr_d:
-            ev.append({"type": "w_trail", "w": cur, "old": tn})
-            st["trail_notified"] = cur["trail"]
-    if cur["status"] == "aperto" and cur.get("dist_now") and st.get("dist_week") != cur["week"]:
-        ev.append({"type": "w_dist", "w": cur})
-        st["dist_week"] = cur["week"]
-    st.update(status=cur["status"], signal_date=cur.get("signal_date"), side=cur.get("side"), trail=cur.get("trail"),
-              date=cur["date"])
-    st["notified"], st["exits"] = st["notified"][-30:], st["exits"][-30:]
+    ev, k, status = [], _pos_key(cur), cur["status"]
+    trades = cur.get("history", {}).get("trades", [])
+    by_sig = {t["signal"]: t for t in trades}
+    first = prev is None
+    st = _norm_state(prev or {})
+    if first and status in ("aperto", "uscita"):
+        ev.append({"type": "w_info", "w": cur, "mark": [("add", "notified", k), ("add", "entered", k),
+                                                       ("set", "trail_notified", cur.get("trail")), ("set", "trail_sig", k)]})
+    # 1. annunci ritirati: segnale (ingresso di lunedì) o uscita non più validi dopo una revisione dei dati
+    ps = st.get("pending_signal")
+    if ps and ps not in by_sig and not (status == "segnale" and k == ps):
+        ev.append({"type": "w_retract", "kind": "signal", "w": cur, "key": ps, "side": st.get("side"),
+                   "why": _why_not_signal(cur, st.get("side")),
+                   "mark": [("set", "pending_signal", None), ("remove", "notified", ps)]})
+    pe = st.get("pending_exit")
+    pe_closed = pe in by_sig and by_sig[pe]["reason"] != "open"
+    if pe and not pe_closed and not (status == "uscita" and k == pe):
+        ev.append({"type": "w_retract", "kind": "exit", "w": cur, "key": pe, "side": st.get("side"),
+                   "why": ("la posizione resta aperta: la chiusura settimanale non conferma più l'uscita"
+                           if k == pe else "la posizione non risulta più nello storico ricalcolato"),
+                   "mark": [("set", "pending_exit", None), ("remove", "exit_announced", pe)]})
+    # 2. uscite eseguite (dallo storico, con il prezzo reale di uscita e il risultato)
+    known = set(st["notified"]) | set(st["entered"]) | set(st["exit_announced"])
+    for t in trades:
+        s = t["signal"]
+        if t["reason"] == "open" or s not in known or s in st["exit_done"]:
+            continue
+        mark = [("add", "exit_done", s), ("add", "exit_announced", s)] + \
+               ([("set", "pending_exit", None)] if st.get("pending_exit") == s else [])
+        if _recent(t["exit"], cur["date"]):
+            ev.append({"type": "w_exit", "trade": t, "w": cur, "mark": mark})
+        else:
+            apply_marks(st, {"mark": mark})
+    # 3. uscita decisa per la prossima apertura
+    if status == "uscita" and k not in st["exit_announced"] and k not in st["exit_done"]:
+        ev.append({"type": "w_exit_next", "w": cur, "mark": [("add", "exit_announced", k), ("set", "pending_exit", k)]})
+    # 4. segnale nuovo (ingresso all'apertura di lunedì)
+    if status == "segnale" and k not in st["notified"]:
+        ev.append({"type": "w_signal", "w": cur, "mark": [
+            ("add", "notified", k), ("set", "pending_signal", k), ("set", "trail_notified", cur["plan"]["stop"]),
+            ("set", "trail_sig", k), ("set", "dist_week", None), ("set", "side", cur.get("side"))]})
+    # 5. ingressi eseguiti di segnali annunciati
+    for t in trades:
+        s = t["signal"]
+        if s not in st["notified"] or s in st["entered"]:
+            continue
+        mark = [("add", "entered", s)] + ([("set", "pending_signal", None)] if st.get("pending_signal") == s else [])
+        if _recent(t["entry"], cur["date"]):
+            ev.append({"type": "w_entry", "trade": t, "w": cur, "mark": mark})
+        else:
+            apply_marks(st, {"mark": mark})
+    # 6. posizione aperta mai annunciata (giri saltati durante il segnale): segnale "già in posizione"
+    if not first and status in ("aperto", "uscita") and k not in st["notified"]:
+        ev.append({"type": "w_signal", "w": cur, "mark": [
+            ("add", "notified", k), ("add", "entered", k), ("set", "trail_notified", cur.get("trail")),
+            ("set", "trail_sig", k), ("set", "dist_week", None), ("set", "side", cur.get("side"))]})
+    # 7. trailing (W3, a cricchetto): avviso quando il livello migliora di almeno lo 0,5% del prezzo
+    elif status == "aperto" and k in st["notified"]:
+        tn = st.get("trail_notified")
+        if tn is None or st.get("trail_sig") != k:
+            st["trail_notified"], st["trail_sig"] = cur["trail"], k
+        elif (cur["trail"] - tn) * _sg(cur.get("side")) >= TRAIL_STEP * cur["price"]:
+            ev.append({"type": "w_trail", "w": cur, "old": tn,
+                       "mark": [("set", "trail_notified", cur["trail"]), ("set", "trail_sig", k)]})
+    if status == "aperto" and cur.get("dist_now") and st.get("dist_week") != cur["week"]:
+        ev.append({"type": "w_dist", "w": cur, "mark": [("set", "dist_week", cur["week"])]})
+    st.update(status=status, signal_date=cur.get("signal_date"), trail=cur.get("trail"), date=cur["date"],
+              side=(cur.get("side") or st.get("side")) if status != "nessuno" else st.get("side"))
     return ev, st
+
+
+def diff_events(cur: dict, prev: dict | None) -> tuple[list[dict], dict]:
+    """(eventi nuovi, stato con tutti gli eventi marcati come inviati). Per l'invio reale usare send_events,
+    che marca solo gli eventi confermati da Telegram."""
+    ev, st = pending_events(cur, prev)
+    for e in ev:
+        apply_marks(st, e)
+    return ev, st
+
+
+def send_events(cur: dict, prev: dict | None, send) -> tuple[list[dict], dict]:
+    """Invia gli eventi uno per uno (send(text) -> message_id/True se riuscito, False/None se no) e marca nello
+    stato solo quelli riusciti. Restituisce (eventi inviati, stato da salvare). Un errore di formattazione o di
+    rete su un evento non blocca gli altri."""
+    ev, st = pending_events(cur, prev)
+    sent = []
+    for e in ev:
+        try:
+            ok = send(format_event(e))
+        except Exception as x:  # noqa: BLE001
+            print(f"[weekly] evento {e['type']} non inviato: {x!r}")
+            ok = False
+        if ok:
+            apply_marks(st, e)
+            sent.append(e)
+        else:
+            print(f"[weekly] evento {e['type']} non confermato da Telegram: si riprova al prossimo giro")
+    return sent, st
 
 
 def _exits_text(side: str) -> str:
     L = side == "long"
-    return (f"Uscita alla prima: trailing 2,5 ATR settimanali dalla miglior chiusura giornaliera; chiusura settimanale "
-            f"{'sotto' if L else 'sopra'} la EMA 21; distribuzione (funding medio 7g "
+    return (f"Uscita alla prima: trailing 2,5 ATR settimanali dalla miglior chiusura giornaliera (a cricchetto, non scende mai); "
+            f"chiusura settimanale {'sotto' if L else 'sopra'} la EMA 21; distribuzione (funding medio 7g "
             + ("&gt; 0,09%/giorno con flusso perp negativo)." if L else "&lt; −0,03%/giorno con flusso perp positivo)."))
 
 
 def _mkt(_w: dict, market: str, expo: float) -> str:
-    return "SPOT 1x (niente leva, niente funding)" if market == "spot" else \
+    return f"SPOT, esposizione {expo:.2f}x (niente leva, niente funding)" if market == "spot" else \
         f"PERP, esposizione {expo:.2f}x del capitale (tetto di rischio 25% allo stop), margine isolato"
 
 
 def format_event(ev: dict) -> str:
     t, w = ev["type"], ev["w"]
-    side = w.get("side") or ev.get("trade", {}).get("side", "")
+    side = ev.get("side") or w.get("side") or ev.get("trade", {}).get("side", "")
     icon = "🟢 LONG" if side == "long" else "🔴 SHORT"
     if t == "w_signal":
         if w["status"] == "segnale":
             p = w["plan"]
             return "\n".join([
-                f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W2)",
+                f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W3)",
                 f"Chiusura settimanale del {w['signal_date']}: {_usd(w['price'])} · regime {w['regime']} · flusso perp {w['flow']:+.2f}σ",
-                f"<b>Ingresso</b> a mercato all'apertura di lunedì (~{_usd(p['entry_est'])})",
+                f"<b>Ingresso</b> a mercato all'apertura di lunedì (~{_usd(p['entry_est'])}): ti confermo il prezzo eseguito",
                 f"<b>Mercato</b>: {_mkt(w, p['market'], p['expo'])}",
                 f"<b>Su {_usd(p['capital'])}</b>: posizione {_usd(p['notional'])} = {p['btc']:.4f} BTC",
                 f"<b>Stop iniziale</b> {_usd(p['stop'])} (2,5 ATR settimanali, −{p['stop_pct']:.1f}%) · perdita allo stop ~{_usd(p['loss_usd'])}",
-                f"<b>Trailing</b>: {_usd(p['trail_dist'])} (2,5 ATRw) sotto/sopra la miglior chiusura giornaliera: ti avviso quando si sposta",
+                f"<b>Trailing</b>: {_usd(p['trail_dist'])} (2,5 ATRw) dalla miglior chiusura giornaliera: ti avviso quando "
+                f"sale di almeno lo 0,5% del prezzo",
                 f"<b>EMA 21 settimanale</b> {_usd(p['ema21'])}",
                 _exits_text(w["side"]),
-                "Operazioni rare (2–3 l'anno) e lunghe; long con al massimo il 25% del capitale a rischio allo stop iniziale."])
-        return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W2, già in posizione)\n"
+                W3_TEXT])
+        return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W3, già in posizione)\n"
                 f"Segnale del {w['signal_date']} · ingresso {w['entry']} a {_usd(w['entry_px'])} · mercato: {_mkt(w, w['market'], w['expo'])}\n"
-                f"Trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}\n" + _exits_text(w["side"]))
+                f"Stop/trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}\n" + _exits_text(w["side"]))
+    if t == "w_entry":
+        x = ev["trade"]
+        lines = [f"<b>RADAR SIGNAL BTC · INGRESSO SETTIMANALE ESEGUITO · {icon}</b> (W3)",
+                 f"Segnale del {x['signal']} · ingresso {x['entry']} all'apertura a <b>{_usd(x['entry_px'])}</b> · "
+                 f"mercato: {_mkt(w, x['market'], x['expo'])}"]
+        if w.get("status") in ("aperto", "uscita") and w.get("signal_date") == x["signal"]:
+            lines.append(f"Su {_usd(w['capital'])}: {_usd(w['notional'])} = {w['btc']:.4f} BTC · stop iniziale {_usd(w['stop0'])} · "
+                         f"stop/trailing attuale {_usd(w['trail'])} · prezzo ora {_usd(w['price'])}")
+        elif x.get("reason") != "open":
+            lines.append(f"Posizione già chiusa: uscita {x['exit']} a {_usd(x['exit_px'])} ({REASONS.get(x['reason'], x['reason'])})")
+        return "\n".join(lines)
     if t == "w_info":
         return "\n".join([
-            f"<b>RADAR SIGNAL BTC · Posizione settimanale in corso · {icon}</b> (W2)",
-            "Da oggi il tool segue anche il segnale settimanale W2. Questa posizione è aperta dal "
+            f"<b>RADAR SIGNAL BTC · Posizione settimanale in corso · {icon}</b> (W3)",
+            "Da oggi il tool segue anche il segnale settimanale W3. Questa posizione è aperta dal "
             f"{w['entry']} a {_usd(w['entry_px'])}, non è un segnale nuovo. Mercato: {_mkt(w, w['market'], w['expo'])}.",
-            f"Andamento {w['move_pct']:+.2f}% sul prezzo · trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}",
+            f"Andamento {w['move_pct']:+.2f}% sul prezzo · stop/trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}",
             f"Su {_usd(w['capital'])}: {_usd(w['notional'])} = {w['btc']:.4f} BTC (se decidi di seguirla ora, entri a un prezzo diverso).",
             _exits_text(w["side"])])
     if t == "w_trail":
-        return (f"<b>RADAR SIGNAL BTC · Settimanale: trailing aggiornato</b> ({w['side']})\n"
+        return (f"<b>RADAR SIGNAL BTC · Settimanale: trailing aggiornato</b> ({w['side']}, W3)\n"
                 f"Nuovo stop {_usd(w['trail'])} (era {_usd(ev['old'])}) · prezzo {_usd(w['price'])} · "
                 f"andamento {w['move_pct']:+.2f}% sul prezzo")
     if t == "w_dist":
-        return (f"<b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione</b> ({w['side']})\n"
+        return (f"<b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione</b> ({w['side']}, W3)\n"
                 f"Funding medio 7g {w['fund7'] * 100:+.4f}%/giorno · flusso perp {w['flow']:+.2f}σ. Se resta così alla chiusura "
                 f"di domenica, la posizione si chiude lunedì all'apertura. Trailing {_usd(w['trail'])}.")
     if t == "w_exit_next":
-        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE</b> ({w['side']}) · all'apertura di lunedì\n"
+        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ANNUNCIATA</b> ({w['side']}, W3) · all'apertura di lunedì\n"
                 f"Motivo: {REASONS[w['reason']]} (chiusura del {w['exit_date']})\n"
                 f"Ingresso {w['entry']} a {_usd(w['entry_px'])} · ora {_usd(w['price'])} · risultato stimato "
-                f"{w['move_pct']:+.2f}% sul prezzo ({w['pnl_pct']:+.2f}% sul capitale dedicato)")
+                f"{w['move_pct']:+.2f}% sul prezzo ({w['pnl_pct']:+.2f}% sul capitale dedicato). "
+                f"Ti confermo prezzo eseguito e risultato dopo l'apertura.")
     if t == "w_exit":
         x = ev["trade"]
-        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE</b> ({x['side']}) {'✅' if x['pnl_pct'] > 0 else '❌'}\n"
-                f"Motivo: {REASONS.get(x['reason'], x['reason'])} · uscita {x['exit']} a {_usd(x['exit_px'])}\n"
+        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA</b> ({x['side']}, W3) {'✅' if x['pnl_pct'] > 0 else '❌'}\n"
+                f"Motivo: {REASONS.get(x['reason'], x['reason'])} · uscita {x['exit']} a <b>{_usd(x['exit_px'])}</b>\n"
                 f"Ingresso {x['entry']} a {_usd(x['entry_px'])} · risultato {x['move_pct']:+.2f}% sul prezzo "
-                f"({x['pnl_pct']:+.2f}% sul capitale dedicato)")
+                f"(<b>{x['pnl_pct']:+.2f}%</b> sul capitale dedicato)")
+    if t == "w_retract":
+        if ev["kind"] == "signal":
+            return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE RITIRATO</b> ({side}, W3, segnale del {ev['key']})\n"
+                    f"Dopo l'aggiornamento dei dati il segnale non è più valido: {ev['why']}.\n"
+                    "Nessun ingresso: se sei già entrato, valuta di chiudere. Stato attuale: "
+                    + ("nessuna posizione." if w["status"] == "nessuno" else f"{w['status']}."))
+        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE RITIRATA</b> ({side}, W3, segnale del {ev['key']})\n"
+                f"Dopo l'aggiornamento dei dati l'uscita annunciata non è più valida: {ev['why']}."
+                + (f"\nStop/trailing {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}" if w.get("trail") else ""))
     return str(ev)
+
+
+def next_decision(today: str | pd.Timestamp) -> str:
+    """Prossima decisione W3: chiusura UTC della domenica (oggi se è domenica)."""
+    d = pd.Timestamp(today).normalize()
+    return str((d + pd.Timedelta(days=(6 - d.dayofweek) % 7)).date())
+
+
+def _state_word(cur: dict | None) -> str:
+    if not cur:
+        return "non calcolato"
+    s = cur.get("status")
+    if s == "aperto":
+        return f"{cur['side']} aperto, stop {_usd(cur['trail'])}"
+    if s == "uscita":
+        return f"{cur['side']}, uscita lunedì all'apertura"
+    if s == "segnale":
+        return f"segnale {cur['side']}, ingresso lunedì all'apertura"
+    return f"nessuna posizione (regime {cur.get('regime')})"
+
+
+def format_heartbeat(cur: dict | None, data_until: str, last_run: str, problems: list[str], today: str) -> str:
+    """Messaggio quotidiano di salute (uno al giorno): dati, ultimo giro, stato W3, prossima decisione."""
+    head = "Radar · tutto ok" if not problems else "Radar · attenzione: " + "; ".join(problems)
+    return (f"{head}: dati fino al {data_until}, ultimo giro {last_run}, W3 {_state_word(cur)}, "
+            f"prossima decisione {next_decision(today)} (chiusura UTC)")
 
 
 # ---------------------------------------------------------------- controllo orario dello stop / trailing
 
-def check_intraday(cur: dict, already: list[str], h: pd.DataFrame | None = None) -> tuple[list[dict], list[str]]:
-    """Ogni ora: il trailing (o lo stop iniziale del segnale) è stato toccato sulle candele orarie dopo l'ultima
-    chiusura giornaliera? Un'allerta per livello. `h` = candele orarie (test)."""
+def told_level(st: dict | None, cur: dict) -> float | None:
+    """Ultimo stop comunicato all'utente per la posizione attuale (None se riferito a un'altra posizione)."""
+    st = st or {}
+    return st.get("trail_notified") if st.get("trail_sig") and st.get("trail_sig") == cur.get("signal_date") else None
+
+
+def check_intraday(cur: dict, already: list[str], h: pd.DataFrame | None = None,
+                   told: float | None = None) -> tuple[list[dict], list[str]]:
+    """Ogni ora: lo stop è stato toccato sulle candele orarie dopo l'ultima chiusura giornaliera? Livello controllato =
+    il più protettivo tra quello del modello (trailing W3 o stop iniziale del segnale) e l'ultimo comunicato
+    all'utente (`told`): l'allerta non arriva mai dopo il livello che l'utente conosce. Un'allerta per livello.
+    `h` = candele orarie (test). Le chiavi restituite vanno salvate solo se l'invio riesce."""
     if cur["status"] in ("aperto", "uscita"):
-        level, sg = cur["trail"], 1 if cur["side"] == "long" else -1
+        model = cur["trail"]
     elif cur["status"] == "segnale":
-        level, sg = cur["plan"]["stop"], 1 if cur["side"] == "long" else -1
+        model = cur["plan"]["stop"]
     else:
         return [], already
+    sg = _sg(cur["side"])
+    level = model if told is None else (max(model, told) if sg > 0 else min(model, told))
     if h is None:
         from .intraday import hourly_since
         h = hourly_since(pd.Timestamp(cur["date"]) + pd.Timedelta(days=1))
@@ -398,12 +586,25 @@ def check_intraday(cur: dict, already: list[str], h: pd.DataFrame | None = None)
     key = f"W:{cur['signal_date']}:{level:.0f}"
     if not hit or key in already:
         return [], already
-    return ([{"level": level, "side": cur["side"], "last": float(h["close"].iloc[-1]),
-              "time": datetime.now(timezone.utc).strftime("%H:%M UTC")}], (list(already) + [key])[-30:])
+    if told is None:
+        which = "modello"
+    elif abs(told - model) < 0.5:
+        which = "comunicato = modello"
+    else:
+        which = "comunicato" if level == told else "modello"
+    return ([{"level": level, "model": model, "told": told, "which": which, "side": cur["side"],
+              "last": float(h["close"].iloc[-1]), "time": datetime.now(timezone.utc).strftime("%H:%M UTC")}],
+            (list(already) + [key])[-30:])
 
 
 def format_intraday(events: list[dict]) -> str:
     e = events[0]
-    return (f"<b>RADAR SIGNAL BTC · Settimanale: stop toccato (tempo reale)</b> ({e['side']})\n"
-            f"🛑 trailing/stop a {_usd(e['level'])} · prezzo ora {_usd(e['last'])} · {e['time']}\n"
+    if e.get("which") == "comunicato":
+        lvl = f"stop comunicato {_usd(e['level'])} (livello del modello {_usd(e['model'])})"
+    elif e.get("told") is not None and e.get("which") == "modello":
+        lvl = f"stop del modello {_usd(e['level'])} (ultimo comunicato {_usd(e['told'])})"
+    else:
+        lvl = f"stop {_usd(e['level'])}"
+    return (f"<b>RADAR SIGNAL BTC · Settimanale: stop toccato (tempo reale)</b> ({e['side']}, W3)\n"
+            f"🛑 toccato lo {lvl} · prezzo ora {_usd(e['last'])} · {e['time']}\n"
             "Lo stop scatta al tocco: chiudi la posizione. L'uscita ufficiale si registra alla chiusura giornaliera.")

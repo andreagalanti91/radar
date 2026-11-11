@@ -125,7 +125,7 @@ def daily_brief(report: dict) -> str:
             f"(soglia ±{report['threshold']}) · regime {report['regime']}\n"
             f"Setup attivi: {', '.join(active) if active else 'nessuno'}\n"
             f"<b>v2</b>: {_status_line(report['v2'])}\n"
-            + (f"<b>Settimanale W2</b>: {_weekly_line(report['weekly'])}\n" if report.get("weekly") else "")
+            + (f"<b>Settimanale W3</b>: {_weekly_line(report['weekly'])}\n" if report.get("weekly") else "")
             + (f"Regione 7g · acquisto {_usd(report['zone']['buy'][0])}–{_usd(report['zone']['buy'][1])} "
                f"(toccata {report['zone']['stats']['buy_zone_touch_%']:.0f}% delle volte) · vendita "
                f"{_usd(report['zone']['sell'][0])}–{_usd(report['zone']['sell'][1])}\n" if report.get("zone") else "")
@@ -135,14 +135,30 @@ def daily_brief(report: dict) -> str:
             f"DD giornaliero {T['max_dd_%']}% (rischio base {report['params']['risk'] * 100:.2f}%)")
 
 
-def send(text: str) -> bool:
+def send(text: str):
+    """Invia un messaggio. Restituisce il message_id di Telegram (o True) se l'invio è confermato, False altrimenti:
+    chi chiama marca l'evento come inviato SOLO con un valore vero. Mai eccezioni (rete, timeout): False."""
     token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
     if not token or not chat:
         print("[telegram] TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID non impostati, messaggio non inviato:\n" + text)
         return False
-    r = requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
-                      json={"chat_id": chat, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True},
-                      timeout=20)
+    try:
+        r = requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                          json={"chat_id": chat, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True},
+                          timeout=20)
+    except requests.RequestException as e:   # il messaggio d'errore non contiene l'URL con il token
+        print(f"[telegram] errore di rete: {type(e).__name__}")
+        return False
     if not r.ok:
-        print(f"[telegram] errore {r.status_code}: {r.text}")
-    return r.ok
+        print(f"[telegram] errore {r.status_code}: {r.text[:300]}")
+        return False
+    try:
+        body = r.json()
+    except ValueError:
+        body = {}
+    if body.get("ok") is False:
+        print(f"[telegram] risposta non ok: {str(body)[:300]}")
+        return False
+    mid = (body.get("result") or {}).get("message_id")
+    print(f"[telegram] ok id={mid}")
+    return mid or True

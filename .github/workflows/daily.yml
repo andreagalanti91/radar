@@ -20,6 +20,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Controllo ultimo giro
@@ -51,17 +52,15 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
         if: steps.gate.outputs.skip != 'true'
-      - name: Test del motore di backtest
-        if: steps.gate.outputs.skip != 'true'
-        run: python -m radar.cli test
       - name: Aggiorna dati, segnale, alert, dashboard
+        # prima dei test: un test rotto non deve mai bloccare valutazione W3 e alert
         if: steps.gate.outputs.skip != 'true'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # il riepilogo giornaliero parte solo con l'esecuzione delle 00:30
           RADAR_DAILY_BRIEF: ${{ github.event.schedule == '30 0 * * *' && (vars.RADAR_DAILY_BRIEF || '1') || '0' }}
-          # capitale reale (variabili del repository): piani in dollari di W2 + MACD su CAPITAL×WEEKLY_SHARE
+          # capitale reale (variabili del repository): piani in dollari di W3 su CAPITAL×WEEKLY_SHARE
           RADAR_CAPITAL: ${{ vars.RADAR_CAPITAL || '50000' }}
           RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '1.0' }}
           RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0' }}
@@ -74,7 +73,32 @@ jobs:
           git config user.email "radar-bot@users.noreply.github.com"
           git add data/
           git diff --cached --quiet || git commit -m "data: aggiornamento $(date -u +%F)"
-          git push
+          # un altro workflow (wallets.yml) può aver spinto nel frattempo: rebase e fino a 3 tentativi
+          for i in 1 2 3; do
+            if git pull --rebase -X theirs && git push; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            echo "push non riuscito (tentativo $i/3), nuovo tentativo"
+            sleep $((i * 10))
+          done
+          exit 1
+      - name: Test del motore di backtest
+        # i test girano e riportano l'esito, ma non bloccano alert, salvataggio e dashboard (avviso Telegram se falliscono)
+        id: tests
+        if: steps.gate.outputs.skip != 'true'
+        continue-on-error: true
+        run: python -m radar.cli test
+      - name: Avviso test falliti
+        if: steps.gate.outputs.skip != 'true' && steps.tests.outcome == 'failure'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=Radar · test falliti (gli alert sono partiti comunque): ${RUN_URL}") || true
+          echo "avviso test falliti: HTTP ${code}"
       - uses: actions/configure-pages@v5
         if: steps.gate.outputs.skip != 'true'
       - uses: actions/upload-pages-artifact@v3
@@ -84,3 +108,16 @@ jobs:
       - id: deploy
         uses: actions/deploy-pages@v4
         if: steps.gate.outputs.skip != 'true'
+      - name: Avviso workflow fallito
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          JOB: ${{ github.job }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=Radar · workflow fallito: ${JOB} ${RUN_URL}") || true
+          echo "avviso workflow fallito: HTTP ${code}"

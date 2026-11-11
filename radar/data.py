@@ -347,15 +347,55 @@ def fetch_taker_1h() -> pd.DataFrame:
     return new
 
 
-def update_all(verbose: bool = True) -> dict[str, pd.DataFrame]:
+CRITICAL = ("spot", "perp", "funding", "metrics")   # usate da W3: se mancano si avvisa e si valuta sull'ultima cache
+STALE_HOURS = 36                                    # una fonte giornaliera è "vecchia" se l'ultima candela ha chiuso da oltre 36 ore
+
+
+def _cached(name: str) -> pd.DataFrame | None:
+    path = DATA_DIR / f"{name}.csv"
+    return pd.read_csv(path, index_col=0, parse_dates=True) if path.exists() else None
+
+
+def update_all(verbose: bool = True, errors: dict | None = None) -> dict[str, pd.DataFrame]:
+    """Scarica tutte le fonti, una per volta e isolate: un errore non ferma le altre.
+    - fonti W3 (CRITICAL): se lo scaricamento fallisce si usa l'ultima cache su disco e l'errore va in `errors`
+      (il chiamante manda un avviso "fonte non disponibile"); senza cache l'eccezione risale (niente dati inventati);
+    - fonti non usate da W3 (fng, spot_1h, taker_1h): errore registrato in `errors`, cache su disco o tabella vuota."""
+    errors = {} if errors is None else errors
     out = {}
     for name, fn in [("spot", fetch_spot), ("spot_1h", fetch_spot_1h), ("perp", fetch_perp), ("funding", fetch_funding),
                      ("metrics", fetch_metrics), ("fng", fetch_fng), ("taker_1h", fetch_taker_1h)]:
         t = time.time()
-        out[name] = fn()
-        if verbose:
-            df = out[name]
+        try:
+            df = fn()
+            if df is None or not len(df):
+                raise ValueError("nessuna riga")
+        except Exception as e:  # noqa: BLE001
+            errors[name] = f"{type(e).__name__}: {str(e)[:120]}"
+            df = _cached(name)
+            print(f"[data] {name:8s} NON aggiornata ({errors[name]}): "
+                  + (f"uso la cache fino al {df.index.max().date()}" if df is not None and len(df) else "nessuna cache"))
+            if df is None or not len(df):
+                if name in CRITICAL:
+                    raise
+                df = pd.DataFrame(columns=["fng"] if name == "fng" else [], index=pd.DatetimeIndex([], name="date"))
+        out[name] = df
+        if verbose and len(df):
             print(f"[data] {name:8s} {len(df):5d} righe  {df.index.min().date()} -> {df.index.max().date()}  ({time.time()-t:.1f}s)")
+    return out
+
+
+def stale_sources(d: dict[str, pd.DataFrame], now: pd.Timestamp | None = None, names=CRITICAL,
+                  hours: float = STALE_HOURS) -> dict[str, str]:
+    """Fonti giornaliere ferme: {nome: ultimo giorno} se l'ultima candela (indice = giorno, chiusura alle 24:00 UTC)
+    ha chiuso da più di `hours` ore."""
+    now = pd.Timestamp(datetime.now(timezone.utc).replace(tzinfo=None)) if now is None else pd.Timestamp(now)
+    out = {}
+    for k in names:
+        df = d.get(k)
+        last = df.index.max() if df is not None and len(df) else None
+        if last is None or now - (last + pd.Timedelta(days=1)) > pd.Timedelta(hours=hours):
+            out[k] = str(last.date()) if last is not None else "mai"
     return out
 
 
