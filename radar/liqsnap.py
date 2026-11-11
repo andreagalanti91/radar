@@ -51,7 +51,7 @@ HL_RATE = 7.0          # richieste/s verso Hyperliquid (peso 2 → ~840/min, sot
 LT_GAP = 1.1           # secondi fra due richieste Lighter (60/min)
 CLUSTER_MIN_USD = 2e6  # cluster: almeno $2M su 3 fasce …
 CLUSTER_REL = 0.20     # … e almeno il 20% del più grande dello stesso lato entro ±15%
-COV_FIELDS = ["ts", "ex", "mid", "target", "read", "failed", "http_429", "cached", "holders", "positions", "ntl_long", "ntl_short",
+COV_FIELDS = ["ts", "ex", "mid", "oi_usd", "target", "read", "failed", "http_429", "cached", "holders", "positions", "ntl_long", "ntl_short",
               "binned_long", "binned_short", "beyond_long", "beyond_short", "no_liq_usd", "wrong_side", "stale", "dupes", "secs"]
 
 
@@ -205,9 +205,11 @@ def merge_state(state: dict, fresh: dict[str, list], now: float, max_age_h: floa
     return out, stale
 
 
-def hot(state: dict, mid: float, min_usd: float = HOT_USD, cap: int = 150) -> list[str]:
-    """Conti con posizioni BTC grandi (≥ min_usd) dall'ultima lettura: si rileggono ogni ora, dai più grandi."""
-    size = {a: sum(p["btc"] for p in v.get("p", [])) * mid for a, v in (state or {}).items()}
+def hot(state: dict, mid: float, min_usd: float = HOT_USD, cap: int = 150, near: float = 0.20) -> list[str]:
+    """Conti con posizioni BTC grandi (≥ min_usd) e liquidazione entro ±near dal prezzo (quelle che spostano le fasce),
+    dall'ultima lettura: si rileggono ogni ora, dai più grandi."""
+    size = {a: sum(p["btc"] for p in v.get("p", []) if p.get("liq") and abs(p["liq"] / mid - 1) <= near) * mid
+            for a, v in (state or {}).items()}
     return [a for a, u in sorted(size.items(), key=lambda x: -x[1]) if u >= min_usd][:cap]
 
 
@@ -307,7 +309,7 @@ def _compact(ps: list[dict]) -> list[dict]:
 
 
 def _record(ex: str, d: Path, ts: str, now: float, mid: float, fresh: dict[str, list], target: int, failed: int, n429: int,
-            stale_reads: int, t0: float, write: bool) -> dict:
+            stale_reads: int, t0: float, write: bool, oi_usd: float | None = None) -> dict:
     """Unisce letture fresche e stato, controlla, aggrega, scrive fotografia + copertura, logga. Ritorna il riassunto."""
     sp = d / f"{ex}_state.json"
     st = _load(sp)
@@ -316,7 +318,7 @@ def _record(ex: str, d: Path, ts: str, now: float, mid: float, fresh: dict[str, 
     allp, dupes = dedupe(allp)
     b, c = bins(allp, mid)
     cached = sum(1 for a in acc if a not in fresh)
-    cov = {"ts": ts, "ex": ex, "mid": round(mid, 1), "target": target, "read": target - failed, "failed": failed, "http_429": n429,
+    cov = {"ts": ts, "ex": ex, "mid": round(mid, 1), "oi_usd": round(oi_usd) if oi_usd else None, "target": target, "read": target - failed, "failed": failed, "http_429": n429,
            "cached": cached, "holders": len(acc), "positions": c["positions"], **{k: round(c[k]) for k in
            ("ntl_long", "ntl_short", "binned_long", "binned_short", "beyond_long", "beyond_short", "no_liq_usd")},
            "wrong_side": c["wrong_side"], "stale": stale + stale_reads, "dupes": dupes, "secs": round(time.time() - t0, 1)}
@@ -324,7 +326,8 @@ def _record(ex: str, d: Path, ts: str, now: float, mid: float, fresh: dict[str, 
           f"({len(acc) - cached} freschi, {cached} da letture ≤ {MAX_AGE_H} h); nozionale BTC long ${c['ntl_long'] / 1e6:,.0f}M "
           f"short ${c['ntl_short'] / 1e6:,.0f}M; in fascia ±15% long ${c['binned_long'] / 1e6:,.0f}M short ${c['binned_short'] / 1e6:,.0f}M; "
           f"senza liq ${c['no_liq_usd'] / 1e6:,.0f}M; scartate: lato sbagliato {c['wrong_side']}, vecchie {stale + stale_reads}, doppioni {dupes}; "
-          f"{cov['secs']} s")
+          f"{cov['secs']} s" + (f"; copertura dell'OI BTC dell'exchange (${oi_usd / 1e6:,.0f}M per lato): long "
+                                f"{c['ntl_long'] / oi_usd:.0%}, short {c['ntl_short'] / oi_usd:.0%}" if oi_usd else ""))
     if target and failed > target / 2:
         print(f"[liqsnap] {ex}: più di metà delle letture fallite: fotografia parziale")
     wrote = False
@@ -389,7 +392,12 @@ def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool) -> dict:
     st = _load(d / "lighter_state.json")
     # nello stato le chiavi sono indirizzi L1 (un indirizzo = tutti i suoi sotto-conti)
     todo = list(dict.fromkeys(hot(st.get("acc", {}), mid, cap=HOT_MAX["lighter"]) + (rotation(addrs, hour) if write else [])))
-    fresh, failed, n429 = {}, 0, 0
+    fresh, failed, n429, oi = {}, 0, 0, None
+    try:   # open interest BTC di Lighter (mercato 1): misura della copertura
+        o = ((_lt_get(s, "orderBookDetails", {"market_id": 1}) or {}).get("order_book_details") or [{}])[0]
+        oi = _f(o.get("open_interest")) * mid if o.get("symbol", "BTC") == "BTC" else None
+    except Exception:  # noqa: BLE001
+        pass
     for a in todo:
         try:
             r = _lt_get(s, "account", {"by": "l1_address", "value": a, "active_only": "true"})
@@ -399,10 +407,11 @@ def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool) -> dict:
             fresh[a] = parse_lighter(r, time.time())
         except Exception:  # noqa: BLE001
             failed += 1
-    return _record("lighter", d, ts, now, mid, fresh, len(todo), failed, n429, 0, t0, write)
+    return _record("lighter", d, ts, now, mid, fresh, len(todo), failed, n429, 0, t0, write, oi)
 
 
-def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str], base_states: dict | None, hl: _HL) -> dict:
+def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str], base_states: dict | None, hl: _HL,
+           oi: float | None = None) -> dict:
     t0, now = time.time(), time.time()
     st = _load(d / "hl_state.json")
     base_states = {a.lower(): v for a, v in (base_states or {}).items()}
@@ -418,7 +427,7 @@ def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str],
             continue
         fresh[a] = parse_hl(s, a)
     target = len(todo) + len(base_states)
-    return _record("hl", d, ts, now, mid, fresh, target, failed, hl.n429, stale_reads, t0, write)
+    return _record("hl", d, ts, now, mid, fresh, target, failed, hl.n429, stale_reads, t0, write, oi)
 
 
 def record(data_dir, base_states: dict | None, big: list[str], ref_price: float | None = None) -> dict:
@@ -426,10 +435,13 @@ def record(data_dir, base_states: dict | None, big: list[str], ref_price: float 
     d = Path(data_dir) / "liqsnap"
     d.mkdir(parents=True, exist_ok=True)
     hl = _HL()
-    try:
-        mid = _f((hl.post({"type": "allMids"}) or {}).get("BTC"))
+    mid, hl_oi = 0.0, None
+    try:   # prezzo medio e open interest BTC di Hyperliquid in una chiamata (peso 20)
+        meta, ctx = hl.post({"type": "metaAndAssetCtxs"}) or ({}, [])
+        i = [u.get("name") for u in meta.get("universe", [])].index("BTC")
+        mid = _f(ctx[i].get("midPx")) or _f(ctx[i].get("markPx"))
+        hl_oi = _f(ctx[i].get("openInterest")) * mid or None
     except Exception as e:  # noqa: BLE001
-        mid = 0.0
         print(f"[liqsnap] prezzo medio Hyperliquid non letto: {e!r}")
     if not mid:   # riserva: chiusura dell'ultima ora usata dalla mappa stimata
         mid = _f(ref_price)
@@ -447,7 +459,7 @@ def record(data_dir, base_states: dict | None, big: list[str], ref_price: float 
         try:
             write = _load(d / f"{ex}_state.json").get("last_hour") != ts[:13]   # una sola fotografia per ora (giro di riserva :37)
             if ex == "hl":
-                return ex, run_hl(d, ts, hour, mid, write, big, base_states, hl)
+                return ex, run_hl(d, ts, hour, mid, write, big, base_states, hl, hl_oi)
             return ex, run_lighter(d, ts, hour, mid, write)
         except Exception as e:  # noqa: BLE001
             print(f"[liqsnap] {ex} non disponibile: {e!r}")

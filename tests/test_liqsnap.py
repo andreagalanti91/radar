@@ -93,8 +93,9 @@ class TestLiqSnap(unittest.TestCase):
               "gone": {"t": now - 60, "p": [pos("long", 1)]}}
         new, stale = liqsnap.merge_state(st, {"gone": [], "y": [pos("short", 2)]}, now)
         self.assertEqual(sorted(new), ["x", "y"]); self.assertEqual(stale, 1)
-        h = liqsnap.hot({"a": {"p": [pos("long", 1, btc=20)]}, "b": {"p": [pos("long", 1, btc=1)]}, "c": {"p": [pos("long", 1, btc=50)]}}, 70000)
-        self.assertEqual(h, ["c", "a"])
+        h = liqsnap.hot({"a": {"p": [pos("long", 65000, btc=20)]}, "b": {"p": [pos("long", 65000, btc=1)]}, "c": {"p": [pos("long", 60000, btc=50)]},
+                         "far": {"p": [pos("long", 30000, btc=500)]}, "noliq": {"p": [pos("long", None, btc=500)]}}, 70000)
+        self.assertEqual(h, ["c", "a"])   # 1 BTC sotto $1M; liquidazioni lontane o assenti: bastano le letture a rotazione
 
     def test_file_gz_in_coda(self):
         with tempfile.TemporaryDirectory() as d:
