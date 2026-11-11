@@ -16,14 +16,23 @@
     "notified": [
       "2026-08-23"
     ],
-    "exits": [
+    "exit_announced": [
       "2026-08-23"
     ],
+    "exit_done": [
+      "2026-08-23"
+    ],
+    "entered": [
+      "2026-08-23"
+    ],
+    "pending_signal": null,
+    "pending_exit": null,
     "trail_notified": 71330.98,
+    "trail_sig": null,
     "dist_week": null,
+    "side": null,
     "status": "nessuno",
     "signal_date": null,
-    "side": null,
     "trail": null,
     "date": "2026-11-10"
   },
@@ -3047,5 +3056,6 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-11T12:04:09"
+  "last_run": "2026-11-11T14:05:36",
+  "heartbeat": "2026-11-11"
 }
