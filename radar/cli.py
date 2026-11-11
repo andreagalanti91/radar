@@ -79,7 +79,7 @@ def daily() -> None:
         print(f"[radar] book non aggiornato: {e!r}")
     report["news"], report["calendar"] = fetch_news(), fetch_calendar()
     report["banks"] = fetch_central_banks()   # prossime riunioni Fed (FOMC) e BCE
-    # solo W2 + MACD dal 05/11/2026 (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli
+    # solo W3 (W2 + MACD robusta, dal 12/11/2026) (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli
     v2_on = os.environ.get("RADAR_V2_ALERTS", "0") == "1"
     events = diff_events(report)
     for ev in events if v2_on else []:

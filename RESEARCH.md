@@ -1075,6 +1075,14 @@ Ordine dei giri serali; la pianificazione può riordinare in base ai risultati. 
 ### Fase 6 · Dati futuri (dal 2027)
 - **R12 Liquidazioni reali** raccolte da oggi; **R13** rivalutazione di SOL dopo 10 trade su carta.
 
+## W3 IN USO dal 12/11/2026 (decisione dell'utente, "ok punto 1")
+W3 = W2 + MACD con tre modifiche (radar/weekly.py): 1) flusso perp = media degli ultimi 3 giorni di pf14z DISPONIBILI alla
+chiusura della domenica (live_flow: rolling(3).mean().shift(1)), identico dal vivo e nel backtest; 2) trailing a cricchetto (lo
+stop non si allenta mai quando l'ATR sale); 3) tetto di rischio 25% allo stop iniziale anche sui long (R_LONG). Liquidità remunerata
+da flat: solo nota operativa, non nei numeri. Dal 2021: 13 trade, WR 92%, 10k → ~78,5k, DD −21,1% (W2 "come dal vivo" 103k, DD
+−22,7%); 2018–20: ~25k con DD −36% contro 20k con DD −48%; 2018 −7% contro −33%. Trade di riferimento: research/weekly_w3_trades.csv.
+Le sezioni sotto descrivono W2: valgono ancora per tutto il resto delle regole.
+
 ## Memoria dell'algoritmo principale · W2 + MACD (aggiornata 05/11/2026) — LEGGERE PER PRIMA
 Unica strategia del tool e dei segnali reali dal 05/11/2026 (decisione dell'utente: "il settimanale con grandi quantità di denaro
 e poco rischio funziona molto di più"). Tutto il resto (v2 giornaliera, intraday, materie prime) è spento o rimosso. Le sezioni

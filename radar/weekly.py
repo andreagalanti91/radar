@@ -31,6 +31,8 @@ SMA, EMA_T, EMA_X, ATR_N = 40, 20, 21, 14
 STOP_K = TRAIL_K = 2.5
 FUND_HOT, FUND_COLD = 0.0009, -0.0003
 R_SHORT = 0.25                     # rischio massimo allo stop iniziale per gli short (frazione del capitale)
+R_LONG = 0.25                      # W3 (12/11/2026): stesso tetto anche sui long (un long vicino a un top perdeva fino a −41%)
+FLOW_N = 3                         # W3: flusso perp = media degli ultimi 3 giorni DISPONIBILI alla decisione (fino al sabato)
 OLD_TREND, MACD_P = 16, (8, 21, 5)  # filtro F1 (01/11/2026): nei trend vecchi nuovo long solo con momentum MACD ripartito
 FEE_SPOT, FEE_PERP, SLIP = 0.001, 0.0005, 0.001
 CAPITAL = float(os.environ.get("RADAR_CAPITAL", "50000"))
@@ -40,10 +42,16 @@ REASONS = {"trail": "trailing 2,5 ATR settimanali", "stop": "stop iniziale 2,5 A
            "open": "posizione aperta"}
 
 
+def live_flow(f: pd.DataFrame) -> pd.Series:
+    """Flusso perp usato dalla strategia: media di FLOW_N giorni di pf14z, ritardata di un giorno. Alla chiusura della domenica
+    il pf14z della domenica non c'è ancora (archivio Binance del giorno dopo): così backtest e segnale reale usano lo stesso dato."""
+    return f["pf14z"].rolling(FLOW_N, min_periods=2).mean().shift(1)
+
+
 def weekly_bars(f: pd.DataFrame) -> pd.DataFrame:
     """Candele settimanali W-SUN CHIUSE (solo settimane complete nei dati) con medie, ATR, flusso e funding."""
     w = f[["open", "high", "low", "close"]].resample("W-SUN").agg({"open": "first", "high": "max", "low": "min", "close": "last"})
-    w["flow"] = f["pf14z"].resample("W-SUN").last()
+    w["flow"] = live_flow(f).resample("W-SUN").last()          # W3: lo stesso dato dal vivo e nel backtest
     w["fund7"] = f["funding"].fillna(0).rolling(7).mean().resample("W-SUN").last()
     c = w["close"]
     w["sma"] = c.rolling(SMA).mean()
@@ -66,10 +74,8 @@ def weekly_bars(f: pd.DataFrame) -> pd.DataFrame:
 
 
 def exposure(sg: int, close: float, atr: float, lev: float = 1.0) -> float:
-    """Esposizione sul capitale: long 1x; short con tetto di rischio 25% allo stop iniziale (2,5 ATRw)."""
-    if sg > 0:
-        return lev
-    return lev * min(1.0, R_SHORT / (STOP_K * atr / close))
+    """Esposizione sul capitale con tetto di rischio allo stop iniziale (2,5 ATRw): 25% per long (W3) e short; il resto resta in liquidità."""
+    return lev * min(1.0, (R_LONG if sg > 0 else R_SHORT) / (STOP_K * atr / close))
 
 
 def _decide(wk: pd.Series, side: int) -> tuple | None:
@@ -128,10 +134,12 @@ def simulate(f: pd.DataFrame, start: str = START, capital: float = 10000.0, lev:
                           entry_px=round(px, 2), sig_close=float(wk["close"]), atr=float(wk["atr"]), expo=round(lt, 3),
                           market="spot" if side > 0 and lev <= 1 else "perp", eq0=cash + abs(q) * px * frate,
                           stop0=float(wk["close"] - side * STOP_K * wk["atr"]), best=O[i], curatr=float(wk["atr"]))
+                tr["stop"] = tr["stop0"]
             pend = None
         if side:
             tl = tr["best"] - side * TRAIL_K * tr["curatr"]
-            stop = max(tr["stop0"], tl) if side > 0 else min(tr["stop0"], tl)
+            stop = max(tr["stop"], tl) if side > 0 else min(tr["stop"], tl)   # W3: a cricchetto, lo stop non si allenta mai
+            tr["stop"] = stop
             if (side > 0 and L[i] <= stop) or (side < 0 and H[i] >= stop):
                 px = (min(O[i], stop) if side > 0 else max(O[i], stop)) * (1 - SLIP * side)
                 close_all(px, i, "stop" if stop == tr["stop0"] else "trail")
@@ -149,7 +157,7 @@ def simulate(f: pd.DataFrame, start: str = START, capital: float = 10000.0, lev:
     if side:
         i = len(idx) - 1
         tl = tr["best"] - side * TRAIL_K * tr["curatr"]
-        trail = max(tr["stop0"], tl) if side > 0 else min(tr["stop0"], tl)   # livello valido dal prossimo giorno
+        trail = max(tr["stop"], tl) if side > 0 else min(tr["stop"], tl)   # livello valido dal prossimo giorno (a cricchetto)
         out["open"] = dict(tr, trail=float(trail), last=float(C[i]), move=(C[i] / tr["entry_px"] - 1) * side,
                            pnl=(eq[i] / tr["eq0"] - 1),
                            # come nella ricerca: per le metriche la posizione aperta si chiude all'ultima chiusura (con commissione)
@@ -209,7 +217,7 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
     wk, last = w.iloc[-1], f.iloc[-1]
     o, pd_ = r["open"], r["pending"]
     fund7 = float(f["funding"].fillna(0).rolling(7).mean().iloc[-1])
-    flow = float(f["pf14z"].dropna().iloc[-1])
+    flow = float(live_flow(f).dropna().iloc[-1])
     out = {"date": str(f.index[-1].date()), "week": str(w.index[-1].date()), "price": float(last["close"]),
            "atr_d": float(last["atr"]) if "atr" in f else None, "atr_w": float(wk["atr"]), "ema21": float(wk["ema21"]),
            "sma40": float(wk["sma"]), "ema20": float(wk["ema20"]), "flow": flow, "fund7": fund7,
@@ -336,7 +344,7 @@ def format_event(ev: dict) -> str:
                 f"<b>Trailing</b>: {_usd(p['trail_dist'])} (2,5 ATRw) sotto/sopra la miglior chiusura giornaliera: ti avviso quando si sposta",
                 f"<b>EMA 21 settimanale</b> {_usd(p['ema21'])}",
                 _exits_text(w["side"]),
-                "Operazioni rare (circa 3 l'anno) e lunghe: DD storico −42,6%."])
+                "Operazioni rare (2–3 l'anno) e lunghe; long con al massimo il 25% del capitale a rischio allo stop iniziale."])
         return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W2, già in posizione)\n"
                 f"Segnale del {w['signal_date']} · ingresso {w['entry']} a {_usd(w['entry_px'])} · mercato: {_mkt(w, w['market'], w['expo'])}\n"
                 f"Trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}\n" + _exits_text(w["side"]))

@@ -2,19 +2,23 @@
 
 # Radar Signal BTC
 
-Segnali di trading su **Bitcoin** con **una sola strategia: W2 settimanale + filtro MACD**, in uso con capitale reale dal
+Segnali di trading su **Bitcoin** con **una sola strategia: W3 settimanale** (W2 + filtro MACD, versione robusta dal 12/11/2026), in uso con capitale reale dal
 02/11/2026 e unica nel tool dal 05/11/2026, sul 100% di `RADAR_CAPITAL`. Poche operazioni grandi (2–3 l'anno, settimane o
 mesi ciascuna): long in **spot senza leva**, short in perp solo in trend ribassista confermato, con tetto di rischio. Intorno
 alla strategia: dashboard aggiornata ogni ora, mappa delle liquidazioni, order book, sentinella dei wallet Hyperliquid e
 balene del giorno, tutto con alert su Telegram.
 
-| Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W2 + MACD | Tenere BTC |
+| Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W3 | Tenere BTC |
 |---|---|---|
-| 10.000 $ diventano | **~120.000 $** | ~26.800 $ |
-| Max drawdown giornaliero | **−22,7%** | −76,6% |
-| Trade / win rate | 14 · 93% | – |
+| 10.000 $ diventano | **~78.500 $** | ~26.800 $ |
+| Max drawdown giornaliero | **−21,1%** | −76,6% |
+| Trade / win rate | 13 · 92% | – |
 
-**Posizione aperta (al 07/11/2026):** long in spot dal 24/08/2026 a 77.812 $, trailing a 71.415 $.
+W3 rispetto a W2 (revisione dell'11/11/2026): usa lo stesso dato di flusso dal vivo e nello storico (W2 nel backtest usava
+un dato non ancora disponibile alla decisione: "come dal vivo" faceva ~103.000 $, non ~119.000 $), ha il trailing a cricchetto e
+un tetto di rischio del 25% anche sui long. Rende meno dal 2021 ma nel 2018 avrebbe perso ~7% invece di ~33%.
+
+**Posizione (al 12/11/2026):** flat. Ultimo trade: long dal 24/08/2026 a 77.812 $, chiuso il 09/11/2026 a 74.777 $ (−4,1%) per chiusura settimanale sotto la EMA 21.
 
 **Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot Telegram:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot) ·
 **Repository:** https://github.com/andreagalanti91/radar
@@ -52,7 +56,7 @@ Pensata per il telefono (installabile dalla schermata Home), dark-first con tema
 | Sezione | Cosa trovi |
 |---|---|
 | **Oggi** | card della posizione con un solo prezzo di riferimento (live o ultima chiusura oraria); overlay *Perché è aperta e quando si chiude* con condizioni, uscite, piano e tutti i trade W2; grafico settimanale dal 2021 con ingressi e uscite, EMA 21, SMA 40, supporti/resistenze e cluster di liquidazione più vicini; card S/R; card *Liquidazioni vicine*; *Oggi nelle notizie* |
-| **Simulatore** | capitale e data di partenza: quanto varrebbe oggi seguendo W2 + MACD (stessa equity giornaliera delle Statistiche) |
+| **Simulatore** | capitale e data di partenza: quanto varrebbe oggi seguendo W3 (stessa equity giornaliera delle Statistiche) |
 | **Statistiche** | curva di equity contro BTC, trade, risultati per anno, drawdown, registro dei trade reali |
 | **Liquidazioni** | mappa stimata Binance + OKX, prezzi di liquidazione delle balene Hyperliquid, feed live, orari di aggiornamento per fonte, motore dell'order book |
 | **Wallet** | sentinella in stile Hyperdash dei 3 wallet (Principale, Simile 1, Simile 2) e *Balene del giorno* con criteri e track record |
@@ -163,7 +167,7 @@ Giro tipo: ricerca/dati/ui in parallelo → test e render → commit → deploy 
 | `TELEGRAM_BOT_TOKEN` | secret | – | token del bot |
 | `TELEGRAM_CHAT_ID` | secret | – | chat che riceve gli alert e da cui si accettano i comandi |
 | `RADAR_CAPITAL` | variabile | 50000 | capitale su cui si calcolano i piani in dollari |
-| `RADAR_WEEKLY_SHARE` | variabile | 1.0 | quota del capitale dedicata a W2 + MACD |
+| `RADAR_WEEKLY_SHARE` | variabile | 1.0 | quota del capitale dedicata a W3 |
 | `RADAR_WALLET_MIN` | variabile | 50000 | variazione minima di size per un alert wallet |
 | `RADAR_WALLET_ORDER_MIN` | variabile | 100000 | valore minimo di un ordine nuovo per un alert wallet |
 | `RADAR_WALLET_ALERTS` | variabile | 1 | `0` spegne gli alert dei wallet |
@@ -188,7 +192,7 @@ python -m radar.scout --no-telegram  # scelta delle balene senza messaggi
 radar/cli.py           giro orario: orchestra tutti i moduli
 radar/data.py          download e cache incrementale (data/*.csv)
 radar/features.py      CVD spot/perp, funding, OI, ATR, trend
-radar/weekly.py        W2 + MACD: storico, stato, eventi, controllo orario del trailing
+radar/weekly.py        W3 (W2 + MACD robusta): storico, stato, eventi, controllo orario del trailing
 radar/levels.py        supporti e resistenze (mappa visiva)
 radar/liqmap.py        mappa stimata delle liquidazioni + prezzi di liquidazione Hyperliquid
 radar/liquidations.py  raccolta delle liquidazioni reali OKX

@@ -1,4 +1,4 @@
-"""Segnale settimanale W2 (radar/weekly.py): numeri storici della ricerca, stato al 30/10/2026, eventi senza duplicati,
+"""Segnale settimanale W3 = W2 + MACD robusta (radar/weekly.py): numeri storici della ricerca, stato al 30/10/2026, eventi senza duplicati,
 tetto di esposizione sugli short, controllo orario del trailing, dashboard."""
 import csv
 import tempfile
@@ -26,18 +26,19 @@ class TestWeekly(unittest.TestCase):
 
     def test_numeri_storici(self):
         M, H = self.cur["history"]["m1"], self.cur["history"]
-        self.assertEqual(M["n"], 14)          # W2 con filtro F1 (MACD 8/21/5 nei trend vecchi), dal 01/11/2026
-        self.assertAlmostEqual(M["per_year"], 2.4, delta=0.05)
-        self.assertAlmostEqual(M["win_rate"], 92.9, delta=0.5)
-        self.assertAlmostEqual(M["avg_pct"], 21.15, delta=0.3)
+        # W3 dal 12/11/2026: flusso dei 3 giorni disponibili alla decisione, trailing a cricchetto, tetto di rischio 25% sui long
+        self.assertEqual(M["n"], 13)
+        self.assertAlmostEqual(M["per_year"], 2.23, delta=0.05)
+        self.assertAlmostEqual(M["win_rate"], 92.3, delta=0.5)
+        self.assertAlmostEqual(M["avg_pct"], 18.59, delta=0.5)
         self.assertAlmostEqual(M["worst_pct"], -0.77, delta=0.3)
-        self.assertAlmostEqual(M["total_pct"], 1128.7, delta=15)
-        self.assertAlmostEqual(M["max_dd_pct"], -22.7, delta=0.5)
-        self.assertAlmostEqual(M["mar"], 49.8, delta=1)
-        self.assertAlmostEqual(H["final_10k_1x"], 122868, delta=1200)
+        self.assertAlmostEqual(M["total_pct"], 712.8, delta=15)
+        self.assertAlmostEqual(M["max_dd_pct"], -21.1, delta=0.5)
+        self.assertAlmostEqual(M["mar"], 33.7, delta=1.5)
+        self.assertAlmostEqual(H["final_10k_1x"], 81278, delta=1200)
 
     def test_trade_come_la_ricerca(self):
-        with open(ROOT / "research" / "weekly_w2_f1macd_trades.csv", newline="") as fh:
+        with open(ROOT / "research" / "weekly_w3_trades.csv", newline="") as fh:
             ref = list(csv.DictReader(fh))
         T = self.cur["history"]["trades"]
         self.assertEqual([(t["entry"], t["side"]) for t in T], [(r["ingresso"], r["lato"]) for r in ref])
@@ -64,10 +65,19 @@ class TestWeekly(unittest.TestCase):
                 self.assertLessEqual(t["expo"], 1.0)
         self.assertAlmostEqual(wk.exposure(-1, 100.0, 10.0), 1.0)          # stop al 25%: tetto non attivo
         self.assertAlmostEqual(wk.exposure(-1, 100.0, 20.0), 0.5)          # stop al 50%: metà esposizione
-        self.assertAlmostEqual(wk.exposure(1, 100.0, 20.0), 1.0)           # i long restano 1x in spot
+        self.assertAlmostEqual(wk.exposure(1, 100.0, 10.0), 1.0)           # long: stop al 25%, tetto non attivo
+        self.assertAlmostEqual(wk.exposure(1, 100.0, 20.0), 0.5)           # W3: anche i long hanno il tetto del 25%
         p = wk.plan(-1, 100.0, 20.0, 110.0, 10000.0)
         self.assertEqual(p["market"], "perp")
         self.assertAlmostEqual(p["notional"] * p["stop_pct"] / 100, 2500, delta=1)   # 25% del capitale allo stop
+
+    def test_w3_flusso_e_cricchetto(self):
+        wk, F = self.wk, self.F[self.F.index < "2026-10-31"]
+        g = F.copy(); g.loc[g.index[-1], "pf14z"] = float("nan")          # dal vivo il pf14z dell'ultimo giorno non c'è ancora
+        self.assertAlmostEqual(wk.live_flow(F).iloc[-1], wk.live_flow(g).iloc[-1])   # stessa decisione con o senza
+        r = wk.simulate(F)                                                 # cricchetto: lo stop di ogni trade non scende mai
+        e = r["equity"]; self.assertGreater(len(e), 0)
+        o = r["open"]; self.assertGreaterEqual(o["trail"], o["stop0"])
 
     def test_primo_avvio_e_dedupe(self):
         wk = self.wk

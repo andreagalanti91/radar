@@ -532,7 +532,7 @@ body.noscroll{overflow:hidden}
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
     <div class="section only-w2" id="wkSec" hidden>
-      <div class="sh">Posizione · W2 + MACD <small id="wkSub"></small></div>
+      <div class="sh">Posizione · W3 <small id="wkSub"></small></div>
       <div class="card glow wkHero" id="wkHero"></div>
       <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
         <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
@@ -630,7 +630,7 @@ body.noscroll{overflow:hidden}
   <!-- ============ SIMULATORE ============ -->
   <div class="view" id="v-simulatore" hidden>
     <div class="section">
-      <div class="sh">Simulatore <small>W2 + MACD dal 2021</small></div>
+      <div class="sh">Simulatore <small>W3 dal 2021</small></div>
       <div class="list">
         <label class="row"><span class="k">Capitale iniziale</span><input id="simCap" type="number" inputmode="decimal" min="100" step="1000" value="10000" enterkeyhint="done"></label>
         <label class="row"><span class="k">Data di partenza</span><input id="simStart" type="date"></label>
@@ -735,7 +735,7 @@ body.noscroll{overflow:hidden}
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
       </div>
       <div class="card mHide" style="padding:4px 6px;margin-top:12px"><div class="scroll" style="max-height:480px;overflow-y:auto"><table class="grid" id="wkTr"></table></div></div>
-      <p class="foot" id="wkStatFoot">Simulazione giornaliera sulle candele settimanali chiuse: long in spot 1x (0,1%/lato), short in perp con tetto di rischio 25% allo stop (0,05%/lato e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
+      <p class="foot" id="wkStatFoot">Simulazione giornaliera sulle candele settimanali chiuse: long in spot e short in perp con tetto di rischio 25% allo stop iniziale (0,1%/lato spot, 0,05%/lato perp e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
     </div>
   </div>
 
@@ -767,27 +767,27 @@ body.noscroll{overflow:hidden}
 
   <div class="view" id="v-metodo" hidden>
     <div class="section only-w2">
-      <div class="sh">Come funziona · W2 + MACD</div>
+      <div class="sh">Come funziona · W3 (W2 + MACD, versione robusta)</div>
       <div class="card prose">
         <p>Si guarda solo la <b>candela settimanale</b> (lunedì → domenica, chiusura UTC della domenica). La decisione si prende alla chiusura della domenica e si esegue all'<b>apertura del lunedì</b>. Circa 2–3 operazioni l'anno, di settimane o mesi ciascuna.</p>
         <h3>Quando si compra</h3>
         <ul>
           <li><b>Trend rialzista</b>: chiusura sopra la media a 40 settimane e EMA 20 settimanale in salita.</li>
-          <li><b>Ingresso</b>: chiusura sopra la EMA 21 settimanale con il flusso dei perp (CVD 14 giorni) positivo.</li>
+          <li><b>Ingresso</b>: chiusura sopra la EMA 21 settimanale con il flusso dei perp positivo (CVD 14 giorni, media degli ultimi 3 giorni disponibili alla chiusura della domenica: lo stesso dato dal vivo e nello storico).</li>
           <li><b>Filtro MACD</b>: se il trend dura da almeno 16 settimane, si entra solo se il MACD settimanale 8/21/5 è sopra la linea di segnale e sopra zero. Evita i rientri sul top che fallisce.</li>
-          <li>Long in <b>spot, senza leva</b>. Short solo in trend ribassista, in perp con esposizione ridotta (lo stop iniziale costa al massimo il 25% del capitale).</li>
+          <li>Long in <b>spot, senza leva</b>; short solo in trend ribassista, in perp. Per entrambi lo stop iniziale costa al massimo il <b>25% del capitale</b>: se è più lontano si entra con meno capitale e il resto resta in liquidità.</li>
         </ul>
         <h3>Quando si vende</h3>
         <ul>
-          <li><b>Trailing</b> a 2,5 ATR settimanali dalla miglior chiusura giornaliera (controllato ogni ora; su Telegram quando si sposta).</li>
+          <li><b>Trailing</b> a 2,5 ATR settimanali dalla miglior chiusura giornaliera, <b>a cricchetto</b>: si alza e non scende mai (controllato a ogni aggiornamento; su Telegram quando si sposta).</li>
           <li>Chiusura settimanale sotto la <b>EMA 21</b>.</li>
           <li><b>Distribuzione</b>: funding medio 7 giorni sopra 0,09% al giorno con flusso perp negativo.</li>
         </ul>
         <h3>Limiti</h3>
         <ul>
-          <li>Dal 2021: 14 trade, 13 vincenti, drawdown giornaliero −22,7%. Pochi trade: ogni trade pesa molto.</li>
+          <li>Dal 2021: 13 trade, 12 vincenti, 10.000 $ → circa 78.000 $, drawdown giornaliero −21%. Pochi trade: ogni trade pesa molto. Attese realistiche: +15/+35% l’anno, drawdown intorno a −25/−30%.</li>
           <li>Il filtro MACD è stato scelto guardando il 2021–24; ha retto anche sul 2017–20, ma il registro reale dirà se il vantaggio è vero.</li>
-          <li>Caso peggiore storico: un crollo come il 2018 (−18% con il filtro, −56% senza). Dedica a W2 una quota di capitale che puoi vedere scendere del 25%.</li>
+          <li>Caso peggiore: un long comprato vicino a un top. Nel 2018 W2 perdeva −41% in un solo trade; con il tetto di rischio di W3 il 2018 chiude intorno a −7%. Dedica alla strategia una quota di capitale che puoi vedere scendere del 30%.</li>
         </ul>
       </div>
     </div>
@@ -1487,7 +1487,7 @@ function simLevs() {   // W2: solo 1x e 2x (come nello storico); v2: fino a 5x
   const W = STRAT === "w2";
   $("simLev").querySelectorAll("button").forEach(x => x.disabled = W && +x.dataset.v > 2);
   if (W && sim.lev > 2) { sim.lev = 1; levSeg.set(1); }
-  $("simFoot").textContent = W ? "W2: 1x = long in spot e short in perp con tetto di rischio 25% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 3 trade l'anno di settimane o mesi ciascuno."
+  $("simFoot").textContent = W ? "W3: 1x = long in spot e short in perp con tetto di rischio 25% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 3 trade l'anno di settimane o mesi ciascuno."
     : "1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.";
 }
 function simulate() {
