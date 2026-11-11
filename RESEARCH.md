@@ -1149,6 +1149,14 @@ File: research/w2_robustezza/, research/w2_migliorie/, research/ta_settimanale/.
   200 giorni e MACD sopra lo zero sono quasi la stessa informazione (accordo 86–94%); il MACD sotto il segnale precede la rottura
   della 200 giorni di ~6 settimane ai top (9 su 9). Utili come contesto in dashboard, non come regole.
 
+### Nuova strategia settimanale/mensile con volumi e S/R · 11/11/2026 · NON ADOTTATA
+Otto varianti solo long (struttura S/R a swing, canale 20/10, VWAP 26 settimane, bilancio dei volumi, voto, mensile) + trailing
+ATR, scelte sul 2014–20 e giudicate una volta sul 2021→oggi: la scelta (VWAP + bilancio volumi + trailing 4 ATR; 2014–20 MAR 2,09)
+fa 10k → 13,2k con DD −56% contro buy & hold 25,2k e W2 118,6k; nessuna delle 40 combinazioni batte il buy & hold dal 2021.
+**Lezione 84**: prezzo, volume spot e supporti/resistenze da soli non indicano la direzione su BTC settimanale dopo il 2021
+(35% di trade vinti, falsi breakout); il vantaggio di W2 sta nel flusso dei perpetual e nell'uscita rapida. La classifica di un
+periodo non predice quella del successivo (correlazione 0,16). File: research/nuova_strategia/REPORT.md.
+
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
