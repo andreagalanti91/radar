@@ -12,7 +12,8 @@ BTC-USDT-SWAP (OI orario fino all'ora corrente). Le ore dopo la fine dell'archiv
 Binance (data-api.binance.vision, fino all'ora chiusa) e un OI Binance STIMATO dalle variazioni % dell'OI OKX (extend_oi):
 la fonte dichiara sempre fin dove arriva l'OI vero ("oi_until") e quante ore sono stimate ("extended_h"). È una STIMA: leve e lati veri delle posizioni non sono pubblici.
 Hyperliquid è l'unico exchange dove le posizioni sono pubbliche: per i conti più grandi (classifica) e i wallet seguiti da
-whalebot si leggono i prezzi di liquidazione VERI delle posizioni BTC.
+whalebot si leggono i prezzi di liquidazione VERI delle posizioni BTC. Ogni ora radar/liqsnap.py registra in data/liqsnap/ i livelli
+reali di Hyperliquid (tutti i conti ≥ $1M a rotazione) e Lighter, in fasce dello 0,25% (chiave "onchain" del risultato).
 La ricerca (research/liquidazioni, lezione 81) non trova un vantaggio di trading nella mappa: è contesto, non segnale.
 """
 from __future__ import annotations
@@ -45,6 +46,7 @@ WHALEBOT = {
     "0x2d99fe0f36c1aebd28a1a2c0e82e8ca13c2ea351": "Rotatore",
 }
 TOP_ACCOUNTS = 80    # conti più grandi della classifica Hyperliquid da leggere (oltre a quelli di whalebot)
+BIG_ACCOUNT_USD = 1e6  # conti della classifica coperti a rotazione dal registratore on-chain (radar/liqsnap.py)
 
 
 # ------------------------------------------------------------------ funzioni pure (testate in tests/test_liqmap.py)
@@ -326,9 +328,13 @@ def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
 
 
 def _hl(body: dict):
-    r = _s.post(HL_API, json=body, timeout=20)
-    r.raise_for_status()
-    return r.json()
+    for back in (2, 4, None):   # limite 1.200 di peso al minuto per IP: su 429 si aspetta e si riprova
+        r = _s.post(HL_API, json=body, timeout=20)
+        if r.status_code == 429 and back:
+            time.sleep(back)
+            continue
+        r.raise_for_status()
+        return r.json()
 
 
 _LB: dict = {}   # classifica scaricata in questo processo (la usano anche radar/scout.py e la cache qui sotto)
@@ -349,16 +355,26 @@ def hl_accounts(cache_path, max_age_h: float = 24) -> dict[str, str]:
         c = json.loads(cache_path.read_text()) if cache_path.exists() else {}
     except Exception:  # noqa: BLE001
         c = {}
-    if not c.get("ts") or time.time() - c["ts"] > max_age_h * 3600:
+    if not c.get("ts") or time.time() - c["ts"] > max_age_h * 3600 or "big" not in c:
         try:
-            rows = sorted(hl_leaderboard(), key=lambda r: -float(r.get("accountValue") or 0))[:TOP_ACCOUNTS]
-            c = {"ts": time.time(), "accounts": [[r["ethAddress"], r.get("displayName")] for r in rows]}
+            rows = sorted(hl_leaderboard(), key=lambda r: -float(r.get("accountValue") or 0))
+            # "big": tutti i conti ≥ $1M, letti a rotazione dal registratore radar/liqsnap.py
+            c = {"ts": time.time(), "accounts": [[r["ethAddress"], r.get("displayName")] for r in rows[:TOP_ACCOUNTS]],
+                 "big": [r["ethAddress"].lower() for r in rows if float(r.get("accountValue") or 0) >= BIG_ACCOUNT_USD]}
             cache_path.write_text(json.dumps(c))
         except Exception as e:  # noqa: BLE001
             print(f"[liqmap] classifica Hyperliquid non letta: {type(e).__name__}")
     for a, n in c.get("accounts", []):
         names.setdefault(a.lower(), n or None)
     return names
+
+
+def hl_big(cache_path) -> list[str]:
+    """Indirizzi della classifica con accountValue ≥ BIG_ACCOUNT_USD (dalla cache di hl_accounts)."""
+    try:
+        return list(json.loads(cache_path.read_text()).get("big", []))
+    except Exception:  # noqa: BLE001
+        return []
 
 
 def hl_states(addrs: list[str]) -> dict[str, dict]:
@@ -411,7 +427,7 @@ def update(levels: dict | None, data_dir) -> dict:
     w = combine(ws)
     w = w[(w["price"] - price).abs() <= RANGE * price].reset_index(drop=True)
     per = {name: combine([x], ref=w) for (name, _), x in zip(maps, ws)}   # stessa griglia: la pagina può sostituire una fonte dal vivo
-    whales, n_acc = [], 0
+    whales, n_acc, names, st = [], 0, {}, {}
     try:
         names = hl_accounts(data_dir / "hl_accounts.json")
         st = hl_states(list(names))
@@ -419,6 +435,13 @@ def update(levels: dict | None, data_dir) -> dict:
         whales = whale_levels(st, names, price)
     except Exception as e:  # noqa: BLE001
         print(f"[liqmap] Hyperliquid non disponibile: {e!r}")
+    onchain = None
+    if names:   # registratore orario dei livelli di liquidazione reali (Hyperliquid + Lighter); names vuoto solo nei test
+        try:
+            from . import liqsnap
+            onchain = liqsnap.record(data_dir, st, hl_big(data_dir / "hl_accounts.json"), price)
+        except Exception as e:  # noqa: BLE001
+            print(f"[liqmap] registratore on-chain non riuscito: {e!r}")
     out = summarize(w, price, levels, whales)
     out.update({
         "ts": str(pd.Timestamp.utcnow().tz_localize(None).floor("min")), "sources": src,
@@ -426,7 +449,7 @@ def update(levels: dict | None, data_dir) -> dict:
         "as_of": {k: {"data": v["as_of"], "oi": v["oi_until"], "estimated_h": v["extended_h"]} for k, v in src.items() if v.get("ok")},
         "bins": [[round(p, 0), round(l, 0), round(s, 0)] for p, l, s in zip(w["price"], w["long"], w["short"])],
         "bins_src": {k: [[round(l, 0), round(s, 0)] for l, s in zip(x["long"], x["short"])] for k, x in per.items()},
-        "whales": whales[:30], "whale_accounts": n_acc,
+        "whales": whales[:30], "whale_accounts": n_acc, "onchain": onchain,
         "params": {"leverage": [list(x) for x in LEVERAGE], "mm": MM, "bin_pct": BIN * 100, "lookback_days": LOOKBACK_H // 24},
     })
     try:

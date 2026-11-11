@@ -254,8 +254,10 @@
     return { sA, lB, imb: sA + lB ? (sA - lB) / (sA + lB) * 100 : 0 };
   }
   window.liqImb5 = () => { const LM = SRV().liqmap; if (!LM || !LM.bins) return null; return imb5(bins(), price()); };
-  const srOf = p => { const LV = SRV().levels; if (!LV) return null;
-    for (const [key, t] of [["resistances", "R"], ["supports", "S"]]) { const i = (LV[key] || []).findIndex(o => o.lo * .995 <= p && p <= o.hi * 1.005); if (i >= 0) return t + (i + 1); } return null; };
+  // S/R riclassificati sul prezzo di riferimento (stessa funzione di Oggi: sopra = R, sotto = S), altrimenti come li dà il server
+  const srLv = () => { const LV = SRV().levels || {}; if (window.srLevels) { const x = window.srLevels(price()); return { res: x.res, sup: x.sup }; }
+    return { res: (LV.resistances || []).map((o, i) => ({ ...o, t: "R" + (i + 1), k: "r" })), sup: (LV.supports || []).map((o, i) => ({ ...o, t: "S" + (i + 1), k: "s" })) }; };
+  const srOf = p => { if (!SRV().levels) return null; const L = srLv(), o = L.res.concat(L.sup).find(o => o.lo * .995 <= p && p <= o.hi * 1.005); return o ? o.t : null; };
 
   // ---------------- verdetto + tile
   function renderHead() {
@@ -265,14 +267,14 @@
     const B = bins(), up = clusters(B, p, "s"), dn = clusters(B, p, "l");
     const na = up.find(c => c.sig), nb = dn.find(c => c.sig);
     const { sA, lB, imb } = imb5(B, p);
-    const LV = SRV().levels || {}, r3 = (LV.resistances || []).find(o => o.strength >= 3 && o.price > p), s3 = (LV.supports || []).find(o => o.strength >= 3 && o.price < p);
+    const LV = srLv(), r3 = LV.res.find(o => o.strength >= 3 && o.price > p), s3 = LV.sup.find(o => o.strength >= 3 && o.price < p);
     const hiZ = [na && na.price, r3 && r3.price].filter(Boolean).sort((a, b) => a - b)[0], loZ = [nb && nb.price, s3 && s3.price].filter(Boolean).sort((a, b) => b - a)[0];
     const near = [na, nb].filter(Boolean).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist))[0];
     const big = Math.abs(imb) >= 15 ? (imb > 0 ? "Più short da liquidare sopra" : "Più long da liquidare sotto") : "Liquidazioni in equilibrio";
     const why = near ? `Il cluster significativo più vicino è <b>${near === na ? "sopra" : "sotto"} a ${px(near.price)}</b> (${pc(near.dist)}, ${m$(near.usd)} stimati)${srOf(near.price) ? `, <b>in confluenza con ${srOf(near.price)}</b>` : ""}.` : "Nessun cluster significativo entro ±10%.";
     H("lqHead").innerHTML = `<span class="cap">Lettura · contesto, non segnale</span><h2>${big} <span style="color:var(--label2);font-weight:500">entro ±5%: ${pc(imb, 0)}</span></h2>
       <p>${why} Zona probabile finché non si rompe: <b>${px(loZ)} – ${px(hiZ)}</b> (primo cluster o S/R forte per lato).</p>
-      <p style="font-size:.78rem">Nei test dal 2021 (lezione 81) il prezzo non raggiunge i cluster stimati più spesso di un livello qualsiasi alla stessa distanza; lo squilibrio dice qualcosa solo sulle 12–24 ore successive (lato pesante toccato per primo +6–12 punti oltre l'atteso), in gran parte perché segue il movimento delle ultime 24 ore, e niente a 3–7 giorni. Usala per sapere dove possono partire accelerazioni, stop e prese di profitto, non per W2.</p>`;
+      <p style="font-size:.78rem">Nei test dal 2021 (lezione 81) il prezzo non raggiunge i cluster stimati più spesso di un livello qualsiasi alla stessa distanza; lo squilibrio dice qualcosa solo sulle 12–24 ore successive (lato pesante toccato per primo +6–12 punti oltre l'atteso), in gran parte perché segue il movimento delle ultime 24 ore, e niente a 3–7 giorni. Usala per sapere dove possono partire accelerazioni, stop e prese di profitto, non per W3.</p>`;
     const t = (cls, lab, c, extra) => `<div class="${cls}"><span>${lab}</span><b>${c ? px(c.price) : "–"}</b><small>${c ? pc(c.dist) + " · " + m$(c.usd) : "nessuno entro ±10%"}${c && srOf(c.price) ? " · " + srOf(c.price) : ""}</small>${extra || ""}</div>`;
     const bigA = up.slice().sort((a, b) => b.usd - a.usd)[0], bigB = dn.slice().sort((a, b) => b.usd - a.usd)[0];
     const w = Math.min(50, Math.abs(imb) / 2);
@@ -292,7 +294,7 @@
     for (let i = 19; i >= -20; i--) { const a = p * (1 + i * step), b = p * (1 + (i + 1) * step);
       const v = B.filter(x => x[0] >= a && x[0] < b).reduce((s, x) => s + (i >= 0 ? x[2] : x[1]), 0); rows.push({ a, b, mid: (a + b) / 2, v, up: i >= 0 }); }
     const mx = Math.max(1, ...rows.map(r => r.v)), sig = rows.filter(r => r.v >= .3 * mx);
-    const LV = SRV().levels || {}, zs = [...(LV.resistances || []).map((o, i) => ({ ...o, t: "R" + (i + 1), k: "r" })), ...(LV.supports || []).map((o, i) => ({ ...o, t: "S" + (i + 1), k: "s" }))];
+    const LV = srLv(), zs = [...LV.res, ...LV.sup];
     const WH = (S.wh || LM.whales || []).filter(w => w.liq);
     const html = rows.map((r, i) => { const z = zs.find(o => o.hi >= r.a && o.lo <= r.b), wh = WH.filter(w => w.liq >= r.a && w.liq < r.b);
       const isSig = r.v >= .3 * mx && r.v > 0, wd = r.v / mx * 100, lab = isSig ? (wd > 72 ? `<b style="right:${(100 - wd).toFixed(1)}%;padding-right:6px;color:#fff">${m$(r.v)}</b>` : `<b style="left:${wd.toFixed(1)}%">${m$(r.v)}</b>`) : "";

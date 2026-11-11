@@ -296,7 +296,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
   .side nav a:not([aria-current="page"]):hover{background:var(--raise);color:var(--label)}
   .seg button:not([aria-pressed="true"]):hover{color:var(--label)}
 }
-/* ---- segnale settimanale W2 + MACD: stato, percorso del prezzo, grafico settimanale, condizioni */
+/* ---- segnale settimanale W3: stato, percorso del prezzo, grafico settimanale, condizioni */
 .wkHero{display:grid;gap:14px}
 .wkTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .wkBadge{display:inline-flex;align-items:center;gap:7px;font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--line2);background:var(--raise)}
@@ -383,6 +383,7 @@ dialog.dlg::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px
 .srTile b{font:600 1.25rem var(--font);font-variant-numeric:tabular-nums}
 .srTile small{font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
 .srTile.r{border-left:3px solid var(--red)} .srTile.s{border-left:3px solid var(--green)}
+.srBrk{font:600 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--orange);font-style:normal;white-space:nowrap}
 .dots{display:inline-flex;gap:3px;vertical-align:middle} .dots i{width:6px;height:6px;border-radius:50%;background:var(--line2)} .dots i.on{background:var(--label2)}
 .srAll summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:10px 2px;font:600 .86rem var(--font);color:var(--tint)}
 .srAll summary::-webkit-details-marker{display:none}
@@ -439,7 +440,7 @@ body.noscroll{overflow:hidden}
 .tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
 .tdRow b{font:600 .9rem/1.35 var(--font);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tdRow small{display:block;color:var(--label2);font-size:.74rem;margin-top:2px}
-/* Statistiche W2 sul telefono: riassunto, anni a barre, trade come lista */
+/* Statistiche W3 sul telefono: riassunto, anni a barre, trade come lista */
 .wkSumM{display:grid;gap:12px}
 .wkSumM .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .wkSumM .kpi{font:700 2.1rem/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
@@ -527,7 +528,7 @@ body.noscroll{overflow:hidden}
     <h1 id="price"></h1>
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
-  <div class="strat" style="display:none"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W2 + MACD</button></div></div>
+  <div class="strat" style="display:none"><span class="cap">Strategia</span><div class="seg" id="stratSeg" role="group" aria-label="Strategia"><button data-v="v2" aria-pressed="true">Giornaliera v2</button><button data-v="w2">Settimanale W3</button></div></div>
 
 <!-- ============ OGGI ============ -->
   <div class="view" id="v-oggi">
@@ -568,7 +569,7 @@ body.noscroll{overflow:hidden}
       <div id="wkPlan" style="margin-top:12px"></div>
       <div class="tiles" id="wkKv" hidden></div>
       <p class="foot" id="wkNote"></p>
-          <h3>Tutti i trade W2 dal 2021 <small class="cap" id="wkTrN"></small></h3>
+          <h3>Tutti i trade W3 dal 2021 <small class="cap" id="wkTrN"></small></h3>
           <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkTrAll"></table></div></div>
           <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
         </div>
@@ -650,8 +651,8 @@ body.noscroll{overflow:hidden}
     <div class="section">
       <div class="sh">Obiettivo <small>quante volte è successo</small></div>
       <div class="list">
-        <label class="row"><span class="k">Capitale obiettivo</span><input id="goalCap" type="number" inputmode="decimal" min="100" step="1000" value="100000" enterkeyhint="done"></label>
-        <label class="row"><span class="k">Entro il</span><input id="goalDate" type="date" value="2026-12-31"></label>
+        <label class="row"><span class="k">Capitale obiettivo</span><input id="goalCap" type="number" inputmode="decimal" min="100" step="1000" enterkeyhint="done"></label>
+        <label class="row"><span class="k">Entro il</span><input id="goalDate" type="date"></label>
       </div>
       <div class="big" id="goalOut"></div>
       <p class="foot" id="goalNote"></p>
@@ -725,7 +726,7 @@ body.noscroll{overflow:hidden}
     </div>
 
     <div class="section only-w2 w2top" id="wkStatSec" hidden>
-      <div class="sh">Settimanale W2 <small id="wkStatSub"></small></div>
+      <div class="sh">Settimanale W3 <small id="wkStatSub"></small></div>
       <div class="card wkSumM mOnly" id="wkSumM"></div>
       <div class="card mOnly" id="wkYearsM"><div class="tapHead" style="margin-bottom:8px"><b>Anno per anno</b><small class="note" id="wkYearsMLev"></small></div><div class="yBars" id="wkYearsMB"></div></div>
       <div class="sh mOnly" style="margin-top:6px">Tutti i trade <small id="wkTrMN"></small></div>
@@ -767,7 +768,7 @@ body.noscroll{overflow:hidden}
 
   <div class="view" id="v-metodo" hidden>
     <div class="section only-w2">
-      <div class="sh">Come funziona · W3 (W2 + MACD, versione robusta)</div>
+      <div class="sh">Come funziona · W3</div>
       <div class="card prose">
         <p>Si guarda solo la <b>candela settimanale</b> (lunedì → domenica, chiusura UTC della domenica). La decisione si prende alla chiusura della domenica e si esegue all'<b>apertura del lunedì</b>. Circa 2–3 operazioni l'anno, di settimane o mesi ciascuna.</p>
         <h3>Quando si compra</h3>
@@ -890,6 +891,16 @@ const REF = window.REF = (() => {
   if (LQ && LQ.price > 0 && tL > tC) return { px: LQ.price, live: false, t: tL, lab: `chiusura 1h delle ${hhmm(tL)}` };
   return { px: R.price, live: false, t: tC, lab: `chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}` };
 })();
+// S/R riclassificati sul prezzo di riferimento: sopra = resistenza, sotto = supporto; "rotto" se il prezzo l'ha attraversato
+// dall'ultimo aggiornamento del server (es. un supporto a 74.258 con il prezzo a 73.000 diventa resistenza, supporto rotto)
+window.srLevels = px => {
+  const LV = R.levels; if (!LV) return { res: [], sup: [] };
+  const all = (LV.supports || []).map(o => ({ ...o, k0: "s" })).concat((LV.resistances || []).map(o => ({ ...o, k0: "r" })))
+    .map(o => { const k = o.price > px ? "r" : "s"; return { ...o, k, broken: k !== o.k0 }; });
+  const res = all.filter(o => o.k === "r").sort((a, b) => a.price - b.price).map((o, i) => ({ ...o, i: i + 1, t: "R" + (i + 1) }));
+  const sup = all.filter(o => o.k === "s").sort((a, b) => b.price - a.price).map((o, i) => ({ ...o, i: i + 1, t: "S" + (i + 1) }));
+  return { res, sup };
+};
 const REF_SUBS = []; let refT = 0, refTimer = null;
 window.onRef = f => REF_SUBS.push(f);
 // passaggio telefono ↔ desktop (rotazione, finestra ridimensionata): ridisegna i blocchi che hanno una versione compatta
@@ -1142,11 +1153,14 @@ renderTrades();
 (function renderWeekly() {
   const W = R.weekly; if (!W) return;
   const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
-  const mkt = (m, e) => m === "spot" ? "spot 1x" : `perp ${e.toFixed(2).replace(".", ",")}x`;
+  const mkt = (m, e) => m === "spot" ? (e < 0.995 ? `spot ${Math.round(e * 100)}%` : "spot 1x") : `perp ${e.toFixed(2).replace(".", ",")}x`;
   $("wkSec").hidden = false;
   $("wkSub").textContent = `chiusura del ${fmtD(W.week)} · regime ${W.regime}`;
   const nf = x => Math.round(x).toLocaleString("it-IT"), pc1 = x => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ",") + "%";
   const open = W.status === "aperto" || W.status === "uscita", sg = W.side === "short" ? -1 : 1;
+  // W3: esposizione ridotta quando lo stop iniziale costerebbe più del 25% del capitale (tetto di rischio, long e short)
+  const part = open && W.expo < 0.995, expoP = x => Math.round(x * 100) + "%";
+  const expoRow = () => part ? `<div class="wkCush"><span>Esposizione <b>${expoP(W.expo)} del capitale</b> (${usd(W.notional)} su ${usd(W.capital)}) · tetto di rischio 25% allo stop, il resto in liquidità</span></div>` : "";
   const nextSun = (() => { const d = new Date(W.week); d.setDate(d.getDate() + 7); return d; })();
   const weeksIn = open ? Math.max(1, Math.round((new Date(W.date) - new Date(W.entry)) / 6.048e8)) : 0;
   // --- stato
@@ -1174,24 +1188,24 @@ renderTrades();
         <div class="rail"></div><div class="risk" style="${sg > 0 ? `left:0;width:${X(W.trail)}` : `left:${X(W.trail)};right:0`}"></div>
         <div class="${move >= 0 ? "gain" : "loss"}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></div>
         ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
-      <div class="wkCush"><span>Trailing a <b>${pc1(cush)}</b> dal prezzo${W.trail_usd >= 0 ? ", in guadagno" : ""}</span></div>`;
+      <div class="wkCush"><span>Trailing a <b>${pc1(cush)}</b> dal prezzo${W.trail_usd >= 0 ? ", in guadagno" : ""}</span></div>${expoRow()}`;
     return `<div class="wkBig">${pc1(move)}<small>dall'ingresso a ${usd(W.entry_px)} · su ${usd(W.notional)} oggi <span class="nw">${usd(val)} (${(diff >= 0 ? "+" : "−") + usd(Math.abs(diff))})</span></small></div>
       <div class="track" role="img" aria-label="Percorso del prezzo: trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(px)}, ${sg > 0 ? "massimo" : "minimo"} ${usd(best)}">
         <div class="rail"></div><div class="risk" style="${sg > 0 ? `left:0;width:${X(W.trail)}` : `left:${X(W.trail)};right:0`}"></div>
         <div class="${move >= 0 ? "gain" : "loss"}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></div>
         ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
       <div class="wkPx"><span class="live${r.live ? " on" : ""}">${r.live ? "prezzo live" : "prezzo · " + r.lab}</span> <b>${usd(px)}</b></div>
-      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>`;
+      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>${expoRow()}`;
   };
   if (open) {
-    hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${W.market === "spot" ? "spot 1x" : "perp " + W.expo.toFixed(2).replace(".", ",") + "x"}</span>
+    hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(W.market, W.expo)}</span>
         <span class="cap">dal ${fmtD(W.entry)} · ${weeksIn} settimane</span></div>
       <div id="wkPos">${posHtml(REF)}</div>`;
     window.onRef(r => { $("wkPos").innerHTML = posHtml(r); });
   } else if (W.status === "segnale") {
     const p = W.plan;
     hero = `<div class="wkTop"><span class="wkBadge sig"><i></i>Segnale ${W.side} · ingresso lunedì</span><span class="cap">chiusura del ${fmtD(W.signal_date)}</span></div>
-      <div class="wkBig">${usd(p.entry_est)}<small>prezzo di riferimento · ${p.market === "spot" ? "compra in spot 1x" : "perp " + p.expo.toFixed(2).replace(".", ",") + "x"} ${usd(p.notional)} (${p.btc.toFixed(4).replace(".", ",")} BTC)</small></div>
+      <div class="wkBig">${usd(p.entry_est)}<small>prezzo di riferimento · ${p.market === "spot" ? (p.expo < 0.995 ? `compra in spot con il ${expoP(p.expo)} del capitale` : "compra in spot 1x") : "perp " + p.expo.toFixed(2).replace(".", ",") + "x"} ${usd(p.notional)} (${p.btc.toFixed(4).replace(".", ",")} BTC)</small></div>
       <div class="wkFacts"><div><span>Stop iniziale</span><b>${usd(p.stop)}</b></div><div><span>Rischio allo stop</span><b>−${String(p.stop_pct).replace(".", ",")}% · ${usd(p.loss_usd)}</b></div><div><span>Trailing</span><b>${usd(p.trail_dist)}</b></div></div>`;
   } else {
     hero = `<div class="wkTop"><span class="wkBadge"><i></i>Flat · nessuna posizione</span><span class="cap">prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>
@@ -1208,8 +1222,10 @@ renderTrades();
   $("wkDlgT").textContent = open ? "Perché la posizione è aperta e quando si chiude" : W.status === "segnale" ? "Il segnale di questa settimana" : "Cosa serve per entrare";
   $("wkWhy").innerHTML = open
     ? `<p><b>Perché è aperta.</b> Alla chiusura del ${fmtD(W.signal_date || W.entry)} BTC ha chiuso ${W.side === "long" ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${W.side === "long" ? "rialzista (sopra la SMA 40)" : "ribassista (sotto la SMA 40)"}, il flusso dei perp nella stessa direzione${W.side === "long" ? " e il filtro MACD a posto" : ""}: ingresso all'apertura del lunedì ${fmtD(W.entry)} a ${usd(W.entry_px)}.</p>
-       <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo tocca il trailing a ${usd(W.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${W.side === "long" ? "sotto" : "sopra"} la EMA 21, oggi ${usd(W.ema21)} (si esce il lunedì); un segnale di distribuzione (funding alto con flusso che si gira). Il trailing sale con il prezzo e non scende mai.</p>`
-    : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>`;
+       <p><b>Quanto capitale.</b> ${part ? `Il ${expoP(W.expo)} del capitale (${usd(W.notional)} su ${usd(W.capital)}): con lo stop iniziale a ${usd(W.stop0)} l'esposizione piena avrebbe rischiato più del 25% del capitale, quindi W3 entra con meno e tiene il resto in liquidità (tetto di rischio 25% allo stop, ${W.side === "long" ? "anche sui long" : "sugli short"}).` : `Esposizione piena: lo stop iniziale a ${usd(W.stop0)} costa meno del 25% del capitale (tetto di rischio di W3${W.side === "long" ? ", anche sui long" : ""}).`}</p>
+       <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo tocca il trailing a ${usd(W.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${W.side === "long" ? "sotto" : "sopra"} la EMA 21, oggi ${usd(W.ema21)} (si esce il lunedì); un segnale di distribuzione (funding alto con flusso che si gira). Il trailing è <b>a cricchetto</b>: ${W.side === "long" ? "sale con il prezzo e non scende mai" : "scende con il prezzo e non sale mai"}, ricalcolato a ogni aggiornamento (su Telegram quando si sposta).</p>`
+    : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>
+       <p>Lo stop iniziale costa al massimo il 25% del capitale (tetto di rischio di W3, long e short): se è più lontano si entra con una parte del capitale. Poi il trailing è a cricchetto: si sposta solo a favore.</p>`;
   const HT = (W.history || {}).trades || [];
   $("wkTrN").textContent = `${HT.length} trade`;
   $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
@@ -1224,19 +1240,21 @@ renderTrades();
     const zone = o => o.lo === o.hi ? usd(o.price) : `${usd(o.lo)} – ${usd(o.hi)}`;
     const dd = o => (o.price / REF.px - 1) * 100;   // distanza dal prezzo di riferimento (live quando c'è)
     const drawSR = () => {
-    const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}</b><small>${pc1(dd(o))} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small></div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
-    $("srTop").innerHTML = tile(LV.resistances[0], "r") + tile(LV.supports[0], "s");
+    const SR = window.srLevels(REF.px), brk = o => o.broken ? (o.k0 === "s" ? "supporto rotto" : "resistenza rotta") : "";
+    const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}${o.broken ? ` <em class="srBrk">${brk(o)}</em>` : ""}</b><small>${pc1(dd(o))} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small></div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
+    $("srTop").innerHTML = tile(SR.res[0], "r") + tile(SR.sup[0], "s");
     // mappa: ogni zona è una barra sull'asse dei prezzi, alta quanto la sua forza; la linea bianca è il prezzo di oggi
-    const all = LV.supports.map(o => ({ ...o, k: "s" })).concat(LV.resistances.map(o => ({ ...o, k: "r" })));
+    const all = SR.sup.concat(SR.res);
     const mn = Math.min(...all.map(o => o.lo), REF.px) * 0.985, mx = Math.max(...all.map(o => o.hi), REF.px) * 1.015, X = v => (v - mn) / (mx - mn) * 100;
     const ticks = [mn, (mn + mx) / 2, mx].map((v, i) => `<span class="tk" style="left:${[4, 50, 96][i]}%">${Math.round(v / 1000)}k</span>`).join("");
     $("srMap").innerHTML = `<div class="ax"></div>` + all.map(o => `<div class="z ${o.k}" style="left:${X(o.lo)}%;width:calc(${X(o.hi) - X(o.lo)}% + 4px);height:${10 + o.strength * 11}px" title="${o.k === "r" ? "Resistenza" : "Supporto"} ${usd(o.price)} · forza ${word(o.strength)} · ${pc1(dd(o))}"></div>`).join("") +
       `<div class="now" style="left:${X(REF.px)}%"><b>ora ${usd(REF.px)}</b></div>` + ticks;
     $("srSub").textContent = `aggiornati al ${fmtD(LV.date)}`;
-    const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}</small></span><span class="d">${pc1(dd(o))}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
-    const Rs = LV.resistances.map((o, i) => ({ ...o, i: i + 1 })), Ss = LV.supports.map((o, i) => ({ ...o, i: i + 1 }));
+    const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
+    const Rs = SR.res, Ss = SR.sup;
     $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(REF.px)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
-    $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti`;
+    const nb = all.filter(o => o.broken).length;
+    $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti${nb ? ` · ${nb} ${nb === 1 ? "rotto" : "rotti"} dal ${fmtD(LV.date)}` : ""}`;
     };
     drawSR(); window.onRef(drawSR);
   }
@@ -1258,7 +1276,8 @@ renderTrades();
   if ((LV && (LV.supports.length || LV.resistances.length)) || (LQ && (LQ.nearest_above || LQ.nearest_below))) {
     const drawLv = () => {
       const it = [], px = REF.px;
-      if (LV) { if (LV.resistances[0]) it.push(["Resistenza", LV.resistances[0].price, "--red"]); if (LV.supports[0]) it.push(["Supporto", LV.supports[0].price, "--green"]); }
+      if (LV) { const SR = window.srLevels(px), r0 = SR.res[0], s0 = SR.sup[0];
+        if (r0) it.push([r0.broken ? "Resistenza · supporto rotto" : "Resistenza", r0.price, "--red"]); if (s0) it.push([s0.broken ? "Supporto · resistenza rotta" : "Supporto", s0.price, "--green"]); }
       if (LQ) { if (LQ.nearest_above) it.push(["Liquidazioni short", LQ.nearest_above.price, "--teal"]); if (LQ.nearest_below) it.push(["Liquidazioni long", LQ.nearest_below.price, "--violet"]); }
       it.sort((a, b) => b[1] - a[1]);
       const row = q => `<div class="lvRow" style="--c:var(${q[2]})"><i></i><span>${q[0]}</span><b>${usd(q[1])}</b><em>${pc1((q[1] / px - 1) * 100)}</em></div>`;
@@ -1333,8 +1352,9 @@ renderTrades();
     setMk(); ch.timeScale().subscribeVisibleLogicalRangeChange(setMk);
     const MB = isMobile(), nLv = MB ? 1 : 2;   // telefono: meno linee, etichette dell'asse leggibili
     if (R.levels) {   // S/R più vicini sul grafico: 2 resistenze e 2 supporti, linee sottili punteggiate
-      R.levels.resistances.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
-      R.levels.supports.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
+      const SRc = window.srLevels(REF.px);
+      SRc.res.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
+      SRc.sup.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
     }
     if (R.liqmap && !MB) {   // cluster di liquidazione stimati più vicini (significativi): 2 sopra e 2 sotto, linee punteggiate viola/azzurre
       (R.liqmap.above || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--teal"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq S" }));
@@ -1392,7 +1412,7 @@ renderTrades();
       <div class="facts"><div><span>Vinti</span><b>${String(X2.win_rate).replace(".", ",")}%</b></div><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div></div>
       <button type="button" class="wkMore" id="wkSumMore"><span>Tutte le metriche</span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
     $("wkSumM").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { mLev = +b.dataset.l; drawStatM(); });
-    $("wkSumMore").onclick = () => sheetNodes("Metriche W2 dal " + fmtD(H.start), [$("wkStatTabs"), $("wkStatFoot")]);
+    $("wkSumMore").onclick = () => sheetNodes("Metriche W3 dal " + fmtD(H.start), [$("wkStatTabs"), $("wkStatFoot")]);
     const Yv = Y.map(y => (mLev === 2 ? H.m2 : M).years[y]), lo = Math.min(0, ...Yv), hi = Math.max(0, ...Yv), sp = (hi - lo) || 1;
     $("wkYearsMLev").textContent = mLev + "x";
     $("wkYearsMB").innerHTML = Y.map((y, i) => { const v = Yv[i], col = v >= 0 ? "var(--green)" : "var(--red)";
@@ -1513,9 +1533,10 @@ function simulate() {
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
   $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, ${perY} trade l'anno, guadagno medio ${pct(avg, 2)} sul capitale per trade, ` +
-    (W ? `W2 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento, drawdown e colonna Capitale giorno per giorno come nelle Statistiche: la posizione aperta è valutata alla chiusura giornaliera del ${R.weekly.date || R.date}, non al prezzo live.`
+    (W ? `W3 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento, drawdown e colonna Capitale giorno per giorno come nelle Statistiche` +
+         (W2H.trades.some(t => t.reason === "open" || !t.exit) ? `: la posizione aperta è valutata alla chiusura giornaliera del ${R.weekly.date || R.date}, non al prezzo live.` : `; oggi la strategia è flat.`)
        : `size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`);
-  $("simCount").textContent = `${tr.length} trade · ${W ? "W2" : "v2"} · ${lev}x`;
+  $("simCount").textContent = `${tr.length} trade · ${W ? "W3" : "v2"} · ${lev}x`;
   $("simTrades").innerHTML = `<tr><th>${W ? "Ingresso" : "Segnale"}</th><th>${W ? "Mercato" : "Setup"}</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
     out.slice().reverse().map(r => `<tr><td>${r.d0}</td><td>${r.tag}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${W ? `${r.d1}<br><small>${r.exit}</small>` : r.exit}</td><td class="${r.pnlU > 0 ? "pos" : "neg"}">${(r.pnlU > 0 ? "+" : "−") + usd(Math.abs(r.pnlU))}</td><td>${usd(r.eq)}</td></tr>`).join("");
   if (window.LightweightCharts) {
@@ -1571,18 +1592,34 @@ function labCurves(lv) {
   $("labNote").textContent = "I candidati su carta non generano segnali reali. Curve a gradini sulle date di uscita dei trade; 2x = size doppia trade per trade (v2 con il tetto di esposizione 5x del conto). Metriche dei candidati come nella ricerca (RESEARCH.md).";
   seg("labLev", v => labCurves(+v)); labCurves(1);
 })();
+// obiettivo: di default capitale × 2 in 2 anni; il capitale obiettivo segue quello iniziale finché non lo si cambia a mano
+const goalDef = () => { const d = new Date(R.date); d.setFullYear(d.getFullYear() + 2); return d.toISOString().slice(0, 10); };
+let goalTouched = false;
+$("goalCap").addEventListener("input", () => { goalTouched = $("goalCap").value !== ""; });
+$("goalDate").value = goalDef();
 function goal(cap, lev) {
-  const target = +$("goalCap").value || cap * 2, end = $("goalDate").value || "2026-12-31";
+  if (!goalTouched) $("goalCap").value = Math.round(cap * 2);
+  if (!$("goalDate").value) $("goalDate").value = goalDef();
+  const target = +$("goalCap").value || cap * 2, end = $("goalDate").value;
   const days = Math.max(1, Math.round((new Date(end) - new Date(R.date)) / 864e5)), mult = target / cap, tr = simList(lev), res = [];
   for (let d = new Date(simFirst()); d <= new Date(new Date(R.date) - days * 864e5); d = new Date(+d + 864e5)) {
     const a = d.toISOString().slice(0, 10), b = new Date(+d + days * 864e5).toISOString().slice(0, 10);
     let x = 1; tr.forEach(t => { if (t.d1 > a && t.d1 <= b) x *= 1 + t.pnl / 100; }); res.push(x);
   }
   const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
-  const hit = res.filter(x => x >= mult).length / (res.length || 1) * 100;
-  $("goalOut").innerHTML = [["Serve", `×${mult.toFixed(2)} in ${days} gg`], ["Successo storico", hit.toFixed(1) + "%"], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
+  const nHit = res.filter(x => x >= mult).length, hit = nHit / (res.length || 1) * 100, y0 = simFirst().slice(0, 4);
+  const yN = (days / 365).toFixed(1).replace(".", ",").replace(/,0$/, ""), per = days >= 365 ? `${yN} ${yN === "1" ? "anno" : "anni"}` : `${days} gg`;
+  const mx = (s, d) => "×" + s.toFixed(d).replace(".", ",");
+  if (!res.length) {
+    $("goalOut").innerHTML = [["Serve", `${mx(mult, 2)} in ${per}`], ["Successo storico", "–"]].map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
+    $("goalNote").textContent = `Orizzonte più lungo dello storico disponibile (dal ${simFirst()}): nessuna finestra di ${days} giorni da confrontare. Scegli una data più vicina.`;
+    return;
+  }
+  $("goalOut").innerHTML = [["Serve", `${mx(mult, 2)} in ${per}`], ["Successo storico", nHit ? (hit < 0.1 ? "<0,1%" : hit.toFixed(1).replace(".", ",") + "%") : `mai dal ${y0}`], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
-  $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x. Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`;
+  $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x (una per ogni giorno di partenza dal ${simFirst()}). ` +
+    (nHit ? `Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`
+          : `Mai successo dal ${y0}: in nessuna finestra il capitale ha fatto ${mx(mult, 2)}; il massimo è stato ${mx(sorted[sorted.length - 1], 2)} (${usd(cap * sorted[sorted.length - 1])}). Obiettivo fuori dalla portata storica della strategia: alza la data o abbassa il capitale obiettivo.`);
 }
 ["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
 
