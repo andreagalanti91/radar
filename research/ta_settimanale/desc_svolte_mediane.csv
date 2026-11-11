@@ -1,0 +1,8 @@
+indicatore,massimi: sett. (mediana),massimi: min/max sett.,massimi: prezzo% (mediana),minimi: sett. (mediana),minimi: min/max sett.,minimi: prezzo% (mediana)
+MACD12/26/9 vs segnale,3.0,-17/34,-18.2,6.5,-14/10,45.349999999999994
+MACD8/21/5 vs segnale,5.0,-2/8,-14.7,5.5,-17/7,38.3
+MACD12/26/9 vs zero,16.0,7/56,-36.0,6.5,-93/41,42.8
+prezzo vs EMA200g,7.0,3/34,-30.4,6.5,-91/24,33.05
+prezzo vs SMA200g,7.0,1/51,-28.8,7.5,-92/24,38.0
+pendenza SMA200g (28g),24.0,2/63,-28.1,-22.0,-93/29,-22.2
+incrocio 50/200g,11.0,-8/53,-34.3,10.5,-89/26,41.25

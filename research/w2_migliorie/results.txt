@@ -135,3 +135,27 @@ M7 R2 no ritest del top 1,5
   2021-oggi finale: min 42,449 · mediana 55,469 · max 118,628; domenica = posto 1/7; MAR mediano 1.26; DD peggiore -39.3
 
 == M5 · placebo (leva 1,3x su un sottoinsieme casuale di long, stessa numerosità; 1.000 prove) ==
+  long a leva nella regola: 5 su 10; reale MAR 2.00 finale 131,821; placebo MAR mediano 2.18, finale mediano 149,268; p(MAR placebo ≥ reale) = 0.987; p(finale ≥ reale) = 0.987
+
+== M7 · 2018–2020 sui proxy: trade della baseline attuale (con F1) ==
+  con F1 (attuale): +118% DD -48.1 n 9 peggiore -41.1%
+      long  2018-01-08 → 2018-01-16 stop   -41.1% età trend 118
+      long  2018-04-30 → 2018-05-14 ema     -8.2% età trend 3
+      short 2018-10-15 → 2019-04-02 trail  +16.7% età trend 0
+      long  2019-05-13 → 2019-06-27 trail  +51.1% età trend 4
+      long  2020-02-03 → 2020-02-17 dist    +5.8% età trend 1
+      short 2020-03-16 → 2020-04-27 ema    -17.9% età trend 0
+      long  2020-05-04 → 2020-08-03 dist   +24.0% età trend 1
+      long  2020-10-26 → 2020-11-23 dist   +40.8% età trend 26
+      long  2020-12-14 → None open   +50.4% età trend 33
+  senza F1: +10% DD -72.2 n 13 peggiore -41.1%
+  F1 + R2 1,5: +82% DD -46.9 n 9 peggiore -39.6%
+      long  2018-01-15 → 2018-02-05 ema    -39.6% età trend 119
+      long  2018-04-30 → 2018-05-14 ema     -8.2% età trend 3
+      short 2018-10-15 → 2019-04-02 trail  +16.7% età trend 0
+      long  2019-05-13 → 2019-06-27 trail  +51.1% età trend 4
+      long  2020-02-03 → 2020-02-17 dist    +5.8% età trend 1
+      short 2020-03-16 → 2020-04-27 ema    -17.9% età trend 0
+      long  2020-05-04 → 2020-08-03 dist   +24.0% età trend 1
+      long  2020-10-26 → 2020-11-23 dist   +40.8% età trend 26
+      long  2020-12-21 → None open   +23.0% età trend 34
