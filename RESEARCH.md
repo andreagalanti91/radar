@@ -1157,6 +1157,14 @@ fa 10k → 13,2k con DD −56% contro buy & hold 25,2k e W2 118,6k; nessuna dell
 (35% di trade vinti, falsi breakout); il vantaggio di W2 sta nel flusso dei perpetual e nell'uscita rapida. La classifica di un
 periodo non predice quella del successivo (correlazione 0,16). File: research/nuova_strategia/REPORT.md.
 
+### Sfida a W2 + MACD · 11/11/2026 · profitto non battuto, versione più solida proposta (W3)
+Tutto con il flusso disponibile dal vivo. Flusso medio a 3 giorni: mediana sui 7 giorni di chiusura 53k → 67k, minimo invariato
+(marginale); 7 e 28 giorni peggiorano. Tranche su più giorni di chiusura: stesso rendimento del "giorno medio" con DD −23%.
+"W3 domenica" (flusso 3 giorni + cricchetto + liquidità 3,5% + tetto di rischio long 25%): 85k, DD −20,7%, MAR 2,13 contro
+W2 dal vivo 103k, DD −22,7%, MAR 2,16; nel 2018–20 26,8k (DD −36%) contro 20,0k (DD −48%), 2018 −7% contro −33%.
+**Lezione 85**: W2 non si batte sul rendimento dal 2021 con i dati disponibili; si può comprare robustezza (tetto di rischio,
+cricchetto, flusso mediato) pagando ~17% del risultato. Da applicare solo su ordine dell'utente. File: research/sfida_w3/REPORT.md.
+
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
