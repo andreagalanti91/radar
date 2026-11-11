@@ -1418,15 +1418,15 @@ renderTrades();
       <button type="button" class="wkMore" id="wkSumMore"><span>Dettagli<small>tutte le metriche, anno per anno, equity</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
     $("wkSumM").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { mLev = +b.dataset.l; drawStatM(); if (detChart) drawDetEq(); });
     $("wkSimOpen").onclick = () => { if (sim.lev !== mLev) { sim.lev = mLev; levSeg.set(mLev); simulate(); }
-      sheetNodes("Simulatore W3", [$("simPanel")]); setTimeout(() => simChart && simChart.timeScale().fitContent(), 80); };
-    $("wkSumMore").onclick = () => { sheetNodes("Dettagli W3 dal " + fmtD(H.start), [$("detPanel")]); setTimeout(drawDetEq, 30); };
+      sheetNodes("Simulatore W3", [$("simPanel")]); [80, 400].forEach(ms => setTimeout(() => simChart && simChart.timeScale().fitContent(), ms)); };
+    $("wkSumMore").onclick = () => { sheetNodes("Dettagli W3 dal " + fmtD(H.start), [$("detPanel")]); setTimeout(drawDetEq, 30); setTimeout(() => detChart && detChart.timeScale().fitContent(), 400); };
     const Yv = Y.map(y => (mLev === 2 ? H.m2 : M).years[y]), lo = Math.min(0, ...Yv), hi = Math.max(0, ...Yv), sp = (hi - lo) || 1;
     $("wkYearsMLev").textContent = mLev + "x";
     $("wkYearsMB").innerHTML = Y.map((y, i) => { const v = Yv[i], col = v >= 0 ? "var(--green)" : "var(--red)";
       return `<div class="yBar"><span>${y}</span><span class="tr"><i style="left:${((Math.min(v, 0) - lo) / sp * 100).toFixed(1)}%;width:${Math.max(1, Math.abs(v) / sp * 100).toFixed(1)}%;background:${col}"></i></span><b class="${v >= 0 ? "pos" : "neg"}">${pc1(v)}</b></div>`; }).join("");
     $("wkTrMN").textContent = `${H.trades.length} · sul capitale a ${mLev}x`;
     $("wkTrM").innerHTML = H.trades.map((t, i) => [t, i]).reverse().map(([t, i]) => { const v = pnlL(t);
-      return `<button type="button" data-i="${i}"><span class="d"><b>${fmtD(t.entry)}</b><small>${t.reason === "open" ? "aperto da " : ""}${wks(t)} sett. · ${mkt(t.market, t.expo)}</small></span>
+      return `<button type="button" data-i="${i}"><span class="d"><b>${fmtD(t.entry)}</b><small>${usd(t.entry_px)} → ${t.reason === "open" ? "aperto" : usd(t.exit_px)} · ${wks(t)} sett.</small></span>
         <span class="sd ${t.side}">${side(t.side)}</span><span class="r ${v >= 0 ? "pos" : "neg"}">${pc1(v)}</span><span class="ch" aria-hidden="true">›</span></button>`; }).join("");
     $("wkTrM").querySelectorAll("button").forEach(b => b.onclick = () => { const t = H.trades[+b.dataset.i], o = t.reason === "open";
       const r = (k, v, cls) => `<div class="row"><span class="k">${k}</span><span class="v strong${cls ? " " + cls : ""}">${v}</span></div>`;
@@ -1438,7 +1438,7 @@ renderTrades();
   };
   drawDetEq = () => {   // equity giornaliera W3 (stessa curva del simulatore) da 10.000 $, alla leva scelta nella scheda
     if (!window.LightweightCharts || !H.eq_dates) return;
-    if (!detChart) { detChart = LightweightCharts.createChart($("detEq"), chartOpts({ handleScroll: false, handleScale: false, rightPriceScale: { borderVisible: false, mode: 1 } }));
+    if (!detChart) { detChart = LightweightCharts.createChart($("detEq"), chartOpts({ handleScroll: false, handleScale: false, rightPriceScale: { borderVisible: false, mode: 1 } })); detChart.timeScale().applyOptions({ minBarSpacing: 0.01 });
       detLine = detChart.addAreaSeries({ lineColor: css("--tint"), topColor: "rgba(10,132,255,.28)", bottomColor: "rgba(10,132,255,0)", lineWidth: 2, priceFormat: { type: "price", precision: 0, minMove: 1 } }); }
     const E = mLev === 2 ? H.eq2 : H.eq1; $("detEqLev").textContent = mLev + "x";
     detLine.setData(H.eq_dates.map((d, i) => ({ time: d, value: 10000 * E[i] / E[0] }))); detChart.timeScale().fitContent();
@@ -1547,7 +1547,7 @@ function simulate() {
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
   $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, ${perY} trade l'anno, guadagno medio ${pct(avg, 2)} sul capitale per trade, ` +
-    (W ? `W3 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento, drawdown e colonna Capitale giorno per giorno come nelle Statistiche` +
+    (W ? `W3 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento, drawdown e colonna Capitale giorno per giorno come nello Storico` +
          (W2H.trades.some(t => t.reason === "open" || !t.exit) ? `: la posizione aperta è valutata alla chiusura giornaliera del ${R.weekly.date || R.date}, non al prezzo live.` : `; oggi la strategia è flat.`)
        : `size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`);
   $("simCount").textContent = `${tr.length} trade · ${W ? "W3" : "v2"} · ${lev}x`;
@@ -1556,6 +1556,7 @@ function simulate() {
   if (window.LightweightCharts) {
     if (!simChart) {
       simChart = LightweightCharts.createChart($("simChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1 } }));
+      simChart.timeScale().applyOptions({ minBarSpacing: 0.01 });   // tutta la curva dal 2021 anche nel pannello stretto del telefono
       simLine = simChart.addAreaSeries({ lineColor: css("--tint"), topColor: "rgba(10,132,255,.28)", bottomColor: "rgba(10,132,255,0)", lineWidth: 2, lineType: 1, priceFormat: { type: "price", precision: 0, minMove: 1 } });
     }
     const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time >= p.time) d[d.length - 1].value = p.value; else d.push({ ...p }); });
