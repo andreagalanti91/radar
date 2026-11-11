@@ -1,5 +1,5 @@
 # STATO · Statistiche/Simulatore unificati, fonti liquidazioni, analisi messaggio trader
-Data: 2026-11-13 · Stato: IN ATTESA ("procedi")
+Data: 2026-11-13 · Stato: IN CORSO
 Classe: lungo · Modello consigliato: Sonnet 5.5 (UI e ricerca dati) con Opus 5.5 per il giudizio sul flusso · Effort: alto
 
 ## Checklist
@@ -14,5 +14,9 @@ Classe: lungo · Modello consigliato: Sonnet 5.5 (UI e ricerca dati) con Opus 5.
 - D2 Laboratorio (strategie su carta) nel Simulatore: rimuoverlo — sì/no
 - D3 Fonti a pagamento (Coinglass API, Kaiko, CryptoQuant): escluse salvo indicazione
 
+## Decisioni prese
+- D1 sì (Storico, 5 tab) · D2 sì (Laboratorio rimosso) · D3 sì (niente fonti a pagamento) — opzioni consigliate, nessuna risposta diversa
+
 ## Log
 - 2026-11-13 richiesta ricevuta, scheda di avvio presentata
+- 2026-11-13 "procedi": avviati 3 agenti (UI Storico; fonti liquidazioni; test tesi flusso perp/spot)
