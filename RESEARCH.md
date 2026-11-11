@@ -1109,6 +1109,8 @@ Posizione reale: long dal 24/08/2026 a 77.812 $, trailing 71.415 $.
   come uscita (69), nube Ichimoku come filtro (67).
 - Altre crypto e indici azionari: il vantaggio è specifico di BTC (71, 74). Intraday: rimosso (78).
 - Strategie short dedicate (regime, MACD, rimbalzo fallito, top di distribuzione, affollamento perp): sotto gli short di W2 (80).
+- Correggere un singolo trade perso: non inseguire dopo una settimana > 2 ATR, uscita su flusso perp negativo per 2–4 settimane,
+  stop a pareggio dopo +1/+1,5 ATR (88): salvano il caso, costano sul resto dello storico.
 - Intraday a mano su BTC/ETH/SOL (rotture 4h, ritracciamenti 1h, flusso e derivati, uscite a gradini): nessun vantaggio dopo costi
   e ritardi reali (78, 82). Da riprovare solo con esecuzione automatica e test su dati mai visti.
 
@@ -1188,6 +1190,14 @@ flat) e liquidity sweep meccanico su 1h/4h. File: research/censimento/REPORT.md.
 W3 batte il buy & hold in MAR in entrambe le metà solo su BTC, ETH e DOGE (DOGE perché il buy & hold ha perso il 90%). Sulle altre
 WR 19–43% e DD −40/−88%. Il paniere dei 10 dimezza il DD (−15,7%) ma fa 33k contro 78k di BTC da solo (MAR 1,44 contro 2,00).
 Il vantaggio resta specifico di BTC; ETH al massimo una seconda gamba piccola (50/50: 56,6k, DD −20,2%). File: research/top10_w3/README.md.
+
+### Il trade perso del 24/08 → 09/11/2026 (−4,1%) · 12/11/2026 · nessuna modifica
+**Lezione 88**: la perdita veniva da un ingresso dopo una sola settimana esplosiva (+2,2 ATR) seguito da 10 settimane di flusso perp
+negativo con prezzo in salita. Tre regole per evitarla (non inseguire, uscita su flusso negativo persistente, stop a pareggio dopo
++1 ATR) salvano questo trade ma costano altrove: "non inseguire" cambia solo questo caso, il flusso negativo taglia i grandi trend
+(−14/−34k dal 2021), il pareggio costa il 21% nel 2018–20. Una perdita del 4% con rischio iniziale del 21% è il funzionamento
+previsto, non un errore da correggere. Il vero rischio da coprire era un altro (long vicino a un top): già coperto da W3.
+File: research/perdita_2026/PREREG.md, research/LOSERS.md.
 
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire

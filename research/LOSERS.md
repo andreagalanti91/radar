@@ -237,3 +237,10 @@ e il TP a 1R non sono più perdite. Gli altri 5 sono qui sotto (segnati con *).
 10. **A parita' di coda la perdita massima per trade non scende con nessuna regola di peso** (v2 -6,8%, R1b60 -7,0%, R3 -7,4% al
    rispettivo r_boot): le riduzioni a base fissa 4,67% vengono solo dalla minore esposizione. L'unica leva sulla perdita massima resta
    il tetto al rischio (L1).
+
+## 24/08 → 09/11/2026 · long spot 1x · 77.812 → 74.777 $ · −4,1% (uscita: chiusura settimanale sotto la EMA 21)
+- Ingresso dopo una sola settimana esplosiva (+23,6%, +2,2 ATR settimanali), trend di 1 settimana, MACD ancora sotto zero.
+- Il flusso perp è diventato negativo dalla 3ª settimana e lo è rimasto per 10 settimane mentre il prezzo saliva fino a +11,3%
+  (86.620 $ il 21/09): rialzo senza compratori a leva; funding freddo, quindi l'uscita "distribuzione" non è scattata.
+- Massimo guadagno = metà del rischio iniziale (stop a −21%): il trailing non poteva proteggerlo; l'uscita EMA 21 ha limitato la perdita.
+- Regole testate per evitarlo (research/perdita_2026/): nessuna regge su tutto lo storico. Nessuna modifica. Lezione 88.
