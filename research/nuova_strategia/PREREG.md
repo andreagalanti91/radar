@@ -38,3 +38,16 @@ Scelta: MAR (rendimento annuo / max drawdown giornaliero) più alto con almeno 6
 Giudizio: nel 2021→oggi MAR > buy & hold, drawdown ≤ 30%, positiva nelle due metà (2021–23, 2024→oggi), mediana dei vicini
 e dei 7 giorni di chiusura almeno al 60% del risultato scelto, positiva senza il trade migliore.
 Se non passa, lo si dice: niente va nel tool senza un ordine dell'utente (ha chiesto di non eseguire modifiche).
+
+## Deviazioni annotate
+- 11/11 (fase di scelta, prima di vedere il 2021→oggi): nel motore, dopo uno stop infrasettimanale la posizione restava bloccata
+  fino alla fine dello stato long (4 trade in 7 anni). Corretto: si rientra il lunedì se la chiusura settimanale è tornata sopra lo stop.
+- 11/11 (fase di scelta): senza protezione dei guadagni tutte le varianti hanno DD −57/−77% nel 2014–20 (limite 45%). Aggiunto un
+  modulo comune: trailing a k ATR settimanali dal massimo di chiusura (k ∈ {2; 2,5; 3; 4}, scelto sul 2014–20), con rientro solo
+  su un nuovo massimo di chiusura o su un nuovo ciclo dello stato. Il giudizio 2021→oggi resta da fare una volta sola.
+
+## Scelta registrata (11/11, prima di guardare il 2021→oggi)
+Criterio del piano (MAR più alto con ≥ 6 trade e DD ≤ 45% nel 2014–20): **N6 "VWAP 26 settimane + bilancio dei volumi" con
+trailing 4 ATR settimanali** — MAR 2,09, DD −39,5%, 10 trade, 10k → 680.807 (buy & hold 383.145, DD −83%). Nota: k = 4 è al bordo
+della griglia e N6 batte N5 (senza bilancio dei volumi) a ogni k. Vicini da provare nel giudizio: VWAP 20/26/32 settimane,
+bilancio 10/13/16 settimane, soglia d'uscita 0,7/0,8/0,9, trailing 3/4/5 ATR, tetto di rischio 20/25/30%, 7 giorni di chiusura.
