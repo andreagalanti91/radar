@@ -1,7 +1,7 @@
 {
  "model": {
   "1h": {
-   "n": 1
+   "n": 2
   },
   "4h": {
    "n": 22,
@@ -31,12 +31,12 @@
  },
  "track": {
   "1h": {
-   "n": 1,
-   "up_rate": 100.0,
+   "n": 2,
+   "up_rate": 50.0,
    "model_acc": null,
    "model_n": 0,
-   "always_up_acc": 100.0,
-   "momentum_acc": 100.0,
+   "always_up_acc": 50.0,
+   "momentum_acc": 50.0,
    "brier": 0.25,
    "brier_05": 0.25
   },
@@ -51,7 +51,7 @@
    "brier_05": 0.25
   }
  },
- "learned": "2026-11-11 05:58:33",
+ "learned": "2026-11-11 08:18:59",
  "history": [
   {
    "t": "2026-11-07 08:53:12",
@@ -464,6 +464,29 @@
     "model_n": 0,
     "always_up_acc": 100.0,
     "momentum_acc": 100.0,
+    "brier": 0.25,
+    "brier_05": 0.25
+   },
+   "4h": {
+    "n": 22,
+    "up_rate": 36.4,
+    "model_acc": null,
+    "model_n": 0,
+    "always_up_acc": 36.4,
+    "momentum_acc": 50.0,
+    "brier": 0.25,
+    "brier_05": 0.25
+   }
+  },
+  {
+   "t": "2026-11-11 08:18:59",
+   "1h": {
+    "n": 2,
+    "up_rate": 50.0,
+    "model_acc": null,
+    "model_n": 0,
+    "always_up_acc": 50.0,
+    "momentum_acc": 50.0,
     "brier": 0.25,
     "brier_05": 0.25
    },
