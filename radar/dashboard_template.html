@@ -256,7 +256,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(500px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);width:min(500px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:26px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -483,7 +483,7 @@ body.noscroll{overflow:hidden}
   #todaySec>.sh{display:none}
   .app:has(#v-oggi:not([hidden]))>footer{display:none}
   #wkStatSec>.sh small,#wkStatSec>.foot{display:none}
-  #simFoot,#v-simulatore .sh small{display:none}
+  #simPanel .sh small{display:none}
   #simTrades td:first-child,#simTrades th:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
   #simTrades td:first-child{background:color-mix(in srgb,var(--label) 4%,var(--card))}
 }
@@ -508,8 +508,7 @@ body.noscroll{overflow:hidden}
   <nav aria-label="Sezioni">
     <span class="cap" style="padding:0 12px 6px">Navigazione</span>
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
-    <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simulatore</a>
-    <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Statistiche</a>
+    <a href="#storico" data-v="storico"><svg><use href="#i-stat"/></svg>Storico</a>
     <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquidazioni</a>
     <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
@@ -628,62 +627,8 @@ body.noscroll{overflow:hidden}
     </div>
   </div>
 
-  <!-- ============ SIMULATORE ============ -->
-  <div class="view" id="v-simulatore" hidden>
-    <div class="section">
-      <div class="sh">Simulatore <small>W3 dal 2021</small></div>
-      <div class="list">
-        <label class="row"><span class="k">Capitale iniziale</span><input id="simCap" type="number" inputmode="decimal" min="100" step="1000" value="10000" enterkeyhint="done"></label>
-        <label class="row"><span class="k">Data di partenza</span><input id="simStart" type="date"></label>
-        <div class="row"><span class="k">Leva</span><div class="seg" id="simLev" role="group" aria-label="Leva"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="3" hidden>3x</button><button data-v="5" hidden>5x</button></div></div>
-        
-      </div>
-      <p class="foot" id="simFoot">1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.</p>
-    </div>
-
-    <div class="big" id="simOut"></div>
-
-    <div class="section">
-      <div class="card"><div id="simChart" class="chart" style="height:280px"></div></div>
-      <p class="foot" id="simNote"></p>
-    </div>
-
-    <div class="section">
-      <div class="sh">Obiettivo <small>quante volte è successo</small></div>
-      <div class="list">
-        <label class="row"><span class="k">Capitale obiettivo</span><input id="goalCap" type="number" inputmode="decimal" min="100" step="1000" enterkeyhint="done"></label>
-        <label class="row"><span class="k">Entro il</span><input id="goalDate" type="date"></label>
-      </div>
-      <div class="big" id="goalOut"></div>
-      <p class="foot" id="goalNote"></p>
-    </div>
-
-    <div class="section">
-      <div class="sh">Trade simulati <small id="simCount"></small></div>
-      <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:560px;overflow-y:auto"><table class="grid" id="simTrades"></table></div></div>
-    </div>
-
-    <!-- Laboratorio: v2 e candidati della ricerca su 10.000 $ (data/lab.json, radar/lab.py) -->
-    <div class="section labSec" id="laboratorio" hidden>
-      <div class="sh">Laboratorio <small id="labSub"></small></div>
-      <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="labTab"></table></div></div>
-    </div>
-    <div class="section labSec" hidden>
-      <div class="sh">10.000 $ a confronto <div class="seg" id="labLev" role="group" aria-label="Size"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button></div></div>
-      <div class="card">
-        <div class="legend" id="labLegend"></div>
-        <div id="labChart" class="chart" style="height:280px"></div>
-      </div>
-    </div>
-    <div class="section labSec" hidden>
-      <div class="sh">Trade dei candidati</div>
-      <div class="trades" id="labTrades"></div>
-      <p class="foot" id="labNote"></p>
-    </div>
-  </div>
-
-  <!-- ============ STATISTICHE ============ -->
-  <div class="view" id="v-statistiche" hidden>
+  <!-- ============ STORICO (ex Simulatore + Statistiche) ============ -->
+  <div class="view" id="v-storico" hidden>
     <div class="section only-v2">
       <div class="sh">Equity vs BTC <div class="seg" id="eqSeg" role="group" aria-label="Size"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="5">5x</button></div></div>
       <div class="card" style="display:grid;gap:10px">
@@ -726,17 +671,76 @@ body.noscroll{overflow:hidden}
     </div>
 
     <div class="section only-w2 w2top" id="wkStatSec" hidden>
-      <div class="sh">Settimanale W3 <small id="wkStatSub"></small></div>
-      <div class="card wkSumM mOnly" id="wkSumM"></div>
-      <div class="card mOnly" id="wkYearsM"><div class="tapHead" style="margin-bottom:8px"><b>Anno per anno</b><small class="note" id="wkYearsMLev"></small></div><div class="yBars" id="wkYearsMB"></div></div>
-      <div class="sh mOnly" style="margin-top:6px">Tutti i trade <small id="wkTrMN"></small></div>
-      <div class="list mOnly"><div class="trM" id="wkTrM"></div></div>
-      <div class="cols mHide" id="wkStatTabs">
-        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
-        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
+      <div class="sh">Storico W3 <small id="wkStatSub"></small></div>
+      <div class="card wkSumM" id="wkSumM"></div>
+      <div class="sh" style="margin-top:14px">Trade del backtest <small id="wkTrMN"></small></div>
+      <div class="list"><div class="trM" id="wkTrM"></div></div>
+    </div>
+    <div id="stoHold" hidden>
+      <div id="simPanel" style="display:grid;gap:14px;min-width:0">
+    <div class="section">
+            <div class="list">
+        <label class="row"><span class="k">Capitale iniziale</span><input id="simCap" type="number" inputmode="decimal" min="100" step="1000" value="10000" enterkeyhint="done"></label>
+        <label class="row"><span class="k">Data di partenza</span><input id="simStart" type="date"></label>
+        <div class="row"><span class="k">Leva</span><div class="seg" id="simLev" role="group" aria-label="Leva"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button><button data-v="3" hidden>3x</button><button data-v="5" hidden>5x</button></div></div>
+        
       </div>
-      <div class="card mHide" style="padding:4px 6px;margin-top:12px"><div class="scroll" style="max-height:480px;overflow-y:auto"><table class="grid" id="wkTr"></table></div></div>
-      <p class="foot" id="wkStatFoot">Simulazione giornaliera sulle candele settimanali chiuse: long in spot e short in perp con tetto di rischio 25% allo stop iniziale (0,1%/lato spot, 0,05%/lato perp e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
+      <p class="foot" id="simFoot">1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.</p>
+    </div>
+
+    <div class="big" id="simOut"></div>
+
+    <div class="section">
+      <div class="card"><div id="simChart" class="chart" style="height:280px"></div></div>
+      <p class="foot" id="simNote"></p>
+    </div>
+
+    <div class="section">
+      <div class="sh">Obiettivo <small>quante volte è successo</small></div>
+      <div class="list">
+        <label class="row"><span class="k">Capitale obiettivo</span><input id="goalCap" type="number" inputmode="decimal" min="100" step="1000" enterkeyhint="done"></label>
+        <label class="row"><span class="k">Entro il</span><input id="goalDate" type="date"></label>
+      </div>
+      <div class="big" id="goalOut"></div>
+      <p class="foot" id="goalNote"></p>
+    </div>
+
+      </div>
+      <div id="simTrHold">
+    <div class="section">
+      <div class="sh">Trade simulati <small id="simCount"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll" style="max-height:560px;overflow-y:auto"><table class="grid" id="simTrades"></table></div></div>
+    </div>
+
+      </div>
+      <div id="detPanel" style="display:grid;gap:12px;min-width:0">
+        <div class="card" id="wkYearsM"><div class="tapHead" style="margin-bottom:8px"><b>Anno per anno</b><small class="note" id="wkYearsMLev"></small></div><div class="yBars" id="wkYearsMB"></div></div>
+        <div class="card"><div class="tapHead" style="margin-bottom:8px"><b>Equity da 10.000 $</b><small class="note" id="detEqLev"></small></div><div id="detEq" class="chart" style="height:220px"></div></div>
+        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
+        <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
+        <p class="foot" id="wkStatFoot" style="margin:0">Simulazione giornaliera sulle candele settimanali chiuse: long in spot e short in perp con tetto di rischio 25% allo stop iniziale (0,1%/lato spot, 0,05%/lato perp e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
+        <table id="wkTr" hidden></table>
+      </div>
+    </div>
+    <!-- Laboratorio (solo carta): fuori dalla vista, dati intatti; nodi tenuti nascosti per il codice che li riempie -->
+    <div hidden>
+    <!-- Laboratorio: v2 e candidati della ricerca su 10.000 $ (data/lab.json, radar/lab.py) -->
+    <div class="section labSec" id="laboratorio" hidden>
+      <div class="sh">Laboratorio <small id="labSub"></small></div>
+      <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="labTab"></table></div></div>
+    </div>
+    <div class="section labSec" hidden>
+      <div class="sh">10.000 $ a confronto <div class="seg" id="labLev" role="group" aria-label="Size"><button data-v="1" aria-pressed="true">1x</button><button data-v="2">2x</button></div></div>
+      <div class="card">
+        <div class="legend" id="labLegend"></div>
+        <div id="labChart" class="chart" style="height:280px"></div>
+      </div>
+    </div>
+    <div class="section labSec" hidden>
+      <div class="sh">Trade dei candidati</div>
+      <div class="trades" id="labTrades"></div>
+      <p class="foot" id="labNote"></p>
+    </div>
     </div>
   </div>
 
@@ -820,8 +824,7 @@ body.noscroll{overflow:hidden}
 
 <nav class="tabbar" aria-label="Sezioni">
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
-  <a href="#simulatore" data-v="simulatore"><svg><use href="#i-sim"/></svg>Simula</a>
-  <a href="#statistiche" data-v="statistiche"><svg><use href="#i-stat"/></svg>Stats</a>
+  <a href="#storico" data-v="storico"><svg><use href="#i-stat"/></svg>Storico</a>
   <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquid.</a>
   <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>News</a>
@@ -913,6 +916,7 @@ $("price").innerHTML = dots(usd(REF.px));
 $("liveTag").textContent = REF.lab;
 $("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
 // strategia scelta con lo switch (salvata solo in questo browser): "v2" giornaliera, "w2" settimanale
+let detChart, detLine, drawDetEq = () => {};
 let STRAT = R.weekly ? "w2" : "v2";   // solo W2 + MACD dal 05/11/2026 (decisione dell'utente); v2 resta il motore dei dati di base
 function pill() {
   const W = R.weekly; let cls = "status", txt = "In attesa";
@@ -1407,12 +1411,15 @@ renderTrades();
   const wks = t => Math.max(1, Math.round((new Date(t.exit || R.date) - new Date(t.entry)) / 6.048e8));
   const drawStatM = () => {
     const X2 = mLev === 2 ? H.m2 : M, fin = mLev === 2 ? H.final_10k_2x : H.final_10k_1x;
-    $("wkSumM").innerHTML = `<div class="top"><div class="kpi ${X2.total_pct >= 0 ? "pos" : "neg"}">${pc1(X2.total_pct)}<small>dal ${fmtD(H.start)}: 10.000 $ diventano ${usd(fin)}</small></div>
+    $("wkSumM").innerHTML = `<div class="top"><div class="kpi ${X2.total_pct >= 0 ? "pos" : "neg"}">${pc1(X2.total_pct)}<small>rendimento dal ${fmtD(H.start)}: 10.000 $ diventano ${usd(fin)}</small></div>
         <div class="seg" role="group" aria-label="Esposizione">${[1, 2].map(l => `<button type="button" data-l="${l}" aria-pressed="${l === mLev}">${l}x</button>`).join("")}</div></div>
-      <div class="facts"><div><span>Vinti</span><b>${String(X2.win_rate).replace(".", ",")}%</b></div><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div></div>
-      <button type="button" class="wkMore" id="wkSumMore"><span>Tutte le metriche</span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
-    $("wkSumM").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { mLev = +b.dataset.l; drawStatM(); });
-    $("wkSumMore").onclick = () => sheetNodes("Metriche W3 dal " + fmtD(H.start), [$("wkStatTabs"), $("wkStatFoot")]);
+      <div class="facts"><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div><div><span>Vinti</span><b>${String(X2.win_rate).replace(".", ",")}%</b></div></div>
+      <button type="button" class="wkMore" id="wkSimOpen"><span>Simulatore<small>capitale, data di partenza, 1x/2x, obiettivo</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>
+      <button type="button" class="wkMore" id="wkSumMore"><span>Dettagli<small>tutte le metriche, anno per anno, equity</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
+    $("wkSumM").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { mLev = +b.dataset.l; drawStatM(); if (detChart) drawDetEq(); });
+    $("wkSimOpen").onclick = () => { if (sim.lev !== mLev) { sim.lev = mLev; levSeg.set(mLev); simulate(); }
+      sheetNodes("Simulatore W3", [$("simPanel")]); setTimeout(() => simChart && simChart.timeScale().fitContent(), 80); };
+    $("wkSumMore").onclick = () => { sheetNodes("Dettagli W3 dal " + fmtD(H.start), [$("detPanel")]); setTimeout(drawDetEq, 30); };
     const Yv = Y.map(y => (mLev === 2 ? H.m2 : M).years[y]), lo = Math.min(0, ...Yv), hi = Math.max(0, ...Yv), sp = (hi - lo) || 1;
     $("wkYearsMLev").textContent = mLev + "x";
     $("wkYearsMB").innerHTML = Y.map((y, i) => { const v = Yv[i], col = v >= 0 ? "var(--green)" : "var(--red)";
@@ -1428,6 +1435,13 @@ renderTrades();
         r("Mercato", mkt(t.market, t.expo)) + r("Durata", wks(t) + " settimane") + r("Movimento del prezzo", pc1(t.move_pct)) +
         r("Sul capitale a 1x", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + r("Sul capitale a 2x", pc1(t.pnl2_pct != null ? t.pnl2_pct : t.pnl_pct * 2), (t.pnl2_pct ?? t.pnl_pct) >= 0 ? "pos" : "neg") + `</div>` +
         (o ? `<p class="foot" style="margin:0">La posizione aperta è valutata all'ultima chiusura giornaliera.</p>` : "")); });
+  };
+  drawDetEq = () => {   // equity giornaliera W3 (stessa curva del simulatore) da 10.000 $, alla leva scelta nella scheda
+    if (!window.LightweightCharts || !H.eq_dates) return;
+    if (!detChart) { detChart = LightweightCharts.createChart($("detEq"), chartOpts({ handleScroll: false, handleScale: false, rightPriceScale: { borderVisible: false, mode: 1 } }));
+      detLine = detChart.addAreaSeries({ lineColor: css("--tint"), topColor: "rgba(10,132,255,.28)", bottomColor: "rgba(10,132,255,0)", lineWidth: 2, priceFormat: { type: "price", precision: 0, minMove: 1 } }); }
+    const E = mLev === 2 ? H.eq2 : H.eq1; $("detEqLev").textContent = mLev + "x";
+    detLine.setData(H.eq_dates.map((d, i) => ({ time: d, value: 10000 * E[i] / E[0] }))); detChart.timeScale().fitContent();
   };
   drawStatM();
 })();
@@ -1630,7 +1644,7 @@ function applyStrat(prev) {
   const ss = $("simStart"), f0 = prev === "w2" && W2H ? W2H.start : firstDate;
   ss.min = simFirst(); if (!ss.value || ss.value === f0 || ss.value < ss.min) ss.value = simFirst();
   simulate();
-  setTimeout(() => { simChart && simChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
+  setTimeout(() => { simChart && simChart.timeScale().fitContent(); detChart && detChart.timeScale().fitContent(); eqChart && eqChart.timeScale().fitContent(); window.refitPrice && window.refitPrice(); }, 60);
 }
 const stratSeg = seg("stratSeg", v => { const prev = STRAT; STRAT = v; try { localStorage.setItem("radarStrat", v); } catch (_) {} applyStrat(prev); });
 if (!R.weekly) $("stratSeg").querySelector('[data-v="w2"]').disabled = true;
@@ -1750,11 +1764,12 @@ function startLive() {
 startLive();
 
 // ---- sezioni
-const VIEWS = ["oggi", "simulatore", "statistiche", "liquidazioni", "wallet", "notizie", "metodo"];
+const VIEWS = ["oggi", "storico", "liquidazioni", "wallet", "notizie", "metodo"];
 document.querySelectorAll('a[data-v]').forEach(a => { if (!$("v-" + a.dataset.v)) a.hidden = true; });   // tab senza pagina: nascosto
-if ([...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length < 6) document.querySelector(".tabbar").style.gridTemplateColumns = `repeat(${[...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length},1fr)`;
+if ([...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length !== 6) document.querySelector(".tabbar").style.gridTemplateColumns = `repeat(${[...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length},1fr)`;
 function route() {
-  const v = (location.hash || "#oggi").slice(1), ok = VIEWS.includes(v) && $("v-" + v) ? v : "oggi";   // pagina non ancora presente → Oggi
+  const ALIAS = { simulatore: "storico", statistiche: "storico" };   // vecchi link → Storico
+  const v0 = (location.hash || "#oggi").slice(1), v = ALIAS[v0] || v0, ok = VIEWS.includes(v) && $("v-" + v) ? v : "oggi";   // pagina non ancora presente → Oggi
   document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== "v-" + ok);
   // pagine in file separati (radar/pages/*.html): si registrano in window.PAGES e si inizializzano alla prima visita
   const PG = (window.PAGES || {})[ok]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
