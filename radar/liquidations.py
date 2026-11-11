@@ -16,6 +16,11 @@ CT_VAL = 0.01  # BTC per contratto BTC-USDT-SWAP
 
 
 def collect() -> int:
+    try:  # altre fonti (Gate, Deribit, Kraken, dYdX, Lighter, OKX paginato) in data/liq_events/
+        from . import liqsources
+        liqsources.collect()
+    except Exception as e:
+        print(f"[liq-fonti] {type(e).__name__}")
     try:
         r = requests.get(URL, params={"instType": "SWAP", "uly": "BTC-USDT", "state": "filled", "limit": 100}, timeout=20)
         r.raise_for_status()
