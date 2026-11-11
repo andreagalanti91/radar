@@ -1199,6 +1199,11 @@ negativo con prezzo in salita. Tre regole per evitarla (non inseguire, uscita su
 previsto, non un errore da correggere. Il vero rischio da coprire era un altro (long vicino a un top): già coperto da W3.
 File: research/perdita_2026/PREREG.md, research/LOSERS.md.
 
+### Tesi del trader: perp in vendita, spot che assorbe, poi riequilibrio · 13/11/2026 · solo contesto
+**Lezione 89**: dal 2021 il riequilibrio del flusso perp Binance dopo vendite con spot in acquisto dà +1/+3 punti a 7 giorni, ma
+passa il placebo solo in 2 varianti su 8 con vicini incoerenti; nessuna variante batte il buy & hold come trade e nessun preavviso
+sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flusso_trader/README.md.
+
 ## Errori operativi da non ripetere (aggiornata 07/11/2026)
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
