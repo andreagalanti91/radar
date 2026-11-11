@@ -212,7 +212,8 @@
 :is(#v-wallet,.wl-sheet) .wl-cmd code{font:600 .86rem var(--mono);background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--label)}
 :is(#v-wallet,.wl-sheet) table.grid td.win,:is(#v-wallet,.wl-sheet) table.grid td.win b{color:var(--green)}
 :is(#v-wallet,.wl-sheet) .wl-cmp td:first-child{white-space:nowrap}
-:is(#v-wallet,.wl-sheet) .wl-na{color:var(--orange);font-size:.72rem;font-weight:600;white-space:nowrap}
+:is(#v-wallet,.wl-sheet) .wl-rv td:first-child{white-space:normal;min-width:9em;max-width:15em} :is(#v-wallet,.wl-sheet) .wl-rv td:first-child small{white-space:normal}
+:is(#v-wallet,.wl-sheet) .wl-na,:is(#v-wallet,.wl-sheet) table.grid td small.wl-na{display:inline;color:var(--orange);font-size:.72rem;font-weight:600;white-space:nowrap}
 /* righe compatte delle tabelle (telefono) */
 :is(#v-wallet,.wl-sheet) .wl-li{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;width:100%;padding:10px 12px;align-items:center}
 :is(#v-wallet,.wl-sheet) .wl-li+.wl-li{border-top:1px solid var(--line)}
@@ -1003,8 +1004,8 @@ const naS = (t) => `<small class="wl-na" title="${t}">non affidabile</small>`;
 const ddf = (m) => flowBad(m) ? naS(UNREL) : p0(m?.dd);
 const r2x = (m) => flowBad(m) ? naS(UNREL) : r2f(m?.r2);
 const levf = (m) => levBad(m) ? naS("leva non affidabile: il conto perp è meno del 10% del valore totale") : fin(m?.lev) ? lev(m.lev) : "–";
-const unrelNote = (ms) => { const f = ms.some(flowBad), l = ms.some(levBad);
-  return f || l ? `<p class="foot">${f ? `Drawdown e R² “non affidabile”: ${UNREL.replace("metrica non affidabile ", "")} nell'ultimo anno, più grandi del valore del conto, falsano la curva time-weighted.` : ""}${f && l ? " " : ""}${l ? "Leva “non affidabile”: il conto perp vale meno del 10% del valore totale, la leva calcolata sui soli perp non descrive il conto." : ""}</p>` : ""; };
+const unrelNote = (ms, withLev = true) => { const f = ms.some(flowBad), l = withLev && ms.some(levBad);
+  return f || l ? `<p class="foot">${f ? "Drawdown e R² “non affidabile”: nell'ultimo anno depositi o prelievi più grandi del valore del conto falsano la curva time-weighted (metrica non affidabile per grandi depositi/prelievi)." : ""}${f && l ? " " : ""}${l ? "Leva “non affidabile”: il conto perp vale meno del 10% del valore totale, la leva calcolata sui soli perp non descrive il conto." : ""}</p>` : ""; };
 // righe del confronto: stesse metriche dello scout; meglio = "hi" (più alto) o "lo" (più basso)
 const CMP = [
   ["Punteggio", (e) => fin(e.score) ? nf(e.score, 0) : "–", (e) => e.score, "hi"],
@@ -1038,13 +1039,16 @@ function openCand(i) {
     <h3>Il wallet</h3>${links(c.address)}
     <p class="foot">Proposto dal ${esc(c.first || c.date)}${c.display ? `, nome in classifica ${esc(c.display)}` : ""}${c.leader_of ? `, leader del vault ${esc(c.leader_of)}` : ""}.</p></div>`);
 }
+// avviso sotto i testi generati dallo scout (che citano drawdown, R² e leva come fatti)
+const cav = (r) => { const m = r && r.metrics; if (!m) return ""; const f = flowBad(m), l = levBad(m); if (!f && !l) return "";
+  return `<p class="foot" style="color:var(--orange)">Per ${esc(r.name)}: ${[f ? "drawdown e R² sono una metrica non affidabile (grandi depositi/prelievi)" : "", l ? "la leva è calcolata su un conto perp sotto il 10% del valore totale, non affidabile" : ""].filter(Boolean).join("; ")}.</p>`; };
 function openReview() {
   const rv = WV()?.review; if (!rv) return;
   const rows = (rv.rows || []).map((r) => { const m = r.metrics || {}, ch = r.address === rv.chosen;
     return `<tr><td>${ch ? "<b>" : ""}${esc(r.name)}${ch ? "</b> ✓" : ""}<small>${esc(r.group || "")}${r.fails && r.fails.length ? ": " + esc(r.fails.join(", ")) : ""}</small></td><td>${fin(r.score) ? nf(r.score, 0) : "–"}</td><td class="${tone(m.ret_1y)}">${pc(m.ret_1y, 0)}</td><td>${ddf(m)}</td><td>${r2x(m)}</td><td>${p0(m.pos)}</td><td>${fin(m.fund_pnl) ? p0(m.fund_pnl, 1) : "–"}</td><td>${m$(m.value)}</td><td>${levf(m)}</td><td>${actf(m)}</td><td class="${tone(m.ret_30d)}">${pc(m.ret_30d, 0)}</td></tr>`; }).join("");
   sheet(`Posto ${rv.slot}: confronto`, `<div class="wl-an">
-    <p style="margin:0">${esc(rv.note || "")}</p>
-    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Periodi +</th><th>Funding</th><th>Valore</th><th>Leva</th><th>Fill</th><th>30g</th></tr></thead><tbody>${rows}</tbody></table></div>${unrelNote((rv.rows || []).map((r) => r.metrics || {}))}
+    <p style="margin:0">${esc(rv.note || "")}</p>${cav((rv.rows || []).find((r) => r.address === rv.chosen))}
+    <div class="scroll"><table class="grid wl-rv"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Periodi +</th><th>Funding</th><th>Valore</th><th>Leva</th><th>Fill</th><th>30g</th></tr></thead><tbody>${rows}</tbody></table></div>${unrelNote((rv.rows || []).map((r) => r.metrics || {}))}
     <p class="foot">Confronto del ${esc(rv.date || "")} con le metriche dello scout: rendimento time-weighted a 1 anno, max drawdown, R² della crescita, quota di periodi di 2 settimane positivi, funding pagato sul PnL, fill al giorno.</p>
     <h3>Per confermare la scelta</h3>${cmdBox(`/conferma ${rv.slot}`)}
     ${(rv.options || []).length ? `<h3>Oppure un'alternativa</h3>${rv.options.map((o) => `<div class="wl-cmd"><span style="min-width:7em">${esc(o.was || o.name)}</span><code>/sostituisci ${rv.slot} ${esc(o.id)}</code></div>`).join("")}` : ""}</div>`);
@@ -1062,7 +1066,7 @@ function openScout() {
       <li>Punteggio 0–100: rendimento su drawdown 40%, regolarità 25%, periodi positivi 20%, funding basso 15%.</li>
       <li>Rianalizza i 3 osservati. Propone un candidato solo se supera un osservato del ${p0(c.margin || 0.15)} di punteggio, o se l'osservato non passa i filtri. Non sostituisce mai da solo.</li></ul>
     <h3>I 3 migliori di oggi per lo scout</h3>
-    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Valore</th></tr></thead><tbody>${top || `<tr><td colspan="6">–</td></tr>`}</tbody></table></div>${unrelNote((sc.picks || []).map((p) => p.metrics || {}))}
+    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Valore</th></tr></thead><tbody>${top || `<tr><td colspan="6">–</td></tr>`}</tbody></table></div>${unrelNote((sc.picks || []).map((p) => p.metrics || {}), false)}
     <h3>Verifica delle scelte passate</h3>
     <div class="scroll"><table class="grid"><thead><tr><th>Dopo</th><th>Scelte</th><th>Chi passava</th><th>Conti ≥ 1M</th><th>Batte ≥ 1M</th></tr></thead><tbody>${hz}</tbody></table></div>
     <p class="foot">Media delle 3 scelte del giorno contro la mediana di chi passava i filtri e di un campione fisso di conti da 1M $. I pesi del punteggio si correggono al massimo ogni 30 giorni. Non è un consiglio di investimento.</p></div>`);
