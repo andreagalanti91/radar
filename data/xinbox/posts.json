@@ -1,0 +1,57 @@
+[
+ {
+  "id": "20261105_123600_manuale",
+  "received_utc": "2026-11-12 16:00:00",
+  "post_utc": "2026-11-05 12:36:00",
+  "text": "short 80500 stop 81600 tp1 77600 target 74400 quando 2026-11-05 13:36 flip level",
+  "links": [],
+  "image": null,
+  "source": "manuale",
+  "side": "short",
+  "stop": 81600.0,
+  "tp1": 77600.0,
+  "target": 74400.0,
+  "entry": 80500.0,
+  "outcome": {
+   "status": "ordine in attesa"
+  }
+ },
+ {
+  "id": "20261108_135900_manuale",
+  "received_utc": "2026-11-12 16:00:00",
+  "post_utc": "2026-11-08 13:59:00",
+  "text": "long 73200 stop 72100 tp1 77600 target 87350 quando 2026-11-08 14:59 challenge 10k-1M",
+  "links": [],
+  "image": null,
+  "source": "manuale",
+  "side": "long",
+  "stop": 72100.0,
+  "tp1": 77600.0,
+  "target": 87350.0,
+  "entry": 73200.0,
+  "outcome": {
+   "status": "aperto",
+   "filled_utc": "2026-11-10 15:00:00",
+   "r_now": 0.74
+  }
+ },
+ {
+  "id": "20261112_140000_dca",
+  "received_utc": "2026-11-12 16:00:00",
+  "post_utc": "2026-11-12 14:00:00",
+  "text": "Tempo di DCA: 60%-25%=45% in mercato, +25% dopo 750M di liquidazioni in 24h. Livelli 71.884 e 70.523, prezzo 71.345",
+  "links": [],
+  "image": null,
+  "source": "manuale",
+  "side": "long"
+ },
+ {
+  "id": "20261031_080000_12",
+  "received_utc": "2026-10-31 08:00:00",
+  "post_utc": "2026-10-31 08:00:00",
+  "text": "testo libero",
+  "links": [],
+  "image": null,
+  "source": "inoltro"
+ }
+]

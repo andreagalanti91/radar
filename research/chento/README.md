@@ -59,3 +59,11 @@ Ogni affermazione è confrontata con le candele orarie BTC-USD (Coinbase, UTC). 
   studio del 03/11, lezione 72): a 7 giorni il prezzo fa −1,8% rispetto alla media, 0/12 combinazioni positive. Non è un segnale.
 - Quindi il suo vantaggio, se c'è, sta nei livelli e nella gestione (scaglioni, stop), non nella liquidazione in sé.
 - Registro dei segnali: research/chento/registro.csv (si aggiorna con gli screenshot che manda l'utente; esito verificato sui prezzi).
+
+## Raccolta automatica (12/11) — radar/xinbox.py
+- L'utente condivide il post X (o lo screenshot) al bot @CryptoRadarGalaBot; il giro orario lo salva in data/xinbox/
+  (posts.json + immagini) e risponde. Nessuna lettura automatica di X (regole d'uso).
+- Livelli letti dal testo; per gli screenshot: /trade long 73200 stop 72100 tp 77600 target 87350 quando 2026-11-08 14:59.
+- Esito verificato a ogni giro sulle candele orarie: eseguito / non eseguito (7 giorni), stop, TP1 (metà, stop a pareggio),
+  target, chiusura a 30 giorni; nella candela d'ingresso contano solo gli stop (prudente). /trader dà il riepilogo in R.
+- Ricostruzione della strategia: quando ci sono 20–30 operazioni registrate.

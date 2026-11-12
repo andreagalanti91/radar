@@ -30,6 +30,7 @@ HELP = ("<b>RADAR SIGNAL BTC · Registro dei trade reali</b>\n"
         "/uscito 69100 [motivo] · uscita (es. tp, stop, tempo, manuale)\n"
         "/exchange bybit|okx · exchange dei trade (predefinito bybit/okx)\n"
         "/registro · ultimi trade reali e confronto con il segnale\n"
+        "Post di un trader: inoltra il post X o lo screenshot · /trade long 73200 stop 72100 tp 77600 · /trader riepilogo\n"
         "Strategia e lato si deducono dal segnale attivo se non li scrivi. Virgola o punto vanno bene.\n"
         "Il bot legge i messaggi a ogni giro orario: la risposta arriva entro un'ora.")
 
@@ -212,6 +213,10 @@ def handle(text: str, when: str, j: dict, state: dict) -> str:
     w = wallets.command(text, when[:10])
     if w is not None:
         return w
+    from . import xinbox   # trader seguito: /trade /trader
+    x = xinbox.command(text, when)
+    if x is not None:
+        return x
     cmd, a = parse(text)
     if cmd in ("aiuto", "help", "start"):
         return HELP + "\n\n" + wallets.HELP_W
@@ -312,9 +317,22 @@ def poll() -> int:
     j, done = load(), 0
     for u in ups:
         m = u.get("message") or {}
-        if str((m.get("chat") or {}).get("id")) != str(chat) or not m.get("text", "").startswith("/"):
-            continue   # altre chat e testo libero: ignorati, nessuna risposta
+        if str((m.get("chat") or {}).get("id")) != str(chat):
+            continue   # altre chat: ignorate, nessuna risposta
         when = str(pd.Timestamp(m.get("date", 0), unit="s"))
+        if not m.get("text", "").startswith("/"):
+            txt = m.get("text") or m.get("caption") or ""
+            if not (m.get("photo") or m.get("forward_origin") or re.search(r"https?://(?:x|twitter)\.com/", txt)):
+                continue   # testo libero senza post allegato: ignorato, nessuna risposta
+            # post del trader seguito inoltrati dall'utente (link X, testo, screenshot): radar/xinbox.py
+            from . import xinbox
+            try:
+                reply = xinbox.ingest(m, _api)
+            except Exception as e:  # noqa: BLE001
+                reply = f"Post non salvato ({type(e).__name__})."
+            _api("sendMessage", chat_id=chat, text=reply, parse_mode="HTML", reply_to_message_id=m.get("message_id"))
+            done += 1
+            continue
         try:
             reply = handle(m["text"], when, j, state)
         except Exception as e:  # noqa: BLE001  un comando malformato non deve bloccare l'offset

@@ -162,6 +162,7 @@ def daily() -> None:
     _soft("modulo su carta", paper.update, f)
     # mappa delle liquidazioni vicine e balene Hyperliquid (radar/liqmap.py)
     report["liqmap"] = _soft("mappa delle liquidazioni", lambda: mod("liqmap").update(report.get("levels"), DATA_DIR))
+    _soft("trader seguito (esiti)", lambda: mod("xinbox").evaluate_all())
     report["liqsources"] = _soft("liquidazioni multi-exchange", lambda: mod("liqsources").summary())
     # scout balene Hyperliquid: una volta al giorno (≥ 20 ore dall'ultimo giro) (radar/scout.py)
     try:   # come prima: None = scout non rifatto oggi; assente = errore (la dashboard legge l'ultimo file)
