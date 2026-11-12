@@ -1,0 +1,15 @@
+# STATO — Studio Zeiierman Trend Pressure su BTC
+Data: 12/11/2026 · Stato: IN CORSO
+Classe: lunga · Opus 5.5, effort alto
+
+- [x] 0. Codice Pine salvato (research/zeiierman/zeiierman_trend_pressure.pine) e screenshot dell'utente
+- [ ] 1. Ciclo 1: porting esatto, controllo di fedeltà, PREREG, backtest R1–R4 dal 2021 (1D e 4h), long e short, IS/OOS, robustezza, placebo
+- [ ] 2. Analisi degli errori e proposte (max 3)
+- [ ] 3. Ciclo 2 (03:30): correzioni + revisione critica
+- [ ] 4. Report alle 08:00 (research/zeiierman/REPORT.md), lezione in RESEARCH.md
+
+Decisioni: D1 long e short separati; D2 1D e 4h. W3 invariata.
+Nota dell'utente: "acquisto in zona blu, vendita in zona rossa" → regola R1 (zone visive del gradiente), distinta dallo stato di esaurimento dell'autore (R2).
+
+Log:
+- 12/11 22:57 avvio ciclo 1 in background; promemoria programmati 03:30 (ciclo 2) e 07:40 (report).

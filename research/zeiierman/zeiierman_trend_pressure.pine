@@ -1,0 +1,138 @@
+//@version=6
+// Zeiierman Trend Pressure (Zeiierman) — copia per ricerca interna non commerciale.
+// Licenza: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 — © Zeiierman
+// https://www.tradingview.com/script/SEdUWOIJ-Zeiierman-Trend-Pressure-Zeiierman/
+// Testo fornito dall'utente il 12/11/2026. Qui solo la parte di calcolo (grafica e box omessi).
+
+// Inputs (default)
+fl=21  // Pulse Range
+pl=9   // Pulse Stochastic
+ps=7   // Pulse Smoothing
+sl=55  // Trend Range
+ml=120 // Macro Trend
+ts=5   // Trend Smoothing
+db=9.0 // Trend Persistence
+zn=20  // Exhaustion Zone
+sn=7   // Sensitivity
+rm=16  // Reactive Smoothing
+gw=0.65 // Regime Weight
+
+const float sw=0.18
+const float mw=0.72
+const float th=0.92
+const int rl=21
+const int gl=112
+const int gm=3
+F=0, S=1, M=2
+var float ud=0.0
+var float dd=0.0
+var float tz=na
+var int est=0
+var int ucn=0
+var int lcn=0
+
+clp(v,lo,hi)=>math.max(lo,math.min(hi,v))
+sm(v,k)=>k>1?ta.ema(v,k):v
+wr(k)=>
+    hh=ta.highest(high,k)
+    ll=ta.lowest(low,k)
+    100.0*(close-hh)/math.max(hh-ll,syminfo.mintick)
+eff(k)=>
+    p=ta.sma(math.abs(close-close[1]),k)*k
+    n=na(close[k])?na:math.abs(close-close[k])
+    na(p) or na(n)?na:clp(n/math.max(p,syminfo.mintick),0.0,1.0)
+stk(x,k)=>
+    hi=ta.highest(x,k)
+    lo=ta.lowest(x,k)
+    -100.0+100.0*(x-lo)/math.max(hi-lo,1e-10)
+con(a,w)=>
+    ws0=w.get(F)+w.get(S)+w.get(M)
+    clp((a.get(F)*w.get(F)+a.get(S)*w.get(S)+a.get(M)*w.get(M))/math.max(ws0,1e-10),-100.0,0.0)
+agr(a)=>
+    d=math.abs(a.get(F)-a.get(S))+math.abs(a.get(S)-a.get(M))+math.abs(a.get(F)-a.get(M))
+    1.0-clp(d/300.0,0.0,1.0)
+prs(k)=>
+    hh=ta.highest(high,k)
+    ll=ta.lowest(low,k)
+    rg=math.max(hh-ll,syminfo.mintick)
+    cr=math.max(high-low,syminfo.mintick)
+    bh0=math.max(open,close)
+    bl0=math.min(open,close)
+    uw=high-bh0
+    lw=bl0-low
+    cl=(close-ll)/rg
+    mn=(hlc3-ll)/rg
+    bd=((close-open)/cr+1.0)*0.5
+    wk=((lw-uw)/cr+1.0)*0.5
+    p5=nz(close[5],close)
+    im=((close-p5)/rg+1.0)*0.5
+    clp((cl*0.42+mn*0.23+bd*0.13+wk*0.12+im*0.10)*100.0,0.0,100.0)
+alpha(prev,trg,mac,ag,ef,base,hold)=>
+    side=mac>-50.0?1:mac<-50.0?-1:0
+    pull=(side==1 and trg<prev) or (side==-1 and trg>prev)
+    lk=clp(0.15+ag*ef*hold,0.0,0.97)
+    pull?math.max(0.015,base*(1.0-lk)):math.max(base*0.75,0.03)
+ccore(v,rg)=> v>50.0 and rg>50.0 ? BULL : v<50.0 and rg<50.0 ? BEAR : NEUTRAL
+
+// Z-Pulse
+rz=array.from(wr(fl),wr(sl),wr(ml))
+rf=rz.get(F)
+rp=stk(rf,pl)
+pr=clp(rf*0.72+rp*0.28,-100.0,0.0)
+pz=sm(pr,ps)
+
+// Z-Trend
+fw=math.max(0.0,1.0-sw-mw)
+twt=array.from(fw,sw,mw)
+cn=con(rz,twt)
+ag=agr(rz)
+ef=nz(eff(sl),0.0)
+ud:=cn>-30.0?math.min(1.0,nz(ud[1])*0.93+0.07):nz(ud[1])*0.94
+dd:=cn<-70.0?math.min(1.0,nz(dd[1])*0.93+0.07):nz(dd[1])*0.94
+tg0=clp(cn+db*(ud-dd),-100.0,0.0)
+tg=sm(tg0,2)
+ba=2.0/(ts+1.0)
+pa=na(tz[1])?ba:alpha(tz[1],tg,rz.get(M),ag,ef,ba,th)
+tz:=na(tz[1])?tg:clp(tz[1]+pa*(tg-tz[1]),-100.0,0.0)
+
+// Pressure Core
+cp=ta.ema(prs(rl),rm)
+cg=ta.ema(prs(gl),gm)
+c0=cg*gw+cp*(1.0-gw)
+cz=c0-100.0
+ccl=ccore(c0,cg)
+
+// Exhaustion state
+d=float(sn-5)
+ez=clp(float(zn)-d*4.0,8.0,42.0)
+rb=clp(8.0+d*1.75,1.0,18.0)
+cf=sn<=5?1:sn<=7?2:sn<=9?3:4
+fastExit=sn<=2
+up=-ez
+dn=-100.0+ez
+ur=up-rb
+lr=dn+rb
+uc=pz>=up and tz>=up
+lc=pz<=dn and tz<=dn
+ucn:=uc?ucn+1:0
+lcn:=lc?lcn+1:0
+ux=fastExit?(pz<ur or tz<ur):(pz<ur and tz<ur)
+lx=fastExit?(pz>lr or tz>lr):(pz>lr and tz>lr)
+if est==0
+    if ucn>=cf
+        est:=1
+    else if lcn>=cf
+        est:=-1
+else if est==1 and ux
+    est:=0
+else if est==-1 and lx
+    est:=0
+ue=est==1
+le=est==-1
+us=ue and nz(est[1],0)!=1      // inizio zona rossa
+ls=le and nz(est[1],0)!=-1     // inizio zona blu
+ubk=est==0 and nz(est[1],0)==1 // rilascio zona rossa
+lbk=est==0 and nz(est[1],0)==-1 // rilascio zona blu
+xup=ta.crossover(pz,tz)
+xdn=ta.crossunder(pz,tz)
+// Grafica: gradient fill rosso tra Z-Pulse e Z-Trend quando entrambe in [-30, 0]; blu quando in [-100, -70].
