@@ -16,6 +16,7 @@ Ogni affermazione è confrontata con le candele orarie BTC-USD (Coinbase, UTC). 
 | 8 | 05/11 17:15 | "perfection" | Bybit 5m: punti d'interesse 81,4k/78,5k disegnati prima, minimo esatto sul livello 75.585 e rimbalzo | Minimo reale 75,43k (Coinbase) / 75,585k (Bybit): livello centrato |
 | 9 | 05/11 17:18 + Discord | "Thank me now, later came quick" · "@everyone Done for the week hair transplant tomorrow" | Freccia verso 74,4k | Minimo 74,72k il 06/11 |
 | 10 | 08/11 14:59 | "10k-1m Challenge": primo ingresso gratis, spostato da 74,4k a 73,2k | 4h: long limit 73,2k ("daily hold level" e consolidamento dal crollo di maggio), stop ~72,1k, TP1 77,6k, poi 80,5k / 81,6k / 87,35k (Daily Range High). "Più tempo passa prima di scendere, più forte sarà la discesa" | Minimo 73,48k alle 22:00 dell'08/11: ordine NON eseguito per ~280 $; ora 74,8k. Ancora in attesa |
+| 11 | 12/11 ~15:00 | "Tempo di DCA": dopo la chiusura 60%−25% = 45% in mercato, aggiunge il 25% "dato che abbiamo liquidato 750m in 24h di nuovo" | BTCUSDT 5m, livelli 71.884 e 70.523, prezzo 71.345. Coinglass 24h $742M (long $627M, 85%), 1h $214M (long $189M) | Minimo 71.151 (Coinbase) alle 15:00 UTC, alle 16:00 71,65k. Esito aperto: da verificare a 1, 3 e 7 giorni |
 
 ## La strategia ricostruita
 - **Mercato e strumenti:** solo BTCUSDT perpetual. Analisi su 4h e 30m, ingressi sul 5m (grafici Bybit e Binance), esecuzione su BloFin.
@@ -51,3 +52,10 @@ Ogni affermazione è confrontata con le candele orarie BTC-USD (Coinbase, UTC). 
 2. Test meccanico della sua idea centrale su BTC 5m–1h dal 2021: "sweep" di un livello (massimo/minimo locale, flip level) →
    rimbalzo o cascata, ingresso limit sul livello, stop oltre, TP1 al livello intermedio. Con le regole preregistrate del ciclo intraday
    (lezioni 68, 75–77 e 82: i livelli giornalieri da soli non hanno dato vantaggio; qui il timeframe e l'ingresso limit sono diversi).
+
+## Aggiornamento 12/11 — DCA dopo liquidazioni di massa dei long
+- Nuovo elemento del metodo: aumenta l'esposizione a scaglioni (25%) dopo grandi liquidazioni di long, su livelli già segnati.
+- La regola meccanica equivalente ("compra dopo una cascata di liquidazioni long") è già stata testata dal 2021 (RESEARCH.md,
+  studio del 03/11, lezione 72): a 7 giorni il prezzo fa −1,8% rispetto alla media, 0/12 combinazioni positive. Non è un segnale.
+- Quindi il suo vantaggio, se c'è, sta nei livelli e nella gestione (scaglioni, stop), non nella liquidazione in sé.
+- Registro dei segnali: research/chento/registro.csv (si aggiorna con gli screenshot che manda l'utente; esito verificato sui prezzi).

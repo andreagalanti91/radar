@@ -1,0 +1,5 @@
+n,data_ora_it,azione,lato,quota_capitale,ingresso,stop,tp1,target,prezzo_al_post,esito,note
+2,2026-10-24 17:31,posizione aperta,long,quasi tutto il margine,80060,,,,~79500,TP raggiunto (81.9k il 29/10),30x cross
+6,2026-11-05 13:36,short,short,,80500,81600,77600,74400,79954,TP1 preso; target mancato di ~1000 $,
+10,2026-11-08 14:59,long limit,long,,73200,72100,77600,87350,~74800,non eseguito (minimo 73.48k),challenge 10k-1M
+11,2026-11-12 15:00,DCA +25% (esposizione 45%->70%),long,25%,~71345,,71884,,71345,aperto,dopo liquidazioni long 627M/24h

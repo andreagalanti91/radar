@@ -404,6 +404,13 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Studio dell'utente · 12/11 — Chento: "DCA dopo 750M di liquidazioni" · SOLO CONTESTO
+Post del 12/11 (Coinglass: 742M in 24h, 85% long). La regola "compra dopo cascata di liquidazioni long" è già bocciata dal 2021
+(studio del 03/11 qui sotto). Il suo eventuale vantaggio sta nei livelli e negli scaglioni; si misura solo con il registro
+research/chento/registro.csv (≥ 20–30 segnali, compresi quelli non eseguiti). Nessun alert aggiunto.
+**Lezione 90**: le liquidazioni totali dicono quanta leva è stata pulita, non dove va il prezzo; prima di copiare un trader
+serve il suo storico completo, perché i post pubblici selezionano i successi.
+
 **Lezione 72**: le liquidazioni stimate non segnano capitolazioni da comprare né supporti; servono al più come gestione del rischio
 (prendere metà vicino a un grande gruppo di liquidazioni long), e anche lì metà del vantaggio è una presa di profitto qualsiasi.
 Per le regole che riducono una posizione il placebo va estratto DENTRO i trade; gli orari dei dati derivati vanno controllati.
