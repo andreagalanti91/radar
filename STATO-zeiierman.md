@@ -8,6 +8,10 @@ Classe: lunga · Opus 5.5, effort alto
 - [ ] 3. Ciclo 2 (03:30): correzioni + revisione critica
 - [ ] 4. Report alle 08:00 (research/zeiierman/REPORT.md), lezione in RESEARCH.md
 
+Richiesta aggiuntiva (12/11 23:10): opinione propria motivata; ciclo 2 orientato a RENDERE PROFITTEVOLE l'indicatore
+(combinazioni con filtro di trend/regime, uscite migliori, uso come gestione del rischio dentro W3, timeframe), sempre
+con preregistrazione, IS/OOS, placebo e confronto con W3 e buy&hold. Report alle 08:00 con giudizio personale.
+
 Decisioni: D1 long e short separati; D2 1D e 4h. W3 invariata.
 Nota dell'utente: "acquisto in zona blu, vendita in zona rossa" → regola R1 (zone visive del gradiente), distinta dallo stato di esaurimento dell'autore (R2).
 
