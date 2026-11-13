@@ -46,5 +46,18 @@ class TestGate(unittest.TestCase):
             self.assertIn(c, s)
 
 
+class TestLiqsnapWorkflow(unittest.TestCase):
+    """Fotografia on-chain oraria (.github/workflows/liqsnap.yml): catena che si riavvia, una fotografia all'ora."""
+    def test_catena(self):
+        s = (WF.parent / "liqsnap.yml").read_text()
+        for x in ("workflow_dispatch", "actions: write", "contents: write", "python -m radar.liqsnap", "gh workflow run liqsnap.yml",
+                  "group: liqsnap", "git add data/liqsnap"):
+            self.assertIn(x, s)
+        loop = int(re.search(r"RADAR_LIQSNAP_LOOP_MIN \|\| '(\d+)'", s).group(1))
+        timeout = int(re.search(r"timeout-minutes: (\d+)", s).group(1))
+        self.assertLess(loop + 15, timeout)   # il ciclo finisce prima del timeout: il riavvio parte sempre
+        self.assertLessEqual(timeout, 355)    # limite di 6 ore dei job GitHub
+
+
 if __name__ == "__main__":
     unittest.main()

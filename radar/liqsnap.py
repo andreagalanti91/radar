@@ -12,6 +12,12 @@ Fonti (solo API pubbliche documentate, senza chiavi):
   ≥ $1M; account?by=l1_address (snapshot pubblico: posizioni con liquidation_price). Limite conti standard: 60 richieste/min per IP,
   qui una ogni 1,1 s, in un thread parallelo a Hyperliquid.
 
+Quando gira: dentro il giro completo del radar (daily.yml) E da solo (python -m radar.liqsnap) ogni ora in
+.github/workflows/liqsnap.yml, perché il cron di GitHub fa partire daily.yml solo ogni 2–5 ore (causa delle fotografie rade
+dell'11–13/11; la lettura in sé dura ~60 s). Una sola fotografia per ora (last_hour nello stato): chi arriva secondo non scrive.
+Ordine delle letture: conti prioritari (whalebot + primi 80 della classifica) e "caldi", poi la rotazione; oltre BUDGET_S
+secondi le letture rimaste si saltano (la fotografia usa quelle fatte + le letture recenti).
+
 Fra un giro e l'altro si tiene l'ultima lettura di ogni conto con BTC (data/liqsnap/*_state.json, al massimo MAX_AGE_H ore):
 la fotografia oraria = letture fresche + letture recenti dei conti non toccati dalla rotazione (dichiarate in "cached").
 
@@ -49,6 +55,7 @@ MAX_AGE_H = 6.5        # letture più vecchie: scartate (dati vecchi)
 FRESH_S = 900          # una lettura Hyperliquid con "time" più vecchio di 15 minuti è considerata vecchia
 HL_RATE = 7.0          # richieste/s verso Hyperliquid (peso 2 → ~840/min, sotto il limite di 1.200)
 LT_GAP = 1.1           # secondi fra due richieste Lighter (60/min)
+BUDGET_S = 300.0       # tempo massimo delle letture per giro (daily.yml ha 20 minuti in tutto; un giro tipico ne usa ~60 s)
 CLUSTER_MIN_USD = 2e6  # cluster: almeno $2M su 3 fasce …
 CLUSTER_REL = 0.20     # … e almeno il 20% del più grande dello stesso lato entro ±15%
 COV_FIELDS = ["ts", "ex", "mid", "oi_usd", "target", "read", "failed", "http_429", "cached", "holders", "positions", "ntl_long", "ntl_short",
@@ -251,13 +258,15 @@ class _Limiter:
 
 
 class _HL:
-    """clearinghouseState con limite di frequenza e attesa su 429 (2, 4, 8 s); dopo troppi 429 si smette (giro parziale)."""
-    def __init__(self, session=None, per_s: float = HL_RATE):
+    """clearinghouseState con limite di frequenza e attesa su 429 (2, 4, 8 s); dopo troppi 429 o oltre la scadenza
+    (budget del giro) si smette: giro parziale, le letture mancanti contano come fallite."""
+    def __init__(self, session=None, per_s: float = HL_RATE, deadline: float | None = None):
         self.s, self.lim, self.n429, self.stop = session or requests.Session(), _Limiter(per_s), 0, False
+        self.deadline = deadline
 
     def post(self, body: dict):
         for back in (2, 4, 8, None):
-            if self.stop:
+            if self.stop or (self.deadline and time.monotonic() > self.deadline):
                 return None
             self.lim.wait()
             r = self.s.post(HL_API, json=body, timeout=20)
@@ -386,7 +395,14 @@ def lighter_accounts(d: Path, s, max_age_h: float = 24) -> list[str]:
     return c.get("accounts", [])
 
 
-def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool) -> dict:
+def todo_list(prio: list[str], hot_: list[str], rot: list[str], skip=()) -> list[str]:
+    """Ordine delle letture: prima i conti prioritari (più grandi) e i "caldi", poi la rotazione; senza doppioni.
+    Con il budget del giro a rischio si perdono solo le ultime letture della rotazione (restano le letture ≤ MAX_AGE_H)."""
+    skip = {a.lower() for a in skip}
+    return [a for a in dict.fromkeys(x.lower() for x in list(prio) + list(hot_) + list(rot)) if a not in skip]
+
+
+def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool, deadline: float | None = None) -> dict:
     t0, now, s = time.time(), time.time(), requests.Session()
     addrs = lighter_accounts(d, s)
     st = _load(d / "lighter_state.json")
@@ -399,6 +415,9 @@ def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool) -> dict:
     except Exception:  # noqa: BLE001
         pass
     for a in todo:
+        if deadline and time.monotonic() > deadline:
+            failed += 1
+            continue
         try:
             r = _lt_get(s, "account", {"by": "l1_address", "value": a, "active_only": "true"})
             if r is None:
@@ -411,12 +430,11 @@ def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool) -> dict:
 
 
 def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str], base_states: dict | None, hl: _HL,
-           oi: float | None = None) -> dict:
+           oi: float | None = None, prio: list[str] | None = None) -> dict:
     t0, now = time.time(), time.time()
     st = _load(d / "hl_state.json")
     base_states = {a.lower(): v for a, v in (base_states or {}).items()}
-    todo = list(dict.fromkeys(a for a in hot(st.get("acc", {}), mid, cap=HOT_MAX["hl"]) + (rotation(big, hour) if write else [])
-                              if a not in base_states))
+    todo = todo_list(prio or [], hot(st.get("acc", {}), mid, cap=HOT_MAX["hl"]), rotation(big, hour) if write else [], base_states)
     got, failed = hl.states(todo)
     states = {**base_states, **{a.lower(): v for a, v in got.items()}}
     fresh, stale_reads = {}, 0
@@ -430,11 +448,15 @@ def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str],
     return _record("hl", d, ts, now, mid, fresh, target, failed, hl.n429, stale_reads, t0, write, oi)
 
 
-def record(data_dir, base_states: dict | None, big: list[str], ref_price: float | None = None) -> dict:
-    """Giro orario: Hyperliquid (con gli stati già letti da liqmap) e Lighter in parallelo. Ritorna report["liqmap"]["onchain"]."""
+def record(data_dir, base_states: dict | None, big: list[str], ref_price: float | None = None, prio: list[str] | None = None,
+           budget_s: float = BUDGET_S) -> dict:
+    """Giro orario: Hyperliquid (con gli stati già letti da liqmap) e Lighter in parallelo. Ritorna report["liqmap"]["onchain"].
+    `prio`: conti da leggere per primi (whalebot + più grandi della classifica, quando liqmap non li ha già letti).
+    `budget_s`: oltre questo tempo le letture rimaste si saltano (fotografia con le letture fatte + quelle recenti)."""
     d = Path(data_dir) / "liqsnap"
     d.mkdir(parents=True, exist_ok=True)
-    hl = _HL()
+    deadline = time.monotonic() + budget_s
+    hl = _HL(deadline=deadline)
     mid, hl_oi = 0.0, None
     try:   # prezzo medio e open interest BTC di Hyperliquid in una chiamata (peso 20)
         meta, ctx = hl.post({"type": "metaAndAssetCtxs"}) or ({}, [])
@@ -459,8 +481,8 @@ def record(data_dir, base_states: dict | None, big: list[str], ref_price: float 
         try:
             write = _load(d / f"{ex}_state.json").get("last_hour") != ts[:13]   # una sola fotografia per ora (giro di riserva :37)
             if ex == "hl":
-                return ex, run_hl(d, ts, hour, mid, write, big, base_states, hl, hl_oi)
-            return ex, run_lighter(d, ts, hour, mid, write)
+                return ex, run_hl(d, ts, hour, mid, write, big, base_states, hl, hl_oi, prio)
+            return ex, run_lighter(d, ts, hour, mid, write, deadline)
         except Exception as e:  # noqa: BLE001
             print(f"[liqsnap] {ex} non disponibile: {e!r}")
             return ex, None
@@ -477,3 +499,31 @@ def record(data_dir, base_states: dict | None, big: list[str], ref_price: float 
     out.update(summary(comb, mid))
     out["bins"] = [[k, round(v[0]), round(v[1]), v[2] + v[3]] for k, v in sorted(comb.items())]
     return out
+
+
+# ------------------------------------------------------------------ giro autonomo (.github/workflows/liqsnap.yml)
+def done_this_hour(d: Path, hour: str) -> bool:
+    """True se entrambe le borse hanno già la fotografia di quest'ora ("YYYY-MM-DDTHH")."""
+    return all(_load(Path(d) / f"{ex}_state.json").get("last_hour") == hour for ex in ("hl", "lighter"))
+
+
+def main() -> int:
+    """Fotografia oraria senza il giro completo del radar (python -m radar.liqsnap). Il workflow orario di GitHub parte solo
+    ogni 2–5 ore (cron best-effort): questo comando, chiamato ogni ora da liqsnap.yml, tiene la serie davvero oraria.
+    Legge per primi i conti più grandi (whalebot + i primi 80 della classifica Hyperliquid) e i "caldi", poi la rotazione."""
+    from . import liqmap
+    from .data import DATA_DIR
+    d = DATA_DIR / "liqsnap"
+    hour = time.strftime("%Y-%m-%dT%H", time.gmtime())
+    if done_this_hour(d, hour):
+        print(f"[liqsnap] fotografia delle {hour}:00 già salvata (giro completo del radar): niente da fare")
+        return 0
+    names = liqmap.hl_accounts(DATA_DIR / "hl_accounts.json")   # cache giornaliera; classifica riletta solo se scaduta
+    out = record(DATA_DIR, None, liqmap.hl_big(DATA_DIR / "hl_accounts.json"), None, prio=list(names))
+    rec = [ex for ex in ("hl", "lighter") if (out.get(ex) or {}).get("recorded")]
+    print(f"[liqsnap] giro autonomo {out['ts']}: fotografie salvate {rec or 'nessuna'}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

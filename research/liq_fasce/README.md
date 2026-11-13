@@ -16,7 +16,7 @@ W3 invariata. Preregistrazione: PREREG.md (6 regole, soglie scritte prima).
   72.243 ($138M, dentro la R1 71.997–76.000): attraversato. La discesa si ferma prima della fascia successiva (70.992).
 - **Fase B** 13/11 00:00–05:00: da 71.460 a **67.568** (−5,4%), ore peggiori 03:00 (−1,8%) e 05:00. Squilibrio alla vigilia
   −75% entro ±5% (long sotto $390M, short sopra $54M). Attraversate tutte e quattro le fasce dense sotto: 70.499 ($102M),
-  69.624 ($65M), 68.932 ($81M), 67.907 ($63M), circa $411M stimati (solo Binance USDT-M). Si ferma nella metà bassa del supporto
+  69.624 ($65M), 68.932 ($81M), 67.907 ($63M), circa $310M stimati (solo Binance USDT-M). Si ferma nella metà bassa del supporto
   S1 66.956–70.080, sopra la fascia successiva 66.731 ($49M), che non viene toccata.
 - **Dopo** (ultima ora chiusa 06:00, prezzo 69.074): sotto restano 66.817 (−3,3%, $53M) e 66.153; sotto la S1 c'è la S2
   62.275–65.000. Sopra la mappa è quasi vuota fino a 74.000–75.500 (+7/+9%, dentro la R1). Squilibrio ±5% −94%: quasi

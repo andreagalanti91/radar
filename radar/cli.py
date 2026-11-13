@@ -164,6 +164,8 @@ def daily() -> None:
     report["liqmap"] = _soft("mappa delle liquidazioni", lambda: mod("liqmap").update(report.get("levels"), DATA_DIR))
     _soft("trader seguito (esiti)", lambda: mod("xinbox").evaluate_all())
     report["liqsources"] = _soft("liquidazioni multi-exchange", lambda: mod("liqsources").summary())
+    # ultima cascata di liquidazioni (24 ore) e prossime fasce dense: solo contesto (radar/liqcascade.py, lezione 92)
+    report["cascade"] = _soft("cascata di liquidazioni", lambda: mod("liqcascade").update(report, DATA_DIR))
     # scout balene Hyperliquid: una volta al giorno (≥ 20 ore dall'ultimo giro) (radar/scout.py)
     try:   # come prima: None = scout non rifatto oggi; assente = errore (la dashboard legge l'ultimo file)
         report["scout"] = mod("scout").daily(DATA_DIR)

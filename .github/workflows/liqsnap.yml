@@ -1,0 +1,64 @@
+name: Livelli di liquidazione on-chain (orario)
+
+# Fotografia oraria dei prezzi di liquidazione reali BTC (Hyperliquid + Lighter, radar/liqsnap.py).
+# Perché un workflow a parte: il cron di GitHub è best-effort e su questo repository i giri programmati partono ogni 2–5 ore
+# (daily.yml: 12 giri in due giorni su 96 previsti; wallets.yml "*/5": un giro ogni ~6 ore). La fotografia dentro daily.yml
+# resta (riserva), ma la serie oraria la tiene questo workflow: un solo job resta acceso ~5,5 ore e fa una fotografia a ogni
+# ora (minuto :20, dopo il giro :07 di daily.yml); alla fine riavvia se stesso con workflow_dispatch (eccezione documentata:
+# gli eventi workflow_dispatch creati con GITHUB_TOKEN avviano un nuovo giro). Il cron sotto serve solo a far ripartire la
+# catena se si interrompe. Repository pubblico: minuti dei runner standard gratuiti.
+on:
+  schedule:
+    - cron: "20 */4 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: liqsnap
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  snap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Una fotografia all'ora per ~5,5 ore
+        env:
+          LOOP_MIN: ${{ vars.RADAR_LIQSNAP_LOOP_MIN || '330' }}
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          end=$(( $(date +%s) + LOOP_MIN * 60 ))
+          while :; do
+            git pull --rebase -X theirs -q || { git rebase --abort 2>/dev/null; echo "pull non riuscito: si continua"; }
+            # una fotografia per ora: se il giro completo del radar l'ha già salvata, il comando esce subito
+            timeout 600 python -m radar.liqsnap || echo "fotografia non riuscita (si riprova all'ora successiva)"
+            git add data/liqsnap data/hl_accounts.json
+            if ! git diff --cached --quiet; then
+              git commit -q -m "data: livelli on-chain $(date -u +%FT%H:%M)"
+              for i in 1 2 3; do
+                if git pull --rebase -X theirs -q && git push -q; then break; fi
+                git rebase --abort 2>/dev/null || true
+                echo "push non riuscito (tentativo $i/3)"; sleep $((i * 10))
+              done
+            fi
+            # prossimo giro al minuto :20 dell'ora successiva
+            now=$(date +%s); next=$(( (now / 3600 + 1) * 3600 + 20 * 60 ))
+            [ "$next" -lt "$end" ] || break
+            sleep $(( next - now ))
+          done
+      - name: Riavvio della catena
+        # non dopo un annullamento manuale (così la catena si può fermare dalla pagina Actions)
+        if: success() || failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run liqsnap.yml --ref "${GITHUB_REF_NAME}" || echo "riavvio non riuscito, riparte con il cron"

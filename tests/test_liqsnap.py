@@ -109,6 +109,33 @@ class TestLiqSnap(unittest.TestCase):
             self.assertEqual(list(x.columns), hdr); self.assertEqual(len(x), 2); self.assertEqual(list(x["k"]), [-3, 5])
             self.assertEqual(gzip.decompress(f.read_bytes()).decode().count("ts,mid"), 1)
 
+    def test_ordine_e_budget(self):
+        # prima i conti prioritari e i caldi, poi la rotazione; niente doppioni; esclusi quelli già letti da liqmap
+        self.assertEqual(liqsnap.todo_list(["0xA", "b"], ["c", "b"], ["d", "a", "e"], skip=["E"]), ["0xa", "b", "c", "d", "a"])
+
+        class Fake:   # sessione finta: nessuna rete
+            n = 0
+
+            def post(self, url, json=None, timeout=None):
+                Fake.n += 1
+                return type("R", (), {"status_code": 200, "raise_for_status": lambda s: None, "json": lambda s: {"ok": 1}})()
+        hl = liqsnap._HL(session=Fake(), per_s=1000, deadline=0.0001)   # scadenza già passata: nessuna richiesta
+        got, failed = hl.states(["x", "y"])
+        self.assertEqual((got, failed, Fake.n), ({}, 2, 0))
+        hl = liqsnap._HL(session=Fake(), per_s=1000, deadline=None)
+        got, failed = hl.states(["x", "y"])
+        self.assertEqual((len(got), failed), (2, 0))
+
+    def test_una_fotografia_per_ora(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            self.assertFalse(liqsnap.done_this_hour(d, "2026-11-13T08"))
+            (d / "hl_state.json").write_text('{"last_hour": "2026-11-13T08", "acc": {}}')
+            self.assertFalse(liqsnap.done_this_hour(d, "2026-11-13T08"))   # manca Lighter: il giro autonomo la completa
+            (d / "lighter_state.json").write_text('{"last_hour": "2026-11-13T08", "acc": {}}')
+            self.assertTrue(liqsnap.done_this_hour(d, "2026-11-13T08"))
+            self.assertFalse(liqsnap.done_this_hour(d, "2026-11-13T09"))
+
 
 if __name__ == "__main__":
     unittest.main()
