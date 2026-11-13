@@ -359,7 +359,7 @@ class TestWorkflow(unittest.TestCase):
         self.assertIn("timeout-minutes: 20", s)
         self.assertLess(s.index("python -m radar.cli daily"), s.index("python -m radar.cli test"))
         self.assertIn("continue-on-error: true", s)
-        self.assertIn("git pull --rebase", s)
+        self.assertIn("python -m radar.liqsnap sync", s)   # allineamento senza rebase "theirs" (M5, tests/test_workflows.py)
         self.assertIn("for i in 1 2 3", s)
         self.assertIn("if: failure()", s)
         self.assertIn("workflow fallito", s)

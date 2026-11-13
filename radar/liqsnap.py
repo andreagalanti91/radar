@@ -15,6 +15,8 @@ Fonti (solo API pubbliche documentate, senza chiavi):
 Quando gira: dentro il giro completo del radar (daily.yml) E da solo (python -m radar.liqsnap) ogni ora in
 .github/workflows/liqsnap.yml, perché il cron di GitHub fa partire daily.yml solo ogni 2–5 ore (causa delle fotografie rade
 dell'11–13/11; la lettura in sé dura ~60 s). Una sola fotografia per ora (last_hour nello stato): chi arriva secondo non scrive.
+Un solo scrittore: se la catena oraria ha aggiornato data/liqsnap/*_state.json da meno di 2 ore (chain_at), il giro completo
+non legge né scrive nulla e riassume l'ultimo stato salvato (chain_alive, view). Allineamento con il remoto: sync_repo.
 Ordine delle letture: conti prioritari (whalebot + primi 80 della classifica) e "caldi", poi la rotazione; oltre BUDGET_S
 secondi le letture rimaste si saltano (la fotografia usa quelle fatte + le letture recenti).
 
@@ -318,7 +320,7 @@ def _compact(ps: list[dict]) -> list[dict]:
 
 
 def _record(ex: str, d: Path, ts: str, now: float, mid: float, fresh: dict[str, list], target: int, failed: int, n429: int,
-            stale_reads: int, t0: float, write: bool, oi_usd: float | None = None) -> dict:
+            stale_reads: int, t0: float, write: bool, oi_usd: float | None = None, chain: bool = False) -> dict:
     """Unisce letture fresche e stato, controlla, aggrega, scrive fotografia + copertura, logga. Ritorna il riassunto."""
     sp = d / f"{ex}_state.json"
     st = _load(sp)
@@ -354,6 +356,8 @@ def _record(ex: str, d: Path, ts: str, now: float, mid: float, fresh: dict[str, 
     elif write:
         print(f"[liqsnap] {ex}: nessuna lettura valida, fotografia non scritta (nessun dato inventato)")
     st.update(acc=acc, mid=round(mid, 1))
+    if chain:   # giro della catena oraria (liqsnap.yml): finché è recente, il giro completo non scrive (un solo scrittore)
+        st["chain_at"] = int(now)
     if wrote:
         st["last_hour"] = ts[:13]
     _save_state(sp, st)
@@ -402,7 +406,7 @@ def todo_list(prio: list[str], hot_: list[str], rot: list[str], skip=()) -> list
     return [a for a in dict.fromkeys(x.lower() for x in list(prio) + list(hot_) + list(rot)) if a not in skip]
 
 
-def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool, deadline: float | None = None) -> dict:
+def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool, deadline: float | None = None, chain: bool = False) -> dict:
     t0, now, s = time.time(), time.time(), requests.Session()
     addrs = lighter_accounts(d, s)
     st = _load(d / "lighter_state.json")
@@ -426,11 +430,11 @@ def run_lighter(d: Path, ts: str, hour: int, mid: float, write: bool, deadline: 
             fresh[a] = parse_lighter(r, time.time())
         except Exception:  # noqa: BLE001
             failed += 1
-    return _record("lighter", d, ts, now, mid, fresh, len(todo), failed, n429, 0, t0, write, oi)
+    return _record("lighter", d, ts, now, mid, fresh, len(todo), failed, n429, 0, t0, write, oi, chain)
 
 
 def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str], base_states: dict | None, hl: _HL,
-           oi: float | None = None, prio: list[str] | None = None) -> dict:
+           oi: float | None = None, prio: list[str] | None = None, chain: bool = False) -> dict:
     t0, now = time.time(), time.time()
     st = _load(d / "hl_state.json")
     base_states = {a.lower(): v for a, v in (base_states or {}).items()}
@@ -445,16 +449,58 @@ def run_hl(d: Path, ts: str, hour: int, mid: float, write: bool, big: list[str],
             continue
         fresh[a] = parse_hl(s, a)
     target = len(todo) + len(base_states)
-    return _record("hl", d, ts, now, mid, fresh, target, failed, hl.n429, stale_reads, t0, write, oi)
+    return _record("hl", d, ts, now, mid, fresh, target, failed, hl.n429, stale_reads, t0, write, oi, chain)
+
+
+CHAIN_ALIVE_H = 2.0    # la catena oraria (liqsnap.yml) è "viva" se ha aggiornato uno stato da meno di 2 ore
+
+
+def chain_alive(d: Path, now: float | None = None, max_h: float = CHAIN_ALIVE_H) -> bool:
+    """True se la catena oraria ha salvato uno stato (chain_at in data/liqsnap/*_state.json) da meno di max_h ore.
+    Si usa il campo nel file e non la data di modifica: il checkout di git la reimposta a ogni giro."""
+    now = time.time() if now is None else now
+    ts = [_f(_load(Path(d) / f"{ex}_state.json").get("chain_at")) for ex in ("hl", "lighter")]
+    return any(0 <= now - t < max_h * 3600 for t in ts if t)
+
+
+def view(d: Path, ref_price: float | None = None) -> dict:
+    """Riassunto in sola lettura dell'ultimo stato salvato dalla catena (nessuna rete, nessun file scritto)."""
+    now, out, comb = time.time(), {"source": "catena oraria liqsnap.yml (sola lettura)", "bin_pct": STEP * 100, "range_pct": RNG * 100}, {}
+    for ex in ("hl", "lighter"):
+        st = _load(Path(d) / f"{ex}_state.json")
+        mid = _f(ref_price) or _f(st.get("mid"))
+        if not mid:
+            out[ex] = {"ok": False}
+            continue
+        acc, _ = merge_state(st.get("acc", {}), {}, now)
+        b, c = bins(dedupe([p for v in acc.values() for p in v["p"]])[0], mid)
+        out[ex] = {"ok": True, "recorded": False, "last_hour": st.get("last_hour"), "holders": len(acc), "positions": c["positions"],
+                   **summary(b, mid)}
+        for k, v in b.items():
+            cc = comb.setdefault(k, [0.0, 0.0, 0, 0])
+            for i in range(4):
+                cc[i] += v[i]
+        out.setdefault("mid", round(mid, 1))
+    print(f"[liqsnap] catena oraria attiva (stato < {CHAIN_ALIVE_H:g} h): il giro completo non scrive data/liqsnap, "
+          f"riassunto dell'ultimo stato (ore {[(out.get(ex) or {}).get('last_hour') for ex in ('hl', 'lighter')]})")
+    if "mid" in out:
+        out.update(summary(comb, out["mid"]))
+        out["bins"] = [[k, round(v[0]), round(v[1]), v[2] + v[3]] for k, v in sorted(comb.items())]
+    out["ts"] = time.strftime("%Y-%m-%dT%H:%M", time.gmtime(now))
+    return out
 
 
 def record(data_dir, base_states: dict | None, big: list[str], ref_price: float | None = None, prio: list[str] | None = None,
-           budget_s: float = BUDGET_S) -> dict:
+           budget_s: float = BUDGET_S, chain: bool = False) -> dict:
     """Giro orario: Hyperliquid (con gli stati già letti da liqmap) e Lighter in parallelo. Ritorna report["liqmap"]["onchain"].
     `prio`: conti da leggere per primi (whalebot + più grandi della classifica, quando liqmap non li ha già letti).
-    `budget_s`: oltre questo tempo le letture rimaste si saltano (fotografia con le letture fatte + quelle recenti)."""
+    `budget_s`: oltre questo tempo le letture rimaste si saltano (fotografia con le letture fatte + quelle recenti).
+    `chain`: True solo nel giro autonomo di liqsnap.yml. Nel giro completo (daily.yml, chain=False) con la catena viva
+    (chain_alive) non si legge né si scrive nulla: si riassume l'ultimo stato salvato dalla catena (un solo scrittore)."""
     d = Path(data_dir) / "liqsnap"
     d.mkdir(parents=True, exist_ok=True)
+    if not chain and chain_alive(d):
+        return view(d, ref_price)
     deadline = time.monotonic() + budget_s
     hl = _HL(deadline=deadline)
     mid, hl_oi = 0.0, None
@@ -481,8 +527,8 @@ def record(data_dir, base_states: dict | None, big: list[str], ref_price: float 
         try:
             write = _load(d / f"{ex}_state.json").get("last_hour") != ts[:13]   # una sola fotografia per ora (giro di riserva :37)
             if ex == "hl":
-                return ex, run_hl(d, ts, hour, mid, write, big, base_states, hl, hl_oi, prio)
-            return ex, run_lighter(d, ts, hour, mid, write, deadline)
+                return ex, run_hl(d, ts, hour, mid, write, big, base_states, hl, hl_oi, prio, chain)
+            return ex, run_lighter(d, ts, hour, mid, write, deadline, chain)
         except Exception as e:  # noqa: BLE001
             print(f"[liqsnap] {ex} non disponibile: {e!r}")
             return ex, None
@@ -517,13 +563,128 @@ def main() -> int:
     hour = time.strftime("%Y-%m-%dT%H", time.gmtime())
     if done_this_hour(d, hour):
         print(f"[liqsnap] fotografia delle {hour}:00 già salvata (giro completo del radar): niente da fare")
+        for ex in ("hl", "lighter"):   # la catena riprende il ruolo di unico scrittore dal giro successivo
+            sp = d / f"{ex}_state.json"
+            st = _load(sp)
+            if st:
+                st["chain_at"] = int(time.time())
+                _save_state(sp, st)
         return 0
     names = liqmap.hl_accounts(DATA_DIR / "hl_accounts.json")   # cache giornaliera; classifica riletta solo se scaduta
-    out = record(DATA_DIR, None, liqmap.hl_big(DATA_DIR / "hl_accounts.json"), None, prio=list(names))
+    out = record(DATA_DIR, None, liqmap.hl_big(DATA_DIR / "hl_accounts.json"), None, prio=list(names), chain=True)
     rec = [ex for ex in ("hl", "lighter") if (out.get(ex) or {}).get("recorded")]
     print(f"[liqsnap] giro autonomo {out['ts']}: fotografie salvate {rec or 'nessuna'}")
     return 0
 
 
+# ------------------------------------------------------------------ allineamento con il repository remoto (workflow)
+# `git pull --rebase -X theirs` su file binari (i .csv.gz a membri accodati) teneva una sola versione intera e perdeva in silenzio
+# i membri accodati dall'altro scrittore. Qui ogni file cambiato da entrambe le parti si unisce in modo esplicito:
+# file in sola aggiunta (.csv.gz, .csv) = versione remota + byte aggiunti da noi; altri file (stati JSON) = la nostra versione,
+# con una riga di log. Si usa in liqsnap.yml e daily.yml: python -m radar.liqsnap sync, poi git push.
+APPEND_SUFFIXES = (".csv.gz", ".csv")
+
+
+def _strip_header_gz(data: bytes) -> bytes:
+    """Byte gzip senza la prima riga (intestazione), ricompressi in un solo membro."""
+    txt = gzip.decompress(data).decode()
+    return gzip.compress(txt.split("\n", 1)[1].encode() if "\n" in txt else b"", compresslevel=9, mtime=0)
+
+
+def merge_file(path: str, base: bytes | None, mine: bytes | None, theirs: bytes | None) -> tuple[bytes | None, str]:
+    """Unione a tre vie di un file (None = assente). Ritorna (contenuto, nota); contenuto None = file da cancellare."""
+    if mine == theirs or theirs == base:
+        return mine, "nostra"
+    if mine == base:
+        return theirs, "remota"
+    if path.endswith(APPEND_SUFFIXES) and mine is not None and theirs is not None:
+        b = base or b""
+        if mine.startswith(b) and theirs.startswith(b):
+            add = mine[len(b):]
+            if base is None:   # file nuovo creato da entrambi (es. primo giro del mese): una sola intestazione
+                if path.endswith(".gz"):
+                    try:
+                        add = _strip_header_gz(add)
+                    except Exception:  # noqa: BLE001
+                        return mine, "ATTENZIONE: gzip illeggibile, tenuta la nostra versione"
+                else:
+                    add = add.split(b"\n", 1)[1] if b"\n" in add else b""
+            if path.endswith(".csv") and theirs and not theirs.endswith(b"\n"):
+                theirs += b"\n"
+            return theirs + add, "unita (remota + righe nostre)"
+    if mine is None:
+        return theirs, "remota (cancellata solo da noi)"
+    return mine, "ATTENZIONE: cambiata da entrambi, tenuta la nostra versione"
+
+
+def _git(repo, *args, check=True) -> str:
+    import subprocess
+    r = subprocess.run(["git", *args], cwd=repo, capture_output=True, check=False)
+    if check and r.returncode:
+        raise RuntimeError(f"git {' '.join(args)}: {r.stderr.decode(errors='replace').strip()}")
+    return r.stdout.decode(errors="replace").strip() if r.returncode == 0 else ""
+
+
+def _blob(repo, rev: str, path: str) -> bytes | None:
+    import subprocess
+    r = subprocess.run(["git", "cat-file", "blob", f"{rev}:{path}"], cwd=repo, capture_output=True, check=False)
+    return r.stdout if r.returncode == 0 else None
+
+
+def sync_repo(repo=".", remote: str = "origin", branch: str | None = None) -> str:
+    """Porta il ramo locale sopra quello remoto senza perdere dati di nessuno dei due. Ritorna "ff", "ahead", "same" o "merged".
+    I commit locali non ancora spinti si ricostruiscono in un solo commit sopra il remoto (file per file con merge_file)."""
+    branch = branch or _git(repo, "rev-parse", "--abbrev-ref", "HEAD")
+    _git(repo, "fetch", "-q", remote, branch)
+    up = _git(repo, "rev-parse", "FETCH_HEAD")
+    head = _git(repo, "rev-parse", "HEAD")
+    if head == up:
+        return "same"
+    base = _git(repo, "merge-base", "HEAD", up, check=False)
+    if base == head:
+        _git(repo, "merge", "-q", "--ff-only", up)
+        return "ff"
+    if base == up:
+        return "ahead"
+    msg = _git(repo, "log", "-1", "--format=%B", "HEAD")
+    files = [f for f in _git(repo, "diff", "--name-only", "--no-renames", base, "HEAD").splitlines() if f]
+    out = {}
+    for f in files:
+        content, note = merge_file(f, _blob(repo, base, f) if base else None, _blob(repo, "HEAD", f), _blob(repo, up, f))
+        out[f] = content
+        print(f"[sync] {f}: {note}")
+    dirty = bool(_git(repo, "status", "--porcelain", "--untracked-files=no"))
+    if dirty:   # modifiche non salvate in un commit: messe da parte e riapplicate dopo (reset --hard le cancellerebbe)
+        _git(repo, "stash", "push", "-q")
+    _git(repo, "reset", "-q", "--hard", up)
+    root = Path(_git(repo, "rev-parse", "--show-toplevel"))
+    for f, content in out.items():
+        fp = root / f
+        if content is None:
+            if fp.exists():
+                fp.unlink()
+            _git(repo, "rm", "-q", "--cached", "--ignore-unmatch", f)
+            continue
+        fp.parent.mkdir(parents=True, exist_ok=True)
+        fp.write_bytes(content)
+        _git(repo, "add", f)
+    if _git(repo, "diff", "--cached", "--name-only"):
+        _git(repo, "commit", "-q", "-m", msg or "data: aggiornamento")
+    if dirty:
+        try:
+            _git(repo, "stash", "pop", "-q")
+        except RuntimeError as e:
+            print(f"[sync] ATTENZIONE: modifiche non salvate non riapplicate, restano in git stash ({e})")
+    return "merged"
+
+
 if __name__ == "__main__":
+    import sys
+    if sys.argv[1:2] == ["sync"]:
+        try:
+            print(f"[sync] {sync_repo()}")
+        except Exception as e:  # noqa: BLE001
+            print(f"[sync] non riuscito: {e}")
+            raise SystemExit(1)
+        raise SystemExit(0)
     raise SystemExit(main())

@@ -1,3 +1,4 @@
-pandas>=2.1
-numpy>=1.26
-requests>=2.31
+# versioni fissate (==): le stesse in tutti i workflow; aggiornarle di proposito, con i test
+pandas==3.1.1
+numpy==2.5.4
+requests==2.34.2

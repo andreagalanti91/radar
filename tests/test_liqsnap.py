@@ -137,5 +137,133 @@ class TestLiqSnap(unittest.TestCase):
             self.assertFalse(liqsnap.done_this_hour(d, "2026-11-13T09"))
 
 
+
+class TestUnicoScrittore(unittest.TestCase):
+    """M5: con la catena oraria viva (chain_at < 2 h) il giro completo non legge né scrive data/liqsnap."""
+    def test_chain_alive_e_view(self):
+        import json
+        import time
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            self.assertFalse(liqsnap.chain_alive(d))
+            now = time.time()
+            st = {"mid": 70000.0, "last_hour": "2026-11-13T10", "chain_at": int(now - 3600),
+                  "acc": {"a": {"t": now - 600, "p": [pos("long", 63000, btc=10, ts=now - 600)]}}}
+            (d / "hl_state.json").write_text(json.dumps(st))
+            self.assertTrue(liqsnap.chain_alive(d, now))
+            self.assertFalse(liqsnap.chain_alive(d, now + 2 * 3600))   # catena ferma da oltre 2 ore: il giro completo scrive
+            before = sorted(p.name for p in d.iterdir())
+            out = liqsnap.view(d, 70000.0)
+            self.assertEqual(sorted(p.name for p in d.iterdir()), before)   # nessun file scritto
+            self.assertTrue(out["hl"]["ok"])
+            self.assertFalse(out["hl"]["recorded"])
+            self.assertEqual(out["hl"]["holders"], 1)
+            self.assertFalse(out["lighter"]["ok"] and out["lighter"].get("holders"))
+
+    def test_record_in_sola_lettura_con_catena_viva(self):
+        import json
+        import time
+        with tempfile.TemporaryDirectory() as root:
+            d = Path(root) / "liqsnap"
+            d.mkdir()
+            (d / "hl_state.json").write_text(json.dumps({"mid": 70000.0, "chain_at": int(time.time()), "acc": {}}))
+            orig = liqsnap._HL
+            liqsnap._HL = None   # qualsiasi accesso alla rete fallirebbe
+            try:
+                out = liqsnap.record(root, None, [], 70000.0)
+            finally:
+                liqsnap._HL = orig
+            self.assertIn("sola lettura", out["source"])
+            self.assertEqual(sorted(p.name for p in d.iterdir()), ["hl_state.json"])
+
+
+def _gz(rows: str) -> bytes:
+    return gzip.compress(rows.encode(), mtime=0)
+
+
+class TestMergeFile(unittest.TestCase):
+    def test_casi(self):
+        base, mine, theirs = _gz("h\n1\n"), _gz("h\n1\n") + _gz("2\n"), _gz("h\n1\n") + _gz("3\n")
+        out, _ = liqsnap.merge_file("data/liqsnap/hl_2026-11.csv.gz", base, mine, theirs)
+        self.assertEqual(gzip.decompress(out).decode(), "h\n1\n3\n2\n")      # nessun membro perso
+        self.assertEqual(liqsnap.merge_file("x.csv.gz", base, mine, base)[0], mine)
+        self.assertEqual(liqsnap.merge_file("x.csv.gz", base, base, theirs)[0], theirs)
+        # file nuovo creato da entrambi (primo giro del mese): una sola intestazione
+        out, _ = liqsnap.merge_file("x.csv.gz", None, _gz("h\n2\n"), _gz("h\n3\n"))
+        self.assertEqual(gzip.decompress(out).decode(), "h\n3\n2\n")
+        out, _ = liqsnap.merge_file("c.csv", b"h\n1\n", b"h\n1\n2\n", b"h\n1\n3\n")
+        self.assertEqual(out, b"h\n1\n3\n2\n")
+        out, _ = liqsnap.merge_file("c.csv", None, b"h\n2\n", b"h\n3\n")
+        self.assertEqual(out, b"h\n3\n2\n")
+        # stato JSON cambiato da entrambi: la nostra versione (la più recente)
+        self.assertEqual(liqsnap.merge_file("s.json", b"{}", b'{"a":1}', b'{"a":2}')[0], b'{"a":1}')
+        self.assertIsNone(liqsnap.merge_file("s.json", b"{}", None, b"{}")[0])
+
+
+class TestSyncRepo(unittest.TestCase):
+    """Due scrittori sullo stesso .csv.gz (repo git locali, niente rete): dopo sync + push non si perde nessun membro gzip."""
+    def git(self, cwd, *a):
+        import subprocess
+        return subprocess.run(["git", *a], cwd=cwd, check=True, capture_output=True, text=True).stdout.strip()
+
+    def clone(self, remote, dst):
+        self.git(dst.parent, "clone", "-q", str(remote), dst.name)
+        self.git(dst, "config", "user.name", "t")
+        self.git(dst, "config", "user.email", "t@example.invalid")
+        self.git(dst, "config", "commit.gpgsign", "false")
+
+    def test_due_scrittori(self):
+        import shutil
+        if not shutil.which("git"):
+            self.skipTest("git assente")
+        with tempfile.TemporaryDirectory() as t:
+            t = Path(t)
+            remote = t / "remote.git"
+            self.git(t, "init", "-q", "--bare", "-b", "main", str(remote))
+            a, b = t / "a", t / "b"
+            self.clone(remote, a)
+            self.git(a, "checkout", "-q", "-b", "main")
+            f = Path("data/liqsnap/hl_2026-11.csv.gz")
+            hdr = ["ts", "mid", "k", "long_usd", "short_usd", "n_long", "n_short"]
+            (a / f.parent).mkdir(parents=True)
+            liqsnap.append_gz(a / f, [["T0", 1, 0, 1, 1, 1, 1]], hdr)
+            (a / "data/state.json").write_text('{"last_run": "0"}')
+            self.git(a, "add", "-A")
+            self.git(a, "commit", "-q", "-m", "base")
+            self.git(a, "push", "-q", "-u", "origin", "main")
+            self.clone(remote, b)
+            # scrittore A (catena oraria): due fotografie, la seconda non ancora spinta quando B spinge
+            liqsnap.append_gz(a / f, [["A1", 1, 0, 1, 1, 1, 1]], hdr)
+            self.git(a, "commit", "-q", "-am", "A1")
+            self.git(a, "push", "-q")
+            liqsnap.append_gz(a / f, [["A2", 1, 0, 1, 1, 1, 1]], hdr)
+            self.git(a, "commit", "-q", "-am", "A2")
+            # scrittore B (giro completo, partito prima di A1): una fotografia + stato
+            liqsnap.append_gz(b / f, [["B1", 1, 0, 1, 1, 1, 1]], hdr)
+            (b / "data/state.json").write_text('{"last_run": "B"}')
+            self.git(b, "commit", "-q", "-am", "B1")
+            self.assertEqual(liqsnap.sync_repo(b), "merged")
+            self.git(b, "push", "-q")
+            self.assertEqual(liqsnap.sync_repo(a), "merged")
+            self.git(a, "push", "-q")
+            self.assertEqual(liqsnap.sync_repo(b), "ff")
+            self.assertEqual(liqsnap.sync_repo(b), "same")
+            for repo in (a, b):
+                rows = pd.read_csv(repo / f)["ts"].tolist()
+                self.assertEqual(sorted(rows), ["A1", "A2", "B1", "T0"], repo.name)
+                self.assertEqual(len(rows), 4)   # un'intestazione sola, nessun doppione
+                self.assertEqual((repo / "data/state.json").read_text(), '{"last_run": "B"}')
+            # con -X theirs (vecchio metodo) lo stesso scenario perdeva righe: verifica che il rischio fosse reale
+            c = t / "c"
+            self.clone(remote, c)
+            liqsnap.append_gz(c / f, [["C1", 1, 0, 1, 1, 1, 1]], hdr)
+            self.git(c, "commit", "-q", "-am", "C1")
+            liqsnap.append_gz(a / f, [["A3", 1, 0, 1, 1, 1, 1]], hdr)
+            self.git(a, "commit", "-q", "-am", "A3")
+            self.git(a, "push", "-q")
+            self.git(c, "pull", "-q", "--rebase", "-X", "theirs")
+            self.assertNotIn("A3", pd.read_csv(c / f)["ts"].tolist())
+
+
 if __name__ == "__main__":
     unittest.main()

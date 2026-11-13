@@ -1,12 +1,14 @@
 name: Livelli di liquidazione on-chain (orario)
 
-# Fotografia oraria dei prezzi di liquidazione reali BTC (Hyperliquid + Lighter, radar/liqsnap.py).
+# Fotografia oraria dei prezzi di liquidazione reali BTC (Hyperliquid + Lighter, radar/liqsnap.py) e orologio del radar.
 # Perché un workflow a parte: il cron di GitHub è best-effort e su questo repository i giri programmati partono ogni 2–5 ore
-# (daily.yml: 12 giri in due giorni su 96 previsti; wallets.yml "*/5": un giro ogni ~6 ore). La fotografia dentro daily.yml
-# resta (riserva), ma la serie oraria la tiene questo workflow: un solo job resta acceso ~5,5 ore e fa una fotografia a ogni
-# ora (minuto :20, dopo il giro :07 di daily.yml); alla fine riavvia se stesso con workflow_dispatch (eccezione documentata:
-# gli eventi workflow_dispatch creati con GITHUB_TOKEN avviano un nuovo giro). Il cron sotto serve solo a far ripartire la
-# catena se si interrompe. Repository pubblico: minuti dei runner standard gratuiti.
+# (il "30 0" di daily.yml non è mai partito dall'1 al 13/11). Un solo job resta acceso ~5 ore e a ogni ora:
+#   :02  avvia daily.yml (gh workflow run, gate=true: se l'ultimo giro completo è di < 25 minuti fa quel giro si ferma subito);
+#   :20  fotografia on-chain (dopo il giro completo, che con la catena viva non scrive data/liqsnap: un solo scrittore).
+# Alla fine riavvia se stesso con workflow_dispatch (eccezione documentata: gli eventi workflow_dispatch creati con GITHUB_TOKEN
+# avviano un nuovo giro). Il cron sotto serve solo a far ripartire la catena se si interrompe.
+# Per FERMARE la catena: `gh workflow disable liqsnap.yml` (o "Disable workflow" nella pagina Actions). Annullare il giro in
+# corso non basta: il riavvio salta, ma il cron la fa ripartire entro 4 ore. Repository pubblico: minuti dei runner gratuiti.
 on:
   schedule:
     - cron: "20 */4 * * *"
@@ -30,35 +32,55 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - name: Una fotografia all'ora per ~5,5 ore
+      - name: Una fotografia all'ora per ~5 ore (e avvio orario di daily.yml)
         env:
-          LOOP_MIN: ${{ vars.RADAR_LIQSNAP_LOOP_MIN || '330' }}
+          LOOP_MIN: ${{ vars.RADAR_LIQSNAP_LOOP_MIN || '320' }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
+          # al massimo 320 minuti anche se la variabile è più alta: fotografia + push + riavvio entro il timeout di 350
+          [ "$LOOP_MIN" -le 320 ] 2>/dev/null || LOOP_MIN=320
           end=$(( $(date +%s) + LOOP_MIN * 60 ))
           while :; do
-            git pull --rebase -X theirs -q || { git rebase --abort 2>/dev/null; echo "pull non riuscito: si continua"; }
+            # allineamento senza rebase "theirs": i .csv.gz a membri accodati si uniscono, nessun dato perso (radar.liqsnap.sync_repo)
+            python -m radar.liqsnap sync || echo "allineamento non riuscito: si continua"
             # una fotografia per ora: se il giro completo del radar l'ha già salvata, il comando esce subito
             timeout 600 python -m radar.liqsnap || echo "fotografia non riuscita (si riprova all'ora successiva)"
             git add data/liqsnap data/hl_accounts.json
             if ! git diff --cached --quiet; then
               git commit -q -m "data: livelli on-chain $(date -u +%FT%H:%M)"
-              for i in 1 2 3; do
-                if git pull --rebase -X theirs -q && git push -q; then break; fi
-                git rebase --abort 2>/dev/null || true
-                echo "push non riuscito (tentativo $i/3)"; sleep $((i * 10))
+              for i in 1 2 3 4 5; do
+                if python -m radar.liqsnap sync && git push -q; then break; fi
+                echo "push non riuscito (tentativo $i/5)"; sleep $((i * 10))
               done
             fi
-            # prossimo giro al minuto :20 dell'ora successiva
-            now=$(date +%s); next=$(( (now / 3600 + 1) * 3600 + 20 * 60 ))
+            # avvio orario di daily.yml al minuto :02 dell'ora successiva, poi fotografia al minuto :20
+            now=$(date +%s); disp=$(( (now / 3600 + 1) * 3600 + 2 * 60 ))
+            [ "$disp" -lt "$end" ] || break
+            sleep $(( disp - now ))
+            gh workflow run daily.yml --ref "${GITHUB_REF_NAME}" -f gate=true || echo "avvio di daily.yml non riuscito (restano i cron)"
+            now=$(date +%s); next=$(( now / 3600 * 3600 + 20 * 60 ))
             [ "$next" -lt "$end" ] || break
-            sleep $(( next - now ))
+            [ "$next" -le "$now" ] || sleep $(( next - now ))
           done
       - name: Riavvio della catena
-        # non dopo un annullamento manuale (così la catena si può fermare dalla pagina Actions)
+        # non dopo un annullamento manuale (per fermare la catena vedi il commento in cima: gh workflow disable)
         if: success() || failure()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run liqsnap.yml --ref "${GITHUB_REF_NAME}" || echo "riavvio non riuscito, riparte con il cron"
+      - name: Avviso workflow fallito
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          JOB: ${{ github.job }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=Radar · workflow fallito: liqsnap ${JOB} ${RUN_URL}") || true
+          echo "avviso workflow fallito: HTTP ${code}"

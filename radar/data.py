@@ -291,6 +291,20 @@ def _klines_1h(df: pd.DataFrame) -> pd.DataFrame:
     return out[~out.index.duplicated(keep="last")]
 
 
+PERP_GAP_DAYS = 30   # finestra in cui si cercano ore perp mancanti da riscaricare
+
+
+def perp_restart(old: pd.DataFrame | None, now: pd.Timestamp, t0: pd.Timestamp) -> pd.Timestamp:
+    """Giorno da cui riscaricare il perp orario: il primo giorno con perp vuoto (ore con spot ma senza perp) negli ultimi
+    PERP_GAP_DAYS giorni; se non ce ne sono, l'ultimo perp disponibile − 1 giorno; senza storico, t0."""
+    if old is None or "perp_vol" not in old or not old["perp_vol"].notna().any():
+        return t0
+    win = old[(old.index >= (now - pd.Timedelta(days=PERP_GAP_DAYS)).normalize()) & (old.index < now)]
+    holes = win.index[win["perp_vol"].isna()]
+    last = (old["perp_vol"].dropna().index.max() - pd.Timedelta(days=1)).normalize()
+    return max(t0, min(holes.min().normalize(), last)) if len(holes) else max(t0, last)
+
+
 def fetch_taker_1h() -> pd.DataFrame:
     """Volume e taker buy base orari dal 2022-01 (data/taker_1h.csv: spot_vol, spot_taker, perp_vol, perp_taker).
 
@@ -298,15 +312,15 @@ def fetch_taker_1h() -> pd.DataFrame:
     - perp: archivio data.binance.vision (mensile per lo storico, giornaliero per il mese in corso). L'API fapi è
       bloccata (451) e l'archivio giornaliero arriva con ~1 giorno di ritardo: le ultime ore hanno spesso il perp
       vuoto. Regola di v2 su carta (paper.dt_4h): se manca il perp della barra di conferma si usa il solo spot.
-    Solo ore chiuse; si riscaricano sempre le ore dall'ultimo perp disponibile per riempire i buchi.
+    Solo ore chiuse; il perp si riscarica dal primo giorno con perp mancante negli ultimi 30 giorni (perp_restart), così
+    un buco in mezzo (es. 28/10/2026, 24 ore vuote) si recupera appena l'archivio lo pubblica.
     """
     path = DATA_DIR / "taker_1h.csv"
     old = pd.read_csv(path, index_col=0, parse_dates=True) if path.exists() else None
     t0 = pd.Timestamp("2022-01-01")
     now = pd.Timestamp(datetime.now(timezone.utc).replace(tzinfo=None)).floor("h")  # ora in corso: esclusa
     s_from = old["spot_vol"].dropna().index.max() - pd.Timedelta(hours=2) if old is not None else t0
-    p_last = old["perp_vol"].dropna().index.max() if old is not None and old["perp_vol"].notna().any() else None
-    p_from = (p_last - pd.Timedelta(days=1)).normalize() if p_last is not None else t0
+    p_from = perp_restart(old, now, t0)
     # spot
     rows, start_ms = [], int(s_from.tz_localize("UTC").timestamp() * 1000)
     while True:

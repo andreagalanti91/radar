@@ -2,11 +2,19 @@ name: Radar Signal BTC daily
 
 on:
   schedule:
-    - cron: "30 0 * * *"   # 00:30 UTC, dopo la chiusura della candela giornaliera: segnale + riepilogo
-    - cron: "7 * * * *"    # ogni ora: notizie, calendario, dashboard e alert sui trade aperti
-    - cron: "37 * * * *"   # riserva sfalsata: GitHub salta molti giri programmati (cron best-effort); si ferma subito
-                           # se l'ultimo giro completo è di meno di 25 minuti fa (data/state.json, last_run)
+    # cron di GitHub = best-effort: su questo repository molti giri programmati saltano (il "30 0" non è mai partito dall'1 al
+    # 13/11). La fonte affidabile è la catena oraria di liqsnap.yml, che avvia questo workflow ogni ora al minuto :02
+    # (workflow_dispatch con gate=true). I due cron restano come riserva; tutti i giri automatici si fermano subito se
+    # l'ultimo giro completo è di meno di 25 minuti fa (data/state.json, last_run). Il riepilogo giornaliero non dipende
+    # dall'orario: parte al primo giro utile dopo le 00:00 UTC (radar.cli.brief_due, marker daily_brief in data/state.json).
+    - cron: "7 * * * *"
+    - cron: "37 * * * *"
   workflow_dispatch:
+    inputs:
+      gate:
+        description: "true = salta se l'ultimo giro completo è di meno di 25 minuti fa (usato dalla catena di liqsnap.yml)"
+        required: false
+        default: "false"
 
 permissions:
   contents: write
@@ -23,19 +31,45 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Stato salvato in cache da un giro con push fallito
+        # se un giro non è riuscito a spingere data/state.json (marker degli avvisi già inviati) l'ha salvato in cache:
+        # si ripristina se più recente (last_run) di quello del repository, così gli avvisi non si ripetono
+        uses: actions/cache/restore@v4
+        with:
+          path: .state-cache/state.json
+          key: radar-state-restore-${{ github.run_id }}
+          restore-keys: radar-state-
+      - name: Scelta dello stato più recente
+        run: |
+          python3 - <<'PY'
+          import json, shutil
+          from pathlib import Path
+          repo, cache = Path("data/state.json"), Path(".state-cache/state.json")
+          def last_run(p):
+              try:
+                  return str(json.loads(p.read_text()).get("last_run") or "")
+              except Exception:  # noqa: BLE001
+                  return ""
+          r, c = last_run(repo), last_run(cache)
+          if c and c > r:
+              shutil.copyfile(cache, repo)
+              print(f"stato ripristinato dalla cache: last_run {c} (repository: {r or 'assente'})")
+          else:
+              print(f"stato del repository in uso (last_run {r or 'assente'}; cache: {c or 'assente'})")
+          PY
       - name: Controllo ultimo giro
         id: gate
-        # solo i giri orari programmati: se l'ultimo giro completo è di < 25 minuti fa (es. :07 riuscito, poi :37) si salta
-        # tutto il resto. Il giro delle 00:30 (riepilogo) e quelli manuali non si saltano mai. Regola = radar.cli.recent_run
+        # giri automatici (cron e catena di liqsnap.yml con gate=true): se l'ultimo giro completo è di < 25 minuti fa si salta
+        # tutto il resto. I giri manuali (gate=false) non si saltano mai (tests/test_workflows.py)
         env:
           EVENT: ${{ github.event_name }}
-          SCHEDULE: ${{ github.event.schedule }}
+          GATE: ${{ github.event.inputs.gate || 'false' }}
         run: |
           python3 - <<'PY'
           import json, os
           from datetime import datetime, timedelta, timezone
           skip = False
-          if os.environ["EVENT"] == "schedule" and os.environ["SCHEDULE"] != "30 0 * * *":
+          if os.environ["EVENT"] == "schedule" or os.environ.get("GATE") == "true":
               try:
                   last = datetime.fromisoformat(json.load(open("data/state.json"))["last_run"])
                   age = datetime.now(timezone.utc).replace(tzinfo=None) - last
@@ -58,8 +92,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # il riepilogo giornaliero parte solo con l'esecuzione delle 00:30
-          RADAR_DAILY_BRIEF: ${{ github.event.schedule == '30 0 * * *' && (vars.RADAR_DAILY_BRIEF || '1') || '0' }}
+          # interruttore del riepilogo giornaliero (una volta al giorno, marker in data/state.json: radar.cli.brief_due)
+          RADAR_DAILY_BRIEF: ${{ vars.RADAR_DAILY_BRIEF || '1' }}
           # capitale reale (variabili del repository): piani in dollari di W3 su CAPITAL×WEEKLY_SHARE
           RADAR_CAPITAL: ${{ vars.RADAR_CAPITAL || '50000' }}
           RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '1.0' }}
@@ -67,20 +101,43 @@ jobs:
           RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '0' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
+        id: push
         if: steps.gate.outputs.skip != 'true'
+        continue-on-error: true
         run: |
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
           git add data/
           git diff --cached --quiet || git commit -m "data: aggiornamento $(date -u +%F)"
-          # un altro workflow (wallets.yml) può aver spinto nel frattempo: rebase e fino a 3 tentativi
-          for i in 1 2 3; do
-            if git pull --rebase -X theirs && git push; then exit 0; fi
-            git rebase --abort 2>/dev/null || true
-            echo "push non riuscito (tentativo $i/3), nuovo tentativo"
-            sleep $((i * 10))
+          # la catena di liqsnap.yml può aver spinto nel frattempo: allineamento senza rebase "theirs" (radar.liqsnap.sync_repo:
+          # i .csv.gz a membri accodati si uniscono, nessun dato perso), 5 tentativi con attesa crescente
+          for i in 1 2 3 4 5; do
+            if python -m radar.liqsnap sync && git push; then exit 0; fi
+            echo "push non riuscito (tentativo $i/5), nuovo tentativo fra $((i * 15)) s"
+            sleep $((i * 15))
           done
           exit 1
+      - name: Stato in cache (push fallito)
+        if: steps.push.outcome == 'failure'
+        run: mkdir -p .state-cache && cp data/state.json .state-cache/state.json
+      - name: Salva lo stato in cache
+        if: steps.push.outcome == 'failure'
+        uses: actions/cache/save@v4
+        with:
+          path: .state-cache/state.json
+          key: radar-state-${{ github.run_id }}
+      - name: Avviso push fallito
+        if: steps.push.outcome == 'failure'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=Radar · salvataggio dei dati non riuscito dopo 5 tentativi: stato in cache, ripristinato al prossimo giro. ${RUN_URL}") || true
+          echo "avviso push fallito: HTTP ${code}"
       - name: Test del motore di backtest
         # i test girano e riportano l'esito, ma non bloccano alert, salvataggio e dashboard (avviso Telegram se falliscono)
         id: tests
@@ -106,8 +163,16 @@ jobs:
         with:
           path: site
       - id: deploy
+        # primo tentativo: se fallisce non ferma il job; secondo tentativo dopo 30 s, avviso solo se fallisce anche quello
         uses: actions/deploy-pages@v4
         if: steps.gate.outputs.skip != 'true'
+        continue-on-error: true
+      - name: Attesa prima del secondo tentativo di pubblicazione
+        if: steps.gate.outputs.skip != 'true' && steps.deploy.outcome == 'failure'
+        run: sleep 30
+      - id: deploy_retry
+        uses: actions/deploy-pages@v4
+        if: steps.gate.outputs.skip != 'true' && steps.deploy.outcome == 'failure'
       - name: Avviso workflow fallito
         if: failure()
         env:
