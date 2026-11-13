@@ -13,3 +13,4 @@ Decisioni: D1 tutto il tool; D2 correzioni dirette se non toccano W3; D3 wallet/
 Log:
 - 13/11 avviati A1, A2, A5; A3 e A4 dopo la mappa v2.
 - 13/11 A1 finito: W3 riprodotta in modo indipendente trade per trade (78.473,92, DD −21,13%); nessun CRITICO; 2 MEDI (sensibilità del flusso ±1 giorno; dati provvisori OKX riscritti dall'archivio Binance), 5 BASSI.
+- 13/11 A5 finito: nessun CRITICO; 3 MEDI (cron 00:30 mai partito → W3 valutato fino a ~4,7h dopo la chiusura; rebase -X theirs su .csv.gz scritti da due workflow; dati persi se push fallisce 3 volte), 5 BASSI.
