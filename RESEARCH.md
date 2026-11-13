@@ -404,6 +404,17 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Studio dell'utente · 12–13/11 — Zeiierman Trend Pressure (2 cicli notturni + revisione) · RESPINTO
+**Lezione 91**: Zeiierman Trend Pressure (porting fedele al Pine, verificato in revisione; la zona colorata è in pratica la
+Z-Trend, un %R a 120 giorni smussato) non mostra alcuna evidenza di vantaggio su BTC dal 2021 (studio a bassa potenza: 7–15 trade
+per regola). Ciclo 1: 24 regole giornaliere (zona, rilascio, trend, continuazione; long/short; con/senza stop): la migliore,
+"compra in blu e vendi in rossa" con stop, 21,1k contro 25,6k del buy & hold e 78,5k di W3, placebo p 0,14; la zona blu dura mesi
+anche nei bear (−53% nel 2022, −33% nel 2026); indizio (n piccolo) che la rossa sia continuazione. Ciclo 2 preregistrato: rilascio
+blu con filtro di trend = 1–2 trade in 6 anni (zona blu e conferma di trend si escludono); uscita al rilascio rosso intera o a metà
+non giudicabile (1 trade); dentro W3 ridurre al 50% con tz < −50 e Core rosso abbassa il MAR (25,7 contro 32,4) e alza il DD
+(−24,2% contro −21,1%). Unico residuo: 4h, long al rilascio blu, buono nel 2022–23 e peggiore del buy & hold dal 2024 (probabile
+caso su ~48 prove). Conferma le lezioni 70 e 86: informazione di trend già contenuta in W3. Solo contesto visivo. File: research/zeiierman/.
+
 ### Studio dell'utente · 12/11 — Chento: "DCA dopo 750M di liquidazioni" · SOLO CONTESTO
 Post del 12/11 (Coinglass: 742M in 24h, 85% long). La regola "compra dopo cascata di liquidazioni long" è già bocciata dal 2021
 (studio del 03/11 qui sotto). Il suo eventuale vantaggio sta nei livelli e negli scaglioni; si misura solo con il registro
