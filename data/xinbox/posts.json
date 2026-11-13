@@ -13,7 +13,7 @@
   "target": 74400.0,
   "entry": 80500.0,
   "outcome": {
-   "status": "ordine in attesa"
+   "status": "non eseguito"
   }
  },
  {
@@ -30,9 +30,10 @@
   "target": 87350.0,
   "entry": 73200.0,
   "outcome": {
-   "status": "aperto",
+   "status": "stop",
    "filled_utc": "2026-11-10 15:00:00",
-   "r_now": 0.74
+   "exit_utc": "2026-11-12 14:00:00",
+   "r": -1.0
   }
  },
  {
