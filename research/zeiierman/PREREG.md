@@ -68,3 +68,56 @@ massimo vs ingresso).
 Classificazione meccanica dei perdenti, in quest'ordine: **ingresso tardivo** (nelle 5 barre prima dell'ingresso il prezzo si è
 già mosso a favore > 2 ATR); **rilascio falso** (perdita chiusa entro 10 barre); **zona lunga in trend forte** (durata > 30
 barre ed escursione avversa > 15%); **laterale** (il resto).
+
+---
+
+# Ciclo 2 — preregistrazione (13/11/2026, 02:33 UTC = 03:33 ora italiana, prima di qualsiasi risultato del ciclo 2)
+
+Si testano SOLO P1, P2, P3 di `CICLO2_PROPOSTE.md` e i vicini dichiarati qui. Indicatore con parametri di default; zona = sola
+Z-Trend (blu tz ≤ −70, rossa tz ≥ −30). Dati, costi, esecuzione (segnale alla chiusura, esecuzione all'apertura successiva),
+funding, stop 2,5 ATR(14), periodi (tot 2021-01-01→2026-11-11, IS 2021–23, OOS 2024→) e metriche uguali al ciclo 1. Solo 1D.
+
+## Regole
+- **P1a (long, filtro SMA 200 giorni)**: ingresso il giorno dopo il rilascio blu visivo (tz > −70 con tz[−1] ≤ −70) se alla
+  stessa chiusura close > SMA200 giornaliera (semplice, chiusure) e Core ≠ −1 (non rosso). Uscita alla prima: stop 2,5 ATR(14)
+  fisso dal prezzo d'ingresso (ATR della barra del segnale), oppure stato R3 short alla chiusura (tz < −50 e Core = −1).
+- **P1b (long, filtro regime W3)**: come P1a, ma al posto della SMA 200 il regime settimanale di W3 non ribassista: sull'ultima
+  candela settimanale W-SUN chiusa (≤ data del segnale) NON vale "close < SMA40w e SMA40w < SMA40w di 4 settimane prima e
+  EMA20w in calo" (definizione `dn` di radar/weekly.py).
+- **P2a (uscita totale al rilascio rosso)**: ingressi di P1a; alle uscite di P1a si aggiunge il rilascio rosso visivo (tz < −30
+  con tz[−1] ≥ −30) avvenuto dopo l'ingresso: esce il 100%. L'ingresso in rossa non provoca uscite.
+- **P2b (parziale, variante dell'utente)**: ingressi di P1a; al primo ingresso in rossa visiva (tz sale a ≥ −30) dopo l'ingresso
+  si vende il 50% della posizione; il resto esce al rilascio rosso, allo stop o allo stato R3 short (tutto ciò che resta).
+  Accettabile solo se batte P2a (finale e MAR) sia in IS sia in OOS (nota a priori: lezione 73).
+- **P3 (dentro W3, gestione del rischio)**: motore = copia di `radar/weekly.simulate` (W3 attuale: flusso a 3 giorni, cricchetto,
+  R_LONG 25%), con una sola aggiunta: con W3 long aperto, alla chiusura giornaliera in cui vale tz < −50 e Core = −1 la quantità
+  si dimezza all'apertura successiva (commissione spot + slippage sulla parte venduta); quando lo stato finisce, all'apertura
+  successiva si torna all'esposizione di W3 all'ingresso (expo × capitale corrente / prezzo, commissione sulla parte comprata).
+  Ingressi, uscite, stop e trailing di W3 invariati; short di W3 invariati. ZTP calcolato sulle stesse candele giornaliere usate
+  dal motore. Prima di P3 si verifica che la copia riproduca W3: 10k → 78.474, DD −21,1% dal 2021 (e 25.142, DD −37,3% nel
+  2018–20 con `load_long`, come research/perdita_2026).
+
+## Vicini dichiarati
+- P1a/P2a/P2b: SMA 150 e 250; parametri ZTP del ciclo 1 (fl 18/24, sl 50/60, ml 110/130; zn/sn non toccano queste regole: si
+  riportano ma non contano) → 6 vicini ZTP effettivi + 2 SMA = 8.
+- P1b: 6 vicini ZTP.
+- P3: soglia tz −45 / −55; frazione ridotta 25% / 75% (sensibilità); 6 vicini ZTP.
+
+## Soglie di accettazione (invariate dal ciclo 1)
+P1/P2 "regge" se valgono tutte: ≥ 8 trade dal 2021 e profitto in IS e OOS; MAR superiore al B&H in IS e OOS; PF ≥ 1,3 in IS e
+OOS; placebo (stessa procedura del ciclo 1, 5000 permutazioni) entro la soglia; senza i 3 trade migliori in profitto; vicini in
+profitto ≥ 80% (≥ 7 su 8 per P1a/P2, ≥ 5 su 6 per P1b). **Placebo corretto per i test multipli dei due cicli**: famiglie di regole
+testate = 6 (ciclo 1) + 5 (P1a, P1b, P2a, P2b, P3) = 11 → "significativo" se p ≤ 0,05/11 ≈ 0,0045; 0,0045 < p ≤ 0,05 = solo
+indizio (al massimo SU CARTA). Per informazione si riporta anche la soglia sulle 53 configurazioni totali (48 del ciclo 1 su 1D e
+4h + 5): 0,05/53 ≈ 0,0009.
+Esiti: **ACCETTATA** = tutte le soglie con placebo significativo e (per P1/P2) MAR dal 2021 sopra W3 oppure correlazione
+d'esposizione con W3 < 0,5 (informazione nuova); **SU CARTA** = tutte le soglie salvo il placebo (solo indizio) o salvo il
+confronto con W3; **RESPINTA** = manca anche una delle altre soglie.
+P1: si misura la correlazione (phi) dell'esposizione giornaliera (in posizione sì/no) con W3 long e la quota di giorni P1 in
+posizione con W3 long: > 0,5 o > 70% = "W3 più lento", non informazione nuova.
+
+**P3 accettata** solo se tutte: MAR (rend./|DD|) migliore di W3 dal 2021, nel 2021–23, nel 2024→ e nel 2018–20; DD non peggiore
+(dal 2021 e 2018–20); i 3 trade migliori di W3 (per P&L sul capitale, dal 2021) perdono in tutto non oltre il 10% del loro
+P&L e nessuno oltre il 10%; placebo: lo stato "ridotto" spostato in modo circolare di un offset casuale (≥ 60 giorni, 2000
+spostamenti) sulla serie giornaliera, p = (1 + #MAR placebo ≥ reale)/(N+1) ≤ 0,0045 (≤ 0,05 indizio); vicini (soglia ±5,
+6 ZTP) con MAR dal 2021 sopra W3 in ≥ 6 su 8. Si riporta l'elenco dei trade W3 modificati con il delta per trade.

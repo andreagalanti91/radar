@@ -5,7 +5,7 @@ Classe: lunga · Opus 5.5, effort alto
 - [x] 0. Codice Pine salvato (research/zeiierman/zeiierman_trend_pressure.pine) e screenshot dell'utente
 - [x] 1. Ciclo 1: porting esatto, controllo di fedeltà, PREREG, backtest R1–R4 dal 2021 (1D e 4h), long e short, IS/OOS, robustezza, placebo
 - [x] 2. Analisi degli errori e proposte (max 3)
-- [ ] 3. Ciclo 2 (03:30): correzioni + revisione critica
+- [x] 3. Ciclo 2 (03:30): correzioni + revisione critica
 - [ ] 4. Report alle 08:00 (research/zeiierman/REPORT.md), lezione in RESEARCH.md
 
 Richiesta aggiuntiva (12/11 23:10): opinione propria motivata; ciclo 2 orientato a RENDERE PROFITTEVOLE l'indicatore
@@ -19,3 +19,4 @@ Log:
 - 12/11 22:57 avvio ciclo 1 in background; promemoria programmati 03:30 (ciclo 2) e 07:40 (report).
 - 13/11 ~00:30 ciclo 1 finito: nessuna delle 24 configurazioni regge (migliore R1v long 21,1k vs B&H 25,6k e W3 78,5k); zona rossa = continuazione, zona blu non anticipa i minimi; proposte P1–P3 per il ciclo 2.
 - 13/11 03:31 ciclo 2 avviato (P1, P2, P3), poi revisione critica.
+- 13/11 ~04:00 ciclo 2 finito: P1, P2, P3 respinte (P1/P2 1–2 trade; P3 peggiora W3: MAR 25,7 vs 32,4). Avvio revisione critica.

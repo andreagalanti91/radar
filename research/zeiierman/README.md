@@ -1,4 +1,4 @@
-# Zeiierman Trend Pressure su BTC · ciclo 1 (12/11/2026) · NON REGGE
+# Zeiierman Trend Pressure su BTC · ciclo 1 (12/11/2026) NON REGGE · ciclo 2 (13/11/2026) RESPINTO
 
 Verdetto: nessuna delle 24 configurazioni giornaliere (6 regole × long/short × con/senza stop) supera le soglie preregistrate;
 la migliore (R1v long con stop) fa 21,1k contro buy & hold 25,6k e W3 78,5k. La zona blu non anticipa i minimi, la zona rossa
@@ -72,9 +72,45 @@ placebo p 0,041 (solo indizio), ma OOS MAR 0,67 contro B&H 1,40 e senza i 3 trad
 - R1v short (8 su 14): 5 laterali in trend rialzista, 3 rilasci falsi (short appena entrata la rossa, stop in 1–3 giorni).
 - 4h R2v long (46 su 80): 23 laterali, 15 ingressi tardivi (rilascio dopo un rimbalzo > 2 ATR), 8 rilasci falsi.
 
-## Lezione proposta per RESEARCH.md
-**Lezione 91**: Zeiierman Trend Pressure (porting fedele agli screenshot; la zona colorata segue la sola Z-Trend) non dà un vantaggio
-su BTC dal 2021: le 24 regole giornaliere (zona, rilascio, trend, continuazione; long/short; con/senza stop) non battono il buy & hold
-in entrambe le metà, nessuna passa il placebo, tutte dipendono dai 3 trade migliori. La zona blu dura mesi anche nei bear (−53% nel
-2022), la rossa è continuazione (+12,5% a 60 giorni): "compra in blu, vendi in rossa" vende i trend. L'esaurimento blu dell'autore
-non si verifica mai con i default. Conferma la lezione 70. Ciclo 2 solo con le proposte in research/zeiierman/CICLO2_PROPOSTE.md.
+## 6. Ciclo 2 (13/11/2026) · P1, P2, P3 tutte RESPINTE
+Regole preregistrate alle 02:33 UTC in `PREREG.md` (sezione "Ciclo 2"), codice `c2.py`, output `risultati_ciclo2.txt`, CSV
+`risultati_ciclo2.csv`, `vicini_ciclo2.csv`, `p3_ciclo2.csv`, `p3_trade_ciclo2.csv`, `trades/c2_*.csv`. Motore W3 verificato
+prima di P3: 10k → 78.474, DD −21,1% (2018–20: 25.142, DD −37,3%). Placebo corretto per 11 famiglie: p ≤ 0,0045.
+
+| Regola (dal 2021, 10k, 1x) | Trade | Finale | DD | MAR | Finale IS / OOS | MAR IS / OOS | Esito |
+|---|---|---|---|---|---|---|---|
+| Buy & hold | 1 | 25.590 | −76,6 | 2,03 | 14.619 / 17.504 | 0,60 / 1,42 | – |
+| W3 | 13 | 78.474 | −21,1 | 32,4 | 33.477 / 23.488 | 12,2 / 6,4 | riferimento |
+| Migliore ciclo 1 (R1v long stop) | 13 | 21.137 | −54,5 | 2,04 | 10.706 / 19.743 | 0,13 / 4,17 | – |
+| P1a rilascio blu + SMA200 + Core non rosso | 1 | 9.000 | −14,5 | − | 10.000 / 9.000 | − / − | RESPINTA |
+| P1b rilascio blu + regime W3 + Core non rosso | 2 | 8.825 | −14,5 | − | 9.806 / 9.000 | − / − | RESPINTA |
+| P2a = P1a + uscita al rilascio rosso | 1 | 10.054 | −5,4 | 0,10 | 10.000 / 10.054 | − / 0,10 | RESPINTA |
+| P2b = P1a + metà in rossa, metà al rilascio | 1 | 10.282 | −4,2 | 0,68 | 10.000 / 10.282 | − / 0,68 | RESPINTA |
+| P3 = W3 al 50% con tz < −50 e Core rosso | 13 | 72.241 | −24,2 | 25,7 | 32.432 / 22.319 | 11,6 / 5,1 | RESPINTA |
+
+- **P1/P2 sono vuote per costruzione**: dei 17 rilasci blu dal 2021 il Core è rosso in 13 e la chiusura è sotto la SMA200 in 15
+  (la zona blu è il prezzo nella parte bassa del range a 120 giorni: la conferma di trend la contraddice). Restano 1–2 trade
+  (16/07/2024), sotto la soglia di 8; placebo e "senza top 3" non hanno senso con un trade. Vicini in profitto: P1a 1/8, P1b 0/6,
+  P2a 4/8, P2b 7/8 (tutti fra 8,6k e 11,4k). Esposizione: 1% dei giorni, phi con W3 −0,08: non è "W3 più lento", è quasi nulla.
+- **P3 peggiora W3** in ogni periodo dal 2021 (MAR 25,7 contro 32,4; IS 11,6 contro 12,2; OOS 5,1 contro 6,4) e alza il DD
+  (−24,2% contro −21,1%); 2018–20 neutro (25.150 contro 25.142, MAR 4,07 contro 4,06). Vicini sopra W3: 0 su 8 (il migliore,
+  tz < −55, 31,6). Placebo (2000 spostamenti circolari): p 0,28, mediana del caso 22,2. Trade toccati: 3 su 13 dal 2021, tutti
+  in peggio (08/2021 4,3 → 2,1; 01/2023 13,3 → 12,1; 04/2025 11,3 → 5,8 con 8 cambi d'esposizione: dimezza vicino ai minimi
+  di ago–set 2025 e ricompra più in alto); 1 nel 2018–20 (+0,04 punti). I 3 trade migliori di W3 non vengono toccati (0%): lo
+  stato "trend negativo" non c'è mai nei grandi trend, quindi non protegge né taglia le code, aggiunge solo rumore nei laterali.
+
+**Opinione.** La Z-Trend è un %R a 120 giorni smussato: dice dove sta il prezzo nel suo range, cioè la stessa informazione del
+trend che W3 ha già (SMA40w/EMA21) e con ritardo. Le zone non anticipano inversioni, come regola a sé non batte il buy & hold e
+dentro W3 non aggiunge nulla. Uso sensato: solo contesto visivo (quanto è "esteso" il prezzo nel range), non regola né filtro.
+Studio chiuso; un ciclo 3 avrebbe senso solo con un'ipotesi nuova, non con altre combinazioni delle stesse soglie.
+
+## Lezione proposta per RESEARCH.md (cicli 1 e 2)
+**Lezione 91**: Zeiierman Trend Pressure (porting fedele; la zona colorata segue la sola Z-Trend, un %R a 120 giorni smussato)
+non dà vantaggio su BTC dal 2021. Ciclo 1: 24 regole giornaliere (zona, rilascio, trend, continuazione; long/short; con/senza
+stop) sotto il buy & hold in almeno una metà, nessun placebo, tutte dipendenti dai 3 trade migliori; la zona blu dura mesi anche
+nei bear (−53% nel 2022), la rossa è continuazione (+12,5% a 60 giorni). Ciclo 2 (preregistrato): il rilascio blu con filtro di
+trend (SMA200 o regime W3) e Core non rosso dà 1–2 trade in 6 anni (il Core è rosso in 13 dei 17 rilasci: zona blu e conferma di
+trend si escludono); uscire al rilascio rosso, intero o a metà, non cambia nulla; dentro W3 ridurre al 50% con tz < −50 e Core
+rosso abbassa il MAR (25,7 contro 32,4) e alza il DD (−24,2% contro −21,1%), vicini 0/8, placebo p 0,28, non tocca i grandi
+trend. Conferma le lezioni 70 e 86: è informazione di trend già contenuta in W3. Solo contesto visivo. File: research/zeiierman/.
+
