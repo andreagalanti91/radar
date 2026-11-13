@@ -12,3 +12,4 @@ Classe: lunga · Opus 5.5, effort alto
 Decisioni: D1 tutto il tool; D2 correzioni dirette se non toccano W3; D3 wallet/Chento/liquidazioni inclusi, priorità bassa.
 Log:
 - 13/11 avviati A1, A2, A5; A3 e A4 dopo la mappa v2.
+- 13/11 A1 finito: W3 riprodotta in modo indipendente trade per trade (78.473,92, DD −21,13%); nessun CRITICO; 2 MEDI (sensibilità del flusso ±1 giorno; dati provvisori OKX riscritti dall'archivio Binance), 5 BASSI.
