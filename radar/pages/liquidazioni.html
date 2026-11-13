@@ -306,7 +306,7 @@
     const el = H("lqCs"), long = C.side !== "short";
     if (!C.active) {
       el.className = "card lqCs";
-      el.innerHTML = `<h2>Nessuna cascata nelle ultime 24 ore</h2>${C.note ? `<p>${esc(C.note)}</p>` : ""}${nextHtml}${warn}`;
+      el.innerHTML = `<h2>Nessuna cascata nelle ultime 24 ore</h2>${nextHtml}${warn}`;
       return;
     }
     el.className = "card lqCs " + (long ? "l" : "s");
@@ -328,7 +328,7 @@
         <p>${long ? "Discesa" : "Salita"} da <b>${px(C.start_px)}</b> a <b>${px(C.end_px)}</b>, ${long ? "minimo" : "massimo"} <b>${px(C.extreme_px)}</b>. Si è fermata ${stop}.</p></div>
       <div class="lqCsMain"><div><span class="lqCsH">Fasce dense attraversate · $ stimati</span>${bands}</div>
         ${facts ? `<div><span class="lqCsH">Posizioni chiuse</span><div class="lqCsF">${facts}</div></div>` : ""}</div>
-      ${C.note ? `<p style="font-size:.8rem">${esc(C.note)}</p>` : ""}${nextHtml}${warn}`;
+      ${nextHtml}${warn}`;
   }
 
   // ---------------- verdetto + tile

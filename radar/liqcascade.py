@@ -24,6 +24,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
+import requests
 
 MIN_MOVE = 0.03
 MAX_H = 8
@@ -291,7 +292,21 @@ def _candles(data_dir: Path) -> pd.DataFrame | None:
     if not p.exists():
         return None
     c = pd.read_csv(p, parse_dates=["t"]).set_index("t")
-    return c.iloc[-(WINDOW_H + MAX_H + 48):]
+    c = c.iloc[-(WINDOW_H + MAX_H + 48):]
+    # spot_1h.csv contiene solo giorni chiusi (lo usa il backtest): le ore di oggi si leggono qui, solo ore chiuse
+    try:
+        r = requests.get("https://data-api.binance.vision/api/v3/klines",
+                         params={"symbol": "BTCUSDT", "interval": "1h", "limit": WINDOW_H + MAX_H + 2}, timeout=15)
+        rows = r.json() if r.ok else []
+        if rows:
+            h = pd.DataFrame([x[:5] for x in rows], columns=["t", "open", "high", "low", "close"])
+            h["t"] = pd.to_datetime(pd.to_numeric(h["t"]), unit="ms")
+            h = h.set_index("t").astype(float)
+            h = h[h.index + pd.Timedelta(hours=1) <= pd.Timestamp.utcnow().tz_localize(None)]   # solo ore chiuse
+            c = pd.concat([c[c.index < h.index[0]], h]) if len(h) else c
+    except Exception as e:  # noqa: BLE001
+        print(f"[cascata] ore di oggi non lette ({type(e).__name__}): si usa solo data/spot_1h.csv")
+    return c
 
 
 def update(report: dict, data_dir, now: pd.Timestamp | None = None) -> dict | None:
