@@ -170,6 +170,15 @@ _MONTHS = {m: i for i, m in enumerate(["January", "February", "March", "April", 
                                        "October", "November", "December"], 1)}
 
 
+def fomc_time_rome(d) -> str:
+    """Ora italiana della decisione FOMC (14:00 a New York) per la data d: 20:00 di norma, 19:00 nelle settimane in cui
+    l'ora legale è sfasata tra USA ed Europa (metà marzo, fine ottobre/inizio novembre)."""
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+    t = dt.datetime(d.year, d.month, d.day, 14, 0, tzinfo=ZoneInfo("America/New_York"))
+    return t.astimezone(ZoneInfo("Europe/Rome")).strftime("%H:%M")
+
+
 def fetch_central_banks(n: int = 6) -> list[dict]:
     """Prossime riunioni di politica monetaria di Fed (FOMC) ed BCE, dai calendari ufficiali. Data = giorno della decisione."""
     import datetime as dt
@@ -186,7 +195,7 @@ def fetch_central_banks(n: int = 6) -> list[dict]:
                 d = dt.date(int(y.group(1)), _MONTHS[mon], int(d_end[-1]))
                 if d >= today:
                     out.append({"bank": "Fed", "title": "FOMC · decisione sui tassi" + (" e proiezioni" if "*" in days else ""),
-                                "date": d.isoformat(), "time": "20:00", "impact": "alto",
+                                "date": d.isoformat(), "time": fomc_time_rome(d), "impact": "alto",
                                 "note": "Tassi USA e conferenza stampa di Powell: l'evento macro che muove di più BTC."})
     except Exception as e:  # noqa: BLE001
         print(f"[news] FOMC: {type(e).__name__}")

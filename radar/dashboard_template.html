@@ -304,6 +304,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 .wkBadge.long i{background:var(--green)} .wkBadge.short i{background:var(--red)} .wkBadge.sig i{background:var(--tint);box-shadow:0 0 0 4px rgba(79,107,255,.18)}
 .wkBig{font:650 2.4rem/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .wkBig small{display:block;font:500 .78rem var(--font);letter-spacing:0;color:var(--label2);margin-top:6px}
+.wkBig small.wkPxLab{margin-top:4px;font-weight:600;color:var(--label3)} .wkBig small.wkPxLab+small{margin-top:10px}
 .wkFacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .wkFacts div{display:grid;gap:2px;min-width:0} .wkFacts span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
 .wkFacts b{font:600 1rem var(--font);font-variant-numeric:tabular-nums}
@@ -523,7 +524,7 @@ body.noscroll{overflow:hidden}
   </header>
 
   <div class="hero">
-    <span class="cap"><span>Bitcoin · BTC/USDT</span><span class="mbarR"><span id="stateD" class="status"></span><button type="button" class="reload" title="Aggiorna dati e pagina" aria-label="Aggiorna dati e pagina" onclick="hardReload(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></span>
+    <span class="cap"><span>Bitcoin · <span id="pairTag">BTC/USDT</span></span><span class="mbarR"><span id="stateD" class="status"></span><button type="button" class="reload" title="Aggiorna dati e pagina" aria-label="Aggiorna dati e pagina" onclick="hardReload(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></span>
     <h1 id="price"></h1>
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
@@ -864,10 +865,20 @@ window.sheetNodes = (title, nodes) => {
     const mt = n.style.marginTop; n.style.marginTop = "0"; n.classList.add("inSheet"); wrap.appendChild(n); return [n, ph, mt]; });
   openSheet(title, wrap, () => back.forEach(([n, ph, mt]) => { n.classList.remove("inSheet"); n.style.marginTop = mt; ph.replaceWith(n); }));
 };
-const usd = x => x == null ? "–" : "$" + Math.round(x).toLocaleString("it-IT");
-const pct = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
+// numeri all'italiana: punto per le migliaia (anche sotto 10.000, che toLocaleString lascia senza), virgola decimale, meno tipografico
+const nfIT = window.nfIT = (x, d = 0) => { if (x == null || !isFinite(x)) return "–"; const [i, f] = Math.abs(x).toFixed(d).split(".");
+  return (x < 0 && /[1-9]/.test(i + (f || "")) ? "−" : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (f ? "," + f : ""); };
+const nfS = x => x == null || x === "" || !isFinite(+x) ? "–" : nfIT(+x, (String(x).split(".")[1] || "").length);   // decimali come arrivano dal server
+const usd = x => x == null ? "–" : (Math.round(x) < 0 ? "−" : "") + "$" + nfIT(Math.abs(Math.round(x)));
+const pct = (x, d = 1) => { if (x == null || !isFinite(x)) return "–"; const s = nfIT(x, d); return (x > 0 && /[1-9]/.test(s) ? "+" : "") + s + "%"; };
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const sgn = x => (x > 0 ? "+" : "") + x.toFixed(2);
+const sgn = x => { const s = nfIT(x, 2); return (x > 0 && /[1-9]/.test(s) ? "+" : "") + s; };
+const fmtD = d => new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "2-digit" });
+const fmtDL = d => new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" });
+// preposizione davanti a una data: "del 12 nov", "dell'8 nov" (1, 8, 11, 18 si leggono con la vocale iniziale)
+const artD = window.artD = (p, s) => { s = String(s); return /^(1|8|11|18)(?!\d)/.test(s) && /(^|\s)([DdNn]el|[Dd]al|[Aa]l)$/.test(p) ? p + "l'" + s : p + " " + s; };
+// dati del calendario macro ("0.3%", "-0.1%") nel formato italiano
+const fcIT = t => String(t).replace(/(\d)\.(\d)/g, "$1,$2").replace(/(^|[^\w])-(?=\d)/g, "$1−");
 // nel font a punti la punteggiatura si legge male: la rendo nel font di testo
 const dots = t => String(t).replace(/[.,]/g, m => `<span class="dp">${m}</span>`);
 
@@ -892,7 +903,7 @@ const REF = window.REF = (() => {
   const s = [so.okx, so.binance].find(x => x && x.ok && (x.as_of || x.until));
   const tL = s ? (s.as_of ? Date.parse(s.as_of.replace(" ", "T") + "Z") : Date.parse(s.until.replace(" ", "T") + "Z") + 36e5) : 0;
   if (LQ && LQ.price > 0 && tL > tC) return { px: LQ.price, live: false, t: tL, lab: `chiusura 1h delle ${hhmm(tL)}` };
-  return { px: R.price, live: false, t: tC, lab: `chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}` };
+  return { px: R.price, live: false, t: tC, lab: "chiusura " + artD("del", new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "short" })) };
 })();
 // S/R riclassificati sul prezzo di riferimento: sopra = resistenza, sotto = supporto; "rotto" se il prezzo l'ha attraversato
 // dall'ultimo aggiornamento del server (es. un supporto a 74.258 con il prezzo a 73.000 diventa resistenza, supporto rotto)
@@ -914,7 +925,7 @@ function refNotify() {   // al massimo ogni 5 s
 }
 $("price").innerHTML = dots(usd(REF.px));
 $("liveTag").textContent = REF.lab;
-$("sub").textContent = `segnali sulla chiusura del ${new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" })}`;
+$("sub").textContent = "segnali sulla chiusura " + artD("del", new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "long" }));
 // strategia scelta con lo switch (salvata solo in questo browser): "v2" giornaliera, "w2" settimanale
 let detChart, detLine, drawDetEq = () => {};
 let STRAT = R.weekly ? "w2" : "v2";   // solo W2 + MACD dal 05/11/2026 (decisione dell'utente); v2 resta il motore dei dati di base
@@ -938,13 +949,13 @@ $("score").innerHTML = dots(sgn(R.score));
 $("score").style.color = R.score >= R.threshold ? css("--green") : R.score <= -R.threshold ? css("--red") : "";
 $("scoreNote").textContent = R.score >= R.threshold ? "sopra la soglia long"
   : R.score <= -R.threshold ? (R.regime === "ribassista" ? "sotto la soglia short" : "debole, ma lo short si attiva solo in regime ribassista")
-  : `mancano ${(R.threshold - R.score).toFixed(2)} alla soglia long`;
+  : `mancano ${nfIT(R.threshold - R.score, 2)} alla soglia long`;
 const m = $("meter"), clamp = v => Math.max(-4, Math.min(4, v));
 [-R.threshold, R.threshold].forEach(t => { const d = document.createElement("span"); d.className = "tick"; d.style.left = ((t + 4) / 8 * 100) + "%"; m.appendChild(d); });
 const nd = document.createElement("span"); nd.className = "needle"; nd.style.left = ((clamp(R.score) + 4) / 8 * 100) + "%"; m.appendChild(nd);
 $("kv").innerHTML = [
   ["CVD perp 14g", sgn(c.perp_flow_z) + "σ", "acquisti aggressivi futures"],
-  ["Long/short retail", sgn(c.retail_ls_z) + "σ", "ratio " + c.global_ls.toFixed(2)],
+  ["Long/short retail", sgn(c.retail_ls_z) + "σ", "ratio " + nfIT(c.global_ls, 2)],
   ["CVD spot 14g", pct(c.spot_flow14 * 100, 2), "delta / volume"],
   ["Funding 7g", pct(c.funding7_annual_pct, 1), "annualizzato"],
   ["Open interest 7g", pct(c.oi_chg7_pct, 1), "variazione"],
@@ -954,7 +965,7 @@ $("kv").innerHTML = [
 // ---- piano operativo
 const rows = r => `<div class="list">${r.map(([k, v, strong]) => `<div class="row"><span class="k">${k}</span><span class="v${strong ? " strong" : ""}">${v}</span></div>`).join("")}</div>`;
 const fmtT = d => new Date(d.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
-const VP = V.plan, vhead = V.status !== "nessuno" ? `<div class="list"><div class="row ic">${icon(V.setup)}<span class="k">${V.setup_label || V.setup}<small>setup ${V.setup} · segnale del ${V.signal_date}</small></span></div></div>` +
+const VP = V.plan, vhead = V.status !== "nessuno" ? `<div class="list"><div class="row ic">${icon(V.setup)}<span class="k">${V.setup_label || V.setup}<small>setup ${V.setup} · segnale ${artD("del", fmtD(V.signal_date))}</small></span></div></div>` +
   `<div class="why"><b>Perché è scattato</b>${V.why || ""}</div>` : "";
 const above = V.side === "long" ? "sopra" : "sotto";
 if (V.status === "conferma") {
@@ -963,14 +974,14 @@ if (V.status === "conferma") {
     `<div class="sh" style="margin-top:6px">Piano indicativo <small>se conferma alla soglia</small></div>` +
     rows([["Ingresso 40%<small>a mercato alla conferma</small>", usd(VP.entry), true], ["Limit 60%<small>−0,5 ATR, valido 7 giorni</small>", usd(VP.limit)],
       ["Stop<small>1 ATR dall'ingresso</small>", usd(VP.stop), true], ["Take profit<small>+1R dal medio a DCA completa</small>", usd(VP.tp_full), true],
-      ["Rischio sul capitale", `${VP.risk_lo.toFixed(1)}–${VP.risk_hi.toFixed(1)}%`], ["Leva", `${VP.lev_lo.toFixed(1)}–${VP.lev_hi.toFixed(1)}x`]]) +
+      ["Rischio sul capitale", `${nfIT(VP.risk_lo, 1)}–${nfIT(VP.risk_hi, 1)}%`], ["Leva", `${nfIT(VP.lev_lo, 1)}–${nfIT(VP.lev_hi, 1)}x`]]) +
     `<p class="foot">Rischio e leva si fissano alla conferma, dal delta taker della barra 4h. Il piano completo in dollari arriva su Telegram.</p>`;
 } else if (V.status === "ingresso" || V.status === "aperto") {
   const tp = V.status === "aperto" ? V.tp : VP.tp_first, filled = V.status === "aperto" && V.filled[1];
-  $("plan").innerHTML = `<div class="sh">${V.status === "aperto" ? "Trade " + V.side + " aperto" : "Ingresso " + V.side + " confermato"} <small>dal ${fmtT(V.entry_time)}</small></div>` + vhead +
-    rows([["Ingresso 40%", usd(VP.entry), true], [`Limit 60%<small>${filled ? "eseguito" : "valido fino al " + fmtT(V.limit_expiry)}</small>`, usd(VP.limit)],
+  $("plan").innerHTML = `<div class="sh">${V.status === "aperto" ? "Trade " + V.side + " aperto" : "Ingresso " + V.side + " confermato"} <small>${artD("dal", fmtT(V.entry_time))}</small></div>` + vhead +
+    rows([["Ingresso 40%", usd(VP.entry), true], [`Limit 60%<small>${filled ? "eseguito" : artD("valido fino al", fmtT(V.limit_expiry))}</small>`, usd(VP.limit)],
       ["Stop", `${usd(VP.stop)} · −${VP.stop_pct}%`, true], [`Take profit<small>+1R dal medio${filled ? "" : "; " + usd(VP.tp_full) + " se si riempie il limit"}</small>`, usd(tp), true],
-      ["Uscita a tempo", fmtT(V.time_exit)], ["Rischio · leva", `${VP.risk.toFixed(2)}% · ${VP.lev.toFixed(2)}x isolato`, true],
+      ["Uscita a tempo", fmtT(V.time_exit)], ["Rischio · leva", `${nfIT(VP.risk, 2)}% · ${nfIT(VP.lev, 2)}x isolato`, true],
       ...(V.status === "aperto" ? [["Andamento", pct(V.pnl_pct_invested, 2) + " sul prezzo"]] : [])]) +
     `<div id="calc"></div>` +
     `<p class="foot">Delta taker della barra di conferma ${sgn(V.dt || 0)} (${V.perp ? "spot + perp" : "solo spot"})${V.side === "long" && V.below_sma40w ? " · long sotto la SMA 40 settimane: size × 0,6" : ""}. Lo stato si aggiorna ogni ora sulle candele 4h chiuse.</p>`;
@@ -989,7 +1000,7 @@ function renderCalc() {
   el.innerHTML = `<div class="sh" style="margin-top:6px">Sul tuo capitale <small>salvato solo su questo dispositivo</small></div>
     <div class="list">
       <label class="row"><span class="k">Capitale</span><input id="cCap" type="number" inputmode="decimal" min="100" step="1000" value="${cap}"></label>
-      ${[[VP.entry, VP.weights[0], "Ingresso"], [VP.limit, VP.weights[1], "Limit"]].map(([px, w, k]) => `<div class="row"><span class="k">${k} ${Math.round(w * 100)}% · ${usd(px)}<small>margine ${usd(nz * w / VP.lev)}</small></span><span class="v strong">${usd(nz * w)}<br><small>${(nz * w / px).toFixed(4)} BTC</small></span></div>`).join("")}
+      ${[[VP.entry, VP.weights[0], "Ingresso"], [VP.limit, VP.weights[1], "Limit"]].map(([px, w, k]) => `<div class="row"><span class="k">${k} ${Math.round(w * 100)}% · ${usd(px)}<small>margine ${usd(nz * w / VP.lev)}</small></span><span class="v strong">${usd(nz * w)}<br><small>${nfIT(nz * w / px, 4)} BTC</small></span></div>`).join("")}
       <div class="row"><span class="k">Perdita se scatta lo stop<small>con il limit eseguito</small></span><span class="v strong neg">−${usd(nz * VP.stop_pct / 100)}</span></div>
     </div>`;
   $("cCap").addEventListener("change", e => { CALC.cap = Math.max(100, +e.target.value || P.capital); saveCalc(); });
@@ -1012,10 +1023,10 @@ if (Z) {
   const st = Z.stats, d = v => pct((v / REF.px - 1) * 100, 1);
   $("zoneH").textContent = `prossimi ${Z.horizon_days} giorni`;
   $("zBuy").textContent = `${usd(Z.buy[0])} – ${usd(Z.buy[1])}`;
-  $("zBuyN").textContent = `${d(Z.buy[1])} / ${d(Z.buy[0])} · toccata nel ${st["buy_zone_touch_%"]}% dei casi`;
+  $("zBuyN").textContent = `${d(Z.buy[1])} / ${d(Z.buy[0])} · toccata nel ${nfS(st["buy_zone_touch_%"])}% dei casi`;
   $("zSell").textContent = `${usd(Z.sell[0])} – ${usd(Z.sell[1])}`;
-  $("zSellN").textContent = `${d(Z.sell[0])} / ${d(Z.sell[1])} · toccata nel ${st["sell_zone_touch_%"]}% dei casi`;
-  $("zNote").textContent = `Dove il prezzo tende ad arrivare nei prossimi ${Z.horizon_days} giorni, stimato sui ritracciamenti storici in ATR nello stesso regime (${({up: "trend rialzista", down: "trend ribassista"})[Z.regime_bucket.split("_")[0]]}, ${({hi: "flusso forte", mid: "flusso neutro", lo: "flusso debole"})[Z.regime_bucket.split("_")[1]]}). Comprare al centro della zona ha dato in media un ingresso ${st["zone_entry_advantage_%"]}% migliore del prezzo di chiusura; nel ${st["below_zone_%"]}% dei casi il prezzo è sceso sotto la zona, quindi lo stop resta necessario.`;
+  $("zSellN").textContent = `${d(Z.sell[0])} / ${d(Z.sell[1])} · toccata nel ${nfS(st["sell_zone_touch_%"])}% dei casi`;
+  $("zNote").textContent = `Dove il prezzo tende ad arrivare nei prossimi ${Z.horizon_days} giorni, stimato sui ritracciamenti storici in ATR nello stesso regime (${({up: "trend rialzista", down: "trend ribassista"})[Z.regime_bucket.split("_")[0]]}, ${({hi: "flusso forte", mid: "flusso neutro", lo: "flusso debole"})[Z.regime_bucket.split("_")[1]]}). Comprare al centro della zona ha dato in media un ingresso ${nfS(st["zone_entry_advantage_%"])}% migliore del prezzo di chiusura; nel ${nfS(st["below_zone_%"])}% dei casi il prezzo è sceso sotto la zona, quindi lo stop resta necessario.`;
 }
 
 // ---- setup
@@ -1024,13 +1035,13 @@ $("ckSum").textContent = on ? on + " attivi" : "nessuno attivo";
 $("checks").innerHTML = R.checklist.map(x => `<div class="row ic">${icon(x.setup, !x.active)}<span class="k">${x.label}<small>${x.detail}</small></span><span class="chip ${x.side}${x.active ? " on" : ""}">${x.active ? "attivo" : x.side}</span></div>`).join("");
 const S = R.stats, S_RISK = { min_: S.risk["min_%"], max_: S.risk["max_%"], avg_lev: S.periods.Totale.avg_lev };
 $("setupList").innerHTML = R.checklist.map(x => { const b = S.by_setup[x.setup] || { trades: 0, win_rate: 0 };
-  return `<div class="row ic">${icon(x.setup)}<span class="k">${x.label}<small>${x.setup} · ${x.side} · ${b.trades} trade, win ${b.win_rate}%</small></span></div>`; }).join("");
+  return `<div class="row ic">${icon(x.setup)}<span class="k">${x.label}<small>${x.setup} · ${x.side} · ${b.trades} trade, win ${nfS(b.win_rate)}%</small></span></div>`; }).join("");
 $("ruleList").innerHTML = [
-  `Segnale: uno dei 6 setup alla chiusura giornaliera UTC. Conferma: una candela 4h chiude oltre il massimo (short: sotto il minimo) delle 2 candele 4h precedenti, entro ${P.window_h} ore; altrimenti il segnale scade.`,
-  `Ingresso a 2 livelli: ${Math.round(P.weights[0] * 100)}% a mercato alla conferma, ${Math.round(P.weights[1] * 100)}% limit a −${P.step_atr} ATR (valido ${P.limit_days} giorni).`,
-  `Stop a ${P.stop_atr} ATR dall'ingresso. Take profit unico a +${P.tp_r}R dal prezzo medio (R = distanza tra medio e stop). Uscita a tempo dopo ${P.hold_days} giorni.`,
-  `Size dal rischio: si rischia il ${(P.risk * 100).toFixed(2)}% del capitale × (0,5 + 1,5 × delta taker della barra di conferma, da 0 a 0,15) → da ${S_RISK.min_}% a ${S_RISK.max_}%; × 0,6 per i long con il prezzo settimanale sotto la media a 40 settimane.`,
-  `Leva = rischio / distanza dello stop, al massimo ${P.cap}x, margine isolato. Media storica ${S_RISK.avg_lev}x.`,
+  `Segnale: uno dei 6 setup alla chiusura giornaliera UTC. Conferma: una candela 4h chiude oltre il massimo (short: sotto il minimo) delle 2 candele 4h precedenti, entro ${nfS(P.window_h)} ore; altrimenti il segnale scade.`,
+  `Ingresso a 2 livelli: ${Math.round(P.weights[0] * 100)}% a mercato alla conferma, ${Math.round(P.weights[1] * 100)}% limit a −${nfS(P.step_atr)} ATR (valido ${P.limit_days} giorni).`,
+  `Stop a ${nfS(P.stop_atr)} ATR dall'ingresso. Take profit unico a +${nfS(P.tp_r)}R dal prezzo medio (R = distanza tra medio e stop). Uscita a tempo dopo ${P.hold_days} giorni.`,
+  `Size dal rischio: si rischia il ${nfIT(P.risk * 100, 2)}% del capitale × (0,5 + 1,5 × delta taker della barra di conferma, da 0 a 0,15) → da ${nfS(S_RISK.min_)}% a ${nfS(S_RISK.max_)}%; × 0,6 per i long con il prezzo settimanale sotto la media a 40 settimane.`,
+  `Leva = rischio / distanza dello stop, al massimo ${nfS(P.cap)}x, margine isolato. Media storica ${nfS(S_RISK.avg_lev)}x.`,
 ].map(t => `<li>${t}</li>`).join("");
 
 // ---- segmented control
@@ -1048,20 +1059,19 @@ function seg(id, onChange) {
 // ---- statistiche
 const cols = Object.keys(S.periods);
 $("stats").innerHTML = `<tr><th></th>${cols.map(k => `<th>${k}</th>`).join("")}</tr>` +
-  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v == null ? "–" : v + "%"], ["Win rate > +1%", "win_rate_1pct", v => v == null ? "–" : v + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : v.toFixed(2)],
+  [["Trade", "trades", v => v], ["Win rate", "win_rate", v => v == null ? "–" : nfS(v) + "%"], ["Win rate > +1%", "win_rate_1pct", v => v == null ? "–" : nfS(v) + "%"], ["Profit factor", "profit_factor", v => v == null ? "∞" : nfIT(v, 2)],
    ["Media vincite", "avg_win_%", v => pct(v, 2)], ["Media perdite", "avg_loss_%", v => pct(v, 2)], ["Aspettativa", "expectancy_%", v => pct(v, 2)],
-   ["Rendimento", "total_return_%", v => pct(v, 1)], ["Max drawdown giorn.", "max_dd_%", v => pct(v, 1)], ["Leva media", "avg_lev", v => v + "x"], ["Durata media", "avg_days", v => v + " gg"]]
+   ["Rendimento", "total_return_%", v => pct(v, 1)], ["Max drawdown giorn.", "max_dd_%", v => pct(v, 1)], ["Leva media", "avg_lev", v => nfS(v) + "x"], ["Durata media", "avg_days", v => nfS(v) + " gg"]]
   .map(([n, k, f]) => `<tr><td>${n}</td>${cols.map(p => { const v = S.periods[p][k]; return `<td>${v === undefined ? "–" : f(v)}</td>`; }).join("")}</tr>`).join("") +
   `<tr><th>Per anno</th>${cols.map(() => "<th></th>").join("")}</tr>` +
-  Object.entries(S.years).map(([y, v]) => `<tr><td>${y}</td><td colspan="${cols.length}">${v.trades} trade · WR ${v.win_rate == null ? "–" : v.win_rate + "%"} · ${pct(v["total_return_%"], 1)} · DD ${pct(v["max_dd_%"], 1)}</td></tr>`).join("");
+  Object.entries(S.years).map(([y, v]) => `<tr><td>${y}</td><td colspan="${cols.length}">${v.trades} trade · WR ${v.win_rate == null ? "–" : nfS(v.win_rate) + "%"} · ${pct(v["total_return_%"], 1)} · DD ${pct(v["max_dd_%"], 1)}</td></tr>`).join("");
 const LV = S.leverage, LK = Object.keys(LV);
 $("lev").innerHTML = `<tr><th></th>${LK.map(l => `<th>${l}x</th>`).join("")}</tr>` +
   [["10.000 $ diventano", "final_10k", v => usd(v)], ["Rendimento", "total_return_%", v => pct(v, 0)], ["Max drawdown (per trade)", "max_dd_%", v => pct(v, 1)], ["Peggior trade", "worst_%", v => pct(v, 1)], ["Aspettativa", "expectancy_%", v => pct(v, 2)]]
   .map(([n, k, f]) => `<tr><td>${n}</td>${LK.map(l => `<td>${f(LV[l][k])}</td>`).join("")}</tr>`).join("");
-$("bySetup").innerHTML = Object.entries(S.by_setup).map(([k, v]) => `<div class="row ic">${icon(k)}<span class="k">${k}<small>${v.side} · ${v.trades} trade</small></span><span class="v strong">${v.win_rate}% · ${pct(v["expectancy_%"], 2)}</span></div>`).join("");
+$("bySetup").innerHTML = Object.entries(S.by_setup).map(([k, v]) => `<div class="row ic">${icon(k)}<span class="k">${k}<small>${v.side} · ${v.trades} trade</small></span><span class="v strong">${nfS(v.win_rate)}% · ${pct(v["expectancy_%"], 2)}</span></div>`).join("");
 // timeline condivisa: storico e trade live
 const EXIT_LABEL = { tp: "Take profit", tp1: "Take profit 1", tp2: "Take profit 2", stop: "Stop loss", stop_be: "Stop a pareggio", trail: "Trailing stop", time: "Uscita a tempo" };
-const fmtD = d => new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "2-digit" });
 function evClass(e) {
   if (e.type === "signal") return "signal";
   if (e.type === "entry") return "entry";
@@ -1095,18 +1105,18 @@ function renderTrades() {
   $("trades").innerHTML = (trMk === "live" ? jrnHtml() : "") + (list.map((t, n) => {
     const pos = t.pnl_pct_capital > 0, last = t.events[t.events.length - 1];
     return `<details class="trade" data-i="${R.trades[trMk].indexOf(t)}">
-      <summary>${icon(t.setup)}<span class="t1"><b>${t.side === "long" ? "Long" : "Short"} · ${t.setup}</b><small>${fmtD(t.signal_date)} → ${t.exit_date ? fmtD(t.exit_date) : "oggi"} · ${t.days} gg · DCA ${t.tranches}/2 · leva ${t.N}x</small></span>
+      <summary>${icon(t.setup)}<span class="t1"><b>${t.side === "long" ? "Long" : "Short"} · ${t.setup}</b><small>${fmtD(t.signal_date)} → ${t.exit_date ? fmtD(t.exit_date) : "oggi"} · ${t.days} gg · DCA ${t.tranches}/2 · leva ${nfS(t.N)}x</small></span>
         <span class="res"><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b><small>${exitTag(t)}</small></span>
         <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></summary>
       <div class="body">
         <div class="why"><b>Perché è scattato</b>${t.why || ""}</div>
         <div class="tchart" id="tc-${trMk}-${n}"></div>
         ${timeline(t.events, t.side)}
-        <div class="kvs"><div><span>Prezzo medio</span><b>${usd(t.avg_entry)}</b></div><div><span>Rischio · leva</span><b>${(t.risk * 100).toFixed(2)}% · ${t.N}x</b></div>
+        <div class="kvs"><div><span>Prezzo medio</span><b>${usd(t.avg_entry)}</b></div><div><span>Rischio · leva</span><b>${nfIT(t.risk * 100, 2)}% · ${nfS(t.N)}x</b></div>
           <div><span>PnL sul prezzo</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_invested, 2)}</b></div><div><span>PnL sul capitale</span><b class="${pos ? "pos" : "neg"}">${pct(t.pnl_pct_capital, 2)}</b></div></div>
         <p class="foot" style="margin:0">Commissioni, funding e slippage inclusi. Stop ${usd(t.plan.stop)}, TP ${usd(t.tp)}, ATR ${usd(t.plan.atr)} · delta taker ${sgn(t.dt || 0)} (${t.perp ? "spot + perp" : "solo spot"}).</p>
       </div></details>`;
-  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali v2 dal ${fmtD(R.live_start)}: ancora nessun trade. Qui compariranno i trade reali con lo stesso dettaglio dello storico, per confrontarli con quanto promesso.` : "Nessun trade con questo filtro."}</p></div>`);
+  }).join("") || `<div class="card"><p style="margin:0">${trMk === "live" ? `Registro dei segnali reali v2 ${artD("dal", fmtD(R.live_start))}: ancora nessun trade. Qui compariranno i trade reali con lo stesso dettaglio dello storico, per confrontarli con quanto promesso.` : "Nessun trade con questo filtro."}</p></div>`);
   $("trades").querySelectorAll("details").forEach((d, n) => d.addEventListener("toggle", () => { if (d.open) tradeChart(d.querySelector(".tchart"), R.trades[trMk][+d.dataset.i]); }, { once: true }));
 }
 function tradeChart(el, t) {
@@ -1133,7 +1143,7 @@ renderTrades();
   const P = R.paper; if (!P) return;
   $("paperSec").hidden = false;
   const A = [["H2", P.h2 || P], ...(P.v2 ? [["v2", P.v2]] : [])], side = x => x === "long" ? "Long" : "Short";
-  $("paperSub").textContent = `dal ${fmtD(P.start)} · H2 rischio ${Math.round((P.h2 || P).risk * 100)}%` + (P.v2 ? " · v2 rischio 1,6–10,5% da delta taker" : "");
+  $("paperSub").textContent = `${artD("dal", fmtD(P.start))} · H2 rischio ${Math.round((P.h2 || P).risk * 100)}%` + (P.v2 ? " · v2 rischio 1,6–10,5% da delta taker" : "");
   const posOf = (o, v2) => !o ? ["In attesa", "nessun segnale attivo"]
     : o.status === "aperto" ? [`${side(o.side)} ${usd(o.entry)}`, `stop ${usd(o.stop)} · TP ${usd(o.tp)}` + (o.filled[1] ? "" : ` · limit ${usd(o.levels[1])}`) + (v2 ? ` · rischio ${pct(o.risk * 100, 1)}` : "")]
     : o.status === "ingresso" ? [`${side(o.side)} confermato`, "ingresso alla prossima apertura 4h" + (v2 && o.risk ? ` · rischio ${pct(o.risk * 100, 1)}` : "")]
@@ -1141,7 +1151,7 @@ renderTrades();
   $("paperKv").style.gridTemplateColumns = `repeat(${A.length},minmax(0,1fr))`;
   $("paperKv").innerHTML = A.map(([k, C]) => {
     const S = C.stats, pos = posOf(C.open, k === "v2");
-    return `<div><span>${k} · capitale virtuale</span><b>${usd(C.capital)}</b><small>da ${usd(C.capital0)} · ${pct(S.ret, 1)} · ${S.n} trade · WR ${S.wr == null ? "–" : S.wr + "%"}</small>` +
+    return `<div><span>${k} · capitale virtuale</span><b>${usd(C.capital)}</b><small>da ${usd(C.capital0)} · ${pct(S.ret, 1)} · ${S.n} trade · WR ${S.wr == null ? "–" : nfS(S.wr) + "%"}</small>` +
       `<small>DD giornaliero ${pct(S.dd, 1)}</small><small><b style="font-size:.8rem">${pos[0]}</b> · ${pos[1]}</small></div>`;
   }).join("");
   const T = A.flatMap(([k, C]) => C.trades.map(t => ({ ...t, k }))).sort((x, y) => x.date < y.date ? 1 : -1).slice(0, 8);
@@ -1149,7 +1159,7 @@ renderTrades();
     T.map(t => `<tr><td>${t.k}</td><td>${fmtD(t.date)}</td><td>${side(t.side)}</td><td>${usd(t.entry)}</td><td>${fmtD(t.exit_date)}</td><td>${t.exit === "tp" ? "TP" : t.exit === "stop" ? "Stop" : "Tempo"}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pct(t.pnl_pct, 2)}</td></tr>`).join("")
     : `<tr><td>Nessun trade chiuso finora</td></tr>`;
   $("paperNote").textContent = "Conti virtuali, nessun ordine reale. Riferimento storico " + A.map(([k, C]) => { const F = C.reference;
-    return `${k} dal ${fmtD(F.start)}: ${F.n} trade, WR ${F.wr}%, ${pct(F.ret, 1)}, DD ${pct(F.dd, 1)}`; }).join("; ") +
+    return `${k} ${artD("dal", fmtD(F.start))}: ${F.n} trade, WR ${nfS(F.wr)}%, ${pct(F.ret, 1)}, DD ${pct(F.dd, 1)}`; }).join("; ") +
     (P.v2 ? ". v2: se manca il perp della barra di conferma (archivio in ritardo di ~1 giorno) il delta taker è solo spot." : ".");
 })();
 
@@ -1159,8 +1169,8 @@ renderTrades();
   const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
   const mkt = (m, e) => m === "spot" ? (e < 0.995 ? `spot ${Math.round(e * 100)}%` : "spot 1x") : `perp ${e.toFixed(2).replace(".", ",")}x`;
   $("wkSec").hidden = false;
-  $("wkSub").textContent = `chiusura del ${fmtD(W.week)} · regime ${W.regime}`;
-  const nf = x => Math.round(x).toLocaleString("it-IT"), pc1 = x => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ",") + "%";
+  $("wkSub").textContent = `chiusura ${artD("del", fmtD(W.week))} · regime ${W.regime}`;
+  const pc1 = x => pct(x, 1);
   const open = W.status === "aperto" || W.status === "uscita", sg = W.side === "short" ? -1 : 1;
   // W3: esposizione ridotta quando lo stop iniziale costerebbe più del 25% del capitale (tetto di rischio, long e short)
   const part = open && W.expo < 0.995, expoP = x => Math.round(x * 100) + "%";
@@ -1203,19 +1213,19 @@ renderTrades();
   };
   if (open) {
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(W.market, W.expo)}</span>
-        <span class="cap">dal ${fmtD(W.entry)} · ${weeksIn} settimane</span></div>
+        <span class="cap">${artD("dal", fmtD(W.entry))} · ${weeksIn} settimane</span></div>
       <div id="wkPos">${posHtml(REF)}</div>`;
     window.onRef(r => { $("wkPos").innerHTML = posHtml(r); });
   } else if (W.status === "segnale") {
     const p = W.plan;
-    hero = `<div class="wkTop"><span class="wkBadge sig"><i></i>Segnale ${W.side} · ingresso lunedì</span><span class="cap">chiusura del ${fmtD(W.signal_date)}</span></div>
+    hero = `<div class="wkTop"><span class="wkBadge sig"><i></i>Segnale ${W.side} · ingresso lunedì</span><span class="cap">chiusura ${artD("del", fmtD(W.signal_date))}</span></div>
       <div class="wkBig">${usd(p.entry_est)}<small>prezzo di riferimento · ${p.market === "spot" ? (p.expo < 0.995 ? `compra in spot con il ${expoP(p.expo)} del capitale` : "compra in spot 1x") : "perp " + p.expo.toFixed(2).replace(".", ",") + "x"} ${usd(p.notional)} (${p.btc.toFixed(4).replace(".", ",")} BTC)</small></div>
-      <div class="wkFacts"><div><span>Stop iniziale</span><b>${usd(p.stop)}</b></div><div><span>Rischio allo stop</span><b>−${String(p.stop_pct).replace(".", ",")}% · ${usd(p.loss_usd)}</b></div><div><span>Trailing</span><b>${usd(p.trail_dist)}</b></div></div>`;
+      <div class="wkFacts"><div><span>Stop iniziale</span><b>${usd(p.stop)}</b></div><div><span>Rischio allo stop</span><b>−${nfS(p.stop_pct)}% · ${usd(p.loss_usd)}</b></div><div><span>Trailing</span><b>${usd(p.trail_dist)}</b></div></div>`;
   } else {
     hero = `<div class="wkTop"><span class="wkBadge"><i></i>Flat · nessuna posizione</span><span class="cap">prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>
-      <div class="wkBig">${usd(W.price)}<small>Si entra solo quando tutte le condizioni qui sotto sono verdi alla chiusura della domenica (circa 2–3 volte l'anno).</small></div>`;
+      <div class="wkBig">${usd(W.price)}<small class="wkPxLab">prezzo BTC alla chiusura ${artD("del", new Date(W.date || R.date).toLocaleDateString("it-IT", { day: "numeric", month: "short" }))}</small><small>Si entra solo quando tutte le condizioni qui sotto sono verdi alla chiusura della domenica (circa 2–3 volte l'anno).</small></div>`;
   }
-  hero += `<button type="button" class="wkMore" id="wkMore"><span>${open ? "Perché è aperta e quando si chiude" : W.status === "segnale" ? "Perché c'è il segnale e come si esegue" : "Cosa serve per entrare"}<small>condizioni, uscite, piano in dollari e tutti i trade dal 2021</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
+  hero += `<button type="button" class="wkMore" id="wkMore"><span>${open ? "Perché è aperta e quando si chiude" : W.status === "segnale" ? "Perché c'è il segnale e come si esegue" : "Cosa serve per entrare"}<small>${open ? "condizioni, uscite, piano in dollari e tutti i trade dal 2021" : "condizioni, uscite e tutti i trade dal 2021"}</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
   $("wkHero").innerHTML = hero;
   // --- overlay con condizioni, uscite, piano e storico (prima erano in pagina)
   const dlg = $("wkDlg");
@@ -1225,7 +1235,7 @@ renderTrades();
   $("wkRules").addEventListener("click", () => dlg.close && dlg.close());
   $("wkDlgT").textContent = open ? "Perché la posizione è aperta e quando si chiude" : W.status === "segnale" ? "Il segnale di questa settimana" : "Cosa serve per entrare";
   $("wkWhy").innerHTML = open
-    ? `<p><b>Perché è aperta.</b> Alla chiusura del ${fmtD(W.signal_date || W.entry)} BTC ha chiuso ${W.side === "long" ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${W.side === "long" ? "rialzista (sopra la SMA 40)" : "ribassista (sotto la SMA 40)"}, il flusso dei perp nella stessa direzione${W.side === "long" ? " e il filtro MACD a posto" : ""}: ingresso all'apertura del lunedì ${fmtD(W.entry)} a ${usd(W.entry_px)}.</p>
+    ? `<p><b>Perché è aperta.</b> ${artD("Alla chiusura del", fmtD(W.signal_date || W.entry))} BTC ha chiuso ${W.side === "long" ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${W.side === "long" ? "rialzista (sopra la SMA 40)" : "ribassista (sotto la SMA 40)"}, il flusso dei perp nella stessa direzione${W.side === "long" ? " e il filtro MACD a posto" : ""}: ingresso all'apertura del lunedì ${fmtD(W.entry)} a ${usd(W.entry_px)}.</p>
        <p><b>Quanto capitale.</b> ${part ? `Il ${expoP(W.expo)} del capitale (${usd(W.notional)} su ${usd(W.capital)}): con lo stop iniziale a ${usd(W.stop0)} l'esposizione piena avrebbe rischiato più del 25% del capitale, quindi W3 entra con meno e tiene il resto in liquidità (tetto di rischio 25% allo stop, ${W.side === "long" ? "anche sui long" : "sugli short"}).` : `Esposizione piena: lo stop iniziale a ${usd(W.stop0)} costa meno del 25% del capitale (tetto di rischio di W3${W.side === "long" ? ", anche sui long" : ""}).`}</p>
        <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo tocca il trailing a ${usd(W.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${W.side === "long" ? "sotto" : "sopra"} la EMA 21, oggi ${usd(W.ema21)} (si esce il lunedì); un segnale di distribuzione (funding alto con flusso che si gira). Il trailing è <b>a cricchetto</b>: ${W.side === "long" ? "sale con il prezzo e non scende mai" : "scende con il prezzo e non sale mai"}, ricalcolato a ogni aggiornamento (su Telegram quando si sposta).</p>`
     : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>
@@ -1253,12 +1263,12 @@ renderTrades();
     const ticks = [mn, (mn + mx) / 2, mx].map((v, i) => `<span class="tk" style="left:${[4, 50, 96][i]}%">${Math.round(v / 1000)}k</span>`).join("");
     $("srMap").innerHTML = `<div class="ax"></div>` + all.map(o => `<div class="z ${o.k}" style="left:${X(o.lo)}%;width:calc(${X(o.hi) - X(o.lo)}% + 4px);height:${10 + o.strength * 11}px" title="${o.k === "r" ? "Resistenza" : "Supporto"} ${usd(o.price)} · forza ${word(o.strength)} · ${pc1(dd(o))}"></div>`).join("") +
       `<div class="now" style="left:${X(REF.px)}%"><b>ora ${usd(REF.px)}</b></div>` + ticks;
-    $("srSub").textContent = `aggiornati al ${fmtD(LV.date)}`;
+    $("srSub").textContent = `${artD("aggiornati al", fmtD(LV.date))}`;
     const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
     const Rs = SR.res, Ss = SR.sup;
     $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(REF.px)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
     const nb = all.filter(o => o.broken).length;
-    $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti${nb ? ` · ${nb} ${nb === 1 ? "rotto" : "rotti"} dal ${fmtD(LV.date)}` : ""}`;
+    $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti${nb ? ` · ${nb} ${nb === 1 ? "rotto" : "rotti"} ${artD("dal", fmtD(LV.date))}` : ""}`;
     };
     drawSR(); window.onRef(drawSR);
   }
@@ -1326,7 +1336,8 @@ renderTrades();
   setTimeout(function wkCharts() {   // dopo le definizioni dei grafici (chartOpts)
     if (!window.LightweightCharts) return;
     const T = c.d.map(d => d), up = css("--green"), dn = css("--red");
-    const ch = LightweightCharts.createChart($("wkChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1 } }));
+    const ch = LightweightCharts.createChart($("wkChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1, scaleMargins: { top: .1, bottom: .08 } },
+      localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));   // margini: il tick più alto non finisce sotto la barra dei periodi
     const cs = ch.addCandlestickSeries({ upColor: up, downColor: dn, borderVisible: false, wickUpColor: up, wickDownColor: dn, priceLineVisible: false, lastValueVisible: false,
       priceFormat: { type: "price", precision: 0, minMove: 1 } });
     cs.setData(T.map((t, i) => ({ time: t, open: c.o[i], high: c.h[i], low: c.l[i], close: c.c[i] })));
@@ -1341,7 +1352,7 @@ renderTrades();
     const bar = d => T.find(t => t >= d), k = v => v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + "k" : String(Math.round(v));
     const mks = [], ev = {};   // ev: testo per la legenda quando il cursore è sulla settimana di un ingresso o di un'uscita
     ((W.history || {}).trades || []).forEach(t => {
-      const L = t.side === "long", be = bar(t.entry), pn = (t.pnl_pct >= 0 ? "+" : "") + Math.round(t.pnl_pct) + "%";
+      const L = t.side === "long", be = bar(t.entry), pn = pct(t.pnl_pct, 0);
       if (be) { mks.push({ time: be, position: L ? "belowBar" : "aboveBar", color: L ? up : dn, shape: L ? "arrowUp" : "arrowDown", text: (L ? "Long " : "Short ") + k(t.entry_px) });
         ev[be] = (ev[be] ? ev[be] + " · " : "") + `<b class="${L ? "pos" : "neg"}">${L ? "Long" : "Short"} ${usd(t.entry_px)}</b> ${t.reason === "open" ? "aperto" : "→ " + pn}`; }
       const bx = t.reason === "open" ? null : bar(t.exit);
@@ -1350,9 +1361,13 @@ renderTrades();
     });
     mks.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0);
     let mkTxt = null;   // etichette solo quando c'è spazio (≥ 4 px per settimana): sul telefono con "Tutto" restano frecce e pallini
+    // ...e non a ridosso dei bordi del grafico, dove il testo (centrato sulla candela) verrebbe tagliato
+    const mkI = mks.map(m => T.indexOf(m.time));
     const setMk = () => { const r = ch.timeScale().getVisibleLogicalRange(); if (!r) return;
-      const on = ch.timeScale().width() / Math.max(1, r.to - r.from) >= 4;
-      if (on !== mkTxt) { mkTxt = on; cs.setMarkers(on ? mks : mks.map(m => ({ ...m, text: "" }))); } };
+      const w = ch.timeScale().width(), bs = w / Math.max(1, r.to - r.from), on = bs >= 4;
+      const show = mks.map((m, j) => on && (mkI[j] - r.from) * bs >= m.text.length * 3.6 + 4 && (r.to - mkI[j]) * bs >= m.text.length * 3.6 + 4);
+      const key = show.map(Number).join("");
+      if (key !== mkTxt) { mkTxt = key; cs.setMarkers(mks.map((m, j) => show[j] ? m : { ...m, text: "" })); } };
     setMk(); ch.timeScale().subscribeVisibleLogicalRangeChange(setMk);
     const MB = isMobile(), nLv = MB ? 1 : 2;   // telefono: meno linee, etichette dell'asse leggibili
     if (R.levels) {   // S/R più vicini sul grafico: 2 resistenze e 2 supporti, linee sottili punteggiate
@@ -1364,7 +1379,8 @@ renderTrades();
       (R.liqmap.above || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--teal"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq S" }));
       (R.liqmap.below || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--violet"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq L" }));
     }
-    const mc = LightweightCharts.createChart($("wkMacd"), chartOpts({ timeScale: { visible: false, borderVisible: false }, rightPriceScale: { borderVisible: false, scaleMargins: { top: .1, bottom: .1 } } }));
+    const mc = LightweightCharts.createChart($("wkMacd"), chartOpts({ timeScale: { visible: false, borderVisible: false }, rightPriceScale: { borderVisible: false, scaleMargins: { top: .1, bottom: .1 } },
+      localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));
     const hs = mc.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
     hs.setData(T.map((t, i) => c.macd[i] == null ? null : ({ time: t, value: c.macd[i] - c.sig[i], color: c.macd[i] >= c.sig[i] ? "rgba(52,215,123,.55)" : "rgba(255,90,82,.55)" })).filter(Boolean));
     const ml = mc.addLineSeries({ color: css("--s-ema"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
@@ -1393,14 +1409,14 @@ renderTrades();
     ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); $("wkLeg").classList.toggle("act", i >= 0); });   // telefono: la riga dei valori compare solo toccando il grafico
   }, 0);
   const H = W.history, M = H.m1;
-  $("wkNote").textContent = `Storico dal 2021: ${M.n} trade, ${String(M.per_year).replace(".", ",")} l'anno, WR ${M.win_rate}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
+  $("wkNote").textContent = `Storico dal 2021: ${M.n} trade, ${nfS(M.per_year)} l'anno, WR ${nfS(M.win_rate)}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
   $("wkStatSec").hidden = false;
-  $("wkStatSub").textContent = `dal ${fmtD(H.start)} · ${M.n} trade`;
+  $("wkStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${M.n} trade`;
   const Y = Object.keys(M.years);
   $("wkYears").innerHTML = `<tr><th>Anno</th><th>1x</th><th>2x</th></tr>` + Y.map(y => `<tr><td>${y}</td><td class="${M.years[y] >= 0 ? "pos" : "neg"}">${pct(M.years[y], 1)}</td><td class="${H.m2.years[y] >= 0 ? "pos" : "neg"}">${pct(H.m2.years[y], 1)}</td></tr>`).join("");
   const S = [["10.000 $ diventano", usd(H.final_10k_1x), usd(H.final_10k_2x)], ["Rendimento", pct(M.total_pct, 1), pct(H.m2.total_pct, 1)],
     ["Max DD giornaliero", pct(M.max_dd_pct, 1), pct(H.m2.max_dd_pct, 1)], ["Peggior trade", pct(M.worst_pct, 1), pct(H.m2.worst_pct, 1)],
-    ["Medio per trade", pct(M.avg_pct, 1), pct(H.m2.avg_pct, 1)], ["Win rate", M.win_rate + "%", H.m2.win_rate + "%"], ["MAR", String(M.mar).replace(".", ","), String(H.m2.mar).replace(".", ",")]];
+    ["Medio per trade", pct(M.avg_pct, 1), pct(H.m2.avg_pct, 1)], ["Win rate", nfS(M.win_rate) + "%", nfS(H.m2.win_rate) + "%"], ["Rend./DD", nfS(M.mar), nfS(H.m2.mar)]];
   $("wkSum").innerHTML = `<tr><th></th><th>1x</th><th>2x</th></tr>` + S.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
   $("wkTr").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Mercato</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Movimento</th><th>Sul capitale</th></tr>` +
     H.trades.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}</td><td>${mkt(t.market, t.expo)}</td><td>${usd(t.entry_px)}</td>` +
@@ -1411,15 +1427,15 @@ renderTrades();
   const wks = t => Math.max(1, Math.round((new Date(t.exit || R.date) - new Date(t.entry)) / 6.048e8));
   const drawStatM = () => {
     const X2 = mLev === 2 ? H.m2 : M, fin = mLev === 2 ? H.final_10k_2x : H.final_10k_1x;
-    $("wkSumM").innerHTML = `<div class="top"><div class="kpi ${X2.total_pct >= 0 ? "pos" : "neg"}">${pc1(X2.total_pct)}<small>rendimento dal ${fmtD(H.start)}: 10.000 $ diventano ${usd(fin)}</small></div>
+    $("wkSumM").innerHTML = `<div class="top"><div class="kpi ${X2.total_pct >= 0 ? "pos" : "neg"}">${pc1(X2.total_pct)}<small>rendimento ${artD("dal", fmtD(H.start))}: 10.000 $ diventano ${usd(fin)}</small></div>
         <div class="seg" role="group" aria-label="Esposizione">${[1, 2].map(l => `<button type="button" data-l="${l}" aria-pressed="${l === mLev}">${l}x</button>`).join("")}</div></div>
-      <div class="facts"><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div><div><span>Vinti</span><b>${String(X2.win_rate).replace(".", ",")}%</b></div></div>
+      <div class="facts"><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div><div><span>Vinti</span><b>${nfS(X2.win_rate)}%</b></div></div>
       <button type="button" class="wkMore" id="wkSimOpen"><span>Simulatore<small>capitale, data di partenza, 1x/2x, obiettivo</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>
       <button type="button" class="wkMore" id="wkSumMore"><span>Dettagli<small>tutte le metriche, anno per anno, equity</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
     $("wkSumM").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { mLev = +b.dataset.l; drawStatM(); if (detChart) drawDetEq(); });
     $("wkSimOpen").onclick = () => { if (sim.lev !== mLev) { sim.lev = mLev; levSeg.set(mLev); simulate(); }
       sheetNodes("Simulatore W3", [$("simPanel")]); [80, 400].forEach(ms => setTimeout(() => simChart && simChart.timeScale().fitContent(), ms)); };
-    $("wkSumMore").onclick = () => { sheetNodes("Dettagli W3 dal " + fmtD(H.start), [$("detPanel")]); setTimeout(drawDetEq, 30); setTimeout(() => detChart && detChart.timeScale().fitContent(), 400); };
+    $("wkSumMore").onclick = () => { sheetNodes(artD("Dettagli W3 dal", fmtD(H.start)), [$("detPanel")]); setTimeout(drawDetEq, 30); setTimeout(() => detChart && detChart.timeScale().fitContent(), 400); };
     const Yv = Y.map(y => (mLev === 2 ? H.m2 : M).years[y]), lo = Math.min(0, ...Yv), hi = Math.max(0, ...Yv), sp = (hi - lo) || 1;
     $("wkYearsMLev").textContent = mLev + "x";
     $("wkYearsMB").innerHTML = Y.map((y, i) => { const v = Yv[i], col = v >= 0 ? "var(--green)" : "var(--red)";
@@ -1430,7 +1446,7 @@ renderTrades();
         <span class="sd ${t.side}">${side(t.side)}</span><span class="r ${v >= 0 ? "pos" : "neg"}">${pc1(v)}</span><span class="ch" aria-hidden="true">›</span></button>`; }).join("");
     $("wkTrM").querySelectorAll("button").forEach(b => b.onclick = () => { const t = H.trades[+b.dataset.i], o = t.reason === "open";
       const r = (k, v, cls) => `<div class="row"><span class="k">${k}</span><span class="v strong${cls ? " " + cls : ""}">${v}</span></div>`;
-      openSheet(`${side(t.side)} del ${fmtD(t.entry)}`, `<div class="list kvList">` +
+      openSheet(artD(`${side(t.side)} del`, fmtD(t.entry)), `<div class="list kvList">` +
         r("Ingresso", usd(t.entry_px)) + (o ? r("Stato", "aperto") : r("Uscita", `${fmtD(t.exit)} · ${usd(t.exit_px)}`) + r("Motivo dell'uscita", why[t.reason] || t.reason)) +
         r("Mercato", mkt(t.market, t.expo)) + r("Durata", wks(t) + " settimane") + r("Movimento del prezzo", pc1(t.move_pct)) +
         r("Sul capitale a 1x", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + r("Sul capitale a 2x", pc1(t.pnl2_pct != null ? t.pnl2_pct : t.pnl_pct * 2), (t.pnl2_pct ?? t.pnl_pct) >= 0 ? "pos" : "neg") + `</div>` +
@@ -1452,14 +1468,15 @@ const parts = [["Stop", nSt, "var(--red)", BE.stop ? "media " + pct(BE.stop.avg,
 $("anaSub").textContent = `${tot} trade v2`;
 $("anaBar").innerHTML = parts.map(([, n, col]) => `<i style="flex:${n};background:${col}"></i>`).join("");
 $("anaLegend").innerHTML = parts.map(([k, n, col, d]) => `<div><span><i style="background:${col}"></i>${k}</span><b>${n} · ${Math.round(n / (tot || 1) * 100)}%</b><small>${d}</small></div>`).join("");
-$("anaNote").textContent = `Il win rate del ${TT.win_rate}% conta come vincita ogni trade chiuso sopra zero, commissioni comprese; sopra +1% sul capitale è del ${TT.win_rate_1pct}%. ` +
+$("anaNote").textContent = `Il win rate del ${nfS(TT.win_rate)}% conta come vincita ogni trade chiuso sopra zero, commissioni comprese; sopra +1% sul capitale è del ${nfS(TT.win_rate_1pct)}%. ` +
   `v2 ha un solo target (+1R) e uno stop vicino (1 ATR): una vincita media vale ${pct(TT["avg_win_%"], 2)}, una perdita media ${pct(TT["avg_loss_%"], 2)} sul capitale. ` +
   `Il guadagno nasce dal numero di target raggiunti e dalla size più grande quando il flusso taker della conferma è forte.`;
 
 // ---- grafici
 const chartOpts = extra => Object.assign({ autoSize: true, layout: { background: { color: "transparent" }, textColor: css("--label2"), fontFamily: css("--font"), fontSize: 11 },
   grid: { vertLines: { visible: false }, horzLines: { color: css("--line") } }, rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false },
-  crosshair: { mode: 0, vertLine: { color: css("--label3") }, horzLine: { color: css("--label3") } } }, extra || {});
+  crosshair: { mode: 0, vertLine: { color: css("--label3") }, horzLine: { color: css("--label3") } },
+  localization: { locale: "it-IT", priceFormatter: v => nfIT(v, Math.abs(v) < 100 ? 2 : 0) } }, extra || {});   // assi in formato italiano
 function charts() {
   if (!window.LightweightCharts) return;
   const s = R.series;
@@ -1498,7 +1515,7 @@ function equity(lv) {
   const pts = [{ time: R.equity.btc[0].date, value: 1 }].concat(R.equity[lv + "x"].map(p => ({ time: p.date, value: p.eq })));
   const d = []; pts.forEach(p => { if (d.length && d[d.length - 1].time === p.time) d[d.length - 1] = p; else d.push(p); });
   eqLine.setData(d); eqChart.timeScale().fitContent();
-  $("eqNote").textContent = `capitale ×${d[d.length - 1].value.toFixed(2)} · max drawdown ${lv === 1 ? S.periods.Totale["max_dd_%"] + "% giornaliero" : S.leverage[String(lv)]["max_dd_%"] + "% per trade"} · scala log`;
+  $("eqNote").textContent = `capitale ×${nfIT(d[d.length - 1].value, 2)} · max drawdown ${lv === 1 ? nfS(S.periods.Totale["max_dd_%"]) + "% giornaliero" : nfS(S.leverage[String(lv)]["max_dd_%"]) + "% per trade"} · scala log`;
 }
 seg("eqSeg", v => equity(+v)); equity(1);
 
@@ -1521,7 +1538,7 @@ function simLevs() {   // W2: solo 1x e 2x (come nello storico); v2: fino a 5x
   const W = STRAT === "w2";
   $("simLev").querySelectorAll("button").forEach(x => x.disabled = W && +x.dataset.v > 2);
   if (W && sim.lev > 2) { sim.lev = 1; levSeg.set(1); }
-  $("simFoot").textContent = W ? "W3: 1x = long in spot e short in perp con tetto di rischio 25% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 3 trade l'anno di settimane o mesi ciascuno."
+  $("simFoot").textContent = W ? "W3: 1x = long in spot e short in perp con tetto di rischio 25% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 2–3 trade l'anno, di settimane o mesi ciascuno."
     : "1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.";
 }
 function simulate() {
@@ -1546,13 +1563,13 @@ function simulate() {
   const avg = tr.length ? tr.reduce((a, t) => a + t.pnl, 0) / tr.length : null, perY = (tr.length / years).toFixed(1).replace(".", ",");
   $("simOut").innerHTML = [["Capitale oggi", usd(eq)], ["Rendimento", pct((eq / cap - 1) * 100, 1)], ["Max drawdown", pct(dd * 100, 1)], ["Trade · win", `${tr.length} · ${tr.length ? Math.round(wins / tr.length * 100) : 0}%`]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
-  $("simNote").textContent = `Dal ${start} al ${R.date}: ${years.toFixed(1)} anni, ${pct(cagr, 1)} l'anno composto, ${perY} trade l'anno, guadagno medio ${pct(avg, 2)} sul capitale per trade, ` +
+  $("simNote").textContent = `${artD("Dal", fmtDL(start))} ${artD("al", fmtDL(R.date))}: ${nfIT(years, 1)} anni, ${pct(cagr, 1)} l'anno composto, ${perY} trade l'anno, guadagno medio ${pct(avg, 2)} sul capitale per trade, ` +
     (W ? `W3 a ${lev}x. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Curva, rendimento, drawdown e colonna Capitale giorno per giorno come nello Storico` +
-         (W2H.trades.some(t => t.reason === "open" || !t.exit) ? `: la posizione aperta è valutata alla chiusura giornaliera del ${R.weekly.date || R.date}, non al prezzo live.` : `; oggi la strategia è flat.`)
+         (W2H.trades.some(t => t.reason === "open" || !t.exit) ? `: la posizione aperta è valutata alla chiusura giornaliera ${artD("del", fmtDL(R.weekly.date || R.date))}, non al prezzo live.` : `; oggi la strategia è flat.`)
        : `size ${lev}x del piano v2. Commissioni, funding e slippage 0,1% inclusi; tasse escluse. Capitale ricalcolato trade per trade.`);
   $("simCount").textContent = `${tr.length} trade · ${W ? "W3" : "v2"} · ${lev}x`;
   $("simTrades").innerHTML = `<tr><th>${W ? "Ingresso" : "Segnale"}</th><th>${W ? "Mercato" : "Setup"}</th><th>Lato</th><th>Uscita</th><th>PnL</th><th>Capitale</th></tr>` +
-    out.slice().reverse().map(r => `<tr><td>${r.d0}</td><td>${r.tag}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${W ? `${r.d1}<br><small>${r.exit}</small>` : r.exit}</td><td class="${r.pnlU > 0 ? "pos" : "neg"}">${(r.pnlU > 0 ? "+" : "−") + usd(Math.abs(r.pnlU))}</td><td>${usd(r.eq)}</td></tr>`).join("");
+    out.slice().reverse().map(r => `<tr><td>${fmtD(r.d0)}</td><td>${r.tag}</td><td class="${r.side === "long" ? "pos" : "neg"}">${r.side}</td><td>${W ? `${fmtD(r.d1)}<br><small>${r.exit}</small>` : r.exit}</td><td class="${r.pnlU > 0 ? "pos" : "neg"}">${(r.pnlU > 0 ? "+" : "−") + usd(Math.abs(r.pnlU))}</td><td>${usd(r.eq)}</td></tr>`).join("");
   if (window.LightweightCharts) {
     if (!simChart) {
       simChart = LightweightCharts.createChart($("simChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1 } }));
@@ -1587,10 +1604,10 @@ function labCurves(lv) {
   const L = R.lab; if (!L || !L.candidates || !L.candidates.length) return;
   document.querySelectorAll(".labSec").forEach(el => el.hidden = false);
   const C = L.candidates, stCls = s => s === "in uso" ? "pos" : s === "bocciato" ? "neg" : "";
-  $("labSub").textContent = `v2 e candidati della ricerca · aggiornato al ${fmtD(L.updated)}`;
+  $("labSub").textContent = `v2 e candidati della ricerca · ${artD("aggiornato al", fmtD(L.updated))}`;
   $("labTab").innerHTML = `<tr><th>Candidato</th><th>Stato</th><th>Trade/anno</th><th>Win rate</th><th>Medio per trade</th><th>Rendimento</th><th>Max DD</th><th>10.000 $ a 1x</th><th>a 2x</th></tr>` +
     C.map(c => { const m = c.metrics; return `<tr><td>${escL(c.name)}</td><td class="${stCls(c.status)}">${escL(c.status)}</td><td>${m.trades_per_year == null ? "–" : String(m.trades_per_year).replace(".", ",")}</td>` +
-      `<td>${m.win_rate == null ? "–" : m.win_rate + "%"}</td><td>${pct(m.avg_trade_pct, 1)}</td><td>${pct(m.total_return_pct, 1)}</td><td class="neg">${pct(m.max_dd_pct, 1)}</td>` +
+      `<td>${m.win_rate == null ? "–" : nfS(m.win_rate) + "%"}</td><td>${pct(m.avg_trade_pct, 1)}</td><td>${pct(m.total_return_pct, 1)}</td><td class="neg">${pct(m.max_dd_pct, 1)}</td>` +
       `<td>${usd(m.final_10k_1x)}</td><td>${usd(m.final_10k_2x)}</td></tr>`; }).join("");
   $("labLegend").innerHTML = C.map((c, i) => `<span><i style="background:var(${LAB_COL[i % LAB_COL.length]})"></i>${escL(c.name)}</span>`).join("") + `<span>scala log</span>`;
   const sideL = x => x === "long" ? "Long" : "Short";
@@ -1601,7 +1618,7 @@ function labCurves(lv) {
       <div class="body">
         <div class="why"><b>Regole</b>${(c.rules || []).map(escL).join("<br>")}</div>
         <div class="scroll" style="max-height:420px;overflow-y:auto"><table class="grid"><tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Movimento</th><th>Sul capitale</th></tr>` +
-        c.trades.slice().reverse().map(t => `<tr><td>${t.ingresso}</td><td class="${t.lato === "long" ? "pos" : "neg"}">${sideL(t.lato)}</td><td>${usd(t.prezzo_ingresso)}</td><td>${t.uscita}</td><td>${usd(t.prezzo_uscita)}</td>` +
+        c.trades.slice().reverse().map(t => `<tr><td>${/^\d{4}-\d\d-\d\d/.test(t.ingresso) ? fmtD(t.ingresso) : t.ingresso}</td><td class="${t.lato === "long" ? "pos" : "neg"}">${sideL(t.lato)}</td><td>${usd(t.prezzo_ingresso)}</td><td>${/^\d{4}-\d\d-\d\d/.test(t.uscita) ? fmtD(t.uscita) : t.uscita}</td><td>${usd(t.prezzo_uscita)}</td>` +
           `<td>${escL(LAB_EXIT[t.motivo] || EXIT_LABEL[t.motivo] || t.motivo)}</td><td>${pct(t.movimento_pct, 1)}</td><td class="${t.pnl_capitale_pct > 0 ? "pos" : "neg"}">${pct(t.pnl_capitale_pct, 1)}</td></tr>`).join("") +
         `</table></div></div></details>`).join("");
   $("labNote").textContent = "I candidati su carta non generano segnali reali. Curve a gradini sulle date di uscita dei trade; 2x = size doppia trade per trade (v2 con il tetto di esposizione 5x del conto). Metriche dei candidati come nella ricerca (RESEARCH.md).";
@@ -1624,15 +1641,15 @@ function goal(cap, lev) {
   const sorted = res.slice().sort((x, y) => x - y), q = p => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
   const nHit = res.filter(x => x >= mult).length, hit = nHit / (res.length || 1) * 100, y0 = simFirst().slice(0, 4);
   const yN = (days / 365).toFixed(1).replace(".", ",").replace(/,0$/, ""), per = days >= 365 ? `${yN} ${yN === "1" ? "anno" : "anni"}` : `${days} gg`;
-  const mx = (s, d) => "×" + s.toFixed(d).replace(".", ",");
+  const mx = (s, d) => "×" + nfIT(s, d);
   if (!res.length) {
     $("goalOut").innerHTML = [["Serve", `${mx(mult, 2)} in ${per}`], ["Successo storico", "–"]].map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
-    $("goalNote").textContent = `Orizzonte più lungo dello storico disponibile (dal ${simFirst()}): nessuna finestra di ${days} giorni da confrontare. Scegli una data più vicina.`;
+    $("goalNote").textContent = `Orizzonte più lungo dello storico disponibile (${artD("dal", fmtDL(simFirst()))}): nessuna finestra di ${nfIT(days)} giorni da confrontare. Scegli una data più vicina.`;
     return;
   }
   $("goalOut").innerHTML = [["Serve", `${mx(mult, 2)} in ${per}`], ["Successo storico", nHit ? (hit < 0.1 ? "<0,1%" : hit.toFixed(1).replace(".", ",") + "%") : `mai dal ${y0}`], ["Esito mediano", usd(cap * q(0.5))], ["Caso peggiore", usd(cap * sorted[0])]]
     .map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
-  $("goalNote").textContent = `${res.length} finestre storiche di ${days} giorni con leva ${lev}x (una per ogni giorno di partenza dal ${simFirst()}). ` +
+  $("goalNote").textContent = `${nfIT(res.length)} finestre storiche di ${nfIT(days)} giorni con leva ${lev}x (una per ogni giorno di partenza ${artD("dal", fmtDL(simFirst()))}). ` +
     (nHit ? `Nel 90% dei casi il capitale finale è stato tra ${usd(cap * q(0.05))} e ${usd(cap * q(0.95))}.`
           : `Mai successo dal ${y0}: in nessuna finestra il capitale ha fatto ${mx(mult, 2)}; il massimo è stato ${mx(sorted[sorted.length - 1], 2)} (${usd(cap * sorted[sorted.length - 1])}). Obiettivo fuori dalla portata storica della strategia: alza la data o abbassa il capitale obiettivo.`);
 }
@@ -1684,7 +1701,7 @@ function calRows(list, nextIdx) {
   return list.map((e, k) => {
     const d = new Date(e.date), dl = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Rome" });
     const head = dl !== day ? `<div class="cday">${(day = dl)}</div>` : "";
-    const past = d < Date.now(), nums = [e.forecast && `previsto ${e.forecast}`, e.previous && `precedente ${e.previous}`].filter(Boolean).join(" · ");
+    const past = d < Date.now(), nums = [e.forecast && `previsto ${fcIT(e.forecast)}`, e.previous && `precedente ${fcIT(e.previous)}`].filter(Boolean).join(" · ");
     return head + `<details class="cev${past ? " past" : ""}${k === nextIdx ? " next" : ""}"><summary>
       <span class="tm">${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}<small>${e.country}</small></span>
       <span class="ti"><b>${esc(e.title)}</b><small>${[nums || (past ? "" : "senza previsione"), k === nextIdx ? "prossimo" : ""].filter(Boolean).join(" · ")}</small></span>
@@ -1709,19 +1726,23 @@ function renderToday() {
   const nw = NEWS.filter(n => now - new Date(n.date) < 864e5 && n.level !== "basso").slice().sort((a, b) => b.impact - a.impact).slice(0, 3);
   const nws = nw.length ? nw : NEWS.slice(0, 2);
   const evH = ev.map(e => { const d = new Date(e.date), past = d < now;
-    return `<div class="ev"><span class="tm">${dKey(e.date) === t0 ? "" : "dom. "}${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}</span><span><b>${esc(e.title)}</b><small>${e.country}${e.forecast ? " · previsto " + esc(e.forecast) : ""}${past ? " · uscito" : ""}</small></span><span class="imp ${e.impact}">${e.impact}</span></div>`; }).join("");
+    return `<div class="ev"><span class="tm">${dKey(e.date) === t0 ? "" : "dom. "}${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}</span><span><b>${esc(e.title)}</b><small>${e.country}${e.forecast ? " · previsto " + esc(fcIT(e.forecast)) : ""}${past ? " · uscito" : ""}</small></span><span class="imp ${e.impact}">${e.impact}</span></div>`; }).join("");
   const bkH = bk.map(b => { const d = bankDate(b), days = Math.ceil((d - now) / 864e5);
     return `<div class="ev"><span class="tm">${b.time}</span><span><b>${esc(b.title)}</b><small>${days <= 0 ? "oggi" : days === 1 ? "domani" : "tra " + days + " giorni"} · ${d.toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" })}</small></span><span class="imp alto">alto</span></div>`; }).join("");
   const nH = nws.map(n => `<a class="n" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><small>${esc(n.source)} · ${ago(n.date)}${n.level !== "basso" ? " · impatto " + n.level : ""}</small></a>`).join("");
   $("todaySec").hidden = !(evH || bkH || nH);
-  $("todaySub").textContent = evH || bkH ? "dati e riunioni in arrivo" : "nessun dato macro importante oggi";
+  // titolo coerente con quello che c'è sotto: dati già usciti, in arrivo o entrambi; riunioni di banca centrale
+  const evUp = ev.some(e => new Date(e.date) >= now), evPast = ev.some(e => new Date(e.date) < now);
+  const what = [ev.length ? (evPast && !evUp ? "dati di oggi" : "dati") : "", bk.length ? "riunioni" : ""].filter(Boolean).join(" e ");
+  $("todaySub").textContent = !(evH || bkH) ? "nessun dato macro importante oggi"
+    : evPast && !evUp && !bk.length ? "dati di oggi, già usciti" : evPast ? `${what}: usciti e in arrivo` : `${what} in arrivo`;
   $("todayN").innerHTML = evH + bkH + nH + `<a class="more" href="#notizie">Calendario completo e tutte le notizie →</a>`;
   // telefono: una scheda sola, il prossimo evento importante e la notizia principale; tocco → pannello con tutto
   const nx = CAL.filter(e => new Date(e.date) >= now && e.impact === "alto").map(e => ({ d: new Date(e.date), t: e.title }))
     .concat(BANKS.map(b => ({ d: bankDate(b), t: b.title })).filter(x => x.d >= now)).sort((x, y) => x.d - y.d)[0]
     || CAL.filter(e => new Date(e.date) >= now && e.impact === "medio").map(e => ({ d: new Date(e.date), t: e.title }))[0];
   const when = d => { const k = dKey(d), hm = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
-    return (k === t0 ? "oggi" : k === t1 ? "domani" : d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", timeZone: "Europe/Rome" })) + " " + hm; };
+    return (k === t0 ? "oggi" : k === t1 ? "domani" : d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/Rome" })) + " " + hm; };
   const top = nws[0];
   $("todayCard").innerHTML = `<div class="tapHead"><b>Oggi nelle notizie</b><span class="more">Tutto ›</span></div>` +
     (nx ? `<div class="tdRow"><span class="tm">${when(nx.d)}</span><b>${esc(nx.t)}</b></div>` : "") +
@@ -1745,6 +1766,7 @@ function setLive(px, chg, src) {
   if (px !== lastPx) { el.classList.remove("up", "down"); void el.offsetWidth; el.classList.add(px > lastPx ? "up" : "down"); setTimeout(() => el.classList.remove("up", "down"), 700); }
   lastPx = px;
   $("liveTag").className = "live on"; $("liveTag").textContent = "live · " + src;
+  $("pairTag").textContent = src === "coinbase" ? "BTC/USD" : "BTC/USDT";   // coppia della fonte del prezzo (Coinbase BTC-USD, Binance BTCUSDT)
   if (chg != null) { $("chg24").textContent = pct(chg, 2) + " 24h"; $("chg24").className = "num " + (chg >= 0 ? "pos" : "neg"); }
   window.drawLadder && window.drawLadder(px);
 }

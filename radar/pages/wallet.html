@@ -295,7 +295,10 @@ const bare = (c) => { const i = c.indexOf(":"); return i < 0 ? c : c.slice(i + 1
 const dexOf = (c) => { const i = c.indexOf(":"); return i < 0 ? "" : c.slice(0, i); };
 const sgn = (x) => (x > 1e-12 ? 1 : x < -1e-12 ? -1 : 0);
 const fin = (x) => typeof x === "number" && isFinite(x);
-const nf = (n, d = 0) => Math.abs(n).toLocaleString("it-IT", { minimumFractionDigits: d, maximumFractionDigits: d });
+// separatore delle migliaia sempre (toLocaleString in italiano non lo mette sotto 10.000: "$7533")
+const nf = (n, d = 0) => { const [i, f] = Math.abs(n).toFixed(d).split("."); return i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (f ? "," + f : ""); };
+const dIt = (s) => { const t = Date.parse(s); return isFinite(t) ? new Date(t).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" }) : String(s ?? ""); };
+const artD = (p, s) => window.artD ? window.artD(p, s) : p + " " + s;
 const m$ = (n) => { if (!fin(n)) return "–"; const x = Math.abs(n);
   const s = x >= 1e9 ? nf(x / 1e9, 2) + "B" : x >= 1e6 ? nf(x / 1e6, 2) + "M" : x >= 1e4 ? nf(x / 1e3, 1) + "k" : nf(x, 0);
   return (n < 0 ? "−" : "") + "$" + s; };
@@ -638,8 +641,8 @@ function analyze(d) {
   const plans = planLines(d).slice(0, 3);
   const nextAb = near.length ? `${near[0].dir > 0 ? "Compra" : "Vende"} ${nm(near[0].coin)} ${m$(near[0].val)} a ${px(near[0].price)} (${pc(near[0].dist, 2)})${near.length > 1 ? `, altri ${near.length - 1} ordini entro il 3%` : ""}.`
     : entry.length ? `Ordini lontani: il primo è ${entry[0].dir > 0 ? "acquisto" : "vendita"} ${nm(entry[0].coin)} a ${pc(entry[0].dist, 1)}.`
-    : flows.length ? `Nessun ordine in attesa: entra a mercato. Ultime 24h ${flows[0][1] > 0 ? "compra" : "vende"} soprattutto ${nm(flows[0][0])} (${s$(flows[0][1])}).`
-    : "Nessun ordine in attesa e nessuna mossa recente.";
+    : flows.length ? `${d.ord.length ? `Nessun ordine d'ingresso rilevante nel book (${d.ord.length === 1 ? "1 ordine" : d.ord.length + " ordini"} di uscita o piccoli): le ultime mosse sono a mercato.` : "Nessun ordine in attesa: entra a mercato."} Ultime 24h ${flows[0][1] > 0 ? "compra" : "vende"} soprattutto ${nm(flows[0][0])} (${s$(flows[0][1])}).`
+    : d.ord.length ? `Nessun ordine d'ingresso rilevante (${d.ord.length === 1 ? "1 ordine" : d.ord.length + " ordini"} di uscita o piccoli) e nessuna mossa recente.` : "Nessun ordine in attesa e nessuna mossa recente.";
   // scenari
   const sc = d.pos.length ? MOVES.map((x) => scenario(d, x)) : [];
   // limiti e guardrail: [classe, testo]
@@ -655,7 +658,7 @@ function analyze(d) {
   const prob = [];
   for (const g of guard) if (g[0] !== "ok") prob.push(g);
   for (const p of losers.slice(0, 2)) prob.push([p.upnl < -0.08 * eq ? "bad" : "warn", `${nm(p.coin)} ${p.dir > 0 ? "long" : "short"} perde ${m$(Math.abs(p.upnl))} (${pc(p.upnl / eq)} del conto).`]);
-  if (sc.length) { const w = sc.reduce((a, b) => (b.pnl < a.pnl ? b : a)); if (w.pnl < -0.15 * eq) prob.push(["bad", `Con ${pc(w.x, 0)} su tutto il conto scende di ${pc(w.pnl / eq, 0)}.`]); }
+  if (sc.length) { const w = sc.reduce((a, b) => (b.pnl < a.pnl ? b : a)); if (w.pnl < -0.15 * eq) prob.push(["bad", `Con ${pc(w.x, 0)} su tutto il conto scende del ${pcu(Math.abs(w.pnl / eq), 0)}.`]); }
   if (pnl30 != null && av30 > 0 && pnl30 / av30 < -0.1) prob.push(["warn", `Ultimi 30 giorni ${s$(pnl30)} (${pc(pnl30 / av30)}).`]);
   // prove
   const ev = [
@@ -1037,7 +1040,7 @@ function openCand(i) {
     <h3>Per approvare, scrivi al bot</h3>${cmdBox(`/sostituisci ${c.slot} ${c.id}`)}
     <p class="foot">Facoltativo un nome: /sostituisci ${c.slot} ${esc(c.id)} Nome. Per scartarlo (30 giorni): /scarta ${esc(c.id)}. Il bot risponde entro un'ora (giro orario); la pagina si aggiorna al giro successivo.</p>
     <h3>Il wallet</h3>${links(c.address)}
-    <p class="foot">Proposto dal ${esc(c.first || c.date)}${c.display ? `, nome in classifica ${esc(c.display)}` : ""}${c.leader_of ? `, leader del vault ${esc(c.leader_of)}` : ""}.</p></div>`);
+    <p class="foot">Proposto ${artD("dal", esc(dIt(c.first || c.date)))}${c.display ? `, nome in classifica ${esc(c.display)}` : ""}${c.leader_of ? `, leader del vault ${esc(c.leader_of)}` : ""}.</p></div>`);
 }
 // avviso sotto i testi generati dallo scout (che citano drawdown, R² e leva come fatti)
 const cav = (r) => { const m = r && r.metrics; if (!m) return ""; const f = flowBad(m), l = levBad(m); if (!f && !l) return "";
@@ -1049,7 +1052,7 @@ function openReview() {
   sheet(`Posto ${rv.slot}: confronto`, `<div class="wl-an">
     <p style="margin:0">${esc(rv.note || "")}</p>${cav((rv.rows || []).find((r) => r.address === rv.chosen))}
     <div class="scroll"><table class="grid wl-rv"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Periodi +</th><th>Funding</th><th>Valore</th><th>Leva</th><th>Fill</th><th>30g</th></tr></thead><tbody>${rows}</tbody></table></div>${unrelNote((rv.rows || []).map((r) => r.metrics || {}))}
-    <p class="foot">Confronto del ${esc(rv.date || "")} con le metriche dello scout: rendimento time-weighted a 1 anno, max drawdown, R² della crescita, quota di periodi di 2 settimane positivi, funding pagato sul PnL, fill al giorno.</p>
+    <p class="foot">Confronto ${artD("del", esc(dIt(rv.date || "")))} con le metriche dello scout: rendimento time-weighted a 1 anno, max drawdown, R² della crescita, quota di periodi di 2 settimane positivi, funding pagato sul PnL, fill al giorno.</p>
     <h3>Per confermare la scelta</h3>${cmdBox(`/conferma ${rv.slot}`)}
     ${(rv.options || []).length ? `<h3>Oppure un'alternativa</h3>${rv.options.map((o) => `<div class="wl-cmd"><span style="min-width:7em">${esc(o.was || o.name)}</span><code>/sostituisci ${rv.slot} ${esc(o.id)}</code></div>`).join("")}` : ""}</div>`);
 }
@@ -1073,7 +1076,7 @@ function openScout() {
 }
 function renderCand() {
   const wv = WV(), cs = (wv && wv.candidates) || [], rv = wv && wv.review, sc = SC();
-  el("wlCandSub").textContent = sc && sc.date ? `scout del ${sc.date}` : "";
+  el("wlCandSub").textContent = sc && sc.date ? `scout ${artD("del", dIt(sc.date))}` : "";
   const vsOf = (c) => ({ score: c.vs_score, metrics: c.vs_metrics || {} });
   const kv = (l, f, c) => `<div><small>${l}</small><b>${f(c)}</b><small>${esc(c.vs_name)} ${f(vsOf(c))}</small></div>`;
   const cards = cs.map((c, i) => `<button class="card tapCard" type="button" data-cand="${i}">
