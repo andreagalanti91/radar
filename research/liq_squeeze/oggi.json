@@ -1,0 +1,60 @@
+{
+ "ok": true,
+ "price": 68594.0,
+ "S_pct": -89.4,
+ "short_above_6": 5922459,
+ "long_below_6": 106053198,
+ "atr4h": 1101.0,
+ "setup": "S1",
+ "side": "short",
+ "note": "Regola di ricerca, non un segnale (vedi README).",
+ "clean": {
+  "long": {
+   "cascade_end_utc": "2026-11-13 07:00:00",
+   "percentile": 0.018,
+   "ok": true
+  },
+  "short": {
+   "cascade_end_utc": null,
+   "percentile": 0.001,
+   "ok": true
+  }
+ },
+ "plan": {
+  "limits": [
+   69280.0,
+   69966.0,
+   70652.0
+  ],
+  "band_edge": 70652.0,
+  "from_support_or_band": false,
+  "stop": 71753.0,
+  "stop_dist_pct_from_avg": 2.55,
+  "t1": {
+   "price": 66817.0,
+   "usd": 52293211.0,
+   "dist_pct": -2.59
+  },
+  "t2": {
+   "price": 66153.0,
+   "usd": 21997108.0,
+   "dist_pct": -3.56
+  },
+  "limit_valid_h": 24,
+  "time_exit_h": 120
+ },
+ "why": "Squilibrio -89% entro ±6% (6M short sopra, 106M long sotto) e pulizia short (percentile basso).",
+ "decision_utc": "2026-11-13 08:00:00",
+ "last_cascade_hour_utc": {
+  "long": "2026-11-13 07:00:00",
+  "short": "2026-11-04 21:00:00"
+ },
+ "short_above_10": 88073111,
+ "long_below_10": 108447969,
+ "short_fino_76k": 129361323,
+ "oi_info": {
+  "oi_until": "2026-11-12 23:00:00",
+  "extended_h": 8,
+  "extended_with": "okx"
+ }
+}

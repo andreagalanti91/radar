@@ -404,6 +404,16 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Studio dell'utente · 13/11 — squeeze: lato pulito + lato carico, con fascia DCA · RESPINTO
+Mappe orarie dal 2021 senza look-ahead (50.913, radar/liqmap.build), research/liq_squeeze/. L1 mercato 4,8k, L2 DCA 4,6k, L3 senza
+pulizia 4,7k, S1 short 4,6k (10k, PF 0,77–0,88, p placebo 0,38–0,83, vicini 1/42); W3 con metà sulla fascia DCA 74,2k contro 78,5k.
+Il 13/11 la nostra mappa Binance (6 M$ short sopra contro 106 M$ long sotto) e quella Coinglass (≈1,2 B$ short fino a 76k) danno
+letture opposte. Controllo non preregistrato da verificare solo con nuova preregistrazione: "compra la discesa a 24h" schema L2 15,9k.
+**Lezione 93**: entrare quando un lato delle liquidazioni stimate è stato pulito e l'altro è carico (squeeze) non dà vantaggio su BTC
+dal 2021, long o short, a mercato o con DCA: tutte perdono dopo i costi e non si distinguono dal caso; la pulizia non aggiunge
+nulla, lo squilibrio peggiora; il momentum a 24h fa meglio (lezione 81). Le mappe stimate di fonti diverse possono contraddirsi:
+nessuna decisione su una sola mappa.
+
 ### Studio dell'utente · 13/11 — fasce di liquidazione come zone d'ingresso (W3 e intraday) · NON ADOTTATO
 Cascata del 13/11 (67,6k): attraversate tutte e 4 le fasce dense stimate sotto 71,5k (~$310M stimati, solo Binance USDT-M), fermata nel
 supporto S1 sopra la fascia 66,7k; ~$128M di long Hyperliquid spariti dalle fasce attraversate. Regole (research/liq_fasce/):
