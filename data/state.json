@@ -31,6 +31,7 @@
     "trail_sig": null,
     "dist_week": null,
     "side": null,
+    "restore_pending": false,
     "status": "nessuno",
     "signal_date": null,
     "trail": null,
@@ -3056,6 +3057,6 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-13T18:09:43",
+  "last_run": "2026-11-13T21:17:11",
   "heartbeat": "2026-11-13"
 }
