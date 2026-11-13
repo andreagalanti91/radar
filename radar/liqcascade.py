@@ -14,7 +14,8 @@ KEEP_H ore); per una cascata iniziata all'ora S si usa l'ultima mappa con dati f
 Senza mappa della vigilia la cascata non si può verificare: active False e messaggio nel log (nessun dato inventato).
 Livelli reali on-chain: data/liqsnap/{hl,lighter}_YYYY-MM.csv.gz, fotografia prima (≤ 20 minuti dopo l'inizio) e dopo (dalla
 chiusura dell'ultima ora): $ di posizioni dal lato liquidato con liquidazione fra estremo e partenza, prima meno dopo.
-Liquidazioni reali: data/liq_events (radar/liqsources: OKX, Gate, Deribit, Kraken, dYdX, Lighter; Binance e Bybit esclusi).
+Liquidazioni reali: data/liq_events (radar/liqsources: OKX, Gate, Deribit, Kraken, dYdX, Lighter) + data/liq_stream (Binance,
+Bybit, OKX via WebSocket da radar/liqstream.py su una VM europea, solo se attivo).
 """
 from __future__ import annotations
 
@@ -334,8 +335,12 @@ def update(report: dict, data_dir, now: pd.Timestamp | None = None) -> dict | No
         print(f"[cascata] fotografie on-chain non lette: {e!r}")
     events = None
     try:
-        from .liqsources import load
+        from .liqsources import load, load_stream, merge
         events = load(2, d / "liq_events")
+        try:   # Binance/Bybit (raccoglitore WebSocket radar/liqstream.py su VM europea), se i file ci sono
+            events = merge(events, load_stream(72, d / "liq_stream"))
+        except Exception as e:  # noqa: BLE001
+            print(f"[cascata] raccoglitore WebSocket non letto: {e!r}")
     except Exception as e:  # noqa: BLE001
         print(f"[cascata] liquidazioni reali non lette: {e!r}")
     out = build(report, c, maps, snaps, events, now)

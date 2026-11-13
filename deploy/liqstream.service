@@ -1,0 +1,26 @@
+# Unit systemd di esempio per il raccoglitore WebSocket delle liquidazioni (radar/liqstream.py).
+# Copiare in /etc/systemd/system/liqstream.service, adattare User e percorsi, poi:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now liqstream
+# Le credenziali NON stanno qui: /etc/liqstream.env (permessi 600), vedi deploy/LIQSTREAM.md.
+[Unit]
+Description=Radar - liquidazioni BTC Binance/Bybit/OKX via WebSocket
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/radar
+EnvironmentFile=/etc/liqstream.env
+ExecStart=/home/ubuntu/radar/.venv/bin/python -u -m radar.liqstream --repo /home/ubuntu/radar
+Restart=always
+RestartSec=15
+# SIGTERM: il processo salva anche l'ora in corso prima di uscire
+KillSignal=SIGTERM
+TimeoutStopSec=60
+NoNewPrivileges=true
+PrivateTmp=true
+MemoryMax=300M
+
+[Install]
+WantedBy=multi-user.target

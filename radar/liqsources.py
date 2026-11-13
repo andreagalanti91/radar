@@ -3,7 +3,9 @@
 Ogni ora: scarica gli eventi recenti, normalizza (ts, exchange, id, side, price, btc, usd), controlla la qualità,
 accoda a data/liq_events/YYYY-MM.csv senza doppioni (exchange+id) e scrive una riga per fonte in coverage.csv.
 side = lato LIQUIDATO: "long" (vendita forzata) o "short" (acquisto forzato).
-Fonti escluse (vedi research/liq_fonti/README.md): Binance fapi e Bybit (bloccati negli USA, solo websocket),
+Binance e Bybit (bloccati negli USA, solo websocket) arrivano dal raccoglitore radar/liqstream.py su una VM europea, che spinge
+sul repo data/liq_stream/YYYY-MM-DD/HH.csv (stesse colonne): summary() li unisce quando i file ci sono.
+Fonti escluse qui (vedi research/liq_fonti/README.md):
 BitMEX (403 dal sandbox), Hyperliquid (i trade pubblici non marcano le liquidazioni), Bitget (nessun endpoint pubblico).
 """
 from __future__ import annotations
@@ -18,6 +20,8 @@ import requests
 from .data import DATA_DIR
 
 EV_DIR = DATA_DIR / "liq_events"
+STREAM_DIR = DATA_DIR / "liq_stream"   # raccoglitore WebSocket (radar/liqstream.py): binance, bybit, okx
+STREAM_STALE_H = 3                     # file del raccoglitore più vecchi: fonte dichiarata ferma
 COLS = ["ts", "exchange", "id", "side", "price", "btc", "usd"]
 TIMEOUT = 15
 MAX_PRICE_DEV = 0.05  # scarto massimo dal prezzo mediano del giro
@@ -183,6 +187,53 @@ def load(months=2, ev_dir=None):
     return out
 
 
+def load_stream(hours=48, stream_dir=None, now_ms=None):
+    """Eventi del raccoglitore WebSocket (data/liq_stream/YYYY-MM-DD/HH.csv) delle ultime `hours` ore. Nessun file: lista vuota."""
+    root = Path(stream_dir or STREAM_DIR)
+    if not root.exists():
+        return []
+    now_ms = now_ms or int(time.time() * 1000)
+    keys = {datetime.fromtimestamp((now_ms - h * 3_600_000) / 1000, timezone.utc).strftime("%Y-%m-%d/%H") for h in range(hours + 1)}
+    out = []
+    for k in sorted(keys):
+        p = root / f"{k}.csv"
+        if not p.exists():
+            continue
+        with open(p, newline="") as f:
+            for r in csv.DictReader(f):
+                try:
+                    r["ts"], r["price"], r["btc"], r["usd"] = int(r["ts"]), float(r["price"]), float(r["btc"]), float(r["usd"])
+                except (KeyError, TypeError, ValueError):
+                    continue
+                out.append(r)
+    return out
+
+
+def stream_status(stream_dir=None, now_ms=None) -> dict | None:
+    """Stato del raccoglitore: ultimo file, età in ore, ferma se oltre STREAM_STALE_H; None se il raccoglitore non è attivo."""
+    root = Path(stream_dir or STREAM_DIR)
+    files = sorted(root.glob("????-??-??/??.csv")) if root.exists() else []
+    if not files:
+        return None
+    now_ms = now_ms or int(time.time() * 1000)
+    last = files[-1]
+    end = datetime.strptime(f"{last.parent.name} {last.stem}", "%Y-%m-%d %H").replace(tzinfo=timezone.utc).timestamp() * 1000 + 3_600_000
+    age = round((now_ms - end) / 3_600_000, 1)
+    return {"last_hour": f"{last.parent.name} {last.stem}:00", "age_h": age, "stale": age > STREAM_STALE_H}
+
+
+def merge(*lists):
+    """Unisce liste di eventi senza doppioni (exchange+id): OKX arriva sia dal REST sia dal raccoglitore."""
+    seen, out = set(), []
+    for lst in lists:
+        for e in lst:
+            k = (e["exchange"], str(e["id"]))
+            if k not in seen:
+                seen.add(k)
+                out.append(e)
+    return out
+
+
 def store(events, ev_dir=None):
     """Accoda per mese senza doppioni (exchange+id). Ritorna il numero di eventi nuovi per exchange."""
     ev_dir = Path(ev_dir or EV_DIR)
@@ -244,10 +295,22 @@ def collect(ev_dir=None, sources=None) -> dict:
     return {"status": status, "added": added, "notes": notes}
 
 
-def summary(events=None, now_ms=None, big_usd=250_000, top=10, ev_dir=None) -> dict:
-    """Totali per exchange (1h/24h, long vs short liquidati in $) e ultimi eventi grandi."""
+def summary(events=None, now_ms=None, big_usd=250_000, top=10, ev_dir=None, stream_dir=None) -> dict:
+    """Totali per exchange (1h/24h, long vs short liquidati in $) e ultimi eventi grandi.
+
+    Senza `events`: data/liq_events (REST, runner USA) + data/liq_stream (WebSocket Binance/Bybit/OKX, VM in Europa) se presente."""
     now_ms = now_ms or int(time.time() * 1000)
-    events = load(2, ev_dir) if events is None else events
+    stream = None
+    if events is None:
+        events = load(2, ev_dir)
+        try:
+            stream = stream_status(stream_dir, now_ms)
+            if stream:
+                events = merge(events, load_stream(26, stream_dir, now_ms))
+                if stream["stale"]:
+                    print(f"[liq-fonti] raccoglitore WebSocket fermo: ultimo file {stream['last_hour']} ({stream['age_h']} ore fa)")
+        except Exception as ex:  # noqa: BLE001  (file del raccoglitore illeggibili: si resta sulle fonti REST)
+            print(f"[liq-fonti] raccoglitore WebSocket non letto: {ex!r}")
     per = {}
     for e in events:
         age = now_ms - e["ts"]
@@ -263,4 +326,4 @@ def summary(events=None, now_ms=None, big_usd=250_000, top=10, ev_dir=None) -> d
                  key=lambda e: e["ts"], reverse=True)[:top]
     last = max((e["ts"] for e in events), default=None)
     return {"per_exchange": per, "total": tot, "big": big, "last_ts": last,
-            "stale": last is None or now_ms - last > 6 * 3_600_000}
+            "stale": last is None or now_ms - last > 6 * 3_600_000, "stream": stream}

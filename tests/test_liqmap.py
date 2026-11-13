@@ -120,3 +120,43 @@ class TestLiqMap(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestLiqMapV2(unittest.TestCase):
+    """v2: quota long dei nuovi contratti dal flusso taker (non adottata nel giro, ma la funzione deve essere corretta)."""
+
+    def test_quota_taker(self):
+        self.assertAlmostEqual(liqmap.taker_share(3, 1), 0.75)
+        self.assertTrue(np.isnan(liqmap.taker_share(0, 0)))
+        self.assertTrue(np.isnan(liqmap.taker_share("x", 1)))
+
+    def test_parse_okx_taker_solo_ore_chiuse(self):
+        t0 = 1_794_589_200_000
+        rows = [[str(t0 + 3_600_000), "10", "30"], [str(t0), "30", "10"]]   # [ts, sellVol, buyVol], dalla più recente
+        s = liqmap.parse_okx_taker(rows, now_ms=t0 + 3_600_000 + 60_000)    # l'ora più recente non è ancora chiusa
+        self.assertEqual(len(s), 1)
+        self.assertAlmostEqual(float(s.iloc[0]), 0.25)
+
+    def test_build_con_quota_long(self):
+        h = hours([100] * 10, [1000 + 100 * i for i in range(10)])
+        w1 = liqmap.window(liqmap.build(h), 100, 0.2)
+        h2 = h.copy(); h2["long_share"] = 0.25
+        w2 = liqmap.window(liqmap.build(h2), 100, 0.2)
+        self.assertAlmostEqual(w2["long"].sum(), 900 * 0.25, delta=1)
+        self.assertAlmostEqual(w2["short"].sum(), 900 * 0.75, delta=1)
+        self.assertAlmostEqual(w1["long"].sum(), w1["short"].sum(), delta=1)   # v1 = 50/50
+        h3 = h.copy(); h3["long_share"] = np.nan                                  # flusso mancante: ripiego 50/50
+        w3 = liqmap.window(liqmap.build(h3), 100, 0.2)
+        self.assertAlmostEqual(w3["long"].sum(), w1["long"].sum(), delta=1e-6)
+        self.assertAlmostEqual(liqmap.window(liqmap.build(h2, long_share=0.5), 100, 0.2)["long"].sum(), w1["long"].sum(), delta=1e-6)
+
+    def test_with_taker_share_riempie_con_okx_senza_futuro(self):
+        h = hours([100] * 4, [1000, 1100, 1200, 1300])
+        h["b"] = [0.6, 0.4, np.nan, np.nan]
+        ref = pd.Series([0.7], index=[h.index[2]])
+        x, n = liqmap.with_taker_share(h, ref)
+        self.assertEqual(n, 3)
+        self.assertEqual(list(x["long_share"].round(2).fillna(-1)), [0.6, 0.4, 0.7, -1])
+        x, n = liqmap.with_taker_share(h.drop(columns="b"))
+        self.assertEqual(n, 0)
+        self.assertEqual(liqmap.VERSION, 1)   # v2 non adottata (research/liqmap_v2)

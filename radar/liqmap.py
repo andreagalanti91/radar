@@ -15,6 +15,8 @@ Hyperliquid è l'unico exchange dove le posizioni sono pubbliche: per i conti pi
 whalebot si leggono i prezzi di liquidazione VERI delle posizioni BTC. Ogni ora radar/liqsnap.py registra in data/liqsnap/ i livelli
 reali di Hyperliquid (tutti i conti ≥ $1M a rotazione) e Lighter, in fasce dello 0,25% (chiave "onchain" del risultato).
 La ricerca (research/liquidazioni, lezione 81) non trova un vantaggio di trading nella mappa: è contesto, non segnale.
+v2 (quota long dei nuovi contratti dal flusso taker, with_taker_share) è pronta ma NON adottata (VERSION = 1): sulle liquidazioni
+reali Binance 2023–24 non localizza meglio delle v1 e nessuna delle due batte il caso a pari distanza (research/liqmap_v2).
 """
 from __future__ import annotations
 
@@ -35,6 +37,11 @@ MM = 0.005           # margine di mantenimento (primo scaglione Binance/OKX ~0,4
 BIN = 0.0025         # fasce dello 0,25%
 LOOKBACK_H = 21 * 24  # 3 settimane di storia oraria
 RANGE = 0.15         # mappa entro ±15% dal prezzo
+SHARE_MIN, SHARE_MAX = 0.1, 0.9   # v2: limiti della quota long dei nuovi contratti
+# Versione del metodo: 1 = ogni aumento di OI metà long e metà short; 2 = quota long dal flusso taker dell'ora (with_taker_share).
+# La v2 NON è adottata: validata il 13/11 sulle liquidazioni reali Binance cm 2023-06 → 2024-10 non localizza meglio le
+# liquidazioni (fasce dense +0,3/−0,1 punti, correlazione del rapporto invariata ~0); vedi research/liqmap_v2/README.md.
+VERSION = 1
 SIG = 0.30           # cluster "significativo": almeno il 30% del più grande dello stesso lato entro ±10%
 HL_API = "https://api.hyperliquid.xyz/info"
 HL_LB = "https://stats-data.hyperliquid.xyz/Mainnet/leaderboard"
@@ -59,13 +66,20 @@ def _bin(p, base: float) -> np.ndarray:
     return np.floor(np.log(np.asarray(p, float) / base) / math.log1p(BIN)).astype(int)
 
 
-def build(h: pd.DataFrame, leverage=LEVERAGE, mm: float = MM, long_share: float = 0.5) -> dict:
+def build(h: pd.DataFrame, leverage=LEVERAGE, mm: float = MM, long_share: float | None = None) -> dict:
     """Mappa delle liquidazioni stimate da candele orarie con open interest in $ (colonne high, low, close, oi_usd).
 
+    Quota long dei nuovi contratti di ogni ora: `long_share` se è un numero; altrimenti la colonna "long_share" di `h` se c'è
+    (v2: flusso taker dell'ora, vedi taker_share), con 0,5 dove manca; altrimenti 0,5 (v1).
     Ritorna {"base", "long", "short"}: array in $ per fascia (fascia i = prezzi [base·(1+BIN)^i, base·(1+BIN)^(i+1))).
     I long liquidabili restano sotto il minimo più recente, gli short sopra il massimo più recente.
     """
+    if long_share is None and "long_share" in h.columns:
+        ls = h["long_share"].astype(float).fillna(0.5).clip(SHARE_MIN, SHARE_MAX)
+    else:
+        ls = pd.Series(0.5 if long_share is None else float(long_share), index=h.index)
     h = h[["high", "low", "close", "oi_usd"]].dropna()
+    ls = ls.reindex(h.index).to_numpy(float)
     base = float(h["low"].min()) * 0.4
     n = int(_bin(float(h["high"].max()) * 2.2, base)) + 2
     L, S = np.zeros(n), np.zeros(n)
@@ -84,10 +98,23 @@ def build(h: pd.DataFrame, leverage=LEVERAGE, mm: float = MM, long_share: float 
             for lev, w, ol, os_ in tiers:
                 jl, js = e + ol, e + os_
                 if 0 <= jl < n and jl < bl[i]:
-                    L[jl] += d * long_share * w
+                    L[jl] += d * ls[i] * w
                 if 0 <= js < n and js > bh[i]:
-                    S[js] += d * (1 - long_share) * w
+                    S[js] += d * (1 - ls[i]) * w
     return {"base": base, "long": L, "short": S}
+
+
+def with_taker_share(h: pd.DataFrame, ref_b: pd.Series | None = None) -> tuple[pd.DataFrame, int]:
+    """v2: colonna long_share = quota taker in acquisto dell'ora (colonna "b" di Binance; dove manca, `ref_b` di OKX).
+
+    Nessun dato dal futuro: b è il flusso DENTRO l'ora, noto alla sua chiusura. Ore senza flusso: restano NaN (build usa 0,5).
+    Ritorna (candele, ore coperte dal flusso)."""
+    h = h.copy()
+    b = h["b"] if "b" in h.columns else pd.Series(np.nan, index=h.index)
+    if ref_b is not None and len(ref_b):
+        b = b.fillna(ref_b.reindex(h.index))
+    h["long_share"] = b.clip(SHARE_MIN, SHARE_MAX)
+    return h, int(b.notna().sum())
 
 
 def extend_oi(b: pd.DataFrame, ref: pd.DataFrame | None, max_h: int = 48) -> tuple[pd.DataFrame, dict]:
@@ -101,7 +128,7 @@ def extend_oi(b: pd.DataFrame, ref: pd.DataFrame | None, max_h: int = 48) -> tup
     if real.empty:
         raise ValueError("nessun open interest")
     last = real.index[-1]
-    head, tail = b.loc[:last].dropna(), b.loc[b.index > last]
+    head, tail = b.loc[:last].dropna(subset=["high", "low", "close", "oi_usd"]), b.loc[b.index > last]
     info = {"oi_until": str(last), "extended_h": 0}
     if ref is None or not len(ref) or not len(tail) or last not in ref.index or not ref.at[last, "oi_usd"] > 0:
         return head, info
@@ -296,6 +323,34 @@ def okx_hourly(hours: int = LOOKBACK_H + 24) -> pd.DataFrame:
     return k.dropna().iloc[-hours:]
 
 
+def taker_share(buy, sell) -> float:
+    """Quota del volume taker in acquisto, b = buy / (buy + sell); NaN se il volume è nullo o non valido."""
+    try:
+        buy, sell = float(buy), float(sell)
+    except (TypeError, ValueError):
+        return float("nan")
+    return buy / (buy + sell) if buy >= 0 and sell >= 0 and buy + sell > 0 else float("nan")
+
+
+def parse_okx_taker(rows, now_ms: float) -> pd.Series:
+    """Righe OKX rubik taker-volume-contract [ts, sellVol, buyVol] → quota taker in acquisto per ora (solo ore chiuse)."""
+    out = {}
+    for r in rows or []:
+        ts = int(r[0])
+        if ts + 3_600_000 <= now_ms:
+            b = taker_share(r[2], r[1])
+            if b == b:
+                out[pd.to_datetime(ts, unit="ms")] = b
+    return pd.Series(out, dtype=float).sort_index()
+
+
+def okx_taker_hourly(hours: int = 72) -> pd.Series:
+    """OKX BTC-USDT-SWAP: quota taker in acquisto per ora (rubik taker-volume-contract), per le ore dopo l'archivio Binance."""
+    d = _get("https://www.okx.com/api/v5/rubik/stat/taker-volume-contract",
+             {"instId": "BTC-USDT-SWAP", "period": "1H", "limit": min(int(hours), 100)}).json().get("data") or []
+    return parse_okx_taker(d, time.time() * 1000)
+
+
 def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
     """Binance USDT-M: OI a 5 minuti dall'archivio giornaliero (fino a ieri) e candele orarie spot (data-api.binance.vision).
     Le candele arrivano fino all'ultima ora chiusa; dopo la fine dell'archivio oi_usd resta vuoto (vedi extend_oi)."""
@@ -305,7 +360,8 @@ def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
             if r.status_code != 200:
                 return None
             with zipfile.ZipFile(io.BytesIO(r.content)) as z:
-                return pd.read_csv(z.open(z.namelist()[0]), usecols=["create_time", "sum_open_interest_value"])
+                x = pd.read_csv(z.open(z.namelist()[0]))
+                return x[[c for c in ("create_time", "sum_open_interest_value", "sum_taker_long_short_vol_ratio") if c in x.columns]]
         except Exception:  # noqa: BLE001
             return None
     today = pd.Timestamp.utcnow().tz_localize(None).normalize().date()
@@ -317,6 +373,8 @@ def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
     m["t"] = pd.to_datetime(m["create_time"])
     v = pd.to_numeric(m["sum_open_interest_value"], errors="coerce")
     oi = v.where(v > 0).groupby(m["t"].dt.floor("h")).last()   # ultimo valore dentro l'ora (≤ chiusura): nessun dato dal futuro
+    r = pd.to_numeric(m.get("sum_taker_long_short_vol_ratio"), errors="coerce") if "sum_taker_long_short_vol_ratio" in m else pd.Series(np.nan, index=m.index)
+    b = (r.where(r > 0) / (1 + r.where(r > 0))).groupby(m["t"].dt.floor("h")).mean()   # quota taker in acquisto dell'ora (v2)
     start = int((pd.Timestamp(oi.index.min())).timestamp() * 1000)
     kl = _get("https://data-api.binance.vision/api/v3/klines", {"symbol": "BTCUSDT", "interval": "1h", "startTime": start, "limit": 1000}).json()
     now_ms = time.time() * 1000
@@ -324,6 +382,7 @@ def binance_hourly(days: int = LOOKBACK_H // 24 + 1) -> pd.DataFrame:
     k = pd.DataFrame([[pd.to_datetime(r[0], unit="ms"), float(r[2]), float(r[3]), float(r[4])] for r in kl], columns=["t", "high", "low", "close"]).set_index("t")
     k["oi_usd"] = oi.reindex(k.index).ffill(limit=2)
     k.loc[k.index > oi.dropna().index.max(), "oi_usd"] = np.nan   # dopo l'archivio nessun OI vero (niente ffill)
+    k["b"] = b.reindex(k.index)   # flusso taker Binance (solo ore d'archivio); usato dalla mappa solo se VERSION == 2
     return k
 
 
@@ -403,7 +462,15 @@ def update(levels: dict | None, data_dir) -> dict:
             else:   # ore dopo la fine dell'archivio Binance: OI stimato dalle variazioni OKX (dichiarato in extended_h)
                 h, info = extend_oi(h, okx)
             h = h.iloc[-LOOKBACK_H:]
-            m = build(h)
+            v = 1
+            if VERSION == 2:   # ripiego: senza flusso taker si resta al 50/50 (v 1)
+                try:
+                    h, nb = with_taker_share(h, okx_taker_hourly(100) if name == "okx" or h["b"].isna().any() else None)
+                    v = 2 if nb else 1
+                except Exception as e:  # noqa: BLE001
+                    print(f"[liqmap] {name}: flusso taker non disponibile, 50/50: {e!r}")
+            m = build(h, long_share=None if v == 2 else 0.5)
+            info = {**info, "v": v}
             if price is None:
                 price = float(h["close"].iloc[-1])
             asof = h.index[-1] + pd.Timedelta(hours=1)   # chiusura dell'ultima ora usata
@@ -450,6 +517,7 @@ def update(levels: dict | None, data_dir) -> dict:
         "bins": [[round(p, 0), round(l, 0), round(s, 0)] for p, l, s in zip(w["price"], w["long"], w["short"])],
         "bins_src": {k: [[round(l, 0), round(s, 0)] for l, s in zip(x["long"], x["short"])] for k, x in per.items()},
         "whales": whales[:30], "whale_accounts": n_acc, "onchain": onchain,
+        "v": max((v.get("v", 1) for v in src.values() if v.get("ok")), default=1),
         "params": {"leverage": [list(x) for x in LEVERAGE], "mm": MM, "bin_pct": BIN * 100, "lookback_days": LOOKBACK_H // 24},
     })
     try:
