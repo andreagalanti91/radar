@@ -1242,7 +1242,16 @@ File: research/perdita_2026/PREREG.md, research/LOSERS.md.
 passa il placebo solo in 2 varianti su 8 con vicini incoerenti; nessuna variante batte il buy & hold come trade e nessun preavviso
 sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flusso_trader/README.md.
 
-## Errori operativi da non ripetere (aggiornata 07/11/2026)
+## Errori operativi da non ripetere (aggiornata 13/11/2026)
+- Revisione completa del 13/11 (5 revisori + verifica incrociata, STATO-revisione.md): W3 corretta e riprodotta da zero; trovati e
+  corretti avvisi falsi ("stop toccato" dopo un'uscita EMA), variabili con virgola/punto delle migliaia che bloccavano il giro o
+  davano 50 $ invece di 50.000 $, giro 00:30 mai partito (ora avviato ogni ora dalla catena liqsnap), perdita silenziosa di dati
+  nei rebase "-X theirs" su file binari, stato degli avvisi perso se il push fallisce.
+- Prima di pubblicare una correzione: test che fallisce prima e passa dopo, suite completa verde, render a 400/1280, deploy e
+  verifica online. I test vanno scritti con unittest (pytest non è installato: test in stile pytest non girano mai).
+- Versioni delle librerie: fissarle a quelle realmente installate nei runner (log "Successfully installed"), non a quelle locali.
+- Mai pubblicare file che un agente sta ancora modificando; mai committare un modulo orario a metà.
+- Dati provvisori (OKX prima dell'archivio Binance) e stime (mappe di liquidazione, anche Coinglass) vanno marcati come tali.
 - Codice salvato ma non pubblicato: dopo ogni modifica alla dashboard avviare il deploy e verificare la pagina online (mai dire
   "fatto" prima di aver visto la versione pubblicata).
 - Verifiche su dati vecchi: testare la pagina con il report pubblicato più recente, non con site/ locale.

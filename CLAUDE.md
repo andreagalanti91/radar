@@ -5,3 +5,5 @@
   medi e lunghi tieni aggiornato un file `STATO-<argomento>.md`. Non ripetere l'analisi per conferme o risposte dentro un lavoro avviato.
 - Tono delle risposte: professionale, sobrio, diretto; prima la conclusione, poi i dettagli.
 - Prima di lavorare sulla strategia leggi in RESEARCH.md: "W3 IN USO", "Memoria dell'algoritmo principale" ed "Errori operativi da non ripetere".
+- Nessuna modifica pubblicata senza: test che riproduce il problema, suite completa verde, render a 400/1280 px, deploy e verifica
+  sul sito; le correzioni che cambiano dati o decisioni di W3 si presentano all'utente prima di applicarle.
