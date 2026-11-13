@@ -15,8 +15,9 @@ H2 2024-02-16 → 2024-10-14
   v2k  M1 long pes  12.8% / giorni   7.0% | short pes  13.1% / giorni   7.7% | M2 rho1 +0.005 rho3 +0.002 parz.mom -0.028 | short/(s+l) ±5% med 46.3%
   v2t  M1 long pes  12.4% / giorni   6.6% | short pes  12.7% / giorni   7.4% | M2 rho1 +0.012 rho3 +0.013 parz.mom -0.019 | short/(s+l) ±5% med 44.8%
 Riferimento: 8 fasce su ~40 per lato = 20% se a caso
+Placebo (fasce dense v1 di un altro giorno, stesse distanze; media e 95° pct su 30 permutazioni, pesato): long 12.5% (p95 14.1%) | short 15.5% (p95 25.4%)
 Novembre 2026 (OKX + altri exchange, 13 giorni, indicativo)
-  v1   M1 long pes  20.0% / giorni  14.3% | short pes   0.2% / giorni   0.2% | M2 rho1 -0.082 rho3 -0.313 parz.mom -0.018 | short/(s+l) ±5% med 32.6%
-  v2   M1 long pes  20.0% / giorni  14.3% | short pes   0.2% / giorni   0.2% | M2 rho1 -0.082 rho3 -0.313 parz.mom -0.018 | short/(s+l) ±5% med 31.1%
-  v2k  M1 long pes  20.0% / giorni  14.3% | short pes   0.0% / giorni   0.0% | M2 rho1 -0.082 rho3 -0.313 parz.mom -0.018 | short/(s+l) ±5% med 28.3%
-  v2t  M1 long pes  20.0% / giorni  14.3% | short pes   0.2% / giorni   0.2% | M2 rho1 -0.016 rho3 -0.308 parz.mom +0.074 | short/(s+l) ±5% med 26.3%
+  v1   M1 long pes  32.8% / giorni  15.8% | short pes   0.2% / giorni   0.2% | M2 rho1 -0.082 rho3 -0.313 parz.mom -0.018 | short/(s+l) ±5% med 32.6%
+  v2   M1 long pes  32.8% / giorni  15.8% | short pes   0.2% / giorni   0.2% | M2 rho1 -0.082 rho3 -0.313 parz.mom -0.018 | short/(s+l) ±5% med 31.1%
+  v2k  M1 long pes  32.8% / giorni  15.8% | short pes   0.0% / giorni   0.0% | M2 rho1 -0.082 rho3 -0.313 parz.mom -0.018 | short/(s+l) ±5% med 28.3%
+  v2t  M1 long pes  32.8% / giorni  15.8% | short pes   0.2% / giorni   0.2% | M2 rho1 -0.016 rho3 -0.308 parz.mom +0.074 | short/(s+l) ±5% med 26.3%

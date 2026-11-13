@@ -1,0 +1,16 @@
+Binance fino a 2026-11-13 19:00:00 (OI vero fino a 2026-11-12 23:00:00, 20 ore stimate), prezzo 69060; ore senza taker Binance 20, coperte da OKX 20
+v1   ±5% short sopra    45 M long sotto   146 M | ±10% short sopra   199 M long sotto   176 M | ±15% short sopra   528 M long sotto   193 M | cluster short: 75325 59M, 76271 77M, 77037 88M
+v2   ±5% short sopra    45 M long sotto   149 M | ±10% short sopra   196 M long sotto   178 M | ±15% short sopra   512 M long sotto   195 M | cluster short: 75325 56M, 76271 75M, 77037 84M
+v2k  ±5% short sopra    45 M long sotto   155 M | ±10% short sopra   189 M long sotto   181 M | ±15% short sopra   479 M long sotto   200 M | cluster short: 71121 23M, 74020 23M, 75137 50M, 75513 50M, 76271 73M
+               close      b   oi_b
+t                                 
+2026-11-04  80504.01  0.494  7.752
+2026-11-05  76088.01  0.503  7.163
+2026-11-06  75844.00  0.497  7.302
+2026-11-07  75867.59  0.495  7.272
+2026-11-08  74851.44  0.500  7.149
+2026-11-09  75368.41  0.512  7.426
+2026-11-10  73796.06  0.494  7.335
+2026-11-11  74015.19  0.488  7.148
+2026-11-12  71460.00  0.489  7.240
+2026-11-13  69060.50  0.490  6.445
