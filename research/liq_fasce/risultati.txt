@@ -1,0 +1,240 @@
+# Risultati · studio fasce di liquidazione + S/R (13/11/2026). Script: q1_q4_evento.py, q2_w3.py, q3_cascate.py
+
+########## Domande 1 e 4 · evento
+== Candele orarie 12/11 08:00 → ultima ora chiusa (UTC)
+                         open      high       low     close  ret%  liq_long_M  liq_short_M
+t                                                                                         
+2026-11-12 08:00:00  73660.60  73696.86  73509.93  73596.31 -0.09        0.00         0.00
+2026-11-12 09:00:00  73596.31  73596.31  73260.00  73496.29 -0.14        2.28         0.00
+2026-11-12 10:00:00  73496.29  73631.64  73372.00  73463.52 -0.04        0.00         0.00
+2026-11-12 11:00:00  73463.52  73485.77  72789.00  72957.41 -0.69        4.48         0.01
+2026-11-12 12:00:00  72957.41  73152.01  72734.71  72909.55 -0.07        0.36         0.00
+2026-11-12 13:00:00  72909.55  72996.33  72234.00  72503.34 -0.56        4.28         0.04
+2026-11-12 14:00:00  72503.34  72580.44  71293.23  71646.00 -1.18       20.95         0.06
+2026-11-12 15:00:00  71646.01  71734.01  71255.02  71710.05  0.09        0.39         0.13
+2026-11-12 16:00:00  71710.05  72223.80  71501.24  71754.96  0.06        1.01         1.00
+2026-11-12 17:00:00  71754.97  72052.60  71656.07  71906.98  0.21        0.01         0.05
+2026-11-12 18:00:00  71906.98  72076.98  71577.79  71757.35 -0.21        0.22         0.01
+2026-11-12 19:00:00  71757.34  71776.19  71438.74  71686.75 -0.10        0.44         0.00
+2026-11-12 20:00:00  71686.75  71701.22  71412.00  71442.02 -0.34        0.07         0.00
+2026-11-12 21:00:00  71442.02  71636.36  71386.00  71559.70  0.16        0.29         0.00
+2026-11-12 22:00:00  71559.70  71559.70  71315.28  71418.01 -0.20        0.10         0.00
+2026-11-12 23:00:00  71418.01  71540.01  71113.06  71460.00  0.06        1.00         0.00
+2026-11-13 00:00:00  71460.00  71514.01  70688.00  71124.19 -0.47       10.72         0.03
+2026-11-13 01:00:00  71124.18  71234.01  70761.98  70947.40 -0.25        0.06         0.02
+2026-11-13 02:00:00  70947.40  70970.01  69900.00  70252.90 -0.98        2.08         0.02
+2026-11-13 03:00:00  70252.90  70329.14  68527.89  68965.01 -1.83       18.51         0.01
+2026-11-13 04:00:00  68965.01  69146.01  68578.05  68581.08 -0.56        1.01         0.20
+2026-11-13 05:00:00  68581.08  68877.11  67568.00  68143.72 -0.64       41.67         1.83
+2026-11-13 06:00:00  68143.73  69138.10  67904.46  69074.43  1.37        0.03         2.89
+
+== Fase A (12/11 11:00–15:00): mappa stimata alla vigilia (ore fino a 2026-11-12 10:00:00), prezzo 73.464, minimo 71.255 alle 2026-11-12 15:00:00
+   squilibrio ±5%: {'short_above': 262644075.0, 'long_below': 394938378.0, 'pct': -20.1}; ±10%: {'short_above': 507903360.0, 'long_below': 728796502.0, 'pct': -17.9}
+       lato   price   usd  dist_pct  rel  sig  sr  attraversata
+ long sotto 72243.0 138.3     -1.66 1.00 True  R1          True
+ long sotto 70992.0  76.2     -3.36 0.55 True NaN         False
+ long sotto 70462.0  77.7     -4.09 0.56 True NaN         False
+ long sotto 69588.0  66.6     -5.28 0.48 True  S1         False
+ long sotto 69241.0  42.3     -5.75 0.31 True  S1         False
+ long sotto 68896.0  78.4     -6.22 0.57 True  S1         False
+ long sotto 68553.0  66.8     -6.68 0.48 True  S1         False
+ long sotto 67872.0  63.2     -7.61 0.46 True  S1         False
+ long sotto 66862.0  55.4     -8.99 0.40 True  S1         False
+short sopra 75188.0  25.6      2.35 0.25 True  R1         False
+short sopra 76323.0 102.3      3.89 1.00 True  R1         False
+short sopra 76705.0  86.3      4.41 0.84 True  R2         False
+short sopra 77089.0  93.7      4.93 0.92 True  R2         False
+short sopra 77475.0  89.2      5.46 0.87 True  R2         False
+short sopra 78252.0  66.8      6.52 0.65 True  R2         False
+   long stimati fra 71.255 e 73.464: $220M (Binance USDT-M, stima)
+   supporti (S/R della dashboard, dati giornalieri fino al giorno prima): S1 66.956–70.080 (forza 4); S2 61.844–65.000 (forza 4); S3 57.800–60.000 (forza 4); S4 53.486–56.553 (forza 1); S5 48.190–49.000 (forza 2)
+   resistenze: R1 71.997–76.000; R2 76.606–80.600; R3 82.300–84.898; R4 87.396–91.231
+
+== Fase B (13/11 00:00–05:00): mappa stimata alla vigilia (ore fino a 2026-11-12 23:00:00), prezzo 71.460, minimo 67.568 alle 2026-11-13 05:00:00
+   squilibrio ±5%: {'short_above': 54487988.0, 'long_below': 389958385.0, 'pct': -75.5}; ±10%: {'short_above': 473407734.0, 'long_below': 528382960.0, 'pct': -5.5}
+       lato   price   usd  dist_pct  rel  sig  sr  attraversata
+ long sotto 70499.0 101.7     -1.35 1.00 True NaN          True
+ long sotto 69624.0  64.8     -2.57 0.64 True  S1          True
+ long sotto 68932.0  80.5     -3.54 0.79 True  S1          True
+ long sotto 67907.0  63.0     -4.97 0.62 True  S1          True
+ long sotto 66731.0  48.5     -6.62 0.48 True  S1         False
+ long sotto 66233.0  26.4     -7.32 0.26 True NaN         False
+ long sotto 64761.0  14.7     -9.37 0.14 True  S2         False
+short sopra 72462.0  12.2      1.40 0.12 True  R1         False
+short sopra 74109.0  29.3      3.71 0.29 True  R1         False
+short sopra 75227.0  42.7      5.27 0.43 True  R1         False
+short sopra 76172.0 100.0      6.59 1.00 True  R1         False
+short sopra 77129.0  83.5      7.93 0.83 True  R2         False
+short sopra 77515.0  84.6      8.47 0.85 True  R2         False
+   long stimati fra 67.568 e 71.460: $411M (Binance USDT-M, stima)
+   supporti (S/R della dashboard, dati giornalieri fino al giorno prima): S1 66.956–70.080 (forza 3) attraversato; S2 62.275–65.000 (forza 4); S3 57.800–61.844 (forza 5); S4 53.486–56.553 (forza 1); S5 45.821–49.000 (forza 4)
+   resistenze: R1 71.997–76.000; R2 76.606–80.600; R3 82.300–84.898; R4 87.396–91.231
+
+== Dopo la cascata: mappa con ore fino a 2026-11-13 06:00:00 (OI {'oi_until': '2026-11-12 23:00:00', 'extended_h': 7, 'extended_with': 'okx'}), prezzo 69.074
+   fasce dense long sotto: 66.817 (-3.3%, $53M); 66.153 (-4.2%, $21M)
+   fasce dense short sopra: 74.020 (+7.2%, $27M); 74.391 (+7.7%, $19M); 74.763 (+8.2%, $19M); 75.137 (+8.8%, $32M); 75.513 (+9.3%, $43M)
+   squilibrio ±5%: {'short_above': 2952607.0, 'long_below': 90715455.0, 'pct': -93.7}
+   supporti: 66.956–70.080; 62.275–65.000; 57.800–61.844; 53.486–56.553 | resistenze: 71.997–76.000; 76.606–80.600; 82.300–84.898; 87.396–91.231
+
+== Liquidazioni reali registrate (data/liq_events: OKX, Gate, Deribit, Kraken, dYdX, Lighter; NON Binance/Bybit)
+   2026-11-12 11:00 → 2026-11-12 16:00: long $30.5M, short $0.2M; per exchange dydx 0.0M, gate 3.4M, okx 27.3M
+     long per fascia di 500 $: 73.000 1.4M, 72.500 4.5M, 72.000 17.0M, 71.500 4.1M, 71.000 3.5M
+   2026-11-13 00:00 → 2026-11-13 06:00: long $74.0M, short $2.1M; per exchange dydx 0.1M, gate 38.7M, okx 37.3M
+     long per fascia di 500 $: 71.000 1.2M, 70.500 9.6M, 70.000 1.3M, 69.500 3.8M, 69.000 8.0M, 68.500 8.7M, 68.000 15.2M, 67.500 26.3M
+
+== Domanda 4 · livelli reali Hyperliquid + Lighter (data/liqsnap, conti ≥ $1M)
+   fotografia 2026-11-12T10:55 (mid 73.414), minimo successivo 71.255: long liquidabili totali ±15% $226M; nelle fasce attraversate $83.9M (HL 83.9M, Lighter 0.0M, posizioni 5)
+     fasce long più grandi: 71.250 $40.9M (attraversata), 71.750 $40.3M (attraversata), 69.250 $36.7M, 70.500 $26.2M, 67.000 $17.6M, 68.250 $16.4M
+     fasce short più grandi: 82.750 $29.0M, 83.500 $6.6M, 81.750 $6.6M, 74.000 $0.0M
+   fotografia 2026-11-13T00:11 (mid 71.372), minimo successivo 67.568: long liquidabili totali ±15% $247M; nelle fasce attraversate $143.1M (HL 143.1M, Lighter 0.0M, posizioni 13)
+     fasce long più grandi: 68.750 $67.4M (attraversata), 61.250 $25.7M, 70.500 $25.5M (attraversata), 66.750 $17.8M, 63.750 $17.1M, 71.000 $16.0M (attraversata)
+     fasce short più grandi: 78.250 $7.9M, 81.250 $6.6M, 80.500 $0.4M
+   ultima fotografia 2026-11-13T07:02 (mid 69.226): long sotto entro −5% $21.9M, entro −10% $67.8M; short sopra entro +5% $0.0M, entro +10% $0.0M
+
+########## Domanda 2 · W3
+== Domanda 2 · W3 con ingresso limit sulle fasce / presa parziale (10k, 1x, costi inclusi)
+               variante periodo  finale  rend    dd   mar  trade    wr  persi  senza_migliore
+                     W3   2021→   78474 684.7 -21.1 32.40     13  92.3      0         51561.0
+                     W3 2021–23   33477 234.8 -19.3 12.16      7 100.0      0         21996.0
+                     W3   2024→   23488 134.9 -21.1  6.38      6  83.3      0         16513.0
+           R1 fascia N3   2021→   59158 491.6 -21.1 23.27     13  92.3      0         43091.0
+           R1 fascia N3 2021–23   27057 170.6 -20.5  8.33      7 100.0      0         19708.0
+           R1 fascia N3   2024→   21908 119.1 -21.1  5.64      6  83.3      0         16518.0
+                  R1 N1   2021→   69433 594.3 -21.1 28.13     13  92.3      0         46095.0
+                  R1 N1 2021–23   30677 206.8 -20.0 10.33      7 100.0      0         20366.0
+                  R1 N1   2024→   22679 126.8 -21.1  6.00      6  83.3      0         16479.0
+                  R1 N7   2021→   54722 447.2 -22.6 19.77     13  92.3      0         40842.0
+                  R1 N7 2021–23   25660 156.6 -22.6  6.92      7 100.0      0         19152.0
+                  R1 N7   2024→   21368 113.7 -21.1  5.38      6  83.3      0         16217.0
+              R1 sig0.2   2021→   59158 491.6 -21.1 23.27     13  92.3      0         43091.0
+              R1 sig0.2 2021–23   27057 170.6 -20.5  8.33      7 100.0      0         19708.0
+              R1 sig0.2   2024→   21908 119.1 -21.1  5.64      6  83.3      0         16518.0
+              R1 sig0.5   2021→   58280 482.8 -21.1 22.85     13  92.3      0         42452.0
+              R1 sig0.5 2021–23   27057 170.6 -20.5  8.33      7 100.0      0         19708.0
+              R1 sig0.5   2024→   21583 115.8 -21.1  5.48      6  83.3      0         16273.0
+       R2 confluenza N3   2021→   61882 518.8 -21.1 24.55     13  92.3      0         40660.0
+       R2 confluenza N3 2021–23   28729 187.3 -20.5  9.15      7 100.0      0         18876.0
+       R2 confluenza N3   2024→   21583 115.8 -21.1  5.48      6  83.3      0         16273.0
+R3 metà su fascia short   2021→   39739 297.4 -15.0 19.78     13  92.3      0         30892.0
+R3 metà su fascia short 2021–23   21918 119.2 -13.5  8.80      7 100.0      0         17029.0
+R3 metà su fascia short   2024→   18150  81.5 -15.0  5.42      6  83.3      0         14694.0
+              R3 sig0.5   2021→   39739 297.4 -15.0 19.78     13  92.3      0         30892.0
+              R3 sig0.5 2021–23   21918 119.2 -13.5  8.80      7 100.0      0         17029.0
+              R3 sig0.5   2024→   18150  81.5 -15.0  5.42      6  83.3      0         14694.0
+             Buy & hold   2021→   24314 143.1 -76.6  1.87      1   NaN      0             NaN
+             Buy & hold 2021–23   14387  43.9 -76.6  0.57      1   NaN      0             NaN
+             Buy & hold   2024→   16143  61.4 -53.0  1.16      1   NaN      0             NaN
+
+Long W3 per variante (prezzo d'ingresso contro W3 a mercato):
+               variante    segnale   ingresso     come   prezzo  prezzo_W3  diff_prezzo_pct       metà  prezzo_metà  pnl_pct  pnl_W3_pct
+           R1 fascia N3 2021-01-31 2021-02-04 scadenza 37657.88   33126.06            13.68      False          NaN    37.29       52.20
+           R1 fascia N3 2021-08-01 2021-08-03    limit 38153.00   39890.12            -4.35      False          NaN     6.96        4.28
+           R1 fascia N3 2021-10-03 2021-10-04    limit 46993.00   48248.21            -2.60      False          NaN    23.27       20.88
+           R1 fascia N3 2023-01-22 2023-01-26 scadenza 23083.48   22728.73             1.56      False          NaN    11.61       13.26
+           R1 fascia N3 2023-10-22 2023-10-26 scadenza 34530.55   30022.45            15.02      False          NaN    22.11       40.46
+           R1 fascia N3 2024-02-11 2024-02-15 scadenza 51846.97   48348.30             7.24      False          NaN    32.63       42.24
+           R1 fascia N3 2024-09-22 2024-09-26 scadenza 63215.16   63642.34            -0.67      False          NaN    31.60       30.77
+           R1 fascia N3 2025-04-27 2025-04-28    limit 92876.00   93843.04            -1.03      False          NaN    12.46       11.29
+           R1 fascia N3 2026-08-23 2026-08-27 scadenza 79102.77   77811.73             1.66      False          NaN    -5.66       -4.10
+       R2 confluenza N3 2021-01-31 2021-02-01   market 33126.06   33126.06             0.00      False          NaN    52.20       52.20
+       R2 confluenza N3 2021-08-01 2021-08-05 scadenza 39762.89   39890.12            -0.32      False          NaN     4.47        4.28
+       R2 confluenza N3 2021-10-03 2021-10-04   market 48248.21   48248.21             0.00      False          NaN    20.88       20.88
+       R2 confluenza N3 2023-01-22 2023-01-26 scadenza 23083.48   22728.73             1.56      False          NaN    11.61       13.26
+       R2 confluenza N3 2023-10-22 2023-10-26 scadenza 34530.55   30022.45            15.02      False          NaN    22.11       40.46
+       R2 confluenza N3 2024-02-11 2024-02-15 scadenza 51846.97   48348.30             7.24      False          NaN    32.63       42.24
+       R2 confluenza N3 2024-09-22 2024-09-26 scadenza 63215.16   63642.34            -0.67      False          NaN    31.60       30.77
+       R2 confluenza N3 2025-04-27 2025-05-01 scadenza 94266.17   93843.04             0.45      False          NaN    10.79       11.29
+       R2 confluenza N3 2026-08-23 2026-08-27 scadenza 79102.77   77811.73             1.66      False          NaN    -5.66       -4.10
+R3 metà su fascia short 2021-01-31 2021-02-01   market 33126.06   33126.06             0.00 2021-02-02      34874.0    27.92       52.20
+R3 metà su fascia short 2021-08-01 2021-08-02   market 39890.12   39890.12             0.00 2021-08-04      38825.0     1.37        4.28
+R3 metà su fascia short 2021-10-03 2021-10-04   market 48248.21   48248.21             0.00 2021-10-05      49770.0    11.45       20.88
+R3 metà su fascia short 2023-01-22 2023-01-23   market 22728.73   22728.73             0.00 2023-01-25      23232.0     7.59       13.26
+R3 metà su fascia short 2023-10-22 2023-10-23   market 30022.45   30022.45             0.00 2023-10-25      35130.0    28.64       40.46
+R3 metà su fascia short 2024-02-11 2024-02-12   market 48348.30   48348.30             0.00 2024-02-14      50761.0    23.52       42.24
+R3 metà su fascia short 2024-09-22 2024-09-23   market 63642.34   63642.34             0.00 2024-09-26      65337.0    16.52       30.77
+R3 metà su fascia short 2025-04-27 2025-04-28   market 93843.04   93843.04             0.00 2025-05-01      96359.0     6.89       11.29
+R3 metà su fascia short 2026-08-23 2026-08-24   market 77811.73   77811.73             0.00 2026-08-25      80714.0    -0.27       -4.10
+  R1 fascia N3: riempiti 3/9, a scadenza 6, a mercato 0, persi 0; prezzo medio contro W3 +3.39%
+  R2 confluenza N3: riempiti 0/9, a scadenza 7, a mercato 2, persi 0; prezzo medio contro W3 +2.77%
+
+== Placebo (a): ogni giorno 2021–2026, limit 3 giorni sulla prima fascia densa long sotto contro mercato (costi inclusi)
+  tutti: n 2116, distanza mediana 2.33%, riempiti 53.9%, vantaggio medio +0.132% (placebo +0.068%, percentile 97°)
+  2021–23: n 1074, distanza mediana 2.48%, riempiti 56.7%, vantaggio medio +0.182% (placebo +0.135%, percentile 82°)
+  2024→: n 1042, distanza mediana 2.24%, riempiti 51.1%, vantaggio medio +0.081% (placebo -0.003%, percentile 99°)
+  riempiti: vantaggio +2.52%, non riempiti -2.67% (comprano dopo un rialzo)
+
+== Placebo (b): R1 con distanze casuali (stessa distribuzione delle fasce), 300 estrazioni, 2021→
+  capitale con distanze casuali: mediana 57,919, 5°–95° 50,967–67,246; R1 59,158 = 63° percentile; W3 78.474 = 100°
+
+== Placebo R3: metà venduta a un livello casuale sopra (distanze delle fasce short), 300 estrazioni
+  capitale: mediana 37,976, 5°–95° 37,513–38,723; R3 39,739 = 100° percentile
+
+########## Domanda 3 · cascate orarie (rendimenti netti % per trade; H in ore)
+Eventi (accorpati a 24 h): proxy k3 long 346, proxy k3 short 57, proxy k2 long 650, proxy k2 short 125, proxy k4 long 200, proxy k4 short 30, reali CM long 32, reali CM short 9
+                   regola    fonte cascata  H   n  n_IS  n_OOS  ret_pct  ret_IS  ret_OOS     wr  tocco  tocco_ctrl  tocco_ctrl_cascate  esauriti_senza_conf  n_senza  ctrl_ore_caso  p_vs_caso  cap_10k    dd   mar  ctrl_livelli_caso  p_vs_livelli
+         R4 continuazione proxy k3    long  4 345   175    170    -0.12   -0.18    -0.05  44.64  25.51       14.33               25.68                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k3    long  4  33    19     14    -0.18   -0.24    -0.09  33.33    NaN         NaN                 NaN                -0.11    105.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k3    long 12 345   175    170    -0.16   -0.15    -0.16  49.86  33.91       28.92               35.34                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k3    long 12  33    19     14    -0.40   -0.63    -0.09  48.48    NaN         NaN                 NaN                -0.01    105.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k3    long 24 345   175    170    -0.30   -0.37    -0.23  53.91  42.61       40.72               44.95                  NaN      NaN          -0.20       0.78   3074.0 -74.5 -0.93                NaN           NaN
+R5 rimbalzo su confluenza proxy k3    long 24  33    19     14    -0.09   -0.58     0.57  48.48    NaN         NaN                 NaN                 0.47    105.0          -0.08       0.50   9513.0 -20.5 -0.24               0.10          0.68
+         R4 continuazione proxy k3    long 48 345   175    170    -0.28   -0.40    -0.14  61.45  53.33       52.99               54.01                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k3    long 48  33    19     14     0.00   -0.60     0.82  54.55    NaN         NaN                 NaN                 0.88    105.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k3   short  4  53    31     22    -0.09    0.04    -0.27  35.85   9.43        6.43                9.29                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k3   short  4   5     5      0    -1.04   -1.04      NaN   0.00    NaN         NaN                 NaN                -0.26     14.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k3   short 12  53    31     22    -0.04    0.02    -0.13  47.17  22.64       15.71               16.18                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k3   short 12   5     5      0    -1.57   -1.57      NaN  20.00    NaN         NaN                 NaN                -0.76     14.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k3   short 24  53    31     22    -0.02    0.26    -0.41  54.72  26.42       25.01               27.65                  NaN      NaN          -0.14       0.38   9791.0 -20.3 -0.10                NaN           NaN
+R5 rimbalzo su confluenza proxy k3   short 24   5     5      0    -1.59   -1.59      NaN  20.00    NaN         NaN                 NaN                -0.69     14.0          -0.32       0.86   9219.0  -8.0 -0.98              -1.52          0.53
+         R4 continuazione proxy k3   short 48  53    31     22     0.32    0.74    -0.27  66.04  35.85       36.56               35.74                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k3   short 48   5     5      0    -2.36   -2.36      NaN  20.00    NaN         NaN                 NaN                -2.39     14.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2    long  4 648   319    329    -0.15   -0.18    -0.13  43.98  20.99       14.77               22.30                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2    long  4  38    21     17    -0.14   -0.20    -0.07  34.21    NaN         NaN                 NaN                -0.10    212.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2    long 12 648   319    329    -0.24   -0.29    -0.19  48.77  32.87       29.54               34.04                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2    long 12  38    21     17    -0.53   -0.69    -0.34  47.37    NaN         NaN                 NaN                 0.06    212.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2    long 24 648   319    329    -0.24   -0.27    -0.21  54.32  42.90       41.37               43.66                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2    long 24  38    21     17    -0.34   -0.75     0.17  50.00    NaN         NaN                 NaN                 0.39    212.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2    long 48 648   319    329    -0.23   -0.24    -0.22  61.42  52.78       53.63               54.01                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2    long 48  38    21     17     0.15   -0.30     0.71  57.89    NaN         NaN                 NaN                 0.39    212.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2   short  4 121    74     47    -0.11   -0.08    -0.16  45.45  14.88        8.11               14.28                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2   short  4   5     5      0    -1.04   -1.04      NaN   0.00    NaN         NaN                 NaN                -0.09     35.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2   short 12 121    74     47     0.00   -0.08     0.13  53.72  27.27       18.70               24.63                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2   short 12   5     5      0    -1.87   -1.87      NaN   0.00    NaN         NaN                 NaN                -0.56     35.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2   short 24 121    74     47    -0.02   -0.02    -0.01  59.50  33.88       28.63               33.60                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2   short 24   5     5      0    -1.73   -1.73      NaN  20.00    NaN         NaN                 NaN                -0.15     35.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k2   short 48 121    74     47     0.50    0.61     0.32  71.07  47.93       40.49               45.16                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k2   short 48   5     5      0    -2.23   -2.23      NaN  20.00    NaN         NaN                 NaN                -1.50     35.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4    long  4 199   106     93     0.05    0.02     0.10  46.23  28.64       14.24               29.11                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4    long  4  25    15     10    -0.34   -0.61     0.07  40.00    NaN         NaN                 NaN                -0.46     54.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4    long 12 199   106     93     0.13    0.15     0.10  52.26  37.69       28.36               38.83                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4    long 12  25    15     10    -0.96   -1.35    -0.38  36.00    NaN         NaN                 NaN                -0.40     54.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4    long 24 199   106     93     0.05   -0.01     0.11  55.28  44.72       39.85               47.68                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4    long 24  25    15     10    -1.27   -1.97    -0.22  40.00    NaN         NaN                 NaN                 0.20     54.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4    long 48 199   106     93     0.16    0.09     0.24  62.31  53.27       51.97               55.53                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4    long 48  25    15     10    -0.69   -1.02    -0.18  40.00    NaN         NaN                 NaN                -0.08     54.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4   short  4  26    17      9    -0.04    0.01    -0.13  38.46   7.69        5.96                9.69                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4   short  4   2     2      0    -0.61   -0.61      NaN   0.00    NaN         NaN                 NaN                -0.20      6.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4   short 12  26    17      9    -0.15   -0.03    -0.38  42.31  15.38       14.03               14.15                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4   short 12   2     2      0    -0.88   -0.88      NaN   0.00    NaN         NaN                 NaN                -0.34      6.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4   short 24  26    17      9    -0.04    0.27    -0.64  53.85  19.23       22.43               23.54                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4   short 24   2     2      0     0.00    0.00      NaN  50.00    NaN         NaN                 NaN                 0.44      6.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione proxy k4   short 48  26    17      9     0.52    0.98    -0.35  57.69  34.62       33.23               38.46                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza proxy k4   short 48   2     2      0    -0.51   -0.51      NaN  50.00    NaN         NaN                 NaN                -2.51      6.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione reali CM    long  4  31     4     27    -0.35   -0.97    -0.26  35.48  25.81       11.44               16.67                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza reali CM    long  4   9     3      6    -0.24   -0.48    -0.13  44.44    NaN         NaN                 NaN                -0.03      8.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione reali CM    long 12  31     4     27    -0.23   -0.85    -0.13  48.39  41.94       24.76               32.69                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza reali CM    long 12   9     3      6    -0.81   -0.80    -0.81  44.44    NaN         NaN                 NaN                -0.71      8.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione reali CM    long 24  31     4     27    -0.53   -2.55    -0.23  51.61  41.94       36.32               43.87                  NaN      NaN          -0.17       0.83   8379.0 -20.1 -0.81                NaN           NaN
+R5 rimbalzo su confluenza reali CM    long 24   9     3      6    -1.08   -0.76    -1.25  44.44    NaN         NaN                 NaN                 0.66      8.0           0.06       0.88   9029.0 -12.1 -0.80              -0.65          0.70
+         R4 continuazione reali CM    long 48  31     4     27    -0.15   -0.87    -0.04  54.84  48.39       48.95               51.51                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza reali CM    long 48   9     3      6    -1.21   -2.09    -0.77  44.44    NaN         NaN                 NaN                -0.22      8.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione reali CM   short  4   9     0      9     0.00     NaN     0.00  55.56  22.22       17.68               23.61                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza reali CM   short  4   1     0      1     0.50     NaN     0.50 100.00    NaN         NaN                 NaN                -0.72      2.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione reali CM   short 12   9     0      9    -0.34     NaN    -0.34  55.56  44.44       32.78               31.94                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza reali CM   short 12   1     0      1     0.91     NaN     0.91 100.00    NaN         NaN                 NaN                -0.59      2.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+         R4 continuazione reali CM   short 24   9     0      9    -0.95     NaN    -0.95  55.56  44.44       43.40               36.11                  NaN      NaN          -0.05       0.91   9153.0 -12.0 -0.71                NaN           NaN
+R5 rimbalzo su confluenza reali CM   short 24   1     0      1     1.15     NaN     1.15 100.00    NaN         NaN                 NaN                -1.07      2.0          -0.27       0.28  10115.0   0.0   NaN               1.15          0.27
+         R4 continuazione reali CM   short 48   9     0      9    -1.04     NaN    -1.04  44.44  44.44       54.17               44.44                  NaN      NaN            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+R5 rimbalzo su confluenza reali CM   short 48   1     0      1    -0.54     NaN    -0.54   0.00    NaN         NaN                 NaN                -0.90      2.0            NaN        NaN      NaN   NaN   NaN                NaN           NaN
+
+Buy & hold 2021-02 → 2026-11-11: 10k → 22,714, DD -77.2%

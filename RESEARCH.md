@@ -404,6 +404,16 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Studio dell'utente · 13/11 — fasce di liquidazione come zone d'ingresso (W3 e intraday) · NON ADOTTATO
+Cascata del 13/11 (67,6k): attraversate tutte e 4 le fasce dense stimate sotto 71,5k (~$411M solo Binance USDT-M), fermata nel
+supporto S1 sopra la fascia 66,7k; ~$128M di long Hyperliquid spariti dalle fasce attraversate. Regole (research/liq_fasce/):
+W3 con limit sulla prima fascia long sotto 59,2k (fascia+supporto 61,9k) contro 78,5k, riempito 3/9, vicini 0/4; metà sulla fascia
+short sopra 39,7k; continuazione dopo cascata −0,37%/trade (p 0,78, anche con liquidazioni reali); rimbalzo su fascia+supporto p 0,50.
+**Lezione 92**: le fasce di liquidazione stimate descrivono dove passa una cascata, non dove entrare. Su W3 un limit in fascia compra
+più caro perché dopo il segnale il prezzo sale; vendere metà sulla fascia short sopra taglia le code; dopo una cascata oraria né la
+continuazione né il rimbalzo su fascia+supporto battono il caso dopo i costi; il tocco più frequente delle fasce è solo volatilità.
+Restano contesto in dashboard (lezioni 72, 81, 90).
+
 ### Studio dell'utente · 12–13/11 — Zeiierman Trend Pressure (2 cicli notturni + revisione) · RESPINTO
 **Lezione 91**: Zeiierman Trend Pressure (porting fedele al Pine, verificato in revisione; la zona colorata è in pratica la
 Z-Trend, un %R a 120 giorni smussato) non mostra alcuna evidenza di vantaggio su BTC dal 2021 (studio a bassa potenza: 7–15 trade

@@ -1,0 +1,16 @@
+fase,lato,price,usd,dist_pct,sig,rel,sr,attraversata
+Fase A,long sotto,72243.0,138301261.0,-1.66,True,1.0,R1,True
+Fase A,long sotto,70992.0,76180667.0,-3.36,True,0.55,,False
+Fase A,long sotto,70462.0,77694654.0,-4.09,True,0.56,,False
+Fase A,long sotto,69588.0,66553921.0,-5.28,True,0.48,S1,False
+Fase A,long sotto,69241.0,42253400.0,-5.75,True,0.31,S1,False
+Fase A,long sotto,68896.0,78425396.0,-6.22,True,0.57,S1,False
+Fase A,long sotto,68553.0,66801873.0,-6.68,True,0.48,S1,False
+Fase A,long sotto,67872.0,63188551.0,-7.61,True,0.46,S1,False
+Fase A,long sotto,66862.0,55360284.0,-8.99,True,0.4,S1,False
+Fase A,short sopra,75188.0,25595652.0,2.35,True,0.25,R1,False
+Fase A,short sopra,76323.0,102333303.0,3.89,True,1.0,R1,False
+Fase A,short sopra,76705.0,86272929.0,4.41,True,0.84,R2,False
+Fase A,short sopra,77089.0,93681178.0,4.93,True,0.92,R2,False
+Fase A,short sopra,77475.0,89197437.0,5.46,True,0.87,R2,False
+Fase A,short sopra,78252.0,66801873.0,6.52,True,0.65,R2,False
