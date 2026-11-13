@@ -99,8 +99,39 @@
 .lqCl .row{min-height:44px;padding:8px 14px;gap:10px} .lqCl .k{min-width:0} .lqCl .rb{flex:1;max-width:90px;height:6px;border-radius:3px;background:var(--line2);overflow:hidden} .lqCl .rb i{display:block;height:100%}
 @media (max-width:700px){.lqD{display:none!important}.lqM{display:grid}.lqMapCard{padding:12px 10px}}
 @media (max-width:560px){.lqTot{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.lqTot>div{padding:10px}.lqTot b{font-size:.86rem}.lqRow,.lqNow{grid-template-columns:52px minmax(0,1fr) 40px;gap:6px}}
+/* ---- cascata di liquidazioni (report.cascade, radar/cascade.py): contesto, non segnale */
+.lqCs{display:grid;gap:14px}
+.lqCs h2{margin:0;font:600 1.3rem/1.25 var(--font);letter-spacing:-.03em;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.lqCs h2 small{font:600 1rem var(--font);font-variant-numeric:tabular-nums}
+.lqCs.l h2,.lqCs.l h2 small{color:var(--red)} .lqCs.s h2,.lqCs.s h2 small{color:var(--green)}
+.lqCs p{margin:0;color:var(--label2);font-size:.86rem;line-height:1.5} .lqCs p b{color:var(--label);font-variant-numeric:tabular-nums}
+.lqCsMain{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px}
+.lqCsMain>div{display:grid;gap:8px;align-content:start;min-width:0}
+.lqCsH{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.lqCsB{display:grid;gap:5px}
+.lqCsB>div{display:grid;grid-template-columns:70px minmax(0,1fr) 58px;gap:8px;align-items:center;font-variant-numeric:tabular-nums;font-size:.84rem}
+.lqCsB>div>span:last-child{text-align:right;font-weight:600}
+.lqCsB em{height:6px;border-radius:3px;background:var(--line2);overflow:hidden} .lqCsB em i{display:block;height:100%;border-radius:3px}
+.lqCs.l .lqCsB em i{background:color-mix(in srgb,var(--red) 70%,transparent)} .lqCs.s .lqCsB em i{background:color-mix(in srgb,var(--green) 70%,transparent)}
+.lqCsB>div.tot{border-top:1px solid var(--line);padding-top:6px;color:var(--label2)}
+.lqCsF{display:grid;gap:8px}
+.lqCsF>div{border-radius:14px;padding:10px 12px;background:var(--raise);border:1px solid var(--line);display:grid;gap:2px;min-width:0}
+.lqCsF span{font-size:.76rem;color:var(--label2)} .lqCsF b{font:600 1rem var(--font);font-variant-numeric:tabular-nums} .lqCsF small{font-size:.72rem;color:var(--label2);line-height:1.4}
+.lqCsN{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lqCsN>div{border-radius:16px;padding:12px 14px;background:var(--raise);border:1px solid var(--line);display:grid;gap:3px;min-width:0}
+.lqCsN>div>span{font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--label3)}
+.lqCsN b{font:600 1.15rem var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.02em} .lqCsN small{font-size:.74rem;color:var(--label2);line-height:1.4}
+.lqCsWarn{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--label2);border-top:1px solid var(--line);padding-top:10px}
+.lqCsWarn i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--orange)}
+@media (max-width:700px){.lqCsMain{grid-template-columns:1fr}.lqCs h2{font-size:1.18rem}}
+@media (max-width:420px){.lqCsN{gap:8px}.lqCsN>div{padding:10px 11px}.lqCsN b{font-size:1rem}.lqCsB>div{grid-template-columns:62px minmax(0,1fr) 54px}}
 </style>
 <div class="view" id="v-liquidazioni" hidden>
+  <!-- cascata di liquidazioni nelle ultime 24 ore (report.cascade); assente se il server non la fornisce -->
+  <div class="section" id="lqCsSec" hidden>
+    <div class="sh">Cascata di liquidazioni <small id="lqCsSub"></small></div>
+    <div class="card lqCs" id="lqCs"></div>
+  </div>
   <!-- telefono (≤ 700 px): una card riassuntiva per blocco, dettagli nel pannello dal basso (openSheet). Desktop: sezioni .lqD invariate. -->
   <div class="section lqM">
     <button type="button" class="card glow tapCard lqMC" id="lqMVerd" aria-haspopup="dialog"></button>
@@ -258,6 +289,47 @@
   const srLv = () => { const LV = SRV().levels || {}; if (window.srLevels) { const x = window.srLevels(price()); return { res: x.res, sup: x.sup }; }
     return { res: (LV.resistances || []).map((o, i) => ({ ...o, t: "R" + (i + 1), k: "r" })), sup: (LV.supports || []).map((o, i) => ({ ...o, t: "S" + (i + 1), k: "s" })) }; };
   const srOf = p => { if (!SRV().levels) return null; const L = srLv(), o = L.res.concat(L.sup).find(o => o.lo * .995 <= p && p <= o.hi * 1.005); return o ? o.t : null; };
+
+  // ---------------- cascata di liquidazioni (report.cascade): cosa è successo nelle ultime 24 ore e dove sono le prossime fasce dense
+  const romeT = t => new Date(t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
+  const romeD = t => new Date(t).toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/Rome" });
+  const rng$ = (lo, hi) => lo == null ? "–" : hi == null || Math.round(lo) === Math.round(hi) ? px(lo) : `${px(lo)}–${px(hi)}`;
+  function renderCasc() {
+    const sec = H("lqCsSec"), C = SRV().cascade;
+    if (!C || typeof C !== "object") { sec.hidden = true; return; }
+    sec.hidden = false;
+    const up = T(C.updated_utc);
+    H("lqCsSub").textContent = "ultime 24 ore" + (up ? " · agg. " + romeT(up) : "");
+    const next = (lab, n) => `<div><span>${lab}</span><b>${n ? px(n.px) : "–"}</b><small>${n ? `${m$(n.usd)} stimati · ${pc(n.dist_pct)}${n.sr && n.sr.lo != null ? `<br>S/R vicino <span style="white-space:nowrap">${rng$(n.sr.lo, n.sr.hi)}</span>` : ""}` : "nessuna entro la mappa"}</small></div>`;
+    const nextHtml = `<div class="lqCsN">${next("Prossima fascia densa sotto", C.next_below)}${next("Prossima fascia densa sopra", C.next_above)}</div>`;
+    const warn = `<div class="lqCsWarn"><i></i><span>Contesto, non è un segnale (lezione 92).</span></div>`;
+    const el = H("lqCs"), long = C.side !== "short";
+    if (!C.active) {
+      el.className = "card lqCs";
+      el.innerHTML = `<h2>Nessuna cascata nelle ultime 24 ore</h2>${C.note ? `<p>${esc(C.note)}</p>` : ""}${nextHtml}${warn}`;
+      return;
+    }
+    el.className = "card lqCs " + (long ? "l" : "s");
+    const t0 = T(C.start_utc), t1 = T(C.end_utc);
+    const when = t0 ? `${romeD(t0)} · ${romeT(t0)}–${t1 ? romeT(t1) : "in corso"}${t1 && romeD(t1) !== romeD(t0) ? " (" + romeD(t1) + ")" : ""} ora italiana` : "";
+    const X = (C.crossed || []).filter(c => c && c.px != null), mx = Math.max(1, ...X.map(c => +c.usd || 0));
+    const tot = C.crossed_usd != null ? C.crossed_usd : X.reduce((a, c) => a + (+c.usd || 0), 0);
+    const bands = X.length ? `<div class="lqCsB">${X.map(c => `<div><span>${px(c.px)}</span><em><i style="width:${((+c.usd || 0) / mx * 100).toFixed(1)}%"></i></em><span>${m$(c.usd)}</span></div>`).join("")}
+        <div class="tot"><span>Totale</span><span></span><span style="color:var(--label)">${m$(tot)}</span></div></div>` : `<p>Nessuna fascia densa attraversata.</p>`;
+    const st = C.stopped_at || {}, K = st.kind;
+    const stop = K === "supporto" || K === "resistenza" ? `su <b>${K} ${rng$(st.lo, st.hi)}</b>` : K === "fascia" ? `su una <b>fascia densa ${rng$(st.lo, st.hi)}</b>` : "senza un livello evidente";
+    const RU = C.real_usd || {}, ex = Array.isArray(RU.exchanges) ? RU.exchanges.length : RU.exchanges;
+    const realV = long ? RU.long : RU.short, realO = long ? RU.short : RU.long;
+    const facts = [
+      C.onchain_gone_usd != null ? `<div><span>${long ? "Long" : "Short"} on-chain Hyperliquid spariti</span><b>${m$(C.onchain_gone_usd)}</b><small>posizioni pubbliche chiuse durante la cascata</small></div>` : "",
+      realV != null ? `<div><span>Liquidazioni reali registrate</span><b>${m$(realV)} ${long ? "long" : "short"}</b><small>${realO != null ? `${m$(realO)} ${long ? "short" : "long"} · ` : ""}${ex ? `${ex} exchange` : ""}${C.coverage_note ? `<br>${esc(C.coverage_note)}` : ""}</small></div>` : ""].join("");
+    el.innerHTML = `<div style="display:grid;gap:6px"><span class="cap">${esc(when)}</span>
+        <h2>${long ? "Cascata long" : "Cascata short"} <small>${pc(C.move_pct)}</small></h2>
+        <p>${long ? "Discesa" : "Salita"} da <b>${px(C.start_px)}</b> a <b>${px(C.end_px)}</b>, ${long ? "minimo" : "massimo"} <b>${px(C.extreme_px)}</b>. Si è fermata ${stop}.</p></div>
+      <div class="lqCsMain"><div><span class="lqCsH">Fasce dense attraversate · $ stimati</span>${bands}</div>
+        ${facts ? `<div><span class="lqCsH">Posizioni chiuse</span><div class="lqCsF">${facts}</div></div>` : ""}</div>
+      ${C.note ? `<p style="font-size:.8rem">${esc(C.note)}</p>` : ""}${nextHtml}${warn}`;
+  }
 
   // ---------------- verdetto + tile
   function renderHead() {
@@ -569,7 +641,7 @@
 
   function renderAll() {
     if (S.moved && !(H("sheet") || {}).open) restore();
-    [renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc, renderAge, renderMobile].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+    [renderCasc, renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc, renderAge, renderMobile].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
   async function refresh(force) {
     const btn = H("lqRefresh"); btn.disabled = true; btn.textContent = "Aggiorno…";
     const jobs = [okxRest(), liveBook()];
