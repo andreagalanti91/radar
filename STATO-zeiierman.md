@@ -18,3 +18,4 @@ Nota dell'utente: "acquisto in zona blu, vendita in zona rossa" → regola R1 (z
 Log:
 - 12/11 22:57 avvio ciclo 1 in background; promemoria programmati 03:30 (ciclo 2) e 07:40 (report).
 - 13/11 ~00:30 ciclo 1 finito: nessuna delle 24 configurazioni regge (migliore R1v long 21,1k vs B&H 25,6k e W3 78,5k); zona rossa = continuazione, zona blu non anticipa i minimi; proposte P1–P3 per il ciclo 2.
+- 13/11 03:31 ciclo 2 avviato (P1, P2, P3), poi revisione critica.
