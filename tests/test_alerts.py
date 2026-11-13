@@ -284,6 +284,75 @@ class TestUpdateAllIsolation(unittest.TestCase):
             self.run_with({"perp"})
 
 
+class TestCorrezioniF3(unittest.TestCase):
+    def test_b1_uscita_nessuna_allerta_stop(self):
+        c = cur("uscita", date="2026-11-08", trades=[trade()])
+        h = pd.DataFrame({"open": [74700.0], "high": [74800.0], "low": [69000.0], "close": [69500.0]})   # sotto il trailing
+        self.assertEqual(weekly.check_intraday(c, [], h), ([], []))
+        self.assertEqual(weekly.check_intraday(c, [], h, told=70000.0), ([], []))
+        self.assertEqual(len(weekly.check_intraday(cur("aperto", trades=[trade()]), [], h)[0]), 1)   # aperto: invariato
+
+    def test_b3_variabili_tolleranti(self):
+        cases = {"0,5": 0.5, " 0.5 ": 0.5, "": 1.0, "   ": 1.0, "abc": 1.0, "-1": 1.0, "1": 1.0}
+        for raw, exp in cases.items():
+            with mock.patch.dict("os.environ", {"RADAR_WEEKLY_SHARE": raw}), mock.patch("builtins.print"):
+                self.assertEqual(weekly._env_float("RADAR_WEEKLY_SHARE", 1.0), exp, raw)
+        for raw, exp in {"50000,5": 50000.5, "50.000,5": 50000.5, "": 50000.0, "x": 50000.0}.items():
+            with mock.patch.dict("os.environ", {"RADAR_CAPITAL": raw}), mock.patch("builtins.print"):
+                self.assertEqual(weekly._env_float("RADAR_CAPITAL", 50000.0), exp, raw)
+        import importlib
+        try:
+            with mock.patch.dict("os.environ", {"RADAR_WEEKLY_SHARE": "0,5", "RADAR_CAPITAL": ""}), \
+                    mock.patch("builtins.print") as pr:
+                importlib.reload(weekly)                                    # prima: ValueError all'import
+                self.assertEqual((weekly.SHARE, weekly.CAPITAL), (0.5, 50000.0))
+            with mock.patch.dict("os.environ", {"RADAR_WEEKLY_SHARE": "mezzo"}), mock.patch("builtins.print") as pr:
+                importlib.reload(weekly)
+                self.assertEqual(weekly.SHARE, 1.0)
+                self.assertIn("RADAR_WEEKLY_SHARE", pr.call_args[0][0])     # messaggio nel log
+        finally:
+            importlib.reload(weekly)
+
+    def test_b2_stato_perso_con_posizione_aperta(self):
+        c = cur("aperto", date="2026-11-05", trades=[trade()])
+        s = Sender(fail=True)
+        sent, st = weekly.send_events(c, None, s)
+        self.assertEqual(sent, [])
+        self.assertNotIn("Da oggi il tool segue", s.texts[0])
+        self.assertIn("Stato degli avvisi ripristinato", s.texts[0])
+        self.assertIn("long aperto, stop $70.000", s.texts[0])
+        s = Sender()
+        sent, st = weekly.send_events(c, st, s)                             # invio fallito: l'avviso si ripropone
+        self.assertEqual([e["type"] for e in sent], ["w_restore"])
+        self.assertEqual(weekly.send_events(c, st, s)[0], [])
+        # il giorno dopo l'uscita EMA arriva normalmente
+        closed = trade("2026-11-09", 74776.59, "ema")
+        sent, st = weekly.send_events(cur("nessuno", date="2026-11-09", trades=[closed]), st, s)
+        self.assertEqual([e["type"] for e in sent], ["w_exit"])
+
+    def test_b2_stato_perso_eventi_recenti(self):
+        s = Sender()
+        sent, st = weekly.send_events(cur("uscita", date="2026-11-08", trades=[trade()]), None, s)
+        self.assertEqual([e["type"] for e in sent], ["w_restore", "w_exit_next"])
+        recent = trade(entry="2026-11-03")                                  # ingresso di 5 giorni prima: si comunica
+        sent, _ = weekly.send_events(cur("aperto", date="2026-11-08", trades=[recent], entry="2026-11-03"), None, Sender())
+        self.assertEqual([e["type"] for e in sent], ["w_restore", "w_entry"])
+        ev, _ = weekly.diff_events(cur("aperto", date="2026-10-30", trades=[trade()]), None)   # primo avvio vero
+        self.assertEqual([e["type"] for e in ev], ["w_info"])
+
+    def test_b12_stop_giorno_ingresso_come_backtest(self):
+        c = cur("segnale", date="2026-08-23")                               # stop iniziale 70.000, trail_dist 7.000
+        h = pd.DataFrame({"open": [78000.0], "high": [78100.0], "low": [70800.0], "close": [70900.0]})
+        ev, _ = weekly.check_intraday(c, [], h)                             # max(70.000, 78.000 − 7.000) = 71.000
+        self.assertEqual(ev[0]["level"], 71000.0)
+        self.assertEqual(weekly.check_intraday(c, [], h.assign(open=76000.0))[0], [])   # 69.000 < 70.000: resta 70.000
+
+    def test_b11_distribuzione_anteprima(self):
+        txt = weekly.format_event({"type": "w_dist", "w": cur("aperto", fund7=0.001, flow=-0.3)})
+        self.assertIn("anteprima", txt.lower())
+        self.assertIn("se la settimana chiudesse oggi", txt)
+
+
 class TestWorkflow(unittest.TestCase):
     def test_struttura(self):
         s = WF.read_text()
@@ -307,6 +376,17 @@ class TestTesti(unittest.TestCase):
         for bad in ("42,6", "42.6", "circa 3 l'anno", "(W2)"):
             self.assertNotIn(bad, src)
 
+
+
+
+class TestCapitaleMigliaia(unittest.TestCase):
+    def test_punto_migliaia(self):
+        import os
+        from unittest import mock
+        from radar import weekly
+        for raw, exp in [("50.000", 50000.0), ("1.250.000", 1250000.0), ("0.5", 0.5), ("50000", 50000.0), ("50.000,5", 50000.5)]:
+            with mock.patch.dict(os.environ, {"X_TEST": raw}):
+                self.assertEqual(weekly._env_float("X_TEST", 1.0), exp, raw)
 
 if __name__ == "__main__":
     unittest.main()

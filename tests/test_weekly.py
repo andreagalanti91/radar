@@ -120,6 +120,30 @@ class TestWeekly(unittest.TestCase):
         ok = h.assign(low=c["trail"] + 100)
         self.assertEqual(wk.check_intraday(c, [], ok)[0], [])
 
+    def test_b1_nessuno_stop_dopo_uscita(self):
+        """16/01/2023: short chiuso dalla EMA 21 all'apertura di lunedì; le ore dopo l'apertura superano il vecchio trailing
+        ma la posizione è già chiusa: nessuna allerta "stop toccato, chiudi la posizione"."""
+        from radar.data import DATA_DIR
+        c = self.wk.evaluate(self.F[self.F.index < "2023-01-16"], capital=50000.0)
+        self.assertEqual((c["status"], c["side"], c["reason"]), ("uscita", "short", "ema"))
+        h = pd.read_csv(DATA_DIR / "spot_1h.csv", index_col=0, parse_dates=True).loc["2023-01-16":"2023-01-16"]
+        self.assertGreaterEqual(float(h["high"].max()), c["trail"])      # il livello viene superato davvero
+        self.assertEqual(self.wk.check_intraday(c, [], h)[0], [])
+        self.assertEqual(self.wk.check_intraday(c, [], h, told=c["trail"])[0], [])
+
+    def test_b2_stato_perso_dopo_uscita(self):
+        """Stato degli avvisi perso il 10/11/2026, dopo l'uscita EMA del 09/11: avviso di ripristino e conferma dell'uscita."""
+        wk = self.wk
+        c = wk.evaluate(self.F[self.F.index < "2026-11-10"], capital=50000.0)
+        self.assertEqual(c["status"], "nessuno")
+        ev, st = wk.diff_events(c, None)
+        self.assertEqual([e["type"] for e in ev], ["w_restore", "w_exit"])
+        txt = wk.format_event(ev[0])
+        self.assertIn("Stato degli avvisi ripristinato", txt)
+        self.assertIn("Ultima situazione W3 = nessuna posizione", txt)
+        self.assertIn("2026-11-09", txt)
+        self.assertEqual(wk.diff_events(c, st)[0], [])
+
     def test_dashboard(self):
         from radar import live, paper
         from radar.dashboard import render

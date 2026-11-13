@@ -20,6 +20,7 @@ Importi su RADAR_CAPITAL × RADAR_WEEKLY_SHARE (quota del capitale dedicata al s
 from __future__ import annotations
 
 import os
+import re
 from datetime import datetime, timezone
 
 import numpy as np
@@ -35,8 +36,31 @@ R_LONG = 0.25                      # W3 (12/11/2026): stesso tetto anche sui lon
 FLOW_N = 3                         # W3: flusso perp = media degli ultimi 3 giorni DISPONIBILI alla decisione (fino al sabato)
 OLD_TREND, MACD_P = 16, (8, 21, 5)  # filtro F1 (01/11/2026): nei trend vecchi nuovo long solo con momentum MACD ripartito
 FEE_SPOT, FEE_PERP, SLIP = 0.001, 0.0005, 0.001
-CAPITAL = float(os.environ.get("RADAR_CAPITAL", "50000"))
-SHARE = float(os.environ.get("RADAR_WEEKLY_SHARE", "1.0"))   # quota di RADAR_CAPITAL dedicata al settimanale
+
+
+def _env_float(name: str, default: float) -> float:
+    """Numero da variabile d'ambiente, tollerante: virgola decimale, spazi, vuoto -> default. Un valore non valido
+    (o non positivo) usa il default con un messaggio nel log: mai un'eccezione all'import (fermerebbe tutto il giro)."""
+    raw = os.environ.get(name)
+    if raw is None or not raw.strip():
+        return default
+    txt = raw.strip().replace(" ", "").replace("\u00a0", "")
+    if "," in txt:
+        txt = txt.replace(".", "").replace(",", ".") if "." in txt else txt.replace(",", ".")   # 50.000,5 / 0,5
+    elif re.fullmatch(r"\d{1,3}(\.\d{3})+", txt):
+        txt = txt.replace(".", "")   # 50.000 / 1.250.000: punto delle migliaia all'italiana (mai un decimale a 3 cifre)
+    try:
+        v = float(txt)
+        if not np.isfinite(v) or v <= 0:
+            raise ValueError("non positivo")
+        return v
+    except ValueError:
+        print(f"[weekly] {name}={raw!r} non valido: uso il valore predefinito {default}")
+        return default
+
+
+CAPITAL = _env_float("RADAR_CAPITAL", 50000.0)
+SHARE = _env_float("RADAR_WEEKLY_SHARE", 1.0)   # quota di RADAR_CAPITAL dedicata al settimanale
 REASONS = {"trail": "trailing 2,5 ATR settimanali", "stop": "stop iniziale 2,5 ATR settimanali",
            "ema": "chiusura settimanale oltre la EMA 21", "dist": "distribuzione (funding e flusso perp)",
            "open": "posizione aperta"}
@@ -303,7 +327,8 @@ def _norm_state(prev: dict) -> dict:
             "pending_signal": prev.get("pending_signal"), "pending_exit": prev.get("pending_exit"),
             "trail_notified": prev.get("trail_notified"),
             "trail_sig": prev.get("trail_sig", prev.get("signal_date") if old else None),
-            "dist_week": prev.get("dist_week"), "side": prev.get("side")}
+            "dist_week": prev.get("dist_week"), "side": prev.get("side"),
+            "restore_pending": bool(prev.get("restore_pending"))}
 
 
 def apply_marks(st: dict, ev: dict) -> dict:
@@ -340,15 +365,47 @@ def _why_not_signal(cur: dict, side: str | None) -> str:
     return "; ".join(why) or "i dati rivisti non confermano più la decisione"
 
 
+def state_lost(cur: dict, prev: dict | None) -> bool:
+    """Stato degli avvisi assente con il tool già in funzione dal vivo (dati successivi a LIVE_START): state.json
+    illeggibile, cancellato o senza la chiave "weekly". Il primo avvio vero ha dati fino a LIVE_START."""
+    return prev is None and pd.Timestamp(cur["date"]) > pd.Timestamp(LIVE_START)
+
+
+def _restore_state(cur: dict, st: dict) -> None:
+    """Stato perso: ricostruisce dalla simulazione cosa l'utente conosceva già. Le posizioni dello storico contano come
+    annunciate; ingressi e uscite degli ultimi RECENT_DAYS restano da comunicare (passi 2 e 5), quelli più vecchi si
+    registrano senza messaggio. La posizione in corso conta come annunciata: il messaggio di ripristino ne dà i livelli."""
+    for t in cur.get("history", {}).get("trades", []):
+        s = t["signal"]
+        for fld in ("notified",) + (() if _recent(t["entry"], cur["date"]) else ("entered",)) + \
+                (("exit_announced",) if t["reason"] != "open" else ()):
+            if s not in st[fld]:
+                st[fld].append(s)
+    for fld in ("notified", "entered", "exit_announced"):
+        st[fld] = st[fld][-30:]
+    k = _pos_key(cur)
+    if cur["status"] in ("aperto", "uscita"):
+        st.update(trail_notified=cur.get("trail"), trail_sig=k, side=cur.get("side"))
+    st["restore_pending"] = True
+
+
 def pending_events(cur: dict, prev: dict | None) -> tuple[list[dict], dict]:
     """(eventi da inviare, stato di base). Lo stato di base NON contiene le marcature degli eventi: si aggiungono
     con apply_marks solo dopo un invio riuscito. prev=None = primo avvio dal vivo: la posizione già aperta si mostra
-    come "in corso" con un solo messaggio informativo, senza rimandarla come segnale nuovo."""
+    come "in corso" con un solo messaggio informativo, senza rimandarla come segnale nuovo. prev=None con dati
+    successivi a LIVE_START = stato perso (state_lost): avviso di ripristino con l'ultima situazione W3, senza perdere
+    ingressi e uscite degli ultimi giorni (ricostruiti dalla simulazione)."""
     ev, k, status = [], _pos_key(cur), cur["status"]
     trades = cur.get("history", {}).get("trades", [])
     by_sig = {t["signal"]: t for t in trades}
-    first = prev is None
+    lost = state_lost(cur, prev)
+    first = prev is None and not lost
     st = _norm_state(prev or {})
+    if lost:
+        _restore_state(cur, st)
+    if st.get("restore_pending"):   # resta in sospeso finché Telegram non conferma l'avviso
+        last = next((t for t in reversed(trades) if t["reason"] != "open"), None)
+        ev.append({"type": "w_restore", "w": cur, "last": last, "mark": [("set", "restore_pending", False)]})
     if first and status in ("aperto", "uscita"):
         ev.append({"type": "w_info", "w": cur, "mark": [("add", "notified", k), ("add", "entered", k),
                                                        ("set", "trail_notified", cur.get("trail")), ("set", "trail_sig", k)]})
@@ -502,9 +559,23 @@ def format_event(ev: dict) -> str:
                 f"Nuovo stop {_usd(w['trail'])} (era {_usd(ev['old'])}) · prezzo {_usd(w['price'])} · "
                 f"andamento {w['move_pct']:+.2f}% sul prezzo")
     if t == "w_dist":
-        return (f"<b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione</b> ({w['side']}, W3)\n"
-                f"Funding medio 7g {w['fund7'] * 100:+.4f}%/giorno · flusso perp {w['flow']:+.2f}σ. Se resta così alla chiusura "
-                f"di domenica, la posizione si chiude lunedì all'apertura. Trailing {_usd(w['trail'])}.")
+        return (f"<b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione (anteprima)</b> ({w['side']}, W3)\n"
+                f"Anteprima a metà settimana, non è una decisione: se la settimana chiudesse oggi, funding medio 7g "
+                f"{w['fund7'] * 100:+.4f}%/giorno e flusso perp {w['flow']:+.2f}σ darebbero l'uscita per distribuzione "
+                f"all'apertura di lunedì. Decide solo la chiusura di domenica (UTC). Trailing {_usd(w['trail'])}.")
+    if t == "w_restore":
+        x = ev.get("last")
+        lines = ["<b>RADAR SIGNAL BTC · Stato degli avvisi ripristinato</b> (W3)",
+                 "Lo stato salvato degli avvisi mancava o non era leggibile: ricostruito dalla simulazione W3.",
+                 f"Ultima situazione W3 = {_state_word(w)} (dati fino al {w['date']})."]
+        if w.get("status") in ("aperto", "uscita"):
+            lines.append(f"Posizione dal {w['entry']} a {_usd(w['entry_px'])} · andamento {w['move_pct']:+.2f}% sul prezzo · "
+                         f"stop/trailing {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}")
+        if x:
+            lines.append(f"Ultima operazione chiusa: {x['side']} dal {x['entry']} a {_usd(x['entry_px'])}, uscita {x['exit']} a "
+                         f"{_usd(x['exit_px'])} ({REASONS.get(x['reason'], x['reason'])}, {x['pnl_pct']:+.2f}% sul capitale dedicato)")
+        lines.append(f"Ingressi e uscite degli ultimi {RECENT_DAYS} giorni seguono in messaggi separati.")
+        return "\n".join(lines)
     if t == "w_exit_next":
         return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ANNUNCIATA</b> ({w['side']}, W3) · all'apertura di lunedì\n"
                 f"Motivo: {REASONS[w['reason']]} (chiusura del {w['exit_date']})\n"
@@ -569,19 +640,25 @@ def check_intraday(cur: dict, already: list[str], h: pd.DataFrame | None = None,
     il più protettivo tra quello del modello (trailing W3 o stop iniziale del segnale) e l'ultimo comunicato
     all'utente (`told`): l'allerta non arriva mai dopo il livello che l'utente conosce. Un'allerta per livello.
     `h` = candele orarie (test). Le chiavi restituite vanno salvate solo se l'invio riesce."""
-    if cur["status"] in ("aperto", "uscita"):
+    # "uscita": decisa alla chiusura di domenica ed eseguita all'apertura di lunedì; le ore controllate partono da lunedì
+    # 00:00, cioè dopo l'uscita: nessuno stop da sorvegliare (B1, caso del 16/01/2023).
+    if cur["status"] == "aperto":
         model = cur["trail"]
     elif cur["status"] == "segnale":
         model = cur["plan"]["stop"]
     else:
         return [], already
     sg = _sg(cur["side"])
-    level = model if told is None else (max(model, told) if sg > 0 else min(model, told))
     if h is None:
         from .intraday import hourly_since
         h = hourly_since(pd.Timestamp(cur["date"]) + pd.Timedelta(days=1))
     if h is None or h.empty:
         return [], already
+    if cur["status"] == "segnale" and cur["plan"].get("trail_dist") is not None:
+        # come il backtest il giorno d'ingresso: stop = max(stop iniziale, apertura − 2,5 ATRw) (min per gli short)
+        tl = float(h["open"].iloc[0]) - sg * float(cur["plan"]["trail_dist"])
+        model = max(model, tl) if sg > 0 else min(model, tl)
+    level = model if told is None else (max(model, told) if sg > 0 else min(model, told))
     hit = float(h["low"].min()) <= level if sg > 0 else float(h["high"].max()) >= level
     key = f"W:{cur['signal_date']}:{level:.0f}"
     if not hit or key in already:
