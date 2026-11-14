@@ -176,7 +176,7 @@ def _history(r: dict, w: pd.DataFrame, f: pd.DataFrame, side: str) -> dict:
         px = float(t["entry_px"])
         adv = (float(seg["high"].max()) / px - 1) if side == "short" else (1 - float(seg["low"].min()) / px)
         out.append({"entry": t["entry"], "px": round(px, 2), "drop_from_8w_high_pct": round((px / hi8 - 1) * 100, 1),
-                    "move_pct": round(t["move"] * 100, 1), "adverse_pct": round(adv * 100, 1),
+                    "move_pct": round(float(t["move"]) * 100, 1), "adverse_pct": round(float(adv) * 100, 1),
                     "reason": W.REASONS.get(t.get("reason", "open"), t.get("reason", "open"))})
     return {"side": side, "trades": out, "wins": sum(1 for t in trades if t["pnl"] > 0), "n": len(trades)}
 
