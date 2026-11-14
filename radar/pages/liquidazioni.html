@@ -379,7 +379,7 @@
     const src = LM.sources || {}, s = Object.entries(src).filter(([, v]) => v.ok).map(([k, v]) => `${k === "okx" ? "OKX" : "Binance"} fino alle ${new Date(v.until.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}`);
     if (S.binMap) s.unshift(`Binance ricalcolata dal browser fino alle ${new Date(S.binMap.until).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}`);
     H("lqMapSub").textContent = "stima · " + (LM.params ? LM.params.lookback_days + " giorni di OI" : "");
-    H("lqMapNote").innerHTML = `STIMA, non dati reali: ogni aumento di open interest delle ultime ${LM.params ? LM.params.lookback_days : 21} giorni è trattato come posizioni nuove, metà long e metà short, con leve 10x (30%), 25x (30%), 50x (25%), 100x (15%) e margine 0,5%; un livello sparisce quando il prezzo lo attraversa. Fonti: ${s.join(" · ") || "–"}. Barre più lunghe = più $ che verrebbero liquidati in quella fascia (${(step * 100).toFixed(2).replace(".", ",")}% per riga).`;
+    H("lqMapNote").innerHTML = `STIMA, non dati reali: ogni aumento di open interest degli ultimi ${LM.params ? LM.params.lookback_days : 21} giorni è trattato come posizioni nuove, metà long e metà short, con leve 10x (30%), 25x (30%), 50x (25%), 100x (15%) e margine 0,5%; un livello sparisce quando il prezzo lo attraversa. Fonti: ${s.join(" · ") || "–"}. Barre più lunghe = più $ che verrebbero liquidati in quella fascia (${(step * 100).toFixed(2).replace(".", ",")}% per riga).`;
   }
 
   // ---------------- liquidazioni live

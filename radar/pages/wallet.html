@@ -665,7 +665,7 @@ function analyze(d) {
     `24 ore: ${nf(f24.length)} fill, ${mv24.length} mosse, PnL chiuso netto di commissioni ${s$(realized)}.`,
     flows.length ? `Flusso 24h per coin: ${flows.slice(0, 3).map(([c, v]) => `${nm(c)} ${s$(v)}`).join(", ")} (positivo = comprato).` : null,
     `Long ${m$(L)}, short ${m$(gross - L)}, PnL non realizzato ${s$(d.pos.reduce((s, p) => s + p.upnl, 0))}.`,
-    d.ord.length ? `${d.ord.length} ordini nel book per ${m$(d.ord.reduce((s, o) => s + o.val, 0))}: ${d.ord.filter((o) => o.rk === "in").length} per entrare o aumentare, ${d.ord.filter((o) => o.rk === "out").length} per ridurre, ${d.ord.filter((o) => o.rk === "tp" || o.rk === "sl").length} TP o stop.` : "Nessun ordine nel book.",
+    d.ord.length ? `${d.ord.length} ${d.ord.length === 1 ? "ordine" : "ordini"} nel book per ${m$(d.ord.reduce((s, o) => s + o.val, 0))}: ${d.ord.filter((o) => o.rk === "in").length} per entrare o aumentare, ${d.ord.filter((o) => o.rk === "out").length} per ridurre, ${d.ord.filter((o) => o.rk === "tp" || o.rk === "sl").length} TP o stop.` : "Nessun ordine nel book.",
     pnl30 != null ? `PnL 30 giorni ${s$(pnl30)}${av30 > 0 ? ` (${pc(pnl30 / av30)} sul valore di partenza)` : ""}.` : null,
   ].filter(Boolean);
   const worst = prob.find((x) => x[0] === "bad") || prob[0];
@@ -692,7 +692,7 @@ function renderNext() {
   if (!d) { el("wlNext").innerHTML = S.err && !d ? `<p class="wl-sum">Dati non disponibili.</p>` : SK(90) + SK(70) + SK(80); el("wlNextSub").textContent = ""; return; }
   const ord = d.ord, A = analyze(d);
   S.deep = A.deep;
-  el("wlNextSub").textContent = ord.length ? `${ord.length} ordini, ${m$(ord.reduce((a, o) => a + o.val, 0))}` : "nessun ordine nel book";
+  el("wlNextSub").textContent = ord.length ? `${ord.length} ${ord.length === 1 ? "ordine" : "ordini"}, ${m$(ord.reduce((a, o) => a + o.val, 0))}` : "nessun ordine nel book";
   const rows = ord.slice(0, S.ordAll ? 40 : 6).map((o) => `<div class="r"><span class="rl ${o.rk}">${esc(o.rl)}</span>
       <span class="c"><b>${act(o.dir)} ${coinH(o.coin)} · ${m$(o.val)}</b><small>${esc(o.type)}${o.reduce ? " · solo riduzione" : ""} · ${qty(o.sz)} @ ${px(o.price)}</small></span>
       <span class="d"><b class="${Math.abs(o.dist) < 0.01 ? "" : "mut"}">${pc(o.dist, 2)}</b><small>dal prezzo</small></span></div>`);
@@ -830,7 +830,7 @@ function renderTabs() {
     put(t, t.rows.slice(0, trN), (o) => [`${coinH(o.coin)} <span class="${o.side > 0 ? "pos" : "neg"}" style="font-weight:500">${esc(DIR_IT[o.dirTxt] || o.dirTxt || (o.side > 0 ? "Compra" : "Vende"))}</span>`, `${dt(o.t)}, ${px(o.px)}`, m$(o.val),
       Math.abs(o.pnl) > 0.005 ? `<span class="${tone(o.pnl)}">${s$(o.pnl)}</span>` : ""], t.rows.length > trN ? `<button class="wl-moreb" type="button" data-trmore>Mostra altri (${t.rows.length - trN})</button>` : "");
     const span = d.fills.length ? d.fills[d.fills.length - 1].time - d.fills[0].time : 0;
-    el("wlTabSub").textContent = `${all.length} ordini eseguiti`;
+    el("wlTabSub").textContent = `${all.length} ${all.length === 1 ? "ordine eseguito" : "ordini eseguiti"}`;
     el("wlTabNote").textContent = `Fill raggruppati per ordine (stesso id): ultimi ${d.fills.length} fill, ${dur(span)} di storico. Il PnL chiuso è al lordo delle commissioni.`;
   } else if (S.tab === "fund") {
     const per = {};
