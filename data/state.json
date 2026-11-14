@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-12",
+  "date": "2026-11-13",
   "last_signal_date": null,
   "intraday_keys": [],
   "v2": {
@@ -31,10 +31,11 @@
     "trail_sig": null,
     "dist_week": null,
     "side": null,
+    "restore_pending": false,
     "status": "nessuno",
     "signal_date": null,
     "trail": null,
-    "date": "2026-11-12"
+    "date": "2026-11-13"
   },
   "weekly_intraday_keys": [],
   "commod": {
@@ -3056,6 +3057,6 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-13T18:09:43",
-  "heartbeat": "2026-11-13"
+  "last_run": "2026-11-14T22:02:58",
+  "heartbeat": "2026-11-14"
 }
