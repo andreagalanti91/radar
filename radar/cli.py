@@ -187,6 +187,8 @@ def daily() -> None:
     _soft("modulo su carta", paper.update, f)
     # mappa delle liquidazioni vicine e balene Hyperliquid (radar/liqmap.py)
     report["liqmap"] = _soft("mappa delle liquidazioni", lambda: mod("liqmap").update(report.get("levels"), DATA_DIR))
+    # pre-analisi della prossima decisione W3 (chiusura della domenica) con i dati di oggi: solo lettura (radar/preview.py)
+    report["preview"] = _soft("pre-analisi W3", lambda: mod("preview").build(f, report)) if wcur else None
     _soft("trader seguito (esiti)", lambda: mod("xinbox").evaluate_all())
     report["liqsources"] = _soft("liquidazioni multi-exchange", lambda: mod("liqsources").summary())
     # ultima cascata di liquidazioni (24 ore) e prossime fasce dense: solo contesto (radar/liqcascade.py, lezione 92)
@@ -201,7 +203,7 @@ def daily() -> None:
     report["news"] = _soft("notizie", fetch_news) or []
     report["calendar"] = _soft("calendario", fetch_calendar) or []
     report["banks"] = _soft("banche centrali", fetch_central_banks) or []   # prossime riunioni Fed (FOMC) e BCE
-    for k in ("levels", "liqmap", "orderbook"):
+    for k in ("levels", "liqmap", "orderbook", "preview"):
         if report.get(k) is None:
             report.pop(k, None)
     # solo W3 (W2 + MACD robusta, dal 12/11/2026) (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli

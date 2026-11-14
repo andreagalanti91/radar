@@ -1,0 +1,19 @@
+{
+  "source": "Mappa delle liquidazioni ±8% ricostruita giorno per giorno, 2.092 giorni dal 2021-01-22 al 2026-10-14 (calcolo della sessione del 14/11/2026). r7/r14/r30 = rendimento medio % di BTC a 7, 14 e 30 giorni.",
+  "rows": [
+    {"label": "molti long sotto", "days": 177, "r7": 0.9, "r14": 1.6, "r30": 1.7},
+    {"label": "bilanciata", "days": 1101, "r7": 0.7, "r14": 1.1, "r30": 3.1},
+    {"label": "più short sopra", "days": 299, "r7": 0.2, "r14": 1.0, "r30": -0.3},
+    {"label": "quasi tutto sopra", "days": 45, "r7": -0.7, "r14": 0.3, "r30": 0.2}
+  ],
+  "base": {"r7": 0.6, "r14": 1.2, "r30": 2.3},
+  "regime_rows": [
+    {"label": "molti long sotto", "days": 62, "r7": 1.3, "r14": 0.7, "r30": 3.3},
+    {"label": "long sotto", "days": 113, "r7": -1.0, "r14": -0.8, "r30": -0.0},
+    {"label": "bilanciata", "days": 263, "r7": 0.3, "r14": 0.9, "r30": 3.4},
+    {"label": "più short sopra", "days": 77, "r7": -0.4, "r14": -0.4, "r30": -4.7},
+    {"label": "quasi tutto sopra", "days": 9, "r7": -1.0, "r14": -0.1, "r30": -0.0}
+  ],
+  "regime_label": "Regime short W3",
+  "note": "Dal 2021 gli short accumulati sopra il prezzo non hanno spinto il prezzo in su: campioni estremi piccoli."
+}
