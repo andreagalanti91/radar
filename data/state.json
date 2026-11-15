@@ -35,7 +35,7 @@
     "status": "nessuno",
     "signal_date": null,
     "trail": null,
-    "date": "2026-11-13"
+    "date": "2026-11-14"
   },
   "weekly_intraday_keys": [],
   "commod": {
@@ -3057,6 +3057,6 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-14T22:55:57",
+  "last_run": "2026-11-15T00:02:52",
   "heartbeat": "2026-11-14"
 }
