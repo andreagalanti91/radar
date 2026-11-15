@@ -1,0 +1,18 @@
+celle totali 3518, ammissibili 1026, test IS 6156, candidati BH-IS 0, confermati OOS (preregistrato) 0, + BH-OOS 0
+secondaria (p IS<0,05 nominale + conferma OOS): long 34 (miglior min z 2.22), short 28 (miglior min z 2.47)
+placebo (50 sfasamenti circolari): candidati BH-IS mediana 2, 95° 262; confermati 95° 13 (reali 0)
+  long: celle nominali placebo mediana 4, 95° 38 (reali 34, quota placebo ≥ reali 0.08); miglior min z placebo mediana 1.91, 95° 2.64 (reale 2.22, quota ≥ 0.28)
+  short: celle nominali placebo mediana 18, 95° 73 (reali 28, quota placebo ≥ reali 0.42); miglior min z placebo mediana 2.29, 95° 2.98 (reale 2.47, quota ≥ 0.36)
+
+TOP
+    side                           cella   h     score      z_is     z_oos  prereg  bh_oos
+0   long       REG=L & PFs=pos & SFs=pos  30  2.223940  2.223940  2.372175   False   False
+1   long        REG=L & PFt=hi & SFs=pos  30  2.183197  2.183197  2.607333   False   False
+2   long        REG=L & PFs=pos & SFt=hi  30  2.155108  2.155108  2.464466   False   False
+3   long         REG=L & PFt=hi & SFt=hi  30  2.121615  2.121615  2.683565   False   False
+4   long  PFt=hi & SFs=pos & DEMA=sopra5   7  2.098493  2.098493  2.257183   False   False
+5  short              SFs=neg & FUND=mid  30  2.468092  2.781457  2.468092   False   False
+6  short   PFs=neg & OI=hi & DEMA=sopra5   7  2.465122  2.465122  2.505828   False   False
+7  short      SFs=neg & FUND=mid & LIQ=0  30  2.429949  2.911747  2.429949   False   False
+8  short                DIV=pari & OI=lo  30  2.232099  2.431158  2.232099   False   False
+9  short               SFt=lo & FUND=mid  30  2.183042  2.621178  2.183042   False   False
