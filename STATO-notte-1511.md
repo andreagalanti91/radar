@@ -2,7 +2,7 @@
 Data: 15/11/2026 · Stato: IN CORSO · Report: 15/11 ore 09:00
 Classe: lunga · Opus 5.5, effort alto
 
-- [ ] N1 Giorno di decisione: W3 con settimana chiusa lun…dom; robustezza dell'ancoraggio (perché domenica)
+- [x] N1 Giorno di decisione: W3 con settimana chiusa lun…dom; robustezza dell'ancoraggio (perché domenica)
 - [ ] N2 Swing 2–3 giorni: famiglie momentum / ritorno alla media / flussi, preregistrate, costi reali, IS/OOS
 - [ ] N3 Internet: strategie e studi su BTC (momentum, politica monetaria, ETF, stablecoin, funding/basis) → ipotesi testabili con fonti
 - [ ] N4 Flussi di denaro e probabilità long/short: modello condizionato (regime, flusso perp/spot, funding, ETF/stablecoin, macro) + range S/R con statistiche di reazione
@@ -13,3 +13,4 @@ Regole: nessuna modifica a W3 senza approvazione; solo research/notte_1511/; fon
 Log:
 - 15/11 avvio.
 - 15/11 01:15 avviati N1–N4 in parallelo; revisione critica 04:30; report 09:00 (oggi).
+- 15/11 N1 finito: domenica = convenzione; prima su 7 giorni dal 2021 (78,5k vs mediana 62,7k), quarta nel 2018–20; tutti i giorni battono il buy & hold; proposta: tenere la domenica e comunicare la mediana (~63k) come attesa.

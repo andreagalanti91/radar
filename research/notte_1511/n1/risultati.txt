@@ -1,0 +1,41 @@
+Dati fino al 2026-11-14. Controllo radar.weekly.simulate (domenica): finale 78,474 $, DD -21.1%, trade 13; copia N1: finale 78,474 $; equity identica=True, trade identici=True
+
+giorno                               finale    DD%  CAGR%   MAR trade   WR%  IS 21-23  OOS 24-    18-20 DD18-20 senza top
+lunedì                               62.728  -27.5   36.7  1.34    15    67    28.235   21.305   27.423   -38.8    39.180
+martedì                              48.763  -25.2   31.0  1.23    13    77    20.246   22.703   29.413   -35.0    34.043
+mercoledì                            38.564  -28.9   25.9  0.90    15    73    17.997   21.189   32.682   -39.1    25.584
+giovedì                              40.948  -39.4   27.2  0.69    17    65    20.879   18.820   14.155   -55.9    26.728
+venerdì                              68.218  -25.5   38.7  1.52    17    76    32.247   22.835   15.071   -49.0    45.860
+sabato                               70.104  -25.8   39.4  1.52    15    80    32.067   21.862   20.210   -35.3    47.836
+domenica                             78.474  -21.1   42.1  1.99    13    92    33.477   23.488   25.142   -37.3    51.561
+media 7 ancoraggi (1/7 ciascuno)     58.257  -23.5   35.0  1.49   105    75    26.450   21.743   23.442   -41.3          
+buy & hold                           21.783  -76.6   14.2  0.19     1   nan    14.358   14.462   21.531   -81.2          
+
+finale 2021→           media  58,256.93  mediana  62,728.25  min  38,564.26  max  78,473.92  dev.st 15,523.28  CV  26.6%  domenica  78,473.92 (posto 1/7, percentile 100)
+DD 2021→               media     -27.63  mediana     -25.81  min     -39.39  max     -21.13  dev.st      5.71  CV  20.7%  domenica     -21.13 (posto 1/7, percentile 100)
+MAR 2021→              media       1.31  mediana       1.34  min       0.69  max       1.99  dev.st      0.43  CV  32.9%  domenica       1.99 (posto 1/7, percentile 100)
+IS 2021–23             media  26,449.60  mediana  28,234.74  min  17,997.08  max  33,477.01  dev.st  6,566.29  CV  24.8%  domenica  33,477.01 (posto 1/7, percentile 100)
+OOS 2024→              media  21,743.10  mediana  21,861.66  min  18,819.55  max  23,488.12  dev.st  1,539.36  CV   7.1%  domenica  23,488.12 (posto 1/7, percentile 100)
+2018–20                media  23,442.23  mediana  25,141.99  min  14,155.03  max  32,681.63  dev.st  7,147.56  CV  30.5%  domenica  25,141.99 (posto 4/7, percentile 50)
+DD 2018–20             media     -41.48  mediana     -38.80  min     -55.91  max     -34.96  dev.st      7.91  CV  19.1%  domenica     -37.27 (posto 3/7, percentile 67)
+senza trade migliore   media  38,684.59  mediana  39,179.79  min  25,583.91  max  51,560.85  dev.st 10,307.07  CV  26.6%  domenica  51,560.85 (posto 1/7, percentile 100)
+Rango di Spearman IS/OOS sui 7 giorni: 0.71; 2021→ contro 2018–20: -0.32
+Domenica / mediana finale 2021→: 1.25; min / mediana: 0.61
+  lunedì     trade 15, di cui 11 con ingresso entro 6 giorni da un ingresso della domenica
+  martedì    trade 13, di cui 12 con ingresso entro 6 giorni da un ingresso della domenica
+  mercoledì  trade 15, di cui 11 con ingresso entro 6 giorni da un ingresso della domenica
+  giovedì    trade 17, di cui 10 con ingresso entro 6 giorni da un ingresso della domenica
+  venerdì    trade 17, di cui 10 con ingresso entro 6 giorni da un ingresso della domenica
+  sabato     trade 15, di cui 10 con ingresso entro 6 giorni da un ingresso della domenica
+  domenica   trade 13, di cui 13 con ingresso entro 6 giorni da un ingresso della domenica
+
+Rendimento per anno (%), ogni anno sul capitale di inizio anno:
+            2021  2022  2023   2024  2025  2026
+lunedì      73.3   3.6  57.3   90.1   7.0   9.3
+martedì     39.1  14.0  27.6  116.9   6.0   4.8
+mercoledì   33.6   5.8  27.3   92.5   5.5   5.6
+giovedì     96.5  17.7  -9.7   90.7 -12.7  17.8
+venerdì    142.1  17.6  13.3   92.0  -1.1  11.4
+sabato     121.3  26.8  14.3  104.2  -1.4   8.6
+domenica    91.9  19.4  46.1  102.7   4.9  10.2
+media 7     85.4  16.0  23.0   98.4   1.3   9.6
