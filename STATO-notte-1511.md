@@ -18,3 +18,4 @@ Log:
 - 15/11 N3 finito: 28 fonti; momentum unico effetto robusto (già in W3); stablecoin, liquidità Fed, FOMC senza effetto; premio Coinbase solo indizio (p 0,03/0,10, instabile) → contesto su carta.
 - 15/11 N4 finito: probabilità condizionate 0/5.790 dopo correzione; S/R come il caso (0/72); stato di oggi lieve inclinazione ribassista non significativa. Lezioni: N1→94, N2→95, N3→96, N4→97. Avvio revisione critica.
 - 15/11 revisione critica: verdetti confermati, premio Coinbase e short di flusso ridotti a rumore; report scritto (REPORT.md), lezioni 94–97. Alle 08:15 aggiunta della pre-analisi aggiornata e invio.
+- 15/11 04:30 controllo programmato: N1–N5 già completati e pubblicati; nessun agente fermo.
