@@ -1,0 +1,363 @@
+{
+ "data_chiusura": "2026-11-14",
+ "prezzo": 64150.0,
+ "stato": {
+  "REG": "N",
+  "PFs": "neg",
+  "PFt": "lo",
+  "SFs": "pos",
+  "SFt": "hi",
+  "DIV": "spot",
+  "FUND": "mid",
+  "OI": "lo",
+  "LIQ": "LL",
+  "DSMA": "sotto",
+  "DEMA": "sotto5"
+ },
+ "valori": {
+  "pf14z": -0.912,
+  "sf14z": 1.249,
+  "div": 2.161,
+  "funding_z": 0.253,
+  "oi_z": -1.122,
+  "dsma": -0.113,
+  "dema": -0.162,
+  "liq_day": 1.0
+ },
+ "celle_ammissibili_che_contengono_oggi": 61,
+ "cella_principale": "PFt=lo & SFt=hi",
+ "nota_cella": "REG×PFt×SFt di oggi non ammissibile (< 40 osservazioni indipendenti): usata la combinazione più ricca disponibile",
+ "h7": {
+  "base_P": 0.511,
+  "base_media_pct": 0.55,
+  "mediana_P_celle_di_oggi": 0.495,
+  "quota_celle_sopra_base": 0.34,
+  "principale": {
+   "P": 0.387,
+   "IC95": [
+    0.276,
+    0.522
+   ],
+   "media_pct": -2.06,
+   "IC95_media_pct": [
+    -3.45,
+    -0.3
+   ],
+   "P_IS": 0.455,
+   "P_OOS": 0.3,
+   "n_ind7": 48
+  },
+  "singole": {
+   "REG=N": {
+    "P": 0.526,
+    "IC95": [
+     0.426,
+     0.634
+    ],
+    "media_pct": 0.58
+   },
+   "PFs=neg": {
+    "P": 0.477,
+    "IC95": [
+     0.425,
+     0.536
+    ],
+    "media_pct": 0.01
+   },
+   "PFt=lo": {
+    "P": 0.476,
+    "IC95": [
+     0.419,
+     0.543
+    ],
+    "media_pct": -0.01
+   },
+   "SFs=pos": {
+    "P": 0.526,
+    "IC95": [
+     0.465,
+     0.591
+    ],
+    "media_pct": 0.76
+   },
+   "SFt=hi": {
+    "P": 0.523,
+    "IC95": [
+     0.461,
+     0.593
+    ],
+    "media_pct": 0.86
+   },
+   "DIV=spot": {
+    "P": 0.519,
+    "IC95": [
+     0.462,
+     0.585
+    ],
+    "media_pct": 0.84
+   },
+   "FUND=mid": {
+    "P": 0.477,
+    "IC95": [
+     0.417,
+     0.543
+    ],
+    "media_pct": -0.5
+   },
+   "OI=lo": {
+    "P": 0.508,
+    "IC95": [
+     0.447,
+     0.575
+    ],
+    "media_pct": 0.6
+   },
+   "LIQ=LL": {
+    "P": 0.508,
+    "IC95": [
+     0.383,
+     0.639
+    ],
+    "media_pct": 0.63
+   },
+   "DSMA=sotto": {
+    "P": 0.497,
+    "IC95": [
+     0.429,
+     0.572
+    ],
+    "media_pct": 0.17
+   },
+   "DEMA=sotto5": {
+    "P": 0.502,
+    "IC95": [
+     0.443,
+     0.568
+    ],
+    "media_pct": -0.08
+   }
+  }
+ },
+ "h14": {
+  "base_P": 0.516,
+  "base_media_pct": 1.1,
+  "mediana_P_celle_di_oggi": 0.478,
+  "quota_celle_sopra_base": 0.13,
+  "principale": {
+   "P": 0.448,
+   "IC95": [
+    0.323,
+    0.585
+   ],
+   "media_pct": -2.08,
+   "IC95_media_pct": [
+    -4.2,
+    0.24
+   ],
+   "P_IS": 0.495,
+   "P_OOS": 0.384,
+   "n_ind7": 48
+  },
+  "singole": {
+   "REG=N": {
+    "P": 0.488,
+    "IC95": [
+     0.36,
+     0.626
+    ],
+    "media_pct": 0.4
+   },
+   "PFs=neg": {
+    "P": 0.466,
+    "IC95": [
+     0.4,
+     0.543
+    ],
+    "media_pct": 0.24
+   },
+   "PFt=lo": {
+    "P": 0.466,
+    "IC95": [
+     0.389,
+     0.551
+    ],
+    "media_pct": 0.07
+   },
+   "SFs=pos": {
+    "P": 0.546,
+    "IC95": [
+     0.472,
+     0.625
+    ],
+    "media_pct": 1.7
+   },
+   "SFt=hi": {
+    "P": 0.557,
+    "IC95": [
+     0.473,
+     0.65
+    ],
+    "media_pct": 2.03
+   },
+   "DIV=spot": {
+    "P": 0.518,
+    "IC95": [
+     0.44,
+     0.608
+    ],
+    "media_pct": 1.26
+   },
+   "FUND=mid": {
+    "P": 0.478,
+    "IC95": [
+     0.388,
+     0.572
+    ],
+    "media_pct": -0.11
+   },
+   "OI=lo": {
+    "P": 0.489,
+    "IC95": [
+     0.411,
+     0.574
+    ],
+    "media_pct": 0.81
+   },
+   "LIQ=LL": {
+    "P": 0.377,
+    "IC95": [
+     0.239,
+     0.512
+    ],
+    "media_pct": -0.3
+   },
+   "DSMA=sotto": {
+    "P": 0.509,
+    "IC95": [
+     0.42,
+     0.604
+    ],
+    "media_pct": 0.32
+   },
+   "DEMA=sotto5": {
+    "P": 0.509,
+    "IC95": [
+     0.428,
+     0.589
+    ],
+    "media_pct": 0.12
+   }
+  }
+ },
+ "h30": {
+  "base_P": 0.529,
+  "base_media_pct": 2.51,
+  "mediana_P_celle_di_oggi": 0.459,
+  "quota_celle_sopra_base": 0.05,
+  "principale": {
+   "P": 0.294,
+   "IC95": [
+    0.154,
+    0.463
+   ],
+   "media_pct": -2.59,
+   "IC95_media_pct": [
+    -8.15,
+    3.59
+   ],
+   "P_IS": 0.198,
+   "P_OOS": 0.435,
+   "n_ind7": 48
+  },
+  "singole": {
+   "REG=N": {
+    "P": 0.469,
+    "IC95": [
+     0.299,
+     0.646
+    ],
+    "media_pct": -0.3
+   },
+   "PFs=neg": {
+    "P": 0.453,
+    "IC95": [
+     0.358,
+     0.549
+    ],
+    "media_pct": 0.63
+   },
+   "PFt=lo": {
+    "P": 0.391,
+    "IC95": [
+     0.289,
+     0.501
+    ],
+    "media_pct": -1.4
+   },
+   "SFs=pos": {
+    "P": 0.545,
+    "IC95": [
+     0.44,
+     0.644
+    ],
+    "media_pct": 4.06
+   },
+   "SFt=hi": {
+    "P": 0.562,
+    "IC95": [
+     0.442,
+     0.668
+    ],
+    "media_pct": 4.48
+   },
+   "DIV=spot": {
+    "P": 0.498,
+    "IC95": [
+     0.38,
+     0.604
+    ],
+    "media_pct": 2.43
+   },
+   "FUND=mid": {
+    "P": 0.456,
+    "IC95": [
+     0.339,
+     0.572
+    ],
+    "media_pct": 0.82
+   },
+   "OI=lo": {
+    "P": 0.498,
+    "IC95": [
+     0.404,
+     0.595
+    ],
+    "media_pct": 1.08
+   },
+   "LIQ=LL": {
+    "P": 0.451,
+    "IC95": [
+     0.299,
+     0.6
+    ],
+    "media_pct": -0.8
+   },
+   "DSMA=sotto": {
+    "P": 0.51,
+    "IC95": [
+     0.39,
+     0.64
+    ],
+    "media_pct": 0.46
+   },
+   "DEMA=sotto5": {
+    "P": 0.529,
+    "IC95": [
+     0.412,
+     0.651
+    ],
+    "media_pct": 0.62
+   }
+  }
+ }
+}

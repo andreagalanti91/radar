@@ -1,0 +1,5 @@
+cella,finale,rend,dd,trade,wr,mar,senza_migliore,placebo_regimeL_pct,placebo_mediana
+REG=L h30 (diagnostica),29304,193.0,-54.7,9,55.6,0.37,9406,69.9,16320
+REG=L & PFs=pos h30 (diagnostica),45313,353.1,-46.8,21,61.9,0.63,29841,87.4,16788
+REG=L & SFs=pos h30 (diagnostica),35646,256.5,-44.5,16,50.0,0.54,18153,82.9,14863
+REG=L & PFs=pos & SFs=pos h30 (diagnostica),65813,558.1,-38.1,16,68.8,0.99,42066,97.0,14466

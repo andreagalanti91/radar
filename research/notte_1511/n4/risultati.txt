@@ -1,0 +1,191 @@
+N4 · risultati (15/11/2026) — script: a_scan.py, a_trade.py, a_oggi.py, b_sr.py, b_oggi.py
+
+=== A · scansione (soglie ±0,43/±0,5) ===
+celle totali 3521, ammissibili 965, test IS 5790, candidati BH-IS 0, confermati OOS (preregistrato) 0, + BH-OOS 0
+secondaria (p IS<0,05 nominale + conferma OOS): long 22 (miglior min z 2.22), short 34 (miglior min z 2.44)
+placebo (50 sfasamenti circolari): candidati BH-IS mediana 0, 95° 326; confermati 95° 15 (reali 0)
+  long: celle nominali placebo mediana 4, 95° 33 (reali 22, quota placebo ≥ reali 0.14); miglior min z placebo mediana 2.00, 95° 2.51 (reale 2.22, quota ≥ 0.24)
+  short: celle nominali placebo mediana 18, 95° 62 (reali 34, quota placebo ≥ reali 0.26); miglior min z placebo mediana 2.36, 95° 2.91 (reale 2.44, quota ≥ 0.44)
+
+TOP
+    side                           cella   h     score      z_is     z_oos  prereg  bh_oos
+0   long       REG=L & PFs=pos & SFs=pos  30  2.223940  2.223940  2.372175   False   False
+1   long        REG=L & PFt=hi & SFs=pos  30  2.069009  2.069009  2.548532   False   False
+2   long        REG=L & PFs=pos & SFt=hi  30  2.033563  2.033563  2.518467   False   False
+3   long              SFt=hi & DSMA=0-20  30  1.975450  1.975450  2.742210   False   False
+4   long  PFt=hi & SFs=pos & DEMA=sopra5   7  1.915879  1.915879  2.192354   False   False
+5  short      PFt=mid & FUND=mid & LIQ=0   7  2.444655  3.824181  2.444655   False   False
+6  short         REG=L & PFs=neg & OI=hi   7  2.357341  2.388758  2.357341   False   False
+7  short   PFs=neg & OI=hi & DEMA=sopra5   7  2.321819  2.333120  2.321819   False   False
+8  short                DIV=pari & OI=lo  30  2.263569  2.263569  2.382796   False   False
+9  short                 PFs=neg & OI=hi   7  2.076452  2.076452  3.254129   False   False
+=== A · vicini soglie ±0,30 ===
+celle totali 3518, ammissibili 1026, test IS 6156, candidati BH-IS 0, confermati OOS (preregistrato) 0, + BH-OOS 0
+secondaria (p IS<0,05 nominale + conferma OOS): long 34 (miglior min z 2.22), short 28 (miglior min z 2.47)
+placebo (50 sfasamenti circolari): candidati BH-IS mediana 2, 95° 262; confermati 95° 13 (reali 0)
+  long: celle nominali placebo mediana 4, 95° 38 (reali 34, quota placebo ≥ reali 0.08); miglior min z placebo mediana 1.91, 95° 2.64 (reale 2.22, quota ≥ 0.28)
+  short: celle nominali placebo mediana 18, 95° 73 (reali 28, quota placebo ≥ reali 0.42); miglior min z placebo mediana 2.29, 95° 2.98 (reale 2.47, quota ≥ 0.36)
+
+=== A · vicini soglie ±0,60 ===
+celle totali 3509, ammissibili 934, test IS 5604, candidati BH-IS 0, confermati OOS (preregistrato) 0, + BH-OOS 0
+secondaria (p IS<0,05 nominale + conferma OOS): long 13 (miglior min z 2.22), short 21 (miglior min z 2.60)
+placebo (50 sfasamenti circolari): candidati BH-IS mediana 2, 95° 332; confermati 95° 20 (reali 0)
+  long: celle nominali placebo mediana 6, 95° 29 (reali 13, quota placebo ≥ reali 0.24); miglior min z placebo mediana 2.05, 95° 2.49 (reale 2.22, quota ≥ 0.24)
+  short: celle nominali placebo mediana 20, 95° 58 (reali 21, quota placebo ≥ reali 0.48); miglior min z placebo mediana 2.28, 95° 3.12 (reale 2.60, quota ≥ 0.24)
+
+=== A · tabelle ===
+TOP (secondaria: p IS nominale < 0,05 + conferma OOS; NESSUNA supera BH)
+ lato                          cella  h  n_ind7     P  P_lo  P_hi  media  P_is  P_oos   m_is  m_oos   z_is  z_oos
+ long      REG=L & PFs=pos & SFs=pos 30      57 0.741 0.599 0.857 12.714 0.759  0.723 12.634 12.793  2.224  2.372
+ long       REG=L & PFt=hi & SFs=pos 30      42 0.780 0.639 0.886 12.085 0.800  0.766 10.440 13.242  2.069  2.548
+ long       REG=L & PFs=pos & SFt=hi 30      51 0.755 0.617 0.878 12.886 0.743  0.769 11.567 14.420  2.034  2.518
+ long             SFt=hi & DSMA=0-20 30      40 0.819 0.644 0.932 13.585 0.753  0.880 12.491 14.600  1.975  2.742
+ long PFt=hi & SFs=pos & DEMA=sopra5  7      40 0.667 0.538 0.766  3.164 0.701  0.646  3.836  2.766  1.916  2.192
+short     PFt=mid & FUND=mid & LIQ=0  7      64 0.341 0.247 0.449 -2.790 0.345  0.337 -3.189 -2.275 -3.824 -2.445
+short        REG=L & PFs=neg & OI=hi  7      44 0.298 0.189 0.431 -2.349 0.227  0.338 -4.140 -1.364 -2.389 -2.357
+short  PFs=neg & OI=hi & DEMA=sopra5  7      40 0.292 0.179 0.438 -2.464 0.233  0.329 -4.189 -1.404 -2.333 -2.322
+short               DIV=pari & OI=lo 30      59 0.388 0.265 0.535 -3.436 0.361  0.402 -5.865 -2.222 -2.264 -2.383
+short                PFs=neg & OI=hi  7      60 0.361 0.251 0.481 -2.120 0.379  0.350 -2.852 -1.637 -2.076 -3.254
+
+BASE (tutte le osservazioni)
+    base_P  base_m
+h                 
+7   0.5115  0.0055
+14  0.5160  0.0110
+30  0.5289  0.0251
+
+VARIABILI SINGOLE (P(r>0), media %, IS/OOS)
+h=7
+       cella  n_ind7     P  P_lo  P_hi  media  P_is  P_oos   z_is  z_oos
+       REG=L     171 0.510 0.452 0.572  0.802 0.529  0.494  0.898 -0.036
+       REG=N      61 0.526 0.426 0.634  0.583 0.486  0.567  0.048 -0.003
+       REG=S      75 0.503 0.432 0.579 -0.042 0.489  0.526 -1.070  0.057
+     PFs=neg     183 0.477 0.425 0.536  0.010 0.470  0.484 -1.253 -0.694
+     PFs=pos     181 0.546 0.484 0.608  1.100 0.544  0.549  1.321  0.725
+      PFt=hi     138 0.568 0.499 0.633  1.403 0.572  0.563  1.735  0.922
+      PFt=lo     131 0.476 0.419 0.543 -0.005 0.480  0.471 -0.473 -1.242
+     PFt=mid     148 0.487 0.418 0.563  0.199 0.470  0.510 -1.251  0.582
+     SFs=neg     170 0.495 0.441 0.553  0.321 0.484  0.506 -0.135 -0.732
+     SFs=pos     186 0.526 0.465 0.591  0.756 0.529  0.523  0.131  0.733
+      SFt=hi     147 0.523 0.461 0.593  0.865 0.516  0.531 -0.263  1.463
+      SFt=lo     131 0.485 0.421 0.551  0.172 0.444  0.522 -0.912  0.015
+     SFt=mid     129 0.529 0.455 0.605  0.571 0.576  0.479  1.715 -2.382
+    DIV=pari     130 0.514 0.439 0.595  0.506 0.553  0.485  0.882 -1.534
+    DIV=perp     125 0.501 0.434 0.570  0.279 0.484  0.524 -0.346 -0.432
+    DIV=spot     132 0.519 0.462 0.585  0.843 0.504  0.535 -0.480  1.417
+     FUND=hi     111 0.533 0.464 0.609  1.244 0.529  0.537  0.497  1.218
+     FUND=lo     135 0.523 0.457 0.587  0.866 0.511  0.533  0.929 -0.111
+    FUND=mid     132 0.477 0.417 0.543 -0.504 0.486  0.466 -1.499 -1.404
+       OI=hi     144 0.493 0.420 0.563  0.113 0.487  0.498 -1.140 -0.412
+       OI=lo     147 0.508 0.447 0.575  0.597 0.491  0.523 -0.227  0.514
+      OI=mid     218 0.511 0.455 0.577  0.320 0.502  0.520 -0.778 -0.121
+       LIQ=0     288 0.505 0.462 0.557  0.332 0.498  0.512 -1.541  0.106
+      LIQ=LL      40 0.508 0.383 0.639  0.627 0.491  0.522  0.294 -0.277
+   DSMA=0-20     105 0.528 0.458 0.615  0.898 0.506  0.543  0.183  0.756
+DSMA=oltre20     124 0.513 0.438 0.582  0.643 0.531  0.493  0.207 -0.013
+  DSMA=sotto     117 0.497 0.429 0.572  0.174 0.490  0.507 -0.341 -0.657
+    DEMA=pm5      76 0.500 0.398 0.612  0.943 0.563  0.463  1.286 -0.779
+ DEMA=sopra5     159 0.522 0.456 0.586  0.874 0.530  0.515  0.518  0.576
+ DEMA=sotto5     119 0.502 0.443 0.568 -0.075 0.471  0.552 -1.408 -0.118
+h=30
+       cella  n_ind7     P  P_lo  P_hi  media  P_is  P_oos   z_is  z_oos
+       REG=L     171 0.530 0.416 0.632  4.067 0.523  0.537  0.798  0.738
+       REG=N      61 0.469 0.299 0.646 -0.296 0.495  0.443  0.006 -1.495
+       REG=S      75 0.573 0.435 0.704  1.294 0.480  0.730 -0.928  0.764
+     PFs=neg     183 0.453 0.358 0.549  0.635 0.418  0.488 -1.131 -1.456
+     PFs=pos     181 0.604 0.507 0.699  4.371 0.584  0.627  1.192  1.445
+      PFt=hi     138 0.629 0.519 0.731  5.145 0.627  0.631  1.554  0.922
+      PFt=lo     131 0.391 0.289 0.501 -1.404 0.342  0.434 -1.836 -2.095
+     PFt=mid     148 0.561 0.451 0.666  3.664 0.525  0.610  0.169  1.579
+     SFs=neg     170 0.511 0.406 0.622  0.792 0.462  0.560 -0.712 -1.069
+     SFs=pos     186 0.545 0.440 0.644  4.064 0.541  0.549  0.687  1.116
+      SFt=hi     147 0.562 0.442 0.668  4.480 0.518  0.616  0.221  1.520
+      SFt=lo     131 0.512 0.396 0.635  0.413 0.418  0.596 -1.029 -0.766
+     SFt=mid     129 0.501 0.396 0.611  2.307 0.590  0.404  1.256 -1.940
+    DIV=pari     130 0.515 0.409 0.628  1.690 0.542  0.494  0.663 -1.975
+    DIV=perp     125 0.573 0.451 0.694  3.302 0.518  0.644  0.393  0.313
+    DIV=spot     132 0.498 0.380 0.604  2.434 0.467  0.535 -0.929  0.964
+     FUND=hi     111 0.550 0.410 0.671  4.533 0.550  0.550  0.657  0.858
+     FUND=lo     135 0.572 0.462 0.684  2.316 0.557  0.587  0.301 -0.578
+    FUND=mid     132 0.456 0.339 0.572  0.816 0.406  0.515 -1.294 -0.213
+       OI=hi     144 0.549 0.450 0.638  2.809 0.520  0.575 -0.442  0.919
+       OI=lo     147 0.498 0.404 0.595  1.080 0.480  0.515 -0.688 -1.465
+      OI=mid     218 0.510 0.413 0.615  1.527 0.458  0.568 -1.286  0.358
+       LIQ=0     288 0.520 0.436 0.606  1.866 0.476  0.563 -1.663  2.270
+      LIQ=LL      40 0.451 0.299 0.600 -0.800 0.491  0.418 -0.216 -2.405
+   DSMA=0-20     105 0.635 0.491 0.767  5.784 0.644  0.628  1.285  0.920
+DSMA=oltre20     124 0.468 0.331 0.588  2.035 0.447  0.491 -0.307  0.049
+  DSMA=sotto     117 0.510 0.390 0.640  0.457 0.481  0.553 -0.495 -0.993
+    DEMA=pm5      76 0.576 0.395 0.757  4.028 0.683  0.510  1.885 -1.124
+ DEMA=sopra5     159 0.514 0.389 0.623  3.404 0.500  0.527  0.123  0.742
+ DEMA=sotto5     119 0.529 0.412 0.651  0.619 0.462  0.635 -1.058 -0.106
+
+=== A · traduzione in trade (10.000 $, 1x, costi; MAR = CAGR/|DD giornaliero|) ===
+                                                regola  finale   rend    dd  trade     wr   mar  senza_migliore  rend_2123  mar_2123  rend_24  mar_24  placebo_pct
+0                                           Buy & hold   21871  118.7 -76.6      1  100.0  0.19           10000       44.2      0.17     45.2    0.26          NaN
+1                                 W3 (radar/weekly.py)   78474  684.7 -21.1     13   92.3  1.99           51561        NaN       NaN      NaN     NaN          NaN
+2            long REG=L & PFs=pos & SFs=pos h30 [base]   65813  558.1 -38.1     16   68.8  0.99           42066      166.5      1.01    132.8    1.01         98.7
+3    long REG=L & PFs=pos & SFs=pos h30 [soglie ±0,30]   65813  558.1 -38.1     16   68.8  0.99           42066      166.5      1.01    132.8    1.01          NaN
+4    long REG=L & PFs=pos & SFs=pos h30 [soglie ±0,60]   65813  558.1 -38.1     16   68.8  0.99           42066      166.5      1.01    132.8    1.01          NaN
+5             long REG=L & PFs=pos & SFs=pos h15 [h/2]   30929  209.3 -37.6     23   52.2  0.56           19261      114.7      0.92     44.0    0.36          NaN
+6              long REG=L & PFs=pos & SFs=pos h60 [2h]   29645  196.5 -62.9     15   60.0  0.32           18499       57.8      0.26     84.8    0.81          NaN
+7           short PFt=mid & FUND=mid & LIQ=0 h7 [base]   31202  212.0 -43.1     50   58.0  0.50           23795       99.2      0.65     56.7    0.94         99.9
+8   short PFt=mid & FUND=mid & LIQ=0 h7 [soglie ±0,30]   29339  193.4 -28.5     32   65.6  0.71           21847      102.3      1.29     45.0    0.66          NaN
+9   short PFt=mid & FUND=mid & LIQ=0 h7 [soglie ±0,60]   12271   22.7 -62.0     60   55.0  0.06           10032       -7.6     -0.05     32.8    0.32          NaN
+10           short PFt=mid & FUND=mid & LIQ=0 h3 [h/2]   19684   96.8 -26.6     61   50.8  0.46           15921       49.7      0.54     31.5    0.92          NaN
+11           short PFt=mid & FUND=mid & LIQ=0 h14 [2h]   24523  145.2 -58.0     35   57.1  0.28           17381       38.3      0.20     77.4    1.29          NaN
+--- diagnostica: il contributo dei flussi oltre il regime (placebo = stesse durate, ingressi casuali nei giorni REG=L)
+                                      cella  finale  rend    dd  trade   wr  mar  senza_migliore  placebo_regimeL_pct  placebo_mediana
+                    REG=L h30 (diagnostica)   29304 193.0 -54.7      9 55.6 0.37            9406                 69.9            16320
+          REG=L & PFs=pos h30 (diagnostica)   45313 353.1 -46.8     21 61.9 0.63           29841                 87.4            16788
+          REG=L & SFs=pos h30 (diagnostica)   35646 256.5 -44.5     16 50.0 0.54           18153                 82.9            14863
+REG=L & PFs=pos & SFs=pos h30 (diagnostica)   65813 558.1 -38.1     16 68.8 0.99           42066                 97.0            14466
+
+=== B · supporti e resistenze ===
+zone reali 743, casuali 14860; test BH 72; superano BH 0; 'vantaggio' (≥ +5 punti, BH, entrambe le metà ≥ +3) 0
+
+    scala        lato   tipo distanza  n_zone  n_tocchi  P_tocco  P_tocco_casuale  P_tenuta  P_tenuta_casuale   diff  ic_lo  ic_hi  p_norm  P_2123  P0_2123  P_2426  P0_2426     bh
+3      D3    supporto      G    tutte     104        73    0.745            0.746     0.699             0.690  0.008 -0.092  0.101   0.433   0.636    0.682   0.793    0.703  False
+7      D3    supporto      W    tutte     263       179    0.716            0.701     0.715             0.698  0.017 -0.047  0.072   0.290   0.821    0.805   0.652    0.635  False
+11     D3    supporto      V    tutte      19        12    0.632            0.687     0.917             0.927 -0.011 -0.097  0.009   0.590   0.667    0.689   1.000    1.000  False
+15     D3    supporto      F    tutte     155        97    0.678            0.664     0.753             0.706  0.047 -0.013  0.106   0.064   0.765    0.766   0.739    0.636  False
+19     D3    supporto  tutti    tutte     386       264    0.719            0.712     0.720             0.707  0.012 -0.036  0.058   0.300   0.746    0.753   0.700    0.673  False
+23     D3  resistenza      G    tutte      95        58    0.624            0.602     0.603             0.627 -0.023 -0.121  0.060   0.695   0.528    0.589   0.727    0.698  False
+27     D3  resistenza      W    tutte     247       187    0.799            0.798     0.679             0.647  0.032 -0.009  0.074   0.066   0.651    0.613   0.703    0.675  False
+31     D3  resistenza      V    tutte      15        15    1.000            0.977     0.733             0.765 -0.031 -0.111  0.004   0.842   0.700    0.736   0.800    0.820  False
+35     D3  resistenza      F    tutte      97        84    0.884            0.876     0.619             0.593  0.026 -0.054  0.100   0.247   0.615    0.583   0.625    0.608  False
+39     D3  resistenza  tutti    tutte     357       260    0.760            0.753     0.665             0.649  0.016 -0.021  0.052   0.194   0.621    0.615   0.711    0.684  False
+43     D6    supporto      G    tutte     104        73    0.745            0.746     0.616             0.620 -0.003 -0.070  0.054   0.541   0.568    0.595   0.690    0.661  False
+47     D6    supporto      W    tutte     263       179    0.716            0.701     0.581             0.587 -0.006 -0.046  0.036   0.606   0.701    0.675   0.509    0.535  False
+51     D6    supporto      V    tutte      19        12    0.632            0.687     0.917             0.893  0.024 -0.044  0.074   0.298   0.667    0.672   1.000    0.960  False
+55     D6    supporto      F    tutte     155        97    0.678            0.664     0.588             0.552  0.035 -0.013  0.090   0.090   0.647    0.627   0.522    0.466  False
+59     D6    supporto  tutti    tutte     386       264    0.719            0.712     0.606             0.611 -0.005 -0.035  0.024   0.634   0.649    0.643   0.573    0.587  False
+63     D6  resistenza      G    tutte      95        58    0.624            0.602     0.603             0.607 -0.004 -0.086  0.067   0.538   0.500    0.546   0.773    0.724  False
+67     D6  resistenza      W    tutte     247       187    0.799            0.798     0.529             0.491  0.038 -0.009  0.087   0.060   0.477    0.455   0.574    0.521  False
+71     D6  resistenza      V    tutte      15        15    1.000            0.977     0.800             0.771  0.029 -0.073  0.160   0.319   0.700    0.736   1.000    0.840  False
+75     D6  resistenza      F    tutte      97        84    0.884            0.876     0.476             0.436  0.040 -0.013  0.094   0.072   0.481    0.450   0.469    0.415  False
+79     D6  resistenza  tutti    tutte     357       260    0.760            0.753     0.562             0.533  0.029 -0.007  0.066   0.064   0.500    0.501   0.625    0.565  False
+83    W10    supporto      G    tutte     104        72    0.742            0.743     0.667             0.661  0.006 -0.056  0.063   0.422   0.773    0.735   0.500    0.533  False
+87    W10    supporto      W    tutte     263       174    0.710            0.698     0.678             0.656  0.022 -0.014  0.059   0.117   0.761    0.754   0.626    0.597  False
+91    W10    supporto      V    tutte      19        12    0.632            0.687     0.417             0.728 -0.311 -0.597  0.082   0.955   0.667    0.672   0.333    0.745  False
+95    W10    supporto      F    tutte     155        92    0.667            0.658     0.630             0.611  0.020 -0.045  0.080   0.260   0.686    0.683   0.561    0.522  False
+99    W10    supporto  tutti    tutte     386       258    0.715            0.709     0.663             0.661  0.002 -0.033  0.036   0.457   0.763    0.744   0.583    0.595  False
+103   W10  resistenza      G    tutte      95        57    0.620            0.598     0.684             0.681  0.003 -0.042  0.037   0.446   0.556    0.583   0.905    0.878  False
+107   W10  resistenza      W    tutte     247       173    0.786            0.784     0.549             0.535  0.014 -0.030  0.061   0.274   0.547    0.497   0.552    0.572  False
+111   W10  resistenza      V    tutte      15        15    1.000            0.977     0.733             0.754 -0.021 -0.092  0.010   0.773   0.700    0.731   0.800    0.800  False
+115   W10  resistenza      F    tutte      97        79    0.878            0.868     0.506             0.498  0.008 -0.063  0.074   0.405   0.558    0.504   0.407    0.486  False
+119   W10  resistenza  tutti    tutte     357       245    0.749            0.740     0.592             0.582  0.010 -0.022  0.044   0.275   0.561    0.538   0.628    0.633  False
+
+    scala        lato tipo distanza  n_zone  n_tocchi  P_tocco  P_tocco_casuale  P_tenuta  P_tenuta_casuale   diff  ic_lo  ic_hi  p_norm  P_2123  P0_2123  P_2426  P0_2426     bh
+26     D3  resistenza    W    8-15%     137        97    0.746            0.728     0.701             0.629  0.072  0.002  0.140   0.020   0.694    0.586   0.708    0.671  False
+34     D3  resistenza    F    8-15%      52        46    0.885            0.863     0.674             0.579  0.095 -0.008  0.200   0.035   0.677    0.554   0.667    0.629  False
+106   W10  resistenza    W    8-15%     137        90    0.732            0.712     0.589             0.537  0.052 -0.002  0.116   0.044   0.571    0.501   0.610    0.579  False
+61     D6  resistenza    G     3-8%      36        28    0.800            0.753     0.643             0.564  0.079 -0.013  0.184   0.056   0.571    0.564   0.714    0.562  False
+69     D6  resistenza    V     3-8%       5         5    1.000            0.950     1.000             0.832  0.168  0.000  0.408   0.071   1.000    1.000   1.000    0.733  False
+65     D6  resistenza    W     3-8%     104        84    0.857            0.879     0.560             0.517  0.042 -0.015  0.099   0.074   0.486    0.483   0.612    0.541  False
+24     D3  resistenza    W     0-3%       6         6    1.000            1.000     0.833             0.742  0.092  0.000  0.238   0.086   1.000    0.925   0.750    0.650  False
+93    W10    supporto    F     3-8%      70        50    0.794            0.762     0.640             0.594  0.046 -0.016  0.120   0.093   0.667    0.676   0.609    0.499  False
+53     D6    supporto    F     3-8%      70        54    0.806            0.770     0.648             0.609  0.039 -0.012  0.103   0.095   0.704    0.678   0.593    0.535  False
+73     D6  resistenza    F     3-8%      44        37    0.881            0.888     0.541             0.495  0.046 -0.021  0.117   0.096   0.524    0.519   0.562    0.463  False
+6      D3    supporto    W    8-15%     137        79    0.612            0.604     0.734             0.682  0.052 -0.030  0.126   0.096   0.824    0.769   0.667    0.621  False
+14     D3    supporto    F    8-15%      79        38    0.535            0.554     0.711             0.647  0.064 -0.041  0.156   0.102   0.727    0.716   0.688    0.556  False
