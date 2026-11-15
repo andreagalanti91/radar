@@ -1,0 +1,116 @@
+====================================================================================================
+N3 · risultati dei test preregistrati (PREREG.md). Rendimenti futuri log in punti %; diff = media ON − media OFF;
+p = placebo unilaterale (spostamento circolare, 2.000). IS 2021–23, OOS 2024–26.
+====================================================================================================
+
+H1 stablecoin 30g > 0  (primario 30 g, secondario 7 g)
+  IS  h= 1: n=1095 ON= 53.7%  base= +0.04  ON= +0.09  OFF= -0.02  diff= +0.11  p=0.392
+  IS  h= 7: n=1095 ON= 53.7%  base= +0.17  ON= +0.40  OFF= -0.10  diff= +0.50  p=0.432
+  IS  h=30: n=1095 ON= 53.7%  base= +0.58  ON= +0.82  OFF= +0.31  diff= +0.51  p=0.472
+  OOS h= 1: n=1048 ON= 82.3%  base= +0.04  ON= +0.09  OFF= -0.22  diff= +0.30  p=0.065
+  OOS h= 7: n=1042 ON= 82.7%  base= +0.33  ON= +0.55  OFF= -0.75  diff= +1.30  p=0.174
+  OOS h=30: n=1019 ON= 84.0%  base= +1.75  ON= +1.78  OFF= +1.60  diff= +0.18  p=0.546
+  → criterio preregistrato: NON PASSA
+
+H1b stablecoin 30g > mediana 365g (descrittiva)  (primario 30 g, secondario 7 g)
+  IS  h= 1: n=1095 ON= 36.9%  base= +0.04  ON= +0.14  OFF= -0.02  diff= +0.17  p=0.242
+  IS  h= 7: n=1095 ON= 36.9%  base= +0.17  ON= +0.63  OFF= -0.09  diff= +0.72  p=0.339
+  IS  h=30: n=1095 ON= 36.9%  base= +0.58  ON= +4.02  OFF= -1.43  diff= +5.45  p=0.218
+  OOS h= 1: n=1048 ON= 48.0%  base= +0.04  ON= +0.05  OFF= +0.03  diff= +0.02  p=0.428
+  OOS h= 7: n=1042 ON= 48.3%  base= +0.33  ON= +0.50  OFF= +0.17  diff= +0.33  p=0.344
+  OOS h=30: n=1019 ON= 49.0%  base= +1.75  ON= +2.08  OFF= +1.43  diff= +0.65  p=0.364
+  → criterio preregistrato: NON PASSA
+
+H2 liquidità netta Fed 28g > 0  (primario 30 g, secondario 7 g)
+  IS  h= 1: n=1095 ON= 47.5%  base= +0.04  ON= +0.27  OFF= -0.18  diff= +0.45  p=0.004
+  IS  h= 7: n=1095 ON= 47.5%  base= +0.17  ON= +1.37  OFF= -0.91  diff= +2.28  p=0.028
+  IS  h=30: n=1095 ON= 47.5%  base= +0.58  ON= +0.99  OFF= +0.22  diff= +0.77  p=0.376
+  OOS h= 1: n=1048 ON= 47.0%  base= +0.04  ON= +0.11  OFF= -0.03  diff= +0.14  p=0.166
+  OOS h= 7: n=1042 ON= 47.3%  base= +0.33  ON= +0.32  OFF= +0.33  diff= -0.01  p=0.507
+  OOS h=30: n=1019 ON= 47.0%  base= +1.75  ON= +2.48  OFF= +1.10  diff= +1.38  p=0.387
+  → criterio preregistrato: NON PASSA
+
+H4 premio Coinbase 7g > 0  (primario 7 g, secondario 30 g)
+  IS  h= 1: n=1095 ON= 81.9%  base= +0.04  ON= +0.13  OFF= -0.38  diff= +0.51  p=0.034
+  IS  h= 7: n=1095 ON= 81.9%  base= +0.17  ON= +0.61  OFF= -1.83  diff= +2.44  p=0.029
+  IS  h=30: n=1095 ON= 81.9%  base= +0.58  ON= +1.49  OFF= -3.53  diff= +5.02  p=0.153
+  OOS h= 1: n=1048 ON= 60.1%  base= +0.04  ON= +0.15  OFF= -0.13  diff= +0.28  p=0.022
+  OOS h= 7: n=1042 ON= 60.5%  base= +0.33  ON= +0.78  OFF= -0.37  diff= +1.15  p=0.103
+  OOS h=30: n=1019 ON= 61.8%  base= +1.75  ON= +3.90  OFF= -1.73  diff= +5.64  p=0.069
+  → criterio preregistrato: NON PASSA
+
+Correlazione premio Coinbase 7g con flusso perp W3 (pf14z 3g): +0.02 (n=2231)
+Correlazioni fra i segnali continui:
+        stable  netliq  cbprem
+stable    1.00    0.26    0.62
+netliq    0.26    1.00    0.21
+cbprem    0.62    0.21    1.00
+
+====================================================================================================
+H3 FOMC: 47 decisioni 2021-01 → 2026-10-28; placebo su 165 mercoledì lontani ≥ 8 g (5.000 estrazioni)
+  pre (t-3→t-1)       : FOMC media  -0.56 (mediana -0.11, positivi   49%) | mercoledì qualsiasi +0.14 | IS -0.93 OOS -0.16 | p bilaterale 0.217 → NON PASSA
+                        |rendimento| medio FOMC  3.56 contro  3.23 (volatilità)
+  reazione (t-1→t+1)  : FOMC media  -0.05 (mediana +0.10, positivi   53%) | mercoledì qualsiasi -0.01 | IS +0.42 OOS -0.55 | p bilaterale 0.929 → NON PASSA
+                        |rendimento| medio FOMC  2.90 contro  3.01 (volatilità)
+  dopo (t+1→t+8)      : FOMC media  -0.76 (mediana +0.41, positivi   51%) | mercoledì qualsiasi +0.28 | IS -0.77 OOS -0.76 | p bilaterale 0.238 → NON PASSA
+                        |rendimento| medio FOMC  6.20 contro  5.37 (volatilità)
+
+====================================================================================================
+Filtro su W3 (nuovi long solo con segnale ON alla domenica del segnale; short invariati). Baseline 78.474 $.
+  W3 base: 78,474 $  trade 13  DD -21.1%  2021–23 +235%  2024–26 +134%
+  + H1 stablecoin       : 69,284 $  trade 12  DD -21.1%  MAR 28.1  2021–23 +196%  2024–26 +134% | placebo mediana 53,477 $, 90° pct 78,777 $  (ipotesi non passata: solo descrittivo)
+  + H2 liquidità netta  : 42,597 $  trade 11  DD -27.9%  MAR 11.7  2021–23 +177%  2024–26 +54% | placebo mediana 39,268 $, 90° pct 61,034 $  (ipotesi non passata: solo descrittivo)
+  + H4 premio Coinbase  : 66,225 $  trade 13  DD -21.1%  MAR 26.6  2021–23 +183%  2024–26 +134% | placebo mediana 59,920 $, 90° pct 78,474 $  (ipotesi non passata: solo descrittivo)
+
+Verdetti preregistrati: H1 stablecoin 30g > 0: NO; H1b stablecoin 30g > mediana 365g (descrittiva): NO; H2 liquidità netta Fed 28g > 0: NO; H4 premio Coinbase 7g > 0: NO; H3 FOMC: NO
+
+====================================================================================================
+Controlli su H4 DOPO il risultato (non preregistrati, non decisivi). diff 7 g = media ON − OFF, punti %
+Vicini (finestra media, soglia in punti %):
+  n= 3 soglia -0.02: IS +5.34  OOS +3.10
+  n= 3 soglia +0.00: IS +2.31  OOS +1.63
+  n= 3 soglia +0.02: IS +3.67  OOS +0.52
+  n= 7 soglia -0.02: IS +7.38  OOS +3.20
+  n= 7 soglia +0.00: IS +2.44  OOS +1.15
+  n= 7 soglia +0.02: IS +4.08  OOS -0.91
+  n=14 soglia -0.02: IS +0.36  OOS +5.36
+  n=14 soglia +0.00: IS +0.60  OOS +1.63
+  n=14 soglia +0.02: IS +1.21  OOS -6.61
+  n=30 soglia -0.02: IS  +nan  OOS  +nan
+  n=30 soglia +0.00: IS +5.20  OOS +2.69
+  n=30 soglia +0.02: IS +0.50  OOS  +nan
+Anno per anno (n=7, soglia 0): diff 7 g / quota ON
+  2021: +4.35  ON   75%
+  2022: -0.87  ON   76%
+  2023: +2.44  ON   95%
+  2024: -1.15  ON   91%
+  2025: +0.37  ON   57%
+  2026: +0.99  ON   29%
+Controllo momentum 30 g (diff H4 dentro ciascun regime di momentum, 2021–26):
+  momentum +: diff +1.66  (n ON 903, OFF 245)
+  momentum −: diff +1.09  (n ON 624, OFF 365)
+Accordo H4 con momentum 30 g > 0: 59% dei giorni
+
+====================================================================================================
+Stagionalità descrittiva (rendimento log giornaliero medio, punti %; t = media/err.std.)
+Per giorno:
+  lun: IS -0.03 (t -0.1) OOS +0.45 (t +2.0)
+  mar: IS +0.14 (t +0.5) OOS -0.29 (t -1.4)
+  mer: IS +0.26 (t +0.8) OOS +0.38 (t +1.7)
+  gio: IS -0.26 (t -0.9) OOS -0.36 (t -1.6)
+  ven: IS +0.01 (t +0.0) OOS +0.03 (t +0.2)
+  sab: IS +0.01 (t +0.0) OOS -0.05 (t -0.4)
+  dom: IS +0.13 (t +0.6) OOS +0.11 (t +0.7)
+Per mese:
+  1: IS +0.31 (t +0.8) OOS -0.01 (t -0.0)
+  2: IS +0.51 (t +1.1) OOS +0.01 (t +0.0)
+  3: IS +0.56 (t +1.6) OOS +0.16 (t +0.5)
+  4: IS -0.20 (t -0.7) OOS +0.09 (t +0.3)
+  5: IS -0.73 (t -1.6) OOS +0.19 (t +0.9)
+  6: IS -0.46 (t -1.0) OOS -0.31 (t -1.5)
+  7: IS +0.30 (t +1.1) OOS +0.19 (t +1.0)
+  8: IS -0.15 (t -0.5) OOS +0.07 (t +0.2)
+  9: IS -0.07 (t -0.2) OOS +0.21 (t +1.0)
+  10: IS +0.69 (t +2.6) OOS -0.01 (t -0.1)
+  11: IS -0.18 (t -0.5) OOS -0.09 (t -0.3)
+  12: IS -0.14 (t -0.5) OOS -0.10 (t -0.4)
