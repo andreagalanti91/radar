@@ -1,5 +1,5 @@
-# STATO — Ciclo lento notturno 15–16/11
-Data: 15/11/2026 · Stato: IN CORSO · Report: 16/11 ore 09:00
+# STATO — Ciclo lento notturno del 15/11
+Data: 15/11/2026 · Stato: IN CORSO · Report: 15/11 ore 09:00
 Classe: lunga · Opus 5.5, effort alto
 
 - [ ] N1 Giorno di decisione: W3 con settimana chiusa lun…dom; robustezza dell'ancoraggio (perché domenica)
@@ -12,3 +12,4 @@ Classe: lunga · Opus 5.5, effort alto
 Regole: nessuna modifica a W3 senza approvazione; solo research/notte_1511/; fonti esterne lecite (niente scraping contro i termini d'uso).
 Log:
 - 15/11 avvio.
+- 15/11 01:15 avviati N1–N4 in parallelo; revisione critica 04:30; report 09:00 (oggi).
