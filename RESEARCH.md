@@ -404,6 +404,19 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Ciclo notturno · 15/11 — giorno di decisione, swing 2–3 giorni, macro/flussi, probabilità e S/R · NESSUNA MODIFICA (research/notte_1511/REPORT.md)
+**Lezione 94**: W3 decide di domenica per convenzione (candela settimanale lun–dom UTC). Dal 2021 la domenica è il giorno migliore
+(78,5k contro mediana dei 7 giorni 62,7k, peggiore 38,6k), nel 2018–20 solo quarta; tutti i giorni battono il buy & hold. Tenere la
+domenica (cambiarla sarebbe rifare la scelta sugli stessi dati) e usare la mediana dei giorni come attesa realistica.
+**Lezione 95**: swing BTC di 2–3 giorni su breakout, RSI(2), ritorno alla media, funding, OI e taker: 0/32 accettabili; momentum e
+RSI(2) si invertono dal 2024; gli short di flusso a W3 flat dipendono da 2–3 crash. Non riproporre swing di 2–3 giorni.
+**Lezione 96**: politica monetaria (liquidità netta Fed, FOMC), stablecoin, ETF, stagionalità e premio Coinbase descrivono il
+movimento ma non lo anticipano a 7–30 giorni; come filtri peggiorano W3 perché bloccano long vincenti. Il premio Coinbase su
+chiusure giornaliere è dominato dalla quotazione USDT-USD. Unico effetto robusto in letteratura: il momentum, già in W3.
+**Lezione 97**: probabilità a 7–30 giorni condizionate a regime, flussi perp/spot, funding, OI, liquidazioni e distanza dalle medie:
+0/5.790 dopo la correzione; le migliori ripetono W3. I livelli S/R del tool tengono come livelli casuali anche sul settimanale:
+mostrarli come contesto con la loro tenuta storica.
+
 ### Studio dell'utente · 13/11 — squeeze: lato pulito + lato carico, con fascia DCA · RESPINTO
 Mappe orarie dal 2021 senza look-ahead (50.913, radar/liqmap.build), research/liq_squeeze/. L1 mercato 4,8k, L2 DCA 4,6k, L3 senza
 pulizia 4,7k, S1 short 4,6k (10k, PF 0,77–0,88, p placebo 0,38–0,83, vicini 1/42); W3 con metà sulla fascia DCA 74,2k contro 78,5k.
@@ -1247,6 +1260,7 @@ sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flu
   corretti avvisi falsi ("stop toccato" dopo un'uscita EMA), variabili con virgola/punto delle migliaia che bloccavano il giro o
   davano 50 $ invece di 50.000 $, giro 00:30 mai partito (ora avviato ogni ora dalla catena liqsnap), perdita silenziosa di dati
   nei rebase "-X theirs" su file binari, stato degli avvisi perso se il push fallisce.
+- Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git).
 - Prima di pubblicare una correzione: test che fallisce prima e passa dopo, suite completa verde, render a 400/1280, deploy e
   verifica online. I test vanno scritti con unittest (pytest non è installato: test in stile pytest non girano mai).
 - Versioni delle librerie: fissarle a quelle realmente installate nei runner (log "Successfully installed"), non a quelle locali.
