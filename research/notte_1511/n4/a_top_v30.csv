@@ -1,0 +1,11 @@
+side,cella,h,score,z_is,z_oos,prereg,bh_oos
+long,REG=L & PFs=pos & SFs=pos,30,2.224,2.224,2.372,False,False
+long,REG=L & PFt=hi & SFs=pos,30,2.183,2.183,2.607,False,False
+long,REG=L & PFs=pos & SFt=hi,30,2.155,2.155,2.464,False,False
+long,REG=L & PFt=hi & SFt=hi,30,2.122,2.122,2.684,False,False
+long,PFt=hi & SFs=pos & DEMA=sopra5,7,2.098,2.098,2.257,False,False
+short,SFs=neg & FUND=mid,30,2.468,2.781,2.468,False,False
+short,PFs=neg & OI=hi & DEMA=sopra5,7,2.465,2.465,2.506,False,False
+short,SFs=neg & FUND=mid & LIQ=0,30,2.43,2.912,2.43,False,False
+short,DIV=pari & OI=lo,30,2.232,2.431,2.232,False,False
+short,SFt=lo & FUND=mid,30,2.183,2.621,2.183,False,False
