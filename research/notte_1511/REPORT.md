@@ -49,6 +49,16 @@ Supporti/resistenze del tool ricalcolati ogni settimana dal 2021: tengono come l
 Nessun look-ahead; tutti i verdetti confermati. Ridimensionati: premio Coinbase (rumore USDT) e short di flusso (2–3 crash).
 Regola di processo nuova: committare il PREREG da solo prima di eseguire gli script (l'ordine si prova con git).
 
+## Chiusura settimanale di stasera (pre-analisi del tool, 15/11 07:02 UTC)
+- Prezzo: 64.150 (ultima chiusura giornaliera); spot alle 08:15 circa 64.500.
+- Segnale SHORT se la settimana chiude sotto **72.334 $** (stanotte alle 00:00 UTC = 01:00 di lunedì in Italia); sopra, nessun segnale.
+- Condizioni oggi tutte verificate: sotto SMA40 (72.130 a fine settimana), SMA40 in calo, EMA20 in calo, sotto EMA21 (75.464),
+  flusso perp −0,72σ (alla decisione userà i giorni 12–14/11).
+- Se scatta: ingresso lunedì all'apertura; stop iniziale ~80.700 $ (+25,8%); esposizione 0,97; perdita allo stop −25,2% della quota
+  W3 (~12.600 $ su 50.000 $). Uscite: trailing 2,5 ATR settimanali, chiusura sopra la EMA21, distribuzione.
+- Contesto dalla notte: nei 48 casi simili (perp vende, spot compra) P(salita a 7 giorni) 39%; con "short sopra" sulla mappa, nel
+  regime short BTC −4,7% medio a 30 giorni. Nessuno dei due è un segnale: decide W3.
+
 ## Proposte
 1. W3 invariata; domenica confermata; attese di W3 comunicate come mediana dei giorni (~63k) e caso peggiore (38,6k, DD −39%).
 2. Nessuna nuova regola (swing, macro, flussi, S/R): restano contesto.

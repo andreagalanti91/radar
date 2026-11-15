@@ -1,5 +1,5 @@
 # STATO — Ciclo lento notturno del 15/11
-Data: 15/11/2026 · Stato: IN CORSO · Report: 15/11 ore 09:00
+Data: 15/11/2026 · Stato: COMPLETATO · Report: 15/11 ore 09:00
 Classe: lunga · Opus 5.5, effort alto
 
 - [x] N1 Giorno di decisione: W3 con settimana chiusa lun…dom; robustezza dell'ancoraggio (perché domenica)
@@ -19,3 +19,4 @@ Log:
 - 15/11 N4 finito: probabilità condizionate 0/5.790 dopo correzione; S/R come il caso (0/72); stato di oggi lieve inclinazione ribassista non significativa. Lezioni: N1→94, N2→95, N3→96, N4→97. Avvio revisione critica.
 - 15/11 revisione critica: verdetti confermati, premio Coinbase e short di flusso ridotti a rumore; report scritto (REPORT.md), lezioni 94–97. Alle 08:15 aggiunta della pre-analisi aggiornata e invio.
 - 15/11 04:30 controllo programmato: N1–N5 già completati e pubblicati; nessun agente fermo.
+- 15/11 08:20 report completato con la pre-analisi della chiusura di stasera e inviato.
