@@ -1255,6 +1255,9 @@ File: research/perdita_2026/PREREG.md, research/LOSERS.md.
 passa il placebo solo in 2 varianti su 8 con vicini incoerenti; nessuna variante batte il buy & hold come trade e nessun preavviso
 sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flusso_trader/README.md.
 
+## Resoconti settimanali
+- Resoconto settimanale 16/11: chiusura del 15/11 a 65.351 $ → SEGNALE SHORT W3 (regime short, flusso −0,93σ, EMA21 75.574): ingresso lunedì 16/11 all'apertura, esposizione 0,97, stop 82.163 $ (+25,7%), perdita allo stop ~12.600 $ su 50.000; registro dei trade reali vuoto; dal 2021 invariato 10k → 78.474 $, DD −21,1%, 13 trade, WR 92%.
+
 ## Errori operativi da non ripetere (aggiornata 13/11/2026)
 - Revisione completa del 13/11 (5 revisori + verifica incrociata, STATO-revisione.md): W3 corretta e riprodotta da zero; trovati e
   corretti avvisi falsi ("stop toccato" dopo un'uscita EMA), variabili con virgola/punto delle migliaia che bloccavano il giro o
