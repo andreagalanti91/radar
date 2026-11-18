@@ -15,3 +15,4 @@ Parte 2 (ricerca)
 Log:
 - 18/11 avviati backend, UI, avvocato del diavolo e PREREG Parte 2.
 - 18/11 pensiero dirompente: rischio allo stop 25% per trade (vincolo DD ≤ 15–20% violato), short con base debole; proposta rischio 10–15% (lezione 99), decisione dell'utente.
+- 18/11 decisioni dell'utente: rischio per trade → decide dopo il test della Parte 2; short aperto → tenuto così (esposizione 0,97).
