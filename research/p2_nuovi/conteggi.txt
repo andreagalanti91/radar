@@ -1,0 +1,59 @@
+W3 trade per periodo: {'2021–23': 7, '2024–26': 6, '2018–20': 9}
+
+# F1 · O1 filtro premio IV: DVOL/vol30 > T blocca ogni ingresso (DVOL dal 24/03/2021; 2018–20 non testabile)
+O1(1.2) | 2021–23: domeniche bloccate 18, trade W3 tolti 4, nuovi 3 | 2024–26: domeniche bloccate  6, trade W3 tolti 2, nuovi 1 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+O1(1.1) | 2021–23: domeniche bloccate 22, trade W3 tolti 5, nuovi 3 | 2024–26: domeniche bloccate 12, trade W3 tolti 3, nuovi 2 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+O1(1.4) | 2021–23: domeniche bloccate  7, trade W3 tolti 3, nuovi 2 | 2024–26: domeniche bloccate  0, trade W3 tolti 0, nuovi 0 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+
+# F1 · O3 filtro skew (IV put OTM − IV call OTM, punti di vol): long bloccati se skew > T, short se skew < −T
+O3(0.0) | 2021–23: domeniche bloccate  7, trade W3 tolti 2, nuovi 0 | 2024–26: domeniche bloccate  5, trade W3 tolti 3, nuovi 2 | 2018–20: domeniche bloccate  7, trade W3 tolti 2, nuovi 1
+O3(1.0) | 2021–23: domeniche bloccate  6, trade W3 tolti 2, nuovi 1 | 2024–26: domeniche bloccate  3, trade W3 tolti 2, nuovi 1 | 2018–20: domeniche bloccate  6, trade W3 tolti 2, nuovi 1
+O3(2.0) | 2021–23: domeniche bloccate  2, trade W3 tolti 1, nuovi 1 | 2024–26: domeniche bloccate  1, trade W3 tolti 1, nuovi 1 | 2018–20: domeniche bloccate  6, trade W3 tolti 2, nuovi 1
+   [solo informativo, scartato per assenza di eventi] DVOL z180 > T:
+O1-scartato z180(1.5) | 2021–23: domeniche bloccate  0, trade W3 tolti 0, nuovi 0 | 2024–26: domeniche bloccate  3, trade W3 tolti 1, nuovi 1 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+O1-scartato z180(1.0) | 2021–23: domeniche bloccate  6, trade W3 tolti 1, nuovi 0 | 2024–26: domeniche bloccate  4, trade W3 tolti 1, nuovi 0 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+O1-scartato z180(2.0) | 2021–23: domeniche bloccate  0, trade W3 tolti 0, nuovi 0 | 2024–26: domeniche bloccate  0, trade W3 tolti 0, nuovi 0 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+
+# F3 · R1 ETHBTC: ingressi W3 solo se ETHBTC < EMA n settimane (dominanza BTC in salita)
+R1(20) | 2021–23: domeniche bloccate 13, trade W3 tolti 5, nuovi 3 | 2024–26: domeniche bloccate  2, trade W3 tolti 1, nuovi 0 | 2018–20: domeniche bloccate 13, trade W3 tolti 7, nuovi 3
+R1(10) | 2021–23: domeniche bloccate 12, trade W3 tolti 5, nuovi 3 | 2024–26: domeniche bloccate  2, trade W3 tolti 1, nuovi 0 | 2018–20: domeniche bloccate 10, trade W3 tolti 4, nuovi 0
+R1(40) | 2021–23: domeniche bloccate 17, trade W3 tolti 6, nuovi 2 | 2024–26: domeniche bloccate  2, trade W3 tolti 1, nuovi 0 | 2018–20: domeniche bloccate  7, trade W3 tolti 4, nuovi 2
+
+# F3 · R2 BTCDOM (Binance, dal 21/06/2021): ingressi W3 solo se BTCDOM > EMA n settimane
+R2(20) | 2021–23: domeniche bloccate  4, trade W3 tolti 2, nuovi 2 | 2024–26: domeniche bloccate  1, trade W3 tolti 1, nuovi 1 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+R2(10) | 2021–23: domeniche bloccate  4, trade W3 tolti 2, nuovi 2 | 2024–26: domeniche bloccate  2, trade W3 tolti 1, nuovi 0 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+R2(40) | 2021–23: domeniche bloccate  3, trade W3 tolti 1, nuovi 1 | 2024–26: domeniche bloccate  0, trade W3 tolti 0, nuovi 0 | 2018–20: domeniche bloccate  0, trade W3 tolti 0, nuovi 0
+   correlazione delle variazioni settimanali log ETHBTC/BTCDOM: -0.88 (n=282)
+
+# F1 · O2 autonomo 'picco di DVOL rientrato': domeniche-segnale e trade non sovrapposti (occupazione = durata)
+O2(picco 2.0, rientro 1.5, 4 sett.) | domeniche-segnale 33 | trade: {'2021–23': 3, '2024–26': 7}
+O2(picco 1.5, rientro 1.0, 4 sett.) | domeniche-segnale 31 | trade: {'2021–23': 3, '2024–26': 7}
+O2(picco 2.0, rientro 1.0, 8 sett.) | domeniche-segnale 20 | trade: {'2021–23': 2, '2024–26': 5}
+   [informativo] episodi indipendenti di DVOL z180 >= 2 dal 2021: 10
+
+# F2 · V vol targeting settimanale (esposizione = min(1, target/vol30)): ribilanciamenti >= 0,10
+V(50%) | 2021–23: trade 7, ingressi sotto 1x 5, ribilanciamenti 13 | 2024–26: trade 6, ingressi sotto 1x 1, ribilanciamenti 4 | 2018–20: trade 9, ingressi sotto 1x 5, ribilanciamenti 10
+V(40%) | 2021–23: trade 7, ingressi sotto 1x 6, ribilanciamenti 17 | 2024–26: trade 6, ingressi sotto 1x 4, ribilanciamenti 8 | 2018–20: trade 9, ingressi sotto 1x 7, ribilanciamenti 13
+V(60%) | 2021–23: trade 7, ingressi sotto 1x 4, ribilanciamenti 6 | 2024–26: trade 6, ingressi sotto 1x 0, ribilanciamenti 2 | 2018–20: trade 9, ingressi sotto 1x 5, ribilanciamenti 11
+
+# F2 · G griglia rischio allo stop × distanza ATR × presa parziale (stessi segnali W3, max 1x)
+G(r 5%, k 2.0) | 2021–23: trade  9, sotto 1x  9, prese parziali  3 | 2024–26: trade  6, sotto 1x  6, prese parziali  3 | 2018–20: trade  9, sotto 1x  9, prese parziali  5
+G(r 10%, k 2.0) | 2021–23: trade  9, sotto 1x  9, prese parziali  3 | 2024–26: trade  6, sotto 1x  6, prese parziali  3 | 2018–20: trade  9, sotto 1x  9, prese parziali  5
+G(r 15%, k 2.0) | 2021–23: trade  9, sotto 1x  8, prese parziali  3 | 2024–26: trade  6, sotto 1x  5, prese parziali  3 | 2018–20: trade  9, sotto 1x  9, prese parziali  5
+G(r 20%, k 2.0) | 2021–23: trade  9, sotto 1x  6, prese parziali  3 | 2024–26: trade  6, sotto 1x  3, prese parziali  3 | 2018–20: trade  9, sotto 1x  6, prese parziali  5
+G(r 25%, k 2.0) | 2021–23: trade  9, sotto 1x  5, prese parziali  3 | 2024–26: trade  6, sotto 1x  0, prese parziali  3 | 2018–20: trade  9, sotto 1x  5, prese parziali  5
+G(r 5%, k 2.5) | 2021–23: trade  7, sotto 1x  7, prese parziali  2 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  4
+G(r 10%, k 2.5) | 2021–23: trade  7, sotto 1x  7, prese parziali  2 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  4
+G(r 15%, k 2.5) | 2021–23: trade  7, sotto 1x  7, prese parziali  2 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  4
+G(r 20%, k 2.5) | 2021–23: trade  7, sotto 1x  6, prese parziali  2 | 2024–26: trade  6, sotto 1x  5, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  4
+G(r 25%, k 2.5) | 2021–23: trade  7, sotto 1x  6, prese parziali  2 | 2024–26: trade  6, sotto 1x  3, prese parziali  2 | 2018–20: trade  9, sotto 1x  6, prese parziali  4
+G(r 5%, k 3.0) | 2021–23: trade  7, sotto 1x  7, prese parziali  1 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  3
+G(r 10%, k 3.0) | 2021–23: trade  7, sotto 1x  7, prese parziali  1 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  3
+G(r 15%, k 3.0) | 2021–23: trade  7, sotto 1x  7, prese parziali  1 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  3
+G(r 20%, k 3.0) | 2021–23: trade  7, sotto 1x  7, prese parziali  1 | 2024–26: trade  6, sotto 1x  6, prese parziali  2 | 2018–20: trade  9, sotto 1x  9, prese parziali  3
+G(r 25%, k 3.0) | 2021–23: trade  7, sotto 1x  6, prese parziali  1 | 2024–26: trade  6, sotto 1x  5, prese parziali  2 | 2018–20: trade  9, sotto 1x  8, prese parziali  3
+
+# F4 · P1 piramidazione (base·E all'ingresso, aggiunte a +k1/+k2 ATRw dalla chiusura del segnale, stop comune)
+P1 base 1/3, +1/+2 ATR | 2021–23: trade 7, con 1ª aggiunta 7, con 2ª 4 | 2024–26: trade 6, con 1ª aggiunta 6, con 2ª 5 | 2018–20: trade 9, con 1ª aggiunta 5, con 2ª 5
+vicino a: base 1/2, +1/+2 ATR | 2021–23: trade 7, con 1ª aggiunta 7, con 2ª 4 | 2024–26: trade 6, con 1ª aggiunta 6, con 2ª 5 | 2018–20: trade 9, con 1ª aggiunta 5, con 2ª 5
+vicino b: base 1/3, +0,5/+1 ATR | 2021–23: trade 7, con 1ª aggiunta 7, con 2ª 7 | 2024–26: trade 6, con 1ª aggiunta 6, con 2ª 6 | 2018–20: trade 9, con 1ª aggiunta 5, con 2ª 5

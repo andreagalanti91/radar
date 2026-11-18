@@ -170,15 +170,18 @@ def opt_day(day: date) -> dict:
     return out
 
 
-def opt() -> None:
-    path = D / "deribit_opt_sunday.csv"
+def opt(first: date = date(2019, 1, 6), last: date | None = None, path: Path | None = None) -> None:
+    """Domeniche da `first` (prima domenica del 2019) a `last`; riprende da dove si era fermato (date già presenti)."""
+    path = path or D / "deribit_opt_sunday.csv"
+    last = last or END.date()
     done = set()
-    if path.exists():
-        with open(path) as fh:
-            done = {r["date"] for r in csv.DictReader(fh)}
-    d = date(2019, 1, 6)                                                  # prima domenica del 2019
+    for pp in [path, D / "deribit_opt_sunday.csv"]:
+        if pp.exists():
+            with open(pp) as fh:
+                done |= {r["date"] for r in csv.DictReader(fh)}
+    d = first
     fields = None
-    while d <= END.date():
+    while d <= last:
         if d.isoformat() not in done:
             row = opt_day(d)
             new_file = not path.exists()
@@ -192,8 +195,35 @@ def opt() -> None:
     print("opt ok")
 
 
+def merge_parts() -> None:
+    """Unisce data/opt_part_*.csv nel file principale, ordinato per data, senza doppioni; cancella le parti."""
+    path = D / "deribit_opt_sunday.csv"
+    rows = {}
+    for pp in [path, *sorted(D.glob("opt_part_*.csv"))]:
+        if pp.exists():
+            with open(pp) as fh:
+                for r in csv.DictReader(fh):
+                    rows[r["date"]] = r
+    keys = sorted(rows)
+    with open(path, "w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[keys[0]]))
+        w.writeheader()
+        for k in keys:
+            w.writerow(rows[k])
+    for pp in D.glob("opt_part_*.csv"):
+        pp.unlink()
+    print("opt", len(keys), keys[0], keys[-1])
+
+
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "all"
+    if what == "optpart":          # python3 -I fetch.py optpart AAAA-MM-GG AAAA-MM-GG n  (domeniche, intervallo chiuso)
+        a, b = (date.fromisoformat(x) for x in sys.argv[2:4])
+        opt(a, b, D / f"opt_part_{sys.argv[4]}.csv")
+        sys.exit(0)
+    if what == "merge":
+        merge_parts()
+        sys.exit(0)
     for name, fn in (("dvol", dvol), ("ethbtc", ethbtc), ("btcdom", btcdom), ("opt", opt)):
         if what in (name, "all"):
             fn()
