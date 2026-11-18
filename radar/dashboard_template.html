@@ -411,6 +411,22 @@ dialog.dlg::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px
 table.grid.pvTbl{font-size:.82rem} table.grid.pvTbl th{white-space:normal;padding:6px 7px;vertical-align:bottom;line-height:1.3}
 table.grid.pvTbl td{padding:9px 7px} table.grid.pvTbl td:first-child{white-space:normal}
 table.grid.pvTbl th.grp{text-align:left;padding-top:12px}
+/* pre-analisi: posizione W3 aperta e contesto di oggi */
+.pvPos{border-left:3px solid var(--c);border-radius:0 14px 14px 0;background:color-mix(in srgb,var(--c) 8%,transparent);padding:10px 0 2px}
+.pvPos .pvPosH{padding:0 14px;font:600 .94rem/1.35 var(--font)}
+.pvPos .pvPosBig{padding:4px 14px 2px;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px}
+.pvPos .pvPosBig b{font:650 1.6rem/1.1 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pvPos .pvPosBig small{font-size:.8rem;color:var(--label2);font-variant-numeric:tabular-nums}
+.pvPos .list{background:transparent;border:0;box-shadow:none;border-radius:0}
+.pvPos .row{min-height:44px;padding:9px 14px} .pvPos .row+.row::before{left:14px;right:14px}
+.pvPos .row .v{white-space:nowrap}
+.pvCtx .row{min-height:0;padding:9px 16px;align-items:flex-start} .pvCtx .row .v{white-space:nowrap;padding-top:1px}
+.pvCtx .rel{color:var(--label3);font-size:.7rem}
+.pvCtx .tblW{padding:2px 8px 4px}
+table.grid.pvSR th,table.grid.pvSR td{padding-left:5px;padding-right:5px}
+table.grid.pvSR td small{display:block;color:var(--label3);font-size:.68rem;margin-top:1px}
+.pvCtx .foot{padding:8px 16px 12px;margin:0}
+@media (max-width:700px){ table.grid.pvSR .fx{display:none} }
 .sr{display:grid;gap:12px}
 .srTop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .srTile{border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;gap:3px;background:var(--raise)}
@@ -1558,18 +1574,59 @@ renderTrades();
     `<div class="row"><span class="k">Esposizione<small>${S.expo < 0.995 ? "ridotta dal tetto di rischio 25% allo stop" : "piena"}</small></span><span class="v strong">${nfIT(S.expo, 1)}x</span></div>` +
     `<div class="row"><span class="k">Perdita allo stop<small>sul capitale W3 di ${usd(S.capital_usd)}</small></span><span class="v strong">${pc1(-Math.abs(S.loss_at_stop_pct))} · ${usd(-Math.abs(S.loss_at_stop_usd))}</span></div>` +
     ((S.exits || []).length ? `<div class="row"><span class="k">Uscite<small>${S.exits.join(" · ")}</small></span></div>` : "") + `</div>` : "";
-  const draw = r => { $("pvScaleW").innerHTML = scale(r.px, r.live); $("pvNowW").innerHTML = nowBox(r.px); };
+  // --- posizione W3 aperta (preview.position_block): P&L ricalcolato sul prezzo di riferimento (live appena arriva)
+  const PB = PV.position_block && PV.position_block.entry_px > 0 ? PV.position_block : null;
+  const num = x => x != null && x !== "" && isFinite(+x);
+  const cls = x => x == null ? "" : x > 0 ? "pos" : x < 0 ? "neg" : "";
+  const posBox = r => { if (!PB) return "";
+    const sd = PB.side === "long" ? 1 : -1, px = r.px, mv = sd * (px / PB.entry_px - 1) * 100;
+    // scala server → capitale (esposizione): rapporto tra il P&L del server e il movimento al prezzo del server
+    const mv0 = num(PB.price) ? sd * (PB.price / PB.entry_px - 1) * 100 : null;
+    const k = num(PB.pnl_pct) && mv0 != null && Math.abs(mv0) > 0.05 ? PB.pnl_pct / mv0 : 1;
+    const pp = mv * (isFinite(k) && k > 0 && k < 5 ? k : 1);
+    const pu = num(PB.capital_usd) ? PB.capital_usd * pp / 100 : num(PB.pnl_usd) && num(PB.pnl_pct) && PB.pnl_pct ? PB.pnl_usd / PB.pnl_pct * pp : null;
+    const dStop = num(PB.stop) ? (PB.stop / px - 1) * 100 : null, thr = num(PB.exit_ema21_threshold) ? +PB.exit_ema21_threshold : null;
+    const dThr = thr ? (thr / px - 1) * 100 : null, dr = PB.dist_rule;
+    const drT = dr == null || dr === "" ? "" : typeof dr === "string" ? dr : (dr.text || dr.label || dr.detail || "");
+    const best = num(PB.trail_best) ? `trailing: ${sd < 0 ? "minimo" : "massimo"} dall'ingresso ${usd(PB.trail_best)} · ` : "";
+    return `<div class="pvPos o-${sd > 0 ? "long" : "short"}">
+      <div class="pvPosH">Posizione W3: ${sd > 0 ? "LONG" : "SHORT"}${PB.entry_date ? " dal " + fmtDL(PB.entry_date) : ""}${num(PB.days_open) ? ` (${PB.days_open} ${+PB.days_open === 1 ? "giorno" : "giorni"})` : ""}</div>
+      <div class="pvPosBig"><b class="${cls(pp)}">${pc1(pp)}</b><small>${pu != null ? `${pu >= 0 ? "+" : ""}${usd(pu)}` : ""}${num(PB.capital_usd) ? ` sul capitale W3 di ${usd(PB.capital_usd)}` : ""}</small></div>
+      <div class="list">
+        <div class="row"><span class="k">Ingresso → ${r.live ? "prezzo live" : "prezzo"}<small>${r.live ? "aggiornato ogni pochi secondi" : r.lab || ""}</small></span><span class="v strong">${usd(PB.entry_px)} → ${usd(px)}</span></div>
+        ${num(PB.stop) ? `<div class="row"><span class="k">Stop / trailing<small>${best}distanza dal prezzo</small></span><span class="v strong">${usd(PB.stop)} · ${pc1(dStop)}</span></div>` : ""}
+        ${thr ? `<div class="row"><span class="k">Esce se la settimana chiude ${sd < 0 ? "sopra" : "sotto"} ${usd(thr)}<small>EMA 21 settimanale · distanza dal prezzo</small></span><span class="v strong">${pc1(dThr)}</span></div>` : ""}
+        ${drT ? `<div class="row"><span class="k">Uscita su distribuzione<small>${drT}</small></span></div>` : ""}
+      </div></div>`; };
+  // --- contesto di oggi (preview.today): letture, livelli con tenuta storica, situazioni simili. Non cambia W3
+  const TD = PV.today && typeof PV.today === "object" ? PV.today : null;
+  const pP = x => num(x) ? nfIT(+x <= 1 && +x >= 0 && !Number.isInteger(+x) ? x * 100 : +x, 0) + "%" : "–";
+  const AN = TD && TD.analog && num(TD.analog.n) ? TD.analog : null;
+  const ci = c => Array.isArray(c) && c.length === 2 && num(c[0]) && num(c[1]) ? ` (IC ${pP(c[0]).replace("%", "")}–${pP(c[1])})` : "";
+  const SR = TD ? (TD.sr || []).filter(o => o && o.name) : [], IT = TD ? (TD.items || []).filter(o => o && o.label) : [];
+  const fasc = o => num(o.lo) && num(o.hi) ? `${nfIT(o.lo)}–${nfIT(o.hi)}` : num(o.lo) ? nfIT(o.lo) : num(o.hi) ? nfIT(o.hi) : "";
+  const srTbl = full => `<table class="grid pvTbl pvSR"><tr><th>Livello</th><th${full ? "" : ' class="fx"'}>Fascia</th><th>Distanza</th><th>Tenuta${full ? "" : " storica"}</th>${full ? "<th>Casuale</th>" : ""}</tr>` +
+    SR.map(o => `<tr><td><b>${o.name}</b></td><td${full ? "" : ' class="fx"'}>${fasc(o)}</td><td>${num(o.dist_pct) ? pc1(o.dist_pct) : "–"}</td>` +
+      (full ? `<td>${pP(o.hold_pct)}</td><td>${pP(o.random_pct)}</td>` : `<td>${pP(o.hold_pct)}${num(o.random_pct) ? `<small>casuale ${pP(o.random_pct)}</small>` : ""}</td>`) + `</tr>`).join("") + `</table>`;
+  const anTxt = AN ? `salita a 7 g ${pP(AN.p7)}${ci(AN.ci7)}${num(AN.p30) ? `, a 30 g ${pP(AN.p30)}${ci(AN.ci30)}` : ""}` : "";
+  const ctx = TD && (IT.length || SR.length || AN) ? `<div class="list pvCtx" style="box-shadow:none">
+      <div class="cap2">Oggi · contesto${TD.updated_utc ? ` · agg. ${(d => d ? d.toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC" : "")(pD(TD.updated_utc))}` : ""}</div>
+      ${IT.map(o => `<div class="row"><span class="k">${o.label}${o.read || o.reliability ? `<small>${o.read || ""}${o.reliability ? `${o.read ? " · " : ""}<span class="rel">${o.reliability}</span>` : ""}</small>` : ""}</span><span class="v strong">${o.value == null ? "–" : o.value}</span></div>`).join("")}
+      ${AN ? `<div class="row"><span class="k">Situazioni simili dal 2021 (${nfIT(AN.n)})<small>${anTxt}${AN.label ? ` · <span class="rel">${AN.label}</span>` : ""}</small></span></div>` : ""}
+      ${SR.length ? `<div class="cap2" style="padding-top:8px">Livelli vicini · tenuta storica vs casuale</div><div class="tblW"><div class="scroll">${srTbl(false)}</div></div>` : ""}
+      <p class="foot">Contesto, non segnale: decide W3.</p></div>` : "";
+  const draw = r => { $("pvScaleW").innerHTML = scale(r.px, r.live); $("pvNowW").innerHTML = nowBox(r.px); if (PB) $("pvPosW").innerHTML = posBox(r); };
   el.innerHTML = `<div class="wkTop"><b style="font:600 1rem var(--font)">Pre-analisi · prossima chiusura settimanale</b><span class="cap">stima con i dati di oggi</span></div>
+    ${PB ? `<div id="pvPosW"></div>` : ""}
     <div class="pvWhen">${whenTxt} · oggi <b>${posT}</b></div>
-    <div id="pvScaleW"></div>${key}<div id="pvNowW"></div>
+    <div id="pvScaleW"></div>${key}<div id="pvNowW"></div>${ctx}
     ${conds ? `<div class="list checks" style="box-shadow:none"><div class="cap2">Condizioni ${focus === "long" ? "per il long " : focus === "short" ? "per lo short " : ""}con i dati di oggi</div>${conds}</div>` : ""}
     ${sig}
-    <button type="button" class="wkMore" id="pvMore"><span>Dettagli pre-analisi<small>storico degli ${sideL((PV.history || {}).side || (S && S.side))} simili, liquidazioni e note</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
+    <button type="button" class="wkMore" id="pvMore"><span>Dettagli pre-analisi<small>${TD && (SR.length || AN) ? "livelli, situazioni simili, " : ""}${PV.history ? `storico degli ${sideL(PV.history.side || (S && S.side))} simili, ` : ""}liquidazioni e note</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
   el.hidden = false; draw(REF); window.onRef(draw);
   let rzT = 0; window.addEventListener("resize", () => { clearTimeout(rzT); rzT = setTimeout(() => draw(REF), 150); });   // soglie in px: ridisegno alla nuova larghezza
   // --- pannello dei dettagli
   const H = PV.history, F = PV.flow, LC = PV.liq_context;
-  const cls = x => x == null ? "" : x > 0 ? "pos" : x < 0 ? "neg" : "";
   const hist = H && (H.trades || []).length ? `<h3>Storico ${sideL(H.side)} di W3 · vinti ${H.wins}/${H.n}</h3>
     <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid pvTbl"><tr><th>Ingresso</th><th>Prezzo</th><th>Da max 8 sett.</th><th>Risul&shy;tato</th><th>Max contro</th></tr>` +
     H.trades.map(t => `<tr><td>${fmtD(t.entry)}${t.reason ? `<small>${t.reason}</small>` : ""}</td><td>${usd(t.px)}</td><td>${pc1(t.drop_from_8w_high_pct)}</td><td class="${cls(t.move_pct)}">${pc1(t.move_pct)}</td><td>${pc1(t.adverse_pct)}</td></tr>`).join("") +
@@ -1583,7 +1640,15 @@ renderTrades();
     ((LC.regime_rows || []).length ? `<tr><th colspan="5" class="grp">Solo nel regime attuale</th></tr>` + LC.regime_rows.map(o => lrow(o)).join("") : "") +
     `</table></div></div>` + (LC.imb_now != null ? `<div class="list"><div class="row"><span class="k">Squilibrio attuale delle liquidazioni</span><span class="v strong">${sgn(LC.imb_now)}</span></div></div>` : "") +
     (LC.note ? `<p class="foot">${LC.note}</p>` : "") : "";
-  $("pvMore").onclick = () => openSheet("Dettagli pre-analisi", `<div style="display:grid;gap:12px;min-width:0">${hist}${flow}${liq}` +
+  const ctxD = TD && (SR.length || AN || TD.note) ? `<h3>Oggi · contesto</h3>` +
+    (SR.length ? `<div class="card" style="padding:4px 6px"><div class="scroll">${srTbl(true)}</div></div>
+      <p class="foot">Distanza dal prezzo dell'aggiornamento. Tenuta = quota delle volte in cui, dal 2021, il prezzo arrivato nella fascia è stato respinto; casuale = stessa misura su fasce prese a caso: conta la differenza.</p>` : "") +
+    (AN ? `<div class="list"><div class="row"><span class="k">Situazioni simili dal 2021<small>${AN.label ? AN.label + " · " : ""}${nfIT(AN.n)} casi</small></span></div>
+      <div class="row"><span class="k">Salita a 7 giorni${Array.isArray(AN.ci7) ? `<small>intervallo di confidenza${ci(AN.ci7).replace(" (IC", "").replace(")", "")}</small>` : ""}</span><span class="v strong">${pP(AN.p7)}</span></div>
+      ${num(AN.p30) ? `<div class="row"><span class="k">Salita a 30 giorni${Array.isArray(AN.ci30) ? `<small>intervallo di confidenza${ci(AN.ci30).replace(" (IC", "").replace(")", "")}</small>` : ""}</span><span class="v strong">${pP(AN.p30)}</span></div>` : ""}
+      ${num(AN.mean7) ? `<div class="row"><span class="k">Variazione media a 7 giorni</span><span class="v strong">${pc1(AN.mean7)}</span></div>` : ""}</div>` : "") +
+    `<p class="foot">${TD.note ? TD.note + " " : ""}Contesto, non segnale: decide W3.</p>` : "";
+  $("pvMore").onclick = () => openSheet("Dettagli pre-analisi", `<div style="display:grid;gap:12px;min-width:0">${ctxD}${hist}${flow}${liq}` +
     `<p class="foot">${PV.note ? PV.note + " " : ""}Stima calcolata con i dati di oggi: la decisione vale solo alla chiusura di domenica.${PV.updated_utc ? " Aggiornata: " + (new Date(PV.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" })) + " UTC." : ""}</p></div>`);
 })();
 
