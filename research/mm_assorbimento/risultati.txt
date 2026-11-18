@@ -1,0 +1,83 @@
+Dati: 2021-01-01 00:00:00 → 2026-11-17 23:00:00 (1h perp Binance), taker da 2022-01-01, mappe fino a 2026-11-18 00:00:00; ore mancanti riempite piatte: 24
+IS 2022-02-01 → 2023-12-31, OOS 2024-01-01 → 2026-11-17; Bonferroni α = 0,05/18 = 0.0028
+
+== Configurazioni principali, vicini e controlli (10.000 $ al 01/01/2021, regole attive dal 2022-02-01)
+A1    n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan (k nan, mediana nan)
+   vicino A1a   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+   vicino A1b   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+A2    n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan (k nan, mediana nan)
+   vicino A2a   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+   vicino A2b   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+B1    n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan (k nan, mediana nan)
+   vicino B1a   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+   vicino B1b   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+B2    n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan (k nan, mediana nan)
+   vicino B2a   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+   vicino B2b   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+C1    n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan (k nan, mediana nan)
+   vicino C1a   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+   vicino C1b   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+C2    n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan (k nan, mediana nan)
+   vicino C2a   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+   vicino C2b   n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000 | placebo p nan
+ctrl K0    n  558 (IS 203/OOS 355, L 298/S 260) WR 46.8% PF 0.95 [IS 0.96 OOS 0.95] media -0.049% [IS -0.044 OOS -0.052] cap 6,484 DD -44.3% MAR -0.79 senza top5 4,855 | placebo p 0.0120
+ctrl K1    n  749 (IS 282/OOS 467, L 393/S 356) WR 46.6% PF 0.93 [IS 0.85 OOS 0.98] media -0.091% [IS -0.201 OOS -0.024] cap 3,686 DD -73.7% MAR -0.86 senza top5 2,353 | placebo p 0.0420
+info K0_2021 n  627 (IS 272/OOS 355, L 339/S 288) WR 45.5% PF 0.87 [IS 0.80 OOS 0.95] media -0.153% [IS -0.285 OOS -0.052] cap 3,140 DD -73.5% MAR -0.93 senza top5 2,317
+info K1_2021 n  916 (IS 449/OOS 467, L 481/S 435) WR 45.2% PF 0.81 [IS 0.70 OOS 0.98] media -0.289% [IS -0.564 OOS -0.024] cap 420 DD -96.9% MAR -0.99 senza top5 238
+info K0+mappa n  429 (IS 153/OOS 276, L 197/S 232) WR 48.5% PF 0.91 [IS 0.84 OOS 0.96] media -0.104% [IS -0.212 OOS -0.044] cap 5,623 DD -54.7% MAR -0.80 senza top5 4,326
+
+W3 dal 2021: 78,838 $ (688.4%), DD -21.1%, MAR 32.58, trade 14 (WR 93%)
+Buy & hold dal 2021: 22,455 $ (124.5%), DD -76.6%, MAR 1.63
+Dal 2022-02-01: buy & hold 16,884 $ DD -66.7%; W3 36,663 $ DD -21.1%
+
+== Criteri (configurazione principale)
+A1: 1 trade≥30/metà False · 2 PF≥1,2 IS e OOS False · 3 batte K0/K1 OOS False · 4 placebo False · 5 vicini False · 6 senza top5 False → RESPINTA
+A2: 1 trade≥30/metà False · 2 PF≥1,2 IS e OOS False · 3 batte K0/K1 OOS False · 4 placebo False · 5 vicini False · 6 senza top5 False → RESPINTA
+B1: 1 trade≥30/metà False · 2 PF≥1,2 IS e OOS False · 3 batte K0/K1 OOS False · 4 placebo False · 5 vicini False · 6 senza top5 False → RESPINTA
+B2: 1 trade≥30/metà False · 2 PF≥1,2 IS e OOS False · 3 batte K0/K1 OOS False · 4 placebo False · 5 vicini False · 6 senza top5 False → RESPINTA
+C1: 1 trade≥30/metà False · 2 PF≥1,2 IS e OOS False · 3 batte K0/K1 OOS False · 4 placebo False · 5 vicini False · 6 senza top5 False · 7 W3+C False → SENZA POTENZA
+C2: 1 trade≥30/metà False · 2 PF≥1,2 IS e OOS False · 3 batte K0/K1 OOS False · 4 placebo False · 5 vicini False · 6 senza top5 False · 7 W3+C False → SENZA POTENZA
+
+== Effetto su W3 (portafoglio W3 + C a W3 flat)
+C1: tot 78,838 DD -21.1% MAR 32.58 (W3 78,838 DD -21.1% MAR 32.58) · 21–23 33,477/33,477 MAR 12.16/12.16 · 24→ 23,550/23,550 MAR 6.41/6.41
+C1a: tot 78,838 DD -21.1% MAR 32.58 (W3 78,838 DD -21.1% MAR 32.58) · 21–23 33,477/33,477 MAR 12.16/12.16 · 24→ 23,550/23,550 MAR 6.41/6.41
+C1b: tot 78,838 DD -21.1% MAR 32.58 (W3 78,838 DD -21.1% MAR 32.58) · 21–23 33,477/33,477 MAR 12.16/12.16 · 24→ 23,550/23,550 MAR 6.41/6.41
+C2: tot 78,838 DD -21.1% MAR 32.58 (W3 78,838 DD -21.1% MAR 32.58) · 21–23 33,477/33,477 MAR 12.16/12.16 · 24→ 23,550/23,550 MAR 6.41/6.41
+C2a: tot 78,838 DD -21.1% MAR 32.58 (W3 78,838 DD -21.1% MAR 32.58) · 21–23 33,477/33,477 MAR 12.16/12.16 · 24→ 23,550/23,550 MAR 6.41/6.41
+C2b: tot 78,838 DD -21.1% MAR 32.58 (W3 78,838 DD -21.1% MAR 32.58) · 21–23 33,477/33,477 MAR 12.16/12.16 · 24→ 23,550/23,550 MAR 6.41/6.41
+
+== Sensibilità (informative)
+A1_2W n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+A1_24h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+A1_72h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+A2_2W n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+A2_24h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+A2_72h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+B1_2W n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+B1_24h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+B1_72h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+B2_2W n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+B2_24h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+B2_72h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+C1_2W n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+C1_24h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+C1_72h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+C2_2W n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+C2_24h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+C2_72h n    0 (IS   0/OOS   0, L 0/S 0) WR —% PF — [IS — OOS —] media —% [IS — OOS —] cap 10,000 DD 0.0% MAR — senza top5 10,000
+K0_2W n  538 (IS 197/OOS 341, L 292/S 246) WR 41.1% PF 0.88 [IS 0.87 OOS 0.88] media -0.146% [IS -0.171 OOS -0.132] cap 3,788 DD -68.9% MAR -0.90 senza top5 2,752
+K0_24h n  691 (IS 245/OOS 446, L 361/S 330) WR 43.4% PF 0.83 [IS 0.90 OOS 0.79] media -0.151% [IS -0.093 OOS -0.183] cap 3,076 DD -75.7% MAR -0.91 senza top5 2,313
+K0_72h n  493 (IS 182/OOS 311, L 262/S 231) WR 46.2% PF 0.87 [IS 0.90 OOS 0.85] media -0.169% [IS -0.128 OOS -0.192] cap 3,686 DD -71.5% MAR -0.88 senza top5 2,754
+K1_2W n  716 (IS 270/OOS 446, L 371/S 345) WR 41.3% PF 0.89 [IS 0.83 OOS 0.93] media -0.148% [IS -0.250 OOS -0.086] cap 2,405 DD -78.7% MAR -0.97 senza top5 1,299
+K1_24h n  946 (IS 354/OOS 592, L 478/S 468) WR 43.4% PF 0.82 [IS 0.87 OOS 0.79] media -0.183% [IS -0.148 OOS -0.204] cap 1,329 DD -91.0% MAR -0.95 senza top5 830
+K1_72h n  634 (IS 241/OOS 393, L 324/S 310) WR 50.2% PF 1.05 [IS 1.06 OOS 1.04] media 0.063% [IS 0.085 OOS 0.050] cap 10,608 DD -56.8% MAR 0.11 senza top5 6,268
+
+== Anni (media % per trade / n) e motivi d'uscita delle principali e dei controlli
+A1: nessun trade
+A2: nessun trade
+B1: nessun trade
+B2: nessun trade
+C1: nessun trade
+C2: nessun trade
+K0: 2022: -0.04/90.0 2023: -0.05/113.0 2024: +0.15/112.0 2025: +0.01/133.0 2026: -0.33/110.0 · uscite {'target': 202, 'stop': 198, 'tempo': 158} · target {'fascia': 547, '2W': 11} · long media -0.068% (298) short -0.027% (260) · W mediana 2.06%
+K1: 2022: -0.33/143.0 2023: -0.07/139.0 2024: -0.03/164.0 2025: -0.16/164.0 2026: +0.14/139.0 · uscite {'tempo': 311, 'target': 230, 'stop': 208} · target {'fascia': 711, '2W': 38} · long media -0.085% (393) short -0.097% (356) · W mediana 2.52%

@@ -404,6 +404,16 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Studio dell'utente · 18/11 — effetti dei market maker (assorbimento, compressione → rottura) · RESPINTO (research/mm_assorbimento/)
+PREREG committato da solo (97b9a13) prima di ogni esecuzione. 18 configurazioni: 0 trade, perché la definizione assoluta di
+assorbimento (volume ≥ 80° e range ≤ 30° percentile su 30 giorni) su BTC quasi non esiste (volume e range orari correlati 0,76:
+6 barre in 4,7 anni). Controlli: compressione oraria → rottura 10k → 6,5k (PF 0,95/0,96 IS/OOS), rottura 24h 3,7k; il verso della
+mappa liquidazioni peggiora; battono ingressi casuali (p 0,01–0,04) ma non coprono i costi.
+**Lezione 98**: compressione e rottura orarie su BTC perdono dopo i costi in entrambe le metà, anche con target sulle fasce di
+liquidazione (conferma 81, 82, 93, 95). L'assorbimento va definito in modo relativo (volume alto rispetto al range atteso per quel
+volume), non con soglie assolute: la definizione assoluta non produce eventi. Errore di disegno da non ripetere: contare quanti
+eventi produce una definizione (senza guardare i rendimenti) prima di preregistrarla.
+
 ### Ciclo notturno · 15/11 — giorno di decisione, swing 2–3 giorni, macro/flussi, probabilità e S/R · NESSUNA MODIFICA (research/notte_1511/REPORT.md)
 **Lezione 94**: W3 decide di domenica per convenzione (candela settimanale lun–dom UTC). Dal 2021 la domenica è il giorno migliore
 (78,5k contro mediana dei 7 giorni 62,7k, peggiore 38,6k), nel 2018–20 solo quarta; tutti i giorni battono il buy & hold. Tenere la

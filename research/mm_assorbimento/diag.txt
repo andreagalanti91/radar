@@ -1,0 +1,12 @@
+1h: barre valutabili 40823, correlazione log(volume)–log(range) 0.76
+  volume ≥ 80° e range ≤ 30°: 6 · |D| ≥ 0,10: 1 · delta concordi: 1 · ΔOI > 0: 0 (vicino largo |D| ≥ 0,05 senza OI: 1)
+  volume ≥ 90° e range ≤ 20°: 0 · |D| ≥ 0,10: 0 · delta concordi: 0 · ΔOI > 0: 0 (vicino largo |D| ≥ 0,05 senza OI: 0)
+  (solo conteggio, non testato) volume ≥ 80° e range ≤ 50°: 84
+  (solo conteggio, non testato) volume ≥ 70° e range ≤ 30°: 35
+  (solo conteggio, non testato) volume ≥ 70° e range ≤ 50°: 419
+4h: barre valutabili 10331, correlazione log(volume)–log(range) 0.67
+  volume ≥ 80° e range ≤ 30°: 3 · |D| ≥ 0,10: 0 · delta concordi: 0 · ΔOI > 0: 0 (vicino largo |D| ≥ 0,05 senza OI: 1)
+  volume ≥ 90° e range ≤ 20°: 0 · |D| ≥ 0,10: 0 · delta concordi: 0 · ΔOI > 0: 0 (vicino largo |D| ≥ 0,05 senza OI: 0)
+  (solo conteggio, non testato) volume ≥ 80° e range ≤ 50°: 31
+  (solo conteggio, non testato) volume ≥ 70° e range ≤ 30°: 12
+  (solo conteggio, non testato) volume ≥ 70° e range ≤ 50°: 128
