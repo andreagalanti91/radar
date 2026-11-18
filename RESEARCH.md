@@ -404,6 +404,12 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Pensiero dirompente · 18/11 — rischio per trade e comunicazione di W3 · DA DECIDERE (research/dirompente/)
+**Lezione 99**: dal 2021 W3 non ha mai preso uno stop pieno, quindi il DD storico (−21%) sottostima il rischio: ogni trade rischia
+il 18–25% della quota (2 stop consecutivi −44%). A parità di logica il rischio 10–15% dà DD −10/−14% (2021+) con la stessa
+efficienza CAGR/DD. La prima misura di rischio da comunicare è la perdita allo stop; il 78k va affiancato alla mediana dei giorni
+(62,7k) e al bootstrap (CAGR 25–68%). Proposta all'utente: rischio 10–15% e short aperto a esposizione dimezzata.
+
 ### Studio dell'utente · 18/11 — effetti dei market maker (assorbimento, compressione → rottura) · RESPINTO (research/mm_assorbimento/)
 PREREG committato da solo (97b9a13) prima di ogni esecuzione. 18 configurazioni: 0 trade, perché la definizione assoluta di
 assorbimento (volume ≥ 80° e range ≤ 30° percentile su 30 giorni) su BTC quasi non esiste (volume e range orari correlati 0,76:
