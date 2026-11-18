@@ -98,9 +98,9 @@ BRIEF_WAIT_H = 6   # se alle 06:00 UTC i dati non arrivano ancora a ieri, il rie
 
 
 def brief_due(st: dict, now: pd.Timestamp, data_until: str | None) -> bool:
-    """Riepilogo giornaliero: una volta al giorno (UTC), al primo giro dopo le 00:00 che ha i dati fino a ieri (candela
+    """Riepilogo giornaliero "Oggi": una volta al giorno (UTC), al primo giro dopo le 00:00 che ha i dati fino a ieri (candela
     giornaliera chiusa), oppure dalle BRIEF_WAIT_H UTC anche senza. Dipende dallo stato (st["daily_brief"]) e non dal cron:
-    il cron delle 00:30 di daily.yml non partiva mai. RADAR_DAILY_BRIEF=0 lo spegne."""
+    il cron delle 00:30 di daily.yml non partiva mai. Indipendente da RADAR_V2_ALERTS; RADAR_DAILY_BRIEF=0 lo spegne."""
     if os.environ.get("RADAR_DAILY_BRIEF", "1") != "1" or st.get("daily_brief") == str(now.date()):
         return False
     yesterday = str((now - pd.Timedelta(days=1)).date())
@@ -108,11 +108,12 @@ def brief_due(st: dict, now: pd.Timestamp, data_until: str | None) -> bool:
 
 
 def daily_brief(report: dict, st: dict, now: pd.Timestamp, data_until: str | None, send=None) -> bool:
-    """Invia il riepilogo se dovuto; il marker del giorno si scrive solo se Telegram conferma (si riprova al giro dopo)."""
+    """Invia il riepilogo "Oggi" (W3 + contesto della pre-analisi, telegram.today_brief) se dovuto; il marker del giorno si
+    scrive solo se Telegram conferma (si riprova al giro dopo)."""
     send = send or telegram.send
     if not brief_due(st, now, data_until):
         return False
-    if send(telegram.daily_brief(report)):
+    if send(telegram.today_brief(report, str(now.date()))):
         st["daily_brief"] = str(now.date())
         return True
     print("[radar] riepilogo giornaliero non confermato da Telegram: si riprova al prossimo giro")
@@ -173,6 +174,10 @@ def daily() -> None:
     except Exception as e:  # noqa: BLE001
         print(f"[radar] v2 non calcolato, dashboard non generata: {e!r}")
         st = _load_state()
+        if wcur:   # il riepilogo "Oggi" non dipende da v2: parte con W3 e la pre-analisi
+            from .preview import build as _pv
+            _soft("riepilogo giornaliero", daily_brief, {"weekly": wcur, "preview": _soft("pre-analisi W3", _pv, f)},
+                  st, _now(), data_until)
         st["last_run"] = _now().isoformat(timespec="seconds")
         _save_state(st)
         return
@@ -214,8 +219,8 @@ def daily() -> None:
     save_state(report)
     # controllo orario degli ordini (limit DCA, stop, target) sulle candele orarie di oggi
     st = _load_state()
-    if v2_on:   # riepilogo giornaliero (testo di v2, come prima: spento con gli alert di v2)
-        _soft("riepilogo giornaliero", daily_brief, report, st, _now(), data_until)
+    # riepilogo giornaliero "Oggi" (W3 + contesto): indipendente dagli alert di v2, interruttore RADAR_DAILY_BRIEF
+    _soft("riepilogo giornaliero", daily_brief, report, st, _now(), data_until)
     try:
         ev, keys = intraday.check(report, st.get("intraday_keys", []))
         if not (ev and v2_on) or telegram.send(intraday.format_events(ev)):

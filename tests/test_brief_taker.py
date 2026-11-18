@@ -30,7 +30,7 @@ class TestBrief(unittest.TestCase):
     def test_marker_e_interruttore(self):
         st, sent = {}, []
         now = T("2026-11-13 00:05")
-        with mock.patch.object(cli.telegram, "daily_brief", lambda r: "testo"):
+        with mock.patch.object(cli.telegram, "today_brief", lambda r, day=None: "testo"):   # riepilogo "Oggi" (W3)
             self.assertFalse(cli.daily_brief({}, st, now, "2026-11-12", send=lambda m: False))   # Telegram non conferma
             self.assertNotIn("daily_brief", st)                                                # si riprova al giro dopo
             self.assertTrue(cli.daily_brief({}, st, now, "2026-11-12", send=lambda m: sent.append(m) or True))

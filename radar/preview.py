@@ -9,6 +9,9 @@ Le soglie di prezzo che cambiano l'esito sono in forma chiusa (le medie della se
 - filtro F1/MACD: MACD(C) lineare in C; MACD > segnale ⇔ MACD(C) > segnale precedente.
 Il flusso perp proiettato è quello attuale (live_flow): a domenica la media userà i giorni fino al sabato.
 Statistiche di contesto sulle liquidazioni: tabella fissa in research/preview/liq_context.json (non si ricalcolano).
+"position_block": la posizione W3 aperta (o in apertura lunedì) con PnL sul capitale, stop, soglia d'uscita EMA21 e distribuzione.
+"today": quadro del giorno (flussi, derivati, liquidazioni, medie, S/R, cella storica più vicina) con l'affidabilità dimostrata
+dagli studi: tabelle fisse dello studio N4 (research/preview/analog.json, sr_hold.json). Contesto, non segnale: decide W3.
 """
 from __future__ import annotations
 
@@ -22,6 +25,9 @@ import pandas as pd
 from . import weekly as W
 
 LIQ_CONTEXT = Path(__file__).resolve().parent.parent / "research" / "preview" / "liq_context.json"
+ANALOG = LIQ_CONTEXT.parent / "analog.json"      # N4: P(r>0) per celle pf14z × sf14z a terzili (research/preview/n4_tables.py)
+SR_HOLD = LIQ_CONTEXT.parent / "sr_hold.json"    # N4: tenuta storica dei livelli S/R contro livelli casuali
+TODAY_NOTE = "Contesto, non segnale: decide W3."
 NOTE = "Stima con i dati di oggi: decide solo la chiusura di domenica (UTC)."
 NEED = ("open", "high", "low", "close", "pf14z", "funding")
 
@@ -154,16 +160,8 @@ def _liq_context(report: dict | None) -> dict | None:
         ctx = json.loads(LIQ_CONTEXT.read_text())
     except Exception:  # noqa: BLE001
         return None
-    imb = None
-    lm = (report or {}).get("liqmap") or {}
-    try:
-        p, bins = float(lm["price"]), lm["bins"]
-        s = sum(b[2] for b in bins if p < b[0] <= p * 1.08)
-        lo = sum(b[1] for b in bins if p * 0.92 <= b[0] < p)
-        imb = round((s - lo) / (s + lo), 3) if s + lo > 0 else None
-    except Exception:  # noqa: BLE001
-        imb = None
-    return {"rows": ctx["rows"], "base": ctx["base"], "regime_rows": ctx["regime_rows"], "imb_now": imb, "note": ctx["note"]}
+    return {"rows": ctx["rows"], "base": ctx["base"], "regime_rows": ctx["regime_rows"], "imb_now": _liq_imb(report),
+            "note": ctx["note"]}
 
 
 def _history(r: dict, w: pd.DataFrame, f: pd.DataFrame, side: str) -> dict:
@@ -197,6 +195,258 @@ def _if_signal(sd: str, price: float, bar: pd.Series) -> dict:
 
 def _fmt_day(d: pd.Timestamp) -> str:
     return d.strftime("%d/%m")
+
+
+# ---------------------------------------------------------------- posizione aperta e quadro di oggi
+def _num(x, d: int = 2):
+    """Numero finito arrotondato oppure None (dati mancanti: mai NaN nel JSON)."""
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return None
+    return round(v, d) if np.isfinite(v) else None
+
+
+def _it(x: float, d: int = 2, sign: bool = True) -> str:
+    return (f"{x:+.{d}f}" if sign else f"{x:.{d}f}").replace(".", ",").replace("-", "−")
+
+
+def _dist_rule(sg: int, fund7: float | None, flow: float | None) -> str:
+    """Condizione di distribuzione di W3 per il lato e il suo stato attuale (alla chiusura della domenica)."""
+    if sg > 0:
+        rule, on = "funding medio 7g > 0,0009 e flusso perp < 0", (fund7 is not None and flow is not None
+                                                                 and fund7 > W.FUND_HOT and flow < 0)
+    else:
+        rule, on = "funding medio 7g < −0,0003 e flusso perp > 0", (fund7 is not None and flow is not None
+                                                                  and fund7 < W.FUND_COLD and flow > 0)
+    now = ("proiezione a domenica " + (f"funding 7g {fund7:.5f}".replace(".", ",").replace("-", "−") if fund7 is not None else "funding n.d.")
+           + (f", flusso {_sig(flow)}" if flow is not None else ", flusso n.d."))
+    return (f"{'Long' if sg > 0 else 'Short'}: esce alla chiusura della domenica se {rule}. Ora, {now}: "
+            + ("ATTIVA (uscita se resta così alla chiusura)." if on else "non attiva."))
+
+
+def position_block(o: dict | None, pend: dict | None, w: pd.DataFrame, th: dict, price: float, last: pd.Timestamp,
+                   bar: pd.Series, flow: float | None) -> dict | None:
+    """Posizione W3 per la sezione Oggi: None se flat (o se l'uscita è già decisa per l'apertura di lunedì).
+    PnL sul capitale CAPITAL·SHARE con l'esposizione del trade (motore di simulate: commissioni e funding inclusi)."""
+    cap = W.CAPITAL * W.SHARE
+    if pend and pend["kind"] == "exit":
+        return None
+    fund7 = _num(bar.get("fund7"), 6)
+    if o:
+        sg = 1 if o["side"] == "long" else -1
+        stop, pnl = float(o["trail"]), float(o["pnl"])
+        entry = pd.Timestamp(o["entry"])
+        return {"side": o["side"], "entry_date": str(o["entry"]), "entry_px": _num(o["entry_px"]), "price": _num(price),
+                "pnl_pct": _num(pnl * 100), "pnl_usd": _num(cap * pnl, 0), "capital_usd": _num(cap, 0),
+                "stop": _num(stop), "stop_dist_pct": _num((stop / price - 1) * 100),
+                "trail_best": _num(o["best"]), "exit_ema21_threshold": _num(th["ema21"]),
+                "dist_rule": _dist_rule(sg, fund7, flow), "days_open": int((last - entry).days) + 1}
+    if pend and pend["kind"] == "enter":   # segnale di domenica: ingresso all'apertura di lunedì, prezzo non ancora noto
+        sg = int(pend["arg"])
+        wk = w.iloc[-1]
+        stop = float(wk["close"]) - sg * W.STOP_K * float(wk["atr"])
+        return {"side": "long" if sg > 0 else "short", "entry_date": str((pd.Timestamp(pend["date"]) + pd.Timedelta(days=1)).date()),
+                "entry_px": None, "price": _num(price), "pnl_pct": None, "pnl_usd": None, "capital_usd": _num(cap, 0),
+                "stop": _num(stop), "stop_dist_pct": _num((stop / price - 1) * 100), "trail_best": None,
+                "exit_ema21_threshold": _num(th["ema21"]), "dist_rule": _dist_rule(sg, fund7, flow), "days_open": 0}
+    return None
+
+
+def _table(path: Path) -> dict | None:
+    try:
+        return json.loads(path.read_text())
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _terz(x: float | None, th: float = 0.43) -> str | None:
+    if x is None:
+        return None
+    return "lo" if x < -th else "hi" if x > th else "mid"
+
+
+TERZ_TXT = {"lo": "basso", "mid": "medio", "hi": "alto"}
+FLOW_TXT = {"lo": "in vendita", "mid": "quasi neutro", "hi": "in acquisto"}
+
+
+def analog(pf: float | None, sf: float | None, tab: dict | None = None) -> dict | None:
+    """Cella storica N4 più vicina allo stato attuale (pf14z e sf14z a terzili fissi ±0,43); ripiego sul terzile singolo."""
+    tab = tab if tab is not None else _table(ANALOG)
+    if not tab:
+        return None
+    th = float((tab.get("thresholds") or {}).get("hi", 0.43))
+    tp, ts = _terz(pf, th), _terz(sf, th)
+    cells = tab.get("cells") or {}
+    keys = ([f"PFt={tp} & SFt={ts}"] if tp and ts else []) + ([f"PFt={tp}"] if tp else []) + ([f"SFt={ts}"] if ts else [])
+    key = next((k for k in keys if k in cells), None)
+    if key is None:
+        return None
+    c, b = cells[key], tab.get("base") or {}
+    parts = ([f"pf14z {TERZ_TXT[tp]}"] if "PFt" in key else []) + ([f"sf14z {TERZ_TXT[ts]}"] if "SFt" in key else [])
+    base = (f" (base {_it(b['p7'], 0, False)}% a 7 g, {_it(b['p30'], 0, False)}% a 30 g)" if "p7" in b and "p30" in b else "")
+    return {"label": " · ".join(parts) + f", dal 2021" + base, "n": int(c["n_ind7"]),
+            "p7": c["p7"], "ci7": list(c["ci7"]), "p30": c["p30"], "ci30": list(c["ci30"]), "mean7": c["mean7"]}
+
+
+def _bucket(d: float) -> str | None:
+    return "0-3%" if d < 0.03 else "3-8%" if d < 0.08 else "8-15%" if d < 0.15 else None
+
+
+def sr_rows(levels: dict | None, tab: dict | None = None, min_touches: int = 20) -> list[dict]:
+    """Livelli del report con la tenuta storica D3 (N4) per lato, tipo e distanza; tipo con < min_touches tocchi → tutti i tipi.
+    Oltre il 15% di distanza: fuori dal test (None)."""
+    if not levels:
+        return []
+    tab = tab if tab is not None else _table(SR_HOLD)
+    rows = {(r["side"], r["type"], r["dist"]): r for r in (tab or {}).get("rows", []) if r.get("scale") == "D3"}
+    out = []
+    for key, tag in (("resistances", "R"), ("supports", "S")):
+        for i, z in enumerate(levels.get(key) or []):
+            try:
+                d = float(z["dist_pct"]) / 100
+                side = "resistenza" if key == "resistances" else "supporto"
+                typ = "W" if z.get("weekly") else ("V" if not z.get("touches") else "G")
+                b = _bucket(abs(d))
+                r = rows.get((side, typ, b)) if b else None
+                if b and (r is None or r["touches"] < min_touches):
+                    r = rows.get((side, "tutti", b))
+                out.append({"name": f"{tag}{i + 1}", "lo": _num(z["lo"], 0), "hi": _num(z["hi"], 0), "dist_pct": _num(d * 100),
+                            "hold_pct": r["hold_pct"] if r else None, "random_pct": r["random_pct"] if r else None})
+            except Exception:  # noqa: BLE001
+                continue
+    return sorted(out, key=lambda x: -(x["dist_pct"] if x["dist_pct"] is not None else 0))
+
+
+def _last(f: pd.DataFrame, k: str) -> float | None:
+    if k not in f:
+        return None
+    s = f[k].dropna()
+    return _num(s.iloc[-1], 6) if len(s) else None
+
+
+def _liq_imb(report: dict | None) -> float | None:
+    lm = (report or {}).get("liqmap") or {}
+    try:
+        p, bins = float(lm["price"]), lm["bins"]
+        s = sum(b[2] for b in bins if p < b[0] <= p * 1.08)
+        lo = sum(b[1] for b in bins if p * 0.92 <= b[0] < p)
+        return round((s - lo) / (s + lo), 3) if s + lo > 0 else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _liq24(report: dict | None) -> dict | None:
+    """Liquidazioni reali 24h (radar/liqsources). Se il giro non le ha ancora calcolate le legge dai file locali (niente rete)."""
+    rep = report or {}
+    ls = rep.get("liqsources")
+    if ls is None and "liqsources" not in rep:
+        try:
+            from . import liqsources
+            ls = liqsources.summary()
+        except Exception:  # noqa: BLE001
+            ls = None
+    try:
+        t = ls["total"]["24h"]
+        return {"long": float(t["long_usd"]), "short": float(t["short_usd"]), "stale": bool(ls.get("stale"))}
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _musd(x: float) -> str:
+    return f"{x / 1e6:,.1f} M$".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, side: int = 0) -> dict:
+    """Quadro di oggi: ogni voce con lettura breve e affidabilità dagli studi. Mai eccezioni: le voci senza dati si saltano."""
+    items: list[dict] = []
+    tab = _table(ANALOG) or {}
+    cells = tab.get("cells") or {}
+    base30 = (tab.get("base") or {}).get("p30")
+
+    def add(key, label, value, read, rel):
+        items.append({"key": key, "label": label, "value": value, "read": read, "reliability": rel})
+
+    def single(k: str) -> str:
+        c = cells.get(k)
+        return (f"; storicamente {_it(c['p30'], 0, False)}% di rialzo a 30 g (base {_it(base30, 0, False)}%)"
+                if c and base30 is not None else "")
+    pf, sf = _last(f, "pf14z"), _last(f, "sf14z")
+    try:
+        if pf is not None:
+            t = _terz(pf)
+            add("pf14z", "Flusso perp (pf14z)", _sig(pf),
+                f"terzile {TERZ_TXT[t]}: perp {FLOW_TXT[t]}" + single(f"PFt={t}"),
+                "W3 ne usa il segno (media di 3 giorni) per gli ingressi; come probabilità a 7–30 g nessun vantaggio "
+                "dopo la correzione (lezione 97)")
+        if sf is not None:
+            t = _terz(sf)
+            add("sf14z", "Flusso spot (sf14z)", _sig(sf),
+                f"terzile {TERZ_TXT[t]}: spot {FLOW_TXT[t]}" + single(f"SFt={t}"),
+                "contesto: nessun vantaggio dimostrato (lezione 97)")
+        if pf is not None and sf is not None:
+            dv = sf - pf
+            rd = ("guida lo spot (spot compra più del perp)" if dv > 0.5 else "guida il perp (perp compra più dello spot)"
+                  if dv < -0.5 else "spot e perp allineati")
+            add("div", "Divergenza spot − perp", _sig(dv), rd,
+                "tesi perp in vendita/spot che assorbe: +1/+3 punti a 7 g ma non regge al placebo (lezione 89)")
+        fund7 = _num(f["funding"].fillna(0).rolling(7).mean().iloc[-1], 6) if "funding" in f and f["funding"].notna().any() else None
+        if fund7 is not None:
+            fz = _last(f, "funding_z")
+            rd = ("funding " + ("alto" if (fz or 0) > 0.43 else "basso" if (fz or 0) < -0.43 else "nella media")
+                  + (f" (z {_it(fz)})" if fz is not None else ""))
+            if side:
+                rd += "; distribuzione " + ("attiva" if (fund7 > W.FUND_HOT if side > 0 else fund7 < W.FUND_COLD)
+                                            else "lontana") + f" (soglia {'> 0,0009' if side > 0 else '< −0,0003'})"
+            add("funding", "Funding (media 7g)", f"{fund7 * 100:.4f}%/giorno · {fund7 * 365 * 100:.1f}%/anno".replace(".", ",")
+                .replace("-", "−"), rd, "contesto (lezione 97); in W3 conta solo dentro la condizione di distribuzione")
+        oi7 = _last(f, "oi_chg7")
+        if oi7 is not None:
+            oz = _last(f, "oi_z")
+            rd = ("OI " + ("in aumento" if oi7 > 0 else "in calo") + (f" (z {_it(oz)})" if oz is not None else ""))
+            if pf is not None and pf < 0 and oz is not None and oz > 0.43:
+                rd += "; perp in vendita con OI in aumento: nuovi short aperti (36% di rialzo a 7 g, non significativo)"
+            add("oi7", "Open interest, variazione 7g", f"{oi7 * 100:+.1f}%".replace(".", ",").replace("-", "−"), rd,
+                "contesto: 0 celle su 5.790 superano la correzione (lezione 97)")
+        lq = _liq24(report)
+        if lq is not None:
+            cas = (report or {}).get("cascade") or {}
+            rd = ("più long liquidati" if lq["long"] > 1.5 * lq["short"] else "più short liquidati"
+                  if lq["short"] > 1.5 * lq["long"] else "equilibrate")
+            if cas.get("active"):
+                rd += f"; cascata {cas.get('side', '')} {cas.get('start_utc', '')}→{cas.get('end_utc', '')} ({_it(float(cas.get('move_pct') or 0), 1)}%)"
+            if lq["stale"]:
+                rd += "; fonti ferme da oltre 6 ore"
+            add("liq24h", "Liquidazioni 24h (exchange registrati)", f"long {_musd(lq['long'])} · short {_musd(lq['short'])}", rd,
+                "dicono quanta leva è stata pulita, non dove va il prezzo; dopo una cascata nessun vantaggio a comprare "
+                "(lezioni 72, 90, 92)")
+        imb = _liq_imb(report)
+        if imb is not None:
+            rd = ("bilanciata" if abs(imb) < 0.15 else "più short da liquidare sopra" if imb > 0 else "più long da liquidare sotto")
+            add("liqmap_imb", "Squilibrio mappa liquidazioni ±8% (stima)", f"{imb * 100:+.0f}%".replace("-", "−"), rd,
+                "stima; non attira il prezzo e non rafforza gli S/R, vale al più 12–24 ore (lezioni 81, 93)")
+        wk = w.iloc[-1]
+        for key, col, lab in (("dist_sma40", "sma", "SMA40"), ("dist_ema21", "ema21", "EMA21")):
+            m = _num(wk.get(col))
+            if m:
+                d = (price / m - 1) * 100
+                rd = f"{'sotto' if d < 0 else 'sopra'} la {lab} settimanale ({_usd(m)}, ultima chiusura)"
+                rel = ("W3 usa il lato della SMA40 come regime; la distanza come probabilità non dà vantaggio (lezione 97)"
+                       if col == "sma" else "W3 esce/entra sul lato della EMA21 alla chiusura; la distanza da sola non dà "
+                       "vantaggio (lezione 97)")
+                add(key, f"Distanza dalla {lab} settimanale", f"{d:+.1f}%".replace(".", ",").replace("-", "−"), rd, rel)
+    except Exception as e:  # noqa: BLE001
+        print(f"[preview] quadro di oggi incompleto: {e!r}")
+    try:
+        sr = sr_rows((report or {}).get("levels"))
+    except Exception:  # noqa: BLE001
+        sr = []
+    try:
+        an = analog(pf, sf, tab or None)
+    except Exception:  # noqa: BLE001
+        an = None
+    return {"updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"), "items": items, "sr": sr, "analog": an,
+            "note": TODAY_NOTE}
 
 
 def build(f: pd.DataFrame | None, report: dict | None = None) -> dict | None:
@@ -273,6 +523,12 @@ def build(f: pd.DataFrame | None, report: dict | None = None) -> dict | None:
         return 0.0 if lo <= price <= hi else min(abs(price - lo), abs(price - hi))
     near = min(sig_b, key=dist_to) if sig_b else None
     sd = near["outcome"] if near else ("long" if side > 0 else "short" if side < 0 else None)
+    try:
+        pos_block = position_block(o, pend, w, th, price, last, bar, flow)
+    except Exception as e:  # noqa: BLE001
+        print(f"[preview] posizione non calcolata: {e!r}")
+        pos_block = None
+    today_d = today(f, w, report, price, side)
     win = [last - pd.Timedelta(days=k) for k in (W.FLOW_N, 1)]
     fwin = [sun - pd.Timedelta(days=k) for k in (W.FLOW_N, 1)]
     need = None if not near else ("neg" if near["outcome"] == "short" else "pos")
@@ -285,4 +541,5 @@ def build(f: pd.DataFrame | None, report: dict | None = None) -> dict | None:
             "if_signal": _if_signal(near["outcome"], price, bar) if near else None,
             "history": _history(r, w, f, sd) if sd else None,
             "liq_context": _liq_context(report), "note": NOTE,
-            "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")}
+            "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"),
+            "position_block": pos_block, "today": today_d}

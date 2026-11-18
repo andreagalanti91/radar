@@ -102,7 +102,7 @@ class TestPreview(unittest.TestCase):
     def test_schema(self):
         p = self.p
         self.assertEqual(set(p), {"decision_utc", "week_close_utc", "price", "position", "conditions", "scenarios", "flow",
-                                  "if_signal", "history", "liq_context", "note", "updated_utc"})
+                                  "if_signal", "history", "liq_context", "note", "updated_utc", "position_block", "today"})
         self.assertEqual((p["decision_utc"], p["week_close_utc"], p["position"]), ("2026-11-16 00:00", "2026-11-15", "flat"))
         for c in p["conditions"]:
             self.assertEqual(set(c), {"key", "label", "now", "value", "depends_on_close"})
