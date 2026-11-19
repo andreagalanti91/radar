@@ -1,0 +1,159 @@
+==================================================================================================== 
+W3 di riferimento: {"ALL": {"final": 78474, "dd": -21.1, "cdd": 1.99, "mar": 32.4, "n": 13}, "IS": {"final": 33477, "dd": -19.3, "cdd": 2.574, "mar": 12.16, "n": 7}, "OOS": {"final": 23488, "dd": -21.1, "cdd": 1.639, "mar": 6.38, "n": 6}, "L": {"final": 25142, "dd": -37.3, "cdd": 0.966, "mar": 4.06, "n": 9}}
+Buy & hold: {"ALL": {"final": 22280, "dd": -76.6, "cdd": 0.191, "mar": 1.6}, "IS": {"final": 14416, "dd": -76.6, "cdd": 0.169, "mar": 0.58}, "OOS": {"final": 14792, "dd": -53.0, "cdd": 0.276, "mar": 0.9}, "L": {"final": 21617, "dd": -81.2, "cdd": 0.361, "mar": 1.43}}
+Rischio di rovina W3 (bootstrap a blocchi, 6 anni): {'p30': 48.48, 'p50': 1.99, 'half': 0.01}
+
+====================================================================================================
+O1
+O1(1.2) | ALL: 19924 $ DD -37.5% CAGR/DD 0.332 MAR 2.65 n 11 cambiati 10 | IS: 14121 $ DD -35.8% CAGR/DD 0.341 MAR 1.15 n 6 cambiati 7 | OOS: 14138 $ DD -24.0% CAGR/DD 0.534 MAR 1.72 n 5 cambiati 3 | L: 25142 $ DD -37.3% CAGR/DD 0.966 MAR 4.06 n 9 cambiati 0 | senza migliore 13091 (W3 51561) | placebo p 0.86507 (distinti 965) | blocchi/chiamate {'IS': 18, 'OOS': 6}/{'IS': 24, 'OOS': 12}
+O1(1.1) | ALL: 13761 $ DD -33.0% CAGR/DD 0.169 MAR 1.14 n 10 cambiati 13 | IS: 13456 $ DD -31.4% CAGR/DD 0.331 MAR 1.1 n 5 cambiati 8 | OOS: 10226 $ DD -24.0% CAGR/DD 0.033 MAR 0.09 n 5 cambiati 5 | L: 25142 $ DD -37.3% CAGR/DD 0.966 MAR 4.06 n 9 cambiati 0 | senza migliore 9041 (W3 51561) | placebo p 0.84158 (distinti 928) | blocchi/chiamate {'IS': 22, 'OOS': 12}/{'IS': 27, 'OOS': 18}
+O1(1.4) | ALL: 53405 $ DD -21.1% CAGR/DD 1.563 MAR 20.54 n 12 cambiati 5 | IS: 22782 $ DD -18.9% CAGR/DD 1.675 MAR 6.77 n 6 cambiati 5 | OOS: 23488 $ DD -21.1% CAGR/DD 1.639 MAR 6.38 n 6 cambiati 0 | L: 25142 $ DD -37.3% CAGR/DD 0.966 MAR 4.06 n 9 cambiati 0 | senza migliore 35089 (W3 51561) | placebo p 0.24388 (distinti 858) | blocchi/chiamate {'IS': 7, 'OOS': 0}/{'IS': 13, 'OOS': 7}
+O1 criteri {'c1': True, 'c2': False, 'c3': None, 'c4': False, 'c5': False, 'c6': False} → respinta
+
+====================================================================================================
+O3
+O3(0.0) | ALL: 60832 $ DD -21.2% CAGR/DD 1.698 MAR 23.96 n 10 cambiati 7 | IS: 26556 $ DD -19.3% CAGR/DD 1.997 MAR 8.57 n 5 cambiati 2 | OOS: 22953 $ DD -21.2% CAGR/DD 1.581 MAR 6.11 n 5 cambiati 5 | L: 16853 $ DD -35.5% CAGR/DD 0.535 MAR 1.93 n 8 cambiati 3 | senza migliore 39969 (W3 51561) | placebo p 0.01399 (distinti 1009) | blocchi/chiamate {'IS': 7, 'OOS': 5}/{'IS': 12, 'OOS': 11}
+O3(1.0) | ALL: 58305 $ DD -21.1% CAGR/DD 1.658 MAR 22.86 n 11 cambiati 6 | IS: 24228 $ DD -19.3% CAGR/DD 1.78 MAR 7.37 n 6 cambiati 3 | OOS: 24113 $ DD -21.1% CAGR/DD 1.697 MAR 6.68 n 5 cambiati 3 | L: 17304 $ DD -35.6% CAGR/DD 0.564 MAR 2.05 n 8 cambiati 3 | senza migliore 38309 (W3 51561) | placebo p 0.08046 (distinti 986) | blocchi/chiamate {'IS': 6, 'OOS': 3}/{'IS': 12, 'OOS': 9}
+O3(2.0) | ALL: 70006 $ DD -21.1% CAGR/DD 1.86 MAR 28.4 n 13 cambiati 4 | IS: 30333 $ DD -19.3% CAGR/DD 2.322 MAR 10.53 n 7 cambiati 2 | OOS: 23125 $ DD -21.1% CAGR/DD 1.604 MAR 6.21 n 6 cambiati 2 | L: 17304 $ DD -35.6% CAGR/DD 0.564 MAR 2.05 n 8 cambiati 3 | senza migliore 45997 (W3 51561) | placebo p 0.29335 (distinti 567) | blocchi/chiamate {'IS': 2, 'OOS': 1}/{'IS': 9, 'OOS': 8}
+O3 criteri {'c1': True, 'c2': False, 'c3': False, 'c4': False, 'c5': False, 'c6': False} → respinta
+
+====================================================================================================
+R1
+R1(20) | ALL: 38473 $ DD -23.7% CAGR/DD 1.089 MAR 12.02 n 10 cambiati 9 | IS: 15740 $ DD -23.7% CAGR/DD 0.69 MAR 2.42 n 5 cambiati 8 | OOS: 24491 $ DD -21.1% CAGR/DD 1.732 MAR 6.86 n 5 cambiati 1 | L: 25006 $ DD -31.6% CAGR/DD 1.132 MAR 4.75 n 5 cambiati 10 | senza migliore 27049 (W3 51561) | placebo p 0.27336 (distinti 979) | blocchi/chiamate {'IS': 13, 'OOS': 2}/{'IS': 18, 'OOS': 8}
+R1(10) | ALL: 38802 $ DD -27.1% CAGR/DD 0.96 MAR 10.64 n 10 cambiati 9 | IS: 15875 $ DD -27.1% CAGR/DD 0.616 MAR 2.17 n 5 cambiati 8 | OOS: 24491 $ DD -21.1% CAGR/DD 1.732 MAR 6.86 n 5 cambiati 1 | L: 30687 $ DD -33.9% CAGR/DD 1.338 MAR 6.1 n 5 cambiati 4 | senza migliore 27280 (W3 51561) | placebo p 0.46477 (distinti 1014) | blocchi/chiamate {'IS': 12, 'OOS': 2}/{'IS': 17, 'OOS': 8}
+R1(40) | ALL: 35807 $ DD -26.7% CAGR/DD 0.91 MAR 9.67 n 8 cambiati 9 | IS: 14650 $ DD -26.7% CAGR/DD 0.51 MAR 1.74 n 3 cambiati 8 | OOS: 24491 $ DD -21.1% CAGR/DD 1.732 MAR 6.86 n 5 cambiati 1 | L: 15164 $ DD -35.6% CAGR/DD 0.419 MAR 1.45 n 7 cambiati 6 | senza migliore 25174 (W3 51561) | placebo p 0.26087 (distinti 930) | blocchi/chiamate {'IS': 17, 'OOS': 2}/{'IS': 20, 'OOS': 8}
+R1 criteri {'c1': True, 'c2': False, 'c3': True, 'c4': False, 'c5': False, 'c6': False} → respinta
+
+====================================================================================================
+R2
+R2(20) | ALL: 64083 $ DD -27.1% CAGR/DD 1.375 MAR 19.97 n 13 cambiati 6 | IS: 27319 $ DD -27.1% CAGR/DD 1.472 MAR 6.4 n 7 cambiati 4 | OOS: 23504 $ DD -21.1% CAGR/DD 1.64 MAR 6.39 n 6 cambiati 2 | L: 25142 $ DD -37.3% CAGR/DD 0.966 MAR 4.06 n 9 cambiati 0 | senza migliore 42105 (W3 51561) | placebo p 0.70865 (distinti 769) | blocchi/chiamate {'IS': 4, 'OOS': 1}/{'IS': 11, 'OOS': 8}
+R2(10) | ALL: 66776 $ DD -27.1% CAGR/DD 1.411 MAR 20.97 n 12 cambiati 5 | IS: 27319 $ DD -27.1% CAGR/DD 1.472 MAR 6.4 n 7 cambiati 4 | OOS: 24491 $ DD -21.1% CAGR/DD 1.732 MAR 6.86 n 5 cambiati 1 | L: 25142 $ DD -37.3% CAGR/DD 0.966 MAR 4.06 n 9 cambiati 0 | senza migliore 43875 (W3 51561) | placebo p 0.52374 (distinti 900) | blocchi/chiamate {'IS': 4, 'OOS': 2}/{'IS': 11, 'OOS': 8}
+R2(40) | ALL: 69149 $ DD -26.3% CAGR/DD 1.486 MAR 22.52 n 13 cambiati 2 | IS: 29499 $ DD -26.3% CAGR/DD 1.656 MAR 7.42 n 7 cambiati 2 | OOS: 23488 $ DD -21.1% CAGR/DD 1.639 MAR 6.38 n 6 cambiati 0 | L: 25142 $ DD -37.3% CAGR/DD 0.966 MAR 4.06 n 9 cambiati 0 | senza migliore 45434 (W3 51561) | placebo p 0.8011 (distinti 443) | blocchi/chiamate {'IS': 3, 'OOS': 0}/{'IS': 10, 'OOS': 7}
+R2 criteri {'c1': True, 'c2': False, 'c3': None, 'c4': False, 'c5': False, 'c6': False} → respinta
+
+====================================================================================================
+P1 piramidazione
+P1[0] {'base': 0.3333333333333333, 'steps': (1.0, 2.0), 'adds': (0.3333333333333333, 0.3333333333333333)} | ALL: 20786 $ DD -38.1% CAGR/DD 0.349 MAR 2.83 expo 0.41 con aggiunte 13 | IS: 17832 $ DD -16.7% CAGR/DD 1.277 MAR 4.7 expo 0.334 con aggiunte 7 | OOS: 11680 $ DD -38.1% CAGR/DD 0.146 MAR 0.44 expo 0.489 con aggiunte 6 | L: 21628 $ DD -25.6% CAGR/DD 1.148 MAR 4.55 expo 0.175 con aggiunte 5 | senza migliore 15593 | rovina {'p30': 75.11, 'p50': 14.89, 'half': 1.0} | placebo p 0.8011 (distinti 584)
+P1[1] {'base': 0.5, 'steps': (1.0, 2.0), 'adds': (0.25, 0.25)} | ALL: 27462 $ DD -33.1% CAGR/DD 0.568 MAR 5.28 expo 0.439 con aggiunte 13 | IS: 20489 $ DD -17.2% CAGR/DD 1.577 MAR 6.11 expo 0.358 con aggiunte 7 | OOS: 13430 $ DD -33.1% CAGR/DD 0.327 MAR 1.04 expo 0.523 con aggiunte 6 | L: 22562 $ DD -28.6% CAGR/DD 1.092 MAR 4.4 expo 0.197 con aggiunte 5 | senza migliore 20007 | rovina {'p30': 72.58, 'p50': 11.49, 'half': 0.37} | placebo p 0.92454 (distinti 611)
+P1[2] {'base': 0.3333333333333333, 'steps': (0.5, 1.0), 'adds': (0.3333333333333333, 0.3333333333333333)} | ALL: 32518 $ DD -26.0% CAGR/DD 0.855 MAR 8.65 expo 0.449 con aggiunte 13 | IS: 19743 $ DD -25.7% CAGR/DD 0.991 MAR 3.79 expo 0.397 con aggiunte 7 | OOS: 16504 $ DD -26.0% CAGR/DD 0.732 MAR 2.5 expo 0.503 con aggiunte 6 | L: 26395 $ DD -27.8% CAGR/DD 1.375 MAR 5.9 expo 0.18 con aggiunte 5 | senza migliore 22753 | rovina {'p30': 72.3, 'p50': 10.31, 'half': 0.22} | placebo p 0.0005 (distinti 521)
+P1 criteri {'c1': True, 'c2': False, 'c3': True, 'c4': False, 'c5': False, 'c6': False} → respinta
+
+====================================================================================================
+V vol targeting settimanale
+V(50%) | ALL: 55503 $ DD -33.9% CAGR/DD 0.999 MAR 13.4 expo 0.54 vs W3 scalata q 1.0: 78474 $ MAR 32.4 | IS: 26029 $ DD -33.9% CAGR/DD 1.108 MAR 4.72 expo 0.496 vs W3 scalata q 1.0: 33477 $ MAR 12.16 | OOS: 21367 $ DD -22.3% CAGR/DD 1.357 MAR 5.1 expo 0.585 vs W3 scalata q 1.0: 23488 $ MAR 6.38 | L: 24124 $ DD -31.3% CAGR/DD 1.091 MAR 4.51 expo 0.3 vs W3 scalata q 0.779: 21584 $ MAR 3.7 | rovina {'p30': 85.89, 'p50': 17.6, 'half': 0.13} | placebo p 0.89005 (distinti 872)
+V(40%) | ALL: 48453 $ DD -32.4% CAGR/DD 0.951 MAR 11.86 expo 0.507 vs W3 scalata q 1.0: 78474 $ MAR 32.4 | IS: 23616 $ DD -32.4% CAGR/DD 1.025 MAR 4.2 expo 0.454 vs W3 scalata q 1.0: 33477 $ MAR 12.16 | OOS: 20551 $ DD -22.5% CAGR/DD 1.266 MAR 4.68 expo 0.562 vs W3 scalata q 1.0: 23488 $ MAR 6.38 | L: 23911 $ DD -25.7% CAGR/DD 1.315 MAR 5.42 expo 0.256 vs W3 scalata q 0.595: 18629 $ MAR 3.35 | rovina {'p30': 80.42, 'p50': 14.33, 'half': 0.12} | placebo p 0.74863 (distinti 940)
+V(60%) | ALL: 65105 $ DD -34.6% CAGR/DD 1.088 MAR 15.94 expo 0.555 vs W3 scalata q 1.0: 78474 $ MAR 32.4 | IS: 29457 $ DD -34.6% CAGR/DD 1.256 MAR 5.63 expo 0.508 vs W3 scalata q 1.0: 33477 $ MAR 12.16 | OOS: 22146 $ DD -21.8% CAGR/DD 1.462 MAR 5.57 expo 0.604 vs W3 scalata q 1.0: 23488 $ MAR 6.38 | L: 23992 $ DD -35.0% CAGR/DD 0.97 MAR 4.0 expo 0.33 vs W3 scalata q 0.914: 23762 $ MAR 3.93 | rovina {'p30': 86.61, 'p50': 17.88, 'half': 0.12} | placebo p 0.91454 (distinti 872)
+V criteri {'c1': True, 'c2': False, 'c3': True, 'c4': False, 'c5': False, 'c6': False, 'ruin_ok': False} → respinta
+
+====================================================================================================
+O2 picco di DVOL rientrato (autonomo e complemento di W3)
+O2[0] picco 2.0 rientro 1.5 4 sett. | ALL: 14173 $ DD -21.4% CAGR/DD 0.286 MAR 1.95 n 10 WR 70.0 PF 3.21 · W3+O2 90183 $ DD -21.1% MAR 37.95 | IS: 12517 $ DD -10.6% CAGR/DD 0.733 MAR 2.37 n 3 WR 100.0 PF inf · W3+O2 35783 $ DD -20.9% MAR 12.34 | OOS: 11323 $ DD -21.4% CAGR/DD 0.207 MAR 0.62 n 7 WR 57.1 PF 1.84 · W3+O2 25254 $ DD -21.1% MAR 7.22 | placebo p 0.14243 (distinti 717)
+O2[1] picco 1.5 rientro 1.0 4 sett. | ALL: 7879 $ DD -46.7% CAGR/DD -0.085 MAR -0.45 n 10 WR 60.0 PF 0.92 · W3+O2 51841 $ DD -51.7% MAR 8.1 | IS: 6838 $ DD -46.7% CAGR/DD -0.255 MAR -0.68 n 3 WR 66.7 PF 0.33 · W3+O2 22352 $ DD -51.7% MAR 2.39 | OOS: 11522 $ DD -32.3% CAGR/DD 0.157 MAR 0.47 n 7 WR 57.1 PF 1.69 · W3+O2 23240 $ DD -37.4% MAR 3.54 | placebo p 0.65117 (distinti 723)
+O2[2] picco 2.0 rientro 1.0 8 sett. | ALL: 16234 $ DD -40.3% CAGR/DD 0.214 MAR 1.55 n 7 WR 57.1 PF 2.82 · W3+O2 104983 $ DD -21.1% MAR 44.95 | IS: 12195 $ DD -21.0% CAGR/DD 0.326 MAR 1.05 n 2 WR 50.0 PF 6.14 · W3+O2 38849 $ DD -19.9% MAR 14.49 | OOS: 13312 $ DD -40.3% CAGR/DD 0.26 MAR 0.82 n 5 WR 60.0 PF 2.38 · W3+O2 27078 $ DD -21.1% MAR 8.08 | placebo p 0.23438 (distinti 768)
+O2 criteri {'c1': True, 'pf': True, 'mar_bh': True, 'c6': False, 'port': True} → su carta (placebo non passa)
+
+====================================================================================================
+G griglia rischio × k × presa parziale
+   r   k    tp  final    dd  cagr   cdd   mar  n   wr  worst  expo  IS_final  IS_dd  IS_cdd  OOS_final  OOS_dd  OOS_cdd  L_final  L_dd  L_cdd  L_worst  vicini_min  ruin_p30  ruin_p50   v_a   v_b   v_c   v_d   v_e    ok
+0.05 2.0 False  16432 -10.7   8.8 0.825  6.01 15 73.3   -3.5 0.128     12906  -10.7   0.831      12743    -6.5    1.357    14541 -11.5  1.154     -5.0       0.857      0.01      0.00  True  True  True False  True False
+0.10 2.0 False  25673 -20.3  17.4 0.857  7.71 15 73.3   -7.0 0.247     16084  -20.3   0.845      15987   -11.7    1.517    19991 -20.5  1.267    -10.1       0.825      4.04      0.01 False  True  True False  True False
+0.15 2.0 False  37669 -29.1  25.3 0.873  9.52 15 73.3  -10.6 0.356     19190  -29.1   0.837      19669   -15.7    1.687    26244 -28.0  1.358    -15.1       0.857     27.47      0.67 False False False  True  True False
+0.20 2.0 False  47857 -35.2  30.6 0.870 10.77 15 73.3  -11.9 0.438     21183  -35.2   0.810      22637   -18.2    1.812    28757 -34.1  1.238    -20.1       0.873     53.89      3.16 False False False  True  True False
+0.25 2.0 False  57889 -36.8  34.9 0.948 13.01 15 73.3  -11.9 0.466     24660  -36.8   0.956      23522   -18.9    1.840    27153 -38.2  1.035    -25.1       0.870     61.94      4.54 False False False  True  True False
+0.05 2.5 False  16802  -5.4   9.2 1.724 12.69 13 92.3   -1.0 0.114     13520   -4.3   2.458      12436    -5.4    1.471    13169 -10.7  0.897     -5.0       0.825      0.00      0.00  True  True  True False False False
+0.10 2.5 False  27190  -9.8  18.6 1.903 17.60 13 92.3   -1.9 0.220     17879   -8.4   2.558      15228    -9.8    1.615    16734 -19.2  0.975    -10.0       0.857      0.71      0.00  True  True  True False False False
+0.15 2.5 False  42630 -13.9  28.0 2.013 23.44 13 92.3   -2.9 0.319     23206  -12.2   2.658      18402   -13.9    1.700    20621 -26.3  1.039    -15.0       0.873      8.37      0.07  True False  True  True False False
+0.20 2.5 False  61054 -17.7  36.1 2.041 28.86 13 92.3   -3.9 0.407     28649  -15.8   2.657      21353   -17.7    1.709    24725 -32.3  1.091    -20.1       0.870     26.68      0.54 False False False  True False False
+0.25 2.5 False  78474 -21.1  42.0 1.990 32.40 13 92.3   -4.1 0.477     33477  -19.3   2.574      23488   -21.1    1.639    25142 -37.3  0.966    -25.1       0.948     48.48      1.99 False False False  True False False
+0.05 3.0 False  15326  -5.5   7.5 1.384  9.77 13 92.3   -0.8 0.097     12896   -3.6   2.455      11892    -5.5    1.141    12308 -10.2  0.705     -5.0       1.517      0.00      0.00  True  True  True False  True False
+0.10 3.0 False  22879 -10.0  15.1 1.517 12.90 13 92.3   -1.6 0.189     16367   -7.0   2.539      13994   -10.0    1.243    14783 -18.4  0.759    -10.0       1.384      0.42      0.00  True  True  True False  True False
+0.15 3.0 False  33387 -13.8  22.8 1.651 16.94 13 92.3   -2.4 0.275     20491  -10.3   2.624      16318   -13.8    1.346    17372 -25.2  0.803    -15.0       1.517      5.51      0.02  True False  True False  True False
+0.20 3.0 False  47762 -17.1  30.5 1.787 22.10 13 92.3   -3.2 0.356     25349  -13.4   2.709      18878   -17.1    1.449    20010 -31.0  0.839    -20.0       1.651     18.88      0.35 False False False False  True False
+0.25 3.0 False  61392 -19.9  36.2 1.819 25.80 13 92.3   -4.0 0.427     29599  -16.4   2.656      20783   -19.9    1.457    22506 -36.1  0.860    -25.0       1.787     37.42      1.19 False False False False  True False
+0.05 2.0  True  16518 -10.7   8.9 0.835  6.09 15 73.3   -3.5 0.119     12645  -10.7   0.762      13067    -5.4    1.807    13956  -7.7  1.519     -5.0       0.867      0.00      0.00  True  True  True  True  True  True
+0.10 2.0  True  25943 -20.3  17.6 0.867  7.84 15 73.3   -7.0 0.231     15505  -20.3   0.775      16741   -10.1    1.937    18579 -14.6  1.567    -10.1       0.835      2.33      0.00 False  True  True  True  True False
+0.15 2.0  True  38277 -29.1  25.7 0.884  9.73 15 73.3  -10.6 0.336     18274  -29.1   0.768      20960   -14.4    2.045    23767 -20.9  1.598    -15.1       0.867     19.73      0.32 False  True False  True  True False
+0.20 2.0  True  48950 -35.2  31.1 0.884 11.08 15 73.3  -11.9 0.415     20071  -35.2   0.745      24405   -18.2    2.006    25751 -26.7  1.391    -20.1       0.884     44.42      2.03 False False False  True  True False
+0.25 2.0  True  59197 -36.8  35.4 0.962 13.37 15 73.3  -11.9 0.442     23265  -36.8   0.885      25462   -18.9    2.039    24315 -31.8  1.085    -25.1       0.884     52.79      3.01 False False False  True  True False
+0.05 2.5  True  16813  -5.2   9.3 1.796 13.22 13 92.3   -1.0 0.109     13437   -4.3   2.406      12518    -5.2    1.578    13216  -6.7  1.455     -5.0       0.835      0.00      0.00  True  True  True False False False
+0.10 2.5  True  27244  -9.8  18.6 1.907 17.66 13 92.3   -1.9 0.210     17681   -8.4   2.504      15422    -9.8    1.667    16846 -12.7  1.500    -10.0       0.867      0.35      0.00  True  True  True  True False False
+0.15 2.5  True  42784 -13.9  28.1 2.019 23.55 13 92.3   -2.9 0.304     22853  -12.2   2.603      18743   -13.9    1.757    20811 -18.7  1.480    -15.0       0.884      5.29      0.02  True  True  True  True False False
+0.20 2.5  True  61511 -17.7  36.3 2.050 29.12 13 92.3   -3.9 0.390     28144  -15.8   2.604      21885   -17.7    1.772    25008 -24.6  1.451    -20.1       0.884     19.54      0.19 False  True False  True False False
+0.25 2.5  True  79582 -21.1  42.4 2.006 32.93 13 92.3   -4.1 0.458     32860  -19.3   2.526      24251   -21.1    1.710    25526 -30.4  1.206    -25.1       0.962     40.50      1.20 False False False  True False False
+0.05 3.0  True  15642  -4.6   7.9 1.732 12.34 13 92.3   -0.8 0.094     12911   -3.6   2.467      12120    -4.6    1.514    12658  -6.2  1.329     -5.0       1.796      0.00      0.00  True  True  True False  True False
+0.10 3.0  True  23784  -8.8  15.9 1.810 15.69 13 92.3   -1.6 0.181     16403   -7.0   2.551      14510    -8.8    1.575    15568 -12.2  1.306    -10.0       1.732      0.09      0.00  True  True  True False  True False
+0.15 3.0  True  35291 -12.7  24.0 1.890 19.94 13 92.3   -2.4 0.264     20554  -10.3   2.636      17188   -12.7    1.636    18670 -18.1  1.281    -15.0       1.810      2.17      0.00  True  True  True False  True False
+0.20 3.0  True  51258 -16.3  32.1 1.970 25.31 13 92.3   -3.2 0.343     25445  -13.4   2.722      20170   -16.3    1.698    21887 -23.9  1.252    -20.0       1.890     10.38      0.05 False  True False  True  True False
+0.25 3.0  True  66758 -19.7  38.2 1.942 28.87 13 92.3   -4.0 0.413     29716  -16.4   2.668      22495   -19.7    1.659    24999 -29.5  1.212    -25.0       1.970     25.43      0.45 False False False  True  True False
+
+SCELTA G: r 10%, k 2.5, TP no · nessuna configurazione rispetta i vincoli → ripiego preregistrato r 10%, k 2,5
+r               0.1
+k               2.5
+tp            False
+final         27190
+dd             -9.8
+cagr           18.6
+cdd           1.903
+mar            17.6
+n                13
+wr             92.3
+worst          -1.9
+expo           0.22
+wo_best       22064
+IS_final      17879
+IS_dd          -8.4
+IS_cdd        2.558
+OOS_final     15228
+OOS_dd         -9.8
+OOS_cdd       1.615
+L_final       16734
+L_dd          -19.2
+L_cdd         0.975
+L_worst       -10.0
+vicini_min    0.857
+ruin_p30       0.71
+ruin_p50        0.0
+v_a            True
+v_b            True
+v_c            True
+v_d           False
+v_e           False
+ok            False
+
+Kelly non stimabile: nell'IS 7 trade e nessun perdente (R = [2.09, 0.17, 0.83, 0.04, 0.33, 0.53, 2.27])
+Short 16/11 · W3 attuale: segnale short True, chiusura 65351, ATRw 6725, stop 82163 (25.7%), esposizione 0.972, perdita allo stop ≈ 25.2% dell'equity; apertura del 16/11 65351
+Short 16/11 · scelta G: segnale short True, chiusura 65351, ATRw 6725, stop 82163 (25.7%), esposizione 0.389, perdita allo stop ≈ 10.1% dell'equity; apertura del 16/11 65351
+
+Placebo (soglia Bonferroni 0.00098 ):
+ config       p  distinti    oss  pla_med  passa_bonferroni
+O1(1.2) 0.86507       965  0.332    0.643             False
+O1(1.1) 0.84158       928  0.169    0.416             False
+O1(1.4) 0.24388       858  1.563    1.341             False
+O3(0.0) 0.01399      1009  1.698    0.952             False
+O3(1.0) 0.08046       986  1.658    1.180             False
+O3(2.0) 0.29335       567  1.860    1.740             False
+ R1(20) 0.27336       979  1.089    0.889             False
+ R1(10) 0.46477      1014  0.960    0.934             False
+ R1(40) 0.26087       930  0.910    0.719             False
+ R2(20) 0.70865       769  1.375    1.546             False
+ R2(10) 0.52374       900  1.411    1.429             False
+ R2(40) 0.80110       443  1.486    1.704             False
+  P1[0] 0.80110       584  0.349    0.466             False
+  P1[1] 0.92454       611  0.568    0.762             False
+  P1[2] 0.00050       521  0.855    0.363              True
+ V(50%) 0.89005       872  0.999    1.280             False
+ V(40%) 0.74863       940  0.951    1.132             False
+ V(60%) 0.91454       872  1.088    1.401             False
+  O2[0] 0.14243       717  0.286   -0.012             False
+  O2[1] 0.65117       723 -0.085   -0.016             False
+  O2[2] 0.23438       768  0.214    0.009             False
+
+Verdetti:
+regola   c1    c2    c3    c4    c5    c6       p                     verdetto ruin_ok   pf mar_bh port
+    O1 True False  None False False False 0.86507                     respinta     NaN  NaN    NaN  NaN
+    O3 True False False False False False 0.01399                     respinta     NaN  NaN    NaN  NaN
+    R1 True False  True False False False 0.27336                     respinta     NaN  NaN    NaN  NaN
+    R2 True False  None False False False 0.70865                     respinta     NaN  NaN    NaN  NaN
+    P1 True False  True False False False 0.80110                     respinta     NaN  NaN    NaN  NaN
+     V True False  True False False False 0.89005                     respinta   False  NaN    NaN  NaN
+    O2 True   NaN   NaN   NaN   NaN False 0.14243 su carta (placebo non passa)     NaN True   True True

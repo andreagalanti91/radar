@@ -22,7 +22,13 @@ class TestWeekly(unittest.TestCase):
         from radar.features import build_features
         cls.wk = weekly
         cls.F = build_features(load_all())
-        cls.cur = weekly.evaluate(cls.F[cls.F.index < "2026-10-31"], capital=50000.0)   # dati fino al 30/10/2026
+        # riferimento della ricerca W3 (rischio 25%): il motore deve riprodurla esatta; W3.1 (10%) ha la sua classe sotto
+        r0 = (weekly.R_LONG, weekly.R_SHORT)
+        weekly.R_LONG = weekly.R_SHORT = 0.25
+        try:
+            cls.cur = weekly.evaluate(cls.F[cls.F.index < "2026-10-31"], capital=50000.0)   # dati fino al 30/10/2026
+        finally:
+            weekly.R_LONG, weekly.R_SHORT = r0
 
     def test_numeri_storici(self):
         M, H = self.cur["history"]["m1"], self.cur["history"]
@@ -63,13 +69,13 @@ class TestWeekly(unittest.TestCase):
         for t in self.cur["history"]["trades"]:
             if t["side"] == "short":
                 self.assertLessEqual(t["expo"], 1.0)
-        self.assertAlmostEqual(wk.exposure(-1, 100.0, 10.0), 1.0)          # stop al 25%: tetto non attivo
-        self.assertAlmostEqual(wk.exposure(-1, 100.0, 20.0), 0.5)          # stop al 50%: metà esposizione
-        self.assertAlmostEqual(wk.exposure(1, 100.0, 10.0), 1.0)           # long: stop al 25%, tetto non attivo
-        self.assertAlmostEqual(wk.exposure(1, 100.0, 20.0), 0.5)           # W3: anche i long hanno il tetto del 25%
+        self.assertAlmostEqual(wk.exposure(-1, 100.0, 10.0), 0.4)          # W3.1: stop al 25% → esposizione 0,4 (rischio 10%)
+        self.assertAlmostEqual(wk.exposure(-1, 100.0, 20.0), 0.2)          # stop al 50% → 0,2
+        self.assertAlmostEqual(wk.exposure(1, 100.0, 10.0), 0.4)           # long: stessa regola
+        self.assertAlmostEqual(wk.exposure(1, 100.0, 2.0), 1.0)            # stop al 5%: tetto 1x
         p = wk.plan(-1, 100.0, 20.0, 110.0, 10000.0)
         self.assertEqual(p["market"], "perp")
-        self.assertAlmostEqual(p["notional"] * p["stop_pct"] / 100, 2500, delta=1)   # 25% del capitale allo stop
+        self.assertAlmostEqual(p["notional"] * p["stop_pct"] / 100, 1000, delta=1)   # W3.1: 10% del capitale allo stop
 
     def test_w3_flusso_e_cricchetto(self):
         wk, F = self.wk, self.F[self.F.index < "2026-10-31"]
@@ -156,3 +162,30 @@ class TestWeekly(unittest.TestCase):
         for k in ('id="wkSec"', 'id="wkStatSec"', "renderWeekly", '"weekly"'):
             self.assertIn(k, html)
         self.assertIn("Settimanale W3", daily_brief(report))
+
+
+@unittest.skipUnless(all((DATA_DIR / f"{n}.csv").exists() for n in FILES), "dati mancanti")
+class TestW31Rischio10(unittest.TestCase):
+    """W3.1 (19/11/2026): stessi segnali di W3, rischio allo stop 10% (regola preregistrata, research/p2_nuovi)."""
+    @classmethod
+    def setUpClass(cls):
+        from radar import weekly
+        from radar.data import load_all
+        from radar.features import build_features
+        cls.wk = weekly
+        cls.cur = weekly.evaluate(build_features(load_all())[lambda d: d.index < "2026-10-31"], capital=50000.0)
+
+    def test_parametri(self):
+        self.assertEqual((self.wk.R_LONG, self.wk.R_SHORT), (0.10, 0.10))
+
+    def test_numeri_storici(self):
+        M, H = self.cur["history"]["m1"], self.cur["history"]
+        self.assertEqual(M["n"], 13)                                 # stessi segnali di W3
+        self.assertAlmostEqual(M["win_rate"], 92.3, delta=0.5)
+        self.assertAlmostEqual(M["max_dd_pct"], -9.8, delta=0.5)
+        self.assertAlmostEqual(H["final_10k_1x"], 27637, delta=600)
+
+    def test_perdita_allo_stop(self):
+        c = self.cur                                                 # long aperto al 30/10: rischio allo stop iniziale ≤ 10%
+        risk = c["expo"] * (c["entry_px"] - c["stop0"]) / c["entry_px"]
+        self.assertLessEqual(risk, 0.102)   # slippage d'ingresso 0,1%

@@ -1,0 +1,8 @@
+regola,c1,c2,c3,c4,c5,c6,p,verdetto,ruin_ok,pf,mar_bh,port
+O1,True,False,,False,False,False,0.86507,respinta,,,,
+O3,True,False,False,False,False,False,0.01399,respinta,,,,
+R1,True,False,True,False,False,False,0.27336,respinta,,,,
+R2,True,False,,False,False,False,0.70865,respinta,,,,
+P1,True,False,True,False,False,False,0.8011,respinta,,,,
+V,True,False,True,False,False,False,0.89005,respinta,False,,,
+O2,True,,,,,False,0.14243,su carta (placebo non passa),,True,True,True

@@ -404,6 +404,14 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Parte 2 · 18–19/11 — opzioni (DVOL, skew), dimensione della posizione, ETH/BTC e dominanza, piramidazione (research/p2_nuovi/)
+PREREG c8b2bd5 (51 configurazioni, Bonferroni p < 0,00098). Filtri su W3: VRP (O1), skew (O3), ETH/BTC (R1), dominanza (R2) respinti
+(peggiorano W3 o cambiano troppo pochi trade); vol targeting (V) respinto (DD peggiore, rovina più alta); piramidazione (P1) respinta;
+O2 (picco di DVOL rientrato, autonomo) solo su carta (10 trade, placebo p 0,14). Griglia di rischio: scelta preregistrata 10% (vedi W3.1).
+**Lezione 100**: nessun indicatore nuovo (opzioni, rotazione crypto) migliora i segnali di W3; la leva che conta è la dimensione della
+posizione: a parità di segnali il rischio 10% allo stop dà circa la stessa efficienza (CAGR/DD 1,90 contro 1,99) con un terzo del
+drawdown e rischio di rovina quasi nullo. Comunicare sempre rendimento e perdita allo stop insieme.
+
 ### Pensiero dirompente · 18/11 — rischio per trade e comunicazione di W3 · DA DECIDERE (research/dirompente/)
 **Lezione 99**: dal 2021 W3 non ha mai preso uno stop pieno, quindi il DD storico (−21%) sottostima il rischio: ogni trade rischia
 il 18–25% della quota (2 stop consecutivi −44%). A parità di logica il rischio 10–15% dà DD −10/−14% (2021+) con la stessa
@@ -1143,6 +1151,13 @@ Ordine dei giri serali; la pianificazione può riordinare in base ai risultati. 
 - **R12 Liquidazioni reali** raccolte da oggi; **R13** rivalutazione di SOL dopo 10 trade su carta.
 
 ## W3 IN USO dal 12/11/2026 (decisione dell'utente, "ok punto 1")
+**W3.1 dal 19/11/2026 (delega dell'utente: "decidi tu stop, TP e capitale"; regola di scelta preregistrata in research/p2_nuovi/PREREG.md,
+commit c8b2bd5)**: stessi segnali, stop e trailing di W3 (2,5 ATR settimanali, nessun take profit); rischio allo stop iniziale 10%
+invece di 25% (R_LONG = R_SHORT = 0,10). Nessuna configurazione della griglia (rischio 5–25% × stop 2,0/2,5/3,0 ATR × TP parziale)
+ha soddisfatto tutti i vincoli (OOS non peggiore di W3: 1,615 contro 1,639; vicini instabili) → ripiego preregistrato 10%, k 2,5.
+Dal 2021: 10k → ~27,2k, DD −9,8%, CAGR ~18,6%, CAGR/DD 1,90 (W3 al 25%: 78,5k, −21,1%, 1,99); 2018–20: DD −19,2% (era −37,3%);
+rischio di rovina (p30) 0,7% contro 48%. Perdita allo stop ≤ 10% della quota. Short aperto dal 16/11: esposizione 0,389 invece di 0,97.
+
 W3 = W2 + MACD con tre modifiche (radar/weekly.py): 1) flusso perp = media degli ultimi 3 giorni di pf14z DISPONIBILI alla
 chiusura della domenica (live_flow: rolling(3).mean().shift(1)), identico dal vivo e nel backtest; 2) trailing a cricchetto (lo
 stop non si allenta mai quando l'ATR sale); 3) tetto di rischio 25% allo stop iniziale anche sui long (R_LONG). Liquidità remunerata

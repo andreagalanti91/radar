@@ -32,17 +32,18 @@ REBAL_MIN = 0.10
 
 def simulate(f: pd.DataFrame, start: str = W.START, end: str | None = None, capital: float = 10000.0, lev: float = 1.0,
              allow=None, expo_fn=None, rebal_fn=None, pyr: dict | None = None, k: float = W.STOP_K,
-             tp: dict | None = None) -> dict:
+             tp: dict | None = None, wb: pd.DataFrame | None = None) -> dict:
     f = f[f["close"].notna()]
     if end is not None:
         f = f[f.index <= end]
-    w = W.weekly_bars(f)
+    w = W.weekly_bars(f) if wb is None else wb[wb.index <= f.index[-1]]   # wb: barre settimanali precalcolate (velocità)
     idx = f.index
     O, H, L, C = (f[k].to_numpy(float) for k in ("open", "high", "low", "close"))
     FU = f["funding"].fillna(0).to_numpy(float)
     t0 = idx.searchsorted(pd.Timestamp(start))
     cash, qty, cost, side, pend, tr = 1.0, 0.0, 0.0, 0, None, None
     trades, events, eq = [], [], np.full(len(idx), np.nan)
+    ex = np.zeros(len(idx))
     st = {}   # stato della posizione: esposizione obiettivo corrente, E piena, aggiunte fatte, ordini del giorno dopo
 
     def rates(expo: float) -> tuple[float, float]:
@@ -142,9 +143,11 @@ def simulate(f: pd.DataFrame, start: str = W.START, end: str | None = None, capi
                 tr["best"] = max(tr["best"], C[i]) if side > 0 else min(tr["best"], C[i])
                 if pyr and st["adds"] < len(pyr["steps"]):
                     kj = pyr["steps"][st["adds"]]
-                    if (C[i] - tr["sig_close"]) * side >= kj * tr["atr"]:
+                    trig = (day in pyr["days"]) if "days" in pyr else (C[i] - tr["sig_close"]) * side >= kj * tr["atr"]
+                    if trig:
                         st["next"] = pyr["adds"][st["adds"]] * st["full"]
         eq[i] = cash + (qty * C[i] - cost if side else 0.0)
+        ex[i] = abs(qty * C[i]) / eq[i] if side else 0.0
         if day.dayofweek == 6 and day in w.index:
             wk = w.loc[day]
             if side:
@@ -159,6 +162,7 @@ def simulate(f: pd.DataFrame, start: str = W.START, end: str | None = None, capi
                 if tgt is not None and abs(tgt - st["expo"]) >= REBAL_MIN:
                     pend = ("rebal", tgt, wk, day)
     out = {"trades": trades, "events": events, "equity": pd.Series(eq[t0:], idx[t0:]) * capital, "weekly": w,
+           "expo": pd.Series(ex[t0:], idx[t0:]),
            "open": None, "pending": None}
     if side:
         i = len(idx) - 1

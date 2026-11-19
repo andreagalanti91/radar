@@ -11,7 +11,7 @@ Regole (candele settimanali W-SUN chiuse, decisione alla chiusura UTC della dome
   chiusura settimanale oltre la EMA 21; distribuzione (long: funding medio 7g > 0,0009/giorno e pf14z < 0;
   short: funding < −0,0003 e pf14z > 0). Stop iniziale 2,5 ATR settimanali dalla chiusura del segnale.
 - esecuzione: long in SPOT a 1x (commissione 0,1%/lato, niente funding); short in PERP con esposizione
-  min(1, 0,25 / (2,5·ATRw/close)) = tetto di rischio del 25% allo stop (commissione 0,05%/lato, funding reale).
+  min(1, 0,10 / (2,5·ATRw/close)) = tetto di rischio del 10% allo stop (W3.1, 19/11/2026; era 0,25) (commissione 0,05%/lato, funding reale).
   Slippage 0,1%. Il tetto sugli short è stato scelto dopo i risultati (ricerca W5), per prudenza.
 Motore di riferimento della ricerca: /tmp/radar-work/w5/scripts/sim3.py (W2 V1, R=0,25, solo short), riscritto qui
 senza le varianti non usate. Stato dal vivo in data/state.json (chiave "weekly"), eventi Telegram con dedupe.
@@ -31,8 +31,8 @@ LIVE_START = "2026-10-31"
 SMA, EMA_T, EMA_X, ATR_N = 40, 20, 21, 14
 STOP_K = TRAIL_K = 2.5
 FUND_HOT, FUND_COLD = 0.0009, -0.0003
-R_SHORT = 0.25                     # rischio massimo allo stop iniziale per gli short (frazione del capitale)
-R_LONG = 0.25                      # W3 (12/11/2026): stesso tetto anche sui long (un long vicino a un top perdeva fino a −41%)
+R_SHORT = 0.10                     # W3.1 (19/11/2026, regola preregistrata research/p2_nuovi, delega dell'utente): rischio allo stop 10% (era 25%)
+R_LONG = 0.10                      # W3.1: stesso rischio sui long (era 25%: uno stop costava ~25% della quota, lezione 99)
 FLOW_N = 3                         # W3: flusso perp = media degli ultimi 3 giorni DISPONIBILI alla decisione (fino al sabato)
 OLD_TREND, MACD_P = 16, (8, 21, 5)  # filtro F1 (01/11/2026): nei trend vecchi nuovo long solo con momentum MACD ripartito
 FEE_SPOT, FEE_PERP, SLIP = 0.001, 0.0005, 0.001

@@ -10,8 +10,8 @@ balene del giorno, tutto con alert su Telegram.
 
 | Dal 01/01/2021 (10.000 $ a 1x, commissioni e slippage inclusi) | W3 | Tenere BTC |
 |---|---|---|
-| 10.000 $ diventano | **~78.500 $** | ~26.800 $ |
-| Max drawdown giornaliero | **−21,1%** | −76,6% |
+| 10.000 $ diventano | **~27.200 $** (rischio 10% allo stop, W3.1 dal 19/11/2026; con il vecchio 25%: ~78.500 $) | ~26.800 $ |
+| Max drawdown giornaliero | **−9,8%** (con il 25%: −21,1%) | −76,6% |
 | Trade / win rate | 13 · 92% | – |
 
 W3 rispetto a W2 (revisione dell'11/11/2026): usa lo stesso dato di flusso dal vivo e nello storico (W2 nel backtest usava
