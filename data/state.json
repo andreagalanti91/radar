@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-17",
+  "date": "2026-11-18",
   "last_signal_date": null,
   "intraday_keys": [],
   "v2": {
@@ -29,15 +29,15 @@
     ],
     "pending_signal": null,
     "pending_exit": null,
-    "trail_notified": 81695.12,
+    "trail_notified": 79880.47,
     "trail_sig": "2026-11-15",
     "dist_week": null,
     "side": "short",
     "restore_pending": false,
     "status": "aperto",
     "signal_date": "2026-11-15",
-    "trail": 81695.12,
-    "date": "2026-11-17"
+    "trail": 79880.47,
+    "date": "2026-11-18"
   },
   "weekly_intraday_keys": [],
   "commod": {
@@ -3059,7 +3059,7 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-18T18:49:58",
-  "heartbeat": "2026-11-18",
-  "daily_brief": "2026-11-18"
+  "last_run": "2026-11-19T07:02:46",
+  "heartbeat": "2026-11-19",
+  "daily_brief": "2026-11-19"
 }
