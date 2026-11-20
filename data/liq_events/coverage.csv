@@ -1151,3 +1151,9 @@ run,exchange,stato,scaricati,nuovi,nota
 2026-11-20T19:02:57Z,kraken,ok,0,0,
 2026-11-20T19:02:57Z,dydx,ok,102,23,
 2026-11-20T19:02:57Z,lighter,ok,1,1,
+2026-11-20T19:59:59Z,okx,ok,700,626,
+2026-11-20T19:59:59Z,gate,ok,1456,538,
+2026-11-20T19:59:59Z,deribit,errore,0,0,HTTPError: 502 Server Error: Bad Gateway for url: https://www.deribit.com/api/v2/public/get
+2026-11-20T19:59:59Z,kraken,ok,0,0,
+2026-11-20T19:59:59Z,dydx,ok,43,2,
+2026-11-20T19:59:59Z,lighter,ok,0,0,
