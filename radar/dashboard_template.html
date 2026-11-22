@@ -1,7 +1,7 @@
 <title>Radar Signal BTC</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <script>/* tema: chiaro di base, scuro come opzione (pulsante in alto, salvato solo su questo dispositivo) */
-try { document.documentElement.dataset.theme = localStorage.getItem("radarTheme") === "dark" ? "dark" : "light"; } catch (_) { document.documentElement.dataset.theme = "light"; }</script>
+(function () { let t = null; try { t = localStorage.getItem("radarTheme"); } catch (_) {} if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.dataset.theme = t; })();   /* scelta salvata, altrimenti il tema del dispositivo */</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
