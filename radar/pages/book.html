@@ -1,0 +1,486 @@
+<!-- ============ BOOK · Order Book Liquidity Heatmap (radar/pages/book.html) ============
+     Perpetual Binance Futures (BTCUSDT, ETHUSDT). Tutto nel browser dell'utente: i server non raggiungono Binance Futures, nessun backend.
+     Dati: snapshot REST /fapi/v1/depth?limit=1000 + WebSocket @depth@100ms, book locale sincronizzato con U, u, pu (BK, funzioni pure).
+     Ogni 10 s un campione (book aggregato + prezzo medio) in buffer circolare da 180 (30 minuti). Canvas, ridisegno <= 4 volte al secondo.
+     Si registra in window.PAGES.book (init alla prima visita, show/hide mettono in pausa). Parametro ?bookdemo=1: book sintetico.
+     Espone window.BOOK e salva i muri >= 5x in localStorage (radar_book_walls, max 2.000 righe) per un test in avanti. -->
+<style>
+.bkPanel{background:#09090b;border:1px solid rgba(255,255,255,.1);border-radius:var(--r-card);box-shadow:var(--shadow);padding:14px;color:#f3f5fb;color-scheme:dark;display:grid;gap:12px;min-width:0}
+.bkHead{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+.bkCtl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bkSeg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:3px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);gap:2px}
+.bkSeg button{font:600 .78rem var(--font);border:0;background:transparent;color:rgba(226,232,255,.62);padding:7px 12px;min-height:32px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.bkSeg button[aria-pressed="true"]{background:#f3f5fb;color:#09090b}
+.bkSeg button:active{transform:scale(.96)}
+.bkLive{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;font:500 .72rem var(--mono);color:rgba(226,232,255,.62);letter-spacing:.04em}
+.bkDot{width:9px;height:9px;border-radius:50%;background:#6b7280;flex:none}
+.bkDot.live{background:#34d77b;box-shadow:0 0 0 0 rgba(52,215,123,.6);animation:bkPulse 1.8s infinite}
+.bkDot.wait{background:#f7931a} .bkDot.err{background:#ff5a52} .bkDot.demo{background:#7a6bff}
+@keyframes bkPulse{70%{box-shadow:0 0 0 7px rgba(52,215,123,0)}100%{box-shadow:0 0 0 0 rgba(52,215,123,0)}}
+@media (prefers-reduced-motion:reduce){.bkDot.live{animation:none}}
+.bkPx{font:700 1.05rem var(--font);color:#f3f5fb;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.bkSt{white-space:nowrap}
+.bkWrap{position:relative;width:100%;height:320px;border-radius:12px;overflow:hidden;background:#09090b}
+@media (min-width:701px){.bkWrap{height:440px}}
+.bkWrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bkMsg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;background:rgba(9,9,11,.82);font:600 .95rem var(--font);color:#f3f5fb}
+.bkMsg.on{display:flex} .bkMsg small{font:500 .74rem var(--mono);color:rgba(226,232,255,.6);letter-spacing:.04em}
+.bkMsg.err b{color:#ff5a52}
+.bkLeg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font:500 .64rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:rgba(226,232,255,.62)}
+.bkLeg>span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.bkLeg .grad{width:96px;height:9px;border-radius:2px;background:linear-gradient(90deg,rgba(217,119,6,.55),rgba(255,240,40,1))}
+.bkLeg i{display:inline-block;width:9px;height:9px;border-radius:2px}
+.bkNote{margin:0 4px;font-size:.8rem;line-height:1.5;color:var(--label2)}
+@media (max-width:700px){.bkPanel{padding:10px}.bkSeg button{padding:7px 10px}}
+</style>
+<div class="view" id="v-book" hidden>
+  <div class="section">
+    <div class="sh">Order Book Liquidity Heatmap <small>Binance Futures · in tempo reale</small></div>
+    <div class="bkPanel">
+      <div class="bkHead">
+        <div class="bkCtl">
+          <div class="bkSeg" id="bkPair" role="group" aria-label="Coppia"></div>
+          <div class="bkSeg" id="bkStep" role="group" aria-label="Step di aggregazione"></div>
+        </div>
+        <div class="bkLive" aria-live="off">
+          <span class="bkDot" id="bkDot"></span><span class="bkSt" id="bkSt">connessione…</span>
+          <span class="bkPx" id="bkPx">–</span>
+          <span class="bkSt" id="bkCd"></span>
+        </div>
+      </div>
+      <div class="bkWrap">
+        <canvas id="bkCv" role="img" aria-label="Heatmap della liquidità nel book degli ultimi 30 minuti, con profondità attuale a destra"></canvas>
+        <div class="bkMsg" id="bkMsg" role="status"></div>
+      </div>
+      <div class="bkLeg">
+        <span>Fasce ≥ 3× la media del range</span>
+        <span>3× <span class="grad"></span> 8×</span>
+        <span><i style="background:#ff5a52"></i>Muri sopra il prezzo</span>
+        <span><i style="background:#34d77b"></i>Muri sotto il prezzo</span>
+      </div>
+    </div>
+    <p class="bkNote">Liquidità visibile nel book: può essere ritirata (non è un segnale).</p>
+  </div>
+</div>
+<script>
+(function () {
+  window.PAGES = window.PAGES || {};
+  const H = id => document.getElementById(id);
+
+  /*CORE-START (funzioni pure: testate con node, nessun accesso a DOM o rete)*/
+  const BK = (function () {
+    const nf = (x, d = 0) => {
+      if (typeof window !== "undefined" && window.nfIT) return window.nfIT(x, d);
+      const [i, f] = Math.abs(x).toFixed(d).split(".");
+      return (x < 0 ? "−" : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (f ? "," + f : "");
+    };
+    const newState = () => ({ bids: new Map(), asks: new Map(), snapId: null, lastU: null, synced: false, pending: [], snapLo: null, snapHi: null });
+    function lv(m, arr) { for (const [p, q] of arr) { const k = +p, v = +q; if (v > 0) m.set(k, v); else m.delete(k); } }
+    // scarta u < lastUpdateId; primo evento con U <= lastUpdateId <= u (o U = lastUpdateId + 1); poi pu == u precedente, altrimenti "resync"
+    function applyEvent(s, e) {
+      if (s.snapId == null) return "wait";
+      if (!s.synced) {
+        if (e.u < s.snapId) return "skip";
+        if (!(e.U <= s.snapId + 1)) return invalidate(s);   // U <= lastUpdateId <= u; U = lastUpdateId + 1 (snapshot esattamente a fine evento) è il seguito contiguo
+        s.synced = true;
+      } else if (e.pu !== s.lastU) return invalidate(s);
+      lv(s.bids, e.b || []); lv(s.asks, e.a || []);
+      s.lastU = e.u;
+      return "ok";
+    }
+    function invalidate(s) { s.snapId = null; s.lastU = null; s.synced = false; s.pending = []; s.bids.clear(); s.asks.clear(); return "resync"; }
+    // evento dal WebSocket: prima dello snapshot va in coda
+    function feed(s, e) {
+      if (s.snapId == null) { s.pending.push(e); if (s.pending.length > 20000) s.pending.shift(); return "wait"; }
+      return applyEvent(s, e);
+    }
+    function applySnapshot(s, snap) {
+      s.bids.clear(); s.asks.clear(); lv(s.bids, snap.bids); lv(s.asks, snap.asks);
+      s.snapId = snap.lastUpdateId; s.lastU = null; s.synced = false;
+      let lo = Infinity, hi = -Infinity;
+      s.bids.forEach((_, p) => { if (p < lo) lo = p; }); s.asks.forEach((_, p) => { if (p > hi) hi = p; });
+      s.snapLo = isFinite(lo) ? lo : null; s.snapHi = isFinite(hi) ? hi : null;
+      const q = s.pending; s.pending = [];
+      for (const e of q) { if (applyEvent(s, e) === "resync") return "resync"; }
+      return "ok";
+    }
+    const idxOf = (p, step) => Math.floor(p / step + 1e-9);
+    // USD (prezzo × quantità) per fascia: Map indice fascia → USD, separato per lato
+    function aggregate(map, step) { const out = new Map(); map.forEach((q, p) => { const i = idxOf(p, step); out.set(i, (out.get(i) || 0) + p * q); }); return out; }
+    function merge(a, b) { const out = new Map(a); b.forEach((v, i) => out.set(i, (out.get(i) || 0) + v)); return out; }
+    // media delle fasce con liquidità nel range visibile [lo, hi)
+    function meanIn(m, lo, hi) { let s = 0, n = 0; m.forEach((v, i) => { if (i >= lo && i < hi && v > 0) { s += v; n++; } }); return n ? s / n : 0; }
+    function bestBid(s) { let b = -Infinity; s.bids.forEach((_, p) => { if (p > b) b = p; }); return isFinite(b) ? b : null; }
+    function bestAsk(s) { let a = Infinity; s.asks.forEach((_, p) => { if (p < a) a = p; }); return isFinite(a) ? a : null; }
+    function mid(s) { const b = bestBid(s), a = bestAsk(s); return b != null && a != null ? (a + b) / 2 : null; }
+    // muri: fasce >= minMult × media, ordinate per USD
+    function walls(bid, ask, lo, hi, step, mid0, minMult) {
+      const mean = meanIn(merge(bid, ask), lo, hi), out = { ask: [], bid: [] };
+      if (!(mean > 0)) return out;
+      const pick = (m, side) => m.forEach((v, i) => { const mult = v / mean; if (i >= lo && i < hi && mult >= minMult) out[side].push({ px: i * step, usd: v, mult }); });
+      pick(ask, "ask"); pick(bid, "bid");
+      out.ask.sort((a, b) => b.usd - a.usd); out.bid.sort((a, b) => b.usd - a.usd);
+      return out;
+    }
+    // colore della fascia: ambra (3×) → giallo acceso (≥ 8×)
+    function heat(m) {
+      const t = Math.max(0, Math.min(1, (m - 3) / 5));
+      return `rgba(${Math.round(217 + 38 * t)},${Math.round(119 + 121 * t)},${Math.round(6 + 34 * t)},${(0.55 + 0.45 * t).toFixed(2)})`;
+    }
+    function fmtUsd(x) { return x >= 1e6 ? nf(x / 1e6, 2) + "M" : x >= 1e3 ? nf(x / 1e3, 0) + "k" : nf(x, 0); }
+    function niceStep(span, n, min) {
+      const raw = Math.max(span / n, min), p = Math.pow(10, Math.floor(Math.log10(raw)));
+      for (const k of [1, 2, 2.5, 5, 10]) if (k * p >= raw) return k * p;
+      return 10 * p;
+    }
+    return { newState, applyEvent, feed, applySnapshot, aggregate, merge, meanIn, mid, bestBid, bestAsk, walls, heat, fmtUsd, niceStep, idxOf };
+  })();
+  /*CORE-END*/
+
+  const PAIRS = { BTCUSDT: { lab: "BTC", steps: [25, 50, 100], dec: 1, base: 64000, tick: 0.5, u0: 35000 },
+                  ETHUSDT: { lab: "ETH", steps: [1, 2.5, 5], dec: 2, base: 3100, tick: 0.05, u0: 9000 } };
+  const NS = 180, DT = 10000, WIN = NS * DT, MAXROWS = 2000, LSK = "radar_book_walls";
+  const DEMO = /(^|[?&])bookdemo=1(&|$)/.test(location.search);
+  const f = (x, d) => window.nfIT ? window.nfIT(x, d) : x.toFixed(d).replace(".", ",");
+
+  const sel = { sym: "BTCUSDT", step: 25 };
+  try { const j = JSON.parse(localStorage.getItem("radar_book_sel") || "null"); if (j && PAIRS[j.sym] && PAIRS[j.sym].steps.includes(j.step)) { sel.sym = j.sym; sel.step = j.step; } } catch (_) {}
+  const S = BK.newState(), bufs = {};
+  const key = () => sel.sym + ":" + sel.step;
+  let gen = 0, ws = null, retryT = null, fails = 0, everSynced = false, lastMsg = 0, retryAt = 0;
+  let active = false, tickT = null, raf = 0, lastDraw = 0, nextAt = 0, status = "wait", V = null;
+  const seen = new Map();   // registro: ultima registrazione per muro (evita righe ripetute ogni 10 s)
+
+  /* ---------- stato in testata ---------- */
+  function setStatus(s) { status = s; }
+  function curMid() { return S.synced ? BK.mid(S) : null; }
+  function lastMid() { const m = curMid(); if (m) return m; const b = bufs[key()]; return b && b.length ? b[b.length - 1].mid : null; }
+  function updateHead() {
+    const dot = H("bkDot"), st = H("bkSt"), msg = H("bkMsg"), P = PAIRS[sel.sym], m = lastMid();
+    const paused = !active;
+    dot.className = "bkDot" + (DEMO ? " demo" : status === "live" ? " live" : status === "err" ? " err" : status === "wait" ? " wait" : "");
+    st.textContent = paused ? "in pausa" : DEMO ? "demo sintetico" : status === "live" ? "live" : status === "err" ? "non raggiungibile" : "connessione…";
+    H("bkPx").textContent = m ? "$" + f(m, P.dec) : "–";
+    const cd = Math.max(0, Math.ceil((nextAt - Date.now()) / 1000));
+    H("bkCd").textContent = active && (status === "live" || DEMO) ? "campione tra " + cd + " s" : "";
+    if (!DEMO && status === "err") {
+      const w = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
+      msg.className = "bkMsg on err"; msg.innerHTML = "<b>Binance Futures non raggiungibile da questa rete</b><small>Nuovo tentativo tra " + w + " s</small>";
+    } else if (!DEMO && status === "wait" && !m) {
+      msg.className = "bkMsg on"; msg.innerHTML = "Connessione a Binance Futures…";
+    } else msg.className = "bkMsg";
+  }
+
+  /* ---------- rete ---------- */
+  function failure() {
+    if (!active) return;
+    gen++;
+    if (ws) { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; try { ws.close(); } catch (_) {} ws = null; }
+    S.snapId = null; S.synced = false; S.pending = [];
+    fails++;
+    const delay = Math.min(30000, 1000 * Math.pow(2, fails - 1));
+    retryAt = Date.now() + delay;
+    setStatus(everSynced && fails < 2 ? "wait" : "err");
+    clearTimeout(retryT); retryT = setTimeout(openWS, delay);
+  }
+  function snapshotUrl() { return "https://fapi.binance.com/fapi/v1/depth?symbol=" + sel.sym + "&limit=1000"; }
+  async function startSync(g) {
+    S.snapId = null; S.synced = false; S.pending = [];
+    let snap;
+    try {
+      const ac = new AbortController(), to = setTimeout(() => ac.abort(), 10000);
+      try {
+        const r = await fetch(snapshotUrl(), { signal: ac.signal });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        snap = await r.json();
+      } finally { clearTimeout(to); }
+      if (!snap || !Array.isArray(snap.bids) || !Array.isArray(snap.asks) || snap.lastUpdateId == null) throw new Error("snapshot non valido");
+    } catch (e) { if (g === gen) failure(); return; }
+    if (g !== gen) return;
+    const r = BK.applySnapshot(S, snap);
+    if (r === "resync") { setTimeout(() => { if (g === gen) startSync(g); }, 400); return; }
+    if (S.synced) markSynced();
+  }
+  function markSynced() { fails = 0; everSynced = true; setStatus("live"); }
+  function onEvent(d) {
+    const r = BK.feed(S, d);
+    if (r === "resync") { setTimeout(() => { if (active && ws) startSync(gen); }, 400); return; }
+    if (r === "ok" && status !== "live" && S.synced) markSynced();
+  }
+  function openWS() {
+    if (!active) return;
+    if (DEMO) return startDemo();
+    const g = ++gen;
+    clearTimeout(retryT);
+    if (ws) { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; try { ws.close(); } catch (_) {} ws = null; }
+    S.bids.clear(); S.asks.clear(); S.snapId = null; S.synced = false; S.pending = [];
+    setStatus("wait");
+    try {
+      ws = new WebSocket("wss://fstream.binance.com/ws/" + sel.sym.toLowerCase() + "@depth@100ms");
+    } catch (e) { failure(); return; }
+    ws.onopen = () => { if (g === gen) startSync(g); };
+    ws.onmessage = ev => {
+      if (g !== gen) return;
+      let d; try { d = JSON.parse(ev.data); } catch (_) { return; }
+      if (!d || d.e !== "depthUpdate") return;
+      lastMsg = Date.now(); onEvent(d);
+    };
+    ws.onerror = () => {};
+    ws.onclose = () => { if (g === gen) failure(); };
+  }
+  function closeWS() {
+    gen++; clearTimeout(retryT);
+    if (ws) { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; try { ws.close(); } catch (_) {} ws = null; }
+  }
+
+  /* ---------- demo: book sintetico realistico (?bookdemo=1) ---------- */
+  function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  let demoWalls = null, demoT0 = 0;
+  function demoPrice(sym, t) {
+    const P = PAIRS[sym], k = P.base / 64000;
+    return P.base + k * (80 * Math.sin(t / 260000) + 35 * Math.sin(t / 61000 + 1)) + k * 5 * (rng(Math.floor(t / DT) * 7 + 1)() - 0.5) * 2;
+  }
+  function demoMkWalls() {
+    const P = PAIRS[sel.sym], r = rng(sel.sym === "BTCUSDT" ? 11 : 23), cover = P.tick * 1000, snap = P.tick * 50, avgBin = P.u0 * 0.7 * (sel.step / P.tick);
+    demoT0 = Date.now(); demoWalls = [];
+    for (let i = 0; i < 18; i++) {
+      const off = (r() < 0.5 ? -1 : 1) * (cover * 0.06 + r() * cover * 0.85), start = demoT0 - r() * WIN, dur = (3 + r() * 24) * 60000;
+      demoWalls.push({ px: Math.round((P.base + off) / snap) * snap, start, end: start + dur, usd: (3.6 + r() * 6.4) * avgBin * (0.8 + r() * 0.4) });
+    }
+  }
+  function demoBook(t) {
+    const P = PAIRS[sel.sym], r = rng(Math.floor(t / DT) * 131 + (sel.sym === "BTCUSDT" ? 1 : 2)), mid = demoPrice(sel.sym, t), tk = P.tick;
+    const b0 = Math.floor(mid / tk) * tk, bids = new Map(), asks = new Map();
+    const gz = () => (r() + r() + r() - 1.5) * 2;
+    for (let i = 0; i < 1000; i++) {
+      const u = P.u0 * (0.35 + Math.exp(-i / 450)) * Math.exp(0.8 * gz() - 0.3), pb = +(b0 - i * tk).toFixed(4), pa = +(b0 + tk + i * tk).toFixed(4);
+      bids.set(pb, u / pb); asks.set(pa, u / pa * Math.exp(0.15 * gz()));
+    }
+    demoWalls.forEach(w => {
+      if (t < w.start || t > w.end) return;
+      const px = Math.round(w.px / tk) * tk, m = px < mid ? bids : asks;
+      m.set(px, (m.get(px) || 0) + w.usd / px);
+    });
+    return { bids, asks, mid };
+  }
+  function demoFill(t) {
+    const d = demoBook(t);
+    S.bids = d.bids; S.asks = d.asks; S.snapId = 1; S.synced = true;
+    let lo = Infinity, hi = -Infinity; S.bids.forEach((_, p) => { if (p < lo) lo = p; }); S.asks.forEach((_, p) => { if (p > hi) hi = p; }); S.snapLo = lo; S.snapHi = hi;
+    lastMsg = Date.now();
+  }
+  function startDemo() {
+    if (!demoWalls || demoKeyStep !== sel.sym + sel.step) { demoKeyStep = sel.sym + sel.step; demoMkWalls(); }
+    const b = bufs[key()] || (bufs[key()] = []);
+    if (!b.length) {
+      const end = Math.floor(Date.now() / DT) * DT;
+      for (let i = NS - 1; i >= 1; i--) { const t = end - i * DT; demoFill(t); pushSample(t, false); }
+    }
+    demoFill(Date.now()); setStatus("live");
+  }
+  let demoKeyStep = "";
+
+  /* ---------- campioni ---------- */
+  function pushSample(t, log) {
+    const m = BK.mid(S); if (!m) return;
+    const agg = BK.merge(BK.aggregate(S.bids, sel.step), BK.aggregate(S.asks, sel.step));
+    const ids = Int32Array.from(agg.keys()), vs = Float32Array.from(agg.values());
+    const b = bufs[key()] || (bufs[key()] = []);
+    b.push({ t, mid: m, ids, vs });
+    if (b.length > NS) b.shift();
+    if (log && !DEMO) logWalls(t, m);
+  }
+  function takeSample() {
+    if (!S.synced || Date.now() - lastMsg > 15000) return;
+    pushSample(Date.now(), true);
+  }
+  function tick() {
+    const now = Date.now();
+    if (DEMO && demoWalls) demoFill(now);
+    if (!nextAt) nextAt = (Math.floor(now / DT) + 1) * DT;
+    if (now >= nextAt) { takeSample(); while (nextAt <= now) nextAt += DT; }
+    if (!DEMO && S.synced && Date.now() - lastMsg > 20000) failure();   // flusso fermo: riconnette
+    if (S.bids.size > 6000) prune();
+  }
+  function prune() {
+    const m = BK.mid(S); if (!m) return;
+    const lo = m * 0.9, hi = m * 1.1;
+    S.bids.forEach((_, p) => { if (p < lo) S.bids.delete(p); }); S.asks.forEach((_, p) => { if (p > hi) S.asks.delete(p); });
+  }
+
+  /* ---------- vista (range visibile) e muri ---------- */
+  function getView() {
+    const step = sel.step, buf = (bufs[key()] || []).filter(s => Date.now() - s.t <= WIN + DT), live = S.synced;
+    const mid = live ? BK.mid(S) : (buf.length ? buf[buf.length - 1].mid : null);
+    if (!mid) return null;
+    let half = 6 * step;
+    if (live && S.snapLo != null && S.snapHi != null) half = Math.max(half, Math.min(mid - S.snapLo, S.snapHi - mid));
+    buf.forEach(s => { half = Math.max(half, Math.abs(s.mid - mid) + 2 * step); });
+    half = Math.min(half, 60 * step);
+    const lo = Math.floor((mid - half) / step), hi = Math.ceil((mid + half) / step);
+    const bid = live ? BK.aggregate(S.bids, step) : new Map(), ask = live ? BK.aggregate(S.asks, step) : new Map();
+    return { step, mid, lo, hi, buf, bid, ask, live };
+  }
+  function computeWalls(minMult) {
+    const v = getView(); if (!v || !v.live) return { ask: [], bid: [] };
+    return BK.walls(v.bid, v.ask, v.lo, v.hi, v.step, v.mid, minMult);
+  }
+  function logWalls(t, mid) {
+    try {
+      const w = computeWalls(5), rows = [];
+      [["ask", w.ask], ["bid", w.bid]].forEach(([side, arr]) => arr.forEach(x => {
+        const k = sel.sym + side + x.px;
+        if (t - (seen.get(k) || 0) < 600000) return;
+        seen.set(k, t);
+        rows.push({ ts: t, t: new Date(t).toISOString(), sym: sel.sym, side, px: x.px, usd: Math.round(x.usd), mult: +x.mult.toFixed(2), dist: +((x.px - mid) / mid * 100).toFixed(3) });
+      }));
+      if (!rows.length) return;
+      let all = []; try { all = JSON.parse(localStorage.getItem(LSK) || "[]"); if (!Array.isArray(all)) all = []; } catch (_) { all = []; }
+      all = all.concat(rows); if (all.length > MAXROWS) all = all.slice(all.length - MAXROWS);
+      localStorage.setItem(LSK, JSON.stringify(all));
+    } catch (_) {}
+  }
+  window.BOOK = {
+    walls() { const w = computeWalls(3); return { ask: w.ask.slice(0, 10), bid: w.bid.slice(0, 10) }; },
+    get symbol() { return sel.sym; },
+    get mid() { return lastMid(); },
+    get step() { return sel.step; },
+    demo: DEMO,
+  };
+
+  /* ---------- disegno ---------- */
+  const FONT = '"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace';
+  function layout(W, Hh) {
+    const mob = W < 560;
+    return { axis: mob ? 46 : 60, domW: Math.max(mob ? 100 : 118, Math.round(W * (mob ? 0.3 : 0.15))), top: 8, bot: 22, mob };
+  }
+  function draw() {
+    const cv = H("bkCv"), r = cv.getBoundingClientRect(), W = Math.round(r.width), Hh = Math.round(r.height);
+    updateHead();
+    if (W < 50 || Hh < 50) return;
+    const dpr = window.devicePixelRatio || 1;
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(Hh * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(Hh * dpr); }
+    const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.fillStyle = "#09090b"; c.fillRect(0, 0, W, Hh);
+    const v = V = getView(); if (!v) return;
+    const L = layout(W, Hh), px0 = L.axis, px1 = W - L.domW - 8, py0 = L.top, py1 = Hh - L.bot, pw = px1 - px0, ph = py1 - py0;
+    const nb = v.hi - v.lo, loPx = v.lo * v.step, hiPx = v.hi * v.step, now = Date.now(), P = PAIRS[sel.sym];
+    const Y = p => py0 + (hiPx - p) / (hiPx - loPx) * ph, X = t => px0 + (t - (now - WIN)) / WIN * pw;
+    c.font = "10px " + FONT; c.textBaseline = "middle";
+    // griglia e asse Y
+    const ts = BK.niceStep(hiPx - loPx, L.mob ? 5 : 7, v.step);
+    c.strokeStyle = "rgba(255,255,255,.06)"; c.lineWidth = 1; c.fillStyle = "rgba(226,232,255,.55)"; c.textAlign = "right";
+    for (let p = Math.ceil(loPx / ts) * ts; p <= hiPx + 1e-9; p += ts) {
+      const y = Math.round(Y(p)) + 0.5;
+      c.beginPath(); c.moveTo(px0, y); c.lineTo(px1, y); c.stroke();
+      c.fillText(f(p, ts % 1 ? 1 : 0), px0 - 6, y);
+    }
+    // heatmap storica: solo fasce >= 3× la media del range visibile, per campione
+    const cw = Math.max(1, pw / NS), ch = ph / nb;
+    for (const s of v.buf) {
+      let sum = 0, n = 0;
+      for (let k = 0; k < s.ids.length; k++) { const i = s.ids[k]; if (i >= v.lo && i < v.hi && s.vs[k] > 0) { sum += s.vs[k]; n++; } }
+      if (!n) continue;
+      const mean = sum / n, xr = Math.ceil(X(s.t)), x = Math.max(px0, Math.floor(xr - cw));
+      if (xr < px0) continue;
+      for (let k = 0; k < s.ids.length; k++) {
+        const i = s.ids[k], m = s.vs[k] / mean;
+        if (m < 3 || i < v.lo || i >= v.hi) continue;
+        c.fillStyle = BK.heat(m);
+        c.fillRect(x, py0 + (v.hi - 1 - i) * ch, Math.min(xr, px1) - x + 1, ch + 0.5);
+      }
+    }
+    // linea del prezzo
+    c.beginPath(); c.strokeStyle = "#ffffff"; c.lineWidth = 1.5; c.lineJoin = "round";
+    let first = true;
+    for (const s of v.buf) { const x = X(s.t), y = Y(s.mid); if (x < px0) continue; if (first) { c.moveTo(x, y); first = false; } else c.lineTo(x, y); }
+    if (v.live) { if (first) c.moveTo(px1, Y(v.mid)); else c.lineTo(px1, Y(v.mid)); first = false; }
+    if (!first) c.stroke();
+    // asse X
+    c.fillStyle = "rgba(226,232,255,.55)"; c.textBaseline = "alphabetic";
+    [["30 m", 0, "left"], ["20 m", 1 / 3, "center"], ["10 m", 2 / 3, "center"], ["ora", 1, "right"]].forEach(([lab, fr, al]) => { c.textAlign = al; c.fillText(lab, px0 + fr * pw, Hh - 6); });
+    // barra DOM: profondità attuale allineata all'asse Y
+    const dx0 = W - L.domW, dw = L.domW - 4;
+    c.strokeStyle = "rgba(255,255,255,.1)"; c.beginPath(); c.moveTo(dx0 - 3.5, py0); c.lineTo(dx0 - 3.5, py1); c.stroke();
+    let mx = 0; [v.bid, v.ask].forEach(m => m.forEach((u, i) => { if (i >= v.lo && i < v.hi && u > mx) mx = u; }));
+    if (mx > 0) {
+      const bar = (m, col) => m.forEach((u, i) => { if (i < v.lo || i >= v.hi) return; c.fillStyle = col; c.fillRect(dx0, py0 + (v.hi - 1 - i) * ch + (ch > 3 ? 0.5 : 0), Math.max(1, u / mx * dw), Math.max(1, ch - (ch > 3 ? 1 : 0))); });
+      bar(v.ask, "rgba(255,90,82,.62)"); bar(v.bid, "rgba(52,215,123,.62)");
+    }
+    c.strokeStyle = "rgba(255,255,255,.85)"; c.lineWidth = 1; c.beginPath(); c.moveTo(dx0 - 3, Math.round(Y(v.mid)) + 0.5); c.lineTo(W, Math.round(Y(v.mid)) + 0.5); c.stroke();
+    // etichette dei 3 muri maggiori sopra (rosso) e sotto (verde)
+    if (v.live) {
+      const w = BK.walls(v.bid, v.ask, v.lo, v.hi, v.step, v.mid, 3), fs = L.mob ? 9 : 10, lh = fs + 4;
+      c.font = "600 " + fs + "px " + FONT; c.textBaseline = "middle"; c.textAlign = "right";
+      const dec = v.step % 1 ? 1 : 0;
+      [["ask", "#ff7b73"], ["bid", "#4ee08e"]].forEach(([side, col]) => {
+        const ls = w[side].slice(0, 3).map(x => ({ y: Y(x.px + v.step / 2), t: f(x.px, dec) + " · " + BK.fmtUsd(x.usd) })).sort((a, b) => a.y - b.y);
+        for (let k = 1; k < ls.length; k++) if (ls[k].y - ls[k - 1].y < lh) ls[k].y = ls[k - 1].y + lh;
+        ls.forEach(l => {
+          const y = Math.max(py0 + lh / 2, Math.min(py1 - lh / 2, l.y)), tw = c.measureText(l.t).width;
+          c.fillStyle = "rgba(9,9,11,.6)"; c.fillRect(W - tw - 8, y - lh / 2 + 1, tw + 6, lh - 2);
+          c.fillStyle = col; c.fillText(l.t, W - 5, y + 0.5);
+        });
+      });
+    }
+  }
+  function loop(ts) {
+    raf = requestAnimationFrame(loop);
+    if (ts - lastDraw < 250) return;
+    lastDraw = ts;
+    try { draw(); } catch (e) { console.warn("book", e); }
+  }
+  function redraw() { lastDraw = performance.now(); try { draw(); } catch (e) { console.warn("book", e); } }
+
+  /* ---------- controlli e ciclo di vita ---------- */
+  function stepLabel(s) { return f(s, s % 1 ? 1 : 0) + " $"; }
+  function buildCtl() {
+    const pb = H("bkPair"), sb = H("bkStep");
+    pb.innerHTML = Object.keys(PAIRS).map(k => `<button type="button" data-v="${k}" aria-pressed="${k === sel.sym}">${PAIRS[k].lab}</button>`).join("");
+    const steps = () => { sb.innerHTML = PAIRS[sel.sym].steps.map(s => `<button type="button" data-v="${s}" aria-pressed="${s === sel.step}">${stepLabel(s)}</button>`).join(""); };
+    steps();
+    const save = () => { try { localStorage.setItem("radar_book_sel", JSON.stringify(sel)); } catch (_) {} };
+    pb.onclick = e => {
+      const b = e.target.closest("button"); if (!b || b.dataset.v === sel.sym) return;
+      sel.sym = b.dataset.v; sel.step = PAIRS[sel.sym].steps[0]; save();
+      pb.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); steps(); changed();
+    };
+    sb.onclick = e => {
+      const b = e.target.closest("button"); if (!b || +b.dataset.v === sel.step) return;
+      sel.step = +b.dataset.v; save();
+      sb.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); changed();
+    };
+  }
+  function changed() {   // nuova coppia o nuovo step: i campioni di un altro step non sono confrontabili, ogni combinazione ha il suo buffer
+    nextAt = 0; V = null; seen.clear();
+    if (active) { if (DEMO) { S.bids = new Map(); S.asks = new Map(); S.synced = false; startDemo(); } else openWS(); }
+    redraw();
+  }
+  function shown() { return !H("v-book").hidden && !document.hidden; }
+  function resume() {
+    if (active) return;
+    active = true; nextAt = 0; fails = 0;
+    clearInterval(tickT); tickT = setInterval(tick, 500);
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+    openWS(); redraw();
+  }
+  function pause() {
+    if (!active) { updateHead(); return; }
+    active = false; clearInterval(tickT); cancelAnimationFrame(raf); closeWS();
+    S.bids.clear(); S.asks.clear(); S.snapId = null; S.synced = false; S.pending = []; setStatus("wait");
+    updateHead();
+  }
+  function sync() { shown() ? resume() : pause(); }
+
+  window.PAGES.book = {
+    init() {
+      buildCtl();
+      document.addEventListener("visibilitychange", () => { if (this._done) sync(); });
+      if (window.ResizeObserver) new ResizeObserver(() => { if (active) redraw(); }).observe(H("bkCv").parentNode);
+      else window.addEventListener("resize", () => { if (active) redraw(); });
+    },
+    show() { sync(); },
+    hide() { pause(); },
+  };
+})();
+</script>
