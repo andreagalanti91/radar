@@ -1421,3 +1421,9 @@ run,exchange,stato,scaricati,nuovi,nota
 2026-11-22T12:02:41Z,kraken,ok,0,0,
 2026-11-22T12:02:41Z,dydx,ok,0,0,
 2026-11-22T12:02:41Z,lighter,ok,0,0,
+2026-11-22T13:02:38Z,okx,ok,600,501,
+2026-11-22T13:02:38Z,gate,ok,240,202,
+2026-11-22T13:02:38Z,deribit,ok,0,0,
+2026-11-22T13:02:38Z,kraken,ok,0,0,
+2026-11-22T13:02:38Z,dydx,ok,0,0,
+2026-11-22T13:02:38Z,lighter,errore,0,0,HTTPError: 503 Server Error: Service Unavailable for url: https://mainnet.zklighter.elliot.
