@@ -120,6 +120,11 @@ def daily_brief(report: dict, st: dict, now: pd.Timestamp, data_until: str | Non
     return False
 
 
+def wallets_enabled() -> bool:
+    """Sezione Wallet (scout balene, sentinella, comandi Telegram): in pausa dal 22/11/2026, RADAR_WALLETS=1 la riaccende."""
+    return os.environ.get("RADAR_WALLETS", "0") == "1"
+
+
 def _soft(label: str, fn, *a, **k):
     """Fonte o modulo non essenziale per W3: un errore si registra e non ferma il giro."""
     try:
@@ -176,7 +181,13 @@ def daily() -> None:
         st = _load_state()
         if wcur:   # il riepilogo "Oggi" non dipende da v2: parte con W3 e la pre-analisi
             from .preview import build as _pv
-            _soft("riepilogo giornaliero", daily_brief, {"weekly": wcur, "preview": _soft("pre-analisi W3", _pv, f)},
+            from .data import DATA_DIR as _dd
+
+            def _mb():   # import isolato: un errore del modulo non ferma il riepilogo
+                from .macro import build
+                return build(_dd, weekly=wcur)
+            _soft("riepilogo giornaliero", daily_brief, {"weekly": wcur, "preview": _soft("pre-analisi W3", _pv, f),
+                                                         "macro": _soft("chiusura multi-asset", _mb)},
                   st, _now(), data_until)
         st["last_run"] = _now().isoformat(timespec="seconds")
         _save_state(st)
@@ -198,16 +209,22 @@ def daily() -> None:
     report["liqsources"] = _soft("liquidazioni multi-exchange", lambda: mod("liqsources").summary())
     # ultima cascata di liquidazioni (24 ore) e prossime fasce dense: solo contesto (radar/liqcascade.py, lezione 92)
     report["cascade"] = _soft("cascata di liquidazioni", lambda: mod("liqcascade").update(report, DATA_DIR))
-    # scout balene Hyperliquid: una volta al giorno (≥ 20 ore dall'ultimo giro) (radar/scout.py)
-    try:   # come prima: None = scout non rifatto oggi; assente = errore (la dashboard legge l'ultimo file)
-        report["scout"] = mod("scout").daily(DATA_DIR)
-    except Exception as e:  # noqa: BLE001
-        print(f"[radar] scout balene non disponibile: {e!r}")
+    # scout balene Hyperliquid: una volta al giorno (≥ 20 ore dall'ultimo giro) (radar/scout.py).
+    # In pausa dal 22/11/2026 (richiesta dell'utente): gira solo con RADAR_WALLETS=1 (radar/wallets.enabled)
+    if wallets_enabled():
+        try:   # come prima: None = scout non rifatto oggi; assente = errore (la dashboard legge l'ultimo file)
+            report["scout"] = mod("scout").daily(DATA_DIR)
+        except Exception as e:  # noqa: BLE001
+            print(f"[radar] scout balene non disponibile: {e!r}")
+    else:
+        print("[radar] scout balene e wallet in pausa (RADAR_WALLETS=0)")
     # motore del book: foto, controlli, previsione 1h/4h (radar/orderbook.py)
     report["orderbook"] = _soft("book", lambda: mod("orderbook").update(DATA_DIR))
     report["news"] = _soft("notizie", fetch_news) or []
     report["calendar"] = _soft("calendario", fetch_calendar) or []
     report["banks"] = _soft("banche centrali", fetch_central_banks) or []   # prossime riunioni Fed (FOMC) e BCE
+    # chiusura multi-asset (S&P, Nasdaq, oro, argento, dollaro, VIX, Treasury 10 anni): solo contesto (radar/macro.py)
+    report["macro"] = _soft("chiusura multi-asset", lambda: mod("macro").build(DATA_DIR, weekly=report.get("weekly")))
     for k in ("levels", "liqmap", "orderbook", "preview"):
         if report.get(k) is None:
             report.pop(k, None)

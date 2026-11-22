@@ -210,7 +210,8 @@ def _ctx_lines(td: dict | None) -> list[str]:
 
 
 def today_brief(report: dict, day: str | None = None) -> str:
-    """Riepilogo giornaliero "Oggi" (al massimo 8 righe): prezzo, W3, 2–3 righe di contesto, nota. Mai eccezioni."""
+    """Riepilogo giornaliero "Oggi" (al massimo 8 righe, 11 con i mercati): prezzo, W3, 2–3 righe di contesto, riga
+    "Mercati" e fino a 2 flag (report["macro"], radar/macro.py), nota. Mai eccezioni."""
     report = report or {}
     pv, wk = report.get("preview") or {}, report.get("weekly")
     head = "<b>RADAR SIGNAL BTC · Oggi</b>" + (f" · {_dm(day)}" if day else "")
@@ -237,7 +238,13 @@ def today_brief(report: dict, day: str | None = None) -> str:
     except Exception as e:  # noqa: BLE001
         print(f"[telegram] riepilogo incompleto: {e!r}")
         lines = [head, "Dati del riepilogo incompleti in questo giro."]
-    return "\n".join(lines[:7] + ["Contesto, non segnale: decide W3."])
+    try:   # chiusura multi-asset (radar/macro.py): una riga "Mercati: …" e al massimo 2 flag da rivedere
+        from .macro import telegram_lines
+        mk = telegram_lines(report.get("macro"))
+    except Exception as e:  # noqa: BLE001
+        print(f"[telegram] riga mercati non composta: {e!r}")
+        mk = []
+    return "\n".join(lines[:7] + mk + ["Contesto, non segnale: decide W3."])
 
 
 def send(text: str):

@@ -145,5 +145,19 @@ class TestLiqsnapWorkflow(unittest.TestCase):
         self.assertLessEqual(timeout, 355)    # limite di 6 ore dei job GitHub
 
 
+class TestWalletsPausa(unittest.TestCase):
+    """Sezione Wallet in pausa dal 22/11/2026: wallets.yml senza schedule (solo avvio manuale), avvisi spenti per default."""
+    def test_pausa(self):
+        s = (WF.parent / "wallets.yml").read_text()
+        code = "\n".join(x for x in s.splitlines() if not x.lstrip().startswith("#"))
+        self.assertNotIn("schedule:", code)
+        self.assertNotIn("cron:", code)
+        self.assertIn("workflow_dispatch", code)
+        self.assertIn("in pausa dal 22/11/2026", s)
+        self.assertIn("RADAR_WALLET_ALERTS: ${{ vars.RADAR_WALLET_ALERTS || '0' }}", s)
+        self.assertIn("RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}", s)
+        self.assertIn("RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}", WF.read_text())
+
+
 if __name__ == "__main__":
     unittest.main()

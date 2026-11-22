@@ -219,7 +219,7 @@ def handle(text: str, when: str, j: dict, state: dict) -> str:
         return x
     cmd, a = parse(text)
     if cmd in ("aiuto", "help", "start"):
-        return HELP + "\n\n" + wallets.HELP_W
+        return HELP + "\n\n" + (wallets.HELP_W if wallets.enabled() else "<b>Wallet osservati</b>: " + wallets.PAUSED)
     if cmd == "exchange":
         ex = next((w.lower() for w in a["words"] if w.lower() in ("bybit", "okx")), None)
         if not ex:

@@ -850,7 +850,7 @@ def run(data_dir: Path = DATA, send: bool = True, now_ms: int | None = None, log
     wallets.save_watch(watch, data_dir / WATCH)
     if new_c:
         msg = "\n\n".join(wallets.candidate_text(c) for c in new_c)
-        if send and telegram.send(msg):
+        if send and wallets.enabled() and telegram.send(msg):   # avvisi wallet in pausa dal 22/11/2026
             for c in new_c:
                 c["notified"] = today
             wallets.save_watch(watch, data_dir / WATCH)

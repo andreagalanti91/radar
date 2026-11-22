@@ -1,13 +1,10 @@
 name: Sentinella wallet (Hyperliquid)
 
-# Ogni 5 minuti: posizioni e ordini dei 3 wallet osservati (data/wallets_watch.json), alert Telegram sui cambi (radar/wallets.py).
+# (Quando attivo) ogni 5 minuti: posizioni e ordini dei 3 wallet osservati (data/wallets_watch.json), alert Telegram sui cambi (radar/wallets.py).
 # Lo stato fra un giro e l'altro sta nella cache di Actions, non nel repository.
+# Sentinella in pausa dal 22/11/2026 (richiesta dell'utente: sezione Wallet nascosta, niente notifiche): schedule tolto, resta l'avvio
+# manuale. Per riprendere: rimettere `schedule: - cron: "*/5 * * * *"` e impostare le variabili RADAR_WALLETS=1, RADAR_WALLET_ALERTS=1.
 on:
-  schedule:
-    # cron di GitHub = best-effort: sotto carico i giri slittano o saltano e un orario nuovo può impiegare tempo ad attivarsi.
-    # Niente seconda riga sfalsata: raddoppierebbe i giri (~576/giorno) senza garanzie; il controllo usa solo lo stato in cache,
-    # quindi un giro saltato si recupera al successivo (gli alert confrontano con l'ultima fotografia salvata).
-    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -39,7 +36,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           RADAR_WALLET_MIN: ${{ vars.RADAR_WALLET_MIN || '50000' }}
           RADAR_WALLET_ORDER_MIN: ${{ vars.RADAR_WALLET_ORDER_MIN || '100000' }}
-          RADAR_WALLET_ALERTS: ${{ vars.RADAR_WALLET_ALERTS || '1' }}
+          RADAR_WALLET_ALERTS: ${{ vars.RADAR_WALLET_ALERTS || '0' }}
+          RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}
         run: python -m radar.wallets
       - name: Salva stato
         if: always()

@@ -81,6 +81,12 @@ class CandidateTest(unittest.TestCase):
 
 
 class CommandTest(unittest.TestCase):
+    """Comandi con la sezione Wallet attiva (RADAR_WALLETS=1; in pausa dal 22/11/2026, vedi PauseTest)."""
+    def setUp(self):
+        p = mock.patch.dict("os.environ", {"RADAR_WALLETS": "1"})
+        p.start()
+        self.addCleanup(p.stop)
+
     def test_not_ours(self):
         self.assertIsNone(W.command("/entrato 67000", "2026-11-08"))
         self.assertIsNone(W.command("ciao", "2026-11-08"))
@@ -124,6 +130,40 @@ class CommandTest(unittest.TestCase):
                 self.assertIn("/candidati", journal.handle("/aiuto", "2026-11-08 10:00:00", j, {}))
                 self.assertIn("Manca il prezzo", journal.handle("/entrato", "2026-11-08 10:00:00", j, {}))   # i comandi del registro restano
             self.assertEqual(W.load_watch(p)["slots"][1]["address"], A("a"))
+
+
+class PauseTest(unittest.TestCase):
+    """Sezione Wallet in pausa (predefinito, dal 22/11/2026): comandi "in pausa", nessun controllo né alert."""
+    def setUp(self):
+        p = mock.patch.dict("os.environ", {"RADAR_WALLETS": "0"})
+        p.start()
+        self.addCleanup(p.stop)
+
+    def test_comandi_in_pausa(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = watch_file(d)
+            before = p.read_text()
+            for c in ("/osservati", "/candidati", "/sostituisci 2 aaaa", "/conferma 3", "/scarta aaaa"):
+                self.assertEqual(W.command(c, "2026-11-22", p), W.PAUSED)
+            self.assertEqual(p.read_text(), before)                       # nessuna modifica alla lista
+            self.assertIsNone(W.command("/entrato 70000", "2026-11-22", p))   # gli altri comandi non sono toccati
+            with mock.patch.object(W, "WATCH", p):
+                j = {"trades": [], "exchange": "bybit", "ref": {}}
+                self.assertIn("in pausa", journal.handle("/osservati", "2026-11-22 10:00:00", j, {}))
+                h = journal.handle("/aiuto", "2026-11-22 10:00:00", j, {})
+                self.assertIn("in pausa", h)
+                self.assertNotIn("/sostituisci", h)
+
+    def test_sentinella_ferma(self):
+        with mock.patch.object(W, "_post", side_effect=AssertionError("nessuna chiamata di rete")), \
+                mock.patch.object(W.telegram, "send", side_effect=AssertionError("nessun alert")):
+            W.run()
+
+    def test_default_spento(self):
+        with mock.patch.dict("os.environ", {}, clear=True):
+            self.assertFalse(W.enabled())
+            from radar import cli
+            self.assertFalse(cli.wallets_enabled())
 
 
 if __name__ == "__main__":

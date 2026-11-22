@@ -99,6 +99,8 @@ jobs:
           RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '1.0' }}
           RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0' }}
           RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '0' }}
+          # sezione Wallet (scout balene, avvisi e comandi) in pausa dal 22/11/2026: RADAR_WALLETS=1 la riaccende
+          RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
         id: push

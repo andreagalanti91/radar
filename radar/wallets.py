@@ -35,6 +35,14 @@ WALLETS = [
     ("0x807a2e2e469df84b299da5f90f15dda4380daca1", "Simile 2"),
 ]
 N_SLOTS = 3
+PAUSED = "Funzione wallet in pausa (dal 22/11/2026): la riprendiamo più avanti."
+
+
+def enabled() -> bool:
+    """Sezione Wallet in pausa dal 22/11/2026 (richiesta dell'utente): sentinella, scout e comandi si riaccendono con RADAR_WALLETS=1."""
+    return os.environ.get("RADAR_WALLETS", "0") == "1"
+
+
 _ADDR = re.compile(r"^0x[0-9a-f]{40}$")
 
 
@@ -232,6 +240,8 @@ def command(text: str, today: str, path: Path | None = None) -> str | None:
     cmd = parts[0][1:].split("@")[0].lower()
     if cmd not in COMMANDS:
         return None
+    if not enabled():
+        return PAUSED
     w, args = load_watch(path), parts[1:]
     if cmd == "osservati":
         return "<b>Wallet osservati</b>\n" + "\n".join(_slot_line(x) for x in w["slots"]) + f"\n\nCandidati in attesa: {len(w['candidates'])} (/candidati)"
@@ -292,6 +302,9 @@ def command(text: str, today: str, path: Path | None = None) -> str | None:
 
 
 def run() -> None:
+    if not enabled():
+        print("[wallet] sentinella in pausa (RADAR_WALLETS=0): nessun controllo, nessun alert")
+        return
     dexes = [""] + [d["name"] for d in _post({"type": "perpDexs"}) if d]
     old = json.loads(STATE.read_text()) if STATE.exists() else None
     new, msgs = {}, []
@@ -310,7 +323,7 @@ def run() -> None:
     if old is None:
         print("[wallet] primo avvio: fotografia registrata, nessun alert")
         return
-    if msgs and os.environ.get("RADAR_WALLET_ALERTS", "1") == "1":
+    if msgs and os.environ.get("RADAR_WALLET_ALERTS", "0") == "1":
         telegram.send("<b>SENTINELLA WALLET · Hyperliquid</b>\n" + "\n".join(msgs) + f"\n\n<a href=\"{PAGE}\">Apri la pagina Wallet</a>")
     print(f"[wallet] {len(msgs)} righe di alert")
 
