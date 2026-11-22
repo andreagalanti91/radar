@@ -31,6 +31,7 @@ Tutti i numeri: BTC, 10.000 $ dal 01/01/2021 al 15/11/2026, 1x, costi inclusi, s
 | Sentiment da order book + liquidazioni | 22/11 | 0/14 test, regola 10k → 6,9k in 16 giorni | descrittivo (pagina Book) | 108 | research/book_sentiment |
 | TP +10/12,5/15% con rientro, trailing 1,5 ATR dopo +10% (su W3.2) | 22/11 | 43–56k $ contro 78,5k | nessuna adottata | 109 | research/tp_rientro |
 | DCA, uscite a scaglioni, TP, stop, distribuzione su W3.1 | 22/11 | migliore variante sotto W3.1 | nessuna adottata | 105 | research/ingressi_uscite |
+| W3.2 su ETH, SOL, S&P 500, Nasdaq, Dow, DAX, FTSE MIB, Nikkei, Russell, Euro Stoxx | 22/11 | ETH 34,8k (DD −27,5%); SOL 52,5k (DD −39,8%); indici 6,7–15,5k, tutti sotto il buy & hold | solo BTC (ETH al limite) | 110 | research/w32_multi |
 | W3.1 solo prezzo su 13 asset | 22/11 | 0/13 | solo BTC | 104 | research/multi_asset |
 | Order book e liquidazioni come supporto | 22/11 | nessun supporto (15 giorni) | rifare 20/12 e 03/2027 | 105 | research/book_liq |
 | Market maker (assorbimento, compressione) | 18/11 | perde dopo i costi | respinto | 98 | research/mm_assorbimento |

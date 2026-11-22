@@ -409,6 +409,7 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 110**: W3.2 con i parametri di BTC non si trasferisce: dal 2021 passa solo ETH (34,8k, DD −27,5%, WR 60% al limite, già noto dalla lezione 87); SOL DD −40%, WR 43%, in perdita dal 2024; nessuno degli 8 indici batte il buy & hold in CAGR/DD. Il vantaggio viene dal flusso perp. research/w32_multi/README.md (PREREG b99fe66).
 **Lezione 109**: su W3.2 il take profit a +10/12,5/15% del prezzo d'ingresso, totale con rientro alla decisione settimanale
 (A o B entro 5%) o a metà, e il trailing 1,5 ATRw dopo +10%, non migliorano nulla: 0/8 varianti passano (PREREG 69dc968);
 finale 43–56k $ contro 78k, permutazione p ≥ 0,82, placebo sul livello p ≥ 0,34. Dal 2021 tutti i 13 trade toccano +10% (MFE
