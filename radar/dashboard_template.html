@@ -791,7 +791,7 @@ body.noscroll{overflow:hidden}
         <div class="card"><div class="tapHead" style="margin-bottom:8px"><b>Equity da 10.000 $</b><small class="note" id="detEqLev"></small></div><div id="detEq" class="chart" style="height:220px"></div></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
-        <p class="foot" id="wkStatFoot" style="margin:0">Simulazione giornaliera sulle candele settimanali chiuse: long in spot e short in perp con tetto di rischio 10% allo stop iniziale (0,1%/lato spot, 0,05%/lato perp e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
+        <p class="foot" id="wkStatFoot" style="margin:0">Simulazione giornaliera sulle candele settimanali chiuse: long in spot e short in perp con tetto di rischio 25% allo stop iniziale (0,1%/lato spot, 0,05%/lato perp e funding reale), slippage 0,1%. 2x = esposizione doppia (long metà spot e metà perp). La posizione aperta conta come chiusa all'ultima chiusura.</p>
         <table id="wkTr" hidden></table>
       </div>
     </div>
@@ -853,7 +853,7 @@ body.noscroll{overflow:hidden}
           <li><b>Trend rialzista</b>: chiusura sopra la media a 40 settimane e EMA 20 settimanale in salita.</li>
           <li><b>Ingresso</b>: chiusura sopra la EMA 21 settimanale con il flusso dei perp positivo (CVD 14 giorni, media degli ultimi 3 giorni disponibili alla chiusura della domenica: lo stesso dato dal vivo e nello storico).</li>
           <li><b>Filtro MACD</b>: se il trend dura da almeno 16 settimane, si entra solo se il MACD settimanale 8/21/5 è sopra la linea di segnale e sopra zero. Evita i rientri sul top che fallisce.</li>
-          <li>Long in <b>spot, senza leva</b>; short solo in trend ribassista, in perp. Per entrambi lo stop iniziale costa al massimo il <b>10% del capitale</b>: se è più lontano si entra con meno capitale e il resto resta in liquidità.</li>
+          <li>Long in <b>spot, senza leva</b>; short solo in trend ribassista, in perp. Per entrambi lo stop iniziale costa al massimo il <b>25% del capitale</b>: se è più lontano si entra con meno capitale e il resto resta in liquidità.</li>
         </ul>
         <h3>Quando si vende</h3>
         <ul>
@@ -863,9 +863,9 @@ body.noscroll{overflow:hidden}
         </ul>
         <h3>Limiti</h3>
         <ul>
-          <li id="wkLim">Dal 2021, con il rischio al 10% allo stop: 10.000 $ → circa 27.000 $, drawdown giornaliero intorno a −10%. Pochi trade: ogni trade pesa molto. Decidendo in un altro giorno della settimana il risultato va da circa 20.000 a 28.000 $, con drawdown fino a −19%.</li>
+          <li id="wkLim">Dal 2021, con il rischio al 25% allo stop: numeri calcolati dallo storico della strategia. Pochi trade: ogni trade pesa molto. Decidendo in un altro giorno della settimana il risultato va da circa 20.000 a 28.000 $, con drawdown fino a −19%.</li>
           <li>Il filtro MACD è stato scelto guardando il 2021–24; ha retto anche sul 2017–20, ma il registro reale dirà se il vantaggio è vero.</li>
-          <li>Caso peggiore: un long comprato vicino a un top. Nel 2018 W2 perdeva −41% in un solo trade; con il tetto di rischio al 10% uno stop costa al massimo il 10% della quota e nel 2018–20 il drawdown è stato −19%. Dedica alla strategia una quota di capitale che puoi vedere scendere del 20%.</li>
+          <li>Caso peggiore: un long comprato vicino a un top. Nel 2018 W2 perdeva −41% in un solo trade; con il tetto di rischio al 25% uno stop costa al massimo il 25% della quota e nel 2018–20 il drawdown è stato −37%. Dedica alla strategia una quota di capitale che puoi vedere scendere del 20%.</li>
         </ul>
       </div>
     </div>
@@ -1244,9 +1244,9 @@ renderTrades();
   $("wkSub").textContent = `chiusura ${artD("del", fmtD(W.week))} · regime ${W.regime}`;
   const pc1 = x => pct(x, 1);
   const open = W.status === "aperto" || W.status === "uscita", sg = W.side === "short" ? -1 : 1;
-  // W3: esposizione ridotta quando lo stop iniziale costerebbe più del 10% del capitale (tetto di rischio, long e short)
+  // W3: esposizione ridotta quando lo stop iniziale costerebbe più del 25% del capitale (tetto di rischio, long e short)
   const part = open && W.expo < 0.995, expoP = x => Math.round(x * 100) + "%";
-  const expoRow = () => part ? `<div class="wkCush"><span>Esposizione <b>${expoP(W.expo)} del capitale</b> (${usd(W.notional)} su ${usd(W.capital)}) · tetto di rischio 10% allo stop, il resto in liquidità</span></div>` : "";
+  const expoRow = () => part ? `<div class="wkCush"><span>Esposizione <b>${expoP(W.expo)} del capitale</b> (${usd(W.notional)} su ${usd(W.capital)}) · tetto di rischio 25% allo stop, il resto in liquidità</span></div>` : "";
   const nextSun = (() => { const d = new Date(W.week); d.setDate(d.getDate() + 7); return d; })();
   const weeksIn = open ? Math.max(1, Math.round((new Date(W.date) - new Date(W.entry)) / 6.048e8)) : 0;
   // --- stato
@@ -1308,10 +1308,10 @@ renderTrades();
   $("wkDlgT").textContent = open ? "Perché la posizione è aperta e quando si chiude" : W.status === "segnale" ? "Il segnale di questa settimana" : "Cosa serve per entrare";
   $("wkWhy").innerHTML = open
     ? `<p><b>Perché è aperta.</b> ${artD("Alla chiusura del", fmtD(W.signal_date || W.entry))} BTC ha chiuso ${W.side === "long" ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${W.side === "long" ? "rialzista (sopra la SMA 40)" : "ribassista (sotto la SMA 40)"}, il flusso dei perp nella stessa direzione${W.side === "long" ? " e il filtro MACD a posto" : ""}: ingresso all'apertura del lunedì ${fmtD(W.entry)} a ${usd(W.entry_px)}.</p>
-       <p><b>Quanto capitale.</b> ${part ? `Il ${expoP(W.expo)} del capitale (${usd(W.notional)} su ${usd(W.capital)}): con lo stop iniziale a ${usd(W.stop0)} l'esposizione piena avrebbe rischiato più del 10% del capitale, quindi W3 entra con meno e tiene il resto in liquidità (tetto di rischio 10% allo stop, ${W.side === "long" ? "anche sui long" : "sugli short"}).` : `Esposizione piena: lo stop iniziale a ${usd(W.stop0)} costa meno del 10% del capitale (tetto di rischio di W3${W.side === "long" ? ", anche sui long" : ""}).`}</p>
+       <p><b>Quanto capitale.</b> ${part ? `Il ${expoP(W.expo)} del capitale (${usd(W.notional)} su ${usd(W.capital)}): con lo stop iniziale a ${usd(W.stop0)} l'esposizione piena avrebbe rischiato più del 25% del capitale, quindi W3 entra con meno e tiene il resto in liquidità (tetto di rischio 25% allo stop, ${W.side === "long" ? "anche sui long" : "sugli short"}).` : `Esposizione piena: lo stop iniziale a ${usd(W.stop0)} costa meno del 10% del capitale (tetto di rischio di W3${W.side === "long" ? ", anche sui long" : ""}).`}</p>
        <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo tocca il trailing a ${usd(W.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${W.side === "long" ? "sotto" : "sopra"} la EMA 21, oggi ${usd(W.ema21)} (si esce il lunedì); un segnale di distribuzione (funding alto con flusso che si gira). Il trailing è <b>a cricchetto</b>: ${W.side === "long" ? "sale con il prezzo e non scende mai" : "scende con il prezzo e non sale mai"}, ricalcolato a ogni aggiornamento (su Telegram quando si sposta).</p>`
     : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>
-       <p>Lo stop iniziale costa al massimo il 10% del capitale (tetto di rischio di W3, long e short): se è più lontano si entra con una parte del capitale. Poi il trailing è a cricchetto: si sposta solo a favore.</p>`;
+       <p>Lo stop iniziale costa al massimo il 25% del capitale (tetto di rischio di W3, long e short): se è più lontano si entra con una parte del capitale. Poi il trailing è a cricchetto: si sposta solo a favore.</p>`;
   const HT = (W.history || {}).trades || [];
   $("wkTrN").textContent = `${HT.length} trade`;
   $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
@@ -1482,7 +1482,7 @@ renderTrades();
   }, 0);
   const H = W.history, M = H.m1;
   // "Limiti" in Come funziona: numeri dello storico del report (W3.1), così il testo non resta indietro quando cambia la strategia
-  if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 10% allo stop: ${M.n} trade, ${Math.round(M.n * M.win_rate / 100)} in guadagno, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto. Decidendo in un altro giorno della settimana il risultato va da circa 20.000 a 28.000 $, con drawdown fino a −19%.`;
+  if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 25% allo stop: ${M.n} trade, ${Math.round(M.n * M.win_rate / 100)} in guadagno, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto. Decidendo in un altro giorno della settimana il risultato va da circa 20.000 a 28.000 $, con drawdown fino a −19%.`;
   $("wkNote").textContent = `Storico dal 2021: ${M.n} trade, ${nfS(M.per_year)} l'anno, WR ${nfS(M.win_rate)}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
   $("wkStatSec").hidden = false;
   $("wkStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${M.n} trade`;
@@ -1594,7 +1594,7 @@ renderTrades();
   const S = PV.if_signal, sig = S ? `<div class="list pvSig" style="box-shadow:none"><div class="cap2">Se scatta ${S.side === "long" ? "il long" : "lo short"}</div>` +
     `<div class="row"><span class="k">Ingresso<small>lunedì all'apertura · stima sull'ultima chiusura giornaliera: stop e perdita si ricalcolano sulla chiusura di domenica</small></span><span class="v strong">≈ ${usd(S.close_est)}</span></div>` +
     `<div class="row"><span class="k">Stop iniziale<small>distanza dall'ingresso</small></span><span class="v strong">${usd(S.stop)} · ${pc1(S.stop_pct)}</span></div>` +
-    `<div class="row"><span class="k">Esposizione<small>${S.expo < 0.995 ? "ridotta dal tetto di rischio 10% allo stop" : "piena"}</small></span><span class="v strong">${nfIT(S.expo, 1)}x</span></div>` +
+    `<div class="row"><span class="k">Esposizione<small>${S.expo < 0.995 ? "ridotta dal tetto di rischio 25% allo stop" : "piena"}</small></span><span class="v strong">${nfIT(S.expo, 1)}x</span></div>` +
     `<div class="row"><span class="k">Perdita allo stop<small>sul capitale W3 di ${usd(S.capital_usd)}</small></span><span class="v strong">${pc1(-Math.abs(S.loss_at_stop_pct))} · ${usd(-Math.abs(S.loss_at_stop_usd))}</span></div>` +
     ((S.exits || []).length ? `<div class="row"><span class="k">Uscite<small>${S.exits.join(" · ")}</small></span></div>` : "") + `</div>` : "";
   // --- posizione W3 aperta (preview.position_block): P&L ricalcolato sul prezzo di riferimento (live appena arriva)
@@ -1768,7 +1768,7 @@ function simLevs() {   // W2: solo 1x e 2x (come nello storico); v2: fino a 5x
   const W = STRAT === "w2";
   $("simLev").querySelectorAll("button").forEach(x => x.disabled = W && +x.dataset.v > 2);
   if (W && sim.lev > 2) { sim.lev = 1; levSeg.set(1); }
-  $("simFoot").textContent = W ? "W3: 1x = long in spot e short in perp con tetto di rischio 10% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 2–3 trade l'anno, di settimane o mesi ciascuno."
+  $("simFoot").textContent = W ? "W3: 1x = long in spot e short in perp con tetto di rischio 25% allo stop; 2x = esposizione doppia (long metà spot e metà perp). Circa 2–3 trade l'anno, di settimane o mesi ciascuno."
     : "1x = il piano v2 così com'è (la leva di ogni trade è già calcolata dal rischio). 2x, 3x e 5x moltiplicano la size di ogni trade: 5x solo come confronto, drawdown oltre il 50%.";
 }
 function simulate() {

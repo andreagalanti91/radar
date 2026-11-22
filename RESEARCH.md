@@ -1202,6 +1202,11 @@ Ordine dei giri serali; la pianificazione può riordinare in base ai risultati. 
 - **R12 Liquidazioni reali** raccolte da oggi; **R13** rivalutazione di SOL dopo 10 trade su carta.
 
 ## W3 IN USO dal 12/11/2026 (decisione dell'utente, "ok punto 1")
+**W3.2 dal 22/11/2026 (decisione esplicita dell'utente: "Ok 25-30"; obiettivo WR > 70%, rendimento massimo, DD 20–30%)**: stessi
+segnali, rischio allo stop iniziale di nuovo 25% (R_LONG = R_SHORT = 0,25). Dal 2021: 78.474 $, DD −21,1%, WR 92%; 2018–20 DD −37,3%.
+A 30%: 92.842 $, DD −21,8%, 2018–20 −40,4%. Il "backtest originale W2 + MACD" (118.628 $) non è riproducibile dal vivo. Tabella:
+memoria/01-strategia/STRATEGIE.md. Il paragrafo W3.1 qui sotto resta come storia.
+
 **W3.1 dal 19/11/2026 (delega dell'utente: "decidi tu stop, TP e capitale"; regola di scelta preregistrata in research/p2_nuovi/PREREG.md,
 commit c8b2bd5)**: stessi segnali, stop e trailing di W3 (2,5 ATR settimanali, nessun take profit); rischio allo stop iniziale 10%
 invece di 25% (R_LONG = R_SHORT = 0,10). Nessuna configurazione della griglia (rischio 5–25% × stop 2,0/2,5/3,0 ATR × TP parziale)
