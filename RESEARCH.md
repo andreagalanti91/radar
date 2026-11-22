@@ -409,6 +409,12 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 109**: su W3.2 il take profit a +10/12,5/15% del prezzo d'ingresso, totale con rientro alla decisione settimanale
+(A o B entro 5%) o a metà, e il trailing 1,5 ATRw dopo +10%, non migliorano nulla: 0/8 varianti passano (PREREG 69dc968);
+finale 43–56k $ contro 78k, permutazione p ≥ 0,82, placebo sul livello p ≥ 0,34. Dal 2021 tutti i 13 trade toccano +10% (MFE
+mediano +36%) e W3.2 restituisce in mediana il 62% del massimo guadagno: è il costo dei trend lunghi, non un difetto da
+correggere. I rientri dopo il TP comprano tardi e perdono −9/−16%: il win rate sale, la perdita peggiore quadruplica. La metà a
++10% (WR 100%, DD −14%) equivale a rischiare meno (W3 al 15%). Non riproporre TP fissi in % sui trade settimanali. research/tp_rientro/README.md (PREREG 69dc968).
 **Lezione 108**: un indicatore di sentiment S = 0,5·squilibrio del book (±1%) + 0,5·squilibrio delle liquidazioni (30 minuti)
 non anticipa BTC: 0 test su 14 (Holm), regola long/short 10k → 6,9k in 16 giorni (buy & hold 8,0k) e capitale azzerato sulle
 liquidazioni reali 2023–24 (3.893 operazioni, lordo −4,5%). Le liquidazioni ripetono la mossa dell'ora precedente (correlazione

@@ -1,0 +1,159 @@
+== MFE dei trade W3.2 ==
+periodo    segnale  lato  ingresso     uscita motivo  expo  mfe_pct  mfe_chiusura_pct  uscita_pct  restituito_pct  quota_restituita  pnl_pct
+  2021+ 2021-01-31  long  33126.06 2021-02-22   dist 0.716     76.2              73.3        73.1             3.0              0.04     52.2
+  2021+ 2021-08-01  long  39890.12 2021-09-27    ema 0.543     32.7              32.0         8.1            24.6              0.75      4.3
+  2021+ 2021-10-03  long  48248.21 2021-11-08   dist 0.679     38.9              36.8        31.0             7.9              0.20     20.9
+  2021+ 2022-01-02 short  47238.89 2022-03-28    ema 0.639     30.3              25.8         0.8            29.5              0.97      1.0
+  2021+ 2022-08-14 short  24280.94 2023-01-16    ema 0.556     36.3              35.0        13.9            22.3              0.62      8.3
+  2021+ 2023-01-22  long  22728.73 2023-08-17  trail 0.945     39.9              38.4        14.2            25.7              0.64     13.3
+  2021+ 2023-10-22  long  30022.45 2024-01-01   dist 1.000     48.9              47.1        40.7             8.2              0.17     40.5
+  2021+ 2024-02-11  long  48348.30 2024-03-11   dist 1.000     44.8              42.6        42.5             2.3              0.05     42.2
+  2021+ 2024-09-22  long  63642.34 2025-02-26  trail 0.912     72.2              66.8        34.0            38.2              0.53     30.8
+  2021+ 2025-04-27  long  93843.04 2025-10-10  trail 0.993     34.5              32.8        11.6            22.9              0.66     11.3
+  2021+ 2025-11-30 short  90269.65 2026-04-27    ema 0.894     33.5              30.3        12.8            20.8              0.62     11.9
+  2021+ 2026-05-24 short  76987.90 2026-08-20  trail 1.000     24.9              23.9         4.8            20.1              0.81      5.7
+  2021+ 2026-08-23  long  77811.73 2026-11-09    ema 1.000     12.3              11.3        -3.9            16.2              1.32     -4.1
+2018-20 2018-01-07  long  16235.07 2018-01-16  trail 0.616      0.5              -0.1       -40.5            41.1             76.44    -25.1
+2018-20 2018-04-29  long   9426.46 2018-05-14    ema 0.397      6.3               4.6        -8.0            14.3              2.27     -3.3
+2018-20 2018-10-14 short   6333.00 2019-04-02  trail 0.593     50.2              49.3        28.1            22.0              0.44     16.7
+2018-20 2019-05-12  long   6975.21 2019-06-27  trail 1.000    100.3              87.7        51.4            48.9              0.49     51.1
+2018-20 2020-02-09  long  10161.87 2020-02-17   dist 0.931      3.3               1.8        -2.6             5.9              1.77     -2.6
+2018-20 2020-03-15 short   5354.97 2020-04-27    ema 0.400     17.0               6.1       -43.8            60.9              3.57    -17.9
+2018-20 2020-05-03  long   8903.04 2020-08-03   dist 0.667     36.2              32.6        24.2            11.9              0.33     16.0
+2018-20 2020-10-25  long  13042.67 2020-11-23   dist 1.000     45.4              43.4        41.0             4.4              0.10     40.8
+2018-20 2020-12-13  long  19194.16        NaN aperto 1.000     52.7              50.7        50.7             2.0              0.04     50.4
+2021+: trade 13 | toccano +10% 13, +12,5% 12, +15% 12 | MFE mediano 36.3% | uscita mediana 13.9% | restituito mediano 20.8 punti | quota restituita mediana 0.62 (vincenti 0.62) | MFE/uscita somma 525/284
+   tra i trade che toccano +10%: uscita mediana 13.9%, sotto +10% all'uscita 4/13, in perdita 1
+2018-20: trade 9 | toccano +10% 6, +12,5% 6, +15% 6 | MFE mediano 36.2% | uscita mediana 24.2% | restituito mediano 14.3 punti | quota restituita mediana 0.49 (vincenti 0.33) | MFE/uscita somma 312/100
+   tra i trade che toccano +10%: uscita mediana 34.5%, sotto +10% all'uscita 1/6, in perdita 1
+
+== Risultati (10.000 $) ==
+W3.2                     fin   78474 CAGR  42.0 DD  -21.1 C/DD 1.990 n 13 WR  92.3 peg  -4.1 TP  0 sMigl  51561 | IS 33477/2.574 OOS 23488/1.639 | 18-20 25142/-37.3/0.966 n9 WR55.6
+V1 TP10 tutto A          fin   49826 CAGR  31.5 DD  -21.2 C/DD 1.483 n 38 WR  81.6 peg -14.6 TP 30 sMigl  45311 | IS 18397/1.162 OOS 27138/1.959 | 18-20 16579/-30.4/0.604 n21 WR76.2
+V2 TP12,5 tutto A        fin   48999 CAGR  31.1 DD  -24.6 C/DD 1.263 n 36 WR  75.0 peg -15.6 TP 25 sMigl  43567 | IS 28235/1.683 OOS 17389/0.982 | 18-20 21642/-30.4/0.965 n20 WR75.0
+V3 TP15 tutto A          fin   48084 CAGR  30.7 DD  -24.6 C/DD 1.246 n 33 WR  69.7 peg -15.6 TP 21 sMigl  41814 | IS 24029/1.382 OOS 20050/1.268 | 18-20 23281/-30.4/1.070 n18 WR72.2
+V4 TP10 metà             fin   48683 CAGR  30.9 DD  -14.3 C/DD 2.160 n 13 WR 100.0 peg   2.8 TP 13 sMigl  37574 | IS 23825/3.536 OOS 20457/1.975 | 18-20 17275/-30.4/0.657 n9 WR55.6
+V5 TP12,5 metà           fin   50583 CAGR  31.8 DD  -18.0 C/DD 1.772 n 13 WR  92.3 peg  -4.1 TP 12 sMigl  38773 | IS 25185/2.012 OOS 20107/1.933 | 18-20 18132/-30.4/0.722 n9 WR55.6
+V6 TP15 metà             fin   56280 CAGR  34.2 DD  -18.0 C/DD 1.906 n 13 WR  92.3 peg  -4.1 TP 12 sMigl  42846 | IS 26612/2.153 OOS 21172/2.107 | 18-20 19025/-30.4/0.786 n9 WR55.6
+V7 TP12,5 tutto B5%      fin   42724 CAGR  28.1 DD  -24.6 C/DD 1.140 n 38 WR  76.3 peg -15.9 TP 25 sMigl  37987 | IS 24726/1.434 OOS 17314/0.993 | 18-20 25104/-30.4/1.181 n21 WR76.2
+V8 trail 1,5 dopo +10%   fin   52553 CAGR  32.7 DD  -32.0 C/DD 1.021 n 19 WR  73.7 peg -15.6 TP  0 sMigl  34529 | IS 27293/1.530 OOS 19294/0.804 | 18-20 23443/-31.3/1.051 n10 WR60.0
+Buy & hold ALL: {'final': 22549, 'cagr': 14.9, 'dd': -76.6, 'cdd': 0.194}
+Buy & hold IS: {'final': 14590, 'cagr': 13.4, 'dd': -76.6, 'cdd': 0.175}
+Buy & hold OOS: {'final': 15425, 'cagr': 16.3, 'dd': -53.0, 'cdd': 0.307}
+Buy & hold L: {'final': 21046, 'cagr': 28.2, 'dd': -81.2, 'cdd': 0.347}
+
+== Criteri ==
+V1 TP10 tutto A: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -45.4, senza 2 -86.7 punti) | signflip p 0.818 (Δ non nulli 13)
+V2 TP12,5 tutto A: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -47.1, senza 2 -63.0 punti) | signflip p 0.933 (Δ non nulli 12)
+V3 TP15 tutto A: c1 IS/OOS False | c2 2018-20 True | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -49.0, senza 2 -61.8 punti) | signflip p 0.971 (Δ non nulli 12)
+V4 TP10 metà: c1 IS/OOS True | c2 2018-20 False | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -47.7, senza 2 -57.3 punti) | signflip p 0.963 (Δ non nulli 13)
+V5 TP12,5 metà: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -43.9, senza 2 -50.4 punti) | signflip p 0.965 (Δ non nulli 12)
+V6 TP15 metà: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -33.2, senza 2 -41.7 punti) | signflip p 0.922 (Δ non nulli 12)
+V7 TP12,5 tutto B5%: c1 IS/OOS False | c2 2018-20 True | c3 DD True | c4 senza 2 Δ migliori False (somma Δ -60.8, senza 2 -62.5 punti) | signflip p 0.996 (Δ non nulli 13)
+V8 trail 1,5 dopo +10%: c1 IS/OOS False | c2 2018-20 True | c3 DD False | c4 senza 2 Δ migliori False (somma Δ -40.1, senza 2 -50.6 punti) | signflip p 0.931 (Δ non nulli 11)
+Holm: {'V1 TP10 tutto A': (0.818, False), 'V6 TP15 metà': (0.922, False), 'V8 trail 1,5 dopo +10%': (0.931, False), 'V2 TP12,5 tutto A': (0.933, False), 'V4 TP10 metà': (0.963, False), 'V5 TP12,5 metà': (0.965, False), 'V3 TP15 tutto A': (0.971, False), 'V7 TP12,5 tutto B5%': (0.996, False)}
+
+== Placebo (livello TP / attivazione a caso per trade, U[5%,30%]) ==
+V1 TP10 tutto A: C/DD 1.483 placebo mediana 1.435 (5-95% 1.122-1.843) p 0.418
+V2 TP12,5 tutto A: C/DD 1.263 placebo mediana 1.435 (5-95% 1.122-1.843) p 0.780
+V3 TP15 tutto A: C/DD 1.246 placebo mediana 1.435 (5-95% 1.122-1.843) p 0.800
+V4 TP10 metà: C/DD 2.160 placebo mediana 2.088 (5-95% 1.859-2.615) p 0.342
+V5 TP12,5 metà: C/DD 1.772 placebo mediana 2.088 (5-95% 1.859-2.615) p 0.996
+V6 TP15 metà: C/DD 1.906 placebo mediana 2.088 (5-95% 1.859-2.615) p 0.900
+V7 TP12,5 tutto B5%: C/DD 1.140 placebo mediana 1.276 (5-95% 0.915-1.706) p 0.738
+V8 trail 1,5 dopo +10%: C/DD 1.021 placebo mediana 1.021 (5-95% 0.928-1.080) p 0.518
+
+== Vicini (2021+, IS, OOS, 2018-20 C/DD) ==
+V7 TP12,5 tutto B5% · B2,5%: fin 46206 DD -24.6 C/DD 1.21 WR 75.7 | IS 1.58 OOS 0.993 18-20 1.126
+V7 TP12,5 tutto B5% · B7,5%: fin 33435 DD -24.6 C/DD 0.928 WR 73.7 | IS 1.002 OOS 0.993 18-20 1.494
+V8 trail 1,5 dopo +10% · k1,25: fin 76416 DD -27.9 C/DD 1.482 WR 84.2 | IS 2.481 OOS 1.115 18-20 0.798
+V8 trail 1,5 dopo +10% · k1,75: fin 46052 DD -32.7 C/DD 0.908 WR 70.6 | IS 1.351 OOS 0.677 18-20 0.931
+V8 trail 1,5 dopo +10% · att 7,5%: fin 44390 DD -31.1 C/DD 0.928 WR 65.0 | IS 0.896 OOS 1.043 18-20 1.051
+V8 trail 1,5 dopo +10% · att 12,5%: fin 50790 DD -32.0 C/DD 0.997 WR 73.7 | IS 1.53 OOS 0.757 18-20 1.051
+W3.2 C/DD: ALL 1.99 IS 2.574 OOS 1.639 18-20 0.966
+
+== Verdetto per variante (c1..c4, Holm, placebo) ==
+V1 TP10 tutto A: NON PASSA [False, False, True, False, False, False]
+V2 TP12,5 tutto A: NON PASSA [False, False, True, False, False, False]
+V3 TP15 tutto A: NON PASSA [False, True, True, False, False, False]
+V4 TP10 metà: NON PASSA [True, False, True, False, False, False]
+V5 TP12,5 metà: NON PASSA [False, False, True, False, False, False]
+V6 TP15 metà: NON PASSA [False, False, True, False, False, False]
+V7 TP12,5 tutto B5%: NON PASSA [False, True, True, False, False, False]
+V8 trail 1,5 dopo +10%: NON PASSA [False, True, False, False, False, False]
+
+== Trade delle varianti TP tutto (2021+) ==
+V2  2021-01-31 long  2021-02-01→2021-02-03 tp     segnale move 12.4 pnl 8.7
+V2  2021-02-07 long  2021-02-08→2021-02-08 tp     segnale move 12.4 pnl 9.6
+V2  2021-02-14 long  2021-02-15→2021-02-19 tp     segnale move 12.4 pnl 11.0
+V2  2021-08-01 long  2021-08-02→2021-08-08 tp     segnale move 12.4 pnl 6.6
+V2  2021-08-08 long  2021-08-09→2021-08-20 tp     segnale move 12.4 pnl 7.2
+V2  2021-08-22 long  2021-08-23→2021-09-27 ema    segnale move -12.5 pnl -8.8
+V2  2021-10-03 long  2021-10-04→2021-10-06 tp     segnale move 12.4 pnl 8.3
+V2  2021-10-10 long  2021-10-11→2021-10-15 tp     segnale move 12.4 pnl 9.1
+V2  2021-10-17 long  2021-10-18→2021-11-08 dist   segnale move 2.6 pnl 2.0
+V2  2022-01-02 short 2022-01-03→2022-01-07 tp     segnale move 12.4 pnl 7.9
+V2  2022-01-09 short 2022-01-10→2022-01-21 tp     segnale move 12.4 pnl 7.1
+V2  2022-03-27 long  2022-03-28→2022-04-11 ema    segnale move -10.2 pnl -7.2
+V2  2022-08-14 short 2022-08-15→2022-08-19 tp     segnale move 12.4 pnl 6.9
+V2  2022-08-21 short 2022-08-22→2022-09-06 tp     segnale move 12.4 pnl 6.1
+V2  2022-10-16 short 2022-10-17→2022-11-09 tp     segnale move 12.4 pnl 7.2
+V2  2022-11-13 short 2022-11-14→2023-01-16 ema    segnale move -28.1 pnl -14.1
+V2  2023-01-22 long  2023-01-23→2023-03-14 tp     segnale move 12.4 pnl 11.5
+V2  2023-03-19 long  2023-03-20→2023-07-13 tp     segnale move 12.4 pnl 12.2
+V2  2023-10-22 long  2023-10-23→2023-10-23 tp     segnale move 12.4 pnl 12.2
+V2  2023-10-29 long  2023-10-30→2023-12-01 tp     segnale move 12.4 pnl 12.2
+V2  2023-12-10 long  2023-12-11→2024-01-01 dist   segnale move -3.6 pnl -3.8
+V2  2024-02-11 long  2024-02-12→2024-02-26 tp     segnale move 12.4 pnl 12.2
+V2  2024-03-03 long  2024-03-04→2024-03-11 dist   segnale move 9.0 pnl 8.8
+V2  2024-09-22 long  2024-09-23→2024-10-29 tp     segnale move 12.4 pnl 11.1
+V2  2024-11-03 long  2024-11-04→2024-11-10 tp     segnale move 12.4 pnl 12.2
+V2  2024-11-10 long  2024-11-11→2024-11-13 tp     segnale move 12.4 pnl 12.2
+V2  2024-11-17 long  2024-11-18→2024-12-05 tp     segnale move 12.4 pnl 12.2
+V2  2025-01-05 long  2025-01-06→2025-02-26 trail  segnale move -15.4 pnl -15.6
+V2  2025-04-27 long  2025-04-28→2025-05-12 tp     segnale move 12.4 pnl 12.1
+V2  2025-05-18 long  2025-05-19→2025-07-14 tp     segnale move 12.4 pnl 12.2
+V2  2025-07-20 long  2025-07-21→2025-10-10 trail  segnale move -10.8 pnl -11.0
+V2  2025-11-30 short 2025-12-01→2026-01-31 tp     segnale move 12.4 pnl 11.8
+V2  2026-02-08 short 2026-02-09→2026-04-27 ema    segnale move -12.1 pnl -9.0
+V2  2026-05-24 short 2026-05-25→2026-06-02 tp     segnale move 12.4 pnl 12.5
+V2  2026-06-07 short 2026-06-08→2026-08-20 trail  segnale move -15.8 pnl -12.4
+V2  2026-08-23 long  2026-08-24→2026-11-09 ema    segnale move -3.9 pnl -4.1
+V7  2021-01-31 long  2021-02-01→2021-02-03 tp     segnale move 12.4 pnl 8.7
+V7  2021-02-07 long  2021-02-08→2021-02-08 tp     segnale move 12.4 pnl 9.6
+V7  2021-02-14 long  2021-02-15→2021-02-19 tp     segnale move 12.4 pnl 11.0
+V7  2021-03-21 long  2021-03-22→2021-04-05 dist   rientroB move 1.3 pnl 0.9
+V7  2021-08-01 long  2021-08-02→2021-08-08 tp     segnale move 12.4 pnl 6.6
+V7  2021-08-08 long  2021-08-09→2021-08-20 tp     segnale move 12.4 pnl 7.2
+V7  2021-08-22 long  2021-08-23→2021-09-27 ema    segnale move -12.5 pnl -8.8
+V7  2021-10-03 long  2021-10-04→2021-10-06 tp     segnale move 12.4 pnl 8.3
+V7  2021-10-10 long  2021-10-11→2021-10-15 tp     segnale move 12.4 pnl 9.1
+V7  2021-10-17 long  2021-10-18→2021-11-08 dist   segnale move 2.6 pnl 2.0
+V7  2022-01-02 short 2022-01-03→2022-01-07 tp     segnale move 12.4 pnl 7.9
+V7  2022-01-09 short 2022-01-10→2022-01-21 tp     segnale move 12.4 pnl 7.1
+V7  2022-01-23 short 2022-01-24→2022-03-28 ema    rientroB move -29.5 pnl -14.2
+V7  2022-08-14 short 2022-08-15→2022-08-19 tp     segnale move 12.4 pnl 6.9
+V7  2022-08-21 short 2022-08-22→2022-09-06 tp     segnale move 12.4 pnl 6.1
+V7  2022-09-18 short 2022-09-19→2022-11-09 tp     rientroB move 12.4 pnl 6.5
+V7  2022-11-13 short 2022-11-14→2023-01-16 ema    segnale move -28.1 pnl -14.1
+V7  2023-01-22 long  2023-01-23→2023-03-14 tp     segnale move 12.4 pnl 11.5
+V7  2023-03-19 long  2023-03-20→2023-07-13 tp     segnale move 12.4 pnl 12.2
+V7  2023-07-16 long  2023-07-17→2023-08-21 ema    rientroB move -13.5 pnl -13.7
+V7  2023-10-22 long  2023-10-23→2023-10-23 tp     segnale move 12.4 pnl 12.2
+V7  2023-10-29 long  2023-10-30→2023-12-01 tp     segnale move 12.4 pnl 12.2
+V7  2023-12-03 long  2023-12-04→2024-01-01 dist   rientroB move 5.6 pnl 5.4
+V7  2024-02-11 long  2024-02-12→2024-02-26 tp     segnale move 12.4 pnl 12.2
+V7  2024-03-03 long  2024-03-04→2024-03-11 dist   segnale move 9.0 pnl 8.8
+V7  2024-09-22 long  2024-09-23→2024-10-29 tp     segnale move 12.4 pnl 11.1
+V7  2024-11-03 long  2024-11-04→2024-11-10 tp     segnale move 12.4 pnl 12.2
+V7  2024-11-10 long  2024-11-11→2024-11-13 tp     segnale move 12.4 pnl 12.2
+V7  2024-11-17 long  2024-11-18→2024-12-05 tp     segnale move 12.4 pnl 12.2
+V7  2024-12-08 long  2024-12-09→2025-02-26 trail  rientroB move -15.8 pnl -15.9
+V7  2025-04-27 long  2025-04-28→2025-05-12 tp     segnale move 12.4 pnl 12.1
+V7  2025-05-18 long  2025-05-19→2025-07-14 tp     segnale move 12.4 pnl 12.2
+V7  2025-07-20 long  2025-07-21→2025-10-10 trail  segnale move -10.8 pnl -11.0
+V7  2025-11-30 short 2025-12-01→2026-01-31 tp     segnale move 12.4 pnl 11.8
+V7  2026-02-08 short 2026-02-09→2026-04-27 ema    segnale move -12.1 pnl -9.0
+V7  2026-05-24 short 2026-05-25→2026-06-02 tp     segnale move 12.4 pnl 12.5
+V7  2026-06-07 short 2026-06-08→2026-08-20 trail  segnale move -15.8 pnl -12.4
+V7  2026-08-23 long  2026-08-24→2026-11-09 ema    segnale move -3.9 pnl -4.1
