@@ -1,6 +1,6 @@
 <!-- ============ LIQUIDAZIONI (radar/pages/liquidazioni.html) ============
-     Server (ogni ora, radar/liqmap.py e radar/orderbook.py): mappa stimata Binance + OKX, balene Hyperliquid, storico OKX raccolto,
-     motore del book. Browser (ogni 45 s e con "Aggiorna"): liquidazioni live Binance/OKX, book Binance futures + OKX, posizioni
+     Server (ogni ora, radar/liqmap.py): mappa stimata Binance + OKX, balene Hyperliquid, storico OKX raccolto.
+     Il book ha la sua pagina (pages/book.html). Browser (ogni 45 s e con "Aggiorna"): liquidazioni live Binance/OKX, posizioni
      Hyperliquid, mappa Binance ricalcolata fino all'ora corrente. Se una fonte non risponde restano i dati del server. -->
 <style>
 .lqBar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -43,18 +43,6 @@
 .lqEv .row{min-height:42px;padding:8px 14px} .lqEv .lqSide{font:600 .72rem var(--font);letter-spacing:0;padding:4px 7px;border-radius:999px;white-space:nowrap}
 .lqEv .lqSide.l{color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent)} .lqEv .lqSide.s{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
 .lqEv .x{font:500 .6rem var(--mono);color:var(--label3);letter-spacing:.06em;text-transform:uppercase;width:52px;flex:none}
-.obBands{display:grid;gap:8px}
-.obBand{display:grid;grid-template-columns:52px minmax(0,1fr) 54px;gap:8px;align-items:center;font-variant-numeric:tabular-nums}
-.obBand span{font:500 .62rem var(--mono);color:var(--label3)} .obBand b{font:600 .78rem var(--font);text-align:right}
-.obBand .dv{position:relative;height:12px;border-radius:6px;background:var(--raise);border:1px solid var(--line)}
-.obBand .dv i{position:absolute;top:1px;bottom:1px;border-radius:5px} .obBand .dv em{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--label2)}
-.obDepth{position:relative;height:90px;margin:8px 2px 2px;display:flex;align-items:flex-end;gap:1px}
-.obDepth i{flex:1;min-width:1px;border-radius:2px 2px 0 0} .obDepth i.b{background:color-mix(in srgb,var(--green) 60%,transparent)} .obDepth i.a{background:color-mix(in srgb,var(--red) 55%,transparent)}
-.obDepth em{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--label);transform:translateX(-1px)}
-.obAx{display:flex;justify-content:space-between;font:500 .6rem var(--mono);color:var(--label3);margin:2px}
-.obP{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.obP>div{border-radius:16px;padding:12px 14px;background:var(--raise);border:1px solid var(--line);display:grid;gap:3px}
-.obP span{font:500 .72rem var(--font);letter-spacing:0;color:var(--label3)} .obP b{font:600 1.3rem var(--font);font-variant-numeric:tabular-nums} .obP small{font-size:.72rem;color:var(--label2)}
 .lqNote{font-size:.78rem;color:var(--label2);line-height:1.5;margin:0}
 .lqAge{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
 .lqAge>div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 12px;display:grid;gap:2px;min-width:0}
@@ -138,11 +126,12 @@
   </div>
   <div class="section lqD">
     <div class="sh">Liquidazioni vicine <small id="lqSub">stima + dati reali</small></div>
+    <details class="calPast"><summary>Fonti e aggiornamento</summary>
     <div class="lqBox" id="lqSrcBox">
       <div class="lqBar"><div class="lqSrc" id="lqSrc"></div><button type="button" class="lqBtn" id="lqRefresh">↻ Aggiorna</button></div>
       <div class="lqAge" id="lqAge" aria-label="Aggiornamento delle fonti"></div>
-      <p class="lqNote" id="lqEngLine" hidden></p>
     </div>
+    </details>
     <div class="lqBox" id="lqHeadBox">
       <div class="card glow lqHead" id="lqHead"><h2>Dati in caricamento…</h2></div>
       <div class="tiles lqT" id="lqTiles"></div>
@@ -157,16 +146,16 @@
       <div class="lqLadder" id="lqLadder" role="img" aria-label="Mappa delle liquidazioni stimate sopra e sotto il prezzo"></div>
       <div class="lqLeg"><span><i style="background:var(--teal)"></i>short liquidabili</span><span><i style="background:var(--violet)"></i>long liquidabili</span><span><i style="background:rgba(255,90,82,.35)"></i>zona R</span><span><i style="background:rgba(52,215,123,.4)"></i>zona S</span><span style="color:var(--orange)">HL = balena Hyperliquid</span></div>
     </div>
+    <details class="calPast lqD"><summary>Come si legge la mappa</summary>
     <p class="foot lqHonest">Mappa = STIMA da un modello (anche quella di Coinglass lo è, con un metodo diverso: le due possono contraddirsi). I livelli di liquidazione veri sono pubblici solo on-chain (Hyperliquid, Lighter: sezione Balene). Reali sono invece le liquidazioni avvenute, nella parte "in tempo reale".</p>
-    <p class="foot lqD" id="lqMapNote"></p>
+    <p class="foot" id="lqMapNote"></p>
+    </details>
     <button type="button" class="lqLink lqM" id="lqMapHow">Come si legge la mappa ›</button>
   </div>
 
   <div class="section lqM">
     <button type="button" class="card tapCard lqMC" id="lqMCl" aria-haspopup="dialog"></button>
     <button type="button" class="card tapCard lqMC" id="lqMLive" aria-haspopup="dialog"></button>
-    <button type="button" class="card tapCard lqMC" id="lqMBook" aria-haspopup="dialog"></button>
-    <button type="button" class="card tapCard lqMC" id="lqMEng" aria-haspopup="dialog" hidden></button>
     <button type="button" class="card tapCard lqMSrc" id="lqMSrc" aria-haspopup="dialog"></button>
   </div>
 
@@ -186,28 +175,10 @@
     <div class="lqBox" id="lqWhBox">
       <div class="sh">Balene Hyperliquid · BTC <small id="lqWhSub"></small></div>
       <div class="list" id="lqWh"></div>
-      <p class="foot">Prezzi di liquidazione VERI: Hyperliquid è l'unico exchange con posizioni pubbliche. Conti seguiti da whalebot + i più grandi della classifica; posizioni in margine incrociato: il prezzo di liquidazione si sposta con il resto del conto.</p>
+      <p class="foot">Prezzi di liquidazione veri (Hyperliquid è l'unico exchange con posizioni pubbliche): le 6 più vicine al prezzo.</p>
     </div>
   </div>
 
-  <div class="section lqD">
-    <div class="lqBox" id="obBookBox">
-      <div class="sh dup">Order book <small id="obSub"></small></div>
-      <div class="card" style="display:grid;gap:12px">
-        <div class="obBands" id="obBands"></div>
-        <div><div class="obDepth" id="obDepth" role="img" aria-label="Profondità del book entro ±1%"></div><div class="obAx"><span>−1%</span><span>mid</span><span>+1%</span></div></div>
-        <div class="list" id="obWalls" style="box-shadow:none"></div>
-      </div>
-    </div>
-    <!-- motore di direzione: visibile SOLO se funziona (≥ 30 previsioni fuori campione e batte "sempre su" e momentum di ≥ 3 punti) -->
-    <div class="card" id="obEng" style="display:grid;gap:12px" hidden>
-      <div class="wkTop" style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font:600 .98rem var(--font)">Motore del book · direzione a breve</b><span class="cap" id="obEngSub"></span></div>
-      <div class="obP" id="obP"></div>
-      <div class="scroll"><table class="grid" id="obTrack"></table></div>
-      <div class="lqSrc" id="obChecks"></div>
-      <p class="lqNote" id="obNote"></p>
-    </div>
-  </div>
 </div>
 <script>
 (function () {
@@ -422,9 +393,9 @@
     if (!shown(H("lqTot"))) return;   // telefono a pannello chiuso: niente lista né istogramma
     H("lqTot").innerHTML = box("OKX · 1 ora", win(1), "long / short liquidati") + box("OKX · 4 ore", win(4), "long / short") + box("OKX · 24 ore", t24, "registro del server + live") ;
     H("lqLiveSub").textContent = `Binance da ${Math.round((now - S.bnLive.t0) / 6e4)} min: ${m$(S.bnLive.l)} long / ${m$(S.bnLive.s)} short`;
-    H("lqEv").innerHTML = ev.slice(0, 15).map(e => `<div class="row"><span class="x">${e.x}</span><span class="lqSide ${e.side}">${e.side === "l" ? "long liq." : "short liq."}</span><span class="k">${m$(e.usd)}<small>${e.btc.toFixed(e.btc >= 1 ? 2 : 4).replace(".", ",")} BTC a ${px(e.p)}</small></span><span class="v">${hm(e.t)}<small style="display:block;font-size:.7rem;color:var(--label3)">${new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</small></span></div>`).join("") ||
+    H("lqEv").innerHTML = ev.slice(0, 6).map(e => `<div class="row"><span class="x">${e.x}</span><span class="lqSide ${e.side}">${e.side === "l" ? "long liq." : "short liq."}</span><span class="k">${m$(e.usd)}<small>${e.btc.toFixed(e.btc >= 1 ? 2 : 4).replace(".", ",")} BTC a ${px(e.p)}</small></span><span class="v">${hm(e.t)}<small style="display:block;font-size:.7rem;color:var(--label3)">${new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</small></span></div>`).join("") ||
       `<div class="row"><span class="k">Nessuna liquidazione ricevuta<small>Le fonti live non rispondono da questa rete: restano i dati raccolti dal server.</small></span></div>`;
-    H("lqEvNote").innerHTML = `Eventi REALI (ordini di liquidazione eseguiti dagli exchange), non stime. Binance (WebSocket forceOrder) trasmette solo dal vivo e al massimo una liquidazione al secondo per contratto: niente storico. OKX dà le ultime liquidazioni via API${F && F.since ? `; il server le raccoglie ogni ora dal ${new Date(F.since.replace(" ", "T") + "Z").toLocaleDateString("it-IT", { day: "numeric", month: "long" })} (data/liquidations.csv)` : ""}. Long liquidati = vendite forzate (spingono giù), short liquidati = acquisti forzati.`;
+    H("lqEvNote").textContent = "Eventi reali, non stime. Long liquidati = vendite forzate (spingono giù), short liquidati = acquisti forzati.";
     if (F && F.hours) { const mx = Math.max(1, ...F.hours.map(h => h[1] + h[2]));
       H("lqHours").innerHTML = F.hours.map(h => `<div title="${esc(new Date(h[0].replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit" }) + " · long " + m$(h[1]) + " · short " + m$(h[2]))}"><i class="s" style="height:${h[2] / mx * 100}%"></i><i class="l" style="height:${h[1] / mx * 100}%"></i></div>`).join("");
       const big = (F.largest || [])[0]; H("lqHoursSub").textContent = big ? `più grande 7g: ${m$(big[2])} ${big[1]} a ${px(big[3])}` : ""; }
@@ -445,90 +416,14 @@
     if (!shown(H("lqWh"))) return;
     const LM = SRV().liqmap || {}, W = S.wh || (LM.whales || []).map(w => ({ ...w, dist: w.dist_pct }));
     H("lqWhSub").textContent = `${W.length} posizioni BTC · ${LM.whale_accounts || 0} conti letti${S.wh ? " · live" : " · dati del server"}`;
-    H("lqWh").innerHTML = W.slice(0, 12).map(w => `<div class="row"><span class="chip" style="color:${w.side === "long" ? "var(--green)" : "var(--red)"}">${w.side}</span><span class="k">${esc(w.who || "?")}${w.tracked ? ` <span class="cap" style="color:var(--tint)">whalebot</span>` : ""}<small>${w.btc.toFixed(1).replace(".", ",")} BTC · ${m$(w.ntl)} · ingresso ${px(w.entry)} · ${w.lev || "?"}x</small></span><span class="v strong">${w.liq ? px(w.liq) : "—"}<small style="display:block;font-weight:400;color:var(--label2)">${w.dist != null ? pc(w.dist) : "niente liquidazione"}</small></span></div>`).join("") ||
+    H("lqWh").innerHTML = W.slice(0, 6).map(w => `<div class="row"><span class="chip" style="color:${w.side === "long" ? "var(--green)" : "var(--red)"}">${w.side}</span><span class="k">${esc(w.who || "?")}${w.tracked ? ` <span class="cap" style="color:var(--tint)">whalebot</span>` : ""}<small>${w.btc.toFixed(1).replace(".", ",")} BTC · ${m$(w.ntl)} · ingresso ${px(w.entry)} · ${w.lev || "?"}x</small></span><span class="v strong">${w.liq ? px(w.liq) : "—"}<small style="display:block;font-weight:400;color:var(--label2)">${w.dist != null ? pc(w.dist) : "niente liquidazione"}</small></span></div>`).join("") ||
       `<div class="row"><span class="k">Nessuna posizione BTC fra i conti letti</span></div>`;
-  }
-
-  // ---------------- order book live (Binance futures + OKX perp), riserva: foto oraria del server
-  function bookStats(books, p) {
-    const bands = [0.1, 0.25, 0.5, 1], out = { bands: [], depth: [], walls: { b: [], a: [] } };
-    bands.forEach(b => { let B = 0, A = 0, n = 0; books.forEach(k => { if (k.cb < b || k.ca < b) return; n++;
-      k.b.forEach(([q, s]) => { if (q >= k.mid * (1 - b / 100)) B += q * s; }); k.a.forEach(([q, s]) => { if (q <= k.mid * (1 + b / 100)) A += q * s; }); });
-      out.bands.push({ b, B, A, n, imb: B + A ? (B - A) / (B + A) : null }); });
-    const NB = 40, acc = new Array(NB).fill(0), wb = {}, wa = {};
-    books.forEach(k => { k.b.concat(k.a).forEach(([q, s]) => { const d = q / k.mid - 1; if (Math.abs(d) > .01) return; const i = Math.min(NB - 1, Math.floor((d + .01) / .02 * NB)); acc[i] += q * s;
-      if (Math.abs(d) >= .001) { const key = Math.floor(d / .0005), W = d < 0 ? wb : wa; W[key] = (W[key] || 0) + q * s; } }); });
-    // muri: fascia dello 0,05% misurata dal mid DEL BOOK stesso (non da un altro prezzo); prezzo mostrato = mid del primo book × (1 + distanza)
-    out.depth = acc;
-    const wall = ([k, v]) => { const d = (+k + .5) * .0005; return { p: p * (1 + d), d: d * 100, usd: v }; };
-    out.walls.b = Object.entries(wb).sort((x, y) => y[1] - x[1]).slice(0, 3).map(wall).filter(w => w.d < 0);
-    out.walls.a = Object.entries(wa).sort((x, y) => y[1] - x[1]).slice(0, 3).map(wall).filter(w => w.d > 0);
-    return out;
-  }
-  const mkBook = (b, a) => { const mid = (b[0][0] + a[0][0]) / 2; return { b, a, mid, cb: (1 - b[b.length - 1][0] / mid) * 100, ca: (a[a.length - 1][0] / mid - 1) * 100 }; };
-  function liveBook() {
-    const bn = getJ("https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=1000").then(j => { S.src.bnbook = true; return mkBook(j.bids.map(x => [+x[0], +x[1]]), j.asks.map(x => [+x[0], +x[1]])); }).catch(() => { S.src.bnbook = false; return null; });
-    const ok = getJ("https://www.okx.com/api/v5/market/books-full?instId=BTC-USDT-SWAP&sz=5000").then(j => { const d = j.data[0]; S.src.okxbook = true; return mkBook(d.bids.map(x => [+x[0], +x[1] * .01]), d.asks.map(x => [+x[0], +x[1] * .01])); }).catch(() => { S.src.okxbook = false; return null; });
-    return Promise.all([bn, ok]).then(r => { const bk = r.filter(Boolean); if (bk.length) { S.bookT = Date.now(); S.book = { st: bookStats(bk, bk[0].mid), n: bk.length, names: [r[0] && "Binance", r[1] && "OKX"].filter(Boolean) }; } });
-  }
-  function bookData() {
-    const OB = SRV().orderbook, B = S.book;
-    let bands, depth = null, walls, sub;
-    if (B) { bands = B.st.bands; depth = B.st.depth; walls = B.st.walls; sub = `live · ${B.names.join(" + ")} perp`; }
-    else if (OB && OB.now) { const n = OB.now; bands = [0.25, 0.5, 1, 2].map(b => ({ b, B: n["bid_" + b], A: n["ask_" + b], n: n["src_" + b], imb: n["imb_" + b] }));
-      walls = { b: n.wall_bid_px ? [{ p: n.wall_bid_px, d: n.wall_bid_dist, usd: n.wall_bid_usd }] : [], a: n.wall_ask_px ? [{ p: n.wall_ask_px, d: n.wall_ask_dist, usd: n.wall_ask_usd }] : [] };
-      walls.b = walls.b.filter(w => w.d == null || w.d < 0); walls.a = walls.a.filter(w => w.d == null || w.d > 0);   // la distanza del server è già dal mid del suo book
-      sub = `foto del server · ${OB.ts ? new Date(OB.ts.replace(" ", "T") + "Z").toLocaleString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""}`; }
-    else return null;
-    return { bands, depth, walls, sub };
-  }
-  function renderBook() {
-    renderMBook();
-    if (!shown(H("obBands"))) return;
-    const D = bookData();
-    if (!D) { H("obBands").innerHTML = `<p class="lqNote">Book non disponibile.</p>`; return; }
-    const { bands, depth, walls } = D; H("obSub").textContent = D.sub;
-    H("obBands").innerHTML = bands.filter(b => b.imb != null).map(b => { const v = b.imb * 100, w = Math.min(50, Math.abs(v) / 2);
-      return `<div class="obBand"><span>±${String(b.b).replace(".", ",")}%</span><div class="dv" title="bid ${m$(b.B)} · ask ${m$(b.A)}"><em></em><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? "var(--green)" : "var(--red)"}"></i></div><b class="${v >= 0 ? "pos" : "neg"}">${pc(v, 0)}</b></div>`; }).join("") +
-      `<p class="lqNote">Squilibrio = (bid − ask) / totale entro la fascia: verde più ordini in acquisto, rosso più in vendita.</p>`;
-    if (depth) { const mx = Math.max(1, ...depth); H("obDepth").innerHTML = depth.map((v, i) => `<i class="${i < depth.length / 2 ? "b" : "a"}" style="height:${v / mx * 100}%" title="${m$(v)}"></i>`).join("") + `<em></em>`; H("obDepth").parentElement.hidden = false; }
-    else H("obDepth").parentElement.hidden = true;
-    const wr = (w, k) => `<div class="row"><span class="k">${k === "b" ? "Muro in acquisto" : "Muro in vendita"}<small>${w.d != null ? pc(w.d, 2) + " dal mid del book" : "foto del server"}</small></span><span class="v strong ${k === "b" ? "pos" : "neg"}">${px(w.p)}<small style="display:block;font-weight:400;color:var(--label2)">${m$(w.usd)}</small></span></div>`;
-    H("obWalls").innerHTML = (walls.a.slice(0, 2).map(w => wr(w, "a")).join("") + walls.b.slice(0, 2).map(w => wr(w, "b")).join("")) || "";
-  }
-  // il motore di direzione si mostra SOLO se funziona: stessa regola di radar/orderbook.py verdict()
-  // (≥ 30 previsioni fuori campione con posizione e accuratezza ≥ max(sempre su, momentum) + 3 punti, su almeno un orizzonte)
-  function engVerdict() {
-    const OB = SRV().orderbook; if (!OB) return { works: false, n: 0, need: 30 };
-    if (OB.verdict) return OB.verdict;
-    const per = ["1h", "4h"].map(hz => { const t = (OB.track || {})[hz] || {}, bs = [t.always_up_acc, t.momentum_acc].filter(v => v != null);
-      return { ok: (t.model_n || 0) >= 30 && t.model_acc != null && bs.length > 0 && t.model_acc >= Math.max(...bs) + 3, n: t.n || 0 }; });
-    return { works: per.some(x => x.ok), n: Math.max(0, ...per.map(x => x.n)), need: 30 };
-  }
-  function renderEngine() {
-    const OB = SRV().orderbook, V = engVerdict();
-    H("obEng").hidden = !V.works;
-    const ln = H("lqEngLine"); ln.hidden = V.works;
-    ln.textContent = V.works ? "" : (V.n < (V.need || 30) ? `Motore di direzione in addestramento: ${V.n}/${V.need || 30} casi.` : `Motore di direzione nascosto: con ${V.n} casi non batte ancora "sempre su" e il momentum.`);
-    renderMEng(V);
-    if (!V.works || !shown(H("obP"))) return;
-    if (!OB) { H("obP").innerHTML = `<p class="lqNote">Motore non ancora avviato.</p>`; return; }
-    const P = OB.pred || {}, TR = OB.track || {}, M = OB.model || {};
-    const pt = (hz, lab) => { const v = P[hz]; const n = (M[hz] || {}).n || 0;
-      return `<div><span>Prob. rialzo ${lab}</span><b class="${v > .52 ? "pos" : v < .48 ? "neg" : ""}">${v == null ? "–" : Math.round(v * 100) + "%"}</b><small>${n < 30 ? `in apprendimento: ${n}/30 casi` : `${n} casi · ${v > .52 ? "lieve spinta su" : v < .48 ? "lieve spinta giù" : "nessuna lettura"}`}</small></div>`; };
-    H("obP").innerHTML = pt("1h", "1 ora") + pt("4h", "4 ore");
-    H("obEngSub").textContent = `foto oraria · ${OB.rows || 0} foto dal ${OB.since ? new Date(OB.since.replace(" ", "T") + "Z").toLocaleDateString("it-IT", { day: "numeric", month: "short" }) : "–"}`;
-    const cell = v => v == null ? "–" : String(v).replace(".", ",") + "%";
-    H("obTrack").innerHTML = `<tr><th>Orizzonte</th><th>Casi</th><th>Modello</th><th>Sempre su</th><th>Momentum</th></tr>` +
-      ["1h", "4h"].map(hz => { const t = TR[hz] || {}; return `<tr><td>${hz}</td><td>${t.n || 0}</td><td>${cell(t.model_acc)}${t.model_n ? ` <small>(${t.model_n})</small>` : ""}</td><td>${cell(t.always_up_acc)}</td><td>${cell(t.momentum_acc)}</td></tr>`; }).join("");
-    H("obChecks").innerHTML = Object.entries(OB.checks || {}).map(([k, v]) => `<span class="chip ${v === "ok" ? "ok" : "ko"}" title="${esc(v)}">${k.replace("_", " ")} ${v === "ok" ? "✓" : "✕"}</span>`).join("");
-    H("obNote").innerHTML = `Ogni ora il server fotografa i book di Coinbase, Kraken, OKX e Binance spot, controlla i dati (book ordinato e non incrociato, spread, età, mid entro 0,3% dalle altre fonti) e scarta le fonti anomale. La previsione si salva prima dell'esito: l'accuratezza è tutta fuori campione. Ogni 4 ore il modello (logistica con forte regolarizzazione sugli squilibri del book) si riaddestra${OB.learned ? `, ultimo il ${new Date(OB.learned.replace(" ", "T") + "Z").toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}` : ""}. Con una foto all'ora il segnale è debole: conta solo se batte "sempre su" e il momentum per molte settimane.`;
   }
 
   // ---------------- aggiornamento per fonte: arancione se più vecchia di 2 ore
   function ages() {
-    const LM = SRV().liqmap, OB = SRV().orderbook, now = Date.now();
-    if (!LM && !OB) return [];
+    const LM = SRV().liqmap, now = Date.now();
+    if (!LM) return [];
     const so = (LM && LM.sources) || {}, F = (LM && LM.feed) || {};
     const srcT = v => v && v.ok ? ((v.as_of || v.asof) ? T(v.as_of || v.asof) : v.until ? T(v.until) + 36e5 : null) : null;   // as_of = chiusura dell'ultima ora; until = sua apertura
     const hm2 = t => new Date(t).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -540,7 +435,6 @@
       L.push(["Balene Hyperliquid", S.whT || T(LM.whales_asof || LM.ts), S.whT ? "live" : "dal server"]);
       L.push(["Liquidazioni OKX", T(F.asof || LM.ts), "registro del server"]);
     }
-    L.push(["Order book", S.bookT || T(OB && OB.ts), S.bookT ? "live" : "foto del server"]);
     return L;
   }
   function renderAge() {
@@ -553,7 +447,7 @@
       return `<div class="${old ? "old" : ""}"><span>${k}</span><b>${t == null ? "non disponibile" : "aggiornato " + when(t)}</b><small>${t == null ? how : ago(t) + " · " + how}</small></div>`; }).join("");
   }
   function renderSrc() {
-    const L = [["Binance live", S.src.bnws], ["OKX live", S.src.okxws || S.src.okx], ["Book", S.src.bnbook || S.src.okxbook], ["Hyperliquid", S.src.hl], ["Mappa Binance", !!S.binMap]];
+    const L = [["Binance live", S.src.bnws], ["OKX live", S.src.okxws || S.src.okx], ["Hyperliquid", S.src.hl], ["Mappa Binance", !!S.binMap]];
     const LM = SRV().liqmap;
     H("lqSrc").innerHTML = L.map(([k, v]) => `<span class="chip ${v ? "ok" : v === false ? "ko" : ""}">${k}</span>`).join("") + (LM ? `<span class="chip">calcolo server ${new Date(T(LM.ts)).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</span>` : "");
   }
@@ -587,29 +481,14 @@
       <div class="lsBar"><i style="width:${tt ? v.l / tt * 100 : 50}%"></i><i style="width:${tt ? v.s / tt * 100 : 50}%"></i></div>` +
       (e ? `<p>${e.usd >= 1e5 ? "Ultima grande" : "La più grande recente"}: <b>${m$(e.usd)}</b> ${e.side === "l" ? "long" : "short"} alle ${hhmm(e.t)}${Date.now() - e.t > 864e5 ? " del " + new Date(e.t).toLocaleDateString("it-IT", { day: "numeric", month: "short" }) : ""}</p>` : `<p>Nessuna liquidazione ricevuta nell'ultima ora.</p>`));
   }
-  function renderMBook() {
-    const el = H("lqMBook"); if (!shown(el)) return;
-    const D = bookData(); if (!D) { el.innerHTML = card("Order book", "Book", `<p>Book non disponibile.</p>`); return; }
-    const b1 = D.bands.find(b => b.b === 1 && b.imb != null) || D.bands.filter(b => b.imb != null).slice(-1)[0];
-    const v = b1 ? b1.imb * 100 : 0, w = Math.min(50, Math.abs(v) / 2);
-    const near = (L, sgn) => L.filter(x => x.d == null || Math.sign(x.d) === sgn).sort((x, y) => Math.abs(x.d || 0) - Math.abs(y.d || 0))[0];
-    const wa = near(D.walls.a, 1), wb = near(D.walls.b, -1);
-    el.innerHTML = card("Order book", "Book", `<p>${Math.abs(v) < 5 ? "Acquisti e vendite in equilibrio" : v > 0 ? "Più ordini in acquisto" : "Più ordini in vendita"} entro ±${b1 ? String(b1.b).replace(".", ",") : 1}%: <b class="${v >= 0 ? "pos" : "neg"}">${pc(v, 0)}</b></p>
-      <div class="obBand" style="grid-template-columns:1fr"><div class="dv"><em></em><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? "var(--green)" : "var(--red)"}"></i></div></div>
-      <div class="lqDuo"><div><span>Muro in acquisto</span><b class="pos">${wb ? k$(wb.p) : "–"}</b><small>${wb ? (wb.d != null ? pc(wb.d, 2) + " · " : "") + m$(wb.usd) : ""}</small></div><div><span>Muro in vendita</span><b class="neg">${wa ? k$(wa.p) : "–"}</b><small>${wa ? (wa.d != null ? pc(wa.d, 2) + " · " : "") + m$(wa.usd) : ""}</small></div></div>`);
-  }
-  function renderMEng(V) {
-    const el = H("lqMEng"); el.hidden = !V.works; if (!V.works || !shown(el)) return;
-    const P = (SRV().orderbook || {}).pred || {}, f = v => v == null ? "–" : Math.round(v * 100) + "%";
-    el.innerHTML = card("Direzione a breve", "Dettagli", `<div class="lqDuo"><div><span>Prob. rialzo 1 ora</span><b>${f(P["1h"])}</b></div><div><span>Prob. rialzo 4 ore</span><b>${f(P["4h"])}</b></div></div>`);
-  }
+
   function renderMSrc() {
     const el = H("lqMSrc"); if (!shown(el)) return;
     const now = Date.now(), L = ages(), ok = L.filter(x => x[1] != null), old = L.filter(x => x[1] == null || now - x[1] > 72e5).length;
     const last = ok.length ? Math.max(...ok.map(x => x[1])) : null;
     el.innerHTML = `<i class="lqDot${old ? " old" : ""}"></i><span class="t">${last ? `Dati aggiornati alle ${hhmm(last)}` : "Dati in caricamento"}<small>${old ? `${old} ${old === 1 ? "fonte in ritardo" : "fonti in ritardo"}` : "tutte le fonti aggiornate"}</small></span><span class="more" style="color:var(--tint);font:600 .82rem var(--font)">Fonti ›</span>`;
   }
-  function renderMobile() { [renderMVerd, renderMCl, renderMLive, renderMBook, renderMSrc].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+  function renderMobile() { [renderMVerd, renderMCl, renderMLive, renderMSrc].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
 
   // pannello: sposta i nodi della versione desktop dentro openSheet e li rimette al loro posto alla chiusura
   function restore() { (S.moved || []).forEach(([n, m]) => { if (m.parentNode) m.replaceWith(n); }); S.moved = null; }
@@ -634,18 +513,16 @@
     H("lqMVerd").onclick = () => sheet("Lettura delle liquidazioni", ["lqHeadBox"]);
     H("lqMCl").onclick = () => sheet("Cluster vicini", ["lqWhBox"], clusterList(), [renderWh]);
     H("lqMLive").onclick = () => sheet("Liquidazioni in tempo reale", ["lqLiveBox"], "", [renderLive]);
-    H("lqMBook").onclick = () => sheet("Order book", ["obBookBox"], "", [renderBook]);
-    H("lqMEng").onclick = () => sheet("Direzione a breve", ["obEng"], "", [renderEngine]);
     H("lqMSrc").onclick = () => sheet("Fonti dei dati", ["lqSrcBox"], "", [renderSrc, renderAge]);
-    H("lqMapHow").onclick = () => sheetHome() || window.openSheet("Come si legge la mappa", `<p class="lqNote">Ogni riga è una fascia di prezzo: sopra il prezzo attuale gli short che verrebbero liquidati (azzurro), sotto i long (viola). Barre più lunghe = più dollari liquidati in quella fascia. R e S sono le zone di resistenza e supporto; HL una balena Hyperliquid con prezzo di liquidazione vero.</p><p class="lqNote">${H("lqMapNote").innerHTML}</p>`);
+    H("lqMapHow").onclick = () => sheetHome() || window.openSheet("Come si legge la mappa", `<p class="lqNote">Ogni riga è una fascia di prezzo: sopra il prezzo attuale gli short che verrebbero liquidati (azzurro), sotto i long (viola). Barre più lunghe = più dollari liquidati in quella fascia. R e S sono le zone di resistenza e supporto; HL una balena Hyperliquid con prezzo di liquidazione vero.</p><p class="lqNote">${H("lqMapNote").innerHTML}</p><p class="lqNote">${document.querySelector("#v-liquidazioni .lqHonest").innerHTML}</p>`);
   }
 
   function renderAll() {
     if (S.moved && !(H("sheet") || {}).open) restore();
-    [renderCasc, renderHead, renderMap, renderLive, renderWh, renderBook, renderEngine, renderSrc, renderAge, renderMobile].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
+    [renderCasc, renderHead, renderMap, renderLive, renderWh, renderSrc, renderAge, renderMobile].forEach(f => { try { f(); } catch (e) { console.warn("liquidazioni", f.name, e); } }); }
   async function refresh(force) {
     const btn = H("lqRefresh"); btn.disabled = true; btn.textContent = "Aggiorno…";
-    const jobs = [okxRest(), liveBook()];
+    const jobs = [okxRest()];
     if (force || Date.now() - S.lastMap > 3e5) { S.lastMap = Date.now(); jobs.push(timeout(binanceMap(), 12000).then(m => { S.binMap = m; }).catch(() => {})); }
     if (force || Date.now() - S.lastWh > 6e4) { S.lastWh = Date.now(); jobs.push(whales()); }
     await Promise.allSettled(jobs.map(j => timeout(j, 15000)));

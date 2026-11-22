@@ -100,7 +100,8 @@
           <div><span>Liquidazioni · L</span><b id="bkL">–</b><small id="bkLs">–</small></div>
         </div>
         <p class="bkState" id="bkLiqSt"></p>
-        <p class="bkWarn">Indicatore descrittivo, non un segnale. Nei test (16 giorni di registro, 16 mesi di liquidazioni reali) il suo segno non ha anticipato il prezzo a 1, 4 o 24 ore e la regola long/short ha perso dopo i costi; per lo squilibrio del book il test non è conclusivo. Le liquidazioni seguono il movimento appena avvenuto. Sotto 250.000 $ di liquidazioni in 30 minuti il punteggio non si calcola. Prossima verifica: febbraio 2027.</p>
+        <div class="bkWarn">Indicatore descrittivo, non un segnale. Nei test non ha anticipato il prezzo.
+          <details class="calPast" style="margin-top:2px"><summary>Dettagli del test</summary>Nei test (16 giorni di registro, 16 mesi di liquidazioni reali) il suo segno non ha anticipato il prezzo a 1, 4 o 24 ore e la regola long/short ha perso dopo i costi; per lo squilibrio del book il test non è conclusivo. Le liquidazioni seguono il movimento appena avvenuto. Sotto 250.000 $ di liquidazioni in 30 minuti il punteggio non si calcola. Prossima verifica: febbraio 2027.</details></div>
       </div>
     </div>
     <div class="section">
@@ -113,7 +114,7 @@
       <div class="list bkEv" id="bkEv"></div>
     </div>
   </div>
-  <p class="foot">Muro: fascia di prezzo con almeno 3 volte la liquidità media delle fasce visibili e almeno il doppio delle fasce vicine (a ridosso del prezzo la liquidità è sempre alta e non fa muro da sola). Quando un muro perde il 70% è «ritirato» se il prezzo era entro lo 0,3% senza attraversarlo (possibile spoofing), «eseguito» se il prezzo lo ha attraversato (assorbimento). La profondità disponibile cambia da borsa a borsa: lontano dal prezzo il book aggregato è parziale. La liquidità visibile può essere ritirata in ogni momento.</p>
+  <details class="calPast"><summary>Cos'è un muro</summary><p class="foot">Muro: fascia di prezzo con almeno 3 volte la liquidità media delle fasce visibili e almeno il doppio delle fasce vicine (a ridosso del prezzo la liquidità è sempre alta e non fa muro da sola). Quando un muro perde il 70% è «ritirato» se il prezzo era entro lo 0,3% senza attraversarlo (possibile spoofing), «eseguito» se il prezzo lo ha attraversato (assorbimento). La profondità disponibile cambia da borsa a borsa: lontano dal prezzo il book aggregato è parziale. La liquidità visibile può essere ritirata in ogni momento.</p></details>
 </div>
 <script>
 (function () {
