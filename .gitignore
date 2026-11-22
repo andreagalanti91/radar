@@ -4,3 +4,4 @@ site/
 .venv/
 data/wallets_state.json
 research/notte_1511/n3/data/*.html
+research/w32_top100/data/

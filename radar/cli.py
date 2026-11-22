@@ -14,7 +14,7 @@ warnings.filterwarnings("ignore")
 from . import telegram  # noqa: E402
 from .backtest import run, summary  # noqa: E402
 from .dashboard import render  # noqa: E402
-from .data import CRITICAL, STALE_HOURS, load_all, stale_sources, update_all  # noqa: E402
+from .data import ASSET_NEEDED, CRITICAL, STALE_HOURS, cache_name, is_critical, load_all, stale_sources, update_all, update_asset  # noqa: E402
 from .features import build_features  # noqa: E402
 from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E402
 from .news import fetch_calendar, fetch_central_banks, fetch_news  # noqa: E402
@@ -46,20 +46,53 @@ def _save_state(st: dict) -> None:
     STATE_FILE.write_text(json.dumps(st, indent=2, default=str))
 
 
+def state_key(asset: str = "BTC") -> str:
+    """Chiave dello stato degli avvisi W3.2 in data/state.json: "weekly" per BTC, "weekly_eth" per ETH."""
+    return "weekly" if asset == "BTC" else f"weekly_{asset.lower()}"
+
+
 def weekly_alerts(cur: dict, st: dict, send=None, h=None) -> list[dict]:
-    """Eventi W3 + controllo orario dello stop. Ogni evento si marca in st["weekly"] SOLO se send() conferma
-    (message_id o True); i falliti si ripropongono al giro dopo. Il controllo orario guarda il più protettivo tra
-    lo stop del modello e l'ultimo comunicato. Restituisce gli eventi inviati."""
+    """Eventi W3 + controllo orario dello stop dell'asset di `cur` (cur["asset"], BTC se assente). Ogni evento si marca in
+    st["weekly"] (st["weekly_eth"] per ETH) SOLO se send() conferma (message_id o True); i falliti si ripropongono al giro
+    dopo. Il controllo orario guarda il più protettivo tra lo stop del modello e l'ultimo comunicato. Restituisce gli eventi
+    inviati. Asset aggiunti dopo BTC: il primo giro conta come primo avvio (posizione "in corso"), dal secondo uno stato
+    mancante è uno stato perso (marker st["weekly_eth_since"])."""
     send = send or telegram.send
-    sent, st["weekly"] = weekly.send_events(cur, st.get("weekly"), send)
-    keys = st.get("weekly_intraday_keys", [])
-    hev, new_keys = weekly.check_intraday(cur, keys, h, told=weekly.told_level(st["weekly"], cur))
+    a = weekly.asset_of(cur)
+    k = state_key(a)
+    lost = None if a == "BTC" else bool(st.get(f"{k}_since"))
+    sent, st[k] = weekly.send_events(cur, st.get(k), send, lost=lost)
+    if a != "BTC":
+        st.setdefault(f"{k}_since", cur["date"])
+    ik = f"{k}_intraday_keys"
+    keys = st.get(ik, [])
+    hev, new_keys = weekly.check_intraday(cur, keys, h, told=weekly.told_level(st[k], cur))
     if hev:
         if send(weekly.format_intraday(hev)):
-            st["weekly_intraday_keys"] = new_keys
+            st[ik] = new_keys
         else:
-            print("[radar] allerta stop W3 non confermata da Telegram: si riprova al prossimo giro")
+            print(f"[radar] allerta stop W3 {a} non confermata da Telegram: si riprova al prossimo giro")
     return sent
+
+
+def asset_round(asset: str, d: dict, st: dict, now: pd.Timestamp, errors: dict, send=None, fetch=None) -> dict | None:
+    """W3.2 di un asset diverso da BTC (oggi ETH), dopo il giro di BTC e isolato da esso: dati (stesse fonti di BTC, cache in
+    data/), feature, valutazione e avvisi. Ritorna {"cur", "d", "stale"} o None se i dati mancano (errori in `errors` con il
+    prefisso dell'asset: li segnala source_alerts). Un errore qui non ferma mai il giro di BTC."""
+    fetch = fetch or update_asset
+    da = fetch(asset, errors)
+    if da is None:
+        return None
+    da = dict(da, fng=d.get("fng") if d.get("fng") is not None else pd.DataFrame(columns=["fng"]))
+    f = build_features(da)
+    cur = weekly.evaluate(f, asset=asset)
+    stale = {cache_name(k, asset): v for k, v in stale_sources(da, now, names=ASSET_NEEDED).items()}
+    try:
+        sent = weekly_alerts(cur, st, send)
+        print(f"[radar] W3 {asset} {cur['status']} · eventi inviati: {[e['type'] for e in sent]}")
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] eventi settimanali {asset} non inviati: {e!r}")
+    return {"cur": cur, "d": da, "stale": stale}
 
 
 def source_alerts(errors: dict, stale: dict, st: dict, now: pd.Timestamp, data_until: str | None, send=None) -> None:
@@ -67,7 +100,7 @@ def source_alerts(errors: dict, stale: dict, st: dict, now: pd.Timestamp, data_u
     (si valuta sull'ultima cache) e dati fermi da oltre 36 ore."""
     send = send or telegram.send
     today = str(now.date())
-    crit = {k: v for k, v in errors.items() if k in CRITICAL}
+    crit = {k: v for k, v in errors.items() if is_critical(k)}
     note = f"W3.2 valutato sui dati fino al {data_until}: decisioni possibili in ritardo." if data_until else ""
     if crit and st.get("source_alert") != today:
         if send("<b>RADAR SIGNAL BTC · Fonte non disponibile</b>\n"
@@ -84,11 +117,12 @@ def heartbeat_due(st: dict, now: pd.Timestamp) -> bool:
     return os.environ.get("RADAR_HEARTBEAT", "1") == "1" and now.hour >= 7 and st.get("heartbeat") != str(now.date())
 
 
-def heartbeat(cur: dict | None, st: dict, now: pd.Timestamp, data_until: str, problems: list[str], send=None) -> bool:
+def heartbeat(cur: dict | None, st: dict, now: pd.Timestamp, data_until: str, problems: list[str], send=None,
+              others: dict | None = None) -> bool:
     send = send or telegram.send
     if not heartbeat_due(st, now):
         return False
-    if send(weekly.format_heartbeat(cur, data_until, now.strftime("%d/%m %H:%M UTC"), problems, str(now.date()))):
+    if send(weekly.format_heartbeat(cur, data_until, now.strftime("%d/%m %H:%M UTC"), problems, str(now.date()), others)):
         st["heartbeat"] = str(now.date())
         return True
     return False
@@ -169,16 +203,34 @@ def daily() -> None:
             print(f"[radar] W3 {wcur['status']} · eventi inviati: {[e['type'] for e in sent]}")
         except Exception as e:  # noqa: BLE001
             print(f"[radar] eventi settimanali non inviati: {e!r}")
+    # ---- W3.2 ETH (dal 22/11/2026, capitale separato RADAR_ETH_CAPITAL): dopo BTC e isolato, dati ETH mancanti non bloccano nulla
+    eth = None
+    try:
+        eth = asset_round("ETH", d, st, now, errors)
+    except Exception as e:  # noqa: BLE001
+        print(f"[radar] W3.2 ETH non calcolato: {e!r}")
+        problems.append("W3.2 ETH non calcolato")
+    ecur = (eth or {}).get("cur")
+    if eth:
+        stale.update(eth["stale"])
+        problems += [f"dati {k} vecchi" for k in eth["stale"]]
+    elif "W3.2 ETH non calcolato" not in problems:
+        problems.append("W3.2 ETH non calcolato")
+    problems += [f"fonte {k} non disponibile" for k in errors if k.startswith("eth_")]
     # registro "provvisori vs definitivi" della decisione domenicale e soglie d'allarme: solo registro e avviso, W3 non cambia
     from importlib import import_module as _im   # import isolato: un modulo rotto non ferma il giro
     from .data import DATA_DIR as _ddir
     provlog_out = _soft("registro provvisori/definitivi", lambda: _im(".provlog", __package__).update(f, d, wcur, _ddir))
     guard_out = _soft("soglie d'allarme", lambda: _im(".guard", __package__).update(wcur, st, journal.load()))
+    guard_eth = _soft("soglie d'allarme ETH", lambda: _im(".guard", __package__).update(ecur, st, None, asset="ETH")) if ecur else None
     _soft("avvisi sulle fonti", source_alerts, errors, stale, st, now, data_until)
     # controlli di coerenza orari (buchi nei dati, storico riscritto, decisione cambiata con i definitivi): solo avviso
     coh = _soft("controlli di coerenza", lambda: _im(".coherence", __package__).update(d, wcur, provlog_out, st))
     problems += [x.split(" (")[0] for x in (coh or {}).get("problems", [])]
-    _soft("heartbeat", heartbeat, wcur, st, now, data_until, problems)
+    if eth:
+        coh_eth = _soft("controlli di coerenza ETH", lambda: _im(".coherence", __package__).update(eth["d"], ecur, None, st, asset="ETH"))
+        problems += ["ETH " + x.split(" (")[0] for x in (coh_eth or {}).get("problems", [])]
+    _soft("heartbeat", heartbeat, wcur, st, now, data_until, problems, others={"ETH": ecur})
     _save_state(st)
     # ---- v2, moduli accessori e dashboard: ognuno isolato
     _soft("liquidazioni", collect_liquidations)
@@ -194,15 +246,17 @@ def daily() -> None:
             def _mb():   # import isolato: un errore del modulo non ferma il riepilogo
                 from .macro import build
                 return build(_dd, weekly=wcur)
-            _soft("riepilogo giornaliero", daily_brief, {"weekly": wcur, "preview": _soft("pre-analisi W3", _pv, f),
+            _soft("riepilogo giornaliero", daily_brief, {"weekly": wcur, "weekly_eth": ecur, "preview": _soft("pre-analisi W3", _pv, f),
                                                          "macro": _soft("chiusura multi-asset", _mb)},
                   st, _now(), data_until)
         st["last_run"] = _now().isoformat(timespec="seconds")
         _save_state(st)
         return
     if wcur:
-        report["weekly"] = wcur
-    for k, v in (("provlog", provlog_out), ("guard", guard_out)):
+        report["weekly"] = wcur          # BTC: chiave storica, invariata per compatibilità
+    if ecur:
+        report["weekly_eth"] = ecur      # ETH: stessa struttura (asset = "ETH")
+    for k, v in (("provlog", provlog_out), ("guard", guard_out), ("guard_eth", guard_eth)):
         if v is not None:
             report[k] = v
     from importlib import import_module

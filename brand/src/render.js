@@ -10,6 +10,7 @@ const JOBS = [
   ["logoLight", "logo-light.png", 1200, 400, 1],
   ["logoDark", "logo-dark.png", 1200, 400, 1],
   ["board", "brand-board.png", 1600, 1000, 1],
+  ["varianti", "src/varianti.png", 1500, 610, 1],
   ["icon", "icon-1024.png", 1024, 1024, 1],
   ["icon", "icon-512.png", 1024, 1024, .5],
   ["icon", "icon-192.png", 1024, 1024, .1875],
@@ -25,7 +26,7 @@ const JOBS = [
     await p.screenshot({ path: path.join(OUT, file), clip: { x: 0, y: 0, width: w, height: h }, omitBackground: true });
     await p.close(); console.log(file);
   }
-  // favicon: icon.svg (segno al 68%, correzione ottica per 16-32 px) con angoli arrotondati e trasparenza
+  // favicon: icon.svg (segno al 72%, correzione ottica per 16-32 px) con angoli arrotondati e trasparenza
   const p = await b.newPage({ viewport: { width: 32, height: 32 } });
   await p.goto("file://" + path.join(OUT, "icon.svg"));
   await p.waitForTimeout(200);

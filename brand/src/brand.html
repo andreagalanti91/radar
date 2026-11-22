@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8">
-<title>Radar Signal brand</title>
+<title>RadarSignal brand</title>
 <!-- Sorgente unica di tutti i PNG del brand. Render: node brand/src/render.js (una vista per hash: #banner, #social, #icon, ...) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
@@ -9,9 +9,10 @@ body{font-family:Inter,system-ui,sans-serif;font-feature-settings:"tnum" 1,"cv11
 .light{--bg:#f4f5f7;--card:#fff;--raise:#f2f4f7;--line:#e6e8ec;--ink:#0f1218;--ink2:#555c68;--ink3:#878e99;--tint:#2f4cf0;--tintbg:#eceffe;--green:#0f8a4a;--red:#d6342a;--sk:#e9ebef;--sh:0 1px 2px rgba(16,24,40,.04),0 12px 32px -8px rgba(16,24,40,.10)}
 .dark{--bg:#0c0d10;--card:#15171c;--raise:#1e2128;--line:#252931;--ink:#f1f3f7;--ink2:#a3aab6;--ink3:#717884;--tint:#7088ff;--tintbg:rgba(112,136,255,.14);--green:#3fd185;--red:#ff6b5f;--sk:#262a33;--sh:0 1px 2px rgba(0,0,0,.3),0 16px 40px -12px rgba(0,0,0,.6)}
 .frame{position:relative;overflow:hidden;background:var(--bg);color:var(--ink)}
-.tile{display:grid;place-items:center;background:linear-gradient(160deg,#5a6bff 0%,#2f4cf0 55%,#2236c4 100%);color:#fff}
-.wm{display:flex;align-items:center;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--ink)}
-.wm i{font-style:normal;font-weight:600;color:var(--tint)}
+.tile{display:grid;place-items:center;background:#2f4cf0;color:#fff}
+.wm{display:flex;align-items:center;font-weight:700;letter-spacing:-.045em;line-height:1;color:var(--ink)}
+.wm i{font-style:normal;font-weight:700;color:var(--tint)}
+.wm.mono,.wm.mono i{color:#fff}
 .card{position:absolute;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh)}
 .sk{display:block;height:10px;border-radius:99px;background:var(--sk)}
 .pill{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 14px;border-radius:99px;font:500 14px/1 Inter;background:var(--tintbg);color:var(--tint)}
@@ -22,12 +23,24 @@ body{font-family:Inter,system-ui,sans-serif;font-feature-settings:"tnum" 1,"cv11
 </style></head><body>
 <div id="out"></div>
 <script>
-// Simbolo: anello + fascio a quarto di cerchio + blip (griglia 64). c = colore del segno, b = colore del blip
-const MARK = (s, c = "currentColor", b = "#5ef0c4") => `<svg width="${s}" height="${s}" viewBox="0 0 64 64" style="display:block"><path fill="${c}" fill-rule="evenodd" d="M32 4a28 28 0 1 1 0 56 28 28 0 0 1 0-56Zm0 7.5a20.5 20.5 0 1 0 0 41 20.5 20.5 0 0 0 0-41Z"/><path fill="${c}" d="M32 32V14.5A17.5 17.5 0 0 1 49.5 32Z"/><circle cx="23" cy="41" r="4.5" fill="${b}"/></svg>`;
-// App tile: raggio 22% del lato, segno al 60%
-const TILE = (s, sq = false) => `<div class="tile" style="width:${s}px;height:${s}px;border-radius:${sq ? 0 : s * .22}px;flex:none">${MARK(s * .6, "#fff")}</div>`;
-// Lockup: tile + wordmark. Altezza tile = 1,2 × corpo del wordmark, distanza = 0,32 × corpo
-const LOCKUP = size => `<div class="wm" style="font-size:${size}px;gap:${size * .32}px">${TILE(size * 1.2)}<span>radar<i>signal</i></span></div>`;
+// Simbolo "Eco": punto sorgente + due anelli aperti da un fascio di 30° verso nord-est (griglia 64, un solo colore)
+const D = "M58.85 16.5A31 31 0 1 1 47.5 5.15L44 11.22A24 24 0 1 0 52.78 20ZM48.45 22.5A19 19 0 1 1 41.5 15.55L38.25 21.17A12.5 12.5 0 1 0 42.83 25.75ZM32 26a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z";
+const MARK = (s, c = "currentColor") => `<svg width="${s}" height="${s}" viewBox="0 0 64 64" style="display:block"><path fill="${c}" d="${D}"/></svg>`;
+// App tile: indaco pieno, raggio 22% del lato, segno bianco al 62%
+const TILE = (s, sq = false) => `<div class="tile" style="width:${s}px;height:${s}px;border-radius:${sq ? 0 : s * .22}px;flex:none">${MARK(s * .62, "#fff")}</div>`;
+// Lockup: segno + wordmark. Segno alto 1,1 × corpo, distanza 0,3 × corpo.
+// mode: "light" = segno indaco, radar Ink + signal indaco; "mono" = tutto bianco (su indaco pieno o nero)
+const LOCKUP = (size, mode = "light") => `<div class="wm ${mode === "mono" ? "mono" : ""}" style="font-size:${size}px;gap:${size * .3}px">${MARK(size * 1.1, mode === "mono" ? "#fff" : "var(--tint)")}<span style="margin-top:-${size * .06}px">radar<i>signal</i></span></div>`;
+// Variante con tile (app, avatar): tile + wordmark
+const LOCKUP_T = size => `<div class="wm" style="font-size:${size}px;gap:${size * .32}px">${TILE(size * 1.2)}<span style="margin-top:-${size * .06}px">radar<i>signal</i></span></div>`;
+
+// Varianti del simbolo proposte (per brand/src/varianti.png)
+const VAR = [
+  ["A · Sweep a tratto", "un tratto continuo spesso: lancetta + ottagono aperto", "M32 32L47.91 16.09L54.5 32L47.91 47.91L32 54.5L16.09 47.91L9.5 32L16.09 16.09L32 9.5", "stroke"],
+  ["B · Quadranti", "moduli pieni: fascio a settore + tre archi", "M32 32L33.05 2.02A30 30 0 0 1 61.98 30.95ZM61.98 33.05A30 30 0 0 1 33.05 61.98L32.7 51.99A20 20 0 0 0 51.99 32.7ZM30.95 61.98A30 30 0 0 1 2.02 33.05L12.01 32.7A20 20 0 0 0 31.3 51.99ZM2.02 30.95A30 30 0 0 1 30.95 2.02L31.3 12.01A20 20 0 0 0 12.01 31.3Z", "fill"],
+  ["C · Eco", "sorgente + due anelli tagliati da un fascio di 30°", D, "fill"],
+];
+const VM = (v, s, c) => `<svg width="${s}" height="${s}" viewBox="0 0 64 64" style="display:block">${v[3] === "stroke" ? `<path d="${v[2]}" fill="none" stroke="${c}" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>` : `<path fill="${c}" d="${v[2]}"/>`}</svg>`;
 
 // Grafico astratto: curva morbida senza numeri, griglia solo orizzontale, ultimo punto = blip
 function chart(w, h) {
@@ -83,33 +96,45 @@ const COVER = theme => `<div class="frame ${theme}" style="width:1280px;height:6
   </div>
 </div>`;
 
-const SW = [["#2f4cf0", "Signal Indigo", "--tint chiaro"], ["#7088ff", "Indigo Night", "--tint scuro"], ["#5ef0c4", "Blip Mint", "solo blip"], ["#0f1218", "Ink", "testo"], ["#f4f5f7", "Paper", "fondo"], ["#0c0d10", "Night", "fondo scuro"]];
+const SW = [["#2f4cf0", "Signal Indigo", "marca, --tint"], ["#7088ff", "Indigo Night", "--tint scuro"], ["#0f1218", "Ink", "testo"], ["#0c0d10", "Night", "fondo scuro"], ["#f4f5f7", "Paper", "fondo"], ["#5ef0c4", "Blip Mint", "solo grafici"]];
+const BOX = (bg, inner, extra = "") => `<div style="background:${bg};border-radius:18px;display:grid;place-items:center;${extra}">${inner}</div>`;
 
 const views = {
   banner: COVER("light"),
   social: COVER("dark"),
   icon: `<div style="width:1024px;height:1024px">${TILE(1024, true)}</div>`,
-  logoLight: `<div class="frame light" style="width:1200px;height:400px;display:grid;place-items:center;background:#fff">${LOCKUP(96)}</div>`,
-  logoDark: `<div class="frame dark" style="width:1200px;height:400px;display:grid;place-items:center">${LOCKUP(96)}</div>`,
-  fav16: `<div style="display:flex;gap:16px;padding:16px;background:#fff">${[16, 24, 32].map(s => `<img src="../icon.svg" width="${s}" height="${s}">`).join("")}</div>`,
-  board: `<div class="frame light" style="width:1600px;height:1000px;padding:48px;display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:20px">
-    <div style="grid-column:1/-1;display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:8px">
+  logoLight: `<div class="frame light" style="width:1200px;height:400px;display:grid;place-items:center;background:#fff">${LOCKUP(100)}</div>`,
+  logoDark: `<div class="frame dark" style="width:1200px;height:400px;display:grid;place-items:center;background:#0c0d10">${LOCKUP(100, "mono")}</div>`,
+  varianti: `<div class="frame light" style="width:1500px;height:610px;padding:44px 48px;background:#f4f5f7">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font:700 30px/1 Inter;letter-spacing:-.03em">Simbolo · tre varianti</div><div class="lbl" style="font-size:15px">indaco pieno · nero · 32/16 px reali</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px">${VAR.map((v, i) => `<div class="bcard" style="padding:22px;${i === 2 ? "outline:3px solid #2f4cf0;outline-offset:-3px" : ""}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">${BOX("#2f4cf0", VM(v, 150, "#fff"), "height:230px")}${BOX("#0c0d10", VM(v, 150, "#fff"), "height:230px")}</div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:16px;height:64px;padding:0 16px;border:1px solid #e6e8ec;border-radius:14px">
+        ${VM(v, 32, "#2f4cf0")}${VM(v, 16, "#2f4cf0")}${VM(v, 16, "#0f1218")}<span style="width:1px;height:28px;background:#e6e8ec"></span>
+        <div style="width:32px;height:32px;border-radius:7px;background:#2f4cf0;display:grid;place-items:center">${VM(v, 22, "#fff")}</div><div style="width:16px;height:16px;border-radius:3.5px;background:#2f4cf0;display:grid;place-items:center">${VM(v, 11.5, "#fff")}</div></div>
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center"><div style="font:700 21px/1 Inter;letter-spacing:-.02em">${v[0]}</div>${i === 2 ? `<span class="pill" style="background:#eceffe;color:#2f4cf0">scelta</span>` : ""}</div>
+      <div style="margin-top:8px;font:400 15px/1.45 Inter;color:#555c68">${v[1]}</div>
+      <div style="margin-top:6px;font:500 14px/1.45 Inter;color:${i === 2 ? "#0f8a4a" : "#d6342a"}">${["si legge come una G (Google, Gitbook)", "sembra un grafico a torta, non un radar", "radar e segnale insieme, nitido a 16 px"][i]}</div></div>`).join("")}</div>
+  </div>`,
+  board: `<div class="frame light" style="width:1600px;height:1000px;padding:44px 48px;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto 1fr 1fr;gap:20px">
+    <div style="grid-column:1/-1;display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:4px">
       <div>${LOCKUP(30)}</div><div style="font:500 15px/1 Inter;color:#878e99">brand board · 2026</div></div>
-    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">logo · fondo chiaro</div><div style="display:grid;place-items:center;padding:20px 0">${LOCKUP(62)}</div><div class="lbl">tile + wordmark radar<b style="color:#2f4cf0;font-weight:600">signal</b> in Inter</div></div>
-    <div class="bcard dark" style="background:#0c0d10;border-color:#252931;display:grid;align-content:space-between"><div class="bt">fondo scuro</div><div style="display:grid;place-items:center">${LOCKUP(40)}</div><div class="lbl">signal in #7088ff</div></div>
-    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">icona e favicon</div>
-      <div style="display:flex;align-items:flex-end;gap:22px;justify-content:center">${TILE(132)}${TILE(64)}${TILE(32)}${TILE(16)}</div>
-      <div style="display:flex;gap:18px;justify-content:center;align-items:center">${[48, 32, 20].map(s => MARK(s, "#0f1218", "#0f1218")).join("")}<span class="lbl">monocromo</span></div></div>
-    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">palette</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 18px">${SW.map(([h, n, u]) => `<div style="display:flex;align-items:center;gap:12px"><span style="width:46px;height:46px;border-radius:14px;background:${h};border:1px solid rgba(15,18,24,.10);flex:none"></span><div><div style="font:600 15px/1.2 Inter">${n}</div><div style="font:500 13px/1.4 Inter;color:#878e99">${h} · ${u}</div></div></div>`).join("")}</div>
-      <div style="display:flex;gap:8px"><span style="flex:1;height:8px;border-radius:9px;background:#0f8a4a"></span><span style="flex:1;height:8px;border-radius:9px;background:#d6342a"></span><span style="flex:1;height:8px;border-radius:9px;background:#c96a00"></span><span class="lbl" style="flex:2">stato: long · short · avviso</span></div></div>
-    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">tipografia</div>
-      <div style="font:700 104px/1 Inter;letter-spacing:-.05em">Aa</div>
-      <div style="display:grid;gap:10px"><div style="font:700 26px/1.1 Inter;letter-spacing:-.03em">Inter 700 · titoli</div><div style="font:600 18px/1.2 Inter">Inter 600 · sezioni</div><div style="font:400 16px/1.4 Inter;color:#555c68">Inter 400 · testo, cifre tabellari</div><div class="lbl">etichette in minuscolo</div></div></div>
-    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">area di rispetto</div>
-      <div style="display:grid;place-items:center"><div style="position:relative;padding:36px;outline:1.5px dashed #2f4cf0;outline-offset:0;border-radius:4px;background:repeating-linear-gradient(45deg,#eceffe 0 6px,#fff 6px 12px)"><div style="background:#fff;padding:0">${TILE(120)}</div>
-        <span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:36px;text-align:center;font:600 14px/1 Inter;color:#2f4cf0">x</span><span style="position:absolute;top:0;left:50%;transform:translateX(-50%);height:36px;line-height:36px;font:600 14px/36px Inter;color:#2f4cf0">x</span></div></div>
-      <div class="lbl" style="line-height:1.5">x = 30% del lato della tile · minimo 16 px</div></div>
+    <div class="bcard" style="grid-column:span 4;display:grid;align-content:space-between"><div class="bt">logo · fondo chiaro</div><div style="display:grid;place-items:center">${LOCKUP(50)}</div><div class="lbl">segno e signal in #2f4cf0, radar in Ink</div></div>
+    <div class="bcard" style="grid-column:span 4;background:#2f4cf0;border-color:#2f4cf0;display:grid;align-content:space-between"><div class="bt" style="color:rgba(255,255,255,.7)">indaco pieno</div><div style="display:grid;place-items:center">${LOCKUP(50, "mono")}</div><div class="lbl" style="color:rgba(255,255,255,.7)">tutto bianco, un colore</div></div>
+    <div class="bcard" style="grid-column:span 4;background:#0c0d10;border-color:#0c0d10;display:grid;align-content:space-between"><div class="bt" style="color:#717884">nero</div><div style="display:grid;place-items:center">${LOCKUP(50, "mono")}</div><div class="lbl" style="color:#717884">tutto bianco, un colore</div></div>
+    <div class="bcard" style="grid-column:span 3;display:grid;align-content:space-between"><div class="bt">icona e favicon</div>
+      <div style="display:flex;align-items:flex-end;gap:16px;justify-content:center">${TILE(104)}${TILE(48)}${TILE(32)}${TILE(16)}</div>
+      <div style="display:flex;gap:16px;justify-content:center;align-items:center">${[40, 24, 16].map(s => MARK(s, "#0f1218")).join("")}<span class="lbl">segno da solo</span></div></div>
+    <div class="bcard" style="grid-column:span 3;display:grid;align-content:space-between"><div class="bt">palette</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 12px">${SW.map(([h, n, u]) => `<div style="display:flex;align-items:center;gap:10px"><span style="width:38px;height:38px;border-radius:11px;background:${h};border:1px solid rgba(15,18,24,.10);flex:none"></span><div><div style="font:600 14px/1.2 Inter">${n}</div><div style="font:500 12px/1.4 Inter;color:#878e99">${h}</div></div></div>`).join("")}</div>
+      <div class="lbl" style="line-height:1.5">un solo colore di marca; menta solo nei grafici</div></div>
+    <div class="bcard" style="grid-column:span 3;display:grid;align-content:space-between"><div class="bt">tipografia</div>
+      <div style="font:700 92px/1 Inter;letter-spacing:-.05em">Aa</div>
+      <div style="display:grid;gap:9px"><div style="font:700 22px/1.1 Inter;letter-spacing:-.03em">Inter 700 · wordmark, titoli</div><div style="font:600 17px/1.2 Inter">Inter 600 · sezioni</div><div style="font:400 15px/1.4 Inter;color:#555c68">Inter 400 · testo, cifre tabellari</div></div></div>
+    <div class="bcard" style="grid-column:span 3;display:grid;align-content:space-between"><div class="bt">area di rispetto</div>
+      <div style="display:grid;place-items:center"><div style="position:relative;padding:30px;outline:1.5px dashed #2f4cf0;border-radius:4px;background:repeating-linear-gradient(45deg,#eceffe 0 6px,#fff 6px 12px)">${TILE(100)}
+        <span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:30px;text-align:center;font:600 13px/1 Inter;color:#2f4cf0">x</span><span style="position:absolute;top:0;left:50%;transform:translateX(-50%);font:600 13px/30px Inter;color:#2f4cf0">x</span></div></div>
+      <div class="lbl" style="line-height:1.5">x = 30% del lato · minimo 16 px</div></div>
   </div>`,
 };
 document.getElementById("out").innerHTML = views[location.hash.slice(1)] || "";
