@@ -404,6 +404,17 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Ciclo Fable · 22/11 — W3.1 solo-prezzo ed EMA200D+VIX su S&P 500, oro, argento, 10 azioni, Dow 2000 e BTC (research/multi_asset/, PREREG 13b0e82, revisione critica fatta)
+**Lezione 104**: W3.1 senza flusso perp non si trasferisce: non batte il buy & hold in CAGR/DD su nessuno dei 13 asset (2/24 nel
+controllo Dow 2000) e fallisce già il criterio dei sottoperiodi. Su BTC le regole solo-prezzo restano sotto W3.1 (CAGR/DD 0,68
+contro 1,90), ma il divario nasce da 4 uscite per distribuzione e 1 trade filtrato: indicazione, non prova. L'EMA200D sull'S&P 500 è
+un'assicurazione contro i ribassi lunghi, non un generatore di rendimento: DD −45% contro −86% dal 1928 (−40% contro −57% dal 1991
+con il VIX), rendimento simile solo grazie a 2000–02 e 2008, costo di 1–6 punti l'anno nei decenni rialzisti; la sola EMA200D è
+significativa con la correzione sulle 57 configurazioni con placebo (p 0,00025), non con quella preregistrata a 415 (troppo severa);
+l'aggiunta del VIX non è dimostrata; su azioni singole e metalli nessun vantaggio; su BTC (VIX o DVOL) peggiora W3.1.
+Regole di metodo: la famiglia per la correzione conta solo i test con p-value; il controllo "apertura del giorno dopo" sugli indici
+va fatto su ETF o future, non sull'indice.
+
 ### Revisione Fable · 22/11 — W3.1 riprodotta e confermata; corretti i testi rimasti al 25%
 **Lezione 101**: un vincolo su una metrica invariante alla scala (CAGR/DD) non discrimina i livelli di rischio; i vincoli si provano
 su un caso finto prima di preregistrarli. Il 10% resta difendibile: è il livello più alto che rispetta i vincoli di rischio.

@@ -11,3 +11,6 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Opzioni (DVOL, skew), ETH/BTC, dominanza, vol targeting, piramidazione | respinti; O2 su carta | 100 | research/p2_nuovi |
 | Rischio per trade (avvocato del diavolo) | 25% troppo alto → 10% | 99 | research/dirompente |
 | Trader seguito (Chento) | registro dei segnali | 90 | research/chento, radar/xinbox.py |
+| W3.1 solo-prezzo su S&P 500, oro, argento, 10 azioni, Dow 2000 | non si trasferisce (0/13) | 104 | research/multi_asset |
+| Indicatore EMA200D+VIX | assicurazione sui ribassi dell'indice, non per BTC | 104 | research/ema200_vix, multi_asset |
+| Revisione Fable di W3.1 | confermata; uscita 'distribuzione' fragile | 101–103 | — |

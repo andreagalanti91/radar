@@ -5,3 +5,4 @@
   mappa = STIMA; reali: eventi e livelli on-chain Hyperliquid/Lighter), liqstream.py (raccoglitore per VM europea, non attivo).
 - Dashboard: dashboard_template.html + pages/*.html; sezioni Oggi, Storico, Liquidazioni, Wallet, News.
 - Test: tests/ (unittest, NON pytest): `python3 -m unittest discover -s tests -q` (207 OK al 19/11).
+- Dal 22/11: macro.py (chiusura giornaliera multi-asset, report.macro), pages/book.html (heatmap del book, solo browser), Wallet in pausa (RADAR_WALLETS=0, tab nascosta).

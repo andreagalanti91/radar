@@ -1,5 +1,5 @@
 # Radar Signal BTC — memoria del progetto (leggi per primo)
-Aggiornata al 20/11/2026. Per un nuovo account Claude: leggi in ordine 00 → 05, poi RESEARCH.md solo per i dettagli.
+Aggiornata al 22/11/2026. Per un nuovo account Claude: leggi in ordine 00 → 05, poi RESEARCH.md solo per i dettagli.
 
 - Repo andreagalanti91/radar, branch di lavoro e predefinito: `claude/vibrant-brahmagupta-fvv2gh`.
 - Dashboard: https://andreagalanti91.github.io/radar/ · bot Telegram @CryptoRadarGalaBot (token SOLO nei GitHub Secrets).
