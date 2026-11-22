@@ -169,6 +169,11 @@ def daily() -> None:
             print(f"[radar] W3 {wcur['status']} · eventi inviati: {[e['type'] for e in sent]}")
         except Exception as e:  # noqa: BLE001
             print(f"[radar] eventi settimanali non inviati: {e!r}")
+    # registro "provvisori vs definitivi" della decisione domenicale e soglie d'allarme: solo registro e avviso, W3 non cambia
+    from importlib import import_module as _im   # import isolato: un modulo rotto non ferma il giro
+    from .data import DATA_DIR as _ddir
+    provlog_out = _soft("registro provvisori/definitivi", lambda: _im(".provlog", __package__).update(f, d, wcur, _ddir))
+    guard_out = _soft("soglie d'allarme", lambda: _im(".guard", __package__).update(wcur, st, journal.load()))
     _soft("avvisi sulle fonti", source_alerts, errors, stale, st, now, data_until)
     _soft("heartbeat", heartbeat, wcur, st, now, data_until, problems)
     _save_state(st)
@@ -194,6 +199,9 @@ def daily() -> None:
         return
     if wcur:
         report["weekly"] = wcur
+    for k, v in (("provlog", provlog_out), ("guard", guard_out)):
+        if v is not None:
+            report[k] = v
     from importlib import import_module
     from .data import DATA_DIR
 

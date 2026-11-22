@@ -134,6 +134,62 @@ def aggregate(books: dict[str, tuple]) -> dict:
     return out, feats
 
 
+WALL_USD = 50.0                  # registro dei muri (data/book_walls.csv): fasce da 50 $ di prezzo
+WALL_RANGE = 0.03                # entro ±3% dal mid della fonte
+WALL_TOP = 3                     # i 3 maggiori cluster per lato e per exchange
+WALL_COLS = ["ts", "exchange", "side", "price", "usd", "x_mean", "dist_pct", "cover_pct"]
+
+
+def book_walls(name: str, bids, asks, ts: str, band: float = WALL_USD, rng: float = WALL_RANGE, top: int = WALL_TOP) -> list[dict]:
+    """I `top` maggiori cluster sopra (ask) e sotto (bid) il mid di UN book, in fasce di `band` $ entro ±rng. Per lato:
+    prezzo = centro della fascia, usd = Σ prezzo·quantità, x_mean = usd / media delle fasce del lato (fasce vuote = 0,
+    solo fino a dove arriva il book), dist_pct dal mid, cover_pct = copertura del book sul lato (≤ 3%)."""
+    if not bids or not asks:
+        return []
+    mid = (bids[0][0] + asks[0][0]) / 2
+    out = []
+    for side, lv in (("bid", bids), ("ask", asks)):
+        acc: dict[int, float] = {}
+        for p, q in lv:
+            if abs(p / mid - 1) <= rng:
+                k = int(math.floor(p / band))
+                acc[k] = acc.get(k, 0.0) + p * q
+        if not acc:
+            continue
+        lo_k = int(math.floor(mid * (1 - rng) / band)) if side == "bid" else int(math.floor(mid / band))
+        hi_k = int(math.floor(mid / band)) if side == "bid" else int(math.floor(mid * (1 + rng) / band))
+        edge = min(p for p, _ in lv if abs(p / mid - 1) <= rng) if side == "bid" else max(p for p, _ in lv if abs(p / mid - 1) <= rng)
+        ke = int(math.floor(edge / band))
+        lo_k, hi_k = (max(lo_k, ke), hi_k) if side == "bid" else (lo_k, min(hi_k, ke))   # solo la parte coperta dal book
+        mean = sum(acc.values()) / max(1, hi_k - lo_k + 1)
+        cover = abs(edge / mid - 1) * 100
+        for k in sorted(acc, key=acc.get, reverse=True)[:top]:
+            px = (k + 0.5) * band
+            out.append({"ts": ts, "exchange": name, "side": side, "price": round(px, 0), "usd": round(acc[k], 0),
+                        "x_mean": round(acc[k] / mean, 2) if mean > 0 else None, "dist_pct": round((px / mid - 1) * 100, 3),
+                        "cover_pct": round(cover, 2)})
+    return out
+
+
+def log_walls(data_dir, books: dict, now: pd.Timestamp) -> list[dict]:
+    """Aggiunge a data/book_walls.csv i muri di ogni fonte valida del giro (niente doppioni entro 20 minuti)."""
+    path = data_dir / "book_walls.csv"
+    ts = str(now.floor("s"))
+    rows = [r for k in sorted(books) for r in book_walls(k, books[k][0], books[k][1], ts)]
+    if not rows:
+        print("[orderbook] muri: nessuna fonte valida, niente registrato")
+        return []
+    if path.exists():
+        try:
+            last = pd.to_datetime(pd.read_csv(path, usecols=["ts"])["ts"]).max()
+        except Exception:  # noqa: BLE001
+            last = None
+        if last is not None and pd.notna(last) and now - last < pd.Timedelta(minutes=20):
+            return rows
+    pd.DataFrame(rows, columns=WALL_COLS).to_csv(path, mode="a", header=not path.exists(), index=False)
+    return rows
+
+
 def label(df: pd.DataFrame, horizon: str) -> pd.Series:
     """Rendimento del mid fra ogni foto e la prima foto nella finestra dell'orizzonte (NaN se manca)."""
     lo, hi = HORIZONS[horizon]
@@ -288,6 +344,11 @@ def update(data_dir, now: pd.Timestamp | None = None) -> dict:
     good, checks = snapshot()
     status = {k: ("ok" if not v else "; ".join(v)) for k, v in checks.items()}
     print(f"[orderbook] controlli: {status}")
+    walls = []
+    try:   # registro dei muri per exchange (data/book_walls.csv): un errore non tocca la foto del book
+        walls = log_walls(data_dir, good, now)
+    except Exception as e:  # noqa: BLE001
+        print(f"[orderbook] registro dei muri non scritto: {e!r}")
     row = None
     if len(good) >= 2:
         agg, per = aggregate(good)
@@ -314,5 +375,5 @@ def update(data_dir, now: pd.Timestamp | None = None) -> dict:
     return {"ts": cur.get("ts"), "mid": cur.get("mid"), "now": {k: cur.get(k) for k in cur if k.startswith(("imb_", "bid_", "ask_", "wall_", "spread", "micro", "n_src", "src_"))},
             "pred": pred, "checks": status, "track": state.get("track", {}), "verdict": verdict(state.get("track", {})), "learned": state.get("learned"),
             "model": {hz: {"n": (state.get("model") or {}).get(hz, {}).get("n", 0), "w": (state.get("model") or {}).get(hz, {}).get("w")} for hz in HORIZONS},
-            "feats": FEATS, "rows": int(len(df)), "since": str(df["ts"].iloc[0]) if len(df) else None,
+            "walls": walls, "feats": FEATS, "rows": int(len(df)), "since": str(df["ts"].iloc[0]) if len(df) else None,
             "per_source": {k: {"mid": round(v["mid"], 1), "spread_bps": round(v["spread_bps"], 2), "imb_0.5": (round((v["bid_0.5"] - v["ask_0.5"]) / (v["bid_0.5"] + v["ask_0.5"]), 3) if v.get("bid_0.5") else None)} for k, v in per.items()}}

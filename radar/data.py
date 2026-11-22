@@ -220,8 +220,9 @@ def fetch_funding() -> pd.DataFrame:
                 if "calc_time" not in df:  # file senza header: calc_time, interval, rate
                     df = df.set_axis(["calc_time", "interval_h", "rate"][: len(df.columns)], axis=1)
                 df["date"] = pd.to_datetime(pd.to_numeric(df["calc_time"]), unit="ms").dt.normalize()
-                frames.append(df.groupby("date")["rate"].sum().to_frame("funding"))
+                frames.append(df.groupby("date")["rate"].sum().to_frame("funding").assign(source="binance"))
     out = _merge_cache("funding", pd.concat(frames)) if frames else pd.read_csv(DATA_DIR / "funding.csv", index_col=0, parse_dates=True)
+    out = _funding_sources(out, this_month)
     # mese corrente da OKX (stesso ordine di grandezza del funding Binance)
     r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": OKX_INST, "limit": 100})
     okx = pd.DataFrame(r.json()["data"])
@@ -230,7 +231,21 @@ def fetch_funding() -> pd.DataFrame:
         okx = okx.groupby("date")["realizedRate"].apply(lambda s: pd.to_numeric(s).sum()).to_frame("funding")
         okx = okx[(okx.index > out.index.max()) & (okx.index.date < today)]
         if len(okx):
-            out = _merge_cache("funding", okx)
+            out = _merge_cache("funding", okx.assign(source="okx"))
+    return out
+
+
+def _funding_sources(out: pd.DataFrame, this_month: date) -> pd.DataFrame:
+    """Colonna "source" del funding (registro provvisori/definitivi, radar/provlog.py). Le righe salvate prima della colonna
+    non la hanno: quelle dal mese corrente in poi (l'archivio Binance è solo mensile) sono OKX, le precedenti Binance.
+    Solo un'etichetta: i valori di "funding" non cambiano."""
+    src = out["source"] if "source" in out else pd.Series(pd.NA, index=out.index, dtype="object")
+    miss = src.isna()
+    if miss.any():
+        out = out.copy()
+        out["source"] = src.where(~miss, pd.Series(["okx" if d >= this_month else "binance" for d in out.index.date],
+                                                   index=out.index))
+        out.to_csv(DATA_DIR / "funding.csv")
     return out
 
 
