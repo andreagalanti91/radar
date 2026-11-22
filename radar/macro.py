@@ -1,4 +1,4 @@
-"""Chiusura giornaliera multi-asset: CONTESTO descrittivo, non segnale (la posizione la decide W3.1).
+"""Chiusura giornaliera multi-asset: CONTESTO descrittivo, non segnale (la posizione la decide W3.2).
 
 Fonti (pubbliche, gratuite, raggiungibili sia dal container sia dai runner GitHub negli USA; verificate il 22/11/2026):
 - S&P 500, Nasdaq Composite, VIX, Treasury 10 anni, dollaro (indice ampio della Fed, settimanale con ~1 settimana di ritardo):
@@ -35,7 +35,7 @@ VIX_HIGH = 34            # flag "VIX sopra 34"
 VIX_REGIME = 25          # regime: VIX sotto/sopra 25
 DIVERGE_MIN = 3.0        # BTC e S&P divergono: variazioni a 20 giorni di segno opposto, entrambe almeno del 3%
 POINTS = ("vix", "us10y")
-NOTE = "Contesto: la posizione la decide W3.1; i flag invitano a una revisione."
+NOTE = "Contesto: la posizione la decide W3.2; i flag invitano a una revisione."
 # (key, nome, giorni oltre i quali il dato è "vecchio" nei controlli di qualità)
 ASSETS = [("btc", "BTC", 3), ("spx", "S&P 500", 5), ("ndx", "Nasdaq", 5), ("gold", "Oro", 4), ("silver", "Argento", 4),
           ("usd", "Dollaro (indice)", 14), ("vix", "VIX", 5), ("us10y", "Treasury 10 anni", 5)]

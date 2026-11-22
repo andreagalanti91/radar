@@ -10,7 +10,6 @@
      Le funzioni pure stanno fra CORE-START e CORE-END e sono provate con node da tests/test_book_page.py. -->
 <style>
 #v-book{--bk-h0:217,119,6;--bk-h1:255,240,40;--bk-a0:.5}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) #v-book{--bk-h0:240,170,50;--bk-h1:176,74,0;--bk-a0:.55}}
 :root[data-theme="light"] #v-book{--bk-h0:240,170,50;--bk-h1:176,74,0;--bk-a0:.55}
 .bkCard{display:grid;gap:12px;padding:14px}
 .bkHead{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
@@ -25,7 +24,7 @@
 @keyframes bkPulse{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
 @media (prefers-reduced-motion:reduce){.bkDot.live{animation:none}}
 .bkSrc{display:flex;flex-wrap:wrap;gap:6px}
-.bkSrc button{font:500 .66rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;padding:8px 10px;min-height:32px;border-radius:999px;background:var(--raise);border:1px solid var(--line);color:var(--label2);cursor:pointer;white-space:nowrap}
+.bkSrc button{font:500 .76rem/1 var(--font);letter-spacing:0;display:inline-flex;align-items:center;gap:6px;padding:8px 10px;min-height:32px;border-radius:999px;background:var(--raise);border:1px solid var(--line);color:var(--label2);cursor:pointer;white-space:nowrap}
 .bkSrc button i{width:6px;height:6px;border-radius:50%;background:var(--label3);flex:none}
 .bkSrc button.live i{background:var(--green)} .bkSrc button.wait i{background:var(--orange)} .bkSrc button.err i{background:var(--red)}
 .bkSrc button.err{color:var(--label3)}
@@ -38,7 +37,7 @@
 .bkWrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .bkMsg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;background:color-mix(in srgb,var(--card) 84%,transparent);font:600 .95rem var(--font)}
 .bkMsg.on{display:flex} .bkMsg small{font:500 .72rem var(--mono);color:var(--label2);letter-spacing:.04em}
-.bkLeg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font:500 .64rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2)}
+.bkLeg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font:500 .74rem var(--font);letter-spacing:0;color:var(--label2)}
 .bkLeg>span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
 .bkLeg .grad{width:72px;height:8px;border-radius:2px;background:linear-gradient(90deg,rgba(var(--bk-h0),var(--bk-a0)),rgb(var(--bk-h1)))}
 .bkLeg i{display:inline-block;width:8px;height:8px;border-radius:50%}
@@ -50,7 +49,7 @@
 .bkGauge u{position:absolute;top:0;bottom:0;left:40%;width:20%;background:var(--line2)}
 .bkGauge em{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--label3)}
 .bkGauge i{position:absolute;top:-4px;bottom:-4px;width:4px;margin-left:-2px;border-radius:2px;background:var(--label);left:50%;transition:left .4s}
-.bkAx{display:flex;justify-content:space-between;font:500 .6rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label3)}
+.bkAx{display:flex;justify-content:space-between;font:500 .72rem var(--font);letter-spacing:0;color:var(--label3)}
 .tiles.bk2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .tiles.bk2>div{background:var(--raise)}
 .bkWarn{margin:0;font-size:.8rem;line-height:1.5;color:var(--label2);padding:10px 12px;border-radius:12px;background:var(--raise);border:1px solid var(--line)}
@@ -58,7 +57,7 @@
 .bkEv .row{min-height:40px;padding:8px 14px;gap:10px;font-variant-numeric:tabular-nums}
 .bkEv .x{font:500 .62rem var(--mono);color:var(--label3);letter-spacing:.04em;flex:none}
 .bkEv .k{font-size:.86rem;white-space:nowrap} .bkEv .v{font-size:.86rem;white-space:nowrap}
-.bkEv .sd,.bkEv .ot{font:600 .58rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:999px;white-space:nowrap;flex:none}
+.bkEv .sd,.bkEv .ot{font:600 .72rem var(--font);letter-spacing:0;padding:4px 7px;border-radius:999px;white-space:nowrap;flex:none}
 .bkEv .sd.a{color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent)} .bkEv .sd.b{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
 .bkEv .ot.r{color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent)} .bkEv .ot.e{color:var(--label2);background:var(--raise)}
 .bkEv .empty{padding:14px 16px;font-size:.84rem;color:var(--label2);line-height:1.45}

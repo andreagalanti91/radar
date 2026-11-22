@@ -1,9 +1,9 @@
-"""Controlli di coerenza orari sui dati e sullo storico di W3.1 (solo avviso: non cambiano dati, segnali né posizione).
+"""Controlli di coerenza orari sui dati e sullo storico di W3.2 (solo avviso: non cambiano dati, segnali né posizione).
 
-A ogni giro (radar.cli.daily, dopo la valutazione di W3.1 e prima del messaggio di salute):
-- buchi: giorni mancanti negli ultimi GAP_DAYS giorni delle fonti giornaliere di W3.1 (data.CRITICAL). L'avviso "dati vecchi"
+A ogni giro (radar.cli.daily, dopo la valutazione di W3.2 e prima del messaggio di salute):
+- buchi: giorni mancanti negli ultimi GAP_DAYS giorni delle fonti giornaliere di W3.2 (data.CRITICAL). L'avviso "dati vecchi"
   guarda solo l'ultimo giorno; un buco in mezzo falsa medie e flusso senza che nessuno lo veda;
-- storico riscritto: un trade della simulazione W3.1 già visto in un giro precedente (per data del segnale) che sparisce, cambia
+- storico riscritto: un trade della simulazione W3.2 già visto in un giro precedente (per data del segnale) che sparisce, cambia
   lato o ingresso, oppure, se era chiuso, cambia uscita o motivo. Succede quando i dati provvisori (OKX) vengono sostituiti da
   quelli definitivi (archivio Binance) e una decisione passata non è più la stessa;
 - decisione cambiata: riga del registro domenicale provvisori/definitivi (radar/provlog.py) con "changed" vero.
@@ -81,7 +81,7 @@ def update(d: dict, wcur: dict | None, prov: dict | None, st: dict, send=None) -
                        f"({', '.join(miss[:5])}{'…' if len(miss) > 5 else ''})"))
     sig = trades_sig(wcur)
     hist = history_changes(cs.get("trades") or {}, sig) if wcur else []
-    events += [(None, "storico W3.1 riscritto · " + x) for x in hist]
+    events += [(None, "storico W3.2 riscritto · " + x) for x in hist]
     for r in prov_changes(prov):
         events.append((f"prov:{r.get('date')}", f"decisione del {r.get('date')}: con i dati provvisori "
                        f"«{r.get('decision_p')}», con i definitivi «{r.get('decision_d')}»"))

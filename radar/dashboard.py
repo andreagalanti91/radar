@@ -7,11 +7,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = Path(__file__).with_name("dashboard_template.html")
-PAGES = Path(__file__).with_name("pages")   # pagine separate (Liquidazioni, Wallet): HTML + script che si registra in window.PAGES
+PAGES = Path(__file__).with_name("pages")   # pagine separate (Liquidazioni, Book, Wallet): HTML + script che si registra in window.PAGES
 BRAND = ROOT / "brand"
 MANIFEST = {
     "name": "Radar Signal BTC", "short_name": "Radar Signal", "start_url": "./#oggi", "display": "standalone",
-    "background_color": "#000000", "theme_color": "#000000",
+    "background_color": "#f4f5f7", "theme_color": "#f4f5f7",
     "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
               {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}],
 }
@@ -21,8 +21,7 @@ HEAD = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f2f2f7">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+<meta name="theme-color" content="#f4f5f7">
 <meta name="color-scheme" content="light dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Radar Signal">
@@ -39,12 +38,8 @@ HEAD = """<!doctype html>
 def render(report: dict, out: Path | None = None, standalone: bool = True) -> Path:
     out = out or ROOT / "site" / "index.html"
     out.parent.mkdir(parents=True, exist_ok=True)
-    pf = ROOT / "data" / "paper.json"   # conto su carta H2 (radar/paper.py), se già calcolato
-    if "paper" not in report and pf.exists():
-        report = dict(report, paper=json.loads(pf.read_text()))
-    lf = ROOT / "data" / "lab.json"     # Laboratorio: v2 e candidati della ricerca (radar/lab.py)
-    if "lab" not in report and lf.exists():
-        report = dict(report, lab=json.loads(lf.read_text()))
+    # nell'interfaccia solo la strategia in uso (W3.2): conti su carta e candidati della ricerca restano fuori dalla pagina
+    report = {k: v for k, v in report.items() if k not in ("paper", "lab")}
     jf = ROOT / "data" / "journal.json"  # registro dei trade reali via Telegram (radar/journal.py)
     if "journal" not in report and jf.exists():
         from .journal import averages, load
