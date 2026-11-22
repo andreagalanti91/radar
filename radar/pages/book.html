@@ -1,486 +1,989 @@
-<!-- ============ BOOK · Order Book Liquidity Heatmap (radar/pages/book.html) ============
-     Perpetual Binance Futures (BTCUSDT, ETHUSDT). Tutto nel browser dell'utente: i server non raggiungono Binance Futures, nessun backend.
-     Dati: snapshot REST /fapi/v1/depth?limit=1000 + WebSocket @depth@100ms, book locale sincronizzato con U, u, pu (BK, funzioni pure).
-     Ogni 10 s un campione (book aggregato + prezzo medio) in buffer circolare da 180 (30 minuti). Canvas, ridisegno <= 4 volte al secondo.
-     Si registra in window.PAGES.book (init alla prima visita, show/hide mettono in pausa). Parametro ?bookdemo=1: book sintetico.
-     Espone window.BOOK e salva i muri >= 5x in localStorage (radar_book_walls, max 2.000 righe) per un test in avanti. -->
+<!-- ============ BOOK · heatmap della liquidità nel book (radar/pages/book.html) ============
+     Tutto nel browser dell'utente, nessun backend. Fonti pubbliche (WebSocket/REST con CORS aperti), ognuna può mancare senza fermare le altre:
+     Binance futures (snapshot REST + diff), Binance spot (idem, con ripiego su binance.vision), OKX swap (canale books + books-full ogni 30 s),
+     Bybit linear (orderbook.1000 → 500 → 200), Coinbase (level2_batch), Hyperliquid (l2Book fine via WebSocket + l2Book a 3 cifre via REST).
+     Tutto in dollari (prezzo × quantità; contratti OKX × ctVal). Liquidazioni live: Binance forceOrder, Bybit allLiquidation, OKX liquidation-orders.
+     Ogni 5 s un campione per fonte (fasce di 25 $ BTC, 1 $ ETH) tenuto 30 minuti in memoria: la storia parte dall'apertura della pagina.
+     Sentiment (specifica fissa): I = sbilancio del book aggregato entro ±1%, L = sbilancio delle liquidazioni a 30 min, S = 0,5·I + 0,5·L.
+     Muri: fascia ≥ 3× la media; alla scomparsa (−70%) "ritirato" se il prezzo era entro 0,3% senza attraversarlo, "eseguito" se attraversato.
+     Si registra in window.PAGES.book. Parametro ?demo=1 (o ?bookdemo=1): dati sintetici dichiarati in pagina. Espone window.BOOK.
+     Le funzioni pure stanno fra CORE-START e CORE-END e sono provate con node da tests/test_book_page.py. -->
 <style>
-.bkPanel{background:#09090b;border:1px solid rgba(255,255,255,.1);border-radius:var(--r-card);box-shadow:var(--shadow);padding:14px;color:#f3f5fb;color-scheme:dark;display:grid;gap:12px;min-width:0}
+#v-book{--bk-h0:217,119,6;--bk-h1:255,240,40;--bk-a0:.5}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) #v-book{--bk-h0:240,170,50;--bk-h1:176,74,0;--bk-a0:.55}}
+:root[data-theme="light"] #v-book{--bk-h0:240,170,50;--bk-h1:176,74,0;--bk-a0:.55}
+.bkCard{display:grid;gap:12px;padding:14px}
 .bkHead{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
-.bkCtl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.bkSeg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:3px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);gap:2px}
-.bkSeg button{font:600 .78rem var(--font);border:0;background:transparent;color:rgba(226,232,255,.62);padding:7px 12px;min-height:32px;border-radius:999px;cursor:pointer;white-space:nowrap}
-.bkSeg button[aria-pressed="true"]{background:#f3f5fb;color:#09090b}
-.bkSeg button:active{transform:scale(.96)}
-.bkLive{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;font:500 .72rem var(--mono);color:rgba(226,232,255,.62);letter-spacing:.04em}
-.bkDot{width:9px;height:9px;border-radius:50%;background:#6b7280;flex:none}
-.bkDot.live{background:#34d77b;box-shadow:0 0 0 0 rgba(52,215,123,.6);animation:bkPulse 1.8s infinite}
-.bkDot.wait{background:#f7931a} .bkDot.err{background:#ff5a52} .bkDot.demo{background:#7a6bff}
-@keyframes bkPulse{70%{box-shadow:0 0 0 7px rgba(52,215,123,0)}100%{box-shadow:0 0 0 0 rgba(52,215,123,0)}}
+.bkT{display:flex;align-items:center;gap:12px;min-width:0}
+.bkT h2{margin:0;font:700 1.3rem/1.1 var(--font);letter-spacing:-.03em}
+.bkLive{display:flex;align-items:center;gap:8px;min-width:0}
+.bkLive b{font:700 1.2rem/1.1 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.bkLive span:last-child{font:500 .66rem var(--mono);letter-spacing:.06em;color:var(--label2);white-space:nowrap;min-width:4.6em}
+.bkDot{width:9px;height:9px;border-radius:50%;background:var(--label3);flex:none}
+.bkDot.live{background:var(--green);box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 60%,transparent);animation:bkPulse 1.8s infinite}
+.bkDot.wait{background:var(--orange)} .bkDot.err{background:var(--red)}
+@keyframes bkPulse{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
 @media (prefers-reduced-motion:reduce){.bkDot.live{animation:none}}
-.bkPx{font:700 1.05rem var(--font);color:#f3f5fb;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.bkSt{white-space:nowrap}
-.bkWrap{position:relative;width:100%;height:320px;border-radius:12px;overflow:hidden;background:#09090b}
-@media (min-width:701px){.bkWrap{height:440px}}
+.bkSrc{display:flex;flex-wrap:wrap;gap:6px}
+.bkSrc button{font:500 .66rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;padding:8px 10px;min-height:32px;border-radius:999px;background:var(--raise);border:1px solid var(--line);color:var(--label2);cursor:pointer;white-space:nowrap}
+.bkSrc button i{width:6px;height:6px;border-radius:50%;background:var(--label3);flex:none}
+.bkSrc button.live i{background:var(--green)} .bkSrc button.wait i{background:var(--orange)} .bkSrc button.err i{background:var(--red)}
+.bkSrc button.err{color:var(--label3)}
+.bkSrc button[aria-pressed="true"]{background:var(--label);color:var(--bg);border-color:var(--label)}
+.bkSrc button:active{transform:scale(.96)} .bkSrc button:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.bkState{margin:0;font-size:.78rem;line-height:1.45;color:var(--label2)}
+.bkDemo{margin:0;padding:8px 12px;border-radius:12px;font:600 .8rem var(--font);color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent);border:1px solid color-mix(in srgb,var(--orange) 40%,transparent)}
+.bkWrap{position:relative;width:100%;height:360px;min-width:0}
+@media (min-width:701px){.bkWrap{height:480px}}
 .bkWrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.bkMsg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;background:rgba(9,9,11,.82);font:600 .95rem var(--font);color:#f3f5fb}
-.bkMsg.on{display:flex} .bkMsg small{font:500 .74rem var(--mono);color:rgba(226,232,255,.6);letter-spacing:.04em}
-.bkMsg.err b{color:#ff5a52}
-.bkLeg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font:500 .64rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:rgba(226,232,255,.62)}
+.bkMsg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;background:color-mix(in srgb,var(--card) 84%,transparent);font:600 .95rem var(--font)}
+.bkMsg.on{display:flex} .bkMsg small{font:500 .72rem var(--mono);color:var(--label2);letter-spacing:.04em}
+.bkLeg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font:500 .64rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label2)}
 .bkLeg>span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
-.bkLeg .grad{width:96px;height:9px;border-radius:2px;background:linear-gradient(90deg,rgba(217,119,6,.55),rgba(255,240,40,1))}
-.bkLeg i{display:inline-block;width:9px;height:9px;border-radius:2px}
-.bkNote{margin:0 4px;font-size:.8rem;line-height:1.5;color:var(--label2)}
-@media (max-width:700px){.bkPanel{padding:10px}.bkSeg button{padding:7px 10px}}
+.bkLeg .grad{width:72px;height:8px;border-radius:2px;background:linear-gradient(90deg,rgba(var(--bk-h0),var(--bk-a0)),rgb(var(--bk-h1)))}
+.bkLeg i{display:inline-block;width:8px;height:8px;border-radius:50%}
+.bkSent{display:grid;gap:12px}
+.bkSTop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.bkSTop b{font:700 1.9rem/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.bkSTop .chip.up{color:var(--green)} .bkSTop .chip.dn{color:var(--red)}
+.bkGauge{position:relative;height:10px;border-radius:5px;background:var(--raise);border:1px solid var(--line)}
+.bkGauge u{position:absolute;top:0;bottom:0;left:40%;width:20%;background:var(--line2)}
+.bkGauge em{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--label3)}
+.bkGauge i{position:absolute;top:-4px;bottom:-4px;width:4px;margin-left:-2px;border-radius:2px;background:var(--label);left:50%;transition:left .4s}
+.bkAx{display:flex;justify-content:space-between;font:500 .6rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--label3)}
+.tiles.bk2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tiles.bk2>div{background:var(--raise)}
+.bkWarn{margin:0;font-size:.8rem;line-height:1.5;color:var(--label2);padding:10px 12px;border-radius:12px;background:var(--raise);border:1px solid var(--line)}
+.bkAlert{margin:0;font-size:.82rem;line-height:1.45;color:var(--orange);padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--orange) 10%,transparent);border:1px solid color-mix(in srgb,var(--orange) 35%,transparent)}
+.bkEv .row{min-height:40px;padding:8px 14px;gap:10px;font-variant-numeric:tabular-nums}
+.bkEv .x{font:500 .62rem var(--mono);color:var(--label3);letter-spacing:.04em;flex:none}
+.bkEv .k{font-size:.86rem;white-space:nowrap} .bkEv .v{font-size:.86rem;white-space:nowrap}
+.bkEv .sd,.bkEv .ot{font:600 .58rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:999px;white-space:nowrap;flex:none}
+.bkEv .sd.a{color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent)} .bkEv .sd.b{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.bkEv .ot.r{color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent)} .bkEv .ot.e{color:var(--label2);background:var(--raise)}
+.bkEv .empty{padding:14px 16px;font-size:.84rem;color:var(--label2);line-height:1.45}
+@media (max-width:700px){.bkCard{padding:12px}.bkEv .row{padding:8px 12px;gap:8px}}
 </style>
 <div class="view" id="v-book" hidden>
   <div class="section">
-    <div class="sh">Order Book Liquidity Heatmap <small>Binance Futures · in tempo reale</small></div>
-    <div class="bkPanel">
+    <div class="sh">Book <small>storia dalla apertura della pagina</small></div>
+    <div class="card bkCard">
       <div class="bkHead">
-        <div class="bkCtl">
-          <div class="bkSeg" id="bkPair" role="group" aria-label="Coppia"></div>
-          <div class="bkSeg" id="bkStep" role="group" aria-label="Step di aggregazione"></div>
-        </div>
-        <div class="bkLive" aria-live="off">
-          <span class="bkDot" id="bkDot"></span><span class="bkSt" id="bkSt">connessione…</span>
-          <span class="bkPx" id="bkPx">–</span>
-          <span class="bkSt" id="bkCd"></span>
-        </div>
+        <div class="bkT"><h2 id="bkSym">BTCUSDT</h2><div class="seg" id="bkPair" role="group" aria-label="Coppia"></div></div>
+        <div class="bkLive"><span class="bkDot" id="bkDot"></span><b id="bkPx">–</b><span id="bkAge"></span></div>
       </div>
+      <p class="bkDemo" id="bkDemo" hidden>Modalità demo: dati sintetici generati nel browser, non sono dati di mercato.</p>
+      <div class="bkSrc" id="bkSrc" role="group" aria-label="Fonte del book"></div>
+      <p class="bkState" id="bkState" role="status"></p>
       <div class="bkWrap">
-        <canvas id="bkCv" role="img" aria-label="Heatmap della liquidità nel book degli ultimi 30 minuti, con profondità attuale a destra"></canvas>
-        <div class="bkMsg" id="bkMsg" role="status"></div>
+        <canvas id="bkCv" role="img" aria-label="Heatmap della liquidità nel book negli ultimi 30 minuti, con profilo attuale e muri maggiori a destra"></canvas>
+        <div class="bkMsg" id="bkMsg"></div>
       </div>
       <div class="bkLeg">
-        <span>Fasce ≥ 3× la media del range</span>
-        <span>3× <span class="grad"></span> 8×</span>
-        <span><i style="background:#ff5a52"></i>Muri sopra il prezzo</span>
-        <span><i style="background:#34d77b"></i>Muri sotto il prezzo</span>
+        <span>3× <span class="grad"></span> 8× la media</span>
+        <span><i style="background:var(--red)"></i>Long liquidato</span>
+        <span><i style="background:var(--green)"></i>Short liquidato</span>
+        <span id="bkStepLab"></span>
       </div>
     </div>
-    <p class="bkNote">Liquidità visibile nel book: può essere ritirata (non è un segnale).</p>
   </div>
+  <div class="cols">
+    <div class="section">
+      <div class="sh">Sentiment <small>book aggregato + liquidazioni</small></div>
+      <div class="card bkSent">
+        <div class="bkSTop"><b id="bkS">–</b><span class="chip" id="bkSl">in attesa</span></div>
+        <div>
+          <div class="bkGauge" role="img" aria-label="Indicatore da −1 a +1" id="bkGauge"><u></u><em></em><i id="bkSm"></i></div>
+          <div class="bkAx" style="margin-top:7px"><span>−1 ribasso</span><span>0</span><span>rialzo +1</span></div>
+        </div>
+        <div class="tiles bk2">
+          <div><span>Book ±1% · I</span><b id="bkI">–</b><small id="bkIs">–</small></div>
+          <div><span>Liquidazioni · L</span><b id="bkL">–</b><small id="bkLs">–</small></div>
+        </div>
+        <p class="bkState" id="bkLiqSt"></p>
+        <p class="bkWarn">Indicatore descrittivo, non un segnale. Nei test (16 giorni di registro, 16 mesi di liquidazioni reali) il suo segno non ha anticipato il prezzo a 1, 4 o 24 ore e la regola long/short ha perso dopo i costi; per lo squilibrio del book il test non è conclusivo. Le liquidazioni seguono il movimento appena avvenuto. Sotto 250.000 $ di liquidazioni in 30 minuti il punteggio non si calcola. Prossima verifica: febbraio 2027.</p>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sh">Muri scomparsi <small>ultimi 30 minuti · book aggregato</small></div>
+      <div class="tiles bk2">
+        <div><span>Ritirati</span><b id="bkRit">0</b><small id="bkRitS">vendita 0 · acquisto 0</small></div>
+        <div><span>Eseguiti</span><b id="bkEse">0</b><small id="bkEseS">vendita 0 · acquisto 0</small></div>
+      </div>
+      <p class="bkAlert" id="bkAlert" hidden></p>
+      <div class="list bkEv" id="bkEv"></div>
+    </div>
+  </div>
+  <p class="foot">Muro: fascia di prezzo con almeno 3 volte la liquidità media delle fasce visibili e almeno il doppio delle fasce vicine (a ridosso del prezzo la liquidità è sempre alta e non fa muro da sola). Quando un muro perde il 70% è «ritirato» se il prezzo era entro lo 0,3% senza attraversarlo (possibile spoofing), «eseguito» se il prezzo lo ha attraversato (assorbimento). La profondità disponibile cambia da borsa a borsa: lontano dal prezzo il book aggregato è parziale. La liquidità visibile può essere ritirata in ogni momento.</p>
 </div>
 <script>
 (function () {
   window.PAGES = window.PAGES || {};
   const H = id => document.getElementById(id);
 
-  /*CORE-START (funzioni pure: testate con node, nessun accesso a DOM o rete)*/
+  /*CORE-START (funzioni pure: provate con node, nessun accesso a DOM o rete)*/
   const BK = (function () {
     const nf = (x, d = 0) => {
       if (typeof window !== "undefined" && window.nfIT) return window.nfIT(x, d);
       const [i, f] = Math.abs(x).toFixed(d).split(".");
       return (x < 0 ? "−" : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (f ? "," + f : "");
     };
-    const newState = () => ({ bids: new Map(), asks: new Map(), snapId: null, lastU: null, synced: false, pending: [], snapLo: null, snapHi: null });
-    function lv(m, arr) { for (const [p, q] of arr) { const k = +p, v = +q; if (v > 0) m.set(k, v); else m.delete(k); } }
-    // scarta u < lastUpdateId; primo evento con U <= lastUpdateId <= u (o U = lastUpdateId + 1); poi pu == u precedente, altrimenti "resync"
+    /* ----- book locale Binance (snapshot REST + diff): futures con U, u, pu; spot con U, u ----- */
+    const newState = spot => ({ bids: new Map(), asks: new Map(), snapId: null, lastU: null, synced: false, loose: false, spot: !!spot, pending: [], plo: -Infinity, phi: Infinity });
+    function lv(s, m, arr) { for (const [p, q] of arr) { const k = +p, v = +q; if (v > 0) { if (k >= s.plo && k <= s.phi) m.set(k, v); } else m.delete(k); } }
     function applyEvent(s, e) {
       if (s.snapId == null) return "wait";
       if (!s.synced) {
-        if (e.u < s.snapId) return "skip";
-        if (!(e.U <= s.snapId + 1)) return invalidate(s);   // U <= lastUpdateId <= u; U = lastUpdateId + 1 (snapshot esattamente a fine evento) è il seguito contiguo
+        if (s.spot ? e.u <= s.snapId : e.u < s.snapId) return "skip";
+        if (!(e.U <= s.snapId + 1)) return invalidate(s);   // primo evento: U <= lastUpdateId (+1) <= u
         s.synced = true;
-      } else if (e.pu !== s.lastU) return invalidate(s);
-      lv(s.bids, e.b || []); lv(s.asks, e.a || []);
+      } else if (s.lastU != null && (s.spot ? e.U !== s.lastU + 1 : e.pu !== s.lastU)) return invalidate(s);
+      lv(s, s.bids, e.b || []); lv(s, s.asks, e.a || []);
       s.lastU = e.u;
       return "ok";
     }
-    function invalidate(s) { s.snapId = null; s.lastU = null; s.synced = false; s.pending = []; s.bids.clear(); s.asks.clear(); return "resync"; }
-    // evento dal WebSocket: prima dello snapshot va in coda
+    function invalidate(s) { s.snapId = null; s.lastU = null; s.synced = false; s.loose = false; s.pending = []; s.bids.clear(); s.asks.clear(); return "resync"; }
+    // senza snapshot (REST non raggiungibile): solo aggiornamenti, il book si completa man mano che i livelli cambiano
+    function startLoose(s) { invalidate(s); s.snapId = 0; s.synced = true; s.loose = true; }
     function feed(s, e) {
-      if (s.snapId == null) { s.pending.push(e); if (s.pending.length > 20000) s.pending.shift(); return "wait"; }
+      if (s.snapId == null) { s.pending.push(e); if (s.pending.length > 5000) s.pending.shift(); return "wait"; }
       return applyEvent(s, e);
     }
     function applySnapshot(s, snap) {
-      s.bids.clear(); s.asks.clear(); lv(s.bids, snap.bids); lv(s.asks, snap.asks);
-      s.snapId = snap.lastUpdateId; s.lastU = null; s.synced = false;
-      let lo = Infinity, hi = -Infinity;
-      s.bids.forEach((_, p) => { if (p < lo) lo = p; }); s.asks.forEach((_, p) => { if (p > hi) hi = p; });
-      s.snapLo = isFinite(lo) ? lo : null; s.snapHi = isFinite(hi) ? hi : null;
+      s.bids.clear(); s.asks.clear(); lv(s, s.bids, snap.bids); lv(s, s.asks, snap.asks);
+      s.snapId = snap.lastUpdateId; s.lastU = null; s.synced = false; s.loose = false;
       const q = s.pending; s.pending = [];
       for (const e of q) { if (applyEvent(s, e) === "resync") return "resync"; }
       return "ok";
     }
+    /* ----- fasce di prezzo ----- */
     const idxOf = (p, step) => Math.floor(p / step + 1e-9);
-    // USD (prezzo × quantità) per fascia: Map indice fascia → USD, separato per lato
-    function aggregate(map, step) { const out = new Map(); map.forEach((q, p) => { const i = idxOf(p, step); out.set(i, (out.get(i) || 0) + p * q); }); return out; }
     function merge(a, b) { const out = new Map(a); b.forEach((v, i) => out.set(i, (out.get(i) || 0) + v)); return out; }
-    // media delle fasce con liquidità nel range visibile [lo, hi)
     function meanIn(m, lo, hi) { let s = 0, n = 0; m.forEach((v, i) => { if (i >= lo && i < hi && v > 0) { s += v; n++; } }); return n ? s / n : 0; }
-    function bestBid(s) { let b = -Infinity; s.bids.forEach((_, p) => { if (p > b) b = p; }); return isFinite(b) ? b : null; }
-    function bestAsk(s) { let a = Infinity; s.asks.forEach((_, p) => { if (p < a) a = p; }); return isFinite(a) ? a : null; }
-    function mid(s) { const b = bestBid(s), a = bestAsk(s); return b != null && a != null ? (a + b) / 2 : null; }
-    // muri: fasce >= minMult × media, ordinate per USD
-    function walls(bid, ask, lo, hi, step, mid0, minMult) {
-      const mean = meanIn(merge(bid, ask), lo, hi), out = { ask: [], bid: [] };
+    // Book di una fonte → dollari per fascia. bids/asks: Map prezzo → quantità (moneta base). deep: livelli oltre il raggio del flusso
+    // live, {b, a} con righe [prezzo, quantità, larghezza]: larghezza > 0 = livello già raggruppato dalla borsa (bid arrotondati in giù,
+    // ask in su), distribuito in parti uguali sulle fasce che copre. R: semiampiezza conservata attorno al prezzo medio.
+    function binBook(bids, asks, deep, step, R) {
+      let bb = -Infinity, ba = Infinity, nlo = Infinity, nhi = -Infinity;
+      bids.forEach((q, p) => { if (p > bb) bb = p; if (p < nlo) nlo = p; });
+      asks.forEach((q, p) => { if (p < ba) ba = p; if (p > nhi) nhi = p; });
+      if (!isFinite(bb) || !isFinite(ba)) return null;
+      const mid = (bb + ba) / 2, lo = mid * (1 - R), hi = mid * (1 + R), bid = new Map(), ask = new Map();
+      const add = (m, p, usd) => { const i = idxOf(p, step); m.set(i, (m.get(i) || 0) + usd); };
+      const span = (m, a, b, usd) => { const i0 = idxOf(a, step), i1 = Math.max(i0, idxOf(b - step * 1e-6, step)), n = i1 - i0 + 1; for (let i = i0; i <= i1; i++) m.set(i, (m.get(i) || 0) + usd / n); };
+      bids.forEach((q, p) => { if (p >= lo && p <= mid) add(bid, p, p * q); });
+      asks.forEach((q, p) => { if (p <= hi && p >= mid) add(ask, p, p * q); });
+      let clo = Math.max(nlo, lo), chi = Math.min(nhi, hi);
+      if (deep) {
+        for (const [p, q, w] of deep.b || []) {
+          if (!(p < nlo) || p < lo) continue;
+          if (w > 0) { const b = Math.min(p + w, nlo); span(bid, p, b, p * q * (b - p) / w); } else add(bid, p, p * q);
+          if (p < clo) clo = p;
+        }
+        for (const [p, q, w] of deep.a || []) {
+          if (!(p > nhi) || p > hi) continue;
+          if (w > 0) { const a = Math.max(p - w, nhi); span(ask, a, p, p * q * (p - a) / w); } else add(ask, p, p * q);
+          if (p > chi) chi = p;
+        }
+      }
+      return { bid, ask, mid, bb, ba, lo: clo, hi: chi, crossed: bb >= ba };
+    }
+    // Una fascia è un muro se vale >= 3× la media delle fasce visibili E >= 2× la media delle 6 fasce vicine per lato: la seconda
+    // condizione esclude l'altopiano di liquidità che sta sempre a ridosso del prezzo (lì ogni fascia supera 3× la media generale).
+    const LOC = { mult: 2, rad: 6 };
+    function standsOut(at, i, lo, hi, v) {
+      let s = 0, n = 0;
+      for (let j = Math.max(lo, i - LOC.rad), e = Math.min(hi - 1, i + LOC.rad); j <= e; j++) if (j !== i) { s += at(j) || 0; n++; }
+      return n < 2 || v * n >= LOC.mult * s;
+    }
+    // muri: fasce >= minMult × media delle fasce visibili [lo, hi) e in rilievo sulle vicine, ordinate per dollari
+    function walls(bid, ask, lo, hi, step, minMult) {
+      const all = merge(bid, ask), mean = meanIn(all, lo, hi), out = { ask: [], bid: [], mean }, at = j => all.get(j);
       if (!(mean > 0)) return out;
-      const pick = (m, side) => m.forEach((v, i) => { const mult = v / mean; if (i >= lo && i < hi && mult >= minMult) out[side].push({ px: i * step, usd: v, mult }); });
+      const pick = (m, side) => m.forEach((v, i) => { const mult = v / mean; if (i >= lo && i < hi && mult >= minMult && standsOut(at, i, lo, hi, all.get(i))) out[side].push({ i, px: i * step, usd: v, mult }); });
       pick(ask, "ask"); pick(bid, "bid");
       out.ask.sort((a, b) => b.usd - a.usd); out.bid.sort((a, b) => b.usd - a.usd);
       return out;
     }
-    // colore della fascia: ambra (3×) → giallo acceso (≥ 8×)
-    function heat(m) {
-      const t = Math.max(0, Math.min(1, (m - 3) / 5));
-      return `rgba(${Math.round(217 + 38 * t)},${Math.round(119 + 121 * t)},${Math.round(6 + 34 * t)},${(0.55 + 0.45 * t).toFixed(2)})`;
-    }
-    function fmtUsd(x) { return x >= 1e6 ? nf(x / 1e6, 2) + "M" : x >= 1e3 ? nf(x / 1e3, 0) + "k" : nf(x, 0); }
+    const heat = m => Math.max(0, Math.min(1, (m - 3) / 5));   // 3× → 0, 8× e oltre → 1
+    function fmtUsd(x) { return x >= 1e9 ? nf(x / 1e9, 2) + " Mld" : x >= 1e6 ? nf(x / 1e6, 2) + "M" : x >= 1e3 ? nf(x / 1e3, 0) + "k" : nf(x, 0); }
     function niceStep(span, n, min) {
       const raw = Math.max(span / n, min), p = Math.pow(10, Math.floor(Math.log10(raw)));
       for (const k of [1, 2, 2.5, 5, 10]) if (k * p >= raw) return k * p;
       return 10 * p;
     }
-    return { newState, applyEvent, feed, applySnapshot, aggregate, merge, meanIn, mid, bestBid, bestAsk, walls, heat, fmtUsd, niceStep, idxOf };
+    const median = a => { const b = a.slice().sort((x, y) => x - y), n = b.length; return n ? (n % 2 ? b[(n - 1) / 2] : (b[n / 2 - 1] + b[n / 2]) / 2) : null; };
+    /* ----- sentiment (specifica fissa) ----- */
+    // I = (bid − ask) / (bid + ask) in dollari entro ±pct dal prezzo medio
+    function imbalance(bid, ask, mid, step, pct) {
+      const lo = mid * (1 - pct), hi = mid * (1 + pct); let b = 0, a = 0;
+      const inR = i => { const c = (i + 0.5) * step; return c >= lo && c <= hi; };
+      bid.forEach((v, i) => { if (inR(i)) b += v; }); ask.forEach((v, i) => { if (inR(i)) a += v; });
+      return { bid: b, ask: a, I: b + a > 0 ? (b - a) / (b + a) : 0 };
+    }
+    // L = (short liquidati − long liquidati) / somma, in dollari, nella finestra; 0 senza liquidazioni
+    function liqBalance(liqs, now, win) {
+      let lg = 0, sh = 0, n = 0;
+      for (const q of liqs) { if (now - q.t > win || q.t > now) continue; n++; if (q.side === "long") lg += q.usd; else sh += q.usd; }
+      return { long: lg, short: sh, n, L: lg + sh > 0 ? (sh - lg) / (lg + sh) : 0, low: lg + sh > 0 && lg + sh < LIQ_MIN_USD };
+    }
+    const LIQ_MIN_USD = 250000;   /* sotto questo totale in 30 minuti il segno di L salta da −1 a +1 per un solo evento: L e S non si calcolano (revisione 22/11, come radar/orderbook.py) */
+    function sentiment(I, L) {
+      const S = Math.max(-1, Math.min(1, 0.5 * I + 0.5 * L));
+      return { S, label: S > 0.2 ? "pressione al rialzo" : S < -0.2 ? "pressione al ribasso" : "neutro" };
+    }
+    /* ----- liquidazioni: una riga {t, px, usd, side: "long" | "short" (posizione liquidata), ex} ----- */
+    const okLiq = q => isFinite(q.t) && q.px > 0 && q.usd > 0;
+    function binanceLiq(d, sym) {
+      const o = d && d.o; if (!o || (sym && o.s !== sym)) return [];
+      const px = +o.ap || +o.p, qty = +o.z || +o.q;
+      return [{ t: +o.T || +d.E, px, usd: px * qty, side: o.S === "SELL" ? "long" : "short", ex: "Binance" }].filter(okLiq);
+    }
+    function bybitLiq(d, sym) {   // allLiquidation: data = [{T, s, S, v, p}]; canale precedente: data = {updatedTime, symbol, side, size, price}. Buy = long liquidato
+      const arr = Array.isArray(d && d.data) ? d.data : d && d.data ? [d.data] : [];
+      return arr.filter(x => !sym || (x.s || x.symbol) === sym).map(x => {
+        const px = +(x.p != null ? x.p : x.price), qty = +(x.v != null ? x.v : x.size);
+        return { t: +(x.T || x.updatedTime || d.ts), px, usd: px * qty, side: (x.S || x.side) === "Buy" ? "long" : "short", ex: "Bybit" };
+      }).filter(okLiq);
+    }
+    function okxLiq(d, fam, ct) {   // liquidation-orders (instType SWAP): sz in contratti → × ctVal × prezzo di bancarotta
+      const out = [];
+      for (const x of (d && d.data) || []) {
+        if (x.instFamily !== fam) continue;
+        for (const k of x.details || []) {
+          const px = +k.bkPx, long = k.posSide === "long" || (k.posSide !== "short" && k.side === "sell");
+          out.push({ t: +k.ts, px, usd: +k.sz * ct * px, side: long ? "long" : "short", ex: "OKX" });
+        }
+      }
+      return out.filter(okLiq);
+    }
+    /* ----- muri nel tempo: ritirati o eseguiti ----- */
+    const TR = { mult: 3, drop: 0.7, near: 0.003, minAge: 3, fade: 6, hist: 6, dist: 8, wait: 2 };
+    const newTracker = () => ({ w: new Map() });
+    // f: {t, mid, midLo, midHi (estremi del prezzo dal campione precedente), bid, ask, lo, hi, step}. Ritorna gli eventi chiusi in questo campione.
+    function trackWalls(tr, f, opt) {
+      const o = Object.assign({}, TR, opt), ev = [], step = f.step, all = merge(f.bid, f.ask), mean = meanIn(all, f.lo, f.hi), at = j => all.get(j);
+      const mLo = Math.min(f.mid, f.midLo == null ? f.mid : f.midLo), mHi = Math.max(f.mid, f.midHi == null ? f.mid : f.midHi);
+      const emit = (w, out) => ev.push({ t: f.t, side: w.side, px: w.px, usd: w.peak, out, dist: Math.min.apply(null, w.d) });
+      tr.w.forEach((w, key) => {
+        const edge = w.side === "ask" ? w.px : w.px + step;                       // bordo del muro verso il prezzo
+        const crossed = w.side === "ask" ? mHi >= edge : mLo <= edge;
+        if (crossed) w.x = true;
+        if (w.pend) {                                                              // scomparso vicino al prezzo: attende conferma
+          if (w.x) { emit(w, "eseguito"); tr.w.delete(key); }
+          else if (++w.pend > o.wait) { emit(w, "ritirato"); tr.w.delete(key); }
+          return;
+        }
+        if (w.i < f.lo || w.i >= f.hi) { tr.w.delete(key); return; }
+        const cur = (w.side === "ask" ? f.ask : f.bid).get(w.i) || 0, ref = Math.max.apply(null, w.h);
+        if (cur <= (1 - o.drop) * ref) {
+          if (w.n < o.minAge) { tr.w.delete(key); return; }
+          if (w.x) { emit(w, "eseguito"); tr.w.delete(key); }
+          else if (Math.min.apply(null, w.d) <= o.near) w.pend = 1;
+          else tr.w.delete(key);                                                   // rimosso lontano dal prezzo: normale gestione degli ordini
+          return;
+        }
+        w.h.push(cur); if (w.h.length > o.hist) w.h.shift();
+        w.d.push(Math.abs(edge - f.mid) / f.mid); if (w.d.length > o.dist) w.d.shift();
+        w.n++; if (cur > w.peak) w.peak = cur;
+        if (!(mean > 0) || cur / mean < o.mult) { if (++w.weak >= o.fade) tr.w.delete(key); } else w.weak = 0;
+      });
+      if (mean > 0) {
+        const scan = (m, side) => m.forEach((v, i) => {
+          if (i < f.lo || i >= f.hi || v / mean < o.mult) return;
+          const key = side + i; if (tr.w.has(key) || !standsOut(at, i, f.lo, f.hi, all.get(i))) return;
+          const px = i * step, edge = side === "ask" ? px : px + step;
+          if (side === "ask" ? f.mid >= edge : f.mid <= edge) return;
+          tr.w.set(key, { side, i, px, h: [v], d: [Math.abs(edge - f.mid) / f.mid], n: 1, peak: v, weak: 0, x: false, pend: 0, t0: f.t });
+        });
+        scan(f.ask, "ask"); scan(f.bid, "bid");
+      }
+      return ev;
+    }
+    // conteggi nella finestra e avviso se i muri ritirati prevalgono da un lato
+    function wallStats(events, now, win) {
+      const c = { ask: { rit: 0, ese: 0 }, bid: { rit: 0, ese: 0 }, warn: null };
+      for (const e of events) { if (now - e.t > win) continue; c[e.side][e.out === "ritirato" ? "rit" : "ese"]++; }
+      const chk = (s, o) => c[s].rit >= 3 && c[s].rit >= 2 * c[o].rit && c[s].rit > c[s].ese;
+      if (chk("ask", "bid")) c.warn = "ask"; else if (chk("bid", "ask")) c.warn = "bid";
+      return c;
+    }
+    return { nf, newState, applyEvent, feed, applySnapshot, invalidate, startLoose, idxOf, merge, meanIn, binBook, standsOut, walls, heat, fmtUsd, niceStep, median,
+             imbalance, liqBalance, sentiment, binanceLiq, bybitLiq, okxLiq, newTracker, trackWalls, wallStats, TR };
   })();
   /*CORE-END*/
 
-  const PAIRS = { BTCUSDT: { lab: "BTC", steps: [25, 50, 100], dec: 1, base: 64000, tick: 0.5, u0: 35000 },
-                  ETHUSDT: { lab: "ETH", steps: [1, 2.5, 5], dec: 2, base: 3100, tick: 0.05, u0: 9000 } };
-  const NS = 180, DT = 10000, WIN = NS * DT, MAXROWS = 2000, LSK = "radar_book_walls";
-  const DEMO = /(^|[?&])bookdemo=1(&|$)/.test(location.search);
-  const f = (x, d) => window.nfIT ? window.nfIT(x, d) : x.toFixed(d).replace(".", ",");
+  const PAIRS = {
+    BTCUSDT: { lab: "BTC", step: 25, dec: 1, base: 60700, u0: 1.5e6, okx: "BTC-USDT", ct: 0.01, cb: "BTC-USD", hl: "BTC" },
+    ETHUSDT: { lab: "ETH", step: 1, dec: 2, base: 1706, u0: 4.5e5, okx: "ETH-USDT", ct: 0.1, cb: "ETH-USD", hl: "ETH" },
+  };
+  const SRC = [
+    { id: "binf", name: "Binance futures", short: "Binance F" }, { id: "bins", name: "Binance spot", short: "Binance S" },
+    { id: "okx", name: "OKX", short: "OKX" }, { id: "bybit", name: "Bybit", short: "Bybit" },
+    { id: "cb", name: "Coinbase", short: "Coinbase" }, { id: "hl", name: "Hyperliquid", short: "Hyperliquid" },
+  ];
+  const DT = 5000, NS = 360, WIN = NS * DT, HALF = 0.025, KEEP = 0.04, RBIN = 0.05, RKEEP = 0.1, STALE = 30000;
+  const DEMO = /(^|[?&])(book)?demo=1(&|$)/.test(location.search);
+  const f = (x, d) => BK.nf(x, d), sg = (x, d = 2) => (x > 0 && +x.toFixed(d) !== 0 ? "+" : "") + f(x, d);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  const sel = { sym: "BTCUSDT", step: 25 };
-  try { const j = JSON.parse(localStorage.getItem("radar_book_sel") || "null"); if (j && PAIRS[j.sym] && PAIRS[j.sym].steps.includes(j.step)) { sel.sym = j.sym; sel.step = j.step; } } catch (_) {}
-  const S = BK.newState(), bufs = {};
-  const key = () => sel.sym + ":" + sel.step;
-  let gen = 0, ws = null, retryT = null, fails = 0, everSynced = false, lastMsg = 0, retryAt = 0;
-  let active = false, tickT = null, raf = 0, lastDraw = 0, nextAt = 0, status = "wait", V = null;
-  const seen = new Map();   // registro: ultima registrazione per muro (evita righe ripetute ogni 10 s)
+  const sel = { sym: "BTCUSDT", view: "agg" };
+  try { const j = JSON.parse(localStorage.getItem("radar_book_sel") || "null"); if (j && PAIRS[j.sym]) { sel.sym = j.sym; if (j.view === "agg" || SRC.some(s => s.id === j.view)) sel.view = j.view; } } catch (_) {}
+  const stores = {};                                   // per coppia: campioni, liquidazioni, eventi dei muri
+  const store = () => stores[sel.sym] || (stores[sel.sym] = { samples: [], liqs: [], events: [], tr: BK.newTracker(), key: "" });
+  const srcs = {}; SRC.forEach(d => { srcs[d.id] = { id: d.id, name: d.name, bids: new Map(), asks: new Map(), deep: null, S: null, last: 0, fails: 0, t0: 0, part: false, off: false, conns: [], timers: [], cov: null }; });
+  const liqFeed = { Binance: "wait", Bybit: "wait", OKX: "wait" };
+  let running = false, visible = false, tickT = null, raf = 0, lastDraw = 0, nextAt = 0, frame = null, refMid = 0, midLo = null, midHi = null;
+  let lastPanel = 0, hideT = null, lastPrune = 0, startedAt = 0, runGen = 0;
 
-  /* ---------- stato in testata ---------- */
-  function setStatus(s) { status = s; }
-  function curMid() { return S.synced ? BK.mid(S) : null; }
-  function lastMid() { const m = curMid(); if (m) return m; const b = bufs[key()]; return b && b.length ? b[b.length - 1].mid : null; }
-  function updateHead() {
-    const dot = H("bkDot"), st = H("bkSt"), msg = H("bkMsg"), P = PAIRS[sel.sym], m = lastMid();
-    const paused = !active;
-    dot.className = "bkDot" + (DEMO ? " demo" : status === "live" ? " live" : status === "err" ? " err" : status === "wait" ? " wait" : "");
-    st.textContent = paused ? "in pausa" : DEMO ? "demo sintetico" : status === "live" ? "live" : status === "err" ? "non raggiungibile" : "connessione…";
-    H("bkPx").textContent = m ? "$" + f(m, P.dec) : "–";
-    const cd = Math.max(0, Math.ceil((nextAt - Date.now()) / 1000));
-    H("bkCd").textContent = active && (status === "live" || DEMO) ? "campione tra " + cd + " s" : "";
-    if (!DEMO && status === "err") {
-      const w = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
-      msg.className = "bkMsg on err"; msg.innerHTML = "<b>Binance Futures non raggiungibile da questa rete</b><small>Nuovo tentativo tra " + w + " s</small>";
-    } else if (!DEMO && status === "wait" && !m) {
-      msg.className = "bkMsg on"; msg.innerHTML = "Connessione a Binance Futures…";
-    } else msg.className = "bkMsg";
+  /* ---------- rete: connessioni con riconnessione, ogni fonte isolata dalle altre ---------- */
+  async function getJSON(url, opt, ms) {
+    const ac = new AbortController(), to = setTimeout(() => ac.abort(), ms || 10000);
+    try { const r = await fetch(url, Object.assign({ signal: ac.signal }, opt)); if (!r.ok) throw new Error("HTTP " + r.status); return await r.json(); }
+    finally { clearTimeout(to); }
   }
-
-  /* ---------- rete ---------- */
-  function failure() {
-    if (!active) return;
-    gen++;
-    if (ws) { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; try { ws.close(); } catch (_) {} ws = null; }
-    S.snapId = null; S.synced = false; S.pending = [];
-    fails++;
-    const delay = Math.min(30000, 1000 * Math.pow(2, fails - 1));
-    retryAt = Date.now() + delay;
-    setStatus(everSynced && fails < 2 ? "wait" : "err");
-    clearTimeout(retryT); retryT = setTimeout(openWS, delay);
-  }
-  function snapshotUrl() { return "https://fapi.binance.com/fapi/v1/depth?symbol=" + sel.sym + "&limit=1000"; }
-  async function startSync(g) {
-    S.snapId = null; S.synced = false; S.pending = [];
-    let snap;
-    try {
-      const ac = new AbortController(), to = setTimeout(() => ac.abort(), 10000);
-      try {
-        const r = await fetch(snapshotUrl(), { signal: ac.signal });
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        snap = await r.json();
-      } finally { clearTimeout(to); }
-      if (!snap || !Array.isArray(snap.bids) || !Array.isArray(snap.asks) || snap.lastUpdateId == null) throw new Error("snapshot non valido");
-    } catch (e) { if (g === gen) failure(); return; }
-    if (g !== gen) return;
-    const r = BK.applySnapshot(S, snap);
-    if (r === "resync") { setTimeout(() => { if (g === gen) startSync(g); }, 400); return; }
-    if (S.synced) markSynced();
-  }
-  function markSynced() { fails = 0; everSynced = true; setStatus("live"); }
-  function onEvent(d) {
-    const r = BK.feed(S, d);
-    if (r === "resync") { setTimeout(() => { if (active && ws) startSync(gen); }, 400); return; }
-    if (r === "ok" && status !== "live" && S.synced) markSynced();
-  }
-  function openWS() {
-    if (!active) return;
-    if (DEMO) return startDemo();
-    const g = ++gen;
-    clearTimeout(retryT);
-    if (ws) { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; try { ws.close(); } catch (_) {} ws = null; }
-    S.bids.clear(); S.asks.clear(); S.snapId = null; S.synced = false; S.pending = [];
-    setStatus("wait");
-    try {
-      ws = new WebSocket("wss://fstream.binance.com/ws/" + sel.sym.toLowerCase() + "@depth@100ms");
-    } catch (e) { failure(); return; }
-    ws.onopen = () => { if (g === gen) startSync(g); };
-    ws.onmessage = ev => {
-      if (g !== gen) return;
-      let d; try { d = JSON.parse(ev.data); } catch (_) { return; }
-      if (!d || d.e !== "depthUpdate") return;
-      lastMsg = Date.now(); onEvent(d);
+  // o: {urls, open(ws), msg(dati, ws, c), ping, pingMs, quiet (ms senza messaggi prima di riconnettere), down(fallimenti)}
+  function conn(o) {
+    const c = { ws: null, t: null, pt: null, fails: 0, ui: 0, dead: false, last: 0, got: false };
+    const kill = () => {
+      clearTimeout(c.t); clearInterval(c.pt);
+      if (c.ws) { c.ws.onopen = c.ws.onmessage = c.ws.onerror = c.ws.onclose = null; try { c.ws.close(); } catch (_) {} c.ws = null; }
     };
-    ws.onerror = () => {};
-    ws.onclose = () => { if (g === gen) failure(); };
+    const fail = () => {
+      if (c.dead) return;
+      kill(); if (!c.got) c.ui++;                       // indirizzo che non ha mai risposto: si prova il successivo
+      c.fails++; try { o.down && o.down(c.fails); } catch (_) {}
+      c.t = setTimeout(open, Math.min(30000, 1000 * Math.pow(2, Math.min(5, c.fails - 1))));
+    };
+    function open() {
+      if (c.dead) return;
+      kill(); c.got = false;
+      let ws; try { ws = c.ws = new WebSocket(o.urls[c.ui % o.urls.length]); } catch (_) { fail(); return; }
+      ws.onopen = () => {
+        c.last = Date.now();
+        try { o.open && o.open(ws, c); } catch (_) {}
+        c.pt = setInterval(() => {
+          if (o.ping) { try { ws.send(o.ping); } catch (_) {} }
+          if (o.quiet && Date.now() - c.last > o.quiet) fail();
+        }, o.pingMs || 20000);
+      };
+      ws.onmessage = ev => {
+        c.last = Date.now();
+        let d; try { d = JSON.parse(ev.data); } catch (_) { return; }
+        if (d == null || typeof d !== "object") return;
+        c.got = true;
+        try { o.msg(d, ws, c); } catch (e) { console.warn("book", e && e.message); }
+      };
+      ws.onerror = () => {};
+      ws.onclose = fail;
+    }
+    c.close = () => { c.dead = true; kill(); };
+    c.restart = fail;
+    open();
+    return c;
   }
-  function closeWS() {
-    gen++; clearTimeout(retryT);
-    if (ws) { ws.onopen = ws.onmessage = ws.onerror = ws.onclose = null; try { ws.close(); } catch (_) {} ws = null; }
+  const send = (ws, o) => { try { ws.send(JSON.stringify(o)); } catch (_) {} };
+  const inR = p => !refMid || (p > refMid * (1 - RKEEP) && p < refMid * (1 + RKEEP));
+  function setLv(m, p, q) { if (q > 0) { if (inR(p)) m.set(p, q); } else m.delete(p); }
+  function clearSrc(s) { s.bids.clear(); s.asks.clear(); s.deep = null; s.last = 0; s.part = false; if (s.S) BK.invalidate(s.S); }
+  const down = s => n => { s.fails = n; clearSrc(s); };
+  const ok = (s, c) => { s.last = Date.now(); s.fails = 0; if (c) c.fails = 0; };
+  function pushLiqs(rows) {
+    if (!rows.length) return;
+    const st = store(), now = Date.now();
+    for (const q of rows) { if (Math.abs(now - q.t) > WIN || (refMid && Math.abs(q.px / refMid - 1) > 0.2)) continue; st.liqs.push(q); }
   }
+  function every(s, ms, fn) { const g = runGen, run = () => { if (g === runGen && running) Promise.resolve().then(fn).catch(() => {}); }; run(); s.timers.push(setInterval(run, ms)); }
 
-  /* ---------- demo: book sintetico realistico (?bookdemo=1) ---------- */
-  function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  let demoWalls = null, demoT0 = 0;
-  function demoPrice(sym, t) {
-    const P = PAIRS[sym], k = P.base / 64000;
-    return P.base + k * (80 * Math.sin(t / 260000) + 35 * Math.sin(t / 61000 + 1)) + k * 5 * (rng(Math.floor(t / DT) * 7 + 1)() - 0.5) * 2;
-  }
-  function demoMkWalls() {
-    const P = PAIRS[sel.sym], r = rng(sel.sym === "BTCUSDT" ? 11 : 23), cover = P.tick * 1000, snap = P.tick * 50, avgBin = P.u0 * 0.7 * (sel.step / P.tick);
-    demoT0 = Date.now(); demoWalls = [];
-    for (let i = 0; i < 18; i++) {
-      const off = (r() < 0.5 ? -1 : 1) * (cover * 0.06 + r() * cover * 0.85), start = demoT0 - r() * WIN, dur = (3 + r() * 24) * 60000;
-      demoWalls.push({ px: Math.round((P.base + off) / snap) * snap, start, end: start + dur, usd: (3.6 + r() * 6.4) * avgBin * (0.8 + r() * 0.4) });
+  function startBinance(s, spot) {
+    const sym = sel.sym, low = sym.toLowerCase(), S = s.S = BK.newState(spot);
+    S.bids = s.bids; S.asks = s.asks;
+    const rest = spot ? ["https://api.binance.com/api/v3/depth?limit=5000&symbol=", "https://data-api.binance.vision/api/v3/depth?limit=5000&symbol="]
+                      : ["https://fapi.binance.com/fapi/v1/depth?limit=1000&symbol="];
+    const urls = spot ? ["wss://stream.binance.com:9443/ws/" + low + "@depth", "wss://data-stream.binance.vision/ws/" + low + "@depth"]
+                      : ["wss://fstream.binance.com/public/ws/" + low + "@depth@500ms", "wss://fstream.binance.com/ws/" + low + "@depth@500ms"];
+    let g = 0, ri = 0, bad = 0, looseT = 0;
+    async function snap(my, quietly) {
+      let j = null;
+      try { j = await getJSON(rest[ri % rest.length] + sym); if (!j || !Array.isArray(j.bids) || !Array.isArray(j.asks) || j.lastUpdateId == null) j = null; } catch (_) { j = null; }
+      if (my !== g || !running) return;
+      if (!j) {
+        ri++; bad++;
+        if (quietly) return;
+        if (bad > rest.length) { BK.startLoose(S); s.part = true; s.t0 = Date.now(); looseT = Date.now(); }   // REST non raggiungibile: solo aggiornamenti
+        else setTimeout(() => snap(my), 1200);
+        return;
+      }
+      bad = 0;
+      if (quietly) BK.invalidate(S);
+      s.part = false;
+      if (BK.applySnapshot(S, j) === "resync") setTimeout(() => { if (my === g) snap(my); }, 500);
     }
+    s.conns.push(conn({
+      urls, quiet: STALE, down: down(s),
+      open: () => { g++; bad = 0; BK.invalidate(S); s.part = false; snap(g); },
+      msg: (d, ws, c) => {
+        if (d.e !== "depthUpdate") return;
+        if (refMid) { S.plo = refMid * (1 - RKEEP); S.phi = refMid * (1 + RKEEP); }
+        const r = BK.feed(S, d);
+        if (r === "ok") { ok(s, c); if (s.part && Date.now() - looseT > 180000) { looseT = Date.now(); snap(g, true); } }   // ogni 3 minuti riprova lo snapshot completo
+        else if (r === "resync") { s.part = false; setTimeout(() => { if (running) snap(++g); }, 500); }
+      },
+    }));
   }
-  function demoBook(t) {
-    const P = PAIRS[sel.sym], r = rng(Math.floor(t / DT) * 131 + (sel.sym === "BTCUSDT" ? 1 : 2)), mid = demoPrice(sel.sym, t), tk = P.tick;
-    const b0 = Math.floor(mid / tk) * tk, bids = new Map(), asks = new Map();
-    const gz = () => (r() + r() + r() - 1.5) * 2;
-    for (let i = 0; i < 1000; i++) {
-      const u = P.u0 * (0.35 + Math.exp(-i / 450)) * Math.exp(0.8 * gz() - 0.3), pb = +(b0 - i * tk).toFixed(4), pa = +(b0 + tk + i * tk).toFixed(4);
-      bids.set(pb, u / pb); asks.set(pa, u / pa * Math.exp(0.15 * gz()));
-    }
-    demoWalls.forEach(w => {
-      if (t < w.start || t > w.end) return;
-      const px = Math.round(w.px / tk) * tk, m = px < mid ? bids : asks;
-      m.set(px, (m.get(px) || 0) + w.usd / px);
+  function startBinanceLiq() {
+    const sym = sel.sym, low = sym.toLowerCase();
+    srcs.binf.conns.push(conn({
+      urls: ["wss://fstream.binance.com/market/ws/" + low + "@forceOrder", "wss://fstream.binance.com/ws/" + low + "@forceOrder"],
+      open: () => { liqFeed.Binance = "on"; }, down: n => { liqFeed.Binance = n >= 2 ? "err" : "wait"; },
+      msg: d => { if (d.e === "forceOrder") pushLiqs(BK.binanceLiq(d, sym)); },
+    }));
+  }
+  function startOkx(s) {
+    const P = PAIRS[sel.sym], inst = P.okx + "-SWAP"; let seq = null;
+    s.conns.push(conn({
+      urls: ["wss://ws.okx.com:8443/ws/v5/public", "wss://ws.okx.com/ws/v5/public"], ping: "ping", pingMs: 20000, quiet: STALE,
+      down: n => { down(s)(n); liqFeed.OKX = n >= 2 ? "err" : "wait"; },
+      open: ws => { seq = null; send(ws, { op: "subscribe", args: [{ channel: "books", instId: inst }, { channel: "liquidation-orders", instType: "SWAP" }] }); },
+      msg: (d, ws, c) => {
+        const ch = d.arg && d.arg.channel;
+        if (d.event === "subscribe" && ch === "liquidation-orders") { liqFeed.OKX = "on"; return; }
+        if (d.event === "error") { if (/liquidation/.test(d.msg || "")) liqFeed.OKX = "err"; return; }
+        if (ch === "liquidation-orders" && d.data) { pushLiqs(BK.okxLiq(d, P.okx, P.ct)); return; }
+        if (ch !== "books" || !d.data) return;
+        for (const x of d.data) {
+          if (d.action === "snapshot") { s.bids.clear(); s.asks.clear(); }
+          else if (seq != null && x.prevSeqId != null && x.prevSeqId !== seq) { c.restart(); return; }   // sequenza interrotta: si riparte dallo snapshot
+          seq = x.seqId;
+          for (const r of x.bids || []) setLv(s.bids, +r[0], +r[1] * P.ct);
+          for (const r of x.asks || []) setLv(s.asks, +r[0], +r[1] * P.ct);
+        }
+        ok(s, c);
+      },
+    }));
+    every(s, 30000, async () => {   // profondità oltre i 400 livelli del canale: istantanea completa
+      const j = await getJSON("https://www.okx.com/api/v5/market/books-full?instId=" + inst + "&sz=5000", null, 15000), d = j && j.data && j.data[0];
+      if (!d || sel.sym !== Object.keys(PAIRS).find(k => PAIRS[k] === P)) return;
+      const row = r => [+r[0], +r[1] * P.ct, 0];
+      s.deep = { b: (d.bids || []).map(row).filter(r => inR(r[0])), a: (d.asks || []).map(row).filter(r => inR(r[0])) };
     });
-    return { bids, asks, mid };
   }
-  function demoFill(t) {
-    const d = demoBook(t);
-    S.bids = d.bids; S.asks = d.asks; S.snapId = 1; S.synced = true;
-    let lo = Infinity, hi = -Infinity; S.bids.forEach((_, p) => { if (p < lo) lo = p; }); S.asks.forEach((_, p) => { if (p > hi) hi = p; }); S.snapLo = lo; S.snapHi = hi;
-    lastMsg = Date.now();
+  function startBybit(s) {
+    const sym = sel.sym, depths = [1000, 500, 200]; let di = 0;
+    s.conns.push(conn({
+      urls: ["wss://stream.bybit.com/v5/public/linear"], ping: '{"op":"ping"}', pingMs: 20000, quiet: STALE,
+      down: n => { down(s)(n); liqFeed.Bybit = n >= 2 ? "err" : "wait"; },
+      open: ws => { di = 0; send(ws, { req_id: "ob", op: "subscribe", args: ["orderbook." + depths[0] + "." + sym] }); send(ws, { req_id: "liq", op: "subscribe", args: ["allLiquidation." + sym] }); },
+      msg: (d, ws, c) => {
+        if (d.op === "subscribe") {
+          if (d.req_id === "ob" && d.success === false && ++di < depths.length) send(ws, { req_id: "ob", op: "subscribe", args: ["orderbook." + depths[di] + "." + sym] });
+          else if (d.req_id === "liq") { if (d.success === false) send(ws, { req_id: "liq2", op: "subscribe", args: ["liquidation." + sym] }); else liqFeed.Bybit = "on"; }
+          else if (d.req_id === "liq2") liqFeed.Bybit = d.success === false ? "err" : "on";
+          return;
+        }
+        const tp = d.topic || "";
+        if (/^(allLiquidation|liquidation)\./.test(tp)) { pushLiqs(BK.bybitLiq(d, sym)); return; }
+        if (tp.indexOf("orderbook.") !== 0 || !d.data) return;
+        if (d.type === "snapshot") { s.bids.clear(); s.asks.clear(); }
+        for (const r of d.data.b || []) setLv(s.bids, +r[0], +r[1]);
+        for (const r of d.data.a || []) setLv(s.asks, +r[0], +r[1]);
+        ok(s, c);
+      },
+    }));
   }
-  function startDemo() {
-    if (!demoWalls || demoKeyStep !== sel.sym + sel.step) { demoKeyStep = sel.sym + sel.step; demoMkWalls(); }
-    const b = bufs[key()] || (bufs[key()] = []);
-    if (!b.length) {
-      const end = Math.floor(Date.now() / DT) * DT;
-      for (let i = NS - 1; i >= 1; i--) { const t = end - i * DT; demoFill(t); pushSample(t, false); }
-    }
-    demoFill(Date.now()); setStatus("live");
+  function startCoinbase(s) {
+    const prod = PAIRS[sel.sym].cb;
+    s.conns.push(conn({
+      urls: ["wss://ws-feed.exchange.coinbase.com"], quiet: STALE, down: down(s),
+      open: ws => send(ws, { type: "subscribe", product_ids: [prod], channels: ["level2_batch"] }),
+      msg: (d, ws, c) => {
+        if (d.type === "error") { s.fails = Math.max(2, s.fails); return; }   // canale non disponibile senza credenziali: fonte non raggiungibile
+        if (d.product_id !== prod) return;
+        if (d.type === "snapshot") {
+          s.bids.clear(); s.asks.clear();
+          const m0 = d.bids && d.bids[0] && d.asks && d.asks[0] ? (+d.bids[0][0] + +d.asks[0][0]) / 2 : 0, near = p => !m0 || Math.abs(p / m0 - 1) < RKEEP;
+          for (const r of d.bids || []) { const p = +r[0]; if (near(p) && +r[1] > 0) s.bids.set(p, +r[1]); }
+          for (const r of d.asks || []) { const p = +r[0]; if (near(p) && +r[1] > 0) s.asks.set(p, +r[1]); }
+          ok(s, c);
+        } else if (d.type === "l2update") {
+          for (const r of d.changes || []) setLv(r[0] === "buy" ? s.bids : s.asks, +r[1], +r[2]);
+          ok(s, c);
+        }
+      },
+    }));
   }
-  let demoKeyStep = "";
+  function startHyper(s) {
+    const coin = PAIRS[sel.sym].hl;
+    s.conns.push(conn({
+      urls: ["wss://api.hyperliquid.xyz/ws"], ping: '{"method":"ping"}', pingMs: 25000, quiet: STALE, down: down(s),
+      open: ws => send(ws, { method: "subscribe", subscription: { type: "l2Book", coin, nSigFigs: 4 } }),
+      msg: (d, ws, c) => {
+        if (d.channel !== "l2Book" || !d.data || d.data.coin !== coin || !Array.isArray(d.data.levels)) return;
+        const L = d.data.levels; s.bids.clear(); s.asks.clear();   // ogni messaggio è il book intero (20 livelli per lato)
+        for (const r of L[0] || []) if (+r.sz > 0) s.bids.set(+r.px, +r.sz);
+        for (const r of L[1] || []) if (+r.sz > 0) s.asks.set(+r.px, +r.sz);
+        ok(s, c);
+      },
+    }));
+    every(s, 10000, async () => {   // 3 cifre significative: 20 livelli larghi che coprono oltre il ±2,5%
+      const j = await getJSON("https://api.hyperliquid.xyz/info", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "l2Book", coin, nSigFigs: 3 }) });
+      if (!j || j.coin !== coin || !Array.isArray(j.levels) || coin !== PAIRS[sel.sym].hl) return;
+      const row = r => { const p = +r.px; return [p, +r.sz, Math.pow(10, Math.floor(Math.log10(p)) - 2)]; };
+      s.deep = { b: (j.levels[0] || []).map(row), a: (j.levels[1] || []).map(row) };
+    });
+  }
+  function startSources() {
+    runGen++;
+    Object.keys(liqFeed).forEach(k => { liqFeed[k] = "wait"; });
+    SRC.forEach(d => { const s = srcs[d.id]; clearSrc(s); s.fails = 0; s.S = null; });
+    if (DEMO) return;
+    const go = (fn, s, a) => { try { fn(s, a); } catch (e) { s.fails = 9; console.warn("book", s.id, e && e.message); } };
+    go(startBinance, srcs.binf, false); go(startBinanceLiq, srcs.binf); go(startBinance, srcs.bins, true);
+    go(startOkx, srcs.okx); go(startBybit, srcs.bybit); go(startCoinbase, srcs.cb); go(startHyper, srcs.hl);
+  }
+  function stopSources() {
+    runGen++;
+    SRC.forEach(d => { const s = srcs[d.id]; s.conns.forEach(c => c.close()); s.conns = []; s.timers.forEach(clearInterval); s.timers = []; clearSrc(s); });
+  }
+  // stato di una fonte: live (book valido e fresco), part (solo aggiornamenti, senza snapshot), wait, err
+  function srcState(s, now) {
+    if (DEMO) return "live";
+    if (s.last && now - s.last < STALE && s.bids.size && s.asks.size && !s.off) return s.part ? (now - s.t0 > 15000 ? "part" : "wait") : "live";
+    return s.fails >= 2 ? "err" : "wait";
+  }
 
-  /* ---------- campioni ---------- */
-  function pushSample(t, log) {
-    const m = BK.mid(S); if (!m) return;
-    const agg = BK.merge(BK.aggregate(S.bids, sel.step), BK.aggregate(S.asks, sel.step));
-    const ids = Int32Array.from(agg.keys()), vs = Float32Array.from(agg.values());
-    const b = bufs[key()] || (bufs[key()] = []);
-    b.push({ t, mid: m, ids, vs });
-    if (b.length > NS) b.shift();
-    if (log && !DEMO) logWalls(t, m);
+  /* ---------- demo: sei fonti sintetiche con muri che vengono ritirati o eseguiti (?demo=1) ---------- */
+  const h01 = (a, b, c) => { let x = (Math.imul(a | 0, 374761393) + Math.imul(b | 0, 668265263) + Math.imul(c | 0, 2147483647)) | 0; x = Math.imul(x ^ (x >>> 13), 1274126177); return ((x ^ (x >>> 16)) >>> 0) / 4294967296; };
+  const SHARE = [0.3, 0.14, 0.14, 0.2, 0.1, 0.12];
+  let demo = null;
+  function demoPx(t) { const x = t / 1000, P = PAIRS[sel.sym]; return P.base * (1 + 0.0046 * Math.sin(x / 410) + 0.0022 * Math.sin(x / 97 + 1.3) + 0.0006 * Math.sin(x / 23 + 0.4)); }
+  function demoInit(t0) {
+    const P = PAIRS[sel.sym], p0 = demoPx(t0), W = [], r = (k, j) => h01(k, j, P.step * 8);
+    for (let k = 1; k <= 7; k++) {            // muri sul percorso del prezzo: a turno ritirati all'avvicinarsi o lasciati eseguire
+      const tk = t0 + k * WIN / 7.5, pk = demoPx(tk), ts = tk - 7 * 60000, side = demoPx(ts) < pk ? "ask" : "bid";
+      W.push({ px: BK.idxOf(pk, P.step) * P.step, side, t0: ts - r(k, 1) * 120000, dead: Infinity, pull: k % 3 !== 0, usd: (4.5 + 4 * r(k, 2)) * P.u0 });
+    }
+    for (let k = 0; k < 13; k++) {            // muri lontani, stabili
+      const off = (k % 2 ? 1 : -1) * (0.006 + r(k, 3) * 0.018), st = t0 - 300000 + r(k, 4) * WIN * 0.8;
+      W.push({ px: BK.idxOf(p0 * (1 + off), P.step) * P.step, side: off > 0 ? "ask" : "bid", t0: st, dead: st + (6 + 30 * r(k, 5)) * 60000, pull: false, usd: (3.6 + 6 * r(k, 6)) * P.u0 });
+    }
+    demo = { W, last: t0, sym: sel.sym };
   }
-  function takeSample() {
-    if (!S.synced || Date.now() - lastMsg > 15000) return;
-    pushSample(Date.now(), true);
+  function demoStep(t) {                       // esito dei muri sul percorso: ritirato a 0,15% dal prezzo oppure eseguito all'attraversamento
+    const P = PAIRS[sel.sym], p = demoPx(t);
+    for (const w of demo.W) {
+      if (t < w.t0 || t >= w.dead) continue;
+      const edge = w.side === "ask" ? w.px : w.px + P.step, d = (w.side === "ask" ? edge - p : p - edge) / p;
+      if (d <= 0 || (w.pull && d < 0.0015)) w.dead = t;
+    }
+    demo.last = t;
+  }
+  function demoBins(t, k) {
+    const P = PAIRS[sel.sym], step = P.step, mid = demoPx(t) * (1 + (k - 2.5) * 1.5e-5), im = BK.idxOf(mid, step), slot = Math.floor(t / DT);
+    const bid = new Map(), ask = new Map(), i0 = BK.idxOf(mid * 0.955, step), i1 = BK.idxOf(mid * 1.045, step);
+    for (let i = i0; i <= i1; i++) {
+      if (i === im) continue;
+      const dist = Math.abs((i + 0.5) * step - mid) / mid;
+      const usd = SHARE[k] * P.u0 * (0.45 + 0.9 * Math.exp(-dist / 0.007)) * (0.5 + h01(i, k, 3)) * (1 + 0.22 * Math.sin(t / 90000 + i * 1.7 + k)) * (0.93 + 0.14 * h01(i, k, slot));
+      (i < im ? bid : ask).set(i, usd);
+    }
+    for (const w of demo.W) {
+      if (t < w.t0 || t >= w.dead) continue;
+      const m = w.side === "ask" ? ask : bid, i = BK.idxOf(w.px, step);
+      m.set(i, (m.get(i) || 0) + w.usd * SHARE[k] * (0.9 + 0.2 * h01(i, k, 11)));
+    }
+    return { bid, ask, mid, lo: mid * 0.955, hi: mid * 1.045, crossed: false };
+  }
+  function demoLiqs(t) {
+    const slot = Math.floor(t / DT), p = demoPx(t), dp = (p - demoPx(t - DT)) / p, out = [];
+    if (h01(slot, 5, 1) > Math.min(0.75, Math.abs(dp) / 0.00022 * 0.13)) return out;
+    const n = 1 + Math.floor(h01(slot, 5, 2) * 3);
+    for (let j = 0; j < n; j++) {
+      const main = h01(slot, j, 7) < 0.88, side = (dp < 0) === main ? "long" : "short";
+      out.push({ t: t - h01(slot, j, 8) * DT, px: p * (1 + (h01(slot, j, 9) - 0.5) * 0.0012), usd: 8000 * Math.exp(4.6 * h01(slot, j, 10)), side, ex: ["Binance", "Bybit", "OKX"][Math.floor(h01(slot, j, 12) * 3)] });
+    }
+    return out;
+  }
+  function demoFill() {
+    const st = store(), end = Math.floor(Date.now() / DT) * DT;
+    st.samples = []; st.liqs = []; st.events = []; st.tr = BK.newTracker(); st.key = "";
+    demoInit(end - NS * DT);
+    for (let j = NS - 1; j >= 0; j--) {
+      const t = end - j * DT, a = demoPx(t - DT), b = demoPx(t);
+      demoStep(t); midLo = Math.min(a, b); midHi = Math.max(a, b);
+      frame = buildFrame(t); st.liqs.push.apply(st.liqs, demoLiqs(t)); takeSample(t);
+    }
+    Object.keys(liqFeed).forEach(k => { liqFeed[k] = "on"; });
+  }
+
+  /* ---------- fotogramma corrente: book per fonte, aggregato, vista selezionata ---------- */
+  function buildFrame(now) {
+    const step = PAIRS[sel.sym].step, per = {}, mids = [];
+    SRC.forEach((d, k) => {
+      const s = srcs[d.id]; let b = null;
+      if (DEMO) b = demoBins(now, k);
+      else { const stt = srcState(s, now); if (stt === "live" || stt === "part" || s.off) b = BK.binBook(s.bids, s.asks, s.deep, step, RBIN); }
+      if (!b || b.crossed) { if (b && b.crossed && !s.xT) s.xT = now; if (!b) s.cov = null; return; }
+      s.xT = 0; s.cov = [(b.lo / b.mid - 1) * 100, (b.hi / b.mid - 1) * 100];
+      per[d.id] = b; mids.push(b.mid);
+    });
+    const med = BK.median(mids);
+    SRC.forEach(d => {                              // una fonte lontana più dell'1% dalle altre è esclusa finché non rientra
+      const s = srcs[d.id], b = per[d.id];
+      s.off = !!(b && mids.length > 1 && Math.abs(b.mid / med - 1) > 0.01);
+      if (s.off) delete per[d.id];
+    });
+    const ids = Object.keys(per);
+    if (!ids.length) return { t: now, mid: null, midAgg: null, per, ids, key: "" };
+    const midAgg = BK.median(ids.map(i => per[i].mid));
+    let aggBid = new Map(), aggAsk = new Map();
+    ids.forEach(i => { aggBid = BK.merge(aggBid, per[i].bid); aggAsk = BK.merge(aggAsk, per[i].ask); });
+    const one = sel.view !== "agg" ? per[sel.view] : null;
+    return { t: now, per, ids, key: ids.join(","), midAgg, aggBid, aggAsk,
+             mid: sel.view === "agg" ? midAgg : one ? one.mid : null, bid: sel.view === "agg" ? aggBid : one ? one.bid : null, ask: sel.view === "agg" ? aggAsk : one ? one.ask : null };
+  }
+  function viewRange(mid) {
+    const step = PAIRS[sel.sym].step, c = Math.round(mid / (4 * step)) * 4 * step;
+    return { lo: BK.idxOf(c * (1 - HALF), step), hi: BK.idxOf(c * (1 + HALF), step) + 1 };
+  }
+  function takeSample(t) {
+    const fr = frame, st = store(); if (!fr || !fr.midAgg) return;
+    const step = PAIRS[sel.sym].step, base = BK.idxOf(fr.midAgg * (1 - KEEP), step), n = BK.idxOf(fr.midAgg * (1 + KEEP), step) - base + 1;
+    const all = new Float32Array(n), src = {};
+    fr.ids.forEach(id => {
+      const v = new Float32Array(n), put = (u, i) => { const k = i - base; if (k >= 0 && k < n) { v[k] += u; all[k] += u; } };
+      fr.per[id].bid.forEach(put); fr.per[id].ask.forEach(put);
+      src[id] = { mid: fr.per[id].mid, v };
+    });
+    st.samples.push({ t, mid: fr.midAgg, base, n, all, src });
+    while (st.samples.length && t - st.samples[0].t > WIN + DT) st.samples.shift();
+    // muri nel tempo, sempre sul book aggregato; se cambia l'insieme delle fonti attive si riparte (un muro non «scompare» perché cade una borsa)
+    if (fr.key !== st.key) { st.key = fr.key; st.tr = BK.newTracker(); }
+    const vr = viewRange(fr.midAgg);
+    const ev = BK.trackWalls(st.tr, { t, mid: fr.midAgg, midLo, midHi, bid: fr.aggBid, ask: fr.aggAsk, lo: vr.lo, hi: vr.hi, step });
+    if (ev.length) st.events.push.apply(st.events, ev);
+    midLo = midHi = fr.midAgg;
+    if (!DEMO) logWalls(t, fr, vr);
+  }
+  const seen = new Map();
+  function logWalls(t, fr, vr) {   // registro locale dei muri >= 5× (radar_book_walls, max 2.000 righe) per un controllo in avanti
+    try {
+      const step = PAIRS[sel.sym].step, w = BK.walls(fr.aggBid, fr.aggAsk, vr.lo, vr.hi, step, 5), rows = [];
+      ["ask", "bid"].forEach(side => w[side].forEach(x => {
+        const k = sel.sym + side + x.px; if (t - (seen.get(k) || 0) < 600000) return;
+        seen.set(k, t);
+        rows.push({ ts: t, t: new Date(t).toISOString(), sym: sel.sym, side, px: x.px, usd: Math.round(x.usd), mult: +x.mult.toFixed(2), dist: +((x.px - fr.midAgg) / fr.midAgg * 100).toFixed(3), src: fr.key });
+      }));
+      if (!rows.length) return;
+      let all = []; try { all = JSON.parse(localStorage.getItem("radar_book_walls") || "[]"); if (!Array.isArray(all)) all = []; } catch (_) { all = []; }
+      all = all.concat(rows); if (all.length > 2000) all = all.slice(all.length - 2000);
+      localStorage.setItem("radar_book_walls", JSON.stringify(all));
+    } catch (_) {}
+  }
+  function prune(now) {
+    const st = store();
+    while (st.liqs.length && now - st.liqs[0].t > WIN + DT) st.liqs.shift();
+    st.liqs = st.liqs.filter(q => now - q.t <= WIN + DT);
+    st.events = st.events.filter(e => now - e.t <= WIN);
+    if (refMid && now - lastPrune > 60000) {
+      lastPrune = now;
+      const lo = refMid * (1 - RKEEP), hi = refMid * (1 + RKEEP), cut = m => m.forEach((_, p) => { if (p < lo || p > hi) m.delete(p); });
+      SRC.forEach(d => { cut(srcs[d.id].bids); cut(srcs[d.id].asks); });
+    }
   }
   function tick() {
     const now = Date.now();
-    if (DEMO && demoWalls) demoFill(now);
+    if (DEMO && demo) demoStep(now);
+    frame = buildFrame(now);
+    if (frame.midAgg) {
+      refMid = frame.midAgg;
+      midLo = midLo == null ? refMid : Math.min(midLo, refMid); midHi = midHi == null ? refMid : Math.max(midHi, refMid);
+    }
+    if (!DEMO) SRC.forEach(d => { const s = srcs[d.id]; if (s.xT && now - s.xT > 10000) { s.xT = 0; s.conns[0] && s.conns[0].restart(); } });   // book incrociato da 10 s: si riparte
     if (!nextAt) nextAt = (Math.floor(now / DT) + 1) * DT;
-    if (now >= nextAt) { takeSample(); while (nextAt <= now) nextAt += DT; }
-    if (!DEMO && S.synced && Date.now() - lastMsg > 20000) failure();   // flusso fermo: riconnette
-    if (S.bids.size > 6000) prune();
-  }
-  function prune() {
-    const m = BK.mid(S); if (!m) return;
-    const lo = m * 0.9, hi = m * 1.1;
-    S.bids.forEach((_, p) => { if (p < lo) S.bids.delete(p); }); S.asks.forEach((_, p) => { if (p > hi) S.asks.delete(p); });
+    if (now >= nextAt) {
+      const t = Math.floor(now / DT) * DT;
+      if (DEMO) store().liqs.push.apply(store().liqs, demoLiqs(t));
+      takeSample(t); while (nextAt <= now) nextAt += DT;
+      lastPanel = 0;
+    }
+    prune(now);
+    if (visible) { updateHead(now); if (now - lastPanel > 2000) { lastPanel = now; renderPanels(now); } }
   }
 
-  /* ---------- vista (range visibile) e muri ---------- */
-  function getView() {
-    const step = sel.step, buf = (bufs[key()] || []).filter(s => Date.now() - s.t <= WIN + DT), live = S.synced;
-    const mid = live ? BK.mid(S) : (buf.length ? buf[buf.length - 1].mid : null);
-    if (!mid) return null;
-    let half = 6 * step;
-    if (live && S.snapLo != null && S.snapHi != null) half = Math.max(half, Math.min(mid - S.snapLo, S.snapHi - mid));
-    buf.forEach(s => { half = Math.max(half, Math.abs(s.mid - mid) + 2 * step); });
-    half = Math.min(half, 60 * step);
-    const lo = Math.floor((mid - half) / step), hi = Math.ceil((mid + half) / step);
-    const bid = live ? BK.aggregate(S.bids, step) : new Map(), ask = live ? BK.aggregate(S.asks, step) : new Map();
-    return { step, mid, lo, hi, buf, bid, ask, live };
+  /* ---------- testata, fonti, pannelli ---------- */
+  const stLabel = { live: "attiva", part: "attiva, copertura parziale", wait: "in connessione", err: "non raggiungibile" };
+  function updateHead(now) {
+    const P = PAIRS[sel.sym], fr = frame, m = fr && fr.mid, dot = H("bkDot");
+    let last = 0; SRC.forEach(d => { if (sel.view === "agg" || sel.view === d.id) last = Math.max(last, srcs[d.id].last); });
+    const age = DEMO ? 0 : last ? Math.max(0, Math.round((now - last) / 1000)) : null;
+    const states = SRC.map(d => srcState(srcs[d.id], now)), any = states.some(s => s === "live" || s === "part"), allErr = states.every(s => s === "err");
+    dot.className = "bkDot " + (m && age != null && age < 15 ? "live" : allErr ? "err" : "wait");
+    H("bkPx").textContent = m ? "$" + f(m, P.dec) : "–";
+    H("bkAge").textContent = !running ? "in pausa" : m && age != null ? age + " s fa" : "";
+    // fonti
+    const box = H("bkSrc");
+    SRC.forEach((d, k) => {
+      const b = box.children[k + 1], st = states[k], cls = st === "part" ? "live" : st, s = srcs[d.id];
+      if (b.dataset.st !== st) { b.dataset.st = st; b.className = cls; }
+      const cov = s.cov ? " · copertura " + sg(s.cov[0], 1) + "% / " + sg(s.cov[1], 1) + "%" : "";
+      const tt = d.name + ": " + (DEMO ? "demo" : stLabel[st]) + cov;
+      if (b.title !== tt) { b.title = tt; b.setAttribute("aria-label", tt); }
+    });
+    const nm = st => SRC.filter((d, k) => states[k] === st).map(d => d.name);
+    const act = nm("live").concat(nm("part")), parts = [];
+    if (DEMO) parts.push("Sei fonti simulate");
+    else {
+      parts.push(act.length + " fonti attive su " + SRC.length);
+      if (nm("part").length) parts.push("solo aggiornamenti, copertura parziale: " + nm("part").join(", "));
+      if (nm("err").length) parts.push("non raggiungibili: " + nm("err").join(", "));
+      if (nm("wait").length) parts.push("in connessione: " + nm("wait").join(", "));
+    }
+    const txt = parts.join(" · ") + ".";
+    if (H("bkState").textContent !== txt) H("bkState").textContent = txt;
+    // messaggio sul grafico
+    const msg = H("bkMsg"), has = store().samples.length > 0, one = sel.view !== "agg" ? SRC.find(d => d.id === sel.view) : null;
+    let html = "";
+    if (one && !m) { const st = states[SRC.indexOf(one)]; html = st === "err" ? "<span>" + esc(one.name) + " non raggiungibile da questa rete</span><small>nuovi tentativi automatici · scegli Aggregato per le altre fonti</small>" : "<span>Connessione a " + esc(one.name) + "…</span>"; }
+    else if (!m && !has) html = allErr ? "<span>Nessuna borsa raggiungibile da questa rete</span><small>nuovi tentativi automatici</small>" : "<span>Connessione alle borse…</span>";
+    else if (!any && !m && !DEMO) html = "<span>Connessione persa</span><small>nuovi tentativi automatici</small>";
+    if (msg.dataset.h !== html) { msg.dataset.h = html; msg.innerHTML = html; msg.className = "bkMsg" + (html ? " on" : ""); }
   }
-  function computeWalls(minMult) {
-    const v = getView(); if (!v || !v.live) return { ask: [], bid: [] };
-    return BK.walls(v.bid, v.ask, v.lo, v.hi, v.step, v.mid, minMult);
+  function sentimentNow(now) {
+    const fr = frame, st = store(), step = PAIRS[sel.sym].step;
+    const lb = BK.liqBalance(st.liqs, now, WIN);
+    if (!fr || !fr.midAgg) return { ready: false, lb };
+    const im = BK.imbalance(fr.aggBid, fr.aggAsk, fr.midAgg, step, 0.01), s = BK.sentiment(im.I, lb.L);
+    if (lb.low) return { ready: false, low: true, I: im.I, bid: im.bid, ask: im.ask, lb };
+    return { ready: true, I: im.I, bid: im.bid, ask: im.ask, L: lb.L, lb, S: s.S, label: s.label };
   }
-  function logWalls(t, mid) {
-    try {
-      const w = computeWalls(5), rows = [];
-      [["ask", w.ask], ["bid", w.bid]].forEach(([side, arr]) => arr.forEach(x => {
-        const k = sel.sym + side + x.px;
-        if (t - (seen.get(k) || 0) < 600000) return;
-        seen.set(k, t);
-        rows.push({ ts: t, t: new Date(t).toISOString(), sym: sel.sym, side, px: x.px, usd: Math.round(x.usd), mult: +x.mult.toFixed(2), dist: +((x.px - mid) / mid * 100).toFixed(3) });
-      }));
-      if (!rows.length) return;
-      let all = []; try { all = JSON.parse(localStorage.getItem(LSK) || "[]"); if (!Array.isArray(all)) all = []; } catch (_) { all = []; }
-      all = all.concat(rows); if (all.length > MAXROWS) all = all.slice(all.length - MAXROWS);
-      localStorage.setItem(LSK, JSON.stringify(all));
-    } catch (_) {}
+  function renderPanels(now) {
+    const st = store(), s = sentimentNow(now), lb = s.lb;
+    H("bkS").textContent = s.ready ? sg(s.S) : "–";
+    const lab = H("bkSl"); lab.textContent = s.ready ? s.label : s.low ? "liquidazioni insufficienti" : "in attesa"; lab.className = "chip" + (s.ready && s.S > 0.2 ? " up" : s.ready && s.S < -0.2 ? " dn" : "");
+    H("bkSm").style.left = ((s.ready ? s.S : 0) + 1) * 50 + "%";
+    H("bkGauge").setAttribute("aria-label", s.ready ? "Sentiment " + sg(s.S) + " su una scala da −1 a +1: " + s.label : s.low ? "Sentiment non calcolato: liquidazioni sotto 250.000 dollari in 30 minuti" : "Sentiment in attesa dei dati");
+    H("bkI").textContent = s.ready || s.low ? sg(s.I) : "–";
+    H("bkIs").textContent = s.ready || s.low ? "acquisto " + BK.fmtUsd(s.bid) + " · vendita " + BK.fmtUsd(s.ask) : "in attesa del book";
+    H("bkL").textContent = lb.low ? "n.d." : sg(lb.L);
+    H("bkLs").textContent = lb.n ? "long " + BK.fmtUsd(lb.long) + " · short " + BK.fmtUsd(lb.short) + (lb.low ? " · sotto 250 mila $" : "") : "nessuna liquidazione";
+    const on = Object.keys(liqFeed).filter(k => liqFeed[k] === "on"), ko = Object.keys(liqFeed).filter(k => liqFeed[k] === "err");
+    H("bkLiqSt").textContent = "Liquidazioni degli ultimi 30 minuti " + (DEMO ? "simulate" : "da " + (on.length ? on.join(", ") : "nessuna fonte attiva") + (ko.length ? " · non raggiungibili: " + ko.join(", ") : "")) + ". Raccolte dall'apertura della pagina.";
+    const ws = BK.wallStats(st.events, now, WIN);
+    H("bkRit").textContent = ws.ask.rit + ws.bid.rit; H("bkRitS").textContent = "vendita " + ws.ask.rit + " · acquisto " + ws.bid.rit;
+    H("bkEse").textContent = ws.ask.ese + ws.bid.ese; H("bkEseS").textContent = "vendita " + ws.ask.ese + " · acquisto " + ws.bid.ese;
+    const al = H("bkAlert");
+    al.hidden = !ws.warn;
+    if (ws.warn) al.textContent = "Muri in " + (ws.warn === "ask" ? "vendita" : "acquisto") + " ritirati all'avvicinarsi del prezzo: liquidità poco affidabile.";
+    const P = PAIRS[sel.sym], rows = st.events.filter(e => now - e.t <= WIN).slice(-8).reverse().map(e =>
+      `<div class="row"><span class="x">${new Date(e.t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</span><span class="sd ${e.side === "ask" ? "a" : "b"}">${e.side === "ask" ? "vendita" : "acquisto"}</span><span class="k">${f(e.px, P.step % 1 ? 1 : 0)}</span><span class="v">${BK.fmtUsd(e.usd)}</span><span class="ot ${e.out === "ritirato" ? "r" : "e"}">${e.out}</span></div>`).join("");
+    const html = rows || '<div class="empty">Nessun muro scomparso vicino al prezzo da quando la pagina è aperta.</div>';
+    const box = H("bkEv"); if (box.dataset.h !== html) { box.dataset.h = html; box.innerHTML = html; }
   }
   window.BOOK = {
-    walls() { const w = computeWalls(3); return { ask: w.ask.slice(0, 10), bid: w.bid.slice(0, 10) }; },
-    get symbol() { return sel.sym; },
-    get mid() { return lastMid(); },
-    get step() { return sel.step; },
-    demo: DEMO,
+    walls() { const fr = frame; if (!fr || !fr.mid) return { ask: [], bid: [] }; const vr = viewRange(fr.mid), w = BK.walls(fr.bid, fr.ask, vr.lo, vr.hi, PAIRS[sel.sym].step, 3); return { ask: w.ask.slice(0, 10), bid: w.bid.slice(0, 10) }; },
+    sentiment() { return sentimentNow(Date.now()); },
+    sources() { const now = Date.now(); return SRC.map(d => ({ id: d.id, name: d.name, state: srcState(srcs[d.id], now), cover: srcs[d.id].cov })); },
+    events() { return store().events.slice(); },
+    liquidations() { return store().liqs.slice(); },
+    get samples() { return store().samples.length; },
+    get symbol() { return sel.sym; }, get view() { return sel.view; }, get mid() { return frame && frame.mid; }, get step() { return PAIRS[sel.sym].step; },
+    demo: DEMO, core: BK,
   };
 
   /* ---------- disegno ---------- */
   const FONT = '"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace';
-  function layout(W, Hh) {
-    const mob = W < 560;
-    return { axis: mob ? 46 : 60, domW: Math.max(mob ? 100 : 118, Math.round(W * (mob ? 0.3 : 0.15))), top: 8, bot: 22, mob };
+  function theme() {
+    const cs = getComputedStyle(H("v-book")), g = n => cs.getPropertyValue(n).trim(), t = n => g(n).split(",").map(Number);
+    return { label: g("--label"), l2: g("--label2"), l3: g("--label3"), line: g("--line"), line2: g("--line2"), card: g("--card"), green: g("--green"), red: g("--red"), h0: t("--bk-h0"), h1: t("--bk-h1"), a0: +g("--bk-a0") || 0.5 };
   }
   function draw() {
     const cv = H("bkCv"), r = cv.getBoundingClientRect(), W = Math.round(r.width), Hh = Math.round(r.height);
-    updateHead();
     if (W < 50 || Hh < 50) return;
     const dpr = window.devicePixelRatio || 1;
     if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(Hh * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(Hh * dpr); }
-    const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0);
-    c.fillStyle = "#09090b"; c.fillRect(0, 0, W, Hh);
-    const v = V = getView(); if (!v) return;
-    const L = layout(W, Hh), px0 = L.axis, px1 = W - L.domW - 8, py0 = L.top, py1 = Hh - L.bot, pw = px1 - px0, ph = py1 - py0;
-    const nb = v.hi - v.lo, loPx = v.lo * v.step, hiPx = v.hi * v.step, now = Date.now(), P = PAIRS[sel.sym];
-    const Y = p => py0 + (hiPx - p) / (hiPx - loPx) * ph, X = t => px0 + (t - (now - WIN)) / WIN * pw;
-    c.font = "10px " + FONT; c.textBaseline = "middle";
-    // griglia e asse Y
-    const ts = BK.niceStep(hiPx - loPx, L.mob ? 5 : 7, v.step);
-    c.strokeStyle = "rgba(255,255,255,.06)"; c.lineWidth = 1; c.fillStyle = "rgba(226,232,255,.55)"; c.textAlign = "right";
+    const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, Hh);
+    const st = store(), fr = frame, P = PAIRS[sel.sym], step = P.step, T = theme(), now = Date.now(), view = sel.view;
+    const vmid = s => view === "agg" ? s.mid : s.src[view] ? s.src[view].mid : null;
+    let mid = fr && fr.mid;
+    if (!mid) for (let k = st.samples.length - 1; k >= 0 && !mid; k--) mid = vmid(st.samples[k]);
+    if (!mid) return;
+    const live = !!(fr && fr.mid), vr = viewRange(mid), lo = vr.lo, hi = vr.hi, nb = hi - lo, loPx = lo * step, hiPx = hi * step;
+    const mob = W < 560, axis = mob ? 44 : 58, domW = mob ? 112 : 176, px0 = axis, px1 = W - domW - 6, py0 = 8, py1 = Hh - 22, pw = px1 - px0, ph = py1 - py0;
+    const Y = p => py0 + (hiPx - p) / (hiPx - loPx) * ph, X = t => px0 + (t - (now - WIN)) / WIN * pw, ch = ph / nb, dec = step % 1 ? 1 : 0;
+    c.font = "10px " + FONT; c.textBaseline = "middle"; c.lineWidth = 1;
+    // griglia e asse dei prezzi
+    const ts = BK.niceStep(hiPx - loPx, mob ? 6 : 8, step);
+    c.strokeStyle = T.line; c.fillStyle = T.l2; c.textAlign = "right";
     for (let p = Math.ceil(loPx / ts) * ts; p <= hiPx + 1e-9; p += ts) {
-      const y = Math.round(Y(p)) + 0.5;
+      const y = Math.round(Y(p)) + 0.5; if (y < py0 + 5 || y > py1 - 3) continue;
       c.beginPath(); c.moveTo(px0, y); c.lineTo(px1, y); c.stroke();
       c.fillText(f(p, ts % 1 ? 1 : 0), px0 - 6, y);
     }
-    // heatmap storica: solo fasce >= 3× la media del range visibile, per campione
-    const cw = Math.max(1, pw / NS), ch = ph / nb;
-    for (const s of v.buf) {
-      let sum = 0, n = 0;
-      for (let k = 0; k < s.ids.length; k++) { const i = s.ids[k]; if (i >= v.lo && i < v.hi && s.vs[k] > 0) { sum += s.vs[k]; n++; } }
+    // heatmap: per ogni campione solo le fasce >= 3× la media delle fasce visibili
+    c.save(); c.beginPath(); c.rect(px0, py0, pw, ph); c.clip();
+    const cw = pw / NS, gap = ch > 2.5 ? 0.6 : 0, rgb = t => `rgba(${Math.round(T.h0[0] + (T.h1[0] - T.h0[0]) * t)},${Math.round(T.h0[1] + (T.h1[1] - T.h0[1]) * t)},${Math.round(T.h0[2] + (T.h1[2] - T.h0[2]) * t)},${(T.a0 + (1 - T.a0) * t).toFixed(2)})`;
+    const pal = []; for (let k = 0; k <= 10; k++) pal.push(rgb(k / 10));
+    let firstT = null;
+    for (const s of st.samples) {
+      const v = view === "agg" ? s.all : s.src[view] && s.src[view].v; if (!v || now - s.t > WIN + DT) continue;
+      if (firstT == null) firstT = s.t;
+      const k0 = Math.max(0, lo - s.base), k1 = Math.min(s.n, hi - s.base); let sum = 0, n = 0;
+      for (let k = k0; k < k1; k++) if (v[k] > 0) { sum += v[k]; n++; }
       if (!n) continue;
-      const mean = sum / n, xr = Math.ceil(X(s.t)), x = Math.max(px0, Math.floor(xr - cw));
-      if (xr < px0) continue;
-      for (let k = 0; k < s.ids.length; k++) {
-        const i = s.ids[k], m = s.vs[k] / mean;
-        if (m < 3 || i < v.lo || i >= v.hi) continue;
-        c.fillStyle = BK.heat(m);
-        c.fillRect(x, py0 + (v.hi - 1 - i) * ch, Math.min(xr, px1) - x + 1, ch + 0.5);
+      const mean = sum / n, x1 = X(s.t), x0 = x1 - cw - 0.4, at = j => v[j];
+      for (let k = k0; k < k1; k++) {
+        const m = v[k] / mean; if (m < 3 || !BK.standsOut(at, k, k0, k1, v[k])) continue;
+        c.fillStyle = pal[Math.round(BK.heat(m) * 10)];
+        c.fillRect(x0, py0 + (hi - 1 - (k + s.base)) * ch + gap / 2, x1 - x0, Math.max(1, ch - gap));
       }
     }
     // linea del prezzo
-    c.beginPath(); c.strokeStyle = "#ffffff"; c.lineWidth = 1.5; c.lineJoin = "round";
-    let first = true;
-    for (const s of v.buf) { const x = X(s.t), y = Y(s.mid); if (x < px0) continue; if (first) { c.moveTo(x, y); first = false; } else c.lineTo(x, y); }
-    if (v.live) { if (first) c.moveTo(px1, Y(v.mid)); else c.lineTo(px1, Y(v.mid)); first = false; }
-    if (!first) c.stroke();
-    // asse X
-    c.fillStyle = "rgba(226,232,255,.55)"; c.textBaseline = "alphabetic";
-    [["30 m", 0, "left"], ["20 m", 1 / 3, "center"], ["10 m", 2 / 3, "center"], ["ora", 1, "right"]].forEach(([lab, fr, al]) => { c.textAlign = al; c.fillText(lab, px0 + fr * pw, Hh - 6); });
-    // barra DOM: profondità attuale allineata all'asse Y
-    const dx0 = W - L.domW, dw = L.domW - 4;
-    c.strokeStyle = "rgba(255,255,255,.1)"; c.beginPath(); c.moveTo(dx0 - 3.5, py0); c.lineTo(dx0 - 3.5, py1); c.stroke();
-    let mx = 0; [v.bid, v.ask].forEach(m => m.forEach((u, i) => { if (i >= v.lo && i < v.hi && u > mx) mx = u; }));
-    if (mx > 0) {
-      const bar = (m, col) => m.forEach((u, i) => { if (i < v.lo || i >= v.hi) return; c.fillStyle = col; c.fillRect(dx0, py0 + (v.hi - 1 - i) * ch + (ch > 3 ? 0.5 : 0), Math.max(1, u / mx * dw), Math.max(1, ch - (ch > 3 ? 1 : 0))); });
-      bar(v.ask, "rgba(255,90,82,.62)"); bar(v.bid, "rgba(52,215,123,.62)");
+    c.beginPath(); c.strokeStyle = T.label; c.lineWidth = 1.5; c.lineJoin = "round";
+    let pen = false, prevT = 0;
+    for (const s of st.samples) {
+      const m = vmid(s); if (!m || now - s.t > WIN + DT) continue;
+      const x = X(s.t), y = Y(m);
+      if (!pen || s.t - prevT > 4 * DT) c.moveTo(x, y); else c.lineTo(x, y);
+      pen = true; prevT = s.t;
     }
-    c.strokeStyle = "rgba(255,255,255,.85)"; c.lineWidth = 1; c.beginPath(); c.moveTo(dx0 - 3, Math.round(Y(v.mid)) + 0.5); c.lineTo(W, Math.round(Y(v.mid)) + 0.5); c.stroke();
-    // etichette dei 3 muri maggiori sopra (rosso) e sotto (verde)
-    if (v.live) {
-      const w = BK.walls(v.bid, v.ask, v.lo, v.hi, v.step, v.mid, 3), fs = L.mob ? 9 : 10, lh = fs + 4;
-      c.font = "600 " + fs + "px " + FONT; c.textBaseline = "middle"; c.textAlign = "right";
-      const dec = v.step % 1 ? 1 : 0;
-      [["ask", "#ff7b73"], ["bid", "#4ee08e"]].forEach(([side, col]) => {
-        const ls = w[side].slice(0, 3).map(x => ({ y: Y(x.px + v.step / 2), t: f(x.px, dec) + " · " + BK.fmtUsd(x.usd) })).sort((a, b) => a.y - b.y);
-        for (let k = 1; k < ls.length; k++) if (ls[k].y - ls[k - 1].y < lh) ls[k].y = ls[k - 1].y + lh;
+    if (live && pen && now - prevT <= 4 * DT) c.lineTo(px1, Y(mid));
+    if (pen) c.stroke();
+    // liquidazioni: rosso = long liquidato, verde = short liquidato, raggio secondo i dollari
+    c.lineWidth = 1; c.strokeStyle = T.card;
+    for (const q of st.liqs) {
+      if (now - q.t > WIN || q.px < loPx || q.px > hiPx) continue;
+      const rad = Math.max(2, Math.min(mob ? 7 : 8, 1.5 + Math.sqrt(q.usd / 1e5) * 1.6));
+      c.beginPath(); c.arc(X(q.t), Y(q.px), rad, 0, 6.2832);
+      c.globalAlpha = 0.78; c.fillStyle = q.side === "long" ? T.red : T.green; c.fill(); c.globalAlpha = 1; c.stroke();
+    }
+    c.restore();
+    // asse del tempo
+    c.fillStyle = T.l2; c.textBaseline = "alphabetic"; c.font = "10px " + FONT;
+    [["−30 m", 0, "left"], ["−20 m", 1 / 3, "center"], ["−10 m", 2 / 3, "center"], ["ora", 1, "right"]].forEach(([lab, q, al]) => { c.textAlign = al; c.fillText(lab, px0 + q * pw, Hh - 6); });
+    // profilo del book attuale
+    const dx0 = W - domW, dw = domW - 2;
+    c.strokeStyle = T.line2; c.beginPath(); c.moveTo(dx0 - 3.5, py0); c.lineTo(dx0 - 3.5, py1); c.stroke();
+    const tagH = 18, ym = Math.max(py0 + tagH / 2, Math.min(py1 - tagH / 2, Y(mid)));
+    if (live && fr.bid && fr.ask) {
+      const w = BK.walls(fr.bid, fr.ask, lo, hi, step, 3);
+      let mx = 0; [fr.bid, fr.ask].forEach(m => m.forEach((u, i) => { if (i >= lo && i < hi && u > mx) mx = u; }));
+      const wi = new Set(w.ask.concat(w.bid).map(x => x.i));
+      if (mx > 0) {
+        const bar = (m, col) => m.forEach((u, i) => {
+          if (i < lo || i >= hi) return;
+          c.globalAlpha = wi.has(i) ? 0.95 : 0.42; c.fillStyle = col;
+          c.fillRect(dx0, py0 + (hi - 1 - i) * ch + gap / 2, Math.max(1, u / mx * dw), Math.max(1, ch - gap));
+        });
+        bar(fr.ask, T.red); bar(fr.bid, T.green); c.globalAlpha = 1;
+      }
+      // muri maggiori: linea sul muro ed etichetta «prezzo · dimensione»
+      const fs = 10, lh = fs + 5; c.font = "600 " + fs + "px " + FONT; c.textBaseline = "middle";
+      [["ask", T.red, -1], ["bid", T.green, 1]].forEach(([side, col, dir]) => {
+        const ls = w[side].slice(0, 3).map(x => ({ y0: Y(x.px + step / 2), t: f(x.px, dec) + " · " + BK.fmtUsd(x.usd) }));
         ls.forEach(l => {
-          const y = Math.max(py0 + lh / 2, Math.min(py1 - lh / 2, l.y)), tw = c.measureText(l.t).width;
-          c.fillStyle = "rgba(9,9,11,.6)"; c.fillRect(W - tw - 8, y - lh / 2 + 1, tw + 6, lh - 2);
-          c.fillStyle = col; c.fillText(l.t, W - 5, y + 0.5);
+          const y = Math.round(l.y0) + 0.5;
+          c.strokeStyle = col; c.globalAlpha = 0.4; c.setLineDash([3, 3]); c.beginPath(); c.moveTo(px0, y); c.lineTo(px1, y); c.stroke();
+          c.setLineDash([]); c.globalAlpha = 0.95; c.beginPath(); c.moveTo(dx0 - 3, y); c.lineTo(W, y); c.stroke(); c.globalAlpha = 1;
+        });
+        ls.sort((a, b) => dir * (a.y0 - b.y0));                    // dal più vicino al prezzo verso l'esterno
+        let edge = ym + dir * (tagH / 2 + lh / 2 + 1);
+        ls.forEach(l => { l.y = dir < 0 ? Math.min(l.y0 - lh / 2 - 1, edge) : Math.max(l.y0 + lh / 2 + 1, edge); edge = l.y + dir * lh; });
+        let lim = dir < 0 ? py0 + lh / 2 : py1 - lh / 2;            // ritorno dal bordo del grafico, senza sovrapposizioni
+        for (let k = ls.length - 1; k >= 0; k--) { const l = ls[k]; if (dir < 0 ? l.y < lim : l.y > lim) l.y = lim; lim = l.y - dir * lh; }
+        c.textAlign = "right";
+        ls.forEach(l => {
+          const tw = c.measureText(l.t).width;
+          c.fillStyle = T.card; c.globalAlpha = 0.86; c.fillRect(W - tw - 8, l.y - lh / 2 + 0.5, tw + 8, lh - 1); c.globalAlpha = 1;
+          c.fillStyle = col; c.fillText(l.t, W - 4, l.y + 0.5);
         });
       });
     }
+    // la storia parte dall'apertura della pagina: dichiarato nello spazio ancora vuoto
+    const xe = firstT == null ? px1 : X(firstT) - cw;
+    if (xe - px0 > 110) {
+      c.font = "10px " + FONT; c.textAlign = "center"; c.textBaseline = "middle";
+      const two = xe - px0 <= 250, xm = (px0 + xe) / 2, yh = py0 + ph * 0.5, bw = two ? 136 : 216, bh = two ? 32 : 18;
+      c.fillStyle = T.card; c.fillRect(xm - bw / 2, yh - bh / 2, bw, bh);
+      c.fillStyle = T.l2;
+      if (two) { c.fillText("storia dalla apertura", xm, yh - 7); c.fillText("della pagina", xm, yh + 7); } else c.fillText("storia dalla apertura della pagina", xm, yh);
+    }
+    // prezzo corrente: linea e riquadro chiaro a destra
+    c.strokeStyle = T.label; c.lineWidth = 1; c.beginPath(); c.moveTo(dx0 - 3, Math.round(Y(mid)) + 0.5); c.lineTo(W, Math.round(Y(mid)) + 0.5); c.stroke();
+    c.font = "600 11px " + FONT; c.textBaseline = "middle"; c.textAlign = "right";
+    const pt = f(mid, P.dec), tw = c.measureText(pt).width + 12;
+    c.fillStyle = T.label; c.beginPath();
+    if (c.roundRect) c.roundRect(W - tw, ym - tagH / 2, tw, tagH, 4); else c.rect(W - tw, ym - tagH / 2, tw, tagH);
+    c.fill(); c.fillStyle = T.card; c.fillText(pt, W - 6, ym + 0.5);
   }
+  function redraw() { lastDraw = performance.now(); try { draw(); } catch (e) { console.warn("book", e && e.message); } }
   function loop(ts) {
     raf = requestAnimationFrame(loop);
     if (ts - lastDraw < 250) return;
-    lastDraw = ts;
-    try { draw(); } catch (e) { console.warn("book", e); }
+    redraw();
   }
-  function redraw() { lastDraw = performance.now(); try { draw(); } catch (e) { console.warn("book", e); } }
 
   /* ---------- controlli e ciclo di vita ---------- */
-  function stepLabel(s) { return f(s, s % 1 ? 1 : 0) + " $"; }
   function buildCtl() {
-    const pb = H("bkPair"), sb = H("bkStep");
+    const pb = H("bkPair"), sb = H("bkSrc");
     pb.innerHTML = Object.keys(PAIRS).map(k => `<button type="button" data-v="${k}" aria-pressed="${k === sel.sym}">${PAIRS[k].lab}</button>`).join("");
-    const steps = () => { sb.innerHTML = PAIRS[sel.sym].steps.map(s => `<button type="button" data-v="${s}" aria-pressed="${s === sel.step}">${stepLabel(s)}</button>`).join(""); };
-    steps();
+    sb.innerHTML = `<button type="button" data-v="agg" aria-pressed="${sel.view === "agg"}">Aggregato</button>` +
+      SRC.map(d => `<button type="button" data-v="${d.id}" aria-pressed="${sel.view === d.id}" class="wait"><i></i>${d.short}</button>`).join("");
     const save = () => { try { localStorage.setItem("radar_book_sel", JSON.stringify(sel)); } catch (_) {} };
     pb.onclick = e => {
       const b = e.target.closest("button"); if (!b || b.dataset.v === sel.sym) return;
-      sel.sym = b.dataset.v; sel.step = PAIRS[sel.sym].steps[0]; save();
-      pb.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); steps(); changed();
+      sel.sym = b.dataset.v; save();
+      pb.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      frame = null; refMid = 0; midLo = midHi = null; nextAt = 0; seen.clear();
+      const st = store(); st.tr = BK.newTracker(); st.key = "";
+      if (running) { stopSources(); startSources(); if (DEMO) demoFill(); }
+      labels(); refresh();
     };
     sb.onclick = e => {
-      const b = e.target.closest("button"); if (!b || +b.dataset.v === sel.step) return;
-      sel.step = +b.dataset.v; save();
-      sb.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); changed();
+      const b = e.target.closest("button"); if (!b || b.dataset.v === sel.view) return;
+      sel.view = b.dataset.v; save();
+      sb.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      if (running) frame = buildFrame(Date.now());
+      refresh();
     };
+    H("bkDemo").hidden = !DEMO;
+    labels();
   }
-  function changed() {   // nuova coppia o nuovo step: i campioni di un altro step non sono confrontabili, ogni combinazione ha il suo buffer
-    nextAt = 0; V = null; seen.clear();
-    if (active) { if (DEMO) { S.bids = new Map(); S.asks = new Map(); S.synced = false; startDemo(); } else openWS(); }
-    redraw();
+  function labels() { const P = PAIRS[sel.sym]; H("bkSym").textContent = sel.sym; H("bkStepLab").textContent = "Fasce da " + f(P.step, 0) + " $ · ±2,5%"; }
+  function refresh() { const now = Date.now(); updateHead(now); renderPanels(now); lastPanel = now; redraw(); }
+  function start() {
+    if (running) return;
+    running = true; startedAt = Date.now(); nextAt = 0;
+    startSources();
+    if (DEMO && (!demo || demo.sym !== sel.sym || Date.now() - demo.last > 60000)) demoFill();
+    clearInterval(tickT); tickT = setInterval(() => { try { tick(); } catch (e) { console.warn("book", e && e.message); } }, 500);
+    try { tick(); } catch (_) {}
   }
-  function shown() { return !H("v-book").hidden && !document.hidden; }
-  function resume() {
-    if (active) return;
-    active = true; nextAt = 0; fails = 0;
-    clearInterval(tickT); tickT = setInterval(tick, 500);
-    cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
-    openWS(); redraw();
+  function stop() {
+    if (!running) return;
+    running = false; clearInterval(tickT); stopSources(); frame = null;
+    const st = store(); st.tr = BK.newTracker(); st.key = "";
   }
-  function pause() {
-    if (!active) { updateHead(); return; }
-    active = false; clearInterval(tickT); cancelAnimationFrame(raf); closeWS();
-    S.bids.clear(); S.asks.clear(); S.snapId = null; S.synced = false; S.pending = []; setStatus("wait");
-    updateHead();
+  function setVisible(v) {
+    visible = v; cancelAnimationFrame(raf);
+    if (v) { raf = requestAnimationFrame(loop); refresh(); }
   }
-  function sync() { shown() ? resume() : pause(); }
+  // La raccolta continua mentre l'app è aperta (anche sulle altre sezioni), così la storia non si interrompe; si ferma dopo 60 s di scheda nascosta.
+  function onVis() {
+    clearTimeout(hideT);
+    if (document.hidden) hideT = setTimeout(() => { stop(); if (visible) updateHead(Date.now()); }, 60000);
+    else { start(); if (visible) refresh(); }
+  }
 
   window.PAGES.book = {
     init() {
       buildCtl();
-      document.addEventListener("visibilitychange", () => { if (this._done) sync(); });
-      if (window.ResizeObserver) new ResizeObserver(() => { if (active) redraw(); }).observe(H("bkCv").parentNode);
-      else window.addEventListener("resize", () => { if (active) redraw(); });
+      document.addEventListener("visibilitychange", onVis);
+      if (window.ResizeObserver) new ResizeObserver(() => { if (visible) redraw(); }).observe(H("bkCv").parentNode);
+      else window.addEventListener("resize", () => { if (visible) redraw(); });
     },
-    show() { sync(); },
-    hide() { pause(); },
+    show() { if (!document.hidden) start(); setVisible(true); },
+    hide() { setVisible(false); },
   };
 })();
 </script>
