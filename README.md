@@ -36,7 +36,7 @@ Si guarda solo la **candela settimanale** (chiusura UTC della domenica): la dome
 - **Ingresso:** chiusura dal lato giusto della EMA 21 settimanale con flusso perp (CVD 14 giorni) concorde. **Filtro MACD:** nei
   trend vecchi (≥ 16 settimane sopra la SMA 40) un nuovo long entra solo con MACD 8/21/5 sopra il segnale e sopra zero.
 - **Uscita**, alla prima di tre: trailing 2,5 ATR settimanali (controllo orario), chiusura settimanale oltre la EMA 21,
-  distribuzione (funding alto con flusso perp contrario). Short in perp con stop che non costa mai più del 25% del capitale.
+  distribuzione (funding alto con flusso perp contrario). Short in perp con stop che non costa mai più del 10% del capitale (W3.1; vale anche per i long).
 
 Cosa fare con gli alert:
 1. *SEGNALE SETTIMANALE*: compra in spot l'importo indicato (lunedì all'apertura) e metti lo stop iniziale.

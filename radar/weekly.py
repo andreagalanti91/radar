@@ -98,7 +98,7 @@ def weekly_bars(f: pd.DataFrame) -> pd.DataFrame:
 
 
 def exposure(sg: int, close: float, atr: float, lev: float = 1.0) -> float:
-    """Esposizione sul capitale con tetto di rischio allo stop iniziale (2,5 ATRw): 25% per long (W3) e short; il resto resta in liquidità."""
+    """Esposizione sul capitale con tetto di rischio allo stop iniziale (2,5 ATRw): 10% per long e short (W3.1); il resto resta in liquidità."""
     return lev * min(1.0, (R_LONG if sg > 0 else R_SHORT) / (STOP_K * atr / close))
 
 
@@ -298,8 +298,8 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
 
 TRAIL_STEP = 0.005     # nuovo avviso del trailing quando sale (long) / scende (short) di almeno lo 0,5% del prezzo
 RECENT_DAYS = 7        # ingressi/uscite più vecchi di così (giri saltati a lungo, primo avvio) si registrano senza messaggio
-W3_TEXT = "Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo storico −21% · " \
-          "al massimo il 25% del capitale a rischio allo stop iniziale."
+W3_TEXT = "Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo storico −10% · " \
+          "al massimo il 10% del capitale a rischio allo stop iniziale."
 
 
 def _usd(x: float) -> str:
@@ -510,7 +510,7 @@ def _exits_text(side: str) -> str:
 
 def _mkt(_w: dict, market: str, expo: float) -> str:
     return f"SPOT, esposizione {expo:.2f}x (niente leva, niente funding)" if market == "spot" else \
-        f"PERP, esposizione {expo:.2f}x del capitale (tetto di rischio 25% allo stop), margine isolato"
+        f"PERP, esposizione {expo:.2f}x del capitale (tetto di rischio 10% allo stop), margine isolato"
 
 
 def format_event(ev: dict) -> str:

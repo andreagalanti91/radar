@@ -8,7 +8,7 @@
 3. La pre-analisi giornaliera e il riepilogo Telegram "Oggi" sono online.
 
 ## Dimensione della posizione (stessi segnali, dal 2021, 10k)
-| Rischio allo stop | 10k → | DD 2021+ | DD 2018–20 | CAGR/DD | Rovina (−30%) |
+| Rischio allo stop | 10k → | DD 2021+ | DD 2018–20 | CAGR/DD | P(DD ≥ 30%) |
 |---|---|---|---|---|---|
 | 5% | 16,8k | −5,4% | −10,7% | 1,72 | 0% |
 | **10% (W3.1)** | **27,2k** | **−9,8%** | **−19,2%** | **1,90** | **0,7%** |

@@ -404,6 +404,14 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Revisione Fable · 22/11 — W3.1 riprodotta e confermata; corretti i testi rimasti al 25%
+**Lezione 101**: un vincolo su una metrica invariante alla scala (CAGR/DD) non discrimina i livelli di rischio; i vincoli si provano
+su un caso finto prima di preregistrarli. Il 10% resta difendibile: è il livello più alto che rispetta i vincoli di rischio.
+**Lezione 102**: l'uscita "distribuzione" vale circa un quarto del profitto (ha chiuso i 3 trade migliori) e dipende da margini di
+0,02–0,11σ e da funding provvisorio OKX: i margini alla decisione vanno registrati (test in avanti).
+**Lezione 103**: una voce "fatta" in uno STATO vale solo con l'artefatto; dopo un cambio di parametro cercare con grep tutti i
+testi rivolti all'utente (messaggi Telegram e README erano rimasti al 25%).
+
 ### Parte 2 · 18–19/11 — opzioni (DVOL, skew), dimensione della posizione, ETH/BTC e dominanza, piramidazione (research/p2_nuovi/)
 PREREG c8b2bd5 (51 configurazioni, Bonferroni p < 0,00098). Filtri su W3: VRP (O1), skew (O3), ETH/BTC (R1), dominanza (R2) respinti
 (peggiorano W3 o cambiano troppo pochi trade); vol targeting (V) respinto (DD peggiore, rovina più alta); piramidazione (P1) respinta;
