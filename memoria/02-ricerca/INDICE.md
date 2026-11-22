@@ -17,3 +17,5 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Ingressi a scaglioni (DCA), uscite a scaglioni, TP, stop, distribuzione, 7 giorni | W3.1 resta la migliore | 105 | research/ingressi_uscite |
 | Order book e liquidazioni (15 giorni) | nessun supporto, rifare 20/12 e 03/2027 | 105 | research/book_liq |
 | Swing brevi su S/R settimanali, stop 5–10%, TP 10–15%, 70/30 con W3.1 (405 configurazioni) | non valida, 0/405 battono W3.1 | 106 | research/swing_sr |
+| Swing S/R su 15 asset (indici, oro, argento, petrolio, 10 azioni) | 0/15 validi, sotto il buy & hold | 107 | research/swing_sr_multi |
+| Sentiment book + liquidazioni (pagina Book) | descrittivo, 0/14 test; rifare a febbraio 2027 | 108 | research/book_sentiment |

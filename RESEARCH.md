@@ -409,6 +409,22 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 108**: un indicatore di sentiment S = 0,5·squilibrio del book (±1%) + 0,5·squilibrio delle liquidazioni (30 minuti)
+non anticipa BTC: 0 test su 14 (Holm), regola long/short 10k → 6,9k in 16 giorni (buy & hold 8,0k) e capitale azzerato sulle
+liquidazioni reali 2023–24 (3.893 operazioni, lordo −4,5%). Le liquidazioni ripetono la mossa dell'ora precedente (correlazione
++0,55) e dominano S; su 16 mesi il loro segno vale Δ +0,001% a 1 ora (IC ±0,02%): chiuso. Per book e S a 1 ora è escluso solo un
+effetto ≥ 0,25%; a 4–24 ore 16 giorni non bastano ("non dimostrabile", non "non funziona"). Muri ritirati: 0 eventi con foto
+orarie, serve un registro al secondo. In pagina l'indicatore va mostrato come descrizione, con la frase di avvertenza; rifare a
+febbraio 2027 con un solo test primario (S → 1 ora). research/book_sentiment/README.md (PREREG dacb01d).
+**Lezione 107**: lo swing breve sui livelli settimanali con stop 5–10% e TP 10–15% non funziona nemmeno su azioni, indici e
+materie prime (SPY, QQQ, GLD, SLV, USO, 10 azioni; scelta fino al 2015, giudizio 2016–2026): 0 asset su 15 validi sia con la
+configurazione scelta asset per asset sia con una sola per tutti; nessun placebo supera Holm (p mediano 0,51) e nessuna scelta
+chiude sopra il buy & hold (mediana 17,6k contro 70,2k). I long guadagnano perché il mercato sale (90% positive), gli short
+perdono (1% positive), e la classifica del passato predice solo il lato (rango 0,61 su tutte, −0,07 fra i soli long). Lo stop
+al livello è quasi sempre sotto il 5% ed è il peggiore; il TP più lontano rende più di quello a +10%. Su argento e petrolio la
+scelta dimezza il capitale. Con le lezioni 75–77 e 106 l'idea è chiusa su tutte le classi provate; un test multi-asset va
+giudicato contro il buy & hold e contro ingressi casuali nello stesso regime, non contro i 10.000 $ di partenza.
+research/swing_sr_multi/README.md (22/11/2026, revisione critica separata non eseguita). research/swing_sr_multi/README.md (PREREG beb05af; revisione critica: verdetto confermato, i positivi sono beta di mercato).
 **Lezione 106**: lo swing breve sui livelli settimanali (rimbalzo, rottura, ritest) con stop 5–10% e TP 10–15% non funziona su BTC
 dal 2021: la configurazione scelta sul 2014–20 fa 10k → 5,6k (DD −56%), 0/405 battono W3.1 o il buy & hold, gli ingressi sui
 livelli valgono quanto ingressi a caso (p 0,43) e la classifica del 2014–20 non predice il 2021+ (rango −0,02). L'unico guadagno
