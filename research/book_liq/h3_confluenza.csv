@@ -1,0 +1,16 @@
+insieme,esito,n_episodi,k,freq_%,ic95_%,casuale_%,diff_punti,p_perm,indizio
+H3a muro + fascia stimata,raggiunto,6,4,66.7,30-90,83.3,-16.7,0.596,False
+H3a muro + fascia stimata,superato,6,4,66.7,30-90,78.7,-12.0,0.613,False
+H3a muro + fascia stimata,rimbalzo,6,2,33.3,10-70,14.0,19.3,0.207,False
+H3b muro + on-chain,raggiunto,1,1,100.0,21-100,89.1,10.9,1.0,False
+H3b muro + on-chain,superato,1,1,100.0,21-100,85.8,14.2,1.0,False
+H3b muro + on-chain,rimbalzo,1,0,0.0,0-79,13.8,-13.8,1.0,False
+H3c muro + S/R,raggiunto,19,14,73.7,51-88,75.2,-1.5,1.0,False
+H3c muro + S/R,superato,19,12,63.2,41-81,66.9,-3.7,0.782,False
+H3c muro + S/R,rimbalzo,19,4,21.1,9-43,16.0,5.1,0.763,False
+H3 muro + almeno una,raggiunto,19,14,73.7,51-88,75.2,-1.5,1.0,False
+H3 muro + almeno una,superato,19,12,63.2,41-81,66.9,-3.7,0.791,False
+H3 muro + almeno una,rimbalzo,19,4,21.1,9-43,16.0,5.1,0.742,False
+H3 muro senza confluenza,raggiunto,5,4,80.0,38-96,66.9,13.1,0.607,False
+H3 muro senza confluenza,superato,5,3,60.0,23-88,59.5,0.5,1.0,False
+H3 muro senza confluenza,rimbalzo,5,1,20.0,4-62,15.4,4.6,1.0,False

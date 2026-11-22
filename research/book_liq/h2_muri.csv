@@ -1,0 +1,22 @@
+insieme,esito,n_episodi,k,freq_%,ic95_%,casuale_%,diff_punti,p_perm,indizio
+H2 tutti,raggiunto,24,18,75.0,55-88,73.4,1.6,1.0,False
+H2 tutti,superato,24,15,62.5,43-79,65.2,-2.7,0.827,False
+H2 tutti,rimbalzo,24,5,20.8,9-40,15.9,4.9,0.567,False
+H2 muri bid (supporto),raggiunto,14,11,78.6,52-92,85.8,-7.2,0.445,False
+H2 muri bid (supporto),superato,14,10,71.4,45-88,81.2,-9.7,0.482,False
+H2 muri bid (supporto),rimbalzo,14,3,21.4,8-48,15.4,6.0,0.699,False
+H2 muri ask (resistenza),raggiunto,10,7,70.0,40-89,55.8,14.2,0.501,False
+H2 muri ask (resistenza),superato,10,5,50.0,24-76,42.5,7.5,0.726,False
+H2 muri ask (resistenza),rimbalzo,10,2,20.0,6-51,16.7,3.3,1.0,False
+vicini R≥2.5 d≥0.3%,raggiunto,32,23,71.9,55-84,70.9,0.9,1.0,False
+vicini R≥2.5 d≥0.3%,superato,32,20,62.5,45-77,61.8,0.7,1.0,False
+vicini R≥2.5 d≥0.3%,rimbalzo,32,5,15.6,7-32,16.3,-0.7,1.0,False
+vicini R≥4.0 d≥0.3%,raggiunto,14,11,78.6,52-92,85.6,-7.0,0.682,False
+vicini R≥4.0 d≥0.3%,superato,14,10,71.4,45-88,80.3,-8.9,0.478,False
+vicini R≥4.0 d≥0.3%,rimbalzo,14,4,28.6,12-55,16.0,12.6,0.258,False
+vicini R≥3.0 d≥0.2%,raggiunto,44,32,72.7,58-84,84.6,-11.9,0.016,True
+vicini R≥3.0 d≥0.2%,superato,44,29,65.9,51-78,75.9,-10.0,0.124,False
+vicini R≥3.0 d≥0.2%,rimbalzo,44,6,13.6,6-27,17.7,-4.1,0.57,False
+vicini R≥3.0 d≥0.5%,raggiunto,21,16,76.2,55-89,72.5,3.7,0.79,False
+vicini R≥3.0 d≥0.5%,superato,21,13,61.9,41-79,65.8,-3.9,0.798,False
+vicini R≥3.0 d≥0.5%,rimbalzo,21,5,23.8,11-45,14.9,8.9,0.398,False

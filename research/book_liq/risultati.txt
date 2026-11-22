@@ -1,0 +1,93 @@
+Book: 2026-11-07 08:53:12 → 2026-11-22 12:02:51, 274 foto, 16 giorni; candele 1m fino a 2026-11-22 12:32:00
+Foto con esito a 1h/4h/24h: 273/269/248
+
+== H1 squilibrio (bid−ask)/(bid+ask) → rendimento futuro ==
+imb ±1%         1h n=273 (indip.~273) ρ=+0.141 IC95 [+0.02,+0.28] p_blocchi=0.031 metà +0.08/+0.18 Q1..Q5 % -0.11 -0.06 -0.33 +0.02 +0.13 Q5−Q1 +0.23 → no
+imb ±1%         4h n=269 (indip.~96) ρ=+0.109 IC95 [-0.06,+0.30] p_blocchi=0.270 metà -0.01/+0.18 Q1..Q5 % -0.35 -0.34 -0.42 +0.02 -0.17 Q5−Q1 +0.18 → no
+imb ±1%        24h n=248 (indip.~15) ρ=+0.080 IC95 [-0.10,+0.31] p_blocchi=0.318 metà +0.06/+0.08 Q1..Q5 % -1.68 -1.55 -1.42 -1.32 -1.46 Q5−Q1 +0.22 → no
+imb ±2%         1h n=273 (indip.~273) ρ=+0.059 IC95 [-0.06,+0.19] p_blocchi=0.319 metà +0.08/+0.05 Q1..Q5 % -0.11 -0.05 -0.07 -0.30 +0.18 Q5−Q1 +0.28 → no
+imb ±2%         4h n=269 (indip.~96) ρ=+0.015 IC95 [-0.10,+0.21] p_blocchi=0.835 metà -0.09/+0.06 Q1..Q5 % -0.44 +0.25 -0.08 -0.67 -0.32 Q5−Q1 +0.12 → no
+imb ±2%        24h n=248 (indip.~15) ρ=-0.198 IC95 [-0.40,+0.09] p_blocchi=0.247 metà -0.09/-0.32 Q1..Q5 % -1.11 -0.52 -1.40 -1.65 -2.74 Q5−Q1 -1.63 → no
+-- non preregistrato, descrittivo (idea dello screenshot): rapporto muro ask / muro bid, e fasce strette
+muro ask/bid    1h n=273 (indip.~273) ρ=-0.080 IC95 [-0.18,+0.01] p_blocchi=0.182 metà -0.12/-0.05 Q1..Q5 % -0.01 -0.09 +0.01 +0.02 -0.28 Q5−Q1 -0.28 → no
+muro ask/bid    4h n=269 (indip.~96) ρ=-0.097 IC95 [-0.22,+0.03] p_blocchi=0.234 metà +0.01/-0.15 Q1..Q5 % +0.15 -0.38 -0.29 -0.26 -0.48 Q5−Q1 -0.63 → no
+muro ask/bid   24h n=248 (indip.~15) ρ=-0.021 IC95 [-0.25,+0.17] p_blocchi=0.890 metà -0.01/-0.01 Q1..Q5 % -0.95 -1.75 -1.54 -2.01 -1.20 Q5−Q1 -0.25 → no
+imb ±0,25%      1h n=273 (indip.~273) ρ=+0.069 IC95 [-0.06,+0.21] p_blocchi=0.277 metà +0.14/-0.02 Q1..Q5 % -0.23 -0.12 -0.07 +0.08 -0.00 Q5−Q1 +0.22 → no
+imb ±0,25%      4h n=269 (indip.~96) ρ=+0.095 IC95 [-0.04,+0.21] p_blocchi=0.177 metà +0.15/+0.02 Q1..Q5 % -0.46 -0.26 -0.37 -0.02 -0.15 Q5−Q1 +0.32 → no
+imb ±0,25%     24h n=248 (indip.~15) ρ=+0.101 IC95 [-0.06,+0.26] p_blocchi=0.061 metà +0.06/+0.10 Q1..Q5 % -1.22 -1.98 -1.97 -1.36 -0.92 Q5−Q1 +0.30 → no
+imb ±0,5%       1h n=273 (indip.~273) ρ=+0.122 IC95 [-0.04,+0.30] p_blocchi=0.040 metà +0.10/+0.12 Q1..Q5 % -0.18 -0.18 -0.01 -0.04 +0.07 Q5−Q1 +0.26 → no
+imb ±0,5%       4h n=269 (indip.~96) ρ=+0.105 IC95 [-0.06,+0.27] p_blocchi=0.150 metà +0.02/+0.14 Q1..Q5 % -0.23 -0.66 -0.12 -0.19 -0.05 Q5−Q1 +0.18 → no
+imb ±0,5%      24h n=248 (indip.~15) ρ=+0.135 IC95 [-0.04,+0.32] p_blocchi=0.234 metà +0.02/+0.20 Q1..Q5 % -1.64 -1.75 -1.87 -1.13 -1.05 Q5−Q1 +0.59 → no
+controllo momentum: ρ(imb_1, rendimento 24h PRECEDENTI) = -0.286 (n 274)
+controllo momentum: ρ(imb_2, rendimento 24h PRECEDENTI) = -0.477 (n 274)
+controllo momentum: ρ(wall_ratio, rendimento 24h PRECEDENTI) = +0.108 (n 274)
+rapporto muro ask/bid aggregato (5 exchange): mediana 0.94, max 2.50, foto con ask ≥ 3× bid: 0, ≥ 2×: 1; bid ≥ 2× ask: 10
+
+== H2 muro vicino (≥ 3× fascia media ±1%, distanza ≥ 0,3%) → esiti entro 24 ore ==
+episodi: 24 (bid 14, ask 10); distanza mediana 0.90%
+H2 tutti                           raggiunto n=24 18/24 =  75.0% (IC95 55–88) casuale  73.4% diff  +1.6 p=1.000 → no
+H2 tutti                           superato  n=24 15/24 =  62.5% (IC95 43–79) casuale  65.2% diff  -2.7 p=0.827 → no
+H2 tutti                           rimbalzo  n=24  5/24 =  20.8% (IC95 9–40) casuale  15.9% diff  +4.9 p=0.567 → no
+H2 muri bid (supporto)             raggiunto n=14 11/14 =  78.6% (IC95 52–92) casuale  85.8% diff  -7.2 p=0.445 → no
+H2 muri bid (supporto)             superato  n=14 10/14 =  71.4% (IC95 45–88) casuale  81.2% diff  -9.7 p=0.482 → no
+H2 muri bid (supporto)             rimbalzo  n=14  3/14 =  21.4% (IC95 8–48) casuale  15.4% diff  +6.0 p=0.699 → no
+H2 muri ask (resistenza)           raggiunto n=10  7/10 =  70.0% (IC95 40–89) casuale  55.8% diff +14.2 p=0.501 → no
+H2 muri ask (resistenza)           superato  n=10  5/10 =  50.0% (IC95 24–76) casuale  42.5% diff  +7.5 p=0.726 → no
+H2 muri ask (resistenza)           rimbalzo  n=10  2/10 =  20.0% (IC95 6–51) casuale  16.7% diff  +3.3 p=1.000 → no
+-- parametri vicini (trasparenza; da leggere solo se H2 desse un indizio)
+vicini R≥2.5 d≥0.3%                raggiunto n=32 23/32 =  71.9% (IC95 55–84) casuale  70.9% diff  +0.9 p=1.000 → no
+vicini R≥2.5 d≥0.3%                superato  n=32 20/32 =  62.5% (IC95 45–77) casuale  61.8% diff  +0.7 p=1.000 → no
+vicini R≥2.5 d≥0.3%                rimbalzo  n=32  5/32 =  15.6% (IC95 7–32) casuale  16.3% diff  -0.7 p=1.000 → no
+vicini R≥4.0 d≥0.3%                raggiunto n=14 11/14 =  78.6% (IC95 52–92) casuale  85.6% diff  -7.0 p=0.682 → no
+vicini R≥4.0 d≥0.3%                superato  n=14 10/14 =  71.4% (IC95 45–88) casuale  80.3% diff  -8.9 p=0.478 → no
+vicini R≥4.0 d≥0.3%                rimbalzo  n=14  4/14 =  28.6% (IC95 12–55) casuale  16.0% diff +12.6 p=0.258 → no
+vicini R≥3.0 d≥0.2%                raggiunto n=44 32/44 =  72.7% (IC95 58–84) casuale  84.6% diff -11.9 p=0.016 → INDIZIO
+vicini R≥3.0 d≥0.2%                superato  n=44 29/44 =  65.9% (IC95 51–78) casuale  75.9% diff -10.0 p=0.124 → no
+vicini R≥3.0 d≥0.2%                rimbalzo  n=44  6/44 =  13.6% (IC95 6–27) casuale  17.7% diff  -4.1 p=0.570 → no
+vicini R≥3.0 d≥0.5%                raggiunto n=21 16/21 =  76.2% (IC95 55–89) casuale  72.5% diff  +3.7 p=0.790 → no
+vicini R≥3.0 d≥0.5%                superato  n=21 13/21 =  61.9% (IC95 41–79) casuale  65.8% diff  -3.9 p=0.798 → no
+vicini R≥3.0 d≥0.5%                rimbalzo  n=21  5/21 =  23.8% (IC95 11–45) casuale  14.9% diff  +8.9 p=0.398 → no
+
+== H3 confluenza entro 0,5% dal muro ==
+episodi H2: 24; con fascia stimata 6, on-chain 1 (on-chain disponibile in 19), S/R 19, almeno una 19
+H3a muro + fascia stimata          raggiunto n= 6  4/6 =  66.7% (IC95 30–90) casuale  83.3% diff -16.7 p=0.596 → no
+H3a muro + fascia stimata          superato  n= 6  4/6 =  66.7% (IC95 30–90) casuale  78.7% diff -12.0 p=0.613 → no
+H3a muro + fascia stimata          rimbalzo  n= 6  2/6 =  33.3% (IC95 10–70) casuale  14.0% diff +19.3 p=0.207 → no
+H3b muro + on-chain                raggiunto n= 1  1/1 = 100.0% (IC95 21–100) casuale  89.1% diff +10.9 p=1.000 → no
+H3b muro + on-chain                superato  n= 1  1/1 = 100.0% (IC95 21–100) casuale  85.8% diff +14.2 p=1.000 → no
+H3b muro + on-chain                rimbalzo  n= 1  0/1 =   0.0% (IC95 0–79) casuale  13.8% diff -13.8 p=1.000 → no
+H3c muro + S/R                     raggiunto n=19 14/19 =  73.7% (IC95 51–88) casuale  75.2% diff  -1.5 p=1.000 → no
+H3c muro + S/R                     superato  n=19 12/19 =  63.2% (IC95 41–81) casuale  66.9% diff  -3.7 p=0.782 → no
+H3c muro + S/R                     rimbalzo  n=19  4/19 =  21.1% (IC95 9–43) casuale  16.0% diff  +5.1 p=0.763 → no
+H3 muro + almeno una               raggiunto n=19 14/19 =  73.7% (IC95 51–88) casuale  75.2% diff  -1.5 p=1.000 → no
+H3 muro + almeno una               superato  n=19 12/19 =  63.2% (IC95 41–81) casuale  66.9% diff  -3.7 p=0.791 → no
+H3 muro + almeno una               rimbalzo  n=19  4/19 =  21.1% (IC95 9–43) casuale  16.0% diff  +5.1 p=0.742 → no
+H3 muro senza confluenza           raggiunto n= 5  4/5 =  80.0% (IC95 38–96) casuale  66.9% diff +13.1 p=0.607 → no
+H3 muro senza confluenza           superato  n= 5  3/5 =  60.0% (IC95 23–88) casuale  59.5% diff  +0.5 p=1.000 → no
+H3 muro senza confluenza           rimbalzo  n= 5  1/5 =  20.0% (IC95 4–62) casuale  15.4% diff  +4.6 p=1.000 → no
+
+== H4 descrittivo 13/11–22/11 (short W3.1 dal 16/11 a 65.286) ==
+giorno  apertura  minimo  massimo  chiusura  foto_book  imb1_media  imb2_media  muro_ask/bid_med  liq_reali_long_M$  liq_reali_short_M$  stima_long_sotto5%_M$  stima_short_sopra5%_M$  onchain_long_sotto5%_M$  onchain_short_sopra5%_M$  short_W3.1_%
+ 12/11     74015   71113    74217     71460          7       0.058       0.261              1.02               36.5                 1.8                  308.0                   320.0                     79.4                       0.0           NaN
+ 13/11     71460   67568    71514     68314         11       0.085       0.211              0.89              120.1                14.4                  333.0                    52.0                    130.2                       0.0           NaN
+ 14/11     68314   63320    68446     64150         23       0.017       0.235              1.00              137.5                22.2                  140.0                    37.0                     28.2                      51.2           NaN
+ 15/11     64150   62006    66132     65351         24      -0.027       0.066              1.12               33.3                36.5                   49.0                    22.0                     61.1                       0.0           NaN
+ 16/11     65351   63905    65696     64883         25      -0.031       0.030              1.06                9.9                12.4                   69.0                    88.0                      0.0                       4.8           0.6
+ 17/11     64883   63336    65447     64947         24       0.022       0.057              0.98               13.7                10.4                  146.0                   125.0                      5.1                      89.2           0.5
+ 18/11     64947   62063    65002     63068         26       0.076       0.249              0.89               28.8                 5.8                  166.0                   175.0                      3.0                       0.0           3.5
+ 19/11     63068   61428    64081     61987         24       0.057       0.321              0.76               36.8                12.5                  152.0                   157.0                     19.3                      94.0           5.3
+ 20/11     61987   57778    62640     58952         27       0.083       0.474              0.93              160.2                55.5                  109.0                    87.0                     13.4                       0.0          10.7
+ 21/11     58952   55130    60996     60216         24       0.036       0.112              0.91               67.7                78.4                  129.0                    43.0                      9.9                       1.2           8.4
+ 22/11     60216   58769    61670     60758         15       0.026      -0.018              0.93                9.1                24.5                   49.0                    68.0                      0.0                      17.7           7.5
+Nota: liquidazioni reali = data/liq_events (OKX, Gate, dYdX, Deribit, Kraken, Lighter; senza Binance e Bybit). Mappa stimata e on-chain all'01:00 UTC del giorno (dati fino a quell'ora); mappa del 22/11 con OI fino al 21/11 23:00.
+
+== Contesto nella finestra del book ==
+buy & hold 07/11 → oggi: 76,178 → 60,758 = -20.2%; short W3.1 dal 16/11 (65.286, esposizione 0,389): movimento +7.5% → sul capitale ~+2.9% (lordo)
+
+== Potenza (α 0,05 bilaterale, potenza 80%) ==
+ρ = 0.05: n indipendenti ≈ 3,137 → a 1h ≈ 131 giorni di foto orarie; a 4h ≈ 523 giorni; a 24h ≈ 3,137 giorni
+ρ = 0.10: n indipendenti ≈ 783 → a 1h ≈ 33 giorni di foto orarie; a 4h ≈ 130 giorni; a 24h ≈ 783 giorni
+ρ = 0.20: n indipendenti ≈ 194 → a 1h ≈ 8 giorni di foto orarie; a 4h ≈ 32 giorni; a 24h ≈ 194 giorni
+differenza 10 punti su base 50%: ≈ 194 episodi → al ritmo attuale (1.6/giorno) ≈ 121 giorni
+differenza 10 punti su base 80%: ≈ 107 episodi → al ritmo attuale (1.6/giorno) ≈ 67 giorni
+differenza 10 punti su base 30%: ≈ 172 episodi → al ritmo attuale (1.6/giorno) ≈ 107 giorni
