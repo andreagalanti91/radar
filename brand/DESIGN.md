@@ -1,4 +1,4 @@
-# Radar Signal · sistema di design
+# RadarSignal · sistema di design
 
 ## 1. Spunti da CoinTracker (dashboard) (pagine pubbliche: home, /portfolio-tracker; CSS pubblico)
 
@@ -50,33 +50,33 @@ Tema **chiaro di base**; lo scuro si sceglie con il pulsante luna in alto (salva
 | Stato (`.status`, `.wkBadge`) | pillola con fondo tenue del colore di stato (verde long, rosso short, indaco segnale) |
 | `.seg` | binario grigio, opzione attiva = pillola bianca con ombra |
 | Navigazione | sidebar bianca su desktop (voce attiva indaco tenue); tab bar flottante su telefono |
-| Logo | vedi sezione 4: tile indaco con il segno bianco e blip menta, wordmark `radar` + `signal` in `--tint` |
+| Logo | vedi sezione 4: simbolo "Eco" in `--tint` (o bianco su indaco/nero), wordmark `radar` + `signal` in `--tint` |
 | Grafici | candele verde/rosso di stato, EMA indaco, SMA arancio tratteggiata, aree `--tint` al 22% |
 | Icone | tratto 1,7px, angoli arrotondati, 20–22px, `currentColor` |
 
 ## 4. Brand (sorgenti in `brand/src`, render con `node brand/src/render.js`)
 
-Spunto CoinTracker (home pubblica): fondi neutri chiari, un solo colore di marca, titoli grandi e asciutti, card di prodotto
-flottanti come illustrazione. Nessun elemento ripreso dal loro marchio: niente viola/lime, niente font proprietario, niente forme loro.
+Spunti (reference dell'utente, solo lo spirito): nexaris → simbolo geometrico spesso, bianco su blu pieno, wordmark sans
+minuscolo bold; DetectHub → moduli pieni, bianco su nero. Nessuna forma ripresa: niente tratti a zig-zag, niente cerchi a incastro.
+Confronto delle tre proposte in `src/varianti.png` (A sweep a tratto: si legge "G"; B quadranti: sembra una torta; **C Eco: scelta**).
 
 | Elemento | Regola |
 |---|---|
-| Simbolo | radar essenziale su griglia 64: anello (r 28 / 20,5), fascio a quarto di cerchio (r 17,5, ore 12→3), blip (r 4,5) in basso a sinistra. File: `src/mark.svg` (`currentColor`) |
-| Tile / icona app | quadrato raggio 22%, gradiente `#5a6bff → #2f4cf0 → #2236c4` (160°), segno bianco al 60%, blip `#5ef0c4`. Favicon e `icon.svg`: segno al 68% (correzione ottica per 16–32 px) |
-| Wordmark | `radarsignal` minuscolo, Inter 700, −0,04em; `radar` in Ink, `signal` Inter 600 in `--tint` (come l'intestazione della dashboard) |
-| Lockup | tile alta 1,2× il corpo del wordmark, distanza 0,32× il corpo. Versioni: chiara (`logo-light.png`), scura (`logo-dark.png`, `signal` in `#7088ff`) |
-| Monocromo | segno e blip nello stesso colore (Ink o bianco) per stampa, filigrane, contesti a un colore |
-| Copertina | `banner.png` (chiara) e `social-preview.png` (scura), 1280×640: lockup, titolo “Segnali chiari su Bitcoin.”, frase di valore, tre fatti di prodotto, mock astratto (curva, candele, interruttore) senza cifre, cerchi radar come motivo |
+| Simbolo "Eco" | griglia 64, centro 32,32: sorgente r 6, anello r 12,5–19, anello r 24–31; entrambi aperti da un fascio radiale di 30° verso nord-est (da −60° a −30°). Un solo colore, nessun gradiente. Il fascio è il segnale che esce, gli anelli l'eco radar. File: `src/mark.svg` (`currentColor`) |
+| Tile / icona app | quadrato indaco pieno `#2f4cf0`, raggio 22%, segno bianco al 62%. `icon.svg` e favicon: segno al 72% (correzione ottica per 16–32 px) |
+| Wordmark | `radarsignal` tutto minuscolo, Inter 700, −0,045em. Minuscolo come nelle reference: più amichevole e compatto, e coincide con l'intestazione della dashboard; le due parole si separano col colore (`radar` Ink, `signal` `--tint`), non con la maiuscola. "RadarSignal" resta la grafia nel testo corrente |
+| Lockup | segno alto 1,1× il corpo del wordmark, distanza 0,3× il corpo. Variante con tile (avatar, app) solo dove serve un quadrato |
+| Versioni | chiara (`logo-light.png`: segno e `signal` indaco su bianco); **indaco pieno** e **nero** (`logo-dark.png`, fondo `#0c0d10`): tutto bianco, un solo colore. Tema scuro della dashboard: `--tint` `#7088ff` |
+| Copertina | `banner.png` (chiara) e `social-preview.png` (scura), 1280×640: lockup, titolo “Segnali chiari su Bitcoin.”, frase di valore, tre fatti di prodotto, mock astratto senza cifre, cerchi radar come motivo |
 
 | Palette | Hex | Uso |
 |---|---|---|
-| Signal Indigo | `#2f4cf0` | colore di marca, `--tint` chiaro |
+| Signal Indigo | `#2f4cf0` | colore di marca, fondo pieno, `--tint` chiaro |
 | Indigo Night | `#7088ff` | `--tint` scuro |
-| Blip Mint | `#5ef0c4` | solo il blip (mai testo: contrasto basso su bianco) |
-| Ink / Paper / Night | `#0f1218` / `#f4f5f7` / `#0c0d10` | testo, fondo chiaro, fondo scuro |
+| Ink / Night / Paper | `#0f1218` / `#0c0d10` / `#f4f5f7` | testo, fondo nero, fondo chiaro |
+| Blip Mint | `#5ef0c4` | solo l'ultimo punto dei grafici; mai nel logo né nel testo |
 | Stato | `#0f8a4a` / `#d6342a` / `#c96a00` | long, short, avviso: mai come colori di marca |
 
-**Area di rispetto**: attorno alla tile (o al lockup) margine libero x = 30% del lato della tile; nessun testo o bordo dentro.
-**Misure minime**: tile 16 px, lockup con tile 20 px. **Da evitare**: ruotare o deformare il segno, cambiare il gradiente,
-mettere il wordmark senza tile in contesti piccoli, usare la menta per testo, mettere numeri di performance nelle copertine.
-
+**Area di rispetto**: margine libero x = 30% del lato del segno (o della tile). **Misure minime**: segno 16 px, lockup con segno 20 px.
+**Da evitare**: ruotare il segno (il fascio punta sempre a nord-est), chiudere o spostare il fascio, aggiungere gradienti o un
+secondo colore al segno, contorni, ombre, wordmark con maiuscole, numeri di performance nelle copertine.

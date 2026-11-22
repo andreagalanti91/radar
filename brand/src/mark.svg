@@ -1,6 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
-  <!-- Radar Signal: anello, fascio a quarto di cerchio, blip. Griglia 64, centro 32,32 -->
-  <path fill-rule="evenodd" d="M32 4a28 28 0 1 1 0 56 28 28 0 0 1 0-56Zm0 7.5a20.5 20.5 0 1 0 0 41 20.5 20.5 0 0 0 0-41Z"/>
-  <path d="M32 32V14.5A17.5 17.5 0 0 1 49.5 32Z"/>
-  <circle cx="23" cy="41" r="4.5"/>
+  <!-- RadarSignal "Eco": sorgente (r 6) + anelli r 12,5–19 e 24–31 aperti da un fascio di 30° verso nord-est. Griglia 64, centro 32,32 -->
+  <path d="M58.85 16.5A31 31 0 1 1 47.5 5.15L44 11.22A24 24 0 1 0 52.78 20ZM48.45 22.5A19 19 0 1 1 41.5 15.55L38.25 21.17A12.5 12.5 0 1 0 42.83 25.75ZM32 26a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/>
 </svg>
