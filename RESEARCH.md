@@ -409,6 +409,12 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 106**: lo swing breve sui livelli settimanali (rimbalzo, rottura, ritest) con stop 5–10% e TP 10–15% non funziona su BTC
+dal 2021: la configurazione scelta sul 2014–20 fa 10k → 5,6k (DD −56%), 0/405 battono W3.1 o il buy & hold, gli ingressi sui
+livelli valgono quanto ingressi a caso (p 0,43) e la classifica del 2014–20 non predice il 2021+ (rango −0,02). L'unico guadagno
+viene dal regime di W3.1, e dentro quel regime il TP breve dimezza il rendimento; il 70/30 W3.1 + swing peggiora W3.1 (20,7k contro
+27,2k). Non riproporre swing su S/R con barre giornaliere; i vicini vanno definiti su parametri che agiscono sull'ingresso scelto.
+research/swing_sr/README.md (22/11/2026, revisione critica separata eseguita, secondo ciclo non eseguito).
 **Lezione 105**: su W3.1 i modi di eseguire gli stessi segnali non migliorano il risultato: il DCA in ingresso costa 3–9k$, le
 uscite a scaglioni 2–3k$, il TP a +3R non scatta mai, lo stop a 2,5 ATR resta il migliore; l'uscita per distribuzione è utile
 (toglierla costa 6,5k$ e 3 punti di DD, placebo p 0,005) ma fragile ai margini: tenerla e registrarne i margini (lezione 102).

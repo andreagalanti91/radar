@@ -1,6 +1,6 @@
 # Stato — Swing settimanali su supporti/resistenze (TP e SL strutturali)
 
-**Stato:** IN CORSO
+**Stato:** COMPLETATO
 **Ultimo aggiornamento:** 2026-11-22
 **Modello / effort usati:** Fable 5.2 · high (regia e motore), agente radar-review per la revisione critica
 
@@ -28,9 +28,9 @@ del 5/10% prendo profitto in TP 10/15% oppure di più se c'è forza nel moviment
 - [x] 2. Motore + conteggio eventi (senza rendimenti) — conteggi.txt
 - [x] 3. PREREG.md committato da solo — 854ebff
 - [x] 4. Backtest: scelta su 2014–2020, giudizio su 2021–2026, placebo, vicini, portafoglio 70/30 — S* NON VALIDA
-- [ ] 5. Revisione critica (radar-review)   ← IN CORSO (agente avviato)
-- [ ] 6. Eventuale secondo ciclo (addendum al PREREG)
-- [ ] 7. README.md con report, lezione 106, memoria/, commit e push su claude/swing-strategy-review-5g3jul
+- [x] 5. Revisione critica (radar-review) — nessun errore bloccante, verdetto confermato
+- [x] 6. Secondo ciclo — NON eseguito (nessun errore, nessuna ipotesi nuova; revisore contrario)
+- [x] 7. README.md, lezione 106, memoria/02-ricerca/INDICE.md, commit e push su claude/swing-strategy-review-5g3jul
 
 ## Risultati e file prodotti
 - Step 1: già provato e respinto: S/R su giornaliero/settimanale come segnale (75–77, 97), struttura S/R long-only settimanale
@@ -55,6 +55,5 @@ del 5/10% prendo profitto in TP 10/15% oppure di più se c'è forza nel moviment
 - nessuno
 
 ## Come riprendere
-**Prossima azione:** leggere l'esito della revisione critica (agente radar-review); se propone un'ipotesi motivata, scrivere
-`research/swing_sr/ADDENDUM.md`, committarlo da solo ed eseguire il secondo ciclo (esplorativo); poi scrivere `research/swing_sr/README.md`,
-la lezione 106 in RESEARCH.md, aggiornare memoria/02-ricerca/INDICE.md, commit e push.
+**Prossima azione:** nessuna. Report: `research/swing_sr/README.md`. W3.1 e tool invariati.
+Riepilogo finale: strategia swing non valida; 70/30 peggiora W3.1; lezione 106 in RESEARCH.md.
