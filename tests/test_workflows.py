@@ -159,5 +159,16 @@ class TestWalletsPausa(unittest.TestCase):
         self.assertIn("RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}", WF.read_text())
 
 
+class TestResocontoSettimanale(unittest.TestCase):
+    """Promemoria del resoconto del lunedì (deploy/RESOCONTO-SETTIMANALE.md): scritto per W3.1, senza token né chat_id."""
+    def test_testo_w31_senza_segreti(self):
+        s = (WF.parents[2] / "deploy" / "RESOCONTO-SETTIMANALE.md").read_text()
+        for x in ("W3.1", "rischio allo stop iniziale 10%", "radar/guard.py", "GitHub Secrets", "unittest"):
+            self.assertIn(x, s)
+        self.assertNotIn("W2 settimanale con filtro MACD", s)            # testo vecchio
+        self.assertNotRegex(s, r"\d{8,10}:[A-Za-z0-9_-]{30,}")          # nessun token di bot
+        self.assertNotRegex(s, r"chat_id\s*=?\s*\d{6,}")              # nessun chat_id in chiaro
+
+
 if __name__ == "__main__":
     unittest.main()

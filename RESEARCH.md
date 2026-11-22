@@ -1324,11 +1324,17 @@ sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flu
 ## Resoconti settimanali
 - Resoconto settimanale 16/11: chiusura del 15/11 a 65.351 $ → SEGNALE SHORT W3 (regime short, flusso −0,93σ, EMA21 75.574): ingresso lunedì 16/11 all'apertura, esposizione 0,97, stop 82.163 $ (+25,7%), perdita allo stop ~12.600 $ su 50.000; registro dei trade reali vuoto; dal 2021 invariato 10k → 78.474 $, DD −21,1%, 13 trade, WR 92%.
 
-## Errori operativi da non ripetere (aggiornata 13/11/2026)
+## Errori operativi da non ripetere (aggiornata 22/11/2026)
 - Revisione completa del 13/11 (5 revisori + verifica incrociata, STATO-revisione.md): W3 corretta e riprodotta da zero; trovati e
   corretti avvisi falsi ("stop toccato" dopo un'uscita EMA), variabili con virgola/punto delle migliaia che bloccavano il giro o
   davano 50 $ invece di 50.000 $, giro 00:30 mai partito (ora avviato ogni ora dalla catena liqsnap), perdita silenziosa di dati
   nei rebase "-X theirs" su file binari, stato degli avvisi perso se il push fallisce.
+- Protezioni permanenti (22/11): a ogni giro orario girano i controlli di coerenza (radar/coherence.py: giorni mancanti nelle
+  fonti di W3.1, trade dello storico riscritti dopo l'arrivo dei dati definitivi, decisione domenicale cambiata nel registro
+  provvisori/definitivi) e le soglie d'allarme (radar/guard.py); avvisano su Telegram una volta per evento e non cambiano mai
+  dati, segnali o posizione. Un controllo che scrive solo nel log di GitHub non è una protezione: ogni nuovo controllo deve
+  avvisare. Testi con numeri della strategia (pagina "Come funziona", promemoria del lunedì) vanno letti dal report o riallineati
+  a ogni cambio di strategia: la sezione "Limiti" mostrava ancora 78.000 $ e DD −21% (W3 al 25%) tre giorni dopo W3.1.
 - Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git).
 - Prima di pubblicare una correzione: test che fallisce prima e passa dopo, suite completa verde, render a 400/1280, deploy e
   verifica online. I test vanno scritti con unittest (pytest non è installato: test in stile pytest non girano mai).

@@ -211,6 +211,16 @@ def _it(x: float, d: int = 2, sign: bool = True) -> str:
     return (f"{x:+.{d}f}" if sign else f"{x:.{d}f}").replace(".", ",").replace("-", "−")
 
 
+def _fund_txt(fund7: float) -> str:
+    """Funding medio 7g come testo: %/giorno a 4 decimali, %/anno a 1 decimale (2 sotto l'1%: un funding piccolo non diventa
+    "−0,0%"); uno zero arrotondato non porta il segno. Solo testo: i valori usati da W3 non passano di qui."""
+    day, year = fund7 * 100, fund7 * 365 * 100
+    a = f"{day:.4f}"
+    b = f"{year:.2f}" if abs(year) < 1 else f"{year:.1f}"
+    a, b = (x.lstrip("-") if float(x) == 0 else x for x in (a, b))
+    return f"{a}%/giorno · {b}%/anno".replace(".", ",").replace("-", "−")
+
+
 def _dist_rule(sg: int, fund7: float | None, flow: float | None) -> str:
     """Condizione di distribuzione di W3 per il lato e il suo stato attuale (alla chiusura della domenica)."""
     if sg > 0:
@@ -398,8 +408,8 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
             if side:
                 rd += "; distribuzione " + ("attiva" if (fund7 > W.FUND_HOT if side > 0 else fund7 < W.FUND_COLD)
                                             else "lontana") + f" (soglia {'> 0,0009' if side > 0 else '< −0,0003'})"
-            add("funding", "Funding (media 7g)", f"{fund7 * 100:.4f}%/giorno · {fund7 * 365 * 100:.1f}%/anno".replace(".", ",")
-                .replace("-", "−"), rd, "contesto (lezione 97); in W3 conta solo dentro la condizione di distribuzione")
+            add("funding", "Funding (media 7g)", _fund_txt(fund7), rd,
+                "contesto (lezione 97); in W3 conta solo dentro la condizione di distribuzione")
         oi7 = _last(f, "oi_chg7")
         if oi7 is not None:
             oz = _last(f, "oi_z")
