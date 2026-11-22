@@ -100,6 +100,7 @@ def simulate(f: pd.DataFrame, cfg: dict | None = None, start: str = W.START, end
     tp = cfg.get("tp")
     dist = cfg.get("dist", ("D0",))
     anchor = cfg.get("anchor", "SUN")
+    force = cfg.get("force_exit", set())   # solo placebo P-D: domeniche in cui si esce come per distribuzione
     dow = DAYS.index(anchor)
     f = f[f["close"].notna()]
     if end is not None:
@@ -141,6 +142,7 @@ def simulate(f: pd.DataFrame, cfg: dict | None = None, start: str = W.START, end
             stop = same[0]["stop"] if same else float(tr["sig_close"] - side * kj * tr["atr"])
             lots.append(dict(q=q, cost=q * px, k=kj, stop=stop, stop0=float(tr["sig_close"] - side * kj * tr["atr"])))
             cash -= abs(q) * px * fee()
+            tr["risk_plan"] = tr.get("risk_plan", 0.0) + abs(q) * abs(px - stop) / st["eq_sig"]
         st["n_fills"] += 1
         ev(i, kind, expo=round(notional / st["eq_sig"], 4))
 
@@ -261,7 +263,7 @@ def simulate(f: pd.DataFrame, cfg: dict | None = None, start: str = W.START, end
                 tr["curatr"] = float(wk["atr"])
                 beyond = wk["close"] < wk["ema21"] if side > 0 else wk["close"] > wk["ema21"]
                 dd = bool(DL.loc[day] if side > 0 else DS.loc[day])
-                reason = "ema" if beyond else ("dist" if dd else None)
+                reason = "ema" if beyond else ("dist" if (dd or day in force) else None)
                 if reason:
                     pend = [a for a in pend if a[0] != "add"]
                     st["e3_open"], st["e2_left"], st["e1"] = False, 0, []

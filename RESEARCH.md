@@ -404,6 +404,16 @@ Coinglass non usato (nessuno storico, termini d'uso). Proxy delle liquidazioni (
   di allineamento orario dell'OI (55 minuti di futuro) corretto cambia 31 dei 56 giorni-segnale e fa fallire di poco il walk-forward
   2021–23; placebo corretto (dimezzamenti casuali dentro i long) p 0,015–0,04, non regge oltre 100 prove; il guadagno nasce da 7 decisioni
   e 2–3 trade; una regola banale "vendi metà a +30%" fa 1.272% / MAR 64. Da seguire su carta (≥ 3 nuovi long).
+### Ingressi/uscite di W3.1 · 22/11 — DCA, uscite a scaglioni, TP, stop, distribuzione, 7 giorni (research/ingressi_uscite/, PREREG 08da8cc) · NESSUN MIGLIORAMENTO
+W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, metà + ritracciamento 21.548; uscita metà + conferma
+24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
+distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
+sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 105**: su W3.1 i modi di eseguire gli stessi segnali non migliorano il risultato: il DCA in ingresso costa 3–9k$, le
+uscite a scaglioni 2–3k$, il TP a +3R non scatta mai, lo stop a 2,5 ATR resta il migliore; l'uscita per distribuzione è utile
+(toglierla costa 6,5k$ e 3 punti di DD, placebo p 0,005) ma fragile ai margini: tenerla e registrarne i margini (lezione 102).
+Con 13 trade la conclusione è "nessun miglioramento dimostrabile", non "W3.1 è ottimale".
+
 ### Ciclo Fable · 22/11 — W3.1 solo-prezzo ed EMA200D+VIX su S&P 500, oro, argento, 10 azioni, Dow 2000 e BTC (research/multi_asset/, PREREG 13b0e82, revisione critica fatta)
 **Lezione 104**: W3.1 senza flusso perp non si trasferisce: non batte il buy & hold in CAGR/DD su nessuno dei 13 asset (2/24 nel
 controllo Dow 2000) e fallisce già il criterio dei sottoperiodi. Su BTC le regole solo-prezzo restano sotto W3.1 (CAGR/DD 0,68

@@ -14,3 +14,5 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | W3.1 solo-prezzo su S&P 500, oro, argento, 10 azioni, Dow 2000 | non si trasferisce (0/13) | 104 | research/multi_asset |
 | Indicatore EMA200D+VIX | assicurazione sui ribassi dell'indice, non per BTC | 104 | research/ema200_vix, multi_asset |
 | Revisione Fable di W3.1 | confermata; uscita 'distribuzione' fragile | 101–103 | — |
+| Ingressi a scaglioni (DCA), uscite a scaglioni, TP, stop, distribuzione, 7 giorni | W3.1 resta la migliore | 105 | research/ingressi_uscite |
+| Order book e liquidazioni (15 giorni) | nessun supporto, rifare 20/12 e 03/2027 | 105 | research/book_liq |
