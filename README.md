@@ -6,6 +6,7 @@ Segnali di trading su **Bitcoin** con **una sola strategia: W3.2 settimanale**, 
 grandi (2–3 l'anno, da settimane a mesi): long in **spot senza leva**, short in perp solo in trend ribassista confermato,
 **perdita allo stop iniziale al massimo del 25%** della quota. Intorno alla strategia: dashboard aggiornata ogni ora, order book
 multi-borsa, liquidazioni, notizie e calendario, avvisi su Telegram.
+Dal 22/11/2026 W3.2 gira anche su **ETH** con le stesse regole: con **capitale separato**: 10.000 $ su BTC e 10.000 $ su ETH nei backtest; dal vivo BTC usa `RADAR_CAPITAL`, ETH `RADAR_ETH_CAPITAL` (predefinito 10.000 $).
 
 ## Performance di W3.2
 
@@ -15,7 +16,14 @@ su candele settimanali chiuse. Dati congelati al 15/11/2026; il valore aggiornat
 | Strategia | In uso | Rischio allo stop | 10.000 $ dal 2021 → | Max drawdown | Trade | Win rate | 2018–20 (DD) |
 |---|---|---|---|---|---|---|---|
 | **W3.2** | **dal 22/11/2026** | **25%** | **78.474 $ (x7,8)** | **−21,1%** | **13** | **92%** | **25.142 $ (−37,3%)** |
+| **W3.2 su ETH** (capitale separato) | **dal 22/11/2026** | **25%** | **34.760 $ (x3,5)** al 10/11 | **−27,5%** | **15** | **60%** | — |
 | Tenere BTC | — | — | 22.594 $ (x2,3) | −76,6% | — | — | — |
+
+ETH: stesse regole e parametri di BTC, flusso e funding dei perp ETH (archivio Binance + OKX provvisorio), 10.000 $ dal 2021 al
+10/11/2026 (numeri di [`research/w32_multi`](research/w32_multi/README.md), riprodotti dal tool in `tests/test_eth.py`; 37.575 $
+al 15/11). ETH vale meno di BTC per unità di drawdown (CAGR/DD 0,86 contro 2,00, WR al limite del 60%). Capitale separato da
+quello di BTC (10.000 $ ciascuno): scelta dell'utente del 22/11/2026.
+Anni ETH: 2021 +104,3% · 2022 −3,9% · 2023 +21,7% · 2024 +27,9% · 2025 +14,0% · 2026 +7,9% (al 15/11).
 
 | Anno | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 (al 15/11) |
 |---|---|---|---|---|---|---|
@@ -77,6 +85,16 @@ Si guarda solo la **candela settimanale** chiusa la domenica alle 00:00 UTC; si 
 Dimensione: esposizione = min(1, 25% / distanza dello stop iniziale). Flusso = media degli ultimi 3 giorni disponibili di pf14z,
 identico dal vivo e nel backtest.
 
+**Asset e capitale** (dal 22/11/2026): le stesse regole girano su BTC ed ETH (`weekly.evaluate(f, asset=...)`, `ASSET_LIST`).
+Capitale BTC = `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE`; capitale ETH = `RADAR_ETH_CAPITAL` (predefinito 10.000 $), separato
+(0,70). Ciascun asset ha il suo tetto di rischio 25% allo stop **sulla propria quota** (con 50.000 $: BTC 35.000 $, ETH 15.000 $;
+uno stop pieno costa al massimo ~8.750 $ su BTC e ~3.750 $ su ETH). Dati ETH: `data/eth_spot.csv`, `eth_perp.csv`, `eth_funding.csv`,
+`eth_metrics.csv`, dalle stesse fonti di BTC (spot data-api.binance.vision, perp e funding archivio data.binance.vision, giorni
+non ancora archiviati da OKX con `source = okx`); Binance fapi resta bloccato dagli USA. Report: `report["weekly"]` = BTC
+(invariato), `report["weekly_eth"]` = ETH. Avvisi Telegram separati con l'asset nel titolo ("RADAR SIGNAL ETH · …": segnale,
+ingresso, trailing, uscita, stop in tempo reale, soglie d'allarme, coerenza), stato in `state.json` sotto `weekly_eth`; una riga
+ETH nel riepilogo "Oggi" e nel messaggio di salute. Se i dati ETH mancano il giro di BTC prosegue e arriva l'avviso sulla fonte.
+
 Cosa fare con gli avvisi:
 1. **Segnale settimanale**: entra lunedì all'apertura con l'importo indicato e metti lo stop iniziale.
 2. **Trailing aggiornato**: sposta lo stop al nuovo livello.
@@ -91,8 +109,8 @@ Pensata per il telefono (installabile dalla schermata Home), tema scuro e chiaro
 
 | Sezione | Contenuto |
 |---|---|
-| **Oggi** | posizione W3.2, Pre-analisi della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, notizie del giorno |
-| **Storico** | trade di W3 con curva di equity contro BTC, registro dei trade reali, simulatore del capitale |
+| **Oggi** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, notizie del giorno |
+| **Storico** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
 | **Liquidazioni** | mappa stimata delle liquidazioni, prezzi di liquidazione reali Hyperliquid, feed live |
 | **Book** | heatmap dell'order book a 30 minuti su sei borse, muri etichettati, liquidazioni live, sentiment descrittivo, muri ritirati o eseguiti |
 | **News** | calendario economico, riunioni FOMC e BCE, notizie classificate per impatto |
@@ -183,6 +201,7 @@ Prima di pubblicare: test che riproduce il problema, suite verde, render a 400 e
 | `TELEGRAM_CHAT_ID` | secret | – | chat che riceve gli avvisi e da cui si accettano i comandi |
 | `RADAR_CAPITAL` | variabile | 50000 | capitale su cui si calcolano i piani in dollari |
 | `RADAR_WEEKLY_SHARE` | variabile | 1.0 | quota del capitale dedicata a W3.2 |
+| `RADAR_ETH_SHARE` | variabile | 0.30 | quota del capitale W3.2 su ETH (0 = ETH escluso dai piani in dollari); BTC = 1 − quota |
 | `RADAR_WALLETS` | variabile | 0 | `1` riaccende la sezione Wallet e la sentinella |
 | `RADAR_V2_ALERTS` | variabile | 0 | `1` riaccende gli avvisi della vecchia strategia giornaliera v2 |
 

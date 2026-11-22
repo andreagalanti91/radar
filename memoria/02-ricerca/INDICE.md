@@ -21,3 +21,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Sentiment book + liquidazioni (pagina Book) | descrittivo, 0/14 test; rifare a febbraio 2027 | 108 | research/book_sentiment |
 | Take profit +10/15% con rientro, trailing stretto (su W3.2) | 0/8; W3.2 restituisce il 62% dell'MFE: costo dei trend lunghi | 109 | research/tp_rientro |
 | W3.2 su ETH, SOL e 8 indici (rischio 25%) | solo ETH al limite; SOL e indici no | 110 | research/w32_multi |
+| W3.2 sulle top 100 crypto (27 altcoin valutabili) | passa solo ETH (1/27) | 111 | research/w32_top100 |

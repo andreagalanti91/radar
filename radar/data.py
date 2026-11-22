@@ -1,4 +1,7 @@
-"""Raccolta dati BTC (giornaliero) da fonti pubbliche, con cache CSV incrementale.
+"""Raccolta dati giornalieri (BTC e gli altri asset di W3.2, oggi ETH) da fonti pubbliche, con cache CSV incrementale.
+
+Asset come parametro (ASSETS): stesse fonti e stessa costruzione per ogni asset; BTC usa i file storici (data/spot.csv, ...),
+gli altri un prefisso (data/eth_spot.csv, data/eth_perp.csv, data/eth_funding.csv, data/eth_metrics.csv).
 
 Fonti:
 - Spot klines (con taker buy volume -> CVD spot): data-api.binance.vision
@@ -23,6 +26,14 @@ import requests
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 SYMBOL = "BTCUSDT"
 OKX_INST = "BTC-USDT-SWAP"
+# asset di W3.2: simbolo Binance (spot e perp USDT-M), contratto OKX per i giorni non ancora archiviati, prefisso dei file in data/
+ASSETS = {"BTC": {"symbol": SYMBOL, "okx": OKX_INST, "prefix": ""},
+          "ETH": {"symbol": "ETHUSDT", "okx": "ETH-USDT-SWAP", "prefix": "eth_"}}
+
+
+def cache_name(name: str, asset: str = "BTC") -> str:
+    """Nome del file di cache (senza .csv) di una fonte per l'asset: BTC "spot", ETH "eth_spot"."""
+    return ASSETS[asset]["prefix"] + name
 START = date(2019, 9, 1)  # nascita del perp USDT-M Binance
 METRICS_START = date(2021, 12, 1)
 ARCHIVE = "https://data.binance.vision/data/futures/um"
@@ -113,11 +124,12 @@ def _cache_last(name: str) -> date | None:
 
 
 # ---------------------------------------------------------------- spot
-def fetch_spot() -> pd.DataFrame:
+def fetch_spot(asset: str = "BTC") -> pd.DataFrame:
+    sym = ASSETS[asset]["symbol"]
     rows, start_ms = [], int(datetime(START.year, START.month, START.day, tzinfo=timezone.utc).timestamp() * 1000)
     while True:
         r = _get("https://data-api.binance.vision/api/v3/klines",
-                 {"symbol": SYMBOL, "interval": "1d", "startTime": start_ms, "limit": 1000})
+                 {"symbol": sym, "interval": "1d", "startTime": start_ms, "limit": 1000})
         batch = r.json()
         if not batch:
             break
@@ -127,7 +139,7 @@ def fetch_spot() -> pd.DataFrame:
             break
     df = _klines_to_daily(pd.DataFrame(rows))
     df = df[df.index.date < _today()]  # solo candele chiuse
-    return _merge_cache("spot", df)
+    return _merge_cache(cache_name("spot", asset), df)
 
 
 def fetch_spot_1h() -> pd.DataFrame:
@@ -154,9 +166,9 @@ def fetch_spot_1h() -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------- perp
-def _okx_perp_daily() -> pd.DataFrame:
+def _okx_perp_daily(asset: str = "BTC") -> pd.DataFrame:
     r = _get("https://www.okx.com/api/v5/market/history-candles",
-             {"instId": OKX_INST, "bar": "1Dutc", "limit": 100})
+             {"instId": ASSETS[asset]["okx"], "bar": "1Dutc", "limit": 100})
     d = pd.DataFrame(r.json()["data"]).iloc[:, :8]
     d.columns = ["ts", "open", "high", "low", "close", "vol", "volCcy", "volQuote"]
     d["date"] = pd.to_datetime(pd.to_numeric(d["ts"]), unit="ms").dt.normalize()
@@ -165,8 +177,9 @@ def _okx_perp_daily() -> pd.DataFrame:
     return out[["open", "high", "low", "close", "volume", "quote_volume"]].sort_index()
 
 
-def fetch_perp() -> pd.DataFrame:
-    last = _cache_last("perp")
+def fetch_perp(asset: str = "BTC") -> pd.DataFrame:
+    sym, name = ASSETS[asset]["symbol"], cache_name("perp", asset)
+    last = _cache_last(name)
     today = _today()
     start = (last - timedelta(days=10)) if last else START  # riprova gli ultimi giorni: l'archivio può avere buchi
     frames = []
@@ -174,39 +187,40 @@ def fetch_perp() -> pd.DataFrame:
     months = [m for m in _months(start, today) if m < this_month]
     days = list(_days(max(start, this_month), today - timedelta(days=1)))
     with ThreadPoolExecutor(8) as ex:
-        for m, df in zip(months, ex.map(lambda m: _zip_csv(f"{ARCHIVE}/monthly/klines/{SYMBOL}/1d/{SYMBOL}-1d-{m:%Y-%m}.zip", "open_time"), months)):
+        for m, df in zip(months, ex.map(lambda m: _zip_csv(f"{ARCHIVE}/monthly/klines/{sym}/1d/{sym}-1d-{m:%Y-%m}.zip", "open_time"), months)):
             if df is not None:
                 frames.append(_klines_to_daily(df))
             elif m >= START:  # mese appena chiuso non ancora archiviato: usa i file giornalieri
                 days += [d for d in _days(max(m, start), min(_months_end(m), today - timedelta(days=1)))]
     with ThreadPoolExecutor(8) as ex:
-        for df in ex.map(lambda d: _zip_csv(f"{ARCHIVE}/daily/klines/{SYMBOL}/1d/{SYMBOL}-1d-{d:%Y-%m-%d}.zip", "open_time"), days):
+        for df in ex.map(lambda d: _zip_csv(f"{ARCHIVE}/daily/klines/{sym}/1d/{sym}-1d-{d:%Y-%m-%d}.zip", "open_time"), days):
             if df is not None:
                 frames.append(_klines_to_daily(df))
     new = pd.concat(frames) if frames else pd.DataFrame()
     if len(new):
         new["source"] = "binance"
-    out = _merge_cache("perp", new) if len(new) else pd.read_csv(DATA_DIR / "perp.csv", index_col=0, parse_dates=True)
+    out = _merge_cache(name, new) if len(new) else pd.read_csv(DATA_DIR / f"{name}.csv", index_col=0, parse_dates=True)
     if "source" in out:  # le righe OKX sono provvisorie: ricalcola sempre quali mancano dall'archivio Binance
         out = out[out["source"].fillna("binance") == "binance"]
     # riempi gli ultimi giorni non ancora archiviati con OKX (taker buy stimato dopo, dalle metrics)
     have = set(out.index.date)
     missing = [d for d in _days(today - timedelta(days=60), today - timedelta(days=1)) if d not in have]
     if missing:
-        okx = _okx_perp_daily()
+        okx = _okx_perp_daily(asset)
         okx = okx[okx.index.isin(pd.to_datetime(missing))]
         if len(okx):
             okx["taker_buy_volume"] = float("nan")
             okx["source"] = "okx"
             # salvati su disco: il backtest e gli agenti leggono il CSV. Al prossimo giro l'archivio
             # Binance (riscaricato sugli ultimi 10 giorni) sovrascrive queste righe appena disponibile.
-            out = _merge_cache("perp", pd.concat([out, okx]))
+            out = _merge_cache(name, pd.concat([out, okx]))
     return out
 
 
 # ---------------------------------------------------------------- funding
-def fetch_funding() -> pd.DataFrame:
-    last = _cache_last("funding")
+def fetch_funding(asset: str = "BTC") -> pd.DataFrame:
+    sym, name = ASSETS[asset]["symbol"], cache_name("funding", asset)
+    last = _cache_last(name)
     today = _today()
     # i giorni recenti arrivano da OKX; si riscaricano i mesi Binance per sovrascriverli appena archiviati
     start = (last - timedelta(days=45)) if last else START
@@ -214,28 +228,28 @@ def fetch_funding() -> pd.DataFrame:
     months = [m for m in _months(start, today) if m < this_month]
     frames = []
     with ThreadPoolExecutor(8) as ex:
-        for df in ex.map(lambda m: _zip_csv(f"{ARCHIVE}/monthly/fundingRate/{SYMBOL}/{SYMBOL}-fundingRate-{m:%Y-%m}.zip", "calc_time"), months):
+        for df in ex.map(lambda m: _zip_csv(f"{ARCHIVE}/monthly/fundingRate/{sym}/{sym}-fundingRate-{m:%Y-%m}.zip", "calc_time"), months):
             if df is not None:
                 df = df.rename(columns={"last_funding_rate": "rate"})
                 if "calc_time" not in df:  # file senza header: calc_time, interval, rate
                     df = df.set_axis(["calc_time", "interval_h", "rate"][: len(df.columns)], axis=1)
                 df["date"] = pd.to_datetime(pd.to_numeric(df["calc_time"]), unit="ms").dt.normalize()
                 frames.append(df.groupby("date")["rate"].sum().to_frame("funding").assign(source="binance"))
-    out = _merge_cache("funding", pd.concat(frames)) if frames else pd.read_csv(DATA_DIR / "funding.csv", index_col=0, parse_dates=True)
-    out = _funding_sources(out, this_month)
+    out = _merge_cache(name, pd.concat(frames)) if frames else pd.read_csv(DATA_DIR / f"{name}.csv", index_col=0, parse_dates=True)
+    out = _funding_sources(out, this_month, name)
     # mese corrente da OKX (stesso ordine di grandezza del funding Binance)
-    r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": OKX_INST, "limit": 100})
+    r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": ASSETS[asset]["okx"], "limit": 100})
     okx = pd.DataFrame(r.json()["data"])
     if len(okx):
         okx["date"] = pd.to_datetime(pd.to_numeric(okx["fundingTime"]), unit="ms").dt.normalize()
         okx = okx.groupby("date")["realizedRate"].apply(lambda s: pd.to_numeric(s).sum()).to_frame("funding")
         okx = okx[(okx.index > out.index.max()) & (okx.index.date < today)]
         if len(okx):
-            out = _merge_cache("funding", okx.assign(source="okx"))
+            out = _merge_cache(name, okx.assign(source="okx"))
     return out
 
 
-def _funding_sources(out: pd.DataFrame, this_month: date) -> pd.DataFrame:
+def _funding_sources(out: pd.DataFrame, this_month: date, name: str = "funding") -> pd.DataFrame:
     """Colonna "source" del funding (registro provvisori/definitivi, radar/provlog.py). Le righe salvate prima della colonna
     non la hanno: quelle dal mese corrente in poi (l'archivio Binance è solo mensile) sono OKX, le precedenti Binance.
     Solo un'etichetta: i valori di "funding" non cambiano."""
@@ -245,13 +259,14 @@ def _funding_sources(out: pd.DataFrame, this_month: date) -> pd.DataFrame:
         out = out.copy()
         out["source"] = src.where(~miss, pd.Series(["okx" if d >= this_month else "binance" for d in out.index.date],
                                                    index=out.index))
-        out.to_csv(DATA_DIR / "funding.csv")
+        out.to_csv(DATA_DIR / f"{name}.csv")
     return out
 
 
 # ---------------------------------------------------------------- metrics (OI, L/S)
-def _metrics_day(d: date) -> pd.DataFrame | None:
-    df = _zip_csv(f"{ARCHIVE}/daily/metrics/{SYMBOL}/{SYMBOL}-metrics-{d:%Y-%m-%d}.zip", "create_time")
+def _metrics_day(d: date, asset: str = "BTC") -> pd.DataFrame | None:
+    sym = ASSETS[asset]["symbol"]
+    df = _zip_csv(f"{ARCHIVE}/daily/metrics/{sym}/{sym}-metrics-{d:%Y-%m-%d}.zip", "create_time")
     if df is None or not len(df):
         return None
     for c in df.columns[2:]:
@@ -270,18 +285,19 @@ def _metrics_day(d: date) -> pd.DataFrame | None:
     }, index=pd.DatetimeIndex([pd.Timestamp(d)], name="date"))
 
 
-def fetch_metrics() -> pd.DataFrame:
-    last = _cache_last("metrics")
+def fetch_metrics(asset: str = "BTC") -> pd.DataFrame:
+    name = cache_name("metrics", asset)
+    last = _cache_last(name)
     start = (last - timedelta(days=3)) if last else METRICS_START
     days = list(_days(start, _today() - timedelta(days=1)))
     frames = []
     with ThreadPoolExecutor(16) as ex:
-        for df in ex.map(_metrics_day, days):
+        for df in ex.map(lambda d: _metrics_day(d, asset), days):
             if df is not None:
                 frames.append(df)
     if frames:
-        return _merge_cache("metrics", pd.concat(frames))
-    return pd.read_csv(DATA_DIR / "metrics.csv", index_col=0, parse_dates=True)
+        return _merge_cache(name, pd.concat(frames))
+    return pd.read_csv(DATA_DIR / f"{name}.csv", index_col=0, parse_dates=True)
 
 
 # ---------------------------------------------------------------- fear & greed
@@ -431,3 +447,53 @@ def stale_sources(d: dict[str, pd.DataFrame], now: pd.Timestamp | None = None, n
 def load_all() -> dict[str, pd.DataFrame]:
     return {n: pd.read_csv(DATA_DIR / f"{n}.csv", index_col=0, parse_dates=True)
             for n in ["spot", "perp", "funding", "metrics", "fng"]}
+
+
+# ---------------------------------------------------------------- altri asset di W3.2 (oggi ETH)
+ASSET_NEEDED = ("spot", "perp", "funding")   # senza una di queste (né cache) il W3.2 dell'asset non si calcola
+ASSET_SOURCES = ASSET_NEEDED + ("metrics",)  # metrics: solo la stima del taker buy dei giorni OKX provvisori
+
+
+def update_asset(asset: str, errors: dict | None = None, verbose: bool = True) -> dict[str, pd.DataFrame] | None:
+    """Fonti W3.2 di un asset (spot, perp, funding, metrics) con le stesse fonti e regole di BTC: archivio data.binance.vision
+    per perp e funding, OKX provvisorio per i giorni non ancora archiviati (colonna "source" = "okx"). Una fonte che non si
+    scarica usa l'ultima cache e finisce in `errors` con il prefisso dell'asset (es. "eth_perp"). Mai eccezioni: senza dati né
+    cache per spot, perp o funding ritorna None e il giro di BTC prosegue. La chiave "fng" va aggiunta dal chiamante."""
+    errors = {} if errors is None else errors
+    fns = {"spot": fetch_spot, "perp": fetch_perp, "funding": fetch_funding, "metrics": fetch_metrics}
+    out = {}
+    for name in ASSET_SOURCES:
+        key, t = cache_name(name, asset), time.time()
+        try:
+            df = fns[name](asset)
+            if df is None or not len(df):
+                raise ValueError("nessuna riga")
+        except Exception as e:  # noqa: BLE001
+            errors[key] = f"{type(e).__name__}: {str(e)[:120]}"
+            try:
+                df = _cached(key)
+            except Exception:  # noqa: BLE001   cache illeggibile = assente
+                df = None
+            print(f"[data] {key:12s} NON aggiornata ({errors[key]}): "
+                  + (f"uso la cache fino al {df.index.max().date()}" if df is not None and len(df) else "nessuna cache"))
+            if df is None or not len(df):
+                if name in ASSET_NEEDED:
+                    print(f"[data] {asset}: W3.2 non calcolabile in questo giro (manca {name})")
+                    return None
+                df = pd.DataFrame(index=pd.DatetimeIndex([], name="date"))
+        out[name] = df
+        if verbose and len(df):
+            print(f"[data] {key:12s} {len(df):5d} righe  {df.index.min().date()} -> {df.index.max().date()}  ({time.time()-t:.1f}s)")
+    return out
+
+
+def load_asset(asset: str) -> dict[str, pd.DataFrame]:
+    """Cache su disco delle fonti W3.2 di un asset, più il Fear & Greed comune (lo usa build_features)."""
+    out = {n: pd.read_csv(DATA_DIR / f"{cache_name(n, asset)}.csv", index_col=0, parse_dates=True) for n in ASSET_SOURCES}
+    out["fng"] = pd.read_csv(DATA_DIR / "fng.csv", index_col=0, parse_dates=True)
+    return out
+
+
+def is_critical(key: str) -> bool:
+    """Fonte usata da W3.2 (BTC: CRITICAL; altri asset: le stesse con il prefisso, es. "eth_perp")."""
+    return key in CRITICAL or any(key == cache_name(n, a) for a in ASSETS if a != "BTC" for n in ASSET_SOURCES)

@@ -409,6 +409,11 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 111**: W3.2 con i parametri di BTC sulle prime 100 crypto di oggi (72 dopo stablecoin/RWA, 57 con perp, 28 con ≥ 3 anni):
+passa il criterio, la conferma e il placebo con Holm solo ETH fra 27 altcoin (BTC 78.474 $, ETH 34.760 $); TRX e SOL rendono di più
+del B&H ma con DD −40/−44% e WR < 60%; altcoin mediana 8.344 $, DD −65%, WR 33%. Il portafoglio equipesato delle 27 altcoin fa
+15.895 $ (DD −18,5%) contro 78.474 $ di BTC da solo. Il vantaggio non si trasferisce alle altcoin; ETH resta l'unico candidato.
+research/w32_top100/README.md (PREREG 866f3eb). research/w32_top100/README.md (PREREG 866f3eb).
 **Lezione 110**: W3.2 con i parametri di BTC non si trasferisce: dal 2021 passa solo ETH (34,8k, DD −27,5%, WR 60% al limite, già noto dalla lezione 87); SOL DD −40%, WR 43%, in perdita dal 2024; nessuno degli 8 indici batte il buy & hold in CAGR/DD. Il vantaggio viene dal flusso perp. research/w32_multi/README.md (PREREG b99fe66).
 **Lezione 109**: su W3.2 il take profit a +10/12,5/15% del prezzo d'ingresso, totale con rientro alla decisione settimanale
 (A o B entro 5%) o a metà, e il trailing 1,5 ATRw dopo +10%, non migliorano nulla: 0/8 varianti passano (PREREG 69dc968);

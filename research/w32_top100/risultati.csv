@@ -1,0 +1,73 @@
+rank,sym,versione,inizio,valutabile,fin,cagr,dd,n,wr,cd,wo,ret,bh_fin,bh_dd,bh_cd,meta1,meta2,c1,c2,c3,c4,c5,passa15,k2,k3,conferma,plac_act,plac_med,p,nota,holm,passa_davvero
+1,BTC,completa,2021-01-01,True,78474.0,42.2,-21.1,13.0,92.0,2.0,51561.0,684.7,25412.0,-76.6,0.23,234.8,134.9,True,True,True,True,True,True,0.95,1.82,True,1.63,-0.03,0.0015,,True,True
+2,ETH,completa,2021-01-01,True,34760.0,23.7,-27.5,15.0,60.0,0.86,19915.0,247.6,27770.0,-79.3,0.24,138.9,45.8,True,True,True,True,True,True,0.59,0.72,True,1.02,-0.02,0.0055,,True,True
+4,BNB,completa,2021-01-01,True,29566.0,20.3,-67.4,25.0,28.0,0.3,7300.0,195.7,181443.0,-70.9,0.9,56.3,93.7,False,False,False,True,True,False,,,,,,,,,False
+6,XRP,completa,2021-01-01,True,4550.0,-12.6,-73.8,25.0,32.0,-0.17,3420.0,-54.5,47933.0,-83.2,0.37,6.5,-57.3,False,False,False,False,True,False,,,,,,,,,False
+7,SOL,completa,2021-07-13,True,52528.0,36.5,-39.8,21.0,43.0,0.92,17977.0,425.3,26980.0,-96.3,0.21,549.2,-18.9,True,False,False,False,True,False,,,,,,,,,False
+8,TRX,completa,2021-01-01,True,100705.0,48.3,-44.4,19.0,58.0,1.09,32455.0,907.0,118241.0,-69.5,0.75,136.8,269.7,True,False,False,True,True,False,,,,,,,,,False
+10,HYPE,completa,2026-03-28,False,9612.0,-6.2,-37.3,3.0,33.0,-0.17,7759.0,-3.9,18630.0,-30.0,5.74,20.0,-11.4,False,False,False,False,False,False,,,,,,,,,False
+11,ZEC,completa,2021-01-01,True,14850.0,7.0,-68.4,28.0,29.0,0.1,7598.0,48.5,162723.0,-94.3,0.65,-16.5,57.2,False,False,False,False,True,False,,,,,,,,,False
+12,XMR,completa,2021-01-01,True,2318.0,-22.1,-88.1,32.0,19.0,-0.25,1785.0,-76.8,35923.0,-78.4,0.31,-61.5,-31.9,False,False,False,False,True,False,,,,,,,,,False
+13,DOGE,completa,2021-05-08,True,4299.0,-14.2,-73.0,28.0,21.0,-0.19,1825.0,-57.0,982.0,-91.7,-0.37,-70.9,48.2,True,False,False,False,True,False,,,,,,,,,False
+14,LEO,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+15,WBT,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+16,LINK,completa,2021-01-01,True,7623.0,-4.5,-49.9,23.0,30.0,-0.09,5048.0,-23.8,9126.0,-90.2,-0.02,2.7,-25.8,False,False,False,False,True,False,,,,,,,,,False
+18,ADA,completa,2021-01-01,True,25675.0,17.5,-46.5,23.0,43.0,0.38,14798.0,156.8,9546.0,-95.2,-0.01,187.7,-10.6,True,False,False,False,True,False,,,,,,,,,False
+20,XLM,completa,2021-01-01,True,5747.0,-9.0,-79.8,27.0,33.0,-0.11,4092.0,-42.5,11296.0,-90.3,0.02,86.9,-69.3,False,False,False,False,True,False,,,,,,,,,False
+22,BCH,completa,2021-01-01,True,11032.0,1.7,-63.3,27.0,44.0,0.03,6195.0,10.3,6726.0,-94.2,-0.07,17.7,-37.0,True,False,False,False,True,False,,,,,,,,,False
+23,NEAR,completa,2021-08-13,True,5670.0,-10.3,-73.6,24.0,33.0,-0.14,3412.0,-43.3,10703.0,-95.2,0.01,86.5,-65.9,False,False,False,False,True,False,,,,,,,,,False
+24,LTC,completa,2021-01-01,True,2506.0,-21.0,-87.4,27.0,26.0,-0.24,1944.0,-74.9,4068.0,-89.4,-0.16,-6.2,-73.3,False,False,False,False,True,False,,,,,,,,,False
+25,AVAX,completa,2021-07-22,True,5651.0,-10.2,-65.4,25.0,36.0,-0.16,3508.0,-43.5,7991.0,-95.6,-0.04,32.5,-57.3,False,False,False,False,True,False,,,,,,,,,False
+26,CC,completa,2026-08-29,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+29,UNI,completa,2021-07-17,True,8344.0,-3.3,-53.4,22.0,32.0,-0.06,5341.0,-16.6,4063.0,-92.4,-0.17,-19.7,4.0,True,False,False,False,True,False,,,,,,,,,False
+31,GRAM,completa,2024-12-28,False,9661.0,-2.3,-41.9,5.0,40.0,-0.05,7159.0,-3.4,2936.0,-79.3,-0.71,53.0,-34.3,True,False,False,False,False,False,,,,,,,,,False
+32,SUI,completa,2024-02-29,False,13567.0,12.0,-39.4,8.0,38.0,0.3,8261.0,35.7,5182.0,-87.7,-0.25,26.8,7.0,True,False,False,True,True,False,,,,,,,,,False
+36,RAIN,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+37,HBAR,completa,2022-01-13,True,14029.0,7.3,-42.0,21.0,38.0,0.17,5764.0,40.3,2204.0,-87.0,-0.31,-23.3,83.0,True,False,False,False,True,False,,,,,,,,,False
+38,TAO,completa,2025-02-07,False,5395.0,-29.6,-51.3,13.0,15.0,-0.58,4739.0,-46.0,6668.0,-70.7,-0.29,-17.0,-33.7,False,False,False,False,True,False,,,,,,,,,False
+39,SHIB,completa,2022-03-08,True,4960.0,-13.9,-60.8,22.0,32.0,-0.23,3689.0,-50.4,1954.0,-88.6,-0.33,-29.3,-29.8,True,False,False,False,True,False,,,,,,,,,False
+40,CRO,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+41,QNT,completa,2023-08-18,True,2502.0,-34.9,-77.6,18.0,22.0,-0.45,1748.0,-75.0,18663.0,-66.3,0.32,-34.9,-63.0,False,False,False,False,True,False,,,,,,,,,False
+44,OKB,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+45,M,completa,2026-05-05,False,10484.0,9.6,-9.4,2.0,50.0,1.02,9714.0,4.8,2890.0,-84.7,-1.07,0.1,5.1,True,True,False,True,False,False,,,,,,,,,False
+50,AAVE,completa,2021-08-14,True,10178.0,0.3,-56.0,19.0,37.0,0.01,5637.0,1.8,2880.0,-88.1,-0.24,23.9,0.4,True,False,False,True,True,False,,,,,,,,,False
+52,PEPE,completa,2024-03-02,False,6210.0,-16.2,-54.5,13.0,31.0,-0.3,4736.0,-37.9,13430.0,-91.2,0.13,-37.1,-1.2,False,False,False,False,True,False,,,,,,,,,False
+53,ONDO,completa,2024-11-17,False,6630.0,-18.8,-42.3,9.0,11.0,-0.44,5258.0,-33.7,3672.0,-89.0,-0.45,-2.7,-38.6,True,False,False,False,True,False,,,,,,,,,False
+54,WLFI,completa,2026-06-21,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+55,ENA,completa,2025-01-29,False,7848.0,-12.7,-30.8,7.0,43.0,-0.41,7337.0,-21.5,2273.0,-91.2,-0.62,-20.8,-0.8,True,True,False,False,False,False,,,,,,,,,False
+57,ASTER,completa,2026-07-18,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+58,HTX,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+59,MNT,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+60,VVV,completa,2025-11-27,False,12544.0,26.9,-41.0,5.0,40.0,0.66,6564.0,25.4,176608.0,-52.3,36.99,72.4,-35.1,False,False,False,False,False,False,,,,,,,,,False
+61,JST,completa,2026-02-24,False,16382.0,100.6,-34.6,3.0,67.0,2.91,11523.0,63.8,31657.0,-23.8,17.16,15.2,42.2,False,True,True,True,False,False,,,,,,,,,False
+62,DOT,completa,2021-06-20,True,10151.0,0.3,-50.0,23.0,52.0,0.01,7832.0,1.5,416.0,-98.6,-0.45,23.3,-17.7,True,False,False,False,True,False,,,,,,,,,False
+63,MORPHO,completa,2025-09-25,False,6066.0,-35.9,-43.3,7.0,14.0,-0.83,5887.0,-39.3,11610.0,-51.0,0.28,-27.1,-16.8,False,False,False,False,False,False,,,,,,,,,False
+64,ICP,completa,2022-03-09,True,6628.0,-8.4,-68.1,20.0,35.0,-0.12,3954.0,-33.7,1497.0,-91.1,-0.37,94.9,-54.6,True,False,False,False,True,False,,,,,,,,,False
+65,BGB,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+66,BTW,completa,2027-04-02,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+67,SKY,completa,2026-07-08,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+69,PIEVERSE,completa,2026-09-12,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+71,PUMP,completa,2026-02-21,False,10630.0,8.9,-21.1,2.0,50.0,0.42,9825.0,6.3,16562.0,-46.2,2.21,1.0,7.8,False,True,False,True,False,False,,,,,,,,,False
+72,WLD,completa,2024-05-21,False,4942.0,-24.8,-56.0,12.0,17.0,-0.44,4501.0,-50.6,613.0,-95.4,-0.71,0.3,-51.2,True,False,False,False,True,False,,,,,,,,,False
+73,ETC,completa,2021-01-01,True,10475.0,0.8,-79.4,27.0,37.0,0.01,3970.0,4.7,11848.0,-95.5,0.03,62.9,-35.6,False,False,False,False,True,False,,,,,,,,,False
+74,KCS,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+75,NIGHT,completa,2026-10-08,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+76,ARB,completa,2024-01-19,False,10370.0,1.3,-27.2,8.0,38.0,0.05,8009.0,3.7,846.0,-96.6,-0.61,-0.6,8.0,True,True,False,False,True,False,,,,,,,,,False
+77,POL,completa,2021-08-20,True,4034.0,-16.0,-67.8,23.0,30.0,-0.24,3412.0,-59.7,598.0,-97.6,-0.43,-42.1,-30.3,True,False,False,False,True,False,,,,,,,,,False
+78,PEARL,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+79,RENDER,completa,2023-12-02,False,9143.0,-3.0,-28.9,12.0,25.0,-0.1,7856.0,-8.6,4529.0,-90.8,-0.26,3.7,-14.5,True,True,False,False,True,False,,,,,,,,,False
+80,JUP,completa,2024-11-28,False,5235.0,-28.3,-50.6,12.0,25.0,-0.56,4650.0,-47.7,2265.0,-90.0,-0.59,-0.3,-48.2,True,False,False,False,True,False,,,,,,,,,False
+81,GT,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+82,KAS,completa,2024-09-14,False,11662.0,7.4,-23.4,8.0,38.0,0.32,9276.0,16.6,1721.0,-86.6,-0.64,18.4,-4.1,True,True,False,False,True,False,,,,,,,,,False
+84,ALGO,completa,2021-04-14,True,23069.0,16.2,-30.0,16.0,44.0,0.54,14230.0,130.7,594.0,-96.7,-0.41,12.8,104.9,True,True,False,True,True,False,,,,,,,,,False
+86,ATOM,completa,2021-01-01,True,4013.0,-14.4,-66.1,25.0,40.0,-0.22,3453.0,-59.9,2153.0,-97.2,-0.24,-58.4,-3.5,True,False,False,False,True,False,,,,,,,,,False
+87,NEXO,solo prezzo,2023-02-23,True,9919.0,-0.2,-57.2,17.0,18.0,-0.0,5977.0,-0.8,9464.0,-56.8,-0.03,41.7,-28.2,False,False,False,False,True,False,,,,,,,,,False
+88,INJ,completa,2023-06-15,True,23299.0,28.2,-44.7,15.0,33.0,0.63,7355.0,133.0,13520.0,-94.7,0.1,128.2,0.8,True,False,False,True,True,False,,,,,,,,,False
+89,PI,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+91,LIT,completa,2026-10-21,False,,,,,,,,,,,,,,,,,,,,,,,,,,< 180 g di test,,False
+92,BDX,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+94,XDC,nessun dato Binance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,False
+95,CAKE,completa,2024-08-30,False,3456.0,-38.4,-74.2,16.0,19.0,-0.52,2863.0,-65.4,10054.0,-73.4,0.0,-68.7,14.4,True,False,False,False,True,False,,,,,,,,,False
+97,ETHFI,completa,2025-01-14,False,7994.0,-11.6,-38.4,8.0,38.0,-0.3,6913.0,-20.1,3548.0,-86.5,-0.5,-23.5,3.3,True,False,False,False,True,False,,,,,,,,,False
+99,STX,completa,2023-12-20,False,17081.0,20.3,-28.4,10.0,70.0,0.72,10447.0,70.8,2665.0,-96.7,-0.38,47.5,13.6,True,True,True,True,True,True,,,,,,,,,False
+100,ZRO,completa,2025-04-18,False,9808.0,-1.2,-20.7,7.0,29.0,-0.06,8961.0,-1.9,6288.0,-77.8,-0.33,6.5,-7.9,True,True,False,False,False,False,,,,,,,,,False

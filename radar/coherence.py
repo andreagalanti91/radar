@@ -66,16 +66,17 @@ def prov_changes(prov: dict | None) -> list[dict]:
     return [r for r in (prov or {}).get("last") or [] if r.get("changed") in (True, "True")]
 
 
-def format_alert(lines: list[str]) -> str:
-    return "<b>RADAR SIGNAL BTC · Controllo di coerenza</b>\n" + "\n".join(lines) + "\n" + TEXT
+def format_alert(lines: list[str], asset: str = "BTC") -> str:
+    return f"<b>RADAR SIGNAL {asset} · Controllo di coerenza</b>\n" + "\n".join(lines) + "\n" + TEXT
 
 
-def update(d: dict, wcur: dict | None, prov: dict | None, st: dict, send=None) -> dict:
-    """Esegue i controlli, avvisa una volta per evento e ritorna {"problems": [...], "gaps": {...}, "history": [...]}."""
-    cs = st.setdefault("coherence", {})
+def update(d: dict, wcur: dict | None, prov: dict | None, st: dict, send=None, asset: str = "BTC") -> dict:
+    """Esegue i controlli, avvisa una volta per evento e ritorna {"problems": [...], "gaps": {...}, "history": [...]}.
+    Altri asset di W3.2 (ETH): buchi nelle loro fonti (spot, perp, funding) e storico riscritto, chiave st["coherence_eth"]."""
+    cs = st.setdefault("coherence" if asset == "BTC" else f"coherence_{asset.lower()}", {})
     sent = list(cs.get("sent", []))
     events: list[tuple[str | None, str]] = []          # (marker o None, riga del messaggio)
-    g = gaps(d)
+    g = gaps(d) if asset == "BTC" else gaps(d, names=("spot", "perp", "funding"))
     for k, miss in g.items():
         events.append((f"gap:{k}:{miss[0]}", f"dati {k}: {len(miss)} giorni mancanti negli ultimi {GAP_DAYS} "
                        f"({', '.join(miss[:5])}{'…' if len(miss) > 5 else ''})"))
@@ -90,7 +91,7 @@ def update(d: dict, wcur: dict | None, prov: dict | None, st: dict, send=None) -
     if new:
         if send is None:
             from .telegram import send
-        confirmed = bool(send(format_alert([line for _, line in new])))
+        confirmed = bool(send(format_alert([line for _, line in new], asset)))
         if confirmed:
             cs["sent"] = (sent + [m for m, _ in new if m])[-40:]
             print(f"[coherence] avviso inviato: {len(new)} eventi")

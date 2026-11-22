@@ -209,6 +209,20 @@ def _ctx_lines(td: dict | None) -> list[str]:
     return out[:3]
 
 
+def _asset_line(w: dict) -> str:
+    """Una riga per un asset di W3.2 diverso da BTC (oggi ETH): stato, P&L sul suo capitale, stop/trailing."""
+    a = w.get("asset") or "ETH"
+    if w.get("status") in ("aperto", "uscita"):
+        cap = w.get("capital") or 0
+        pnl = cap * (w.get("pnl_pct") or 0) / 100
+        return (f"<b>{a} · W3.2</b>: {w['side'].upper()} dal {_dm(w['entry'])} a {_usd(w['entry_px'])} · {_pc(w['pnl_pct'], 2)} "
+                f"({'+' if pnl >= 0 else '−'}{_usd(abs(pnl))} su {_usd(cap)}) · stop {_usd(w['trail'])}"
+                + (" · uscita lunedì all'apertura" if w["status"] == "uscita" else ""))
+    if w.get("status") == "segnale":
+        return f"<b>{a} · W3.2</b>: segnale {w['side']} alla chiusura del {_dm(w['signal_date'])}, ingresso lunedì all'apertura"
+    return f"<b>{a} · W3.2</b>: nessuna posizione (regime {w.get('regime')})"
+
+
 def today_brief(report: dict, day: str | None = None) -> str:
     """Riepilogo giornaliero "Oggi" (al massimo 8 righe, 11 con i mercati): prezzo, W3, 2–3 righe di contesto, riga
     "Mercati" e fino a 2 flag (report["macro"], radar/macro.py), nota. Mai eccezioni."""
@@ -234,7 +248,12 @@ def today_brief(report: dict, day: str | None = None) -> str:
                 w3 = [f"<b>W3.2</b>: {wk.get('status', 'stato non disponibile')} {wk.get('side', '')}".rstrip()]
         else:
             w3 = ["<b>W3.2</b>: non calcolato in questo giro"]
-        lines = [head, l_px] + w3 + _ctx_lines(pv.get("today"))
+        try:   # altri asset di W3.2 (report["weekly_eth"]): una riga ciascuno, subito dopo BTC
+            eth = [_asset_line(report["weekly_eth"])] if report.get("weekly_eth") else []
+        except Exception as e:  # noqa: BLE001
+            print(f"[telegram] riga ETH non composta: {e!r}")
+            eth = []
+        lines = [head, l_px] + w3 + eth + _ctx_lines(pv.get("today"))
     except Exception as e:  # noqa: BLE001
         print(f"[telegram] riepilogo incompleto: {e!r}")
         lines = [head, "Dati del riepilogo incompleti in questo giro."]
@@ -244,7 +263,7 @@ def today_brief(report: dict, day: str | None = None) -> str:
     except Exception as e:  # noqa: BLE001
         print(f"[telegram] riga mercati non composta: {e!r}")
         mk = []
-    return "\n".join(lines[:7] + mk + ["Contesto, non segnale: decide W3.2."])
+    return "\n".join(lines[:7 + bool(report.get("weekly_eth"))] + mk + ["Contesto, non segnale: decide W3.2."])
 
 
 def send(text: str):

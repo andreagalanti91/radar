@@ -71,28 +71,30 @@ def events(g: dict) -> list[str]:
     return ev
 
 
-def format_alarm(g: dict) -> str:
-    return ("<b>RADAR SIGNAL BTC · Soglia d'allarme W3.2</b>\n" + "\n".join(g["why"])
+def format_alarm(g: dict, asset: str = "BTC") -> str:
+    return (f"<b>RADAR SIGNAL {asset} · Soglia d'allarme W3.2</b>\n" + "\n".join(g["why"])
             + f"\nStorico dal vivo dal {g['since']}.\n" + TEXT)
 
 
-def update(wcur: dict | None, st: dict, journal: dict | None = None, send=None) -> dict | None:
-    """Calcola lo stato e invia un avviso per ogni evento nuovo; marca st["guard"]["sent"] solo se send conferma."""
+def update(wcur: dict | None, st: dict, journal: dict | None = None, send=None, asset: str = "BTC") -> dict | None:
+    """Calcola lo stato e invia un avviso per ogni evento nuovo; marca st["guard"]["sent"] solo se send conferma.
+    Altri asset di W3.2 (ETH): stesse soglie sul loro storico, dal loro avvio dal vivo, chiave st["guard_eth"]."""
     if not wcur:
         return None
     if send is None:
         from .telegram import send
-    g = compute(wcur, live_start(journal))
-    gs = st.setdefault("guard", {})
+    g = compute(wcur, live_start(journal) if asset == "BTC" else weekly.ASSET_LIVE_START[asset])
+    g["asset"] = asset
+    gs = st.setdefault("guard" if asset == "BTC" else f"guard_{asset.lower()}", {})
     sent = list(gs.get("sent", []))
     new = [e for e in events(g) if e not in sent]
     if new:
-        if send(format_alarm(g)):
+        if send(format_alarm(g, asset)):
             gs["sent"] = (sent + new)[-20:]
             print(f"[guard] avviso inviato: {new}")
         else:
             print("[guard] avviso non confermato da Telegram: si riprova al prossimo giro")
     gs["last"] = {k: g[k] for k in ("dd_pct", "stops_in_a_row", "alarm")}
-    print(f"[guard] dal {g['since']}: drawdown {g['dd_pct']}% (peggiore {g['dd_max_pct']}%), stop consecutivi "
+    print(f"[guard] {asset} dal {g['since']}: drawdown {g['dd_pct']}% (peggiore {g['dd_max_pct']}%), stop consecutivi "
           f"{g['stops_in_a_row']}, allarme {'SÌ' if g['alarm'] else 'no'}")
     return g

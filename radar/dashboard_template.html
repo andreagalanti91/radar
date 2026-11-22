@@ -53,7 +53,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ---------- logo */
 .logo{display:flex;align-items:center;gap:10px;color:var(--label);text-decoration:none}
-.logo svg{width:34px;height:34px;flex:none;padding:7px;border-radius:10px;color:#fff;--mint:#5ef0c4;background:radial-gradient(95% 95% at 70% 100%,#8b5cff 0,#3d5bff 45%,#1a2a9e 75%,#0b1450 100%);box-shadow:0 4px 12px -4px rgba(61,91,255,.5)}
+.logo svg{width:34px;height:34px;flex:none;padding:6.5px;border-radius:7.5px;color:#fff;background:#2f4cf0}   /* tile del brand (brand/DESIGN.md §4): indaco pieno, raggio 22%, segno al 62% */
 .logo b{font:700 1.14rem/1 var(--font);letter-spacing:-.035em}
 .logo b span{color:var(--tint);font-weight:600}
 .logo small{display:block;font:500 .72rem/1 var(--font);letter-spacing:0;color:var(--label3);margin-top:5px;white-space:nowrap}
@@ -312,6 +312,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 .wkFacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .wkFacts div{display:grid;gap:2px;min-width:0} .wkFacts span{font:500 .72rem var(--font);letter-spacing:0;color:var(--label3)}
 .wkFacts b{font:600 1rem var(--font);font-variant-numeric:tabular-nums}
+.ethCard .wkBig{font-size:1.9rem} .ethCard .ethTag{font:700 .78rem var(--font);letter-spacing:.02em;color:var(--label2)}
 .track{position:relative;height:100px;margin:4px 12px 0}
 .track .rail{position:absolute;left:0;right:0;top:46px;height:6px;border-radius:3px;background:var(--line2)}
 .track .risk{position:absolute;top:46px;height:6px;border-radius:3px 0 0 3px;background:repeating-linear-gradient(135deg,rgba(255,90,82,.55) 0 4px,rgba(255,90,82,.2) 4px 8px)}
@@ -537,7 +538,7 @@ body.noscroll{overflow:hidden}
   .hero>.cap,#sub{display:none}
   #wkSec>.sh{display:none}
   .wkHero{gap:12px}
-  .wkHero>.wkTop{display:none}
+  .wkHero:not(.ethCard)>.wkTop{display:none}
   .wkBig{font-size:2.6rem}
   .track{height:84px;margin:0 8px}
   .track .lab.dn{top:62px}
@@ -562,7 +563,7 @@ body.noscroll{overflow:hidden}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <symbol id="mark" viewBox="0 0 64 64"><path fill="currentColor" fill-rule="evenodd" d="M32 4a28 28 0 1 1 0 56 28 28 0 0 1 0-56Zm0 7.5a20.5 20.5 0 1 0 0 41 20.5 20.5 0 0 0 0-41Z"/><path fill="currentColor" d="M32 32V14.5A17.5 17.5 0 0 1 49.5 32Z"/><circle cx="23" cy="41" r="4.5" fill="var(--mint)"/></symbol>
+  <symbol id="mark" viewBox="0 0 64 64"><path fill="currentColor" d="M58.85 16.5A31 31 0 1 1 47.5 5.15L44 11.22A24 24 0 1 0 52.78 20ZM48.45 22.5A19 19 0 1 1 41.5 15.55L38.25 21.17A12.5 12.5 0 1 0 42.83 25.75ZM32 26a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></symbol>
   <symbol id="i-theme" viewBox="0 0 24 24"><path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-oggi" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 12l5-5"/></g><circle cx="8.6" cy="15.2" r="1.6" fill="currentColor"/></symbol>
   <symbol id="i-sim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20h17"/><path d="M4.5 15.5l4.5-5 4 3 6.5-8"/><path d="M15.5 5.5h4v4"/></g></symbol>
@@ -606,6 +607,7 @@ body.noscroll{overflow:hidden}
     <div class="section" id="wkSec" hidden>
       <div class="sh">Posizione · W3.2 <small id="wkSub"></small></div>
       <div class="card glow wkHero" id="wkHero"></div>
+      <div class="card wkHero ethCard" id="ethCard" style="margin-top:12px" hidden></div>
       <div class="card pv" id="pvCard" style="margin-top:12px" hidden></div>
       <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
         <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
@@ -663,6 +665,12 @@ body.noscroll{overflow:hidden}
       <div class="card wkSumM" id="wkSumM"></div>
       <div class="sh" style="margin-top:14px">Trade del backtest <small id="wkTrMN"></small></div>
       <div class="list"><div class="trM" id="wkTrM"></div></div>
+    </div>
+    <div class="section" id="ethStatSec" hidden>
+      <div class="sh">Storico W3.2 · ETH <small id="ethStatSub"></small></div>
+      <div class="card wkSumM" id="ethSumM"></div>
+      <div class="sh" style="margin-top:14px">Trade ETH del backtest <small id="ethTrMN"></small></div>
+      <div class="list"><div class="trM" id="ethTrM"></div></div>
     </div>
     <div id="stoHold" hidden>
       <div id="simPanel" style="display:grid;gap:14px;min-width:0">
@@ -1185,6 +1193,51 @@ function seg(id, onChange) {
     detLine.setData(H.eq_dates.map((d, i) => ({ time: d, value: 10000 * E[i] / E[0] }))); detChart.timeScale().fitContent();
   };
   drawStatM();
+})();
+
+// ---- W3.2 su ETH (report.weekly_eth, radar/weekly.py con asset="ETH"): card compatta in Oggi, storico in Storico
+(function renderEth() {
+  const E = R.weekly_eth; if (!E) return;
+  const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
+  const mkt = (m, e) => m === "spot" ? (e < 0.995 ? `spot ${Math.round(e * 100)}%` : "spot 1x") : `perp ${e.toFixed(2).replace(".", ",")}x`;
+  const pc1 = x => pct(x, 1);
+  const quota = `capitale ETH ${usd(E.capital)}`;
+  const open = E.status === "aperto" || E.status === "uscita";
+  const nextSun = (() => { const d = new Date(E.week); d.setDate(d.getDate() + 7); return d.toLocaleDateString("it-IT", { day: "numeric", month: "short" }); })();
+  let h = "";
+  if (open) {
+    const pnlUsd = E.capital * E.pnl_pct / 100, weeks = Math.max(1, Math.round((new Date(E.date) - new Date(E.entry)) / 6.048e8));
+    h = `<div class="wkTop"><span class="wkBadge ${E.side}"><i></i>ETH · ${side(E.side)} ${E.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(E.market, E.expo)}</span><span class="cap">${artD("dal", fmtD(E.entry))} · ${weeks} sett.</span></div>
+      <div class="wkBig">${pct(E.pnl_pct, 1)}<small>sul ${quota}: ${(pnlUsd >= 0 ? "+" : "−") + usd(Math.abs(pnlUsd))} · prezzo ${pc1(E.move_pct)} dall'ingresso a ${usd(E.entry_px)}</small></div>
+      <div class="wkFacts"><div><span>Stop/trailing</span><b>${usd(E.trail)}</b></div><div><span>Esposizione</span><b>${Math.round(E.expo * 100)}% · ${usd(E.notional)}</b></div><div><span>Chiusura ETH</span><b>${usd(E.price)}</b></div></div>`;
+  } else if (E.status === "segnale") {
+    const p = E.plan;
+    h = `<div class="wkTop"><span class="wkBadge sig"><i></i>ETH · segnale ${E.side} · ingresso lunedì</span><span class="cap">chiusura ${artD("del", fmtD(E.signal_date))}</span></div>
+      <div class="wkBig">${usd(p.entry_est)}<small>${p.market === "spot" ? "spot" : "perp"} ${Math.round(p.expo * 100)}% della ${quota} = ${usd(p.notional)} (${String(p.qty).replace(".", ",")} ETH)</small></div>
+      <div class="wkFacts"><div><span>Stop iniziale</span><b>${usd(p.stop)}</b></div><div><span>Rischio allo stop</span><b>−${nfS(p.stop_pct)}% · ${usd(p.loss_usd)}</b></div><div><span>Esposizione</span><b>${Math.round(p.expo * 100)}%</b></div></div>`;
+  } else {
+    h = `<div class="wkTop"><span class="wkBadge"><i></i>ETH · flat · nessuna posizione</span><span class="cap">prossima decisione: domenica ${nextSun}</span></div>
+      <div class="wkBig">${usd(E.price)}<small>chiusura ETH ${artD("del", fmtD(E.date))} · regime ${E.regime} · ${quota}</small></div>`;
+  }
+  h += `<p class="foot" style="margin:0">Stesse regole di BTC (rischio 25% allo stop sul capitale ETH). Dal 2021: ${E.history.m1.n} trade, WR ${nfS(E.history.m1.win_rate)}%, DD ${pc1(E.history.m1.max_dd_pct)}.</p>`;
+  $("ethCard").innerHTML = h; $("ethCard").hidden = false;
+  // --- Storico
+  const H = E.history, M = H.m1;
+  $("ethStatSec").hidden = false;
+  $("ethStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${M.n} trade`;
+  $("ethSumM").innerHTML = `<div class="top"><div class="kpi ${M.total_pct >= 0 ? "pos" : "neg"}">${pc1(M.total_pct)}<small>rendimento ${artD("dal", fmtD(H.start))}: $10.000 diventano ${usd(H.final_10k_1x)}</small></div></div>
+    <div class="facts"><div><span>Max drawdown</span><b>${pc1(M.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div><div><span>Vinti</span><b>${nfS(M.win_rate)}%</b></div></div>
+    <p class="foot" style="margin:0">W3.2 su ETH con le regole e i parametri di BTC, flusso e funding dei perp ETH. Capitale separato da BTC: ${usd(E.capital)} (RADAR_ETH_CAPITAL).</p>`;
+  const wks = t => Math.max(1, Math.round((new Date(t.exit || E.date) - new Date(t.entry)) / 6.048e8));
+  $("ethTrMN").textContent = `${H.trades.length} · risultato sul capitale ETH`;
+  $("ethTrM").innerHTML = H.trades.map((t, i) => [t, i]).reverse().map(([t, i]) => `<button type="button" data-i="${i}"><span class="d"><b>${fmtD(t.entry)}</b><small>${usd(t.entry_px)} → ${t.reason === "open" ? "aperto" : usd(t.exit_px)} · ${wks(t)} sett.</small></span>
+      <span class="sd ${t.side}">${side(t.side)}</span><span class="r ${t.pnl_pct >= 0 ? "pos" : "neg"}">${pc1(t.pnl_pct)}</span><span class="ch" aria-hidden="true">›</span></button>`).join("");
+  $("ethTrM").querySelectorAll("button").forEach(b => b.onclick = () => { const t = H.trades[+b.dataset.i], o = t.reason === "open";
+    const r = (k, v, cls) => `<div class="row"><span class="k">${k}</span><span class="v strong${cls ? " " + cls : ""}">${v}</span></div>`;
+    openSheet(artD(`ETH · ${side(t.side)} del`, fmtD(t.entry)), `<div class="list kvList">` + r("Ingresso", usd(t.entry_px)) +
+      (o ? r("Stato", "aperto") : r("Uscita", `${fmtD(t.exit)} · ${usd(t.exit_px)}`) + r("Motivo dell'uscita", why[t.reason] || t.reason)) +
+      r("Mercato", mkt(t.market, t.expo)) + r("Durata", wks(t) + " settimane") + r("Movimento del prezzo", pc1(t.move_pct)) +
+      r("Sul capitale ETH", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + `</div>`); });
 })();
 
 // ---- pre-analisi della prossima chiusura settimanale (report.preview, radar/preview.py): stima con i dati di oggi,
