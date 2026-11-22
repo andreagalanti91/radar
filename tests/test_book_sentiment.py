@@ -116,7 +116,7 @@ class TestSentimentFile(unittest.TestCase):
             run = (NOW - pd.Timedelta(seconds=20)).strftime("%Y-%m-%dT%H:%M:%SZ")
             (d / "liq_events" / "coverage.csv").write_text(f"run,exchange,stato,scaricati,nuovi,nota\n{run},okx,ok,2,2,\n{run},gate,errore,0,0,x\n")
             (d / "liq_events" / "2026-11.csv").write_text("ts,exchange,id,side,price,btc,usd\n"
-                                                          f"{NOW_MS - 600_000},okx,a,short,60000,1,60000\n{NOW_MS - 7_200_000},okx,b,long,60000,9,540000\n")
+                                                          f"{NOW_MS - 600_000},okx,a,short,60000,5,300000\n{NOW_MS - 7_200_000},okx,b,long,60000,9,540000\n")
             fine = flat(60000, 1e6, 1e6, far=0.003)                            # book fine: solo ±0,3% → fuori da I
             r = ob.log_sentiment(d, NOW, {"hyperliquid": fine}, extra={"hyperliquid": {"coarse": flat(60000, 1e6, 3e6)}})
             self.assertEqual((r["I"], r["sources"], r["L"], r["liq_src"], r["liq_n"], r["S"]), (-0.5, "hyperliquid", 1.0, "okx", 1, 0.25))
@@ -240,3 +240,37 @@ class TestRange(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRevisione(unittest.TestCase):
+    """Correzioni dalla revisione critica del 22/11: una riga rovinata non azzera il registro; L instabile sotto soglia."""
+
+    def test_riga_rovinata_non_azzera_il_registro(self):
+        with tempfile.TemporaryDirectory() as t:
+            p = Path(t) / "book_walls.csv"
+            rows = [f"2026-11-22 1{i}:00:00,okx,bid,{60000 + i},1000000" for i in range(5)]
+            rows.insert(2, "rotto,okx,bid,1,1")
+            p.write_text("ts,exchange,side,price,usd\n" + "\n".join(rows) + "\n")
+            df = ob._read_log(p, ["ts", "exchange", "side", "price", "usd", "outcome"])
+            self.assertEqual(len(df), 5)                                   # le righe buone restano
+            self.assertTrue(pd.to_datetime(df["ts"], errors="coerce").notna().all())
+            side = sorted(x.name for x in Path(t).glob("book_walls.csv.scartate-*"))
+            self.assertEqual(len(side), 1)                                 # la riga cattiva è conservata a parte
+            self.assertIn("rotto", (Path(t) / side[0]).read_text())
+            p.write_text(p.read_text() + "rotto2,okx,bid,1,1\n")
+            ob._read_log(p, ["ts"])
+            names = {x.name for x in Path(t).glob("book_walls.csv.scartate-*")}
+            self.assertEqual(len(names), 2)                                # seconda volta: file nuovo, il primo non si sovrascrive
+
+    def test_l_vuoto_sotto_soglia(self):
+        books = {"a": flat(60000, 3e6, 1e6)}
+        small = {"events": [ev(1, "long", 151_000)], "sources": ["okx"], "age_min": 0.2}
+        r = ob.sentiment_row(NOW, books, small, None)
+        self.assertIsNone(r["L"])
+        self.assertIsNone(r["S"])
+        self.assertEqual(r["liq_long_usd"], 151_000)                       # gli importi restano registrati
+        self.assertIn("sotto", r["note"])
+        big = {"events": [ev(1, "long", 200_000), ev(2, "short", 100_000)], "sources": ["okx"], "age_min": 0.2}
+        r = ob.sentiment_row(NOW, books, big, None)
+        self.assertAlmostEqual(r["L"], -1 / 3, places=4)
+        self.assertIsNotNone(r["S"])

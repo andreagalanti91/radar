@@ -105,3 +105,11 @@ al livello è quasi sempre sotto il 5% ed è il peggiore; il TP più lontano ren
 scelta dimezza il capitale. Con le lezioni 75–77 e 106 l'idea è chiusa su tutte le classi provate; un test multi-asset va
 giudicato contro il buy & hold e contro ingressi casuali nello stesso regime, non contro i 10.000 $ di partenza.
 research/swing_sr_multi/README.md (22/11/2026, revisione critica separata non eseguita).
+
+## Revisione critica (agente separato, 22/11/2026)
+Il verdetto regge. Verifiche eseguite dal revisore con script propri, non salvati nel repo: 239 trade rigiocati barra per barra
+(MSFT, LLY, SPY, NVDA) coincidono per data, motivo d'uscita e P&L; nessuna informazione dal futuro (i livelli entrano con un giorno
+di ritardo: prudente); i prezzi rettificati non falsano stop e TP in percentuale. Il risultato positivo di alcuni asset è beta di
+mercato: il finale supera il buy & hold scalato alla quota di tempo in posizione su 4 asset su 15 (QQQ, BRK-B, GOOGL, MSFT), il
+rapporto mediano è 0,84 e il CAGR/DD lo supera su 1 su 15. QQQ: 28,3k contro 25,1k del buy & hold scalato. Su QQQ, AAPL, BRK-B,
+MSFT e LLY i primi 3 trade valgono il 32–41% del guadagno. p combinato di Fisher sui placebo: 0,27.

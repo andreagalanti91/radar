@@ -185,7 +185,7 @@ class TestWallOutcome(unittest.TestCase):
             self.assertTrue(all(a.startswith(b + ",") for a, b in zip(after, before)))
             p.write_text("non,un,registro\n1,2,3\n")                         # illeggibile: messo da parte, non perso
             ob.update_walls(d, bk, self.T1 + pd.Timedelta(hours=1))
-            self.assertTrue((d / "book_walls.csv.illeggibile").exists())
+            self.assertEqual(len(list(d.glob("book_walls.csv.illeggibile-*"))), 1)
             self.assertEqual(len(pd.read_csv(p)), 6)
 
     def test_nessuna_fonte_valida(self):

@@ -380,12 +380,21 @@ def price_range(start: pd.Timestamp, end: pd.Timestamp, data_dir=None, sources: 
 
 def _read_log(path, cols: list[str]) -> pd.DataFrame:
     """Registro CSV letto come testo (i valori già scritti non si riformattano), con le colonne mancanti aggiunte vuote
-    (schema vecchio). File assente o vuoto: tabella vuota. File illeggibile o senza `ts`: messo da parte, si riparte."""
+    (schema vecchio). File assente o vuoto: tabella vuota. Righe con `ts` non valido: SOLO quelle si scartano e si conservano
+    in un file a parte dal nome unico (<nome>.scartate-<istante>), le righe buone restano. File illeggibile o senza colonna
+    `ts`: messo da parte intero con nome unico, si riparte."""
+    stamp = pd.Timestamp.now(tz="UTC").strftime("%Y%m%dT%H%M%S%f")
     if path.exists() and path.stat().st_size > 0:
         try:
             df = pd.read_csv(path, dtype=str, keep_default_na=False)
-            if "ts" not in df.columns or pd.to_datetime(df["ts"], errors="coerce").isna().any():
-                raise ValueError("colonna ts assente o non valida")
+            if "ts" not in df.columns:
+                raise ValueError("colonna ts assente")
+            bad = pd.to_datetime(df["ts"], errors="coerce").isna()
+            if bad.any():
+                side = path.with_name(f"{path.name}.scartate-{stamp}")
+                df[bad].to_csv(side, index=False)
+                print(f"[orderbook] {path.name}: {int(bad.sum())} righe con ts non valido scartate e conservate in {side.name}")
+                df = df[~bad].reset_index(drop=True)
             for c in cols:
                 if c not in df.columns:
                     df[c] = ""
@@ -393,7 +402,7 @@ def _read_log(path, cols: list[str]) -> pd.DataFrame:
         except pd.errors.EmptyDataError:
             pass
         except Exception as e:  # noqa: BLE001
-            bad = path.with_name(path.name + ".illeggibile")
+            bad = path.with_name(f"{path.name}.illeggibile-{stamp}")
             path.replace(bad)
             print(f"[orderbook] {path.name} illeggibile ({e!r}): messo da parte in {bad.name}, il registro riparte")
     return pd.DataFrame({c: pd.Series(dtype=str) for c in cols})
@@ -467,6 +476,7 @@ def log_walls(data_dir, books: dict, now: pd.Timestamp, range_fn=None) -> list[d
 # ------------------------------------------------------------------ registro del sentiment (data/book_sentiment.csv)
 SENT_BAND = 1.0                  # I: ±1% dal mid (specifica fissa)
 SENT_LIQ_MIN = 30                # L: liquidazioni degli ultimi 30 minuti (specifica fissa)
+SENT_LIQ_MIN_USD = 250_000       # sotto questo totale in 30 minuti L (e S) restano vuoti: segno instabile (revisione 22/11)
 SENT_W = 0.5                     # S = 0,5·I + 0,5·L (specifica fissa)
 LIQ_MAX_AGE_MIN = 10             # ultima raccolta delle liquidazioni (stesso giro, pochi secondi prima) più vecchia di 10 minuti:
                                  # la finestra di 30 minuti non sarebbe coperta → L (e S) restano vuoti, non 0
@@ -560,7 +570,10 @@ def sentiment_row(now: pd.Timestamp, books: dict, liq: dict | None, outcomes: di
         notes.append("nessun book utile: I non calcolato")
     if liq and liq.get("events") is not None:
         lq = liq_imbalance(liq["events"], now.timestamp() * 1000)
-        row.update({"L": round(lq["L"], 4), "liq_short_usd": round(lq["short_usd"], 0), "liq_long_usd": round(lq["long_usd"], 0),
+        tot = lq["short_usd"] + lq["long_usd"]
+        if 0 < tot < SENT_LIQ_MIN_USD:   # importi piccoli: il segno di L salta da −1 a +1 per un solo evento (revisione 22/11)
+            notes.append(f"liquidazioni sotto {SENT_LIQ_MIN_USD:,.0f} $ in 30 minuti: L e S non calcolati".replace(",", "."))
+        row.update({"L": None if 0 < tot < SENT_LIQ_MIN_USD else round(lq["L"], 4), "liq_short_usd": round(lq["short_usd"], 0), "liq_long_usd": round(lq["long_usd"], 0),
                     "liq_n": lq["n"], "liq_src": "+".join(liq.get("sources") or [])})
     else:
         notes.append("liquidazioni non aggiornate: L non calcolato")

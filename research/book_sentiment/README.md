@@ -1,4 +1,4 @@
-# Indicatore di sentiment da order book e liquidazioni · 22/11/2026 · NON è un segnale
+# Indicatore di sentiment da order book e liquidazioni · 22/11/2026 · L non è un segnale; I e S non dimostrati
 
 **Verdetto.** Il segno di S (e di I e L da soli) non predice il rendimento di BTC a 1, 4 o 24 ore in nessuno dei 14 test
 preregistrati (nessun p grezzo sotto 0,05, tutti i p di Holm = 1,00). La regola "long se S > +0,2, short se S < −0,2" perde dopo
@@ -137,3 +137,11 @@ liquidazioni reali 2023–24 (3.893 operazioni, lordo −4,5%). Le liquidazioni 
 effetto ≥ 0,25%; a 4–24 ore 16 giorni non bastano ("non dimostrabile", non "non funziona"). Muri ritirati: 0 eventi con foto
 orarie, serve un registro al secondo. In pagina l'indicatore va mostrato come descrizione, con la frase di avvertenza; rifare a
 febbraio 2027 con un solo test primario (S → 1 ora). research/book_sentiment/README.md (PREREG dacb01d).
+
+## Revisione critica (agente separato, 22/11/2026)
+Il verdetto regge, con una riserva sulla formulazione: "non è un segnale" vale per L (16 mesi di liquidazioni reali). Per I e per
+S a 4 e 24 ore l'esito corretto è "non dimostrabile": I ha correlazione di rango +0,14 a 1 ora con lo stesso segno nelle due metà,
+quindi non è confutato, è non provato. Allineamento temporale e segni delle liquidazioni verificati alla lettura; `bs_run.py` non è
+stato rieseguito dal revisore (cache dei prezzi assente). Nota: il backtest filtra gli eventi per orario dell'evento e non di
+raccolta, quindi vede anche eventi recuperati dopo: favorisce l'indicatore e rafforza l'esito negativo. Dal 22/11 il registro lascia
+L e S vuoti quando le liquidazioni dei 30 minuti sono sotto 250.000 $ (segno instabile: cambia entro 5 minuti nel 16% dei casi).
