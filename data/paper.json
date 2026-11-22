@@ -16,7 +16,7 @@
   "signal_date": "2026-11-21",
   "setup": "fundneg",
   "atr": 3019.77,
-  "trigger": 60568.01,
+  "trigger": 60352.16,
   "deadline": "2026-11-25 00:00:00"
  },
  "trades": [],
@@ -121,7 +121,7 @@
   "ret": 85.4,
   "dd": -11.4
  },
- "updated": "2026-11-22 04:00:00",
+ "updated": "2026-11-22 08:00:00",
  "h2": {
   "version": "H2 v1",
   "start": "2026-10-31",
@@ -140,7 +140,7 @@
    "signal_date": "2026-11-21",
    "setup": "fundneg",
    "atr": 3019.77,
-   "trigger": 60568.01,
+   "trigger": 60352.16,
    "deadline": "2026-11-25 00:00:00"
   },
   "trades": [],
@@ -270,7 +270,7 @@
    "signal_date": "2026-11-21",
    "setup": "fundneg",
    "atr": 3019.77,
-   "trigger": 60568.01,
+   "trigger": 60352.16,
    "deadline": "2026-11-25 00:00:00"
   },
   "trades": [],
