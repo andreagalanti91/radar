@@ -1,0 +1,58 @@
+Dati: frame lungo 2014-01-01 → 2026-11-15 · frame del tool 2019-09-01 → 2026-11-15
+Chiusure 2021+ identiche nei due frame: True
+
+== K = 2 settimane per lato (livelli attivi 104 settimane) ==
+frame lungo: 169 livelli · attivi per giorno mediana 25
+frame tool: 103 livelli · attivi per giorno mediana 28
+segnali grezzi (giorni con segnale; stop strutturale ≤ 10% fra parentesi) per periodo, tipo, lato e regime
+  2014-17 B: LR0 85 (79) · LR1 70 (65) · LR2 0 (0) · SR0 64 (61) · SR1 12 (11) · SR2 0 (0)
+  2014-17 X: LR0 92 (92) · LR1 71 (71) · LR2 0 (0) · SR0 72 (69) · SR1 14 (13) · SR2 0 (0)
+  2014-17 T: LR0 100 (97) · LR1 82 (80) · LR2 0 (0) · SR0 54 (51) · SR1 10 (9) · SR2 0 (0)
+  2018-20 B: LR0 118 (109) · LR1 66 (62) · LR2 18 (15) · SR0 73 (69) · SR1 12 (9) · SR2 7 (5)
+  2018-20 X: LR0 105 (102) · LR1 57 (56) · LR2 15 (15) · SR0 98 (96) · SR1 16 (16) · SR2 13 (13)
+  2018-20 T: LR0 119 (111) · LR1 74 (69) · LR2 20 (17) · SR0 81 (78) · SR1 12 (9) · SR2 8 (5)
+  2021-23 B: LR0 116 (115) · LR1 63 (63) · LR2 23 (23) · SR0 109 (103) · SR1 27 (25) · SR2 4 (4)
+  2021-23 X: LR0 114 (113) · LR1 61 (60) · LR2 21 (20) · SR0 110 (105) · SR1 26 (24) · SR2 6 (4)
+  2021-23 T: LR0 117 (117) · LR1 64 (64) · LR2 24 (24) · SR0 108 (100) · SR1 25 (23) · SR2 5 (5)
+  2024-26 B: LR0 148 (148) · LR1 62 (62) · LR2 18 (18) · SR0 129 (127) · SR1 49 (49) · SR2 18 (18)
+  2024-26 X: LR0 114 (114) · LR1 46 (46) · LR2 17 (17) · SR0 113 (112) · SR1 42 (42) · SR2 17 (17)
+  2024-26 T: LR0 129 (129) · LR1 48 (48) · LR2 19 (19) · SR0 125 (124) · SR1 52 (52) · SR2 21 (21)
+
+== K = 3 settimane per lato (livelli attivi 104 settimane) ==
+frame lungo: 124 livelli · attivi per giorno mediana 19
+frame tool: 76 livelli · attivi per giorno mediana 21
+segnali grezzi (giorni con segnale; stop strutturale ≤ 10% fra parentesi) per periodo, tipo, lato e regime
+  2014-17 B: LR0 63 (57) · LR1 51 (46) · LR2 0 (0) · SR0 48 (46) · SR1 10 (10) · SR2 0 (0)
+  2014-17 X: LR0 65 (65) · LR1 49 (49) · LR2 0 (0) · SR0 49 (47) · SR1 9 (8) · SR2 0 (0)
+  2014-17 T: LR0 68 (64) · LR1 55 (52) · LR2 0 (0) · SR0 38 (36) · SR1 7 (7) · SR2 0 (0)
+  2018-20 B: LR0 111 (102) · LR1 63 (60) · LR2 17 (15) · SR0 71 (67) · SR1 12 (9) · SR2 7 (5)
+  2018-20 X: LR0 94 (91) · LR1 50 (49) · LR2 13 (13) · SR0 87 (85) · SR1 14 (14) · SR2 11 (11)
+  2018-20 T: LR0 114 (107) · LR1 71 (67) · LR2 19 (17) · SR0 77 (75) · SR1 11 (9) · SR2 7 (5)
+  2021-23 B: LR0 95 (94) · LR1 51 (51) · LR2 19 (19) · SR0 81 (76) · SR1 23 (21) · SR2 2 (2)
+  2021-23 X: LR0 93 (92) · LR1 51 (50) · LR2 18 (17) · SR0 86 (83) · SR1 22 (21) · SR2 2 (1)
+  2021-23 T: LR0 98 (98) · LR1 56 (56) · LR2 22 (22) · SR0 85 (79) · SR1 20 (18) · SR2 1 (1)
+  2024-26 B: LR0 107 (107) · LR1 53 (53) · LR2 12 (12) · SR0 104 (102) · SR1 37 (37) · SR2 13 (13)
+  2024-26 X: LR0 92 (92) · LR1 42 (42) · LR2 16 (16) · SR0 93 (92) · SR1 27 (27) · SR2 11 (11)
+  2024-26 T: LR0 96 (96) · LR1 40 (40) · LR2 13 (13) · SR0 106 (105) · SR1 37 (37) · SR2 17 (17)
+distanza dello stop strutturale (tutti i segnali, frame del tool): quartili 2.3% / 3.2% / 4.7% · sotto 5%: 79% · oltre 10%: 2%
+giorni in regime R1 long 2021+: 56% · 2014–20: 56%
+giorni in regime R1 short 2021+: 25% · 2014–20: 24%
+giorni in regime R2 long 2021+: 16% · 2014–20: 7%
+giorni in regime R2 short 2021+: 8% · 2014–20: 6%
+
+== K = 4 settimane per lato (livelli attivi 104 settimane) ==
+frame lungo: 91 livelli · attivi per giorno mediana 14
+frame tool: 51 livelli · attivi per giorno mediana 14
+segnali grezzi (giorni con segnale; stop strutturale ≤ 10% fra parentesi) per periodo, tipo, lato e regime
+  2014-17 B: LR0 48 (42) · LR1 39 (34) · LR2 0 (0) · SR0 37 (35) · SR1 5 (5) · SR2 0 (0)
+  2014-17 X: LR0 54 (54) · LR1 42 (42) · LR2 0 (0) · SR0 42 (41) · SR1 7 (7) · SR2 0 (0)
+  2014-17 T: LR0 55 (51) · LR1 47 (44) · LR2 0 (0) · SR0 39 (36) · SR1 5 (5) · SR2 0 (0)
+  2018-20 B: LR0 75 (67) · LR1 33 (31) · LR2 9 (8) · SR0 44 (42) · SR1 9 (7) · SR2 6 (4)
+  2018-20 X: LR0 63 (60) · LR1 29 (28) · LR2 5 (5) · SR0 56 (55) · SR1 12 (12) · SR2 9 (9)
+  2018-20 T: LR0 75 (69) · LR1 37 (34) · LR2 9 (8) · SR0 45 (43) · SR1 8 (6) · SR2 5 (3)
+  2021-23 B: LR0 38 (37) · LR1 16 (16) · LR2 5 (5) · SR0 51 (50) · SR1 17 (17) · SR2 2 (2)
+  2021-23 X: LR0 61 (60) · LR1 31 (30) · LR2 12 (11) · SR0 57 (54) · SR1 19 (18) · SR2 2 (1)
+  2021-23 T: LR0 49 (49) · LR1 23 (23) · LR2 9 (9) · SR0 52 (50) · SR1 19 (19) · SR2 1 (1)
+  2024-26 B: LR0 81 (81) · LR1 40 (40) · LR2 8 (8) · SR0 76 (75) · SR1 21 (21) · SR2 7 (7)
+  2024-26 X: LR0 69 (69) · LR1 35 (35) · LR2 14 (14) · SR0 69 (68) · SR1 19 (19) · SR2 8 (8)
+  2024-26 T: LR0 77 (77) · LR1 36 (36) · LR2 11 (11) · SR0 79 (79) · SR1 20 (20) · SR2 11 (11)
