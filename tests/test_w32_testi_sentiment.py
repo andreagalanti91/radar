@@ -94,6 +94,12 @@ class TestSentiment(unittest.TestCase):
             self.assertEqual(set(i), {"key", "label", "value", "read", "reliability"})
             self.assertTrue(all(isinstance(v, str) and v for v in i.values()))
 
+    def test_affidabilita_cita_la_lezione(self):
+        # con dati reali la Pre-analisi richiede "lezion" o "stima" in ogni voce (test_preview_today): falliva sul branch pubblicato
+        for row in (ROW, dict(ROW, L=None, S=None, liq_short_usd=279.0, liq_long_usd=18312.0)):
+            for it in preview.sentiment(_csv([row]), NOW)["items"]:
+                self.assertIn("lezion", it["reliability"], it["key"])
+
     def test_etichette(self):
         for S, lab in ((-0.35, "pressione al ribasso"), (0.1, "neutro"), (-0.2, "neutro")):
             s = preview.sentiment(_csv([dict(ROW, S=S)]), NOW)

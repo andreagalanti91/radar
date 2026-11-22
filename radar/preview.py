@@ -449,21 +449,21 @@ def sentiment(path: Path | None = None, now: pd.Timestamp | None = None) -> dict
     if I is not None:
         add("sent_i", "Sentiment: squilibrio del book ±1% (I)", _it(I),
             ("più domanda (bid) che offerta" if I > 0 else "più offerta (ask) che domanda" if I < 0 else "bid e ask pari")
-            + f" entro ±1% dal prezzo · {n_src} {'fonte' if n_src == 1 else 'fonti'}", "componente di S, stesso limite")
+            + f" entro ±1% dal prezzo · {n_src} {'fonte' if n_src == 1 else 'fonti'}", "componente di S, stesso limite (lezione 108)")
     else:
         add("sent_i", "Sentiment: squilibrio del book ±1% (I)", "n.d.", "nessun book utile in questo giro",
-            "componente di S, stesso limite")
+            "componente di S, stesso limite (lezione 108)")
     amounts = (f"short liquidati {_usd(sh)} · long liquidati {_usd(lg)}" if sh is not None and lg is not None
                else "importi non disponibili")
     if L is not None:
-        add("sent_l", "Sentiment: liquidazioni 30 min (L)", _it(L), amounts, "componente di S, stesso limite")
+        add("sent_l", "Sentiment: liquidazioni 30 min (L)", _it(L), amounts, "componente di S, stesso limite (lezione 108)")
     elif sh is not None and lg is not None and sh + lg < SENT_LIQ_MIN_USD:
         add("sent_l", "Sentiment: liquidazioni 30 min (L)", "vuoto",
             f"sotto {_usd(SENT_LIQ_MIN_USD)} di liquidazioni in 30 minuti ({amounts}): L e S non calcolati",
-            "componente di S, stesso limite")
+            "componente di S, stesso limite (lezione 108)")
     else:
         add("sent_l", "Sentiment: liquidazioni 30 min (L)", "n.d.", "liquidazioni non aggiornate: L non calcolato",
-            "componente di S, stesso limite")
+            "componente di S, stesso limite (lezione 108)")
     pb, pa, fb, fa = (_fnum(r.get(k)) for k in ("pulled_bid", "pulled_ask", "filled_bid", "filled_ask"))
     if None not in (pb, pa, fb, fa):
         gap = _fnum(r.get("walls_gap_min"))
@@ -471,15 +471,15 @@ def sentiment(path: Path | None = None, now: pd.Timestamp | None = None) -> dict
             f"ritirati bid {pb:.0f} · ask {pa:.0f} · eseguiti bid {fb:.0f} · ask {fa:.0f}",
             "ritirato = tolto prima che il prezzo arrivasse; eseguito = raggiunto dal prezzo"
             + (f" · confronto con la foto di {gap:.0f} min prima" if gap is not None else ""),
-            "descrittivo, nessun effetto su W3.2")
+            "descrittivo, nessun effetto su W3.2 (lezione 108)")
     else:
         add("sent_walls", "Sentiment: muri del book dall'ultimo giro", "n.d.", "nessun muro valutato in questo giro",
-            "descrittivo")
+            "descrittivo (lezione 108)")
     ma, ma_prev, nc, _ = _sent_ma(pd.to_numeric(df["S"], errors="coerce") if "S" in df else pd.Series(dtype=float))
     if ma is None:
         add("sent_ma24", "Sentiment: media mobile 24 ore di S", "n.d.",
             f"storico insufficiente: S calcolato in {nc} delle ultime {min(len(df), SENT_MA_N)} rilevazioni disponibili "
-            f"(ne servono {SENT_MA_MIN} su {SENT_MA_N})", "tendenza del contesto, non un segnale")
+            f"(ne servono {SENT_MA_MIN} su {SENT_MA_N})", "tendenza del contesto, non un segnale (lezione 108)")
     else:
         if ma_prev is None:
             dr = "direzione n.d. (24 ore precedenti insufficienti)"
@@ -488,7 +488,7 @@ def sentiment(path: Path | None = None, now: pd.Timestamp | None = None) -> dict
             dr = (("in salita" if d > 0 else "in calo") if abs(d) > SENT_MA_STEP else "stabile") + \
                  f" rispetto alle 24 precedenti ({_it(ma_prev)})"
         add("sent_ma24", "Sentiment: media mobile 24 ore di S", _it(ma),
-            f"{_sent_label(ma)}; {dr} · {nc} valori su {SENT_MA_N}", "tendenza del contesto, non un segnale")
+            f"{_sent_label(ma)}; {dr} · {nc} valori su {SENT_MA_N}", "tendenza del contesto, non un segnale (lezione 108)")
     return {"available": True, "age_min": round(age), "ts": str(r["ts"]), "items": items, "note": SENT_NOTE}
 
 
