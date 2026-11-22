@@ -371,7 +371,8 @@ class TestTesti(unittest.TestCase):
         txt = weekly.format_event({"type": "w_signal", "w": cur("segnale")})
         self.assertIn("(W3)", txt)
         self.assertIn("13 trade dal 2021", txt)
-        self.assertIn("−21%", txt)
+        self.assertIn("−10%", txt)
+        self.assertIn("10% del capitale a rischio", txt)   # W3.1
         src = Path(weekly.__file__).read_text()
         for bad in ("42,6", "42.6", "circa 3 l'anno", "(W2)"):
             self.assertNotIn(bad, src)
