@@ -1346,7 +1346,7 @@ sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flu
 - Resoconto settimanale 16/11: chiusura del 15/11 a 65.351 $ → SEGNALE SHORT W3 (regime short, flusso −0,93σ, EMA21 75.574): ingresso lunedì 16/11 all'apertura, esposizione 0,97, stop 82.163 $ (+25,7%), perdita allo stop ~12.600 $ su 50.000; registro dei trade reali vuoto; dal 2021 invariato 10k → 78.474 $, DD −21,1%, 13 trade, WR 92%.
 
 ## Errori operativi da non ripetere (aggiornata 22/11/2026)
-- Revisione completa del 13/11 (5 revisori + verifica incrociata, STATO-revisione.md): W3 corretta e riprodotta da zero; trovati e
+- Revisione completa del 13/11 (5 revisori + verifica incrociata, stato/STATO-revisione.md): W3 corretta e riprodotta da zero; trovati e
   corretti avvisi falsi ("stop toccato" dopo un'uscita EMA), variabili con virgola/punto delle migliaia che bloccavano il giro o
   davano 50 $ invece di 50.000 $, giro 00:30 mai partito (ora avviato ogni ora dalla catena liqsnap), perdita silenziosa di dati
   nei rebase "-X theirs" su file binari, stato degli avvisi perso se il push fallisce.

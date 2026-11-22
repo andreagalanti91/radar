@@ -158,7 +158,7 @@ Conclusione generale: dal 2021 solo il trend settimanale regge; tutto il resto Ã
 - Istruzioni del progetto: [`CLAUDE.md`](CLAUDE.md). Memoria per una nuova sessione: [`memoria/`](memoria/00-inizia-qui/README.md),
   da leggere in ordine 00 â†’ 05.
 - Ogni richiesta passa dalla skill **gengar** ([`.claude/skills/gengar`](.claude/skills/gengar/SKILL.md)); i lavori lunghi tengono un
-  file `STATO-<argomento>.md` nella radice per riprendere dopo un'interruzione.
+  file `stato/STATO-<argomento>.md` (cartella stato/) per riprendere dopo un'interruzione.
 - Agenti per mansione in [`.claude/agents/`](.claude/agents/), ognuno con file suoi; il commit lo fa la sessione principale.
 
 | Agente | Ruolo |
@@ -222,7 +222,7 @@ brand/                 logo, icone, banner (sorgenti in brand/src)
 .claude/               agenti e skill di Claude
 .github/workflows/     daily.yml, liqsnap.yml, wallets.yml
 RESEARCH.md            diario della ricerca, lezioni numerate, errori operativi da non ripetere
-STATO-*.md             file di stato dei lavori lunghi di Claude
+stato/                 file di stato dei lavori lunghi di Claude
 ```
 
 ## Brand

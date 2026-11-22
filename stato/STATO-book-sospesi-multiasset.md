@@ -31,7 +31,7 @@ Poi: "Ok procedi. Backtesta tutto. Apprendi dai propri sbagli e revisiona".
 ## Piano
 - [x] A. Pagina Book: heatmap 30 min, sei borse, muri, liquidazioni, sentiment descrittivo, muri ritirati/eseguiti — 47c9027
 - [x] B. Registro lato server di muri ed esiti e di book_sentiment.csv — ef9edba (+ correzioni della revisione)
-- [x] C. Sospesi: coherence.py con avviso, Pre-analisi più corta, testi e decimali — committato; STATO-revisione IN ATTESA DELL'UTENTE
+- [x] C. Sospesi: coherence.py con avviso, Pre-analisi più corta, testi e decimali — committato; stato/STATO-revisione IN ATTESA DELL'UTENTE
 - [x] D. Swing S/R su 15 asset: 0/15 validi (lezione 107) — PREREG beb05af
 - [x] E. Backtest del sentiment: 0/14 test, descrittivo (lezione 108) — PREREG dacb01d
 - [x] F. Revisione critica: verdetti confermati; corretti il registro (riga rovinata azzerava il file) e la soglia di 250.000 $ su L
@@ -49,7 +49,7 @@ Poi: "Ok procedi. Backtesta tutto. Apprendi dai propri sbagli e revisiona".
 - Promemoria del lunedì: il testo si cambia solo dalla conversazione originale; non modificato. Testo pronto in deploy/RESOCONTO-SETTIMANALE.md.
 - Rischio latente: book_walls.csv riscritto sul posto (un solo workflow lo scrive; manca un test su merge_file).
 - radar/pages/liquidazioni.html usa ancora il vecchio percorso WebSocket di Binance forceOrder.
-- Pulizie della radice da confermare: STATO-*.md in una cartella, gengar-skill.zip, nome del branch predefinito.
+- Pulizie della radice da confermare: stato/STATO-*.md in una cartella, gengar-skill.zip, nome del branch predefinito.
 
 ## Come riprendere
 **Prossima azione:** nessuna; restano le decisioni dell utente elencate in Problemi aperti.

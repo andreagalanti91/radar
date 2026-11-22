@@ -5,7 +5,7 @@
 **Modello / effort usati:** Fable 5.2 · high (regia e motore), agente radar-review per la revisione critica
 
 ## Prompt originale
-> Leggi memoria/00-inizia-qui/README.md e poi, in ordine, le cartelle memoria/01…05. Poi leggi STATO-ingressi-uscite.md e
+> Leggi memoria/00-inizia-qui/README.md e poi, in ordine, le cartelle memoria/01…05. Poi leggi stato/STATO-ingressi-uscite.md e
 > research/ingressi_uscite/README.md. Ti chiedo di fare revisione della strategia. Approfondisci e analizza nuova strategia swing
 > settimanali, gestione TP e SL basato su supporti/resistenze. Analizza te la versione migliore che performi di più. Capitale di
 > partenza 10.000$. Apprendi, analizza, impara dai propri sbagli, fai revisioni critiche. Avvia ciclo di analisi. Fammi domande se
