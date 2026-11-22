@@ -3,21 +3,46 @@
  "start": "2026-10-31",
  "capital0": 10000.0,
  "risk": 0.03,
- "capital": 10000.0,
+ "capital": 9986.23,
  "stats": {
   "n": 0,
   "wr": null,
-  "ret": 0.0,
-  "dd": 0.0
+  "ret": -0.1,
+  "dd": -0.1
  },
  "open": {
-  "status": "ingresso",
-  "side": "long",
-  "signal_date": "2026-11-21",
+  "date": "2026-11-21",
   "setup": "fundneg",
+  "side": "long",
+  "entry_time": "2026-11-22 12:00:00",
+  "entry": 61062.73,
+  "avg": 61123.79,
+  "stop": 58042.96,
+  "tp": 63228.58,
+  "fills": 1,
+  "exit": "open",
+  "exit_date": "2026-11-22",
+  "N": 0.811,
+  "pnl_pct": -0.14,
+  "pnl_usd": -13.77,
+  "risk": 0.03,
+  "pnl_unit": -0.0016978306795262265,
   "atr": 3019.77,
-  "trigger": 61365.24,
-  "deadline": "2026-11-25 00:00:00"
+  "levels": [
+   61062.73,
+   59552.85
+  ],
+  "exit_px": null,
+  "fill_time": null,
+  "exit_time": "2026-11-22 12:00:00",
+  "status": "aperto",
+  "filled": [
+   true,
+   false
+  ],
+  "limit_expiry": "2026-11-29 12:00:00",
+  "time_exit": "2026-12-06 12:00:00",
+  "size_usd": 8109.51
  },
  "trades": [],
  "equity": [
@@ -111,37 +136,62 @@
   ],
   [
    "2026-11-22",
-   10000.0
+   9986.23
   ]
  ],
  "reference": {
   "start": "2022-03-01",
   "n": 105,
   "wr": 79.0,
-  "ret": 85.4,
+  "ret": 85.2,
   "dd": -11.4
  },
- "updated": "2026-11-22 12:00:00",
+ "updated": "2026-11-22 16:00:00",
  "h2": {
   "version": "H2 v1",
   "start": "2026-10-31",
   "capital0": 10000.0,
   "risk": 0.03,
-  "capital": 10000.0,
+  "capital": 9986.23,
   "stats": {
    "n": 0,
    "wr": null,
-   "ret": 0.0,
-   "dd": 0.0
+   "ret": -0.1,
+   "dd": -0.1
   },
   "open": {
-   "status": "ingresso",
-   "side": "long",
-   "signal_date": "2026-11-21",
+   "date": "2026-11-21",
    "setup": "fundneg",
+   "side": "long",
+   "entry_time": "2026-11-22 12:00:00",
+   "entry": 61062.73,
+   "avg": 61123.79,
+   "stop": 58042.96,
+   "tp": 63228.58,
+   "fills": 1,
+   "exit": "open",
+   "exit_date": "2026-11-22",
+   "N": 0.811,
+   "pnl_pct": -0.14,
+   "pnl_usd": -13.77,
+   "risk": 0.03,
+   "pnl_unit": -0.0016978306795262265,
    "atr": 3019.77,
-   "trigger": 61365.24,
-   "deadline": "2026-11-25 00:00:00"
+   "levels": [
+    61062.73,
+    59552.85
+   ],
+   "exit_px": null,
+   "fill_time": null,
+   "exit_time": "2026-11-22 12:00:00",
+   "status": "aperto",
+   "filled": [
+    true,
+    false
+   ],
+   "limit_expiry": "2026-11-29 12:00:00",
+   "time_exit": "2026-12-06 12:00:00",
+   "size_usd": 8109.51
   },
   "trades": [],
   "equity": [
@@ -235,14 +285,14 @@
    ],
    [
     "2026-11-22",
-    10000.0
+    9986.23
    ]
   ],
   "reference": {
    "start": "2022-03-01",
    "n": 105,
    "wr": 79.0,
-   "ret": 85.4,
+   "ret": 85.2,
    "dd": -11.4
   }
  },
@@ -257,25 +307,49 @@
    "m_long_sotto_sma40w": 0.6,
    "cap": 5.0
   },
-  "capital": 10000.0,
+  "capital": 9978.81,
   "stats": {
    "n": 0,
    "wr": null,
-   "ret": 0.0,
-   "dd": 0.0
+   "ret": -0.2,
+   "dd": -0.2
   },
   "open": {
-   "status": "ingresso",
-   "side": "long",
-   "signal_date": "2026-11-21",
+   "date": "2026-11-21",
    "setup": "fundneg",
-   "atr": 3019.77,
-   "trigger": 61365.24,
-   "deadline": "2026-11-25 00:00:00",
+   "side": "long",
+   "entry_time": "2026-11-22 12:00:00",
+   "entry": 61062.73,
+   "avg": 61123.79,
+   "stop": 58042.96,
+   "tp": 63228.58,
+   "fills": 1,
+   "exit": "open",
+   "exit_date": "2026-11-22",
+   "N": 1.248,
+   "pnl_pct": -0.21,
+   "pnl_usd": -21.19,
    "risk": 0.0462,
    "dt": 0.0968,
    "below_sma40w": true,
-   "perp": false
+   "perp": false,
+   "pnl_unit": -0.0016978306795262265,
+   "atr": 3019.77,
+   "levels": [
+    61062.73,
+    59552.85
+   ],
+   "exit_px": null,
+   "fill_time": null,
+   "exit_time": "2026-11-22 12:00:00",
+   "status": "aperto",
+   "filled": [
+    true,
+    false
+   ],
+   "limit_expiry": "2026-11-29 12:00:00",
+   "time_exit": "2026-12-06 12:00:00",
+   "size_usd": 12477.78
   },
   "trades": [],
   "equity": [
@@ -369,14 +443,14 @@
    ],
    [
     "2026-11-22",
-    10000.0
+    9978.81
    ]
   ],
   "reference": {
    "start": "2022-03-01",
    "n": 105,
    "wr": 79.0,
-   "ret": 225.8,
+   "ret": 225.1,
    "dd": -13.5,
    "trades": [
     {
