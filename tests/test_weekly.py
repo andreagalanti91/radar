@@ -146,7 +146,7 @@ class TestWeekly(unittest.TestCase):
         self.assertEqual([e["type"] for e in ev], ["w_restore", "w_exit"])
         txt = wk.format_event(ev[0])
         self.assertIn("Stato degli avvisi ripristinato", txt)
-        self.assertIn("Ultima situazione W3 = nessuna posizione", txt)
+        self.assertIn("Ultima situazione W3.2 = nessuna posizione", txt)
         self.assertIn("2026-11-09", txt)
         self.assertEqual(wk.diff_events(c, st)[0], [])
 

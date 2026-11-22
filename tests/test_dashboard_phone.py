@@ -55,5 +55,34 @@ class TestTestiW31(unittest.TestCase):
             self.assertIn(k, m.group(1))
 
 
+class TestSoloW32(unittest.TestCase):
+    """Nell'interfaccia solo la strategia in uso (W3.2): niente versioni precedenti, laboratorio né conti su carta."""
+    VIETATI = ("W3.1", "Storico v2", "Laboratorio", "Giornaliera v2", "Strategia v2", "labTab", "stratSeg", "only-v2", "paperSec")
+
+    def _ui(self):
+        root = Path(__file__).resolve().parents[1] / "radar"
+        return [("dashboard_template.html", T)] + [(f.name, f.read_text()) for f in sorted((root / "pages").glob("*.html"))]
+
+    def test_sorgenti_senza_versioni_vecchie(self):
+        for name, src in self._ui():
+            for w in self.VIETATI:
+                self.assertNotIn(w, src, f"{w!r} in {name}")
+            self.assertNotRegex(src, r"\bW2\b", name)
+            self.assertNotRegex(src, r"\bW3\b(?!\.2)", name)          # sempre "W3.2"
+
+    def test_html_generato(self):
+        import tempfile
+        from radar.dashboard import render
+        rep = {"date": "2026-11-21", "price": 60000, "lab": {"candidates": [{"name": "W3.1 Laboratorio"}]}, "paper": {"x": "Storico v2"}}
+        html = render(rep, Path(tempfile.mkdtemp()) / "index.html", standalone=False).read_text()
+        for w in ("W3.1", "Storico v2", "Laboratorio"):
+            self.assertNotIn(w, html)
+
+    def test_tema_chiaro_di_base(self):
+        self.assertIn('localStorage.getItem("radarTheme") === "dark" ? "dark" : "light"', T)
+        self.assertNotIn("prefers-color-scheme", T)
+        self.assertIn(':root[data-theme="dark"]{', T)
+
+
 if __name__ == "__main__":
     unittest.main()

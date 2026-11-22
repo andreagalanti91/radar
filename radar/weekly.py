@@ -521,7 +521,7 @@ def format_event(ev: dict) -> str:
         if w["status"] == "segnale":
             p = w["plan"]
             return "\n".join([
-                f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W3)",
+                f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W3.2)",
                 f"Chiusura settimanale del {w['signal_date']}: {_usd(w['price'])} · regime {w['regime']} · flusso perp {w['flow']:+.2f}σ",
                 f"<b>Ingresso</b> a mercato all'apertura di lunedì (~{_usd(p['entry_est'])}): ti confermo il prezzo eseguito",
                 f"<b>Mercato</b>: {_mkt(w, p['market'], p['expo'])}",
@@ -532,12 +532,12 @@ def format_event(ev: dict) -> str:
                 f"<b>EMA 21 settimanale</b> {_usd(p['ema21'])}",
                 _exits_text(w["side"]),
                 W3_TEXT])
-        return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W3, già in posizione)\n"
+        return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · {icon}</b> (W3.2, già in posizione)\n"
                 f"Segnale del {w['signal_date']} · ingresso {w['entry']} a {_usd(w['entry_px'])} · mercato: {_mkt(w, w['market'], w['expo'])}\n"
                 f"Stop/trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}\n" + _exits_text(w["side"]))
     if t == "w_entry":
         x = ev["trade"]
-        lines = [f"<b>RADAR SIGNAL BTC · INGRESSO SETTIMANALE ESEGUITO · {icon}</b> (W3)",
+        lines = [f"<b>RADAR SIGNAL BTC · INGRESSO SETTIMANALE ESEGUITO · {icon}</b> (W3.2)",
                  f"Segnale del {x['signal']} · ingresso {x['entry']} all'apertura a <b>{_usd(x['entry_px'])}</b> · "
                  f"mercato: {_mkt(w, x['market'], x['expo'])}"]
         if w.get("status") in ("aperto", "uscita") and w.get("signal_date") == x["signal"]:
@@ -548,26 +548,26 @@ def format_event(ev: dict) -> str:
         return "\n".join(lines)
     if t == "w_info":
         return "\n".join([
-            f"<b>RADAR SIGNAL BTC · Posizione settimanale in corso · {icon}</b> (W3)",
-            "Da oggi il tool segue anche il segnale settimanale W3. Questa posizione è aperta dal "
+            f"<b>RADAR SIGNAL BTC · Posizione settimanale in corso · {icon}</b> (W3.2)",
+            "Da oggi il tool segue anche il segnale settimanale W3.2. Questa posizione è aperta dal "
             f"{w['entry']} a {_usd(w['entry_px'])}, non è un segnale nuovo. Mercato: {_mkt(w, w['market'], w['expo'])}.",
             f"Andamento {w['move_pct']:+.2f}% sul prezzo · stop/trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}",
             f"Su {_usd(w['capital'])}: {_usd(w['notional'])} = {w['btc']:.4f} BTC (se decidi di seguirla ora, entri a un prezzo diverso).",
             _exits_text(w["side"])])
     if t == "w_trail":
-        return (f"<b>RADAR SIGNAL BTC · Settimanale: trailing aggiornato</b> ({w['side']}, W3)\n"
+        return (f"<b>RADAR SIGNAL BTC · Settimanale: trailing aggiornato</b> ({w['side']}, W3.2)\n"
                 f"Nuovo stop {_usd(w['trail'])} (era {_usd(ev['old'])}) · prezzo {_usd(w['price'])} · "
                 f"andamento {w['move_pct']:+.2f}% sul prezzo")
     if t == "w_dist":
-        return (f"<b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione (anteprima)</b> ({w['side']}, W3)\n"
+        return (f"<b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione (anteprima)</b> ({w['side']}, W3.2)\n"
                 f"Anteprima a metà settimana, non è una decisione: se la settimana chiudesse oggi, funding medio 7g "
                 f"{w['fund7'] * 100:+.4f}%/giorno e flusso perp {w['flow']:+.2f}σ darebbero l'uscita per distribuzione "
                 f"all'apertura di lunedì. Decide solo la chiusura di domenica (UTC). Trailing {_usd(w['trail'])}.")
     if t == "w_restore":
         x = ev.get("last")
-        lines = ["<b>RADAR SIGNAL BTC · Stato degli avvisi ripristinato</b> (W3)",
-                 "Lo stato salvato degli avvisi mancava o non era leggibile: ricostruito dalla simulazione W3.",
-                 f"Ultima situazione W3 = {_state_word(w)} (dati fino al {w['date']})."]
+        lines = ["<b>RADAR SIGNAL BTC · Stato degli avvisi ripristinato</b> (W3.2)",
+                 "Lo stato salvato degli avvisi mancava o non era leggibile: ricostruito dalla simulazione W3.2.",
+                 f"Ultima situazione W3.2 = {_state_word(w)} (dati fino al {w['date']})."]
         if w.get("status") in ("aperto", "uscita"):
             lines.append(f"Posizione dal {w['entry']} a {_usd(w['entry_px'])} · andamento {w['move_pct']:+.2f}% sul prezzo · "
                          f"stop/trailing {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}")
@@ -577,24 +577,24 @@ def format_event(ev: dict) -> str:
         lines.append(f"Ingressi e uscite degli ultimi {RECENT_DAYS} giorni seguono in messaggi separati.")
         return "\n".join(lines)
     if t == "w_exit_next":
-        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ANNUNCIATA</b> ({w['side']}, W3) · all'apertura di lunedì\n"
+        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ANNUNCIATA</b> ({w['side']}, W3.2) · all'apertura di lunedì\n"
                 f"Motivo: {REASONS[w['reason']]} (chiusura del {w['exit_date']})\n"
                 f"Ingresso {w['entry']} a {_usd(w['entry_px'])} · ora {_usd(w['price'])} · risultato stimato "
                 f"{w['move_pct']:+.2f}% sul prezzo ({w['pnl_pct']:+.2f}% sul capitale dedicato). "
                 f"Ti confermo prezzo eseguito e risultato dopo l'apertura.")
     if t == "w_exit":
         x = ev["trade"]
-        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA</b> ({x['side']}, W3) {'✅' if x['pnl_pct'] > 0 else '❌'}\n"
+        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA</b> ({x['side']}, W3.2) {'✅' if x['pnl_pct'] > 0 else '❌'}\n"
                 f"Motivo: {REASONS.get(x['reason'], x['reason'])} · uscita {x['exit']} a <b>{_usd(x['exit_px'])}</b>\n"
                 f"Ingresso {x['entry']} a {_usd(x['entry_px'])} · risultato {x['move_pct']:+.2f}% sul prezzo "
                 f"(<b>{x['pnl_pct']:+.2f}%</b> sul capitale dedicato)")
     if t == "w_retract":
         if ev["kind"] == "signal":
-            return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE RITIRATO</b> ({side}, W3, segnale del {ev['key']})\n"
+            return (f"<b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE RITIRATO</b> ({side}, W3.2, segnale del {ev['key']})\n"
                     f"Dopo l'aggiornamento dei dati il segnale non è più valido: {ev['why']}.\n"
                     "Nessun ingresso: se sei già entrato, valuta di chiudere. Stato attuale: "
                     + ("nessuna posizione." if w["status"] == "nessuno" else f"{w['status']}."))
-        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE RITIRATA</b> ({side}, W3, segnale del {ev['key']})\n"
+        return (f"<b>RADAR SIGNAL BTC · USCITA SETTIMANALE RITIRATA</b> ({side}, W3.2, segnale del {ev['key']})\n"
                 f"Dopo l'aggiornamento dei dati l'uscita annunciata non è più valida: {ev['why']}."
                 + (f"\nStop/trailing {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}" if w.get("trail") else ""))
     return str(ev)
@@ -622,7 +622,7 @@ def _state_word(cur: dict | None) -> str:
 def format_heartbeat(cur: dict | None, data_until: str, last_run: str, problems: list[str], today: str) -> str:
     """Messaggio quotidiano di salute (uno al giorno): dati, ultimo giro, stato W3, prossima decisione."""
     head = "Radar · tutto ok" if not problems else "Radar · attenzione: " + "; ".join(problems)
-    return (f"{head}: dati fino al {data_until}, ultimo giro {last_run}, W3 {_state_word(cur)}, "
+    return (f"{head}: dati fino al {data_until}, ultimo giro {last_run}, W3.2 {_state_word(cur)}, "
             f"prossima decisione {next_decision(today)} (chiusura UTC)")
 
 
@@ -682,6 +682,6 @@ def format_intraday(events: list[dict]) -> str:
         lvl = f"stop del modello {_usd(e['level'])} (ultimo comunicato {_usd(e['told'])})"
     else:
         lvl = f"stop {_usd(e['level'])}"
-    return (f"<b>RADAR SIGNAL BTC · Settimanale: stop toccato (tempo reale)</b> ({e['side']}, W3)\n"
+    return (f"<b>RADAR SIGNAL BTC · Settimanale: stop toccato (tempo reale)</b> ({e['side']}, W3.2)\n"
             f"🛑 toccato lo {lvl} · prezzo ora {_usd(e['last'])} · {e['time']}\n"
             "Lo stop scatta al tocco: chiudi la posizione. L'uscita ufficiale si registra alla chiusura giornaliera.")

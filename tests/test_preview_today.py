@@ -15,7 +15,7 @@ from radar.data import DATA_DIR
 FILES = ["spot", "perp", "funding", "metrics", "fng"]
 POS_KEYS = {"side", "entry_date", "entry_px", "price", "pnl_pct", "pnl_usd", "capital_usd", "stop", "stop_dist_pct",
             "trail_best", "exit_ema21_threshold", "dist_rule", "days_open"}
-TODAY_KEYS = {"updated_utc", "items", "sr", "analog", "note"}
+TODAY_KEYS = {"updated_utc", "items", "sr", "analog", "sentiment", "note"}
 ITEM_KEYS = {"key", "label", "value", "read", "reliability"}
 SR_KEYS = {"name", "lo", "hi", "dist_pct", "hold_pct", "random_pct"}
 AN_KEYS = {"label", "n", "p7", "ci7", "p30", "ci30", "mean7"}
@@ -40,7 +40,7 @@ def _synth(drop=()) -> pd.DataFrame:
 class TestSchema(unittest.TestCase):
     def _check_today(self, td):
         self.assertEqual(set(td), TODAY_KEYS)
-        self.assertEqual(td["note"], "Contesto, non segnale: decide W3.")
+        self.assertEqual(td["note"], "Contesto, non segnale: decide W3.2.")
         for it in td["items"]:
             self.assertEqual(set(it), ITEM_KEYS)
             self.assertTrue(all(isinstance(it[k], str) and it[k] for k in ITEM_KEYS))
@@ -160,7 +160,7 @@ PV = {"price": 64947.35, "week_close_utc": "2026-11-22",
                           {"key": "funding", "label": "", "value": "0,0098%/giorno · 3,6%/anno", "read": "", "reliability": ""}],
                 "sr": [{"name": "R1", "lo": 64854.0, "hi": 69000.0, "dist_pct": 2.6, "hold_pct": 80.0, "random_pct": 77.2}],
                 "analog": {"label": "pf14z basso · sf14z medio, dal 2021", "n": 50, "p7": 52.0, "ci7": [42.1, 62.1],
-                           "p30": 36.5, "ci30": [22.2, 53.2], "mean7": 1.22}, "note": "Contesto, non segnale: decide W3."}}
+                           "p30": 36.5, "ci30": [22.2, 53.2], "mean7": 1.22}, "note": "Contesto, non segnale: decide W3.2."}}
 
 
 class TestBrief(unittest.TestCase):
@@ -172,8 +172,8 @@ class TestBrief(unittest.TestCase):
         self.assertIn("SHORT dal 16/11", t)
         self.assertIn("$81.695", t)
         self.assertIn("sopra $75.574", t)
-        self.assertEqual(lines[-1], "Contesto, non segnale: decide W3.")
-        self.assertNotIn("<b>W3</b>: nessuna", t)
+        self.assertEqual(lines[-1], "Contesto, non segnale: decide W3.2.")
+        self.assertNotIn("<b>W3.2</b>: nessuna", t)
 
     def test_testo_flat_soglia_segnale(self):
         pv = dict(PV, position_block=None, scenarios=[{"lo": None, "hi": 60000.0, "outcome": "short"},

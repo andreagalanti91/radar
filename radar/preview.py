@@ -11,7 +11,8 @@ Il flusso perp proiettato è quello attuale (live_flow): a domenica la media use
 Statistiche di contesto sulle liquidazioni: tabella fissa in research/preview/liq_context.json (non si ricalcolano).
 "position_block": la posizione W3 aperta (o in apertura lunedì) con PnL sul capitale, stop, soglia d'uscita EMA21 e distribuzione.
 "today": quadro del giorno (flussi, derivati, liquidazioni, medie, S/R, cella storica più vicina) con l'affidabilità dimostrata
-dagli studi: tabelle fisse dello studio N4 (research/preview/analog.json, sr_hold.json). Contesto, non segnale: decide W3.
+dagli studi: tabelle fisse dello studio N4 (research/preview/analog.json, sr_hold.json). Contesto, non segnale: decide W3.2.
+"today.sentiment" (e le voci sentiment* in coda a "today.items"): ultima riga di data/book_sentiment.csv, solo descrittiva.
 """
 from __future__ import annotations
 
@@ -27,7 +28,7 @@ from . import weekly as W
 LIQ_CONTEXT = Path(__file__).resolve().parent.parent / "research" / "preview" / "liq_context.json"
 ANALOG = LIQ_CONTEXT.parent / "analog.json"      # N4: P(r>0) per celle pf14z × sf14z a terzili (research/preview/n4_tables.py)
 SR_HOLD = LIQ_CONTEXT.parent / "sr_hold.json"    # N4: tenuta storica dei livelli S/R contro livelli casuali
-TODAY_NOTE = "Contesto, non segnale: decide W3."
+TODAY_NOTE = "Contesto, non segnale: decide W3.2."
 NOTE = "Stima con i dati di oggi: decide solo la chiusura di domenica (UTC)."
 NEED = ("open", "high", "low", "close", "pf14z", "funding")
 
@@ -367,6 +368,130 @@ def _musd(x: float) -> str:
     return f"{x / 1e6:,.1f} M$".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+# ---------------------------------------------------------------- sentiment di mercato (data/book_sentiment.csv)
+SENT_FILE = Path(__file__).resolve().parent.parent / "data" / "book_sentiment.csv"   # radar/orderbook.log_sentiment, ogni ora
+SENT_NOTE = ("Contesto descrittivo, non un segnale: nei test (lezione 108) il sentiment non ha anticipato il prezzo "
+             "a 1, 4 o 24 ore.")
+SENT_MAX_AGE_H = 3        # ultima riga più vecchia di 3 ore: dato non disponibile
+SENT_TH = 0.2             # |S| > 0,2: pressione al rialzo / al ribasso
+SENT_MA_N = 24            # media mobile semplice di S sulle ultime 24 righe (una riga per giro orario)
+SENT_MA_MIN = 12          # servono almeno 12 valori di S su 24 (L è vuoto sotto 250.000 $ di liquidazioni)
+SENT_MA_STEP = 0.05       # differenza tra le due medie oltre la quale la media è "in salita" / "in calo"
+SENT_LIQ_MIN_USD = 250_000  # come radar/orderbook.SENT_LIQ_MIN_USD: sotto questo totale in 30 minuti L e S restano vuoti
+
+
+def _fnum(x) -> float | None:
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return None
+    return v if np.isfinite(v) else None
+
+
+def _ago(minutes: float) -> str:
+    m = max(0, int(round(minutes)))
+    return f"{m} min fa" if m < 60 else f"{m // 60} h {m % 60:02d} min fa"
+
+
+def _sent_label(s: float) -> str:
+    return "pressione al rialzo" if s > SENT_TH else "pressione al ribasso" if s < -SENT_TH else "neutro"
+
+
+def _sent_ma(s: pd.Series) -> tuple[float | None, float | None, int, int]:
+    """Media di S sulle ultime 24 righe e sulle 24 precedenti (None se meno di 12 valori), con i valori usati."""
+    cur, prev = s.iloc[-SENT_MA_N:], s.iloc[-2 * SENT_MA_N:-SENT_MA_N]
+    nc, np_ = int(cur.notna().sum()), int(prev.notna().sum())
+    return (float(cur.mean()) if nc >= SENT_MA_MIN else None, float(prev.mean()) if np_ >= SENT_MA_MIN else None, nc, np_)
+
+
+def sentiment(path: Path | None = None, now: pd.Timestamp | None = None) -> dict:
+    """Blocco "Sentiment di mercato" dall'ultima riga di data/book_sentiment.csv: S con etichetta, componenti I (book ±1%)
+    e L (liquidazioni 30 min), muri ritirati/eseguiti dal giro precedente, media 24 righe di S e direzione. Solo lettura:
+    nessun effetto su W3.2. Ritorna {"available", "age_min", "ts", "items", "note"}; mai eccezioni."""
+    path = SENT_FILE if path is None else Path(path)
+    now = pd.Timestamp.now(tz="UTC").tz_convert(None) if now is None else pd.Timestamp(now)
+    if now.tzinfo is not None:
+        now = now.tz_convert(None)
+    rel = SENT_NOTE
+
+    def na(why: str) -> dict:
+        return {"available": False, "age_min": None, "ts": None, "note": SENT_NOTE,
+                "items": [{"key": "sentiment", "label": "Sentiment di mercato", "value": "n.d.",
+                           "read": f"dato non disponibile ({why})", "reliability": rel}]}
+    try:
+        df = pd.read_csv(path)
+        df["ts"] = pd.to_datetime(df["ts"], errors="coerce", utc=True).dt.tz_convert(None)
+        df = df[df["ts"].notna()].sort_values("ts")
+    except FileNotFoundError:
+        return na("file del sentiment assente")
+    except Exception as e:  # noqa: BLE001
+        return na(f"file del sentiment non leggibile: {type(e).__name__}")
+    if df.empty:
+        return na("nessuna riga nel registro")
+    r = df.iloc[-1]
+    age = (now - r["ts"]).total_seconds() / 60
+    if age > SENT_MAX_AGE_H * 60:
+        return na(f"ultima riga del {r['ts'].strftime('%d/%m %H:%M')} UTC, {_ago(age)}: più vecchia di {SENT_MAX_AGE_H} ore")
+    when = f"rilevazione delle {r['ts'].strftime('%H:%M')} UTC, {_ago(age)}"
+    S, I, L = _fnum(r.get("S")), _fnum(r.get("I")), _fnum(r.get("L"))
+    sh, lg = _fnum(r.get("liq_short_usd")), _fnum(r.get("liq_long_usd"))
+    items: list[dict] = []
+
+    def add(key, label, value, read, reliability=rel):
+        items.append({"key": key, "label": label, "value": value, "read": read, "reliability": reliability})
+    if S is not None:
+        add("sentiment", "Sentiment di mercato (S = ½ I + ½ L)", _it(S),
+            f"{_sent_label(S)} (soglie ±0,2) · {when}")
+    else:
+        add("sentiment", "Sentiment di mercato (S = ½ I + ½ L)", "n.d.",
+            f"S non calcolato: {'L vuoto' if I is not None else 'I mancante'} · {when}")
+    n_src = int(_fnum(r.get("n_src")) or 0)
+    if I is not None:
+        add("sent_i", "Sentiment: squilibrio del book ±1% (I)", _it(I),
+            ("più domanda (bid) che offerta" if I > 0 else "più offerta (ask) che domanda" if I < 0 else "bid e ask pari")
+            + f" entro ±1% dal prezzo · {n_src} {'fonte' if n_src == 1 else 'fonti'}", "componente di S, stesso limite")
+    else:
+        add("sent_i", "Sentiment: squilibrio del book ±1% (I)", "n.d.", "nessun book utile in questo giro",
+            "componente di S, stesso limite")
+    amounts = (f"short liquidati {_usd(sh)} · long liquidati {_usd(lg)}" if sh is not None and lg is not None
+               else "importi non disponibili")
+    if L is not None:
+        add("sent_l", "Sentiment: liquidazioni 30 min (L)", _it(L), amounts, "componente di S, stesso limite")
+    elif sh is not None and lg is not None and sh + lg < SENT_LIQ_MIN_USD:
+        add("sent_l", "Sentiment: liquidazioni 30 min (L)", "vuoto",
+            f"sotto {_usd(SENT_LIQ_MIN_USD)} di liquidazioni in 30 minuti ({amounts}): L e S non calcolati",
+            "componente di S, stesso limite")
+    else:
+        add("sent_l", "Sentiment: liquidazioni 30 min (L)", "n.d.", "liquidazioni non aggiornate: L non calcolato",
+            "componente di S, stesso limite")
+    pb, pa, fb, fa = (_fnum(r.get(k)) for k in ("pulled_bid", "pulled_ask", "filled_bid", "filled_ask"))
+    if None not in (pb, pa, fb, fa):
+        gap = _fnum(r.get("walls_gap_min"))
+        add("sent_walls", "Sentiment: muri del book dall'ultimo giro",
+            f"ritirati bid {pb:.0f} · ask {pa:.0f} · eseguiti bid {fb:.0f} · ask {fa:.0f}",
+            "ritirato = tolto prima che il prezzo arrivasse; eseguito = raggiunto dal prezzo"
+            + (f" · confronto con la foto di {gap:.0f} min prima" if gap is not None else ""),
+            "descrittivo, nessun effetto su W3.2")
+    else:
+        add("sent_walls", "Sentiment: muri del book dall'ultimo giro", "n.d.", "nessun muro valutato in questo giro",
+            "descrittivo")
+    ma, ma_prev, nc, _ = _sent_ma(pd.to_numeric(df["S"], errors="coerce") if "S" in df else pd.Series(dtype=float))
+    if ma is None:
+        add("sent_ma24", "Sentiment: media mobile 24 ore di S", "n.d.",
+            f"storico insufficiente: S calcolato in {nc} delle ultime {min(len(df), SENT_MA_N)} rilevazioni disponibili "
+            f"(ne servono {SENT_MA_MIN} su {SENT_MA_N})", "tendenza del contesto, non un segnale")
+    else:
+        if ma_prev is None:
+            dr = "direzione n.d. (24 ore precedenti insufficienti)"
+        else:
+            d = ma - ma_prev
+            dr = (("in salita" if d > 0 else "in calo") if abs(d) > SENT_MA_STEP else "stabile") + \
+                 f" rispetto alle 24 precedenti ({_it(ma_prev)})"
+        add("sent_ma24", "Sentiment: media mobile 24 ore di S", _it(ma),
+            f"{_sent_label(ma)}; {dr} · {nc} valori su {SENT_MA_N}", "tendenza del contesto, non un segnale")
+    return {"available": True, "age_min": round(age), "ts": str(r["ts"]), "items": items, "note": SENT_NOTE}
+
+
 def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, side: int = 0) -> dict:
     """Quadro di oggi: ogni voce con lettura breve e affidabilità dagli studi. Mai eccezioni: le voci senza dati si saltano."""
     items: list[dict] = []
@@ -387,7 +512,7 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
             t = _terz(pf)
             add("pf14z", "Flusso perp (pf14z)", _sig(pf),
                 f"terzile {TERZ_TXT[t]}: perp {FLOW_TXT[t]}" + single(f"PFt={t}"),
-                "W3 ne usa il segno (media di 3 giorni) per gli ingressi; come probabilità a 7–30 g nessun vantaggio "
+                "W3.2 ne usa il segno (media di 3 giorni) per gli ingressi; come probabilità a 7–30 g nessun vantaggio "
                 "dopo la correzione (lezione 97)")
         if sf is not None:
             t = _terz(sf)
@@ -409,7 +534,7 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
                 rd += "; distribuzione " + ("attiva" if (fund7 > W.FUND_HOT if side > 0 else fund7 < W.FUND_COLD)
                                             else "lontana") + f" (soglia {'> 0,0009' if side > 0 else '< −0,0003'})"
             add("funding", "Funding (media 7g)", _fund_txt(fund7), rd,
-                "contesto (lezione 97); in W3 conta solo dentro la condizione di distribuzione")
+                "contesto (lezione 97); in W3.2 conta solo dentro la condizione di distribuzione")
         oi7 = _last(f, "oi_chg7")
         if oi7 is not None:
             oz = _last(f, "oi_z")
@@ -441,12 +566,19 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
             if m:
                 d = (price / m - 1) * 100
                 rd = f"{'sotto' if d < 0 else 'sopra'} la {lab} settimanale ({_usd(m)}, ultima chiusura)"
-                rel = ("W3 usa il lato della SMA40 come regime; la distanza come probabilità non dà vantaggio (lezione 97)"
-                       if col == "sma" else "W3 esce/entra sul lato della EMA21 alla chiusura; la distanza da sola non dà "
+                rel = ("W3.2 usa il lato della SMA40 come regime; la distanza come probabilità non dà vantaggio (lezione 97)"
+                       if col == "sma" else "W3.2 esce/entra sul lato della EMA21 alla chiusura; la distanza da sola non dà "
                        "vantaggio (lezione 97)")
                 add(key, f"Distanza dalla {lab} settimanale", f"{d:+.1f}%".replace(".", ",").replace("-", "−"), rd, rel)
     except Exception as e:  # noqa: BLE001
         print(f"[preview] quadro di oggi incompleto: {e!r}")
+    try:   # sentiment di mercato: righe in coda al quadro (stesso formato delle altre voci), dati anche in "sentiment"
+        sent = (report or {}).get("sentiment")
+        sent = sent if isinstance(sent, dict) and sent.get("items") else sentiment()
+        items.extend(sent["items"])
+    except Exception as e:  # noqa: BLE001
+        print(f"[preview] sentiment non letto: {e!r}")
+        sent = None
     try:
         sr = sr_rows((report or {}).get("levels"))
     except Exception:  # noqa: BLE001
@@ -456,7 +588,7 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
     except Exception:  # noqa: BLE001
         an = None
     return {"updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"), "items": items, "sr": sr, "analog": an,
-            "note": TODAY_NOTE}
+            "sentiment": sent, "note": TODAY_NOTE}
 
 
 def build(f: pd.DataFrame | None, report: dict | None = None) -> dict | None:

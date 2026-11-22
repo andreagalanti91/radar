@@ -76,8 +76,9 @@ class TestLab(unittest.TestCase):
         from radar.dashboard import render
         out = render(dict(self.report, lab=self.lab), Path(tempfile.mkdtemp()) / "index.html", standalone=False)
         html = out.read_text()
-        self.assertIn('id="labTab"', html)
-        self.assertIn('"W2 settimanale con filtro MACD (in uso dal 02/11/2026)"', html)
+        # il laboratorio (strategie su carta) non va più nell'interfaccia: solo W3.2
+        self.assertNotIn('id="labTab"', html)
+        self.assertNotIn('"W2 settimanale con filtro MACD (in uso dal 02/11/2026)"', html)
 
 
 if __name__ == "__main__":

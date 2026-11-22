@@ -68,7 +68,7 @@ def source_alerts(errors: dict, stale: dict, st: dict, now: pd.Timestamp, data_u
     send = send or telegram.send
     today = str(now.date())
     crit = {k: v for k, v in errors.items() if k in CRITICAL}
-    note = f"W3 valutato sui dati fino al {data_until}: decisioni possibili in ritardo." if data_until else ""
+    note = f"W3.2 valutato sui dati fino al {data_until}: decisioni possibili in ritardo." if data_until else ""
     if crit and st.get("source_alert") != today:
         if send("<b>RADAR SIGNAL BTC · Fonte non disponibile</b>\n"
                 + "\n".join(f"fonte {k} non disponibile ({v})" for k, v in crit.items()) + f"\n{note}"):
@@ -145,7 +145,7 @@ def daily() -> None:
     try:
         d = update_all(errors=errors)
     except Exception as e:  # noqa: BLE001   fonte W3 senza dati né cache: niente da valutare
-        telegram.send(f"<b>RADAR SIGNAL BTC · Fonte non disponibile</b>\n{type(e).__name__}: dati W3 assenti, giro interrotto.")
+        telegram.send(f"<b>RADAR SIGNAL BTC · Fonte non disponibile</b>\n{type(e).__name__}: dati W3.2 assenti, giro interrotto.")
         raise
     f = build_features(d)
     now = _now()
@@ -159,9 +159,9 @@ def daily() -> None:
         wcur = weekly.evaluate(f)
     except Exception as e:  # noqa: BLE001
         print(f"[radar] settimanale W3 non calcolato: {e!r}")
-        problems.append("W3 non calcolato")
+        problems.append("W3.2 non calcolato")
         if st.get("w3_error_alert") != str(now.date()) and telegram.send(
-                f"<b>RADAR SIGNAL BTC · W3 non calcolato</b>\n{type(e).__name__}: {str(e)[:200]}"):
+                f"<b>RADAR SIGNAL BTC · W3.2 non calcolato</b>\n{type(e).__name__}: {str(e)[:200]}"):
             st["w3_error_alert"] = str(now.date())
     if wcur:
         try:

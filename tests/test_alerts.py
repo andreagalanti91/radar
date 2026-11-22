@@ -233,7 +233,7 @@ class TestHeartbeatAndStale(unittest.TestCase):
         self.assertEqual(len(s.texts), 2)
         self.assertIn("fonte perp non disponibile", s.texts[0])
         self.assertNotIn("fng", s.texts[0])                                     # fonte non W3: nessun avviso
-        self.assertIn("W3 valutato sui dati fino al 2026-11-08", s.texts[1])
+        self.assertIn("W3.2 valutato sui dati fino al 2026-11-08", s.texts[1])
         cli.source_alerts({"perp": "HTTPError"}, {"spot": "2026-11-08"}, st, now, "2026-11-08", s)
         self.assertEqual(len(s.texts), 2)
 
@@ -369,7 +369,7 @@ class TestWorkflow(unittest.TestCase):
 class TestTesti(unittest.TestCase):
     def test_numeri_w3(self):
         txt = weekly.format_event({"type": "w_signal", "w": cur("segnale")})
-        self.assertIn("(W3)", txt)
+        self.assertIn("(W3.2)", txt)
         self.assertIn("13 trade dal 2021", txt)
         self.assertIn("−21%", txt)
         self.assertIn("25% del capitale a rischio", txt)   # W3.2

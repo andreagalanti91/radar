@@ -153,7 +153,7 @@ class TestTelegram(unittest.TestCase):
     def test_nel_riepilogo(self):
         t = telegram.today_brief({"macro": self.M}, "2026-11-22").splitlines()
         self.assertTrue(t[-4].startswith("Mercati: S&P"))
-        self.assertEqual(t[-1], "Contesto, non segnale: decide W3.")
+        self.assertEqual(t[-1], "Contesto, non segnale: decide W3.2.")
         self.assertNotIn("Mercati", telegram.today_brief({"macro": {"assets": "rotto"}}))
 
 

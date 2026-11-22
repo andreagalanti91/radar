@@ -1,7 +1,7 @@
-"""Soglie d'allarme di W3.1 dal vivo (solo avviso: nessuna azione automatica, non cambia segnali né posizione).
+"""Soglie d'allarme di W3.2 dal vivo (solo avviso: nessuna azione automatica, non cambia segnali né posizione).
 
 Sullo storico dal vivo (dal primo trade reale W3 nel registro data/journal.json, altrimenti da weekly.LIVE_START):
-- drawdown dell'equity della simulazione W3.1 (report["weekly"]["history"]: eq_dates/eq1, posizione aperta valutata
+- drawdown dell'equity della simulazione W3.2 (report["weekly"]["history"]: eq_dates/eq1, posizione aperta valutata
   alla chiusura giornaliera) dal suo massimo nel periodo;
 - stop consecutivi: trade chiusi per trailing o stop iniziale IN PERDITA, contati dall'ultimo trade chiuso all'indietro.
 Allarme se drawdown ≤ −15% o ≥ 2 stop consecutivi. Un solo avviso Telegram per evento (marker in data/state.json, chiave
@@ -72,7 +72,7 @@ def events(g: dict) -> list[str]:
 
 
 def format_alarm(g: dict) -> str:
-    return ("<b>RADAR SIGNAL BTC · Soglia d'allarme W3.1</b>\n" + "\n".join(g["why"])
+    return ("<b>RADAR SIGNAL BTC · Soglia d'allarme W3.2</b>\n" + "\n".join(g["why"])
             + f"\nStorico dal vivo dal {g['since']}.\n" + TEXT)
 
 
