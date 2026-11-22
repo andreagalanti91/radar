@@ -1,0 +1,4 @@
+BTC X/R1/LS/SS/TSR dal 2021 con il wrapper e i costi di BTC: 5,626 $ · DD -55.8% · trade 88 · PF 0.83 (atteso 5,626 $) → OK
+BTC B/R2/LS/SF/TSR dal 2021 con il wrapper e i costi di BTC: 21,611 $ · DD -19.6% · trade 20 · PF 2.86 (atteso 21,611 $) → OK
+Stessa serie BTC con i costi 'std' (0,05% + 0,05%), solo per mostrare l'effetto dei costi: 6,423 $
+Costi di radar.weekly ripristinati dopo ogni chiamata: True
