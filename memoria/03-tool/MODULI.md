@@ -1,5 +1,5 @@
 # Tool: moduli principali (radar/) — giro orario in .github/workflows/daily.yml
-- cli.py (giro), weekly.py (W3.1 + avvisi Telegram), preview.py (Pre-analisi: soglie della prossima chiusura, posizione, contesto di oggi),
+- cli.py (giro), weekly.py (W3.2 + avvisi Telegram), preview.py (Pre-analisi: soglie della prossima chiusura, posizione, contesto di oggi),
   telegram.py (avvisi e riepilogo giornaliero "Oggi" all'01:00 italiana), journal.py + xinbox.py (comandi bot, post del trader).
 - Dati: data.py (Binance archivio + OKX provvisorio), features.py (pf14z, sf14z), liqmap/liqsnap/liqsources/liqcascade (liquidazioni:
   mappa = STIMA; reali: eventi e livelli on-chain Hyperliquid/Lighter), liqstream.py (raccoglitore per VM europea, non attivo).

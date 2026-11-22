@@ -2,34 +2,34 @@
 
 # Radar Signal BTC
 
-Segnali di trading su **Bitcoin** con **una sola strategia: W3.1 settimanale**, in uso con capitale reale. Poche operazioni
+Segnali di trading su **Bitcoin** con **una sola strategia: W3.2 settimanale**, in uso con capitale reale. Poche operazioni
 grandi (2–3 l'anno, da settimane a mesi): long in **spot senza leva**, short in perp solo in trend ribassista confermato,
-**perdita allo stop iniziale al massimo del 10%** della quota. Intorno alla strategia: dashboard aggiornata ogni ora, order book
+**perdita allo stop iniziale al massimo del 25%** della quota. Intorno alla strategia: dashboard aggiornata ogni ora, order book
 multi-borsa, liquidazioni, notizie e calendario, avvisi su Telegram.
 
 **Dashboard:** https://andreagalanti91.github.io/radar/ · **Bot Telegram:** [@CryptoRadarGalaBot](https://t.me/CryptoRadarGalaBot)
 
-| Dal 01/01/2021 al 15/11/2026 (10.000 $, 1x, costi inclusi) | W3.1 | Tenere BTC |
+| Dal 01/01/2021 al 15/11/2026 (10.000 $, 1x, costi inclusi) | W3.2 | Tenere BTC |
 |---|---|---|
-| 10.000 $ diventano | **27.190 $** | 22.594 $ |
-| Max drawdown giornaliero | **−9,8%** | −76,6% |
+| 10.000 $ diventano | **78.474 $** | 22.594 $ |
+| Max drawdown giornaliero | **−21,1%** (2018–20: −37,3%) | −76,6% |
 | Trade · win rate | 13 · 92% | – |
-| Perdita allo stop iniziale | ≤ 10% della quota | – |
+| Perdita allo stop iniziale | ≤ 25% della quota | – |
 
-Attesa realistica: la domenica è il giorno di decisione migliore per caso; la mediana dei 7 giorni di decisione è circa 25.000 $
-con drawdown fino a −19% (lezioni 94 e 105). Tre trade fanno il 59% del rendimento.
+W3.2 (dal 22/11/2026) = segnali di W3.1 con rischio 25% invece di 10%, scelta dell'utente. Dal 2021 nessuno stop pieno: il backtest
+sottostima il rischio (lezione 99). Versioni e livelli di rischio a confronto: [`memoria/01-strategia/STRATEGIE.md`](memoria/01-strategia/STRATEGIE.md).
 
-**Posizione al 22/11/2026:** short dal 16/11 a 65.286 $, esposizione 0,389 del capitale.
+**Posizione al 22/11/2026:** short dal 16/11 a 65.286 $; esposizione raccomandata con W3.2 circa 0,97 del capitale.
 
 ## Indice
 
-- [Strategia W3.1](#strategia-w31) · [Dashboard](#dashboard) · [Automazioni e avvisi](#automazioni-e-avvisi)
+- [Strategia W3.2](#strategia-w32) · [Dashboard](#dashboard) · [Automazioni e avvisi](#automazioni-e-avvisi)
 - [Order book e liquidazioni](#order-book-e-liquidazioni) · [Ricerca](#ricerca) · [Come lavora Claude](#come-lavora-claude)
 - [Configurazione](#configurazione) · [Uso locale](#uso-locale) · [Struttura del repository](#struttura-del-repository) · [Brand](#brand)
 
-## Strategia W3.1
+## Strategia W3.2
 
-Codice: [`radar/weekly.py`](radar/weekly.py) · scheda: [`memoria/01-strategia/W3.1.md`](memoria/01-strategia/W3.1.md).
+Codice: [`radar/weekly.py`](radar/weekly.py) · scheda: [`memoria/01-strategia/W3.2.md`](memoria/01-strategia/W3.2.md).
 Si guarda solo la **candela settimanale** chiusa la domenica alle 00:00 UTC; si esegue il lunedì all'apertura.
 
 | | Long | Short |
@@ -39,7 +39,7 @@ Si guarda solo la **candela settimanale** chiusa la domenica alle 00:00 UTC; si 
 | Mercato | spot 1x | perp 1x |
 | Uscita (la prima) | trailing 2,5 ATR settimanali a cricchetto · chiusura settimanale oltre la EMA 21 · distribuzione (funding 7 giorni alto con flusso contrario) | stesse regole, specchiate |
 
-Dimensione: esposizione = min(1, 10% / distanza dello stop iniziale). Flusso = media degli ultimi 3 giorni disponibili di pf14z,
+Dimensione: esposizione = min(1, 25% / distanza dello stop iniziale). Flusso = media degli ultimi 3 giorni disponibili di pf14z,
 identico dal vivo e nel backtest.
 
 Cosa fare con gli avvisi:
@@ -48,7 +48,7 @@ Cosa fare con gli avvisi:
 3. **Uscita settimanale**: chiudi lunedì all'apertura; se il trailing viene toccato l'avviso arriva entro l'ora.
 4. Registra ogni operazione con `/entrato` e `/uscito`: il registro confronta l'esecuzione con il segnale.
 
-W3.1 non si cambia senza approvazione esplicita dell'utente ([`memoria/05-regole`](memoria/05-regole/REGOLE.md)).
+W3.2 non si cambia senza approvazione esplicita dell'utente ([`memoria/05-regole`](memoria/05-regole/REGOLE.md)).
 
 ## Dashboard
 

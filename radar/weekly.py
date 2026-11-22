@@ -11,7 +11,7 @@ Regole (candele settimanali W-SUN chiuse, decisione alla chiusura UTC della dome
   chiusura settimanale oltre la EMA 21; distribuzione (long: funding medio 7g > 0,0009/giorno e pf14z < 0;
   short: funding < −0,0003 e pf14z > 0). Stop iniziale 2,5 ATR settimanali dalla chiusura del segnale.
 - esecuzione: long in SPOT a 1x (commissione 0,1%/lato, niente funding); short in PERP con esposizione
-  min(1, 0,10 / (2,5·ATRw/close)) = tetto di rischio del 10% allo stop (W3.1, 19/11/2026; era 0,25) (commissione 0,05%/lato, funding reale).
+  min(1, 0,25 / (2,5·ATRw/close)) = tetto di rischio del 25% allo stop (W3.2 dal 22/11/2026, scelta dell'utente; W3.1 era 0,10) (commissione 0,05%/lato, funding reale).
   Slippage 0,1%. Il tetto sugli short è stato scelto dopo i risultati (ricerca W5), per prudenza.
 Motore di riferimento della ricerca: /tmp/radar-work/w5/scripts/sim3.py (W2 V1, R=0,25, solo short), riscritto qui
 senza le varianti non usate. Stato dal vivo in data/state.json (chiave "weekly"), eventi Telegram con dedupe.
@@ -31,8 +31,8 @@ LIVE_START = "2026-10-31"
 SMA, EMA_T, EMA_X, ATR_N = 40, 20, 21, 14
 STOP_K = TRAIL_K = 2.5
 FUND_HOT, FUND_COLD = 0.0009, -0.0003
-R_SHORT = 0.10                     # W3.1 (19/11/2026, regola preregistrata research/p2_nuovi, delega dell'utente): rischio allo stop 10% (era 25%)
-R_LONG = 0.10                      # W3.1: stesso rischio sui long (era 25%: uno stop costava ~25% della quota, lezione 99)
+R_SHORT = 0.25                     # W3.2 (22/11/2026, scelta esplicita dell'utente: DD 20–30%, rendimento massimo): rischio allo stop 25% (W3.1: 10%)
+R_LONG = 0.25                      # W3.2: stesso rischio sui long; uno stop pieno costa ~25% della quota (lezione 99)
 FLOW_N = 3                         # W3: flusso perp = media degli ultimi 3 giorni DISPONIBILI alla decisione (fino al sabato)
 OLD_TREND, MACD_P = 16, (8, 21, 5)  # filtro F1 (01/11/2026): nei trend vecchi nuovo long solo con momentum MACD ripartito
 FEE_SPOT, FEE_PERP, SLIP = 0.001, 0.0005, 0.001
@@ -98,7 +98,7 @@ def weekly_bars(f: pd.DataFrame) -> pd.DataFrame:
 
 
 def exposure(sg: int, close: float, atr: float, lev: float = 1.0) -> float:
-    """Esposizione sul capitale con tetto di rischio allo stop iniziale (2,5 ATRw): 10% per long e short (W3.1); il resto resta in liquidità."""
+    """Esposizione sul capitale con tetto di rischio allo stop iniziale (2,5 ATRw): 25% per long e short (W3.2); il resto resta in liquidità."""
     return lev * min(1.0, (R_LONG if sg > 0 else R_SHORT) / (STOP_K * atr / close))
 
 
@@ -298,8 +298,8 @@ def evaluate(f: pd.DataFrame, capital: float | None = None) -> dict:
 
 TRAIL_STEP = 0.005     # nuovo avviso del trailing quando sale (long) / scende (short) di almeno lo 0,5% del prezzo
 RECENT_DAYS = 7        # ingressi/uscite più vecchi di così (giri saltati a lungo, primo avvio) si registrano senza messaggio
-W3_TEXT = "Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo storico −10% · " \
-          "al massimo il 10% del capitale a rischio allo stop iniziale."
+W3_TEXT = "Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo storico −21% · " \
+          "al massimo il 25% del capitale a rischio allo stop iniziale."
 
 
 def _usd(x: float) -> str:
@@ -510,7 +510,7 @@ def _exits_text(side: str) -> str:
 
 def _mkt(_w: dict, market: str, expo: float) -> str:
     return f"SPOT, esposizione {expo:.2f}x (niente leva, niente funding)" if market == "spot" else \
-        f"PERP, esposizione {expo:.2f}x del capitale (tetto di rischio 10% allo stop), margine isolato"
+        f"PERP, esposizione {expo:.2f}x del capitale (tetto di rischio 25% allo stop), margine isolato"
 
 
 def format_event(ev: dict) -> str:

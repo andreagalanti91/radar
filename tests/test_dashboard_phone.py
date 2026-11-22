@@ -43,7 +43,7 @@ class TestPreanalisiTelefono(unittest.TestCase):
 
 
 class TestTestiW31(unittest.TestCase):
-    """Sezione "Limiti" di Come funziona: numeri di W3.1 (rischio 10%) presi dal report, non quelli fissi di W3 al 25%."""
+    """Sezione "Limiti" di Come funziona: numeri presi dal report, mai scritti fissi nel modello (restavano indietro)."""
     def test_limiti_senza_numeri_del_25(self):
         for old in ("circa 78.000 $", "drawdown giornaliero −21%", "−25/−30%", "scendere del 30%"):
             self.assertNotIn(old, T)
