@@ -1,0 +1,2 @@
+ts,price,I,L,S,n_src,sources,bid_usd,ask_usd,liq_short_usd,liq_long_usd,liq_n,liq_src,liq_age_min,pulled_bid,pulled_ask,filled_bid,filled_ask,still_bid,still_ask,walls_prev,walls_gap_min,range_src,dropped,note
+2026-11-22 14:30:00,60601.93,0.0347,,,6,binance_spot+coinbase+hyperliquid+kraken+okx_perp+okx_spot,207558326.0,193633546.0,279.0,18312.0,9,deribit+dydx+gate+kraken+lighter+okx,0,1,2,7,8,7,3,30,27,binance_spot_1m,,liquidazioni sotto 250.000 $ in 30 minuti: L e S non calcolati
