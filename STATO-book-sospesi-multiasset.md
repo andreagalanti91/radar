@@ -1,6 +1,6 @@
 # Stato — Book multi-borsa con liquidazioni e sentiment, lavori in sospeso, swing su azioni e materie prime
 
-**Stato:** IN CORSO
+**Stato:** COMPLETATO
 **Ultimo aggiornamento:** 2026-11-22
 **Modello / effort usati:** Fable 5.2 · high (regia), agenti radar-ui, radar-dati, radar-ricerca, radar-review
 
@@ -37,7 +37,7 @@ Poi: "Ok procedi. Backtesta tutto. Apprendi dai propri sbagli e revisiona".
 - [x] F. Revisione critica: verdetti confermati; corretti il registro (riga rovinata azzerava il file) e la soglia di 250.000 $ su L
 - [x] G. Suite verde (283), render 400/1280, deploy autorizzato dall'utente: run 404 e 405 success
 - [x] H. Richiesta aggiuntiva "Organizza bene GitHub e README": README riscritto, research/README.md (indice), lezioni 107–108
-- [ ] I. radar-verifica sul sito pubblicato   ← IN CORSO
+- [x] I. radar-verifica: sito OK (14:42 UTC), solo note minori (rendimento Oggi vs Storico su basi diverse; fusi orari in Liquidazioni)
 
 ## Decisioni prese
 - Cinque agenti in parallelo su file separati, regia nella sessione principale (in autonomia).
@@ -52,4 +52,4 @@ Poi: "Ok procedi. Backtesta tutto. Apprendi dai propri sbagli e revisiona".
 - Pulizie della radice da confermare: STATO-*.md in una cartella, gengar-skill.zip, nome del branch predefinito.
 
 ## Come riprendere
-**Prossima azione:** leggere l'esito di radar-verifica; correggere eventuali problemi; poi Stato: COMPLETATO.
+**Prossima azione:** nessuna; restano le decisioni dell utente elencate in Problemi aperti.
