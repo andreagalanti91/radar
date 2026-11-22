@@ -1,0 +1,176 @@
+W3.1 2021+: identico a radar.weekly=True · finale 27,190 $ · DD -9.8% · trade 13
+W3.1 IS 21-23: identico a radar.weekly=True · finale 17,879 $ · DD -8.4% · trade 7
+W3.1 OOS 24-26: identico a radar.weekly=True · finale 15,228 $ · DD -9.8% · trade 6
+W3.1 2018-20: identico a radar.weekly=True · finale 16,734 $ · DD -19.2% · trade 9
+invarianza E1 una parte: True
+invarianza E2 n=1: True
+invarianza U1 a=1: True
+invarianza U2 2,5/2,5: True
+invarianza D3 s=1: True
+invarianza D2 n=1: True
+invarianza TP a +99R: True
+
+W3.1 motivi d'uscita (conteggio): {'2021+': {'dist': 4, 'ema': 5, 'trail': 4}, 'IS 21-23': {'dist': 2, 'ema': 3, 'trail': 1, 'aperto': 1}, 'OOS 24-26': {'dist': 1, 'trail': 3, 'ema': 2}, '2018-20': {'trail': 3, 'ema': 2, 'dist': 3, 'aperto': 1}}
+
+Variante | periodo | trade | tolti/nuovi/modificati vs W3.1 | eventi
+E1 lun/mer/ven | 2021+ | 13 | 0/0/13 | {'enter': 13, 'e1_add': 26} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2025-11-30', '2026-05-24', '2026-08-23']
+E1 lun/mer/ven | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e1_add': 14} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E1 lun/mer/ven | OOS 24-26 | 6 | 0/0/6 | {'enter': 6, 'e1_add': 12} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E1 lun/mer/ven | 2018-20 | 9 | 0/0/9 | {'enter': 9, 'e1_add': 18} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E1v lun/gio | 2021+ | 13 | 0/0/13 | {'enter': 13, 'e1_add': 13} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2025-11-30', '2026-05-24', '2026-08-23']
+E1v lun/gio | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e1_add': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E1v lun/gio | OOS 24-26 | 6 | 0/0/6 | {'enter': 6, 'e1_add': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E1v lun/gio | 2018-20 | 9 | 0/0/9 | {'enter': 9, 'e1_add': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E1v lun-ven 5 | 2021+ | 13 | 0/0/13 | {'enter': 13, 'e1_add': 52} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2025-11-30', '2026-05-24', '2026-08-23']
+E1v lun-ven 5 | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e1_add': 28} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E1v lun-ven 5 | OOS 24-26 | 6 | 0/0/6 | {'enter': 6, 'e1_add': 24} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E1v lun-ven 5 | 2018-20 | 9 | 0/0/9 | {'enter': 9, 'e1_add': 36} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E2 3 sett. | 2021+ | 13 | 0/0/12 | {'enter': 13, 'e2_add': 19, 'e2_skip': 7} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2026-05-24', '2026-08-23']
+E2 3 sett. | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e2_add': 12, 'e2_skip': 2} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E2 3 sett. | OOS 24-26 | 6 | 0/0/5 | {'enter': 6, 'e2_add': 7, 'e2_skip': 5} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E2 3 sett. | 2018-20 | 9 | 0/0/6 | {'enter': 9, 'e2_add': 10, 'e2_skip': 4} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E2v 2 sett. | 2021+ | 13 | 0/0/12 | {'enter': 13, 'e2_add': 12, 'e2_skip': 1} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2026-05-24', '2026-08-23']
+E2v 2 sett. | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e2_add': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E2v 2 sett. | OOS 24-26 | 6 | 0/0/5 | {'enter': 6, 'e2_add': 5, 'e2_skip': 1} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E2v 2 sett. | 2018-20 | 9 | 0/0/6 | {'enter': 9, 'e2_add': 6, 'e2_skip': 2} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E2v 4 sett. | 2021+ | 13 | 0/0/12 | {'enter': 13, 'e2_add': 24, 'e2_skip': 14} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2026-05-24', '2026-08-23']
+E2v 4 sett. | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e2_add': 14, 'e2_skip': 6} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E2v 4 sett. | OOS 24-26 | 6 | 0/0/5 | {'enter': 6, 'e2_add': 10, 'e2_skip': 8} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E2v 4 sett. | 2018-20 | 9 | 0/0/8 | {'enter': 9, 'e2_add': 14, 'e2_skip': 5} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E3 0,5 ATR 14g | 2021+ | 13 | 0/0/13 | {'enter': 13, 'e3_market': 12, 'e3_limit': 1} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2025-11-30', '2026-05-24', '2026-08-23']
+E3 0,5 ATR 14g | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e3_market': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E3 0,5 ATR 14g | OOS 24-26 | 6 | 0/0/6 | {'enter': 6, 'e3_market': 5, 'e3_limit': 1} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E3 0,5 ATR 14g | 2018-20 | 9 | 0/0/8 | {'enter': 9, 'e3_limit': 5, 'e3_market': 3} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E3v 0,25 ATR | 2021+ | 13 | 0/0/13 | {'enter': 13, 'e3_market': 10, 'e3_limit': 3} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2025-11-30', '2026-05-24', '2026-08-23']
+E3v 0,25 ATR | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e3_market': 6, 'e3_limit': 1} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E3v 0,25 ATR | OOS 24-26 | 6 | 0/0/6 | {'enter': 6, 'e3_market': 4, 'e3_limit': 2} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E3v 0,25 ATR | 2018-20 | 9 | 0/0/9 | {'enter': 9, 'e3_limit': 6, 'e3_market': 3} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+E3v 0,75 ATR | 2021+ | 13 | 0/0/13 | {'enter': 13, 'e3_market': 13} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-08-01', '2021-10-03', '2022-01-02', '2022-08-14', '2023-01-22', '2023-10-22', '2024-02-11', '2024-09-22', '2025-04-27', '2025-11-30', '2026-05-24', '2026-08-23']
+E3v 0,75 ATR | IS 21-23 | 7 | 0/0/7 | {'enter': 7, 'e3_market': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+E3v 0,75 ATR | OOS 24-26 | 6 | 0/0/6 | {'enter': 6, 'e3_market': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+E3v 0,75 ATR | 2018-20 | 9 | 0/0/7 | {'enter': 9, 'e3_limit': 3, 'e3_market': 4} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+U1 1/2+1/2 | 2021+ | 12 | 1/0/8 | {'enter': 12, 'u1_first': 8, 'partial_exit': 8, 'u1_unconfirmed': 8} | uscite {'dist': 3, 'ema': 2, 'trail': 7}
+   tolti ['2021-10-03'] nuovi [] modificati ['2021-01-31', '2021-08-01', '2022-01-02', '2022-08-14', '2023-10-22', '2024-02-11', '2025-11-30', '2026-08-23']
+U1 1/2+1/2 | IS 21-23 | 6 | 1/0/4 | {'enter': 6, 'u1_first': 5, 'partial_exit': 4, 'u1_unconfirmed': 5} | uscite {'dist': 2, 'ema': 1, 'trail': 2}
+U1 1/2+1/2 | OOS 24-26 | 6 | 0/0/3 | {'enter': 6, 'u1_first': 3, 'partial_exit': 3} | uscite {'dist': 1, 'trail': 4, 'ema': 1}
+U1 1/2+1/2 | 2018-20 | 9 | 0/0/5 | {'enter': 9, 'u1_first': 5, 'partial_exit': 5, 'u1_unconfirmed': 3} | uscite {'trail': 4, 'ema': 2, 'dist': 2}
+U1v 1/3 | 2021+ | 12 | 1/0/8 | {'enter': 12, 'u1_first': 8, 'partial_exit': 8, 'u1_unconfirmed': 8} | uscite {'dist': 3, 'ema': 2, 'trail': 7}
+   tolti ['2021-10-03'] nuovi [] modificati ['2021-01-31', '2021-08-01', '2022-01-02', '2022-08-14', '2023-10-22', '2024-02-11', '2025-11-30', '2026-08-23']
+U1v 1/3 | IS 21-23 | 6 | 1/0/4 | {'enter': 6, 'u1_first': 5, 'partial_exit': 4, 'u1_unconfirmed': 5} | uscite {'dist': 2, 'ema': 1, 'trail': 2}
+U1v 1/3 | OOS 24-26 | 6 | 0/0/3 | {'enter': 6, 'u1_first': 3, 'partial_exit': 3} | uscite {'dist': 1, 'trail': 4, 'ema': 1}
+U1v 1/3 | 2018-20 | 9 | 0/0/5 | {'enter': 9, 'u1_first': 5, 'partial_exit': 5, 'u1_unconfirmed': 3} | uscite {'trail': 4, 'ema': 2, 'dist': 2}
+U1v 2/3 | 2021+ | 12 | 1/0/8 | {'enter': 12, 'u1_first': 8, 'partial_exit': 8, 'u1_unconfirmed': 8} | uscite {'dist': 3, 'ema': 2, 'trail': 7}
+   tolti ['2021-10-03'] nuovi [] modificati ['2021-01-31', '2021-08-01', '2022-01-02', '2022-08-14', '2023-10-22', '2024-02-11', '2025-11-30', '2026-08-23']
+U1v 2/3 | IS 21-23 | 6 | 1/0/4 | {'enter': 6, 'u1_first': 5, 'partial_exit': 4, 'u1_unconfirmed': 5} | uscite {'dist': 2, 'ema': 1, 'trail': 2}
+U1v 2/3 | OOS 24-26 | 6 | 0/0/3 | {'enter': 6, 'u1_first': 3, 'partial_exit': 3} | uscite {'dist': 1, 'trail': 4, 'ema': 1}
+U1v 2/3 | 2018-20 | 9 | 0/0/5 | {'enter': 9, 'u1_first': 5, 'partial_exit': 5, 'u1_unconfirmed': 3} | uscite {'trail': 4, 'ema': 2, 'dist': 2}
+U2 2,0/3,0 | 2021+ | 13 | 0/0/4 | {'enter': 13, 'lot_stop': 8} | uscite {'dist': 4, 'ema': 7, 'trail': 2}
+   tolti [] nuovi [] modificati ['2023-01-22', '2024-09-22', '2025-04-27', '2026-05-24']
+U2 2,0/3,0 | IS 21-23 | 7 | 0/0/1 | {'enter': 7, 'lot_stop': 2} | uscite {'dist': 2, 'ema': 4}
+U2 2,0/3,0 | OOS 24-26 | 6 | 0/0/3 | {'enter': 6, 'lot_stop': 6} | uscite {'dist': 1, 'trail': 2, 'ema': 3}
+U2 2,0/3,0 | 2018-20 | 9 | 0/0/2 | {'enter': 9, 'lot_stop': 3} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+U2v 2,25/2,75 | 2021+ | 13 | 0/0/1 | {'enter': 13, 'lot_stop': 4} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2026-05-24']
+U2v 2,25/2,75 | IS 21-23 | 7 | 0/0/0 | {'enter': 7, 'lot_stop': 2} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+U2v 2,25/2,75 | OOS 24-26 | 6 | 0/0/1 | {'enter': 6, 'lot_stop': 2} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+U2v 2,25/2,75 | 2018-20 | 9 | 0/0/2 | {'enter': 9, 'lot_stop': 2} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+U2v 1,75/3,25 | 2021+ | 13 | 0/0/4 | {'enter': 13, 'lot_stop': 10} | uscite {'dist': 4, 'ema': 7, 'trail': 2}
+   tolti [] nuovi [] modificati ['2023-01-22', '2024-09-22', '2025-04-27', '2026-05-24']
+U2v 1,75/3,25 | IS 21-23 | 7 | 0/0/1 | {'enter': 7, 'lot_stop': 4} | uscite {'dist': 2, 'ema': 4}
+U2v 1,75/3,25 | OOS 24-26 | 6 | 0/0/3 | {'enter': 6, 'lot_stop': 6} | uscite {'dist': 1, 'trail': 2, 'ema': 3}
+U2v 1,75/3,25 | 2018-20 | 9 | 0/0/3 | {'enter': 9, 'lot_stop': 4} | uscite {'ema': 3, 'trail': 2, 'dist': 3}
+T1 1/3 a +3R | 2021+ | 13 | 0/0/0 | {'enter': 13} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+T1 1/3 a +3R | IS 21-23 | 7 | 0/0/0 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+T1 1/3 a +3R | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+T1 1/3 a +3R | 2018-20 | 9 | 0/0/1 | {'enter': 9, 'tp': 1} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+T1v +2R | 2021+ | 13 | 0/0/4 | {'enter': 13, 'tp': 4} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-01-31', '2023-10-22', '2024-02-11', '2024-09-22']
+T1v +2R | IS 21-23 | 7 | 0/0/2 | {'enter': 7, 'tp': 2} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+T1v +2R | OOS 24-26 | 6 | 0/0/2 | {'enter': 6, 'tp': 2} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+T1v +2R | 2018-20 | 9 | 0/0/3 | {'enter': 9, 'tp': 3} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+T1v +4R | 2021+ | 13 | 0/0/0 | {'enter': 13} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+T1v +4R | IS 21-23 | 7 | 0/0/0 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+T1v +4R | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+T1v +4R | 2018-20 | 9 | 0/0/1 | {'enter': 9, 'tp': 1} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+K 2,0 (vicino) | 2021+ | 15 | 0/2/6 | {'enter': 15} | uscite {'dist': 3, 'ema': 2, 'trail': 10}
+   tolti [] nuovi ['2023-03-19', '2023-07-02'] modificati ['2022-08-14', '2023-01-22', '2024-02-11', '2024-09-22', '2025-11-30', '2026-08-23']
+K 2,0 (vicino) | IS 21-23 | 9 | 0/2/2 | {'enter': 9} | uscite {'dist': 2, 'ema': 2, 'trail': 4}
+K 2,0 (vicino) | OOS 24-26 | 6 | 0/0/4 | {'enter': 6} | uscite {'trail': 6}
+K 2,0 (vicino) | 2018-20 | 9 | 0/0/1 | {'enter': 9} | uscite {'trail': 4, 'ema': 1, 'dist': 3}
+K 2,25 | 2021+ | 14 | 0/1/3 | {'enter': 14} | uscite {'dist': 4, 'ema': 4, 'trail': 6}
+   tolti [] nuovi ['2023-07-02'] modificati ['2022-08-14', '2023-01-22', '2024-09-22']
+K 2,25 | IS 21-23 | 8 | 0/1/2 | {'enter': 8} | uscite {'dist': 2, 'ema': 2, 'trail': 3}
+K 2,25 | OOS 24-26 | 6 | 0/0/1 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+K 2,25 | 2018-20 | 9 | 0/0/0 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+K 2,75 | 2021+ | 13 | 0/0/1 | {'enter': 13} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+   tolti [] nuovi [] modificati ['2026-05-24']
+K 2,75 | IS 21-23 | 7 | 0/0/0 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+K 2,75 | OOS 24-26 | 6 | 0/0/1 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+K 2,75 | 2018-20 | 9 | 0/0/2 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+K 3,0 | 2021+ | 13 | 0/0/4 | {'enter': 13} | uscite {'dist': 4, 'ema': 7, 'trail': 2}
+   tolti [] nuovi [] modificati ['2023-01-22', '2024-09-22', '2025-04-27', '2026-05-24']
+K 3,0 | IS 21-23 | 7 | 0/0/1 | {'enter': 7} | uscite {'dist': 2, 'ema': 4}
+K 3,0 | OOS 24-26 | 6 | 0/0/3 | {'enter': 6} | uscite {'dist': 1, 'trail': 2, 'ema': 3}
+K 3,0 | 2018-20 | 9 | 0/0/2 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+K 3,25 (vicino) | 2021+ | 13 | 0/0/4 | {'enter': 13} | uscite {'dist': 4, 'ema': 7, 'trail': 2}
+   tolti [] nuovi [] modificati ['2023-01-22', '2024-09-22', '2025-04-27', '2026-05-24']
+K 3,25 (vicino) | IS 21-23 | 7 | 0/0/1 | {'enter': 7} | uscite {'dist': 2, 'ema': 4}
+K 3,25 (vicino) | OOS 24-26 | 6 | 0/0/3 | {'enter': 6} | uscite {'dist': 1, 'trail': 2, 'ema': 3}
+K 3,25 (vicino) | 2018-20 | 9 | 0/0/3 | {'enter': 9} | uscite {'ema': 3, 'trail': 2, 'dist': 3}
+D1 senza | 2021+ | 13 | 0/0/4 | {'enter': 13} | uscite {'trail': 8, 'ema': 5}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-10-03', '2023-10-22', '2024-02-11']
+D1 senza | IS 21-23 | 7 | 0/0/2 | {'enter': 7} | uscite {'trail': 3, 'ema': 3}
+D1 senza | OOS 24-26 | 6 | 0/0/1 | {'enter': 6} | uscite {'trail': 4, 'ema': 2}
+D1 senza | 2018-20 | 7 | 2/0/2 | {'enter': 7} | uscite {'trail': 3, 'ema': 3}
+D2 2 dom. | 2021+ | 13 | 0/0/4 | {'enter': 13} | uscite {'dist': 3, 'ema': 5, 'trail': 5}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-10-03', '2023-10-22', '2024-02-11']
+D2 2 dom. | IS 21-23 | 7 | 0/0/2 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+D2 2 dom. | OOS 24-26 | 6 | 0/0/1 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+D2 2 dom. | 2018-20 | 8 | 1/0/2 | {'enter': 8} | uscite {'trail': 3, 'ema': 3, 'dist': 1}
+D2v 3 dom. | 2021+ | 13 | 0/0/4 | {'enter': 13} | uscite {'dist': 1, 'ema': 5, 'trail': 7}
+   tolti [] nuovi [] modificati ['2021-01-31', '2021-10-03', '2023-10-22', '2024-02-11']
+D2v 3 dom. | IS 21-23 | 7 | 0/0/2 | {'enter': 7} | uscite {'dist': 1, 'ema': 3, 'trail': 2}
+D2v 3 dom. | OOS 24-26 | 6 | 0/0/1 | {'enter': 6} | uscite {'trail': 4, 'ema': 2}
+D2v 3 dom. | 2018-20 | 7 | 2/0/2 | {'enter': 7} | uscite {'trail': 3, 'ema': 3}
+D3a soglie x0,8 | 2021+ | 13 | 0/0/2 | {'enter': 13} | uscite {'dist': 5, 'ema': 4, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-08-01', '2021-10-03']
+D3a soglie x0,8 | IS 21-23 | 7 | 0/0/2 | {'enter': 7} | uscite {'dist': 3, 'ema': 2, 'trail': 1}
+D3a soglie x0,8 | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+D3a soglie x0,8 | 2018-20 | 9 | 0/0/0 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+D3av x0,7 | 2021+ | 14 | 0/1/3 | {'enter': 14} | uscite {'dist': 6, 'ema': 4, 'trail': 4}
+   tolti [] nuovi ['2025-01-05'] modificati ['2021-08-01', '2021-10-03', '2024-09-22']
+D3av x0,7 | IS 21-23 | 7 | 0/0/2 | {'enter': 7} | uscite {'dist': 3, 'ema': 2, 'trail': 1}
+D3av x0,7 | OOS 24-26 | 7 | 0/1/1 | {'enter': 7} | uscite {'dist': 2, 'trail': 3, 'ema': 2}
+D3av x0,7 | 2018-20 | 10 | 0/1/1 | {'enter': 10} | uscite {'trail': 3, 'ema': 2, 'dist': 4}
+D3av x0,9 | 2021+ | 13 | 0/0/2 | {'enter': 13} | uscite {'dist': 5, 'ema': 4, 'trail': 4}
+   tolti [] nuovi [] modificati ['2021-08-01', '2021-10-03']
+D3av x0,9 | IS 21-23 | 7 | 0/0/2 | {'enter': 7} | uscite {'dist': 3, 'ema': 2, 'trail': 1}
+D3av x0,9 | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+D3av x0,9 | 2018-20 | 9 | 0/0/0 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+D3b soglie x1,2 | 2021+ | 13 | 0/0/1 | {'enter': 13} | uscite {'dist': 3, 'ema': 5, 'trail': 5}
+   tolti [] nuovi [] modificati ['2023-10-22']
+D3b soglie x1,2 | IS 21-23 | 7 | 0/0/0 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+D3b soglie x1,2 | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+D3b soglie x1,2 | 2018-20 | 9 | 0/0/1 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+D3bv x1,1 | 2021+ | 13 | 0/0/0 | {'enter': 13} | uscite {'dist': 4, 'ema': 5, 'trail': 4}
+D3bv x1,1 | IS 21-23 | 7 | 0/0/0 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+D3bv x1,1 | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+D3bv x1,1 | 2018-20 | 9 | 0/0/1 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+D3bv x1,3 | 2021+ | 13 | 0/0/1 | {'enter': 13} | uscite {'dist': 3, 'ema': 5, 'trail': 5}
+   tolti [] nuovi [] modificati ['2023-10-22']
+D3bv x1,3 | IS 21-23 | 7 | 0/0/0 | {'enter': 7} | uscite {'dist': 2, 'ema': 3, 'trail': 1}
+D3bv x1,3 | OOS 24-26 | 6 | 0/0/0 | {'enter': 6} | uscite {'dist': 1, 'trail': 3, 'ema': 2}
+D3bv x1,3 | 2018-20 | 9 | 0/0/1 | {'enter': 9} | uscite {'trail': 3, 'ema': 2, 'dist': 3}
+G7 7 giorni | 2021+ | 106 | trade per giorno {'MON': 15, 'TUE': 13, 'WED': 15, 'THU': 17, 'FRI': 17, 'SAT': 16, 'SUN': 13} | eventi {'enter': 106}
+G7 7 giorni | IS 21-23 | 57 | trade per giorno {'MON': 8, 'TUE': 7, 'WED': 8, 'THU': 8, 'FRI': 10, 'SAT': 9, 'SUN': 7} | eventi {'enter': 57}
+G7 7 giorni | OOS 24-26 | 49 | trade per giorno {'MON': 7, 'TUE': 6, 'WED': 7, 'THU': 9, 'FRI': 7, 'SAT': 7, 'SUN': 6} | eventi {'enter': 49}
+G7 7 giorni | 2018-20 | 70 | trade per giorno {'MON': 9, 'TUE': 9, 'WED': 10, 'THU': 12, 'FRI': 11, 'SAT': 10, 'SUN': 9} | eventi {'enter': 70}
