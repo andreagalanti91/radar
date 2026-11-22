@@ -158,7 +158,7 @@ Conclusione generale: dal 2021 solo il trend settimanale regge; tutto il resto Ã
 - Istruzioni del progetto: [`CLAUDE.md`](CLAUDE.md). Memoria per una nuova sessione: [`memoria/`](memoria/00-inizia-qui/README.md),
   da leggere in ordine 00 â†’ 05.
 - Ogni richiesta passa dalla skill **gengar** ([`.claude/skills/gengar`](.claude/skills/gengar/SKILL.md)); i lavori lunghi tengono un
-  file `STATO-<argomento>.md` nella radice per riprendere dopo un'interruzione.
+  file `stato/STATO-<argomento>.md` (cartella stato/) per riprendere dopo un'interruzione.
 - Agenti per mansione in [`.claude/agents/`](.claude/agents/), ognuno con file suoi; il commit lo fa la sessione principale.
 
 | Agente | Ruolo |
@@ -222,14 +222,15 @@ brand/                 logo, icone, banner (sorgenti in brand/src)
 .claude/               agenti e skill di Claude
 .github/workflows/     daily.yml, liqsnap.yml, wallets.yml
 RESEARCH.md            diario della ricerca, lezioni numerate, errori operativi da non ripetere
-STATO-*.md             file di stato dei lavori lunghi di Claude
+stato/                 file di stato dei lavori lunghi di Claude
 ```
 
 ## Brand
 
 <p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
 
-Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `radarsignal` in Geist bold. Palette: Signal Blue
-`#3D5BFF`, Pulse Violet `#8B5CFF`, Blip Mint `#5EF0C4`, Night `#07080C`. Font: Geist, Geist Mono, Doto per i numeri principali.
+Simbolo: un radar essenziale (anello, fascio, blip) in una tile indaco. Wordmark `radar` + `signal` in Inter, con `signal` in
+indaco `#2f4cf0`; blip menta. Ispirazione: il linguaggio pulito delle piattaforme fintech, senza riprendere marchi altrui.
+Regole, palette, area di rispetto e misure minime: [`brand/DESIGN.md`](brand/DESIGN.md); sorgente unica `brand/src/brand.html`.
 
 Strumento di analisi, non consulenza finanziaria. I risultati passati non garantiscono quelli futuri.

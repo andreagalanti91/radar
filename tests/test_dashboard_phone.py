@@ -20,15 +20,17 @@ class TestFundingTesto(unittest.TestCase):
 
 class TestPreanalisiTelefono(unittest.TestCase):
     def test_chiusura_multi_asset_richiudibile(self):
-        # tabella degli asset in un <details>: chiusa su telefono (≤ 700 px), aperta su schermo largo; regime nel titolo
-        self.assertIn('<details class="pvMac"${window.isMobile() ? "" : " open"}>', T)
+        # tabella degli asset in un <details> chiuso, solo nel pannello Dettagli pre-analisi; regime nel titolo
+        self.assertIn('<details class="pvMac"><summary>', T)
         m = re.search(r'<details class="pvMac".*?</details>', T, re.S)
         self.assertIsNotNone(m)
         box = m.group(0)
         self.assertIn("<summary", box)
         self.assertIn("MC.regime.label", box[:box.index("</summary>")])      # il regime si legge anche da chiusa
         self.assertNotIn("MC.flags", box)                                    # gli avvisi restano sempre in vista, fuori
-        self.assertIn("MC.flags", T[m.end():m.end() + 400])
+        self.assertIn("const macFlags = MC && (MC.flags", T)
+        self.assertIn("${macFlags}", T)                                      # avvisi nella card
+        self.assertIn("${ctx}${macroBox}", T)                                # tabella solo nel pannello
 
     def test_etichette_non_tagliate(self):
         css = re.search(r"\.pvMac \.mr>b\{[^}]*\}", T).group(0)
@@ -83,6 +85,41 @@ class TestSoloW32(unittest.TestCase):
         self.assertIn('t = localStorage.getItem("radarTheme")', T)
         self.assertIn('matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"', T)
         self.assertIn(':root[data-theme="dark"]{', T)
+
+
+
+class TestToolSemplice(unittest.TestCase):
+    """Richiesta 22/11: "togliamo le informazioni non necessarie". Stesso stile, meno contenuto in primo piano."""
+    def test_oggi_senza_ripetizioni(self):
+        # la pre-analisi non ripete P&L, ingresso e trailing della card Posizione: resta solo la soglia d'uscita
+        self.assertNotIn("Posizione W3.2: ${sd > 0", T)
+        self.assertNotIn("Ingresso → ${r.live", T)
+        self.assertIn("Esce se <span class=\"x\">la settimana </span>chiude", T)
+        self.assertNotIn("pvCtxS\">${cLines", T)                             # flussi e funding solo nei Dettagli
+        self.assertNotIn('class="wkPx"', T)                                  # il prezzo è già in testa alla pagina
+
+    def test_livelli_una_scheda(self):
+        # una sola scheda "Livelli vicini" a ogni larghezza; mappa S/R e liquidazioni vicine solo nel pannello
+        self.assertIn('class="card tapCard" id="lvCard"', T)
+        self.assertIn('class="card sr sheetOnly" id="srCard"', T)
+        self.assertIn('class="card lqCard sheetOnly" id="lqCard"', T)
+        self.assertIn(".sheetOnly:not(.inSheet){display:none!important}", T)
+
+    def test_notizie_corte(self):
+        self.assertNotIn("n.summary", T)                                     # niente riassunti nel feed
+        self.assertIn("L.slice(0, 8)", T)
+        self.assertIn("Altre ${bkMore.length} riunioni", T)
+        self.assertNotIn('id="newsWhy"', T)
+        self.assertIn("meglio non aprire o spostare posizioni a ridosso dell'uscita", T)   # avviso di rischio resta
+
+    def test_liquidazioni_senza_book(self):
+        L = (Path(__file__).resolve().parents[1] / "radar" / "pages" / "liquidazioni.html").read_text()
+        for w in ('id="obBookBox"', 'id="obEng"', 'id="lqMBook"', 'id="lqMEng"', "liveBook(", "renderEngine"):
+            self.assertNotIn(w, L)
+        self.assertIn("ev.slice(0, 6)", L)
+        self.assertIn("W.slice(0, 6)", L)
+        B = (Path(__file__).resolve().parents[1] / "radar" / "pages" / "book.html").read_text()
+        self.assertIn("Indicatore descrittivo, non un segnale", B)            # dicitura del sentiment sempre in vista
 
 
 if __name__ == "__main__":

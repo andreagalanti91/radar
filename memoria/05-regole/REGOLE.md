@@ -1,5 +1,5 @@
 # Regole di lavoro (vincolanti)
-1. Skill gengar a ogni nuova richiesta; prompt lunghi: scheda di avvio e attesa di "procedi"; file STATO-*.md per lavori medi/lunghi.
+1. Skill gengar a ogni nuova richiesta; prompt lunghi: scheda di avvio e attesa di "procedi"; file stato/STATO-*.md per lavori medi/lunghi.
 2. W3.2 non si cambia senza approvazione esplicita dell'utente. Risultati sempre dal 01/01/2021 (10k, DD, WR, trade) + perdita allo stop.
 3. Ricerca: PREREG.md committato DA SOLO prima di ogni esecuzione; contare gli eventi prima di fissare una regola; IS/OOS, placebo,
    vicini, correzione per test multipli, revisione critica.

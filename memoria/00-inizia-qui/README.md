@@ -1,7 +1,7 @@
 # Radar Signal BTC — memoria del progetto (leggi per primo)
 Aggiornata al 22/11/2026. Per un nuovo account Claude: leggi in ordine 00 → 05, poi RESEARCH.md solo per i dettagli.
 
-- Lavoro del 22/11 (swing S/R, sentiment, pagina Book, sospesi, W3.2): STATO-swing-sr.md e STATO-book-sospesi-multiasset.md.
+- Lavoro del 22/11 (swing S/R, sentiment, pagina Book, sospesi, W3.2): stato/STATO-swing-sr.md e stato/STATO-book-sospesi-multiasset.md.
 - Repo andreagalanti91/radar, branch di lavoro e predefinito: `claude/vibrant-brahmagupta-fvv2gh`.
 - Dashboard: https://andreagalanti91.github.io/radar/ · bot Telegram @CryptoRadarGalaBot (token SOLO nei GitHub Secrets).
 - L'utente opera con CAPITALE REALE (RADAR_CAPITAL 50.000 $) su UNA strategia: **W3.2** (01-strategia/W3.2.md; tabella di tutte le versioni: 01-strategia/STRATEGIE.md).

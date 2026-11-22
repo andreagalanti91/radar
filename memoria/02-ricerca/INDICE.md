@@ -19,3 +19,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Swing brevi su S/R settimanali, stop 5–10%, TP 10–15%, 70/30 con W3.1 (405 configurazioni) | non valida, 0/405 battono W3.1 | 106 | research/swing_sr |
 | Swing S/R su 15 asset (indici, oro, argento, petrolio, 10 azioni) | 0/15 validi, sotto il buy & hold | 107 | research/swing_sr_multi |
 | Sentiment book + liquidazioni (pagina Book) | descrittivo, 0/14 test; rifare a febbraio 2027 | 108 | research/book_sentiment |
+| Take profit +10/15% con rientro, trailing stretto (su W3.2) | 0/8; W3.2 restituisce il 62% dell'MFE: costo dei trend lunghi | 109 | research/tp_rientro |

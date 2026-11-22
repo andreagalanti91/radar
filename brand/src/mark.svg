@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
-  <path fill-rule="evenodd" d="M32 3a29 29 0 1 1 0 58 29 29 0 0 1 0-58Zm0 7a22 22 0 1 0 0 44 22 22 0 0 0 0-44Z"/>
-  <path d="M32 32 L42.5 13.8 A21 21 0 0 1 53 32 Z"/>
-  <circle cx="21.5" cy="40.5" r="5"/>
+  <!-- Radar Signal: anello, fascio a quarto di cerchio, blip. Griglia 64, centro 32,32 -->
+  <path fill-rule="evenodd" d="M32 4a28 28 0 1 1 0 56 28 28 0 0 1 0-56Zm0 7.5a20.5 20.5 0 1 0 0 41 20.5 20.5 0 0 0 0-41Z"/>
+  <path d="M32 32V14.5A17.5 17.5 0 0 1 49.5 32Z"/>
+  <circle cx="23" cy="41" r="4.5"/>
 </svg>

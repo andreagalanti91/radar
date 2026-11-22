@@ -29,6 +29,7 @@ Tutti i numeri: BTC, 10.000 $ dal 01/01/2021 al 15/11/2026, 1x, costi inclusi, s
 | Swing breve su S/R settimanali, stop 5–10%, TP 10–15% (BTC) | 22/11 | 5.626 $, DD −55,8%, WR 23% | non valida; 70/30 con W3.1 peggiora | 106 | research/swing_sr |
 | Stessa strategia su 15 asset (SPY, QQQ, oro, argento, petrolio, 10 azioni) | 22/11 | 0/15 validi, mediana 17,6k contro 70,2k buy & hold | non funziona | 107 | research/swing_sr_multi |
 | Sentiment da order book + liquidazioni | 22/11 | 0/14 test, regola 10k → 6,9k in 16 giorni | descrittivo (pagina Book) | 108 | research/book_sentiment |
+| TP +10/12,5/15% con rientro, trailing 1,5 ATR dopo +10% (su W3.2) | 22/11 | 43–56k $ contro 78,5k | nessuna adottata | 109 | research/tp_rientro |
 | DCA, uscite a scaglioni, TP, stop, distribuzione su W3.1 | 22/11 | migliore variante sotto W3.1 | nessuna adottata | 105 | research/ingressi_uscite |
 | W3.1 solo prezzo su 13 asset | 22/11 | 0/13 | solo BTC | 104 | research/multi_asset |
 | Order book e liquidazioni come supporto | 22/11 | nessun supporto (15 giorni) | rifare 20/12 e 03/2027 | 105 | research/book_liq |
