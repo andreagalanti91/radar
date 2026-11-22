@@ -25,10 +25,10 @@ del 5/10% prendo profitto in TP 10/15% oppure di più se c'è forza nel moviment
 
 ## Piano
 - [x] 1. Apprendimento (lezioni 75–77, 95, 97, 105, nuova_strategia, n2)
-- [ ] 2. Motore + conteggio eventi (senza rendimenti)   ← IN CORSO
-- [ ] 3. PREREG.md committato da solo
-- [ ] 4. Backtest: scelta su 2014–2020, giudizio su 2021–2026, placebo, vicini, portafoglio 70/30
-- [ ] 5. Revisione critica (radar-review)
+- [x] 2. Motore + conteggio eventi (senza rendimenti) — conteggi.txt
+- [x] 3. PREREG.md committato da solo — 854ebff
+- [x] 4. Backtest: scelta su 2014–2020, giudizio su 2021–2026, placebo, vicini, portafoglio 70/30 — S* NON VALIDA
+- [ ] 5. Revisione critica (radar-review)   ← IN CORSO (agente avviato)
 - [ ] 6. Eventuale secondo ciclo (addendum al PREREG)
 - [ ] 7. README.md con report, lezione 106, memoria/, commit e push su claude/swing-strategy-review-5g3jul
 
@@ -36,6 +36,14 @@ del 5/10% prendo profitto in TP 10/15% oppure di più se c'è forza nel moviment
 - Step 1: già provato e respinto: S/R su giornaliero/settimanale come segnale (75–77, 97), struttura S/R long-only settimanale
   (nuova_strategia N1: 7.726 $), swing 2–3 giorni a tempo (95), TP/stop in ATR su W3.1 (105). Non provato: swing giornalieri su
   livelli settimanali con stop 5–10% oltre il livello, TP 10/15%/livello successivo, parte con trailing, filtro di regime W3.1.
+
+- Step 4 (`python3 research/swing_sr/sw_run.py`, ~30 s → risultati.txt, griglia.csv, trade_scelta.csv, placebo.csv, equity.csv):
+  S* = X/R1/LS/SS/TSR (rottura, regime di prezzo, long+short, stop strutturale puro, TP al livello successivo): 2014–20 56.194 $,
+  2021+ 10.000 → 5.626 $, DD −55,8%, 88 trade, WR 23%, PF 0,83; criteri 1–5 tutti falliti; placebo p 0,43. Solo 3/405 ammissibili
+  nel 2014–20, nessuna positiva nel 2021+. Correlazione di rango 2014–20 / 2021+: −0,02. 111/405 positive nel 2021+, 0 sopra
+  buy & hold (22.594 $) e W3.1 (27.190 $). Solo il regime R2 (condizioni W3.1) è positivo in mediana (10.618 $, 70% positive);
+  la migliore a posteriori B/R2/LS/SF/TSR fa 21.611 $ (DD −19,6%, 20 trade) ma ingressi a caso nello stesso regime fanno
+  16.487 $ in mediana (p 0,23). 70/30 con S*: 20.721 $; con la migliore a posteriori 25.516 $ (C/DD 1,784 < 1,903 di W3.1).
 
 ## Decisioni prese
 - Lavoro svolto nella sessione principale invece che con due sottoagenti di ricerca: un solo motore, un solo file, meno rischio
@@ -47,4 +55,6 @@ del 5/10% prendo profitto in TP 10/15% oppure di più se c'è forza nel moviment
 - nessuno
 
 ## Come riprendere
-**Prossima azione:** completare `research/swing_sr/sw_engine.py` e `sw_count.py`, poi scrivere e committare `PREREG.md` da solo.
+**Prossima azione:** leggere l'esito della revisione critica (agente radar-review); se propone un'ipotesi motivata, scrivere
+`research/swing_sr/ADDENDUM.md`, committarlo da solo ed eseguire il secondo ciclo (esplorativo); poi scrivere `research/swing_sr/README.md`,
+la lezione 106 in RESEARCH.md, aggiornare memoria/02-ricerca/INDICE.md, commit e push.
