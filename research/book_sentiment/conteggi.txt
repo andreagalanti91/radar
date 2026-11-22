@@ -1,0 +1,64 @@
+=== INSIEME A · registro del book (data/orderbook.csv) + liquidazioni reali registrate ===
+foto: 275 dal 2026-11-07 08:53:12 al 2026-11-22 13:02:51 UTC; giorni di calendario 16
+foto per giorno: 07/11:9 08/11:9 09/11:7 10/11:8 11/11:11 12/11:7 13/11:11 14/11:23 15/11:24 16/11:25 17/11:24 18/11:26 19/11:24 20/11:27 21/11:24 22/11:16
+intervallo fra foto (minuti): mediana 60, 90° 147, max 401; coppie consecutive ≤ 90 min: 227
+fonti del book a ±1% (src_1): {3: 13, 4: 40, 5: 222}; fonti totali {'binance_spot,coinbase,kraken,okx_perp,okx_spot': 275}
+profondità ±1% mediana: bid 120 M$, ask 113 M$
+
+liquidazioni reali registrate (eventi):
+  deribit    n     31  12/11 22:51 → 20/11 16:02  long      0.2 M$  short      0.0 M$
+  dydx       n   1075  11/11 15:35 → 21/11 13:07  long      1.9 M$  short      0.0 M$
+  gate       n  23149  11/11 15:38 → 22/11 12:45  long    299.0 M$  short    117.7 M$
+  kraken     n      7  15/11 01:02 → 21/11 08:01  long      0.0 M$  short      0.0 M$
+  lighter    n      8  15/11 01:02 → 22/11 03:03  long      0.0 M$  short      0.0 M$
+  okx        n  47515  10/11 18:39 → 22/11 12:49  long    362.6 M$  short    167.0 M$
+  okx_csv    n   4460  30/10 15:15 → 10/11 18:37  long     21.9 M$  short     17.2 M$
+  (mancano Binance, Bybit, Hyperliquid: copertura stimata < 10% del totale di mercato, vedi research/liq_fasce)
+
+finestra liquidazioni 30 minuti prima della foto:
+  foto con ≥ 1 liquidazione: 257/275; con ≥ 100.000 $: 157; con un solo lato (|L| = 1): 90; $ mediani nella finestra 185,541
+  I (imb ±1%): n 275  >0 172  <0 103  =0 0  quantili 5/25/50/75/95 -0.122 -0.043 +0.029 +0.095 +0.234  autocorr(1) +0.36  serie di segno 84
+  L: n 275  >0 115  <0 142  =0 18  quantili 5/25/50/75/95 -1.000 -0.995 -0.170 +0.971 +1.000  autocorr(1) -0.05  serie di segno 151
+  S: n 275  >0 127  <0 148  =0 0  quantili 5/25/50/75/95 -0.513 -0.429 -0.086 +0.444 +0.530  autocorr(1) -0.07  serie di segno 148
+  S soglia ±0.2: rialzo 106  ribasso 132  neutro 37  cambi di stato 168  serie 169
+  S soglia ±0.1: rialzo 108  ribasso 136  neutro 31  cambi di stato 162  serie 163
+  S soglia ±0.3: rialzo 101  ribasso 127  neutro 47  cambi di stato 171  serie 172
+  I soglia ±0.2: rialzo 22  ribasso 1  neutro 252  cambi di stato 36  serie 37
+  L soglia ±0.2: rialzo 110  ribasso 135  neutro 30  cambi di stato 164  serie 165
+  correlazione I–L (Pearson) -0.42; quota della varianza di S dovuta a L 110%; segno di S = segno di L in 253/275 foto
+  metà 1 (07/11–14/11): foto 85, giorni 8, rialzo 27, ribasso 38, neutro 20
+  metà 2 (15/11–22/11): foto 190, giorni 8, rialzo 79, ribasso 94, neutro 17
+
+finestra liquidazioni 60 minuti prima della foto:
+  foto con ≥ 1 liquidazione: 265/275; con ≥ 100.000 $: 202; con un solo lato (|L| = 1): 43; $ mediani nella finestra 572,171
+  L: n 275  >0 112  <0 153  =0 10  quantili 5/25/50/75/95 -1.000 -0.948 -0.279 +0.821 +1.000  autocorr(1) +0.13  serie di segno 128
+  S: n 275  >0 121  <0 154  =0 0  quantili 5/25/50/75/95 -0.493 -0.397 -0.111 +0.388 +0.498  autocorr(1) +0.11  serie di segno 126
+  S soglia ±0.2: rialzo 94  ribasso 128  neutro 53  cambi di stato 152  serie 153
+
+osservazioni indipendenti (insieme A): giorni 16; blocchi di 4 ore 90; orizzonte 24h ≈ 15 finestre non sovrapposte
+
+cascate di liquidazioni nel registro (griglia oraria, solo per contare):
+  ore con ≥ 5 M$ e lato ≥ 75%: long 27 (episodi a > 6 h 10), short 8 (episodi 5)
+  ore con ≥ 10 M$ e lato ≥ 75%: long 17 (episodi a > 6 h 9), short 4 (episodi 3)
+  ore con ≥ 20 M$ e lato ≥ 75%: long 8 (episodi a > 6 h 7), short 1 (episodi 1)
+  ore ≥ 99,5° percentile (43.5 M$) e lato ≥ 75%: long 2, short 0 su 550 ore
+
+=== MURI ===
+data/book_walls.csv (muri per exchange, top 3 per lato): 30 righe, 1 foto (2026-11-22 13:02:51 → 2026-11-22 13:02:51): coppie di foto consecutive 0
+data/orderbook.csv: un solo muro per lato (fascia 0,05% più grande fra 0,1% e 2% dal mid, book aggregato).
+muri osservati in coppie di foto ≤ 90 min: 454 (bid 227, ask 227); di cui ≥ 3× la fascia media: 99; distanza mediana dal prezzo 0.125%
+  non toccati, ancora nella finestra registrabile, muro registrato dopo a un altro livello: 96 (bid 48, ask 48)
+  ritirato largo (nuovo massimo < vecchio muro): 46 (bid 22, ask 24); ≥ 3×: 14; giorni distinti 12; entro 0,3% dal prezzo: 39
+  ritirato −50%: 0 (bid 0, ask 0); ≥ 3×: 0; giorni distinti 0; entro 0,3% dal prezzo: 0
+  ritirato −70% (specifica): 0 (bid 0, ask 0); ≥ 3×: 0; giorni distinti 0; entro 0,3% dal prezzo: 0
+
+=== INSIEME B · archivio liquidazioni reali Binance COIN-M BTCUSD_PERP (solo L) ===
+eventi: 53398 dal 2023-06-25 al 2024-10-14; giorni con file 472; long 620 M$, short 329 M$; evento mediano 1,700 $
+ore: 11472; con ≥ 1 liquidazione nell'ora precedente 7067; con ≥ 100.000 $ 1708; candele orarie spot disponibili 11472
+  L (ora precedente): n 11472  >0 3005  <0 4057  =0 4410  quantili 5/25/50/75/95 -1.000 -1.000 +0.000 +0.311 +1.000  autocorr(1) +0.15  serie di segno 5876
+  S = 0,5·L soglia ±0.2: rialzo 2830  ribasso 3862  neutro 4780  cambi di stato 6052  serie 6053
+  S = 0,5·L soglia ±0.1: rialzo 2922  ribasso 3967  neutro 4583  cambi di stato 5976  serie 5977
+  S = 0,5·L soglia ±0.3: rialzo 2739  ribasso 3747  neutro 4986  cambi di stato 6126  serie 6127
+  metà 1 (2023-06-25 → 2024-02-19): ore 5736, L>0 1380, L<0 1819, rialzo 1314, ribasso 1751
+  metà 2 (2024-02-19 → 2024-10-15): ore 5736, L>0 1625, L<0 2238, rialzo 1516, ribasso 2111
+osservazioni indipendenti (insieme B): giorni 472; finestre di 4 ore 2868; ore con segnale non nullo 7062

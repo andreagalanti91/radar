@@ -1,0 +1,69 @@
+Controllo 1 · nessuna informazione dal futuro (segnali e regimi identici troncando i dati al 30/06/2024): True
+Controllo 2 · primo trade X/R0/L/SF/T10: segnale 2021-02-08 chiusura 46375, ingresso 46421 (apertura 46375 + 0,1%), stop 42897 (−7,5%), TP 51012, uscita [('tp', np.float64(51012.36))], pnl 9.67%
+Controllo 3 · prodotto dei trade = equity finale: 0.851598 = 0.851598
+Riferimenti 2021+: W3.1 27,190 $ (DD -9.8%) · buy & hold 22,594 $ (DD -76.6%)
+
+== SCELTA (2014-06 → 2020-12) == configurazioni 405 · con ≥ 40 trade 201 · ammissibili 3
+buy & hold 2014-06 → 2020-12: 460,714 $
+Prime 10 per CAGR/DD nel 2014–20 (fra le ammissibili):
+  X/R1/LS/SS/TSR     2014–20:    56,194 $ · DD  -25.5% · C/DD  1.17 · trade  86 · PF 2.69/1.54  ||  2021+:   5,626 $ · DD  -55.8% · PF 0.83
+  X/R1/L/ST/TSR      2014–20:    54,755 $ · DD  -28.5% · C/DD  1.03 · trade  55 · PF 2.68/1.94  ||  2021+:   6,396 $ · DD  -44.0% · PF 0.84
+  X/R1/L/SS/TSR      2014–20:    42,439 $ · DD  -25.0% · C/DD  0.98 · trade  67 · PF 2.77/1.62  ||  2021+:   8,734 $ · DD  -28.8% · PF 1.00
+S* = X/R1/LS/SS/TSR
+Finalisti per tipo d'ingresso (migliore ammissibile):
+  B: nessuna ammissibile
+  X/R1/LS/SS/TSR     2014–20 C/DD  1.17 (56,194 $) || 2021+: 5,626 $ · DD -55.8% · PF 0.83 · IS 7,025 / OOS 8,008
+  T: nessuna ammissibile
+
+== GIUDIZIO di S* (2021-01-01 → 2026-11-15, 10.000 $) ==
+2021+   :   5,626 $ · CAGR  -9.3% · DD  -55.8% · C/DD -0.17 · trade  88 · WR 22.7% · PF 0.83 · medio -0.46% · peggiore  -8.6% · durata 2 g · in posizione 25%
+IS 21–23:   7,025 $ · CAGR -11.1% · DD  -48.3% · C/DD -0.23 · trade  46 · WR 21.7% · PF 0.82 · medio -0.53% · peggiore  -8.6% · durata 2 g · in posizione 26%
+OOS 24–26:   8,008 $ · CAGR  -7.4% · DD  -40.1% · C/DD -0.19 · trade  42 · WR 23.8% · PF 0.85 · medio -0.38% · peggiore  -6.6% · durata 2 g · in posizione 24%
+Per anno: 2021 +4.4% · 2022 -25.5% · 2023 -9.7% · 2024 +21.4% · 2025 -27.1% · 2026 -9.5%
+Motivi d'uscita: {'stop': {'count': 68, 'mean': -3.56}, 'tp': {'count': 20, 'mean': 10.09}}
+Per lato: {'long': {'count': 53, 'mean': -0.01, 'sum': -0.63}, 'short': {'count': 35, 'mean': -1.13, 'sum': -39.65}}
+Criterio 1 (finale > 10k e PF ≥ 1,2 in IS e OOS): False · PF IS 0.82 · PF OOS 0.85
+Criterio 2 (DD entro −20%): False · DD -55.8%
+Criterio 4 (senza i 2 trade migliori): False · 3,870 $
+Criterio 3 (placebo, 1000 simulazioni): False · p = 0.429 · placebo mediana 5,189 $ (5°–95° 2,338–11,192) · trade mediani 88 contro 88
+  vicino K=2     :   3,456 $ · CAGR -16.6% · DD  -67.5% · C/DD -0.25 · trade 110 · WR 21.8% · PF 0.71 · medio -0.80% · peggiore  -8.6% · durata 1 g · in posizione 26%
+  vicino K=4     :   5,507 $ · CAGR  -9.7% · DD  -57.3% · C/DD -0.17 · trade  69 · WR 17.4% · PF 0.77 · medio -0.65% · peggiore -10.0% · durata 2 g · in posizione 20%
+  vicino tol 0,5%:   5,626 $ · CAGR  -9.3% · DD  -55.8% · C/DD -0.17 · trade  88 · WR 22.7% · PF 0.83 · medio -0.46% · peggiore  -8.6% · durata 2 g · in posizione 25%
+  vicino tol 2%  :   5,626 $ · CAGR  -9.3% · DD  -55.8% · C/DD -0.17 · trade  88 · WR 22.7% · PF 0.83 · medio -0.46% · peggiore  -8.6% · durata 2 g · in posizione 25%
+Criterio 5 (vicini, ≥ 3 su 4 positivi): False · 0/4
+VERDETTO S*: NON VALIDA · criteri 1–5: [False, False, np.False_, np.False_, False]
+
+Portafoglio 70/30 (7.000 $ W3.1 + 3.000 $ S*): 20,721 $ · CAGR 13.2% · DD -16.8% · C/DD 0.788
+W3.1 da sola: 27,190 $ · CAGR 18.6% · DD -9.8% · C/DD 1.903
+70% W3.1 + 30% liquidità: 22,033 $
+Correlazione dei rendimenti settimanali S* / W3.1: 0.56
+MIGLIORA IL PORTAFOGLIO: False (richiede anche il verdetto VALIDA)
+
+== DESCRITTIVO (non cambia il verdetto) ==
+Configurazioni con finale > 10.000 $ nel 2021+: 111/405 · con finale > buy & hold: 0 · con finale > W3.1: 0 · mediana 7,753 $
+Spearman CAGR/DD 2014–20 contro 2021+ (201 configurazioni con ≥ 40 e ≥ 20 trade): -0.02
+Ammissibili nel 2014–20: 3 · di queste positive nel 2021+: 0 · mediana 2021+ 6,396 $
+Mediane per entry: B: 6,985 $ DD -43% PF 0.82 positive 26% (trade 34; 2014–20 C/DD 0.23) · T: 7,267 $ DD -50% PF 0.85 positive 19% (trade 27; 2014–20 C/DD 0.37) · X: 8,859 $ DD -45% PF 1.03 positive 38% (trade 40; 2014–20 C/DD 0.29)
+Mediane per regime: R0: 5,716 $ DD -64% PF 0.87 positive 10% (trade 70; 2014–20 C/DD 0.39) · R1: 6,592 $ DD -47% PF 0.76 positive 3% (trade 34; 2014–20 C/DD 0.43) · R2: 10,618 $ DD -22% PF 1.30 positive 70% (trade 13; 2014–20 C/DD 0.19)
+Mediane per side: L: 8,667 $ DD -42% PF 1.00 positive 36% (trade 34; 2014–20 C/DD 0.46) · LS: 6,563 $ DD -55% PF 0.90 positive 31% (trade 52; 2014–20 C/DD 0.40) · S: 7,495 $ DD -46% PF 0.80 positive 15% (trade 20; 2014–20 C/DD 0.05)
+Mediane per stop: SF: 7,425 $ DD -49% PF 0.90 positive 30% (trade 29; 2014–20 C/DD 0.26) · SS: 7,894 $ DD -42% PF 0.91 positive 27% (trade 43; 2014–20 C/DD 0.23) · ST: 7,871 $ DD -45% PF 0.89 positive 26% (trade 34; 2014–20 C/DD 0.37)
+Mediane per tp: T10: 7,425 $ DD -46% PF 0.92 positive 32% (trade 38; 2014–20 C/DD 0.23) · T15: 7,295 $ DD -47% PF 0.81 positive 15% (trade 30; 2014–20 C/DD 0.22) · TH: 8,413 $ DD -42% PF 0.94 positive 35% (trade 32; 2014–20 C/DD 0.31) · TSR: 6,601 $ DD -49% PF 0.83 positive 27% (trade 36; 2014–20 C/DD 0.33) · TT: 8,367 $ DD -45% PF 0.97 positive 28% (trade 36; 2014–20 C/DD 0.39)
+Stop × uscita, finale mediano 2021+ (solo R1 e R2, tutti i tipi e lati):
+tp       T10     T15       TH     TSR      TT
+stop                                         
+SF    9967.0  8380.0  10109.0  8446.0  9638.0
+SS    9319.0  8537.0   9672.0  9061.0  9692.0
+ST    8956.0  8140.0   9248.0  8262.0  9238.0
+Prime 10 del 2021+ per CAGR/DD (≥ 20 trade) — SCELTA A POSTERIORI, NON UTILIZZABILE:
+  B/R2/LS/SF/TSR      21,611 $ · DD  -19.6% · C/DD  0.72 · trade  20 · PF 2.86 · IS 13,984 / OOS 14,261 || 2014–20: 12,250 $ · DD -25% · PF nan/1.49 · amm. False
+  X/R2/LS/SS/TSR      16,395 $ · DD  -19.4% · C/DD  0.45 · trade  34 · PF 1.89 · IS 12,045 / OOS 13,612 || 2014–20: 12,017 $ · DD -10% · PF nan/1.53 · amm. False
+  X/R2/L/SS/TSR       15,246 $ · DD  -17.5% · C/DD  0.43 · trade  24 · PF 2.06 · IS 12,332 / OOS 12,363 || 2014–20: 10,275 $ · DD -10% · PF nan/1.18 · amm. False
+  X/R2/L/SS/T15       14,077 $ · DD  -17.5% · C/DD  0.34 · trade  23 · PF 1.86 · IS 11,387 / OOS 12,363 || 2014–20: 9,124 $ · DD -17% · PF nan/0.65 · amm. False
+  T/R2/LS/SF/TSR      14,422 $ · DD  -21.7% · C/DD  0.30 · trade  20 · PF 1.72 · IS 12,878 / OOS 10,335 || 2014–20: 15,719 $ · DD -24% · PF nan/2.33 · amm. False
+  X/R2/L/SS/TT        15,026 $ · DD  -25.2% · C/DD  0.28 · trade  22 · PF 2.14 · IS 10,844 / OOS 13,856 || 2014–20: 9,507 $ · DD -21% · PF nan/0.84 · amm. False
+  X/R2/LS/SS/T15      13,619 $ · DD  -19.4% · C/DD  0.28 · trade  30 · PF 1.60 · IS 11,121 / OOS 12,246 || 2014–20: 10,321 $ · DD -23% · PF nan/1.18 · amm. False
+  X/R2/LS/SS/TT       14,966 $ · DD  -27.0% · C/DD  0.26 · trade  28 · PF 1.90 · IS 10,592 / OOS 14,130 || 2014–20: 11,560 $ · DD -29% · PF nan/1.67 · amm. False
+  X/R2/LS/SF/T10      15,057 $ · DD  -27.9% · C/DD  0.26 · trade  25 · PF 1.59 · IS 13,572 / OOS 9,948 || 2014–20: 14,054 $ · DD -27% · PF nan/1.84 · amm. False
+  B/R2/LS/SS/TH       13,869 $ · DD  -23.6% · C/DD  0.24 · trade  20 · PF 1.87 · IS 9,196 / OOS 15,081 || 2014–20: 10,793 $ · DD -19% · PF nan/1.37 · amm. False
+Placebo della migliore a posteriori B/R2/LS/SF/TSR: p = 0.226 (soglia di Bonferroni 0.00012) · placebo mediana 16,487 $
+70/30 con la migliore a posteriori: 25,516 $ · DD -9.7% · C/DD 1.784

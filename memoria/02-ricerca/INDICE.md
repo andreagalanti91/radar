@@ -16,3 +16,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Revisione Fable di W3.1 | confermata; uscita 'distribuzione' fragile | 101–103 | — |
 | Ingressi a scaglioni (DCA), uscite a scaglioni, TP, stop, distribuzione, 7 giorni | W3.1 resta la migliore | 105 | research/ingressi_uscite |
 | Order book e liquidazioni (15 giorni) | nessun supporto, rifare 20/12 e 03/2027 | 105 | research/book_liq |
+| Swing brevi su S/R settimanali, stop 5–10%, TP 10–15%, 70/30 con W3.1 (405 configurazioni) | non valida, 0/405 battono W3.1 | 106 | research/swing_sr |

@@ -175,6 +175,9 @@ def daily() -> None:
     provlog_out = _soft("registro provvisori/definitivi", lambda: _im(".provlog", __package__).update(f, d, wcur, _ddir))
     guard_out = _soft("soglie d'allarme", lambda: _im(".guard", __package__).update(wcur, st, journal.load()))
     _soft("avvisi sulle fonti", source_alerts, errors, stale, st, now, data_until)
+    # controlli di coerenza orari (buchi nei dati, storico riscritto, decisione cambiata con i definitivi): solo avviso
+    coh = _soft("controlli di coerenza", lambda: _im(".coherence", __package__).update(d, wcur, provlog_out, st))
+    problems += [x.split(" (")[0] for x in (coh or {}).get("problems", [])]
     _soft("heartbeat", heartbeat, wcur, st, now, data_until, problems)
     _save_state(st)
     # ---- v2, moduli accessori e dashboard: ognuno isolato

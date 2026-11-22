@@ -1,0 +1,59 @@
+"""Pre-analisi su telefono (radar/dashboard_template.html, radar/preview.py): card più corta a 400 px senza perdere informazioni
+(chiusura multi-asset richiudibile, etichette non tagliate), funding senza "−0,0%". Niente rete."""
+import re
+import unittest
+from pathlib import Path
+
+from radar import preview
+
+T = (Path(__file__).resolve().parents[1] / "radar" / "dashboard_template.html").read_text()
+
+
+class TestFundingTesto(unittest.TestCase):
+    def test_funding_piccolo_senza_meno_zero(self):
+        self.assertEqual(preview._fund_txt(0.000098), "0,0098%/giorno · 3,6%/anno")
+        self.assertEqual(preview._fund_txt(-0.0000013), "−0,0001%/giorno · −0,05%/anno")   # era "−0,0%/anno"
+        self.assertEqual(preview._fund_txt(-0.0003), "−0,0300%/giorno · −10,9%/anno")
+        self.assertEqual(preview._fund_txt(-1e-9), "0,0000%/giorno · 0,00%/anno")           # zero senza segno
+        self.assertEqual(preview._fund_txt(0.0), "0,0000%/giorno · 0,00%/anno")
+
+
+class TestPreanalisiTelefono(unittest.TestCase):
+    def test_chiusura_multi_asset_richiudibile(self):
+        # tabella degli asset in un <details>: chiusa su telefono (≤ 700 px), aperta su schermo largo; regime nel titolo
+        self.assertIn('<details class="pvMac"${window.isMobile() ? "" : " open"}>', T)
+        m = re.search(r'<details class="pvMac".*?</details>', T, re.S)
+        self.assertIsNotNone(m)
+        box = m.group(0)
+        self.assertIn("<summary", box)
+        self.assertIn("MC.regime.label", box[:box.index("</summary>")])      # il regime si legge anche da chiusa
+        self.assertNotIn("MC.flags", box)                                    # gli avvisi restano sempre in vista, fuori
+        self.assertIn("MC.flags", T[m.end():m.end() + 400])
+
+    def test_etichette_non_tagliate(self):
+        css = re.search(r"\.pvMac \.mr>b\{[^}]*\}", T).group(0)
+        self.assertNotIn("ellipsis", css)                                    # "Treasury 10 anni" era tagliato a 400 px
+        self.assertNotIn("nowrap", css)
+
+    def test_riga_decisione_corta_con_posizione(self):
+        # con la posizione aperta "oggi short aperto" ripete il blocco sopra: su telefono resta solo la data della decisione
+        self.assertIn('class="pvWhenX"', T)
+        self.assertRegex(T, r"@media \(max-width:700px\)\{[^\n]*\.pvWhenX\{display:none\}")
+        self.assertRegex(T, r"@media \(max-width:700px\)\{[^\n]*\.pvPos \.x\{display:none\}")
+
+
+class TestTestiW31(unittest.TestCase):
+    """Sezione "Limiti" di Come funziona: numeri di W3.1 (rischio 10%) presi dal report, non quelli fissi di W3 al 25%."""
+    def test_limiti_senza_numeri_del_25(self):
+        for old in ("circa 78.000 $", "drawdown giornaliero −21%", "−25/−30%", "scendere del 30%"):
+            self.assertNotIn(old, T)
+        self.assertIn('id="wkLim"', T)
+        # testo calcolato dallo storico del report (trade, vincenti, 10.000 $, drawdown): non può più restare indietro
+        m = re.search(r'\$\("wkLim"\)\.innerHTML = `([^`]*)`', T)
+        self.assertIsNotNone(m)
+        for k in ("M.n", "M.win_rate", "H.final_10k_1x", "M.max_dd_pct"):
+            self.assertIn(k, m.group(1))
+
+
+if __name__ == "__main__":
+    unittest.main()

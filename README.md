@@ -69,11 +69,11 @@ Wallet stanno in `radar/pages/` (`liquidazioni.html`, `wallet.html`) e vengono i
 
 | Quando | Workflow / modulo | Cosa fa |
 |---|---|---|
-| Ogni ora a :07 (riserva a :37) | `.github/workflows/daily.yml` → `python -m radar.cli daily` | registro Telegram, dati, segnale W2, S/R, liquidazioni, scout, order book, notizie e calendario, alert, dashboard su Pages |
+| Ogni ora a :07 (riserva a :37) | `.github/workflows/daily.yml` → `python -m radar.cli daily` | registro Telegram, dati, segnale W3.1, controlli di coerenza, S/R, liquidazioni, scout, order book, notizie e calendario, alert, dashboard su Pages |
 | 00:30 UTC | stesso workflow | giro sulla candela giornaliera chiusa (mai saltato) |
 | Ogni 5 minuti | `.github/workflows/wallets.yml` → `python -m radar.wallets` | alert sui wallet della sentinella e sulle balene del giorno |
 | Una volta al giorno | `radar/scout.py` (dentro il giro orario, ≥ 20 ore dall'ultimo) | scelta delle 3 balene, verifica delle scelte passate |
-| Lunedì 08:41 | resoconto su Telegram | settimana chiusa e confronto con il registro reale |
+| Lunedì 08:41 | resoconto settimanale (attività pianificata di Claude, testo in `deploy/RESOCONTO-SETTIMANALE.md`) | settimana chiusa di W3.1, soglie d'allarme, registro provvisori/definitivi e confronto con il registro reale |
 
 Il giro di riserva a :37 esiste perché il cron di GitHub è best-effort: si ferma subito se l'ultimo giro completo è di meno di
 25 minuti fa (`data/state.json`, `last_run`). Alert della strategia (tutti "RADAR SIGNAL BTC"): segnale settimanale con piano in
@@ -193,6 +193,9 @@ radar/cli.py           giro orario: orchestra tutti i moduli
 radar/data.py          download e cache incrementale (data/*.csv)
 radar/features.py      CVD spot/perp, funding, OI, ATR, trend
 radar/weekly.py        W3 (W2 + MACD robusta): storico, stato, eventi, controllo orario del trailing
+radar/guard.py         soglie d'allarme di W3.1 dal vivo (equity −15%, 2 stop consecutivi): solo avviso
+radar/coherence.py     controlli di coerenza orari (buchi nei dati, storico riscritto, decisione cambiata): solo avviso
+radar/provlog.py       registro domenicale dei dati provvisori (OKX) contro i definitivi (Binance)
 radar/levels.py        supporti e resistenze (mappa visiva)
 radar/liqmap.py        mappa stimata delle liquidazioni + prezzi di liquidazione Hyperliquid
 radar/liquidations.py  raccolta delle liquidazioni reali OKX

@@ -409,6 +409,12 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 106**: lo swing breve sui livelli settimanali (rimbalzo, rottura, ritest) con stop 5–10% e TP 10–15% non funziona su BTC
+dal 2021: la configurazione scelta sul 2014–20 fa 10k → 5,6k (DD −56%), 0/405 battono W3.1 o il buy & hold, gli ingressi sui
+livelli valgono quanto ingressi a caso (p 0,43) e la classifica del 2014–20 non predice il 2021+ (rango −0,02). L'unico guadagno
+viene dal regime di W3.1, e dentro quel regime il TP breve dimezza il rendimento; il 70/30 W3.1 + swing peggiora W3.1 (20,7k contro
+27,2k). Non riproporre swing su S/R con barre giornaliere; i vicini vanno definiti su parametri che agiscono sull'ingresso scelto.
+research/swing_sr/README.md (22/11/2026, revisione critica separata eseguita, secondo ciclo non eseguito).
 **Lezione 105**: su W3.1 i modi di eseguire gli stessi segnali non migliorano il risultato: il DCA in ingresso costa 3–9k$, le
 uscite a scaglioni 2–3k$, il TP a +3R non scatta mai, lo stop a 2,5 ATR resta il migliore; l'uscita per distribuzione è utile
 (toglierla costa 6,5k$ e 3 punti di DD, placebo p 0,005) ma fragile ai margini: tenerla e registrarne i margini (lezione 102).
@@ -1318,11 +1324,17 @@ sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flu
 ## Resoconti settimanali
 - Resoconto settimanale 16/11: chiusura del 15/11 a 65.351 $ → SEGNALE SHORT W3 (regime short, flusso −0,93σ, EMA21 75.574): ingresso lunedì 16/11 all'apertura, esposizione 0,97, stop 82.163 $ (+25,7%), perdita allo stop ~12.600 $ su 50.000; registro dei trade reali vuoto; dal 2021 invariato 10k → 78.474 $, DD −21,1%, 13 trade, WR 92%.
 
-## Errori operativi da non ripetere (aggiornata 13/11/2026)
+## Errori operativi da non ripetere (aggiornata 22/11/2026)
 - Revisione completa del 13/11 (5 revisori + verifica incrociata, STATO-revisione.md): W3 corretta e riprodotta da zero; trovati e
   corretti avvisi falsi ("stop toccato" dopo un'uscita EMA), variabili con virgola/punto delle migliaia che bloccavano il giro o
   davano 50 $ invece di 50.000 $, giro 00:30 mai partito (ora avviato ogni ora dalla catena liqsnap), perdita silenziosa di dati
   nei rebase "-X theirs" su file binari, stato degli avvisi perso se il push fallisce.
+- Protezioni permanenti (22/11): a ogni giro orario girano i controlli di coerenza (radar/coherence.py: giorni mancanti nelle
+  fonti di W3.1, trade dello storico riscritti dopo l'arrivo dei dati definitivi, decisione domenicale cambiata nel registro
+  provvisori/definitivi) e le soglie d'allarme (radar/guard.py); avvisano su Telegram una volta per evento e non cambiano mai
+  dati, segnali o posizione. Un controllo che scrive solo nel log di GitHub non è una protezione: ogni nuovo controllo deve
+  avvisare. Testi con numeri della strategia (pagina "Come funziona", promemoria del lunedì) vanno letti dal report o riallineati
+  a ogni cambio di strategia: la sezione "Limiti" mostrava ancora 78.000 $ e DD −21% (W3 al 25%) tre giorni dopo W3.1.
 - Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git).
 - Prima di pubblicare una correzione: test che fallisce prima e passa dopo, suite completa verde, render a 400/1280, deploy e
   verifica online. I test vanno scritti con unittest (pytest non è installato: test in stile pytest non girano mai).

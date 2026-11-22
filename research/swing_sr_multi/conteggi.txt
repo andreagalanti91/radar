@@ -1,0 +1,433 @@
+Conteggi senza rendimenti. Fra parentesi i segnali con stop strutturale entro il 10% (gli altri sono scartati da ST e SS).
+Un segnale non è un trade: con una posizione per volta i trade sono meno dei segnali.
+
+=== SPY · S&P 500 (ETF SPY) · dati 1993-01-29 → 2026-11-20 (8512 barre) · barre piatte (max = min) dal 1996: 0.0%
+scelta 1996-01-01 → 2015-12-31 (20.0 anni; metà al 2005-12-31) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 411 · attivi per giorno (mediana dal 1996) 24
+  scelta   B: LR0 945 (944) · LR1 565 (565) · SR0 833 (833) · SR1 143 (143)
+  scelta   X: LR0 604 (604) · LR1 283 (283) · SR0 550 (550) · SR1 122 (122)
+  scelta   T: LR0 926 (926) · LR1 571 (571) · SR0 727 (727) · SR1 150 (150)
+  giudizio B: LR0 527 (527) · LR1 364 (364) · SR0 393 (393) · SR1 64 (64)
+  giudizio X: LR0 343 (343) · LR1 180 (180) · SR0 300 (298) · SR1 70 (70)
+  giudizio T: LR0 523 (523) · LR1 369 (369) · SR0 307 (307) · SR1 74 (74)
+K=3: livelli 284 · attivi per giorno (mediana dal 1996) 16
+  scelta   B: LR0 694 (693) · LR1 396 (396) · SR0 652 (652) · SR1 112 (112)
+  scelta   X: LR0 444 (444) · LR1 202 (202) · SR0 404 (404) · SR1 98 (98)
+  scelta   T: LR0 696 (696) · LR1 412 (412) · SR0 562 (562) · SR1 123 (123)
+  giudizio B: LR0 407 (407) · LR1 281 (281) · SR0 321 (321) · SR1 47 (47)
+  giudizio X: LR0 265 (265) · LR1 137 (137) · SR0 231 (229) · SR1 48 (48)
+  giudizio T: LR0 407 (407) · LR1 283 (283) · SR0 241 (241) · SR1 52 (52)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.7% / 2.1% / 2.7% · sotto 2%: 43% · sotto 5%: 98% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 1.4% · giudizio 1.1%
+  giorni in regime R1: long scelta 67% · long giudizio 78% · short scelta 17% · short giudizio 9%
+K=4: livelli 223 · attivi per giorno (mediana dal 1996) 13
+  scelta   B: LR0 583 (582) · LR1 332 (332) · SR0 541 (541) · SR1 97 (97)
+  scelta   X: LR0 363 (363) · LR1 171 (171) · SR0 332 (332) · SR1 87 (87)
+  scelta   T: LR0 618 (618) · LR1 373 (373) · SR0 477 (477) · SR1 110 (110)
+  giudizio B: LR0 339 (339) · LR1 238 (238) · SR0 275 (275) · SR1 39 (39)
+  giudizio X: LR0 210 (210) · LR1 109 (109) · SR0 180 (179) · SR1 37 (37)
+  giudizio T: LR0 351 (351) · LR1 250 (250) · SR0 199 (199) · SR1 43 (43)
+
+=== QQQ · Nasdaq 100 (ETF QQQ) · dati 1999-03-10 → 2026-11-20 (6970 barre) · barre piatte (max = min) dal 2000: 0.0%
+scelta 2000-03-08 → 2015-12-31 (15.8 anni; metà al 2008-02-03) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 336 · attivi per giorno (mediana dal 2000) 24
+  scelta   B: LR0 655 (650) · LR1 380 (380) · SR0 512 (510) · SR1 108 (106)
+  scelta   X: LR0 503 (502) · LR1 251 (251) · SR0 463 (463) · SR1 113 (113)
+  scelta   T: LR0 651 (649) · LR1 410 (410) · SR0 508 (507) · SR1 121 (120)
+  giudizio B: LR0 467 (467) · LR1 300 (300) · SR0 344 (344) · SR1 66 (66)
+  giudizio X: LR0 328 (327) · LR1 187 (187) · SR0 292 (290) · SR1 52 (52)
+  giudizio T: LR0 448 (448) · LR1 314 (314) · SR0 307 (307) · SR1 66 (66)
+K=3: livelli 233 · attivi per giorno (mediana dal 2000) 17
+  scelta   B: LR0 466 (463) · LR1 270 (270) · SR0 370 (369) · SR1 79 (78)
+  scelta   X: LR0 352 (352) · LR1 169 (169) · SR0 319 (319) · SR1 79 (79)
+  scelta   T: LR0 463 (461) · LR1 291 (291) · SR0 360 (359) · SR1 94 (93)
+  giudizio B: LR0 346 (346) · LR1 224 (224) · SR0 269 (269) · SR1 52 (52)
+  giudizio X: LR0 251 (250) · LR1 141 (141) · SR0 223 (221) · SR1 45 (45)
+  giudizio T: LR0 348 (348) · LR1 248 (248) · SR0 236 (236) · SR1 53 (53)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.8% / 2.3% / 2.9% · sotto 2%: 35% · sotto 5%: 96% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 1.6% · giudizio 1.5%
+  giorni in regime R1: long scelta 62% · long giudizio 76% · short scelta 20% · short giudizio 10%
+K=4: livelli 189 · attivi per giorno (mediana dal 2000) 13
+  scelta   B: LR0 384 (383) · LR1 222 (222) · SR0 303 (302) · SR1 65 (64)
+  scelta   X: LR0 302 (302) · LR1 146 (146) · SR0 270 (270) · SR1 72 (72)
+  scelta   T: LR0 387 (387) · LR1 240 (240) · SR0 309 (308) · SR1 80 (79)
+  giudizio B: LR0 286 (286) · LR1 197 (197) · SR0 222 (222) · SR1 38 (38)
+  giudizio X: LR0 204 (203) · LR1 118 (118) · SR0 186 (184) · SR1 35 (35)
+  giudizio T: LR0 292 (292) · LR1 215 (215) · SR0 207 (207) · SR1 40 (40)
+
+=== GLD · Oro (ETF GLD) · dati 2004-11-18 → 2026-11-20 (5537 barre) · barre piatte (max = min) dal 2005: 0.0%
+scelta 2005-11-17 → 2015-12-31 (10.1 anni; metà al 2010-12-09) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 300 · attivi per giorno (mediana dal 2005) 27
+  scelta   B: LR0 363 (362) · LR1 164 (164) · SR0 370 (369) · SR1 110 (110)
+  scelta   X: LR0 293 (293) · LR1 139 (139) · SR0 267 (267) · SR1 76 (76)
+  scelta   T: LR0 357 (357) · LR1 175 (175) · SR0 338 (338) · SR1 111 (111)
+  giudizio B: LR0 576 (576) · LR1 314 (314) · SR0 577 (577) · SR1 118 (118)
+  giudizio X: LR0 431 (431) · LR1 235 (235) · SR0 402 (402) · SR1 69 (69)
+  giudizio T: LR0 547 (547) · LR1 317 (317) · SR0 538 (538) · SR1 118 (118)
+K=3: livelli 219 · attivi per giorno (mediana dal 2005) 20
+  scelta   B: LR0 266 (265) · LR1 112 (112) · SR0 271 (270) · SR1 96 (96)
+  scelta   X: LR0 204 (204) · LR1 86 (86) · SR0 195 (195) · SR1 63 (63)
+  scelta   T: LR0 258 (258) · LR1 121 (121) · SR0 250 (250) · SR1 100 (100)
+  giudizio B: LR0 517 (517) · LR1 282 (282) · SR0 464 (464) · SR1 111 (111)
+  giudizio X: LR0 343 (343) · LR1 172 (172) · SR0 322 (322) · SR1 65 (65)
+  giudizio T: LR0 473 (473) · LR1 264 (264) · SR0 435 (435) · SR1 112 (112)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.5% / 1.9% / 2.3% · sotto 2%: 57% · sotto 5%: 100% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 1.4% · giudizio 1.1%
+  giorni in regime R1: long scelta 56% · long giudizio 62% · short scelta 25% · short giudizio 16%
+K=4: livelli 170 · attivi per giorno (mediana dal 2005) 16
+  scelta   B: LR0 200 (200) · LR1 90 (90) · SR0 234 (234) · SR1 92 (92)
+  scelta   X: LR0 166 (166) · LR1 68 (68) · SR0 159 (159) · SR1 57 (57)
+  scelta   T: LR0 215 (215) · LR1 100 (100) · SR0 228 (228) · SR1 94 (94)
+  giudizio B: LR0 461 (461) · LR1 244 (244) · SR0 419 (419) · SR1 105 (105)
+  giudizio X: LR0 292 (292) · LR1 145 (145) · SR0 278 (278) · SR1 58 (58)
+  giudizio T: LR0 407 (407) · LR1 220 (220) · SR0 390 (390) · SR1 105 (105)
+
+=== SLV · Argento (ETF SLV) · dati 2006-04-28 → 2026-11-20 (5175 barre) · barre piatte (max = min) dal 2007: 0.0%
+scelta 2007-04-27 → 2015-12-31 (8.7 anni; metà al 2011-08-29) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 285 · attivi per giorno (mediana dal 2007) 28
+  scelta   B: LR0 280 (280) · LR1 105 (105) · SR0 300 (300) · SR1 120 (120)
+  scelta   X: LR0 312 (311) · LR1 130 (130) · SR0 297 (293) · SR1 87 (83)
+  scelta   T: LR0 263 (263) · LR1 121 (121) · SR0 272 (272) · SR1 100 (100)
+  giudizio B: LR0 462 (462) · LR1 196 (196) · SR0 459 (459) · SR1 150 (150)
+  giudizio X: LR0 454 (454) · LR1 213 (213) · SR0 430 (428) · SR1 112 (112)
+  giudizio T: LR0 479 (479) · LR1 234 (234) · SR0 418 (418) · SR1 138 (138)
+K=3: livelli 205 · attivi per giorno (mediana dal 2007) 20
+  scelta   B: LR0 215 (215) · LR1 82 (82) · SR0 212 (212) · SR1 88 (88)
+  scelta   X: LR0 225 (224) · LR1 92 (92) · SR0 218 (215) · SR1 64 (61)
+  scelta   T: LR0 201 (201) · LR1 97 (97) · SR0 201 (201) · SR1 79 (79)
+  giudizio B: LR0 403 (403) · LR1 175 (175) · SR0 408 (408) · SR1 121 (121)
+  giudizio X: LR0 385 (385) · LR1 185 (185) · SR0 364 (363) · SR1 91 (91)
+  giudizio T: LR0 414 (414) · LR1 211 (211) · SR0 375 (375) · SR1 116 (116)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.8% / 2.3% / 2.9% · sotto 2%: 36% · sotto 5%: 97% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.4% · giudizio 1.9%
+  giorni in regime R1: long scelta 41% · long giudizio 51% · short scelta 37% · short giudizio 27%
+K=4: livelli 155 · attivi per giorno (mediana dal 2007) 15
+  scelta   B: LR0 189 (189) · LR1 78 (78) · SR0 173 (173) · SR1 60 (60)
+  scelta   X: LR0 194 (193) · LR1 88 (88) · SR0 188 (186) · SR1 45 (43)
+  scelta   T: LR0 178 (178) · LR1 96 (96) · SR0 173 (173) · SR1 56 (56)
+  giudizio B: LR0 323 (323) · LR1 139 (139) · SR0 312 (312) · SR1 85 (85)
+  giudizio X: LR0 291 (291) · LR1 144 (144) · SR0 271 (270) · SR1 73 (73)
+  giudizio T: LR0 326 (326) · LR1 171 (171) · SR0 278 (278) · SR1 87 (87)
+
+=== USO · Petrolio WTI (ETF USO) · dati 2006-04-10 → 2026-11-20 (5188 barre) · barre piatte (max = min) dal 2007: 0.0%
+scelta 2007-04-09 → 2015-12-31 (8.7 anni; metà al 2011-08-20) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 282 · attivi per giorno (mediana dal 2007) 26
+  scelta   B: LR0 403 (403) · LR1 201 (201) · SR0 328 (328) · SR1 75 (75)
+  scelta   X: LR0 396 (396) · LR1 181 (181) · SR0 394 (393) · SR1 102 (102)
+  scelta   T: LR0 408 (408) · LR1 218 (218) · SR0 329 (329) · SR1 78 (78)
+  giudizio B: LR0 417 (417) · LR1 191 (191) · SR0 390 (389) · SR1 120 (120)
+  giudizio X: LR0 497 (496) · LR1 184 (184) · SR0 454 (454) · SR1 142 (142)
+  giudizio T: LR0 447 (447) · LR1 203 (203) · SR0 397 (397) · SR1 123 (123)
+K=3: livelli 182 · attivi per giorno (mediana dal 2007) 18
+  scelta   B: LR0 292 (292) · LR1 142 (142) · SR0 256 (256) · SR1 63 (63)
+  scelta   X: LR0 289 (289) · LR1 119 (119) · SR0 291 (291) · SR1 85 (85)
+  scelta   T: LR0 310 (310) · LR1 157 (157) · SR0 252 (252) · SR1 66 (66)
+  giudizio B: LR0 293 (293) · LR1 134 (134) · SR0 272 (271) · SR1 81 (81)
+  giudizio X: LR0 343 (342) · LR1 125 (125) · SR0 311 (311) · SR1 111 (111)
+  giudizio T: LR0 328 (328) · LR1 151 (151) · SR0 290 (290) · SR1 97 (97)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.9% / 2.5% / 3.2% · sotto 2%: 30% · sotto 5%: 97% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.5% · giudizio 2.6%
+  giorni in regime R1: long scelta 41% · long giudizio 49% · short scelta 35% · short giudizio 30%
+K=4: livelli 154 · attivi per giorno (mediana dal 2007) 15
+  scelta   B: LR0 264 (264) · LR1 124 (124) · SR0 227 (227) · SR1 59 (59)
+  scelta   X: LR0 266 (266) · LR1 109 (109) · SR0 268 (268) · SR1 84 (84)
+  scelta   T: LR0 290 (290) · LR1 143 (143) · SR0 229 (229) · SR1 63 (63)
+  giudizio B: LR0 252 (252) · LR1 118 (118) · SR0 243 (242) · SR1 70 (70)
+  giudizio X: LR0 297 (296) · LR1 113 (113) · SR0 275 (275) · SR1 93 (93)
+  giudizio T: LR0 292 (292) · LR1 142 (142) · SR0 269 (269) · SR1 90 (90)
+
+=== AAPL · Apple · dati 1980-12-12 → 2026-11-20 (11579 barre) · barre piatte (max = min) dal 1996: 0.0%
+scelta 1996-01-01 → 2015-12-31 (20.0 anni; metà al 2005-12-31) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 618 · attivi per giorno (mediana dal 1996) 26
+  scelta   B: LR0 604 (591) · LR1 343 (339) · SR0 646 (636) · SR1 162 (158)
+  scelta   X: LR0 668 (659) · LR1 344 (339) · SR0 631 (621) · SR1 180 (175)
+  scelta   T: LR0 608 (602) · LR1 360 (359) · SR0 604 (591) · SR1 174 (170)
+  giudizio B: LR0 485 (484) · LR1 285 (285) · SR0 381 (380) · SR1 80 (80)
+  giudizio X: LR0 407 (406) · LR1 208 (208) · SR0 340 (340) · SR1 79 (79)
+  giudizio T: LR0 482 (482) · LR1 282 (282) · SR0 330 (329) · SR1 94 (94)
+K=3: livelli 419 · attivi per giorno (mediana dal 1996) 19
+  scelta   B: LR0 444 (431) · LR1 247 (243) · SR0 479 (469) · SR1 131 (127)
+  scelta   X: LR0 511 (502) · LR1 254 (249) · SR0 484 (475) · SR1 155 (150)
+  scelta   T: LR0 464 (459) · LR1 273 (272) · SR0 460 (446) · SR1 146 (141)
+  giudizio B: LR0 368 (367) · LR1 199 (199) · SR0 310 (309) · SR1 69 (69)
+  giudizio X: LR0 302 (301) · LR1 144 (144) · SR0 256 (256) · SR1 63 (63)
+  giudizio T: LR0 362 (362) · LR1 200 (200) · SR0 267 (267) · SR1 78 (78)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.1% / 2.8% / 4.0% · sotto 2%: 23% · sotto 5%: 85% · oltre 10%: 1%
+  ATR14 giornaliero / chiusura, mediana: scelta 3.4% · giudizio 2.0%
+  giorni in regime R1: long scelta 63% · long giudizio 71% · short scelta 20% · short giudizio 14%
+K=4: livelli 325 · attivi per giorno (mediana dal 1996) 14
+  scelta   B: LR0 313 (302) · LR1 164 (160) · SR0 332 (324) · SR1 106 (102)
+  scelta   X: LR0 357 (350) · LR1 175 (171) · SR0 335 (327) · SR1 115 (111)
+  scelta   T: LR0 337 (333) · LR1 188 (187) · SR0 316 (306) · SR1 120 (115)
+  giudizio B: LR0 289 (288) · LR1 148 (148) · SR0 251 (250) · SR1 59 (59)
+  giudizio X: LR0 238 (238) · LR1 101 (101) · SR0 197 (197) · SR1 54 (54)
+  giudizio T: LR0 288 (288) · LR1 149 (149) · SR0 206 (206) · SR1 67 (67)
+
+=== AMZN · Amazon · dati 1997-05-15 → 2026-11-20 (7427 barre) · barre piatte (max = min) dal 1998: 0.0%
+scelta 1998-05-14 → 2015-12-31 (17.6 anni; metà al 2007-03-08) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 411 · attivi per giorno (mediana dal 1998) 27
+  scelta   B: LR0 620 (594) · LR1 294 (291) · SR0 563 (542) · SR1 149 (136)
+  scelta   X: LR0 613 (592) · LR1 268 (261) · SR0 593 (575) · SR1 152 (142)
+  scelta   T: LR0 562 (552) · LR1 272 (270) · SR0 548 (529) · SR1 148 (136)
+  giudizio B: LR0 363 (363) · LR1 186 (186) · SR0 381 (380) · SR1 38 (38)
+  giudizio X: LR0 384 (381) · LR1 169 (168) · SR0 345 (343) · SR1 36 (35)
+  giudizio T: LR0 375 (374) · LR1 202 (202) · SR0 331 (330) · SR1 43 (43)
+K=3: livelli 279 · attivi per giorno (mediana dal 1998) 18
+  scelta   B: LR0 479 (457) · LR1 233 (230) · SR0 444 (425) · SR1 125 (113)
+  scelta   X: LR0 493 (475) · LR1 221 (214) · SR0 461 (448) · SR1 118 (111)
+  scelta   T: LR0 483 (474) · LR1 232 (230) · SR0 462 (443) · SR1 127 (115)
+  giudizio B: LR0 268 (268) · LR1 139 (139) · SR0 289 (288) · SR1 29 (29)
+  giudizio X: LR0 287 (285) · LR1 129 (128) · SR0 260 (258) · SR1 21 (20)
+  giudizio T: LR0 285 (284) · LR1 154 (154) · SR0 260 (259) · SR1 30 (30)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.1% / 3.0% / 4.1% · sotto 2%: 21% · sotto 5%: 85% · oltre 10%: 2%
+  ATR14 giornaliero / chiusura, mediana: scelta 3.5% · giudizio 2.4%
+  giorni in regime R1: long scelta 57% · long giudizio 64% · short scelta 21% · short giudizio 10%
+K=4: livelli 217 · attivi per giorno (mediana dal 1998) 15
+  scelta   B: LR0 419 (400) · LR1 207 (205) · SR0 369 (353) · SR1 105 (95)
+  scelta   X: LR0 417 (401) · LR1 191 (185) · SR0 384 (372) · SR1 101 (95)
+  scelta   T: LR0 427 (421) · LR1 209 (209) · SR0 409 (394) · SR1 119 (108)
+  giudizio B: LR0 233 (233) · LR1 123 (123) · SR0 248 (248) · SR1 29 (29)
+  giudizio X: LR0 251 (250) · LR1 119 (119) · SR0 226 (224) · SR1 19 (18)
+  giudizio T: LR0 261 (260) · LR1 148 (148) · SR0 229 (228) · SR1 28 (28)
+
+=== AVGO · Broadcom · dati 2009-08-06 → 2026-11-20 (4351 barre) · barre piatte (max = min) dal 2010: 0.0%
+scelta 2010-08-05 → 2018-09-26 (8.1 anni; metà al 2014-08-31) · giudizio 2018-09-27 → 2026-11-20 (8.1 anni; metà al 2022-10-24)
+K=2: livelli 237 · attivi per giorno (mediana dal 2010) 28
+  scelta   B: LR0 276 (276) · LR1 174 (174) · SR0 249 (248) · SR1 26 (26)
+  scelta   X: LR0 272 (272) · LR1 138 (138) · SR0 261 (260) · SR1 28 (28)
+  scelta   T: LR0 259 (259) · LR1 167 (167) · SR0 258 (256) · SR1 28 (28)
+  giudizio B: LR0 260 (258) · LR1 157 (157) · SR0 226 (225) · SR1 32 (32)
+  giudizio X: LR0 298 (294) · LR1 169 (167) · SR0 279 (273) · SR1 41 (39)
+  giudizio T: LR0 272 (272) · LR1 187 (187) · SR0 244 (242) · SR1 33 (33)
+K=3: livelli 177 · attivi per giorno (mediana dal 2010) 20
+  scelta   B: LR0 205 (205) · LR1 137 (137) · SR0 189 (188) · SR1 23 (23)
+  scelta   X: LR0 203 (203) · LR1 109 (109) · SR0 181 (180) · SR1 22 (22)
+  scelta   T: LR0 195 (195) · LR1 133 (133) · SR0 192 (190) · SR1 26 (26)
+  giudizio B: LR0 201 (199) · LR1 121 (121) · SR0 167 (166) · SR1 26 (26)
+  giudizio X: LR0 217 (214) · LR1 119 (117) · SR0 196 (190) · SR1 41 (39)
+  giudizio T: LR0 211 (211) · LR1 148 (148) · SR0 159 (157) · SR1 28 (28)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.1% / 2.9% / 3.9% · sotto 2%: 20% · sotto 5%: 90% · oltre 10%: 1%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.7% · giudizio 3.0%
+  giorni in regime R1: long scelta 76% · long giudizio 76% · short scelta 6% · short giudizio 7%
+K=4: livelli 126 · attivi per giorno (mediana dal 2010) 15
+  scelta   B: LR0 166 (166) · LR1 117 (117) · SR0 174 (173) · SR1 18 (18)
+  scelta   X: LR0 169 (169) · LR1 94 (94) · SR0 152 (151) · SR1 18 (18)
+  scelta   T: LR0 162 (162) · LR1 115 (115) · SR0 180 (178) · SR1 24 (24)
+  giudizio B: LR0 163 (161) · LR1 100 (100) · SR0 133 (133) · SR1 25 (25)
+  giudizio X: LR0 153 (151) · LR1 81 (80) · SR0 139 (135) · SR1 31 (30)
+  giudizio T: LR0 163 (163) · LR1 115 (115) · SR0 122 (121) · SR1 27 (27)
+
+=== BRK-B · Berkshire B · dati 1996-05-09 → 2026-11-20 (7684 barre) · barre piatte (max = min) dal 1997: 0.0%
+scelta 1997-05-08 → 2015-12-31 (18.6 anni; metà al 2006-09-04) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 447 · attivi per giorno (mediana dal 1997) 29
+  scelta   B: LR0 978 (977) · LR1 552 (551) · SR0 1146 (1145) · SR1 214 (213)
+  scelta   X: LR0 733 (732) · LR1 368 (368) · SR0 729 (729) · SR1 157 (157)
+  scelta   T: LR0 914 (913) · LR1 543 (542) · SR0 1017 (1016) · SR1 223 (222)
+  giudizio B: LR0 691 (691) · LR1 456 (456) · SR0 530 (530) · SR1 71 (71)
+  giudizio X: LR0 441 (441) · LR1 235 (235) · SR0 384 (382) · SR1 58 (58)
+  giudizio T: LR0 634 (634) · LR1 421 (421) · SR0 482 (482) · SR1 64 (64)
+K=3: livelli 311 · attivi per giorno (mediana dal 1997) 20
+  scelta   B: LR0 798 (798) · LR1 436 (436) · SR0 921 (920) · SR1 193 (192)
+  scelta   X: LR0 587 (586) · LR1 285 (285) · SR0 573 (573) · SR1 137 (137)
+  scelta   T: LR0 783 (783) · LR1 453 (453) · SR0 859 (858) · SR1 204 (203)
+  giudizio B: LR0 495 (495) · LR1 322 (322) · SR0 396 (396) · SR1 62 (62)
+  giudizio X: LR0 318 (318) · LR1 170 (170) · SR0 274 (272) · SR1 48 (48)
+  giudizio T: LR0 459 (459) · LR1 302 (302) · SR0 367 (367) · SR1 58 (58)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.7% / 2.1% / 2.7% · sotto 2%: 43% · sotto 5%: 98% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 1.5% · giudizio 1.4%
+  giorni in regime R1: long scelta 61% · long giudizio 70% · short scelta 17% · short giudizio 10%
+K=4: livelli 243 · attivi per giorno (mediana dal 1997) 16
+  scelta   B: LR0 632 (632) · LR1 311 (311) · SR0 718 (717) · SR1 179 (178)
+  scelta   X: LR0 458 (457) · LR1 197 (197) · SR0 455 (455) · SR1 128 (128)
+  scelta   T: LR0 635 (635) · LR1 323 (323) · SR0 672 (671) · SR1 193 (192)
+  giudizio B: LR0 471 (471) · LR1 307 (307) · SR0 369 (369) · SR1 58 (58)
+  giudizio X: LR0 293 (293) · LR1 155 (155) · SR0 253 (251) · SR1 46 (46)
+  giudizio T: LR0 446 (446) · LR1 289 (289) · SR0 347 (347) · SR1 54 (54)
+
+=== GOOGL · Alphabet · dati 2004-08-19 → 2026-11-20 (5601 barre) · barre piatte (max = min) dal 2005: 0.0%
+scelta 2005-08-18 → 2015-12-31 (10.4 anni; metà al 2010-10-25) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 291 · attivi per giorno (mediana dal 2005) 26
+  scelta   B: LR0 329 (329) · LR1 155 (155) · SR0 375 (375) · SR1 85 (85)
+  scelta   X: LR0 303 (299) · LR1 137 (135) · SR0 274 (273) · SR1 73 (72)
+  scelta   T: LR0 334 (334) · LR1 170 (170) · SR0 330 (330) · SR1 81 (81)
+  giudizio B: LR0 528 (528) · LR1 353 (353) · SR0 421 (420) · SR1 60 (59)
+  giudizio X: LR0 448 (448) · LR1 260 (260) · SR0 392 (389) · SR1 62 (61)
+  giudizio T: LR0 529 (529) · LR1 382 (382) · SR0 392 (391) · SR1 58 (57)
+K=3: livelli 200 · attivi per giorno (mediana dal 2005) 18
+  scelta   B: LR0 242 (242) · LR1 116 (116) · SR0 276 (276) · SR1 57 (57)
+  scelta   X: LR0 215 (212) · LR1 108 (106) · SR0 199 (199) · SR1 48 (48)
+  scelta   T: LR0 240 (240) · LR1 129 (129) · SR0 251 (251) · SR1 56 (56)
+  giudizio B: LR0 391 (391) · LR1 263 (263) · SR0 284 (283) · SR1 40 (39)
+  giudizio X: LR0 329 (329) · LR1 191 (191) · SR0 293 (290) · SR1 48 (47)
+  giudizio T: LR0 404 (404) · LR1 290 (290) · SR0 296 (295) · SR1 45 (44)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.9% / 2.5% / 3.2% · sotto 2%: 29% · sotto 5%: 95% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.0% · giudizio 2.3%
+  giorni in regime R1: long scelta 62% · long giudizio 68% · short scelta 16% · short giudizio 12%
+K=4: livelli 157 · attivi per giorno (mediana dal 2005) 14
+  scelta   B: LR0 198 (198) · LR1 94 (94) · SR0 218 (218) · SR1 43 (43)
+  scelta   X: LR0 167 (165) · LR1 87 (86) · SR0 156 (156) · SR1 38 (38)
+  scelta   T: LR0 190 (190) · LR1 106 (106) · SR0 191 (190) · SR1 46 (45)
+  giudizio B: LR0 297 (297) · LR1 212 (212) · SR0 214 (214) · SR1 21 (21)
+  giudizio X: LR0 249 (249) · LR1 155 (155) · SR0 228 (225) · SR1 36 (35)
+  giudizio T: LR0 326 (326) · LR1 254 (254) · SR0 236 (236) · SR1 28 (28)
+
+=== LLY · Eli Lilly · dati 1972-06-01 → 2026-11-20 (13733 barre) · barre piatte (max = min) dal 1996: 0.0%
+scelta 1996-01-01 → 2015-12-31 (20.0 anni; metà al 2005-12-31) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 779 · attivi per giorno (mediana dal 1996) 29
+  scelta   B: LR0 1052 (1052) · LR1 543 (543) · SR0 1088 (1088) · SR1 263 (263)
+  scelta   X: LR0 895 (894) · LR1 414 (413) · SR0 877 (874) · SR1 211 (211)
+  scelta   T: LR0 1042 (1042) · LR1 572 (572) · SR0 1029 (1029) · SR1 261 (261)
+  giudizio B: LR0 503 (502) · LR1 255 (255) · SR0 428 (428) · SR1 57 (57)
+  giudizio X: LR0 384 (380) · LR1 185 (184) · SR0 331 (328) · SR1 50 (49)
+  giudizio T: LR0 467 (467) · LR1 263 (263) · SR0 380 (380) · SR1 57 (57)
+K=3: livelli 528 · attivi per giorno (mediana dal 1996) 19
+  scelta   B: LR0 759 (759) · LR1 374 (374) · SR0 779 (779) · SR1 213 (213)
+  scelta   X: LR0 634 (633) · LR1 277 (276) · SR0 625 (622) · SR1 178 (178)
+  scelta   T: LR0 761 (761) · LR1 407 (407) · SR0 765 (765) · SR1 227 (227)
+  giudizio B: LR0 380 (380) · LR1 186 (186) · SR0 330 (330) · SR1 49 (49)
+  giudizio X: LR0 289 (286) · LR1 131 (130) · SR0 246 (244) · SR1 40 (39)
+  giudizio T: LR0 374 (374) · LR1 200 (200) · SR0 306 (306) · SR1 54 (54)
+  distanza dello stop strutturale (tutti i segnali): quartili 1.9% / 2.4% / 3.1% · sotto 2%: 30% · sotto 5%: 96% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.1% · giudizio 2.3%
+  giorni in regime R1: long scelta 57% · long giudizio 69% · short scelta 22% · short giudizio 9%
+K=4: livelli 422 · attivi per giorno (mediana dal 1996) 16
+  scelta   B: LR0 657 (657) · LR1 321 (321) · SR0 667 (667) · SR1 182 (182)
+  scelta   X: LR0 540 (539) · LR1 230 (229) · SR0 520 (517) · SR1 154 (154)
+  scelta   T: LR0 667 (667) · LR1 355 (355) · SR0 657 (657) · SR1 211 (211)
+  giudizio B: LR0 312 (311) · LR1 148 (147) · SR0 268 (268) · SR1 45 (45)
+  giudizio X: LR0 233 (230) · LR1 96 (95) · SR0 194 (192) · SR1 36 (35)
+  giudizio T: LR0 315 (315) · LR1 156 (156) · SR0 246 (246) · SR1 50 (50)
+
+=== META · Meta · dati 2012-05-18 → 2026-11-20 (3649 barre) · barre piatte (max = min) dal 2013: 0.0%
+scelta 2013-05-17 → 2020-02-16 (6.8 anni; metà al 2016-10-01) · giudizio 2020-02-17 → 2026-11-20 (6.8 anni; metà al 2023-07-05)
+K=2: livelli 203 · attivi per giorno (mediana dal 2013) 27
+  scelta   B: LR0 307 (307) · LR1 218 (218) · SR0 254 (254) · SR1 25 (25)
+  scelta   X: LR0 283 (280) · LR1 182 (181) · SR0 257 (256) · SR1 29 (29)
+  scelta   T: LR0 316 (316) · LR1 240 (240) · SR0 275 (275) · SR1 34 (34)
+  giudizio B: LR0 213 (213) · LR1 117 (117) · SR0 239 (238) · SR1 48 (48)
+  giudizio X: LR0 243 (239) · LR1 119 (117) · SR0 231 (228) · SR1 55 (55)
+  giudizio T: LR0 199 (199) · LR1 120 (120) · SR0 225 (224) · SR1 55 (55)
+K=3: livelli 137 · attivi per giorno (mediana dal 2013) 18
+  scelta   B: LR0 218 (218) · LR1 156 (156) · SR0 195 (195) · SR1 19 (19)
+  scelta   X: LR0 209 (207) · LR1 129 (128) · SR0 190 (189) · SR1 22 (22)
+  scelta   T: LR0 251 (251) · LR1 190 (190) · SR0 205 (205) · SR1 24 (24)
+  giudizio B: LR0 168 (168) · LR1 93 (93) · SR0 173 (172) · SR1 39 (39)
+  giudizio X: LR0 170 (167) · LR1 79 (78) · SR0 168 (165) · SR1 45 (45)
+  giudizio T: LR0 154 (154) · LR1 90 (90) · SR0 165 (165) · SR1 49 (49)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.0% / 2.7% / 3.6% · sotto 2%: 24% · sotto 5%: 92% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.3% · giudizio 3.0%
+  giorni in regime R1: long scelta 77% · long giudizio 61% · short scelta 6% · short giudizio 22%
+K=4: livelli 104 · attivi per giorno (mediana dal 2013) 14
+  scelta   B: LR0 183 (183) · LR1 142 (142) · SR0 168 (168) · SR1 12 (12)
+  scelta   X: LR0 175 (173) · LR1 114 (113) · SR0 154 (153) · SR1 14 (14)
+  scelta   T: LR0 236 (236) · LR1 183 (183) · SR0 179 (179) · SR1 17 (17)
+  giudizio B: LR0 142 (142) · LR1 80 (80) · SR0 134 (133) · SR1 38 (38)
+  giudizio X: LR0 139 (136) · LR1 64 (63) · SR0 135 (132) · SR1 45 (45)
+  giudizio T: LR0 121 (121) · LR1 73 (73) · SR0 129 (129) · SR1 49 (49)
+
+=== MSFT · Microsoft · dati 1986-03-13 → 2026-11-20 (10253 barre) · barre piatte (max = min) dal 1996: 0.0%
+scelta 1996-01-01 → 2015-12-31 (20.0 anni; metà al 2005-12-31) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 544 · attivi per giorno (mediana dal 1996) 27
+  scelta   B: LR0 980 (979) · LR1 550 (549) · SR0 1018 (1016) · SR1 247 (247)
+  scelta   X: LR0 840 (838) · LR1 380 (380) · SR0 778 (773) · SR1 212 (210)
+  scelta   T: LR0 976 (975) · LR1 561 (560) · SR0 941 (939) · SR1 260 (260)
+  giudizio B: LR0 423 (423) · LR1 243 (243) · SR0 387 (387) · SR1 88 (88)
+  giudizio X: LR0 345 (343) · LR1 174 (173) · SR0 297 (297) · SR1 78 (78)
+  giudizio T: LR0 397 (397) · LR1 253 (253) · SR0 317 (317) · SR1 81 (81)
+K=3: livelli 367 · attivi per giorno (mediana dal 1996) 18
+  scelta   B: LR0 698 (697) · LR1 381 (380) · SR0 715 (714) · SR1 176 (176)
+  scelta   X: LR0 608 (607) · LR1 272 (272) · SR0 557 (553) · SR1 148 (146)
+  scelta   T: LR0 744 (743) · LR1 415 (414) · SR0 708 (706) · SR1 207 (207)
+  giudizio B: LR0 314 (314) · LR1 181 (181) · SR0 298 (298) · SR1 69 (69)
+  giudizio X: LR0 243 (241) · LR1 122 (121) · SR0 209 (209) · SR1 59 (59)
+  giudizio T: LR0 286 (286) · LR1 190 (190) · SR0 249 (249) · SR1 70 (70)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.0% / 2.6% / 3.4% · sotto 2%: 26% · sotto 5%: 95% · oltre 10%: 0%
+  ATR14 giornaliero / chiusura, mediana: scelta 2.3% · giudizio 1.9%
+  giorni in regime R1: long scelta 58% · long giudizio 73% · short scelta 20% · short giudizio 11%
+K=4: livelli 281 · attivi per giorno (mediana dal 1996) 14
+  scelta   B: LR0 558 (557) · LR1 307 (306) · SR0 572 (571) · SR1 146 (146)
+  scelta   X: LR0 483 (482) · LR1 217 (217) · SR0 445 (441) · SR1 118 (116)
+  scelta   T: LR0 600 (599) · LR1 336 (335) · SR0 575 (573) · SR1 175 (175)
+  giudizio B: LR0 265 (265) · LR1 153 (153) · SR0 247 (247) · SR1 53 (53)
+  giudizio X: LR0 194 (192) · LR1 95 (94) · SR0 163 (163) · SR1 49 (49)
+  giudizio T: LR0 233 (233) · LR1 151 (151) · SR0 199 (199) · SR1 58 (58)
+
+=== NVDA · Nvidia · dati 1999-01-22 → 2026-11-20 (7002 barre) · barre piatte (max = min) dal 2000: 0.0%
+scelta 2000-01-21 → 2015-12-31 (15.9 anni; metà al 2008-01-11) · giudizio 2016-01-01 → 2026-11-20 (10.9 anni; metà al 2021-01-01)
+K=2: livelli 380 · attivi per giorno (mediana dal 2000) 26
+  scelta   B: LR0 536 (518) · LR1 310 (303) · SR0 581 (555) · SR1 129 (122)
+  scelta   X: LR0 635 (622) · LR1 314 (310) · SR0 610 (592) · SR1 144 (135)
+  scelta   T: LR0 500 (489) · LR1 307 (303) · SR0 545 (526) · SR1 113 (110)
+  giudizio B: LR0 295 (286) · LR1 185 (181) · SR0 299 (291) · SR1 46 (45)
+  giudizio X: LR0 363 (357) · LR1 220 (216) · SR0 323 (313) · SR1 67 (63)
+  giudizio T: LR0 316 (309) · LR1 212 (208) · SR0 256 (250) · SR1 42 (41)
+K=3: livelli 256 · attivi per giorno (mediana dal 2000) 18
+  scelta   B: LR0 383 (372) · LR1 207 (202) · SR0 440 (420) · SR1 97 (92)
+  scelta   X: LR0 455 (446) · LR1 225 (222) · SR0 439 (424) · SR1 107 (99)
+  scelta   T: LR0 369 (361) · LR1 217 (213) · SR0 428 (415) · SR1 101 (98)
+  giudizio B: LR0 238 (230) · LR1 151 (148) · SR0 215 (210) · SR1 32 (31)
+  giudizio X: LR0 276 (272) · LR1 164 (162) · SR0 249 (240) · SR1 58 (55)
+  giudizio T: LR0 242 (235) · LR1 164 (160) · SR0 202 (196) · SR1 35 (33)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.3% / 3.3% / 4.8% · sotto 2%: 17% · sotto 5%: 77% · oltre 10%: 3%
+  ATR14 giornaliero / chiusura, mediana: scelta 4.1% · giudizio 3.4%
+  giorni in regime R1: long scelta 56% · long giudizio 76% · short scelta 23% · short giudizio 11%
+K=4: livelli 199 · attivi per giorno (mediana dal 2000) 14
+  scelta   B: LR0 311 (306) · LR1 183 (181) · SR0 361 (346) · SR1 71 (67)
+  scelta   X: LR0 365 (357) · LR1 187 (184) · SR0 353 (340) · SR1 88 (82)
+  scelta   T: LR0 304 (298) · LR1 194 (191) · SR0 358 (346) · SR1 80 (77)
+  giudizio B: LR0 167 (159) · LR1 108 (105) · SR0 167 (163) · SR1 18 (18)
+  giudizio X: LR0 211 (207) · LR1 133 (131) · SR0 189 (183) · SR1 35 (34)
+  giudizio T: LR0 190 (183) · LR1 141 (137) · SR0 154 (149) · SR1 15 (14)
+
+=== TSLA · Tesla · dati 2010-06-29 → 2026-11-20 (4126 barre) · barre piatte (max = min) dal 2011: 0.0%
+scelta 2011-06-28 → 2019-03-09 (7.7 anni; metà al 2015-05-04) · giudizio 2019-03-10 → 2026-11-20 (7.7 anni; metà al 2023-01-14)
+K=2: livelli 228 · attivi per giorno (mediana dal 2011) 27
+  scelta   B: LR0 333 (331) · LR1 132 (131) · SR0 330 (326) · SR1 82 (81)
+  scelta   X: LR0 345 (341) · LR1 128 (128) · SR0 324 (319) · SR1 79 (76)
+  scelta   T: LR0 294 (293) · LR1 143 (142) · SR0 270 (266) · SR1 64 (63)
+  giudizio B: LR0 251 (246) · LR1 100 (97) · SR0 236 (232) · SR1 67 (66)
+  giudizio X: LR0 301 (296) · LR1 120 (117) · SR0 287 (276) · SR1 78 (76)
+  giudizio T: LR0 227 (223) · LR1 91 (90) · SR0 215 (212) · SR1 72 (71)
+K=3: livelli 159 · attivi per giorno (mediana dal 2011) 19
+  scelta   B: LR0 257 (255) · LR1 110 (109) · SR0 260 (256) · SR1 64 (63)
+  scelta   X: LR0 270 (267) · LR1 100 (100) · SR0 258 (254) · SR1 67 (64)
+  scelta   T: LR0 252 (251) · LR1 124 (123) · SR0 236 (232) · SR1 64 (63)
+  giudizio B: LR0 160 (155) · LR1 52 (49) · SR0 142 (141) · SR1 37 (37)
+  giudizio X: LR0 206 (201) · LR1 73 (70) · SR0 188 (180) · SR1 53 (51)
+  giudizio T: LR0 151 (148) · LR1 50 (49) · SR0 130 (129) · SR1 42 (42)
+  distanza dello stop strutturale (tutti i segnali): quartili 2.5% / 3.4% / 4.7% · sotto 2%: 15% · sotto 5%: 80% · oltre 10%: 2%
+  ATR14 giornaliero / chiusura, mediana: scelta 3.9% · giudizio 4.5%
+  giorni in regime R1: long scelta 57% · long giudizio 51% · short scelta 17% · short giudizio 22%
+K=4: livelli 124 · attivi per giorno (mediana dal 2011) 15
+  scelta   B: LR0 212 (210) · LR1 93 (92) · SR0 205 (202) · SR1 50 (50)
+  scelta   X: LR0 224 (221) · LR1 86 (86) · SR0 208 (204) · SR1 57 (54)
+  scelta   T: LR0 219 (218) · LR1 106 (105) · SR0 195 (191) · SR1 60 (59)
+  giudizio B: LR0 124 (119) · LR1 35 (32) · SR0 109 (108) · SR1 29 (29)
+  giudizio X: LR0 154 (151) · LR1 48 (45) · SR0 142 (137) · SR1 39 (38)
+  giudizio T: LR0 116 (114) · LR1 37 (36) · SR0 101 (101) · SR1 29 (29)
+
+=== Segnali per anno con stop entro il 10% (K=3): mediana fra i 15 asset [minimo–massimo]
+  giudizio B LR0:  31.8 [20.1–47.5]
+  giudizio B LR1:  16.6 [6.4–29.6]
+  giudizio B SR0:  26.5 [18.3–42.6]
+  giudizio B SR1:   4.8 [2.7–11.1]
+  giudizio T LR0:  32.0 [19.2–43.5]
+  giudizio T LR1:  18.4 [6.4–27.7]
+  giudizio T SR0:  24.4 [16.8–40.0]
+  giudizio T SR1:   5.3 [2.8–10.7]
+  giudizio X LR0:  26.3 [22.1–35.4]
+  giudizio X LR1:  13.0 [9.1–17.5]
+  giudizio X SR0:  23.5 [19.2–33.3]
+  giudizio X SR1:   5.1 [1.8–10.2]
+  scelta   B LR0:  29.3 [21.6–42.8]
+  scelta   B LR1:  16.3 [9.4–23.4]
+  scelta   B SR0:  26.7 [23.1–49.3]
+  scelta   B SR1:   6.4 [2.8–10.7]
+  scelta   T LR0:  29.2 [22.6–42.0]
+  scelta   T LR1:  16.3 [11.2–28.1]
+  scelta   T SR0:  26.0 [22.3–46.0]
+  scelta   T SR1:   7.1 [3.2–11.4]
+  scelta   X LR0:  26.9 [20.2–34.7]
+  scelta   X LR1:  13.0 [8.5–19.0]
+  scelta   X SR0:  25.4 [19.2–33.3]
+  scelta   X SR1:   6.3 [2.7–9.7]

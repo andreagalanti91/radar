@@ -1,0 +1,80 @@
+=== INSIEME A · 275 foto, 2.17 settimane; prezzi 1m fino a 2026-11-22 14:11:00 ===
+=== INSIEME B · 11472 ore, 68.3 settimane ===
+
+--- Regola · insieme A · 07/11/2026 → 22/11/2026 · costi 0.10% per lato ---
+                    variante  finale  rend    dd  trade   wr  mar  lordo  senza_migliore  esposto  finale_m1  finale_m2  finale_costo075
+            V1 regola S ±0,2 6,906.6 -30.9 -30.9    139 29.5 -3.2   -8.8           -33.6     86.5    8,636.1    8,087.8          7,404.2
+              V2 soglia ±0,1 6,868.2 -31.3 -31.3    139 28.8 -3.2   -9.3           -34.0     88.7    8,636.1    8,042.7          7,362.9
+              V3 soglia ±0,3 7,095.3 -29.0 -29.0    136 30.1 -3.4   -6.9           -31.8     82.8    8,731.5    8,217.9          7,595.0
+            V4 solo I (±0,2) 9,385.8  -6.1  -8.3     18 50.0 -9.4   -2.7            -7.1      8.4    9,545.3    9,832.9          9,470.7
+            V5 solo L (±0,2) 6,661.7 -33.4 -33.4    142 28.9 -3.0  -11.5           -36.0     89.1    8,481.7    7,942.9          7,152.3
+            V6 L a 60 minuti 7,509.8 -24.9 -25.1    116 25.9 -4.0   -5.3           -27.4     81.0    9,561.3    7,927.3          7,958.7
+               V7 rovesciata 8,169.1 -18.3 -20.5    139 53.2 -4.8    7.9           -21.1     86.5    9,488.6    8,548.1          8,757.6
+     V8 decisione ogni 4 ore 8,303.5 -17.0 -20.2     35 28.6 -4.9  -10.9           -19.3     87.2    9,002.7    9,121.1          8,450.2
+Buy & hold (stessa finestra) 7,967.5 -20.3 -21.9      1  NaN  NaN    NaN             NaN      NaN        NaN        NaN              NaN
+placebo a blocchi sul rendimento LORDO di V1: osservato -8.79%, placebo mediana +0.31% (5°–95° -18.88% / +22.10%), p a una coda 0.7946
+contesto W3.1 nella finestra: flat fino al 16/11, poi short da 65.286 $ con esposizione 0,389 → circa +2.9% lordo sul capitale (posizione aperta)
+V1 solo dal 11/11 (liquidazioni multi-fonte): finale 7,261 $, lordo -7.13%, trade 123, DD -27.4%
+
+--- Regola · insieme B · 25/06/2023 → 15/10/2024 · costi 0.10% per lato ---
+                    variante   finale   rend     dd  trade   wr  mar  lordo  senza_migliore  esposto  finale_m1  finale_m2  finale_costo075
+            V1 regola S ±0,2      4.0 -100.0 -100.0   3893 22.9 -1.0   -4.5          -100.0     58.3      177.7      223.1             27.7
+              V2 soglia ±0,1      3.3 -100.0 -100.0   3925 22.8 -1.0  -14.4          -100.0     60.1      167.5      198.9             23.7
+              V3 soglia ±0,3      4.3 -100.0 -100.0   3857 23.1 -1.0   -2.5          -100.0     56.5      195.5      222.5             29.9
+               V7 rovesciata      3.5 -100.0 -100.0   3893 33.4 -1.0  -15.5          -100.0     58.3      318.5      109.9             24.5
+     V8 decisione ogni 4 ore    681.4  -93.2  -93.3   1103 32.9 -0.9  -38.1           -93.8     58.3    2,267.6    3,007.4          1,183.3
+Buy & hold (stessa finestra) 21,614.2  116.1  -26.5      1  NaN  NaN    NaN             NaN      NaN        NaN        NaN              NaN
+placebo a blocchi sul rendimento LORDO di V1: osservato -4.47%, placebo mediana -14.97% (5°–95° -56.60% / +64.84%), p a una coda 0.3878
+contesto W3 nella finestra (research/weekly_w3_trades.csv): long fino al 17/08/2023, long 23/10/2023–01/01/2024 (+40,5%), long 12/02–11/03/2024 (+42,2%), long dal 23/09/2024: vedi README
+
+=== DOMANDA 1 · Δ = rendimento medio dopo segno + meno dopo segno − (punti %) ===
+   test    n  n_pos  n_neg  delta  ic_lo  ic_hi      p  p_holm  meta1  meta2    hit    rho
+ A·S→1h  275    127    148 -0.117 -0.295 +0.038 +0.200  +1.000 -0.181 -0.091 +0.465 -0.095
+ A·S→4h  271    125    146 +0.014 -0.349 +0.447 +0.961  +1.000 -0.132 +0.070 +0.520 +0.024
+A·S→24h  250    114    136 -0.140 -0.403 +0.147 +0.770  +1.000 -0.123 -0.169 +0.492 -0.106
+ A·I→1h  275    172    103 +0.057 -0.040 +0.160 +0.548  +1.000 +0.033 +0.062 +0.527 +0.142
+ A·I→4h  271    170    101 +0.204 -0.240 +0.633 +0.376  +1.000 +0.081 +0.240 +0.517 +0.106
+A·I→24h  250    156     94 +0.342 -0.273 +1.036 +0.488  +1.000 +0.500 +0.199 +0.516 +0.070
+ A·L→1h  257    115    142 -0.118 -0.321 +0.042 +0.197  +1.000 -0.220 -0.083 +0.471 -0.133
+ A·L→4h  253    113    140 +0.091 -0.296 +0.533 +0.651  +1.000 -0.158 +0.174 +0.534 -0.015
+A·L→24h  232    102    130 -0.237 -0.582 +0.150 +0.609  +1.000 -0.457 -0.167 +0.478 -0.106
+ B·L→1h 7062   3005   4057 +0.001 -0.020 +0.021 +0.917  +1.000 -0.015 +0.015 +0.460 -0.054
+ B·L→4h 7062   3005   4057 -0.018 -0.058 +0.020 +0.488  +1.000 -0.059 +0.015 +0.459 -0.046
+B·L→24h 7062   3005   4057 -0.020 -0.160 +0.107 +0.769  +1.000 -0.064 +0.015 +0.468 -0.019
+
+=== POTENZA · SE₀ dal placebo a blocchi; MDE 80% (α 0,05) e al primo passo di Holm; settimane necessarie (foto/ore orarie) ===
+   test   se0  mde80  mde80_holm  sett_utile  sett_plaus
+ A·S→1h 0.086  0.242       0.325       0.795      12.725
+ A·S→4h 0.184  0.515       0.691       3.596      57.537
+A·S→24h 0.365  1.022       1.369      14.141     226.250
+ A·I→1h 0.090  0.252       0.337       0.858      13.727
+ A·I→4h 0.224  0.627       0.840       5.324      85.190
+A·I→24h 0.501  1.404       1.882      26.713     427.415
+ A·L→1h 0.093  0.261       0.350       0.925      14.797
+ A·L→4h 0.196  0.549       0.736       4.086      65.368
+A·L→24h 0.405  1.135       1.521      17.440     279.036
+ B·L→1h 0.012  0.033       0.045       0.479       7.658
+ B·L→4h 0.026  0.074       0.099       2.336      37.368
+B·L→24h 0.067  0.189       0.253      15.165     242.633
+
+Regole: RA p 0.7946 (Holm 1.000); RB p 0.3878 (Holm 1.000)
+
+--- Controlli non di conferma · insieme A ---
+  I: Spearman con rendimento PRECEDENTE 1h -0.51, 24h -0.29; con rendimento SUCCESSIVO 1h +0.142, 4h +0.106, 24h +0.070
+  L: Spearman con rendimento PRECEDENTE 1h +0.53, 24h +0.14; con rendimento SUCCESSIVO 1h -0.133, 4h -0.015, 24h -0.106
+  S: Spearman con rendimento PRECEDENTE 1h +0.47, 24h +0.06; con rendimento SUCCESSIVO 1h -0.095, 4h +0.024, 24h -0.106
+  h  1h: Δ etichette S ±0,2 -0.103% | Δ L con ≥ 100k$ -0.176% (n 157) | Δ segno del rendimento dell'ora precedente (momentum 1h) -0.112% | coeff. di segno(L) al netto del rendimento precedente -0.023% (Δ ≈ -0.045%)
+  h  4h: Δ etichette S ±0,2 +0.027% | Δ L con ≥ 100k$ +0.075% (n 157) | Δ segno del rendimento dell'ora precedente (momentum 1h) +0.013% | coeff. di segno(L) al netto del rendimento precedente +0.129% (Δ ≈ +0.257%)
+  h 24h: Δ etichette S ±0,2 -0.252% | Δ L con ≥ 100k$ -0.174% (n 157) | Δ segno del rendimento dell'ora precedente (momentum 1h) -0.440% | coeff. di segno(L) al netto del rendimento precedente +0.015% (Δ ≈ +0.029%)
+
+--- Controlli non di conferma · insieme B ---
+  L: Spearman con rendimento PRECEDENTE 1h +0.57, 24h +0.14; con rendimento SUCCESSIVO 1h -0.054, 4h -0.046, 24h -0.019
+  S: Spearman con rendimento PRECEDENTE 1h +0.57, 24h +0.14; con rendimento SUCCESSIVO 1h -0.054, 4h -0.046, 24h -0.019
+  h  1h: Δ etichette S ±0,2 +0.003% | Δ L con ≥ 100k$ +0.006% (n 1708) | Δ segno del rendimento dell'ora precedente (momentum 1h) -0.017% | coeff. di segno(L) al netto del rendimento precedente +0.010% (Δ ≈ +0.020%)
+  h  4h: Δ etichette S ±0,2 -0.019% | Δ L con ≥ 100k$ -0.056% (n 1708) | Δ segno del rendimento dell'ora precedente (momentum 1h) -0.040% | coeff. di segno(L) al netto del rendimento precedente -0.003% (Δ ≈ -0.005%)
+  h 24h: Δ etichette S ±0,2 -0.030% | Δ L con ≥ 100k$ -0.054% (n 1708) | Δ segno del rendimento dell'ora precedente (momentum 1h) -0.065% | coeff. di segno(L) al netto del rendimento precedente +0.021% (Δ ≈ +0.042%)
+
+=== DOMANDA 4 · descrittivo, definizione larga (46 eventi), nessun test ===
+  muro bid ritirato (largo): n 22, rendimento medio 1h +0.182% (dev. st. 1.15), 4h +0.201% (dev. st. 1.90); tutte le foto: 1h -0.071%, 4h -0.244%
+  muro ask ritirato (largo): n 24, rendimento medio 1h +0.157% (dev. st. 0.44), 4h -0.296% (dev. st. 1.25); tutte le foto: 1h -0.071%, 4h -0.244%
+  dev. st. del rendimento a 1h 0.75%: per vedere una differenza bid−ask di 0,10% (0,40%) con potenza 80% servono ~872 (54) eventi per lato
