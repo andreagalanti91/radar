@@ -78,9 +78,10 @@ class TestSoloW32(unittest.TestCase):
         for w in ("W3.1", "Storico v2", "Laboratorio"):
             self.assertNotIn(w, html)
 
-    def test_tema_chiaro_di_base(self):
-        self.assertIn('localStorage.getItem("radarTheme") === "dark" ? "dark" : "light"', T)
-        self.assertNotIn("prefers-color-scheme", T)
+    def test_tema_scelto_o_del_dispositivo(self):
+        # scelta salvata (pulsante luna) prima di tutto, altrimenti il tema del dispositivo (decisione 22/11)
+        self.assertIn('t = localStorage.getItem("radarTheme")', T)
+        self.assertIn('matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"', T)
         self.assertIn(':root[data-theme="dark"]{', T)
 
 
