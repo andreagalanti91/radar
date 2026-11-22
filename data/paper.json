@@ -11,12 +11,12 @@
   "dd": 0.0
  },
  "open": {
-  "status": "conferma",
+  "status": "ingresso",
   "side": "long",
   "signal_date": "2026-11-21",
   "setup": "fundneg",
   "atr": 3019.77,
-  "trigger": 60352.16,
+  "trigger": 61365.24,
   "deadline": "2026-11-25 00:00:00"
  },
  "trades": [],
@@ -121,7 +121,7 @@
   "ret": 85.4,
   "dd": -11.4
  },
- "updated": "2026-11-22 08:00:00",
+ "updated": "2026-11-22 12:00:00",
  "h2": {
   "version": "H2 v1",
   "start": "2026-10-31",
@@ -135,12 +135,12 @@
    "dd": 0.0
   },
   "open": {
-   "status": "conferma",
+   "status": "ingresso",
    "side": "long",
    "signal_date": "2026-11-21",
    "setup": "fundneg",
    "atr": 3019.77,
-   "trigger": 60352.16,
+   "trigger": 61365.24,
    "deadline": "2026-11-25 00:00:00"
   },
   "trades": [],
@@ -265,13 +265,17 @@
    "dd": 0.0
   },
   "open": {
-   "status": "conferma",
+   "status": "ingresso",
    "side": "long",
    "signal_date": "2026-11-21",
    "setup": "fundneg",
    "atr": 3019.77,
-   "trigger": 60352.16,
-   "deadline": "2026-11-25 00:00:00"
+   "trigger": 61365.24,
+   "deadline": "2026-11-25 00:00:00",
+   "risk": 0.0462,
+   "dt": 0.0968,
+   "below_sma40w": true,
+   "perp": false
   },
   "trades": [],
   "equity": [
@@ -1322,6 +1326,14 @@
     }
    ]
   },
-  "risk_frozen": {}
+  "risk_frozen": {
+   "2026-11-21 long": {
+    "risk": 0.04615982431049383,
+    "dt": 0.0968,
+    "below_sma40w": true,
+    "perp": false,
+    "bar": "2026-11-22 08:00:00"
+   }
+  }
  }
 }
