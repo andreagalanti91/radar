@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<title>Radar Signal brand</title>
+<!-- Sorgente unica di tutti i PNG del brand. Render: node brand/src/render.js (una vista per hash: #banner, #social, #icon, ...) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,system-ui,sans-serif;font-feature-settings:"tnum" 1,"cv11" 1;-webkit-font-smoothing:antialiased;background:transparent}
+.light{--bg:#f4f5f7;--card:#fff;--raise:#f2f4f7;--line:#e6e8ec;--ink:#0f1218;--ink2:#555c68;--ink3:#878e99;--tint:#2f4cf0;--tintbg:#eceffe;--green:#0f8a4a;--red:#d6342a;--sk:#e9ebef;--sh:0 1px 2px rgba(16,24,40,.04),0 12px 32px -8px rgba(16,24,40,.10)}
+.dark{--bg:#0c0d10;--card:#15171c;--raise:#1e2128;--line:#252931;--ink:#f1f3f7;--ink2:#a3aab6;--ink3:#717884;--tint:#7088ff;--tintbg:rgba(112,136,255,.14);--green:#3fd185;--red:#ff6b5f;--sk:#262a33;--sh:0 1px 2px rgba(0,0,0,.3),0 16px 40px -12px rgba(0,0,0,.6)}
+.frame{position:relative;overflow:hidden;background:var(--bg);color:var(--ink)}
+.tile{display:grid;place-items:center;background:linear-gradient(160deg,#5a6bff 0%,#2f4cf0 55%,#2236c4 100%);color:#fff}
+.wm{display:flex;align-items:center;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--ink)}
+.wm i{font-style:normal;font-weight:600;color:var(--tint)}
+.card{position:absolute;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh)}
+.sk{display:block;height:10px;border-radius:99px;background:var(--sk)}
+.pill{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 14px;border-radius:99px;font:500 14px/1 Inter;background:var(--tintbg);color:var(--tint)}
+.chip{display:inline-flex;align-items:center;height:36px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);font:500 15px/1 Inter;color:var(--ink2)}
+.lbl{font:500 13px/1 Inter;color:var(--ink3)}
+.bcard{background:#fff;border:1px solid #e6e8ec;border-radius:24px;padding:32px;position:relative;overflow:hidden}
+.bt{font:600 13px/1 Inter;color:#878e99;letter-spacing:.02em;text-transform:lowercase}
+</style></head><body>
+<div id="out"></div>
+<script>
+// Simbolo: anello + fascio a quarto di cerchio + blip (griglia 64). c = colore del segno, b = colore del blip
+const MARK = (s, c = "currentColor", b = "#5ef0c4") => `<svg width="${s}" height="${s}" viewBox="0 0 64 64" style="display:block"><path fill="${c}" fill-rule="evenodd" d="M32 4a28 28 0 1 1 0 56 28 28 0 0 1 0-56Zm0 7.5a20.5 20.5 0 1 0 0 41 20.5 20.5 0 0 0 0-41Z"/><path fill="${c}" d="M32 32V14.5A17.5 17.5 0 0 1 49.5 32Z"/><circle cx="23" cy="41" r="4.5" fill="${b}"/></svg>`;
+// App tile: raggio 22% del lato, segno al 60%
+const TILE = (s, sq = false) => `<div class="tile" style="width:${s}px;height:${s}px;border-radius:${sq ? 0 : s * .22}px;flex:none">${MARK(s * .6, "#fff")}</div>`;
+// Lockup: tile + wordmark. Altezza tile = 1,2 × corpo del wordmark, distanza = 0,32 × corpo
+const LOCKUP = size => `<div class="wm" style="font-size:${size}px;gap:${size * .32}px">${TILE(size * 1.2)}<span>radar<i>signal</i></span></div>`;
+
+// Grafico astratto: curva morbida senza numeri, griglia solo orizzontale, ultimo punto = blip
+function chart(w, h) {
+  const ys = [.70, .62, .66, .55, .58, .47, .52, .40, .44, .33, .36, .26, .30, .20];
+  const pts = ys.map((y, i) => [i * w / (ys.length - 1), y * h]);
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], mx = (x0 + x1) / 2; d += ` C${mx},${y0} ${mx},${y1} ${x1},${y1}`; }
+  const [lx, ly] = pts[pts.length - 1];
+  const grid = [.25, .5, .75, 1].map(f => `<line x1="0" x2="${w}" y1="${f * h - .5}" y2="${f * h - .5}" stroke="var(--line)" stroke-width="1"/>`).join("");
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;overflow:visible">
+    <defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--tint)" stop-opacity=".22"/><stop offset="1" stop-color="var(--tint)" stop-opacity="0"/></linearGradient></defs>
+    ${grid}<path d="${d} L${w},${h} L0,${h} Z" fill="url(#ar)"/><path d="${d}" fill="none" stroke="var(--tint)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="${lx}" cy="${ly}" r="14" fill="#5ef0c4" opacity=".25"/><circle cx="${lx}" cy="${ly}" r="6.5" fill="#5ef0c4" stroke="var(--card)" stroke-width="3"/></svg>`;
+}
+// Candele settimanali astratte (verde/rosso di stato)
+function candles(w, h) {
+  const c = [[.84, .64, .92, .58], [.64, .74, .80, .60], [.74, .52, .78, .46], [.52, .36, .58, .30], [.36, .48, .52, .32], [.48, .26, .52, .20], [.26, .10, .30, .04]];
+  const bw = w / c.length;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block">${c.map(([o, cl, lo, hi], i) => {
+    const x = i * bw + bw / 2, up = cl < o, col = up ? "var(--green)" : "var(--red)";
+    return `<line x1="${x}" x2="${x}" y1="${hi * h}" y2="${lo * h}" stroke="${col}" stroke-width="2" stroke-linecap="round"/><rect x="${x - bw * .28}" y="${Math.min(o, cl) * h}" width="${bw * .56}" height="${Math.max(Math.abs(o - cl) * h, 3)}" rx="3" fill="${col}"/>`;
+  }).join("")}</svg>`;
+}
+// Cerchi concentrici del radar come motivo di sfondo
+const RINGS = (cx, cy, op) => `<svg style="position:absolute;inset:0" width="100%" height="100%">${[140, 250, 360, 470, 580].map(r => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--tint)" stroke-opacity="${op}" stroke-width="1.5"/>`).join("")}</svg>`;
+
+// Copertina 1280×640: a sinistra nome, frase di valore e fatti di prodotto; a destra mock astratto della dashboard
+const COVER = theme => `<div class="frame ${theme}" style="width:1280px;height:640px">
+  <div style="position:absolute;inset:0;background:radial-gradient(60% 80% at 82% 55%,var(--tintbg),transparent 70%)"></div>
+  ${RINGS(930, 330, theme === "dark" ? .10 : .08)}
+  <div style="position:absolute;left:80px;top:72px">${LOCKUP(34)}</div>
+  <div style="position:absolute;left:80px;top:196px;width:560px">
+    <div style="font:700 66px/1.04 Inter;letter-spacing:-.04em">Segnali chiari<br>su <span style="color:var(--tint)">Bitcoin</span>.</div>
+    <div style="margin-top:24px;font:400 22px/1.45 Inter;color:var(--ink2);max-width:500px">Una sola strategia settimanale, una dashboard pulita aggiornata ogni ora.</div>
+    <div style="margin-top:36px;display:flex;gap:10px;flex-wrap:wrap"><span class="chip">candele settimanali</span><span class="chip">spot senza leva</span><span class="chip">avvisi Telegram</span></div>
+  </div>
+  <div class="card" style="left:716px;top:104px;width:484px;height:360px;padding:26px 28px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px">${TILE(36)}<div><div style="font:600 17px/1 Inter;letter-spacing:-.01em">BTC</div><span class="sk" style="width:84px;height:8px;margin-top:8px"></span></div></div>
+      <span class="pill"><span style="width:8px;height:8px;border-radius:9px;background:var(--tint)"></span>segnale</span>
+    </div>
+    <span class="sk" style="width:190px;height:22px;margin-top:24px;background:var(--ink);opacity:.9"></span>
+    <span class="sk" style="width:110px;height:10px;margin-top:12px;background:var(--green);opacity:.55"></span>
+    <div style="margin-top:22px">${chart(428, 170)}</div>
+  </div>
+  <div class="card" style="left:636px;top:418px;width:250px;height:156px;padding:20px 22px">
+    <div class="lbl">settimanale</div><div style="margin-top:14px">${candles(206, 86)}</div>
+  </div>
+  <div class="card" style="left:904px;top:494px;width:296px;height:80px;padding:0 22px;display:flex;align-items:center;gap:14px">
+    <div style="width:40px;height:40px;border-radius:12px;background:var(--tintbg);display:grid;place-items:center">${MARK(24, "var(--tint)")}</div>
+    <div style="flex:1"><span class="sk" style="width:120px"></span><span class="sk" style="width:76px;height:8px;margin-top:9px;opacity:.7"></span></div>
+    <span style="width:44px;height:26px;border-radius:99px;background:var(--tint);position:relative"><span style="position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:99px;background:#fff"></span></span>
+  </div>
+</div>`;
+
+const SW = [["#2f4cf0", "Signal Indigo", "--tint chiaro"], ["#7088ff", "Indigo Night", "--tint scuro"], ["#5ef0c4", "Blip Mint", "solo blip"], ["#0f1218", "Ink", "testo"], ["#f4f5f7", "Paper", "fondo"], ["#0c0d10", "Night", "fondo scuro"]];
+
+const views = {
+  banner: COVER("light"),
+  social: COVER("dark"),
+  icon: `<div style="width:1024px;height:1024px">${TILE(1024, true)}</div>`,
+  logoLight: `<div class="frame light" style="width:1200px;height:400px;display:grid;place-items:center;background:#fff">${LOCKUP(96)}</div>`,
+  logoDark: `<div class="frame dark" style="width:1200px;height:400px;display:grid;place-items:center">${LOCKUP(96)}</div>`,
+  fav16: `<div style="display:flex;gap:16px;padding:16px;background:#fff">${[16, 24, 32].map(s => `<img src="../icon.svg" width="${s}" height="${s}">`).join("")}</div>`,
+  board: `<div class="frame light" style="width:1600px;height:1000px;padding:48px;display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:20px">
+    <div style="grid-column:1/-1;display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:8px">
+      <div>${LOCKUP(30)}</div><div style="font:500 15px/1 Inter;color:#878e99">brand board · 2026</div></div>
+    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">logo · fondo chiaro</div><div style="display:grid;place-items:center;padding:20px 0">${LOCKUP(62)}</div><div class="lbl">tile + wordmark radar<b style="color:#2f4cf0;font-weight:600">signal</b> in Inter</div></div>
+    <div class="bcard dark" style="background:#0c0d10;border-color:#252931;display:grid;align-content:space-between"><div class="bt">fondo scuro</div><div style="display:grid;place-items:center">${LOCKUP(40)}</div><div class="lbl">signal in #7088ff</div></div>
+    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">icona e favicon</div>
+      <div style="display:flex;align-items:flex-end;gap:22px;justify-content:center">${TILE(132)}${TILE(64)}${TILE(32)}${TILE(16)}</div>
+      <div style="display:flex;gap:18px;justify-content:center;align-items:center">${[48, 32, 20].map(s => MARK(s, "#0f1218", "#0f1218")).join("")}<span class="lbl">monocromo</span></div></div>
+    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">palette</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 18px">${SW.map(([h, n, u]) => `<div style="display:flex;align-items:center;gap:12px"><span style="width:46px;height:46px;border-radius:14px;background:${h};border:1px solid rgba(15,18,24,.10);flex:none"></span><div><div style="font:600 15px/1.2 Inter">${n}</div><div style="font:500 13px/1.4 Inter;color:#878e99">${h} · ${u}</div></div></div>`).join("")}</div>
+      <div style="display:flex;gap:8px"><span style="flex:1;height:8px;border-radius:9px;background:#0f8a4a"></span><span style="flex:1;height:8px;border-radius:9px;background:#d6342a"></span><span style="flex:1;height:8px;border-radius:9px;background:#c96a00"></span><span class="lbl" style="flex:2">stato: long · short · avviso</span></div></div>
+    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">tipografia</div>
+      <div style="font:700 104px/1 Inter;letter-spacing:-.05em">Aa</div>
+      <div style="display:grid;gap:10px"><div style="font:700 26px/1.1 Inter;letter-spacing:-.03em">Inter 700 · titoli</div><div style="font:600 18px/1.2 Inter">Inter 600 · sezioni</div><div style="font:400 16px/1.4 Inter;color:#555c68">Inter 400 · testo, cifre tabellari</div><div class="lbl">etichette in minuscolo</div></div></div>
+    <div class="bcard" style="display:grid;align-content:space-between"><div class="bt">area di rispetto</div>
+      <div style="display:grid;place-items:center"><div style="position:relative;padding:36px;outline:1.5px dashed #2f4cf0;outline-offset:0;border-radius:4px;background:repeating-linear-gradient(45deg,#eceffe 0 6px,#fff 6px 12px)"><div style="background:#fff;padding:0">${TILE(120)}</div>
+        <span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:36px;text-align:center;font:600 14px/1 Inter;color:#2f4cf0">x</span><span style="position:absolute;top:0;left:50%;transform:translateX(-50%);height:36px;line-height:36px;font:600 14px/36px Inter;color:#2f4cf0">x</span></div></div>
+      <div class="lbl" style="line-height:1.5">x = 30% del lato della tile · minimo 16 px</div></div>
+  </div>`,
+};
+document.getElementById("out").innerHTML = views[location.hash.slice(1)] || "";
+</script></body></html>

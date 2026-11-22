@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs><radialGradient id="g" cx=".7" cy="1" r=".95"><stop offset="0" stop-color="#8b5cff"/><stop offset=".45" stop-color="#3d5bff"/><stop offset=".75" stop-color="#1a2a9e"/><stop offset="1" stop-color="#0b1450"/></radialGradient></defs>
+  <defs><linearGradient id="g" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#5a6bff"/><stop offset=".55" stop-color="#2f4cf0"/><stop offset="1" stop-color="#2236c4"/></linearGradient></defs>
   <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <g transform="translate(14 14) scale(.5625)" fill="#fff">
-    <path fill-rule="evenodd" d="M32 3a29 29 0 1 1 0 58 29 29 0 0 1 0-58Zm0 7a22 22 0 1 0 0 44 22 22 0 0 0 0-44Z"/>
-    <path d="M32 32 L42.5 13.8 A21 21 0 0 1 53 32 Z"/>
-    <circle cx="21.5" cy="40.5" r="5" fill="#5ef0c4"/>
+  <g transform="translate(10.24 10.24) scale(.68)" fill="#fff">
+    <path fill-rule="evenodd" d="M32 4a28 28 0 1 1 0 56 28 28 0 0 1 0-56Zm0 7.5a20.5 20.5 0 1 0 0 41 20.5 20.5 0 0 0 0-41Z"/>
+    <path d="M32 32V14.5A17.5 17.5 0 0 1 49.5 32Z"/>
+    <circle cx="23" cy="41" r="4.5" fill="#5ef0c4"/>
   </g>
 </svg>

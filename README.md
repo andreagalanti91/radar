@@ -229,7 +229,8 @@ stato/                 file di stato dei lavori lunghi di Claude
 
 <p><img src="brand/brand-board.png" alt="Brand board Radar Signal" width="100%"></p>
 
-Simbolo: un radar ridotto all'essenziale (anello, fascio e blip). Wordmark `radarsignal` in Geist bold. Palette: Signal Blue
-`#3D5BFF`, Pulse Violet `#8B5CFF`, Blip Mint `#5EF0C4`, Night `#07080C`. Font: Geist, Geist Mono, Doto per i numeri principali.
+Simbolo: un radar essenziale (anello, fascio, blip) in una tile indaco. Wordmark `radar` + `signal` in Inter, con `signal` in
+indaco `#2f4cf0`; blip menta. Ispirazione: il linguaggio pulito delle piattaforme fintech, senza riprendere marchi altrui.
+Regole, palette, area di rispetto e misure minime: [`brand/DESIGN.md`](brand/DESIGN.md); sorgente unica `brand/src/brand.html`.
 
 Strumento di analisi, non consulenza finanziaria. I risultati passati non garantiscono quelli futuri.
