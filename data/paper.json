@@ -10,7 +10,15 @@
   "ret": 0.0,
   "dd": 0.0
  },
- "open": null,
+ "open": {
+  "status": "conferma",
+  "side": "long",
+  "signal_date": "2026-11-21",
+  "setup": "fundneg",
+  "atr": 3019.77,
+  "trigger": 60568.01,
+  "deadline": "2026-11-25 00:00:00"
+ },
  "trades": [],
  "equity": [
   [
@@ -109,7 +117,7 @@
   "ret": 85.4,
   "dd": -11.4
  },
- "updated": "2026-11-21 20:00:00",
+ "updated": "2026-11-22 00:00:00",
  "h2": {
   "version": "H2 v1",
   "start": "2026-10-31",
@@ -122,7 +130,15 @@
    "ret": 0.0,
    "dd": 0.0
   },
-  "open": null,
+  "open": {
+   "status": "conferma",
+   "side": "long",
+   "signal_date": "2026-11-21",
+   "setup": "fundneg",
+   "atr": 3019.77,
+   "trigger": 60568.01,
+   "deadline": "2026-11-25 00:00:00"
+  },
   "trades": [],
   "equity": [
    [
@@ -240,7 +256,15 @@
    "ret": 0.0,
    "dd": 0.0
   },
-  "open": null,
+  "open": {
+   "status": "conferma",
+   "side": "long",
+   "signal_date": "2026-11-21",
+   "setup": "fundneg",
+   "atr": 3019.77,
+   "trigger": 60568.01,
+   "deadline": "2026-11-25 00:00:00"
+  },
   "trades": [],
   "equity": [
    [
