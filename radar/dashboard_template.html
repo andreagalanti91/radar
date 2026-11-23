@@ -260,11 +260,13 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);width:min(500px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(520px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
 .tabbar a[aria-current="page"]{color:var(--tint);background:var(--tint-bg);font-weight:600}
+@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.66rem;letter-spacing:-.01em;border-radius:18px}}   /* 6 voci: etichette intere anche a 360 px */
+@media (max-width:380px){.tabbar a{font-size:.62rem}}
 
 /* grafici */
 .chart{height:330px}
@@ -510,24 +512,56 @@ body.noscroll{overflow:hidden}
 .cxRow{display:grid;grid-template-columns:3.5rem minmax(0,1fr);gap:8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:.86rem;line-height:1.4}
 .cxRow:first-child{border-top:0}
 .cxRow span{font:500 .78rem var(--font);color:var(--label2)}
-.cxNote{margin:6px 0 0;font-size:.72rem;line-height:1.45;color:var(--label3)} .cxWarn{margin:6px 0 0;font-size:.76rem;line-height:1.4;color:var(--orange)}
+.cxNote{margin:14px 0 0;font-size:.7rem;line-height:1.45;color:var(--label3)} .cxWarn{margin:10px 0 0;font-size:.76rem;line-height:1.4;color:var(--orange)}
 .tapHead b{font:600 1rem var(--font)}
-/* card "Fra 30 giorni" (report.cone, radar/cone.py): cono di probabilità dalla volatilità, non dalla direzione */
-.cnRows{display:grid;margin-top:8px;font-variant-numeric:tabular-nums}
-.cnRow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:.86rem}
-.cnRow:first-child{border-top:0}
-.cnRow span{color:var(--label2);min-width:0} .cnRow b{font:600 .92rem var(--font);white-space:nowrap}
-.cnBar{position:relative;height:10px;margin:8px 0 4px;border-radius:5px;background:var(--fill)}
-.cnBar i{position:absolute;top:0;bottom:0;border-radius:5px;background:var(--tint);opacity:.28}
-.cnBar i.b50{opacity:.6}
-.cnBar u{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;border-radius:1px;background:var(--label)}
-.cnCap{margin:12px 0 0;font:600 .78rem var(--font);color:var(--label2)}
-.cnLv{display:grid;grid-template-columns:minmax(0,1fr) auto 44px 2.6rem;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:.86rem;font-variant-numeric:tabular-nums}
-.cnLv:first-of-type{border-top:0}
+.tapHead b small{font:500 .76rem var(--font);color:var(--label3)}
+/* Oggi · riga di stato delle posizioni: porta a Posizioni */
+.posLine{display:flex;align-items:center;gap:6px 12px;padding:13px 16px;color:var(--label);text-decoration:none;font-size:.92rem;font-variant-numeric:tabular-nums}
+.posLine .plK{font:500 .76rem var(--font);color:var(--label3)}
+.posLine .plV{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:2px 0;align-items:baseline}
+.posLine .plV>span{white-space:nowrap} .posLine .plV>span+span::before{content:"·";margin:0 8px;color:var(--label3)}
+.posLine .plV b{font-weight:600}
+.posLine .more{color:var(--tint);font:600 .82rem var(--font);white-space:nowrap}
+@media (max-width:700px){.posLine .plK,.posLine .more span{display:none}}
+/* Oggi · card "Fra 30 giorni" (report.cone, radar/cone.py): cono di probabilità dalla volatilità, non dalla direzione.
+   Un dato grande (intervallo all'80%), la fascia con prezzo attuale e livelli sulla stessa scala, le probabilità a barre in ordine di prezzo */
+.cnGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:14px}
+@media (min-width:900px){.cnGrid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:36px;align-items:start}}
+.cnK{display:block;font:500 .76rem var(--font);color:var(--label3)}
+.cnBig{font:700 clamp(1.5rem,7.2vw,2.1rem)/1.1 var(--font);letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
+.cnScale{position:relative;height:80px;margin:14px 0 0}
+.cnScale .rail{position:absolute;left:0;right:0;top:36px;height:4px;border-radius:2px;background:var(--fill)}
+.cnScale .b80,.cnScale .b50{position:absolute;top:26px;height:24px;border-radius:8px;background:color-mix(in srgb,var(--tint) 16%,transparent)}
+.cnScale .b50{background:color-mix(in srgb,var(--tint) 42%,transparent);border-radius:6px}
+.cnScale .lv{position:absolute;top:33px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--card)}
+.cnScale .now{position:absolute;top:20px;width:2px;height:36px;margin-left:-1px;border-radius:1px;background:var(--label);box-shadow:0 0 0 2px var(--card)}
+.cnScale .nowL{position:absolute;top:0;transform:translateX(-50%);font:600 .76rem var(--font);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cnScale .nowL.l{transform:none} .cnScale .nowL.r{transform:translateX(-100%)}
+.cnScale .nowL em,.cnDiv em{font:500 .72rem var(--font);color:var(--label3);font-style:normal;margin-right:5px}
+.cnScale .tk{position:absolute;top:60px;font:600 .68rem/1 var(--mono);color:var(--label2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cnScale .tk.e{transform:translateX(-100%)}
+.cnKey{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
+.cnKey span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap} .cnKey i{width:10px;height:10px;border-radius:3px;background:color-mix(in srgb,var(--tint) 16%,transparent)} .cnKey i.k50{background:color-mix(in srgb,var(--tint) 42%,transparent)}
+.cnCap{margin:0 0 4px;font:500 .76rem var(--font);color:var(--label3)}
+.cnLv{display:grid;grid-template-columns:8px minmax(0,1fr) 4.2rem 84px 2.5rem;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:.86rem;font-variant-numeric:tabular-nums}
+.cnLv.first{border-top:0}
+.cnLv>i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 .cnLv span{color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cnLv b{font:600 .92rem var(--font)} .cnLv em{font:600 .92rem var(--font);font-style:normal;text-align:right}
-.cnLv s{display:block;height:6px;border-radius:3px;background:var(--fill);overflow:hidden;text-decoration:none}
-.cnLv s i{display:block;height:100%;border-radius:3px;background:var(--tint);opacity:.6}
+.cnLv b{font:500 .86rem var(--font);color:var(--label2);text-align:right;font-variant-numeric:tabular-nums} .cnLv em{font:650 1rem var(--font);font-style:normal;text-align:right;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+@media (max-width:420px){.cnLv{grid-template-columns:8px minmax(0,1fr) 4.2rem 56px 2.4rem;gap:8px}}
+@media (max-width:380px){.cnLv{grid-template-columns:8px minmax(0,1fr) 4.1rem 40px 2.3rem}}
+.cnLv s{display:block;height:8px;border-radius:4px;background:var(--fill);overflow:hidden;text-decoration:none}
+.cnLv s i{display:block;height:100%;border-radius:4px;background:var(--tint)}
+.cnDiv{display:flex;align-items:center;gap:8px;padding:5px 0;font:600 .78rem var(--font);font-variant-numeric:tabular-nums}
+.cnDiv::after{content:"";flex:1;height:2px;border-radius:1px;background:var(--label)} .cnDiv em{margin-right:0}
+/* Oggi · "Contesto" (report.context): tre tessere Mercato / Fed / Dati con icona e colore di stato sobrio */
+.cxTiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.cxT{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border-radius:var(--r-tile);background:var(--raise);border:1px solid var(--line);min-width:0}
+.cxT .ico{background:color-mix(in srgb,var(--c) 14%,var(--card))}
+.cxT span.l{display:block;font:500 .72rem var(--font);color:var(--label3)}
+.cxT b{display:block;font:600 .98rem/1.3 var(--font);letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+.cxT small{display:block;font-size:.76rem;line-height:1.4;color:var(--label2);margin-top:2px;font-variant-numeric:tabular-nums}
+@media (max-width:700px){.cxTiles{grid-template-columns:minmax(0,1fr);gap:8px}.cxT{padding:10px 12px;align-items:center}}
 .tdRow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;margin-top:10px}
 .tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
 .tdRow b{font:600 .9rem/1.35 var(--font);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -593,6 +627,9 @@ body.noscroll{overflow:hidden}
   <symbol id="i-wal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 9.5h17M15.5 14h2"/><path d="M6 6l9-2.5L16.5 6"/></g></symbol>
   <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="4.5" width="16" height="15" rx="2.5"/><path d="M4 9.5h16M4 14.5h16M10 4.5v15"/></g></symbol>
   <symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="14" height="15" rx="2.5"/><path d="M17.5 8.5h2a1 1 0 0 1 1 1V17a2.5 2.5 0 0 1-5 0"/><path d="M7 9h7M7 12.5h7M7 16h4"/></g></symbol>
+  <symbol id="i-pos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 19.5v-15M3.5 8.5l4-4 4 4"/><path d="M16.5 4.5v15M12.5 15.5l4 4 4-4"/></g></symbol>
+  <symbol id="i-graf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5v3M7 15.5v4M17 4.5v4M17 15.5v3"/><rect x="4.8" y="6.5" width="4.4" height="9" rx="1.4"/><rect x="14.8" y="8.5" width="4.4" height="7" rx="1.4"/></g></symbol>
+  <symbol id="i-fed" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5l8-5 8 5M4.5 19.5h15M6.5 10v7M10.2 10v7M13.8 10v7M17.5 10v7"/></g></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
 
@@ -600,13 +637,12 @@ body.noscroll{overflow:hidden}
 <aside class="side">
   <a class="logo" href="#oggi"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · W3.2</small></span></a>
   <nav aria-label="Sezioni">
-    <span class="cap" style="padding:0 12px 6px">Navigazione</span>
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
-    <a href="#storico" data-v="storico"><svg><use href="#i-stat"/></svg>Storico</a>
+    <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
+    <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
     <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquidazioni</a>
-    <a href="#book" data-v="book"><svg><use href="#i-book"/></svg>Book</a>
+    <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
-    <a href="#metodo" data-v="metodo"><svg><use href="#i-met"/></svg>Come funziona</a>
   </nav>
   <div class="promo"><b>Alert su Telegram</b><span>Segnale settimanale, trailing aggiornato e uscite arrivano su @CryptoRadarGalaBot.</span></div>
 </aside>
@@ -623,14 +659,57 @@ body.noscroll{overflow:hidden}
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
 
-<!-- ============ OGGI ============ -->
+<!-- ============ OGGI: stato delle posizioni in una riga, previsione a 30 giorni, contesto, notizie del giorno ============ -->
   <div class="view" id="v-oggi">
+    <a class="card posLine" id="posLine" href="#posizioni" hidden></a>
+
+    <div class="section" id="cnSec" hidden>
+      <button type="button" class="card tapCard cn" id="cnCard" aria-haspopup="dialog"></button>
+    </div>
+
+    <div class="section" id="cxSec" hidden>
+      <button type="button" class="card tapCard cx" id="cxCard" aria-haspopup="dialog"></button>
+    </div>
+
+    <div class="section" id="todaySec" hidden>
+      <div class="sh">Oggi nelle notizie <small id="todaySub"></small></div>
+      <button type="button" class="card tapCard mOnly" id="todayCard" aria-haspopup="dialog"></button>
+      <div class="todayN mHide" id="todayN"></div>
+    </div>
+
+  </div>
+
+<!-- ============ POSIZIONI: posizioni aperte BTC ed ETH, pre-analisi della prossima chiusura ============ -->
+  <div class="view" id="v-posizioni" hidden>
     <div class="section" id="wkSec" hidden>
       <div class="sh">Posizione · W3.2 <small id="wkSub"></small></div>
       <div class="card glow wkHero" id="wkHero"></div>
       <div class="card wkHero ethCard" id="ethCard" style="margin-top:12px" hidden></div>
       <div class="card pv" id="pvCard" style="margin-top:12px" hidden></div>
-      <div class="card wkChartCard" id="wkChartCard" style="margin-top:12px">
+      <dialog class="dlg" id="sheet" aria-labelledby="sheetT"><div class="dlgHead"><b id="sheetT"></b><button type="button" id="sheetX">Chiudi</button></div><div class="dlgBody" id="sheetB"></div></dialog>
+      <dialog class="dlg" id="wkDlg" aria-labelledby="wkDlgT">
+        <div class="dlgHead"><b id="wkDlgT">Perché la posizione è aperta e quando si chiude</b><button type="button" id="wkDlgX">Chiudi</button></div>
+        <div class="dlgBody">
+          <div class="card prose" id="wkWhy"></div>
+      <div class="wkGrid">
+        <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
+        <div class="list checks"><div class="cap2" id="wkExitH">Uscite da sorvegliare</div><div id="wkExits"></div></div>
+      </div>
+      <div id="wkPlan" style="margin-top:12px"></div>
+      <div class="tiles" id="wkKv" hidden></div>
+      <p class="foot" id="wkNote"></p>
+          <h3>Tutti i trade W3.2 dal 2021 <small class="cap" id="wkTrN"></small></h3>
+          <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkTrAll"></table></div></div>
+          <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
+        </div>
+      </dialog>
+    </div>
+  </div>
+
+<!-- ============ GRAFICO: grafico settimanale e scheda "Livelli vicini" (S/R e cluster di liquidazione più vicini) ============ -->
+  <div class="view" id="v-grafico" hidden>
+    <div class="section" id="grSec" hidden>
+      <div class="card wkChartCard" id="wkChartCard">
         <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
           <div class="wkTools"><div class="seg" id="wkRange" role="group" aria-label="Periodo"><button data-v="26">6M</button><button data-v="52">1A</button><button data-v="104">2A</button><button data-v="0" aria-pressed="true">Tutto</button></div>
           <button id="wkLegB" class="mOnly" type="button">Legenda</button><button id="wkFull" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
@@ -652,43 +731,11 @@ body.noscroll{overflow:hidden}
         <div class="srTop" id="lqCardTop" style="margin-top:10px"></div>
         <div class="wkTop" style="margin-top:10px;align-items:center"><span class="foot" id="lqCardNote" style="margin:0"></span><span class="more">Mappa completa →</span></div>
       </a>
-      <dialog class="dlg" id="sheet" aria-labelledby="sheetT"><div class="dlgHead"><b id="sheetT"></b><button type="button" id="sheetX">Chiudi</button></div><div class="dlgBody" id="sheetB"></div></dialog>
-      <dialog class="dlg" id="wkDlg" aria-labelledby="wkDlgT">
-        <div class="dlgHead"><b id="wkDlgT">Perché la posizione è aperta e quando si chiude</b><button type="button" id="wkDlgX">Chiudi</button></div>
-        <div class="dlgBody">
-          <div class="card prose" id="wkWhy"></div>
-      <div class="wkGrid">
-        <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
-        <div class="list checks"><div class="cap2" id="wkExitH">Uscite da sorvegliare</div><div id="wkExits"></div></div>
-      </div>
-      <div id="wkPlan" style="margin-top:12px"></div>
-      <div class="tiles" id="wkKv" hidden></div>
-      <p class="foot" id="wkNote"></p>
-          <h3>Tutti i trade W3.2 dal 2021 <small class="cap" id="wkTrN"></small></h3>
-          <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkTrAll"></table></div></div>
-          <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
-        </div>
-      </dialog>
     </div>
-
-    <div class="section" id="cnSec" hidden>
-      <button type="button" class="card tapCard" id="cnCard" aria-haspopup="dialog"></button>
-    </div>
-
-    <div class="section" id="cxSec" hidden>
-      <button type="button" class="card tapCard" id="cxCard" aria-haspopup="dialog"></button>
-    </div>
-
-    <div class="section" id="todaySec" hidden>
-      <div class="sh">Oggi nelle notizie <small id="todaySub"></small></div>
-      <button type="button" class="card tapCard mOnly" id="todayCard" aria-haspopup="dialog"></button>
-      <div class="todayN mHide" id="todayN"></div>
-    </div>
-
   </div>
 
-  <!-- ============ STORICO (ex Simulatore + Statistiche) ============ -->
-  <div class="view" id="v-storico" hidden>
+  <!-- ============ MOVIMENTI (ex Storico): storico BTC ed ETH, simulatore ============ -->
+  <div class="view" id="v-movimenti" hidden>
     <div class="section" id="wkStatSec" hidden>
       <div class="sh">Storico W3.2 <small id="wkStatSub"></small></div>
       <div class="card wkSumM" id="wkSumM"></div>
@@ -775,6 +822,7 @@ body.noscroll{overflow:hidden}
 
   <div class="view" id="v-metodo" hidden>
     <div class="section">
+      <a class="more" href="#posizioni" style="margin:0 4px;color:var(--tint);font:600 .84rem var(--font);text-decoration:none">← Posizioni</a>
       <div class="sh">Come funziona · W3.2</div>
       <div class="card prose">
         <p>Si guarda solo la <b>candela settimanale</b> (lunedì → domenica, chiusura UTC della domenica). La decisione si prende alla chiusura della domenica e si esegue all'<b>apertura del lunedì</b>. Circa 2–3 operazioni l'anno, di settimane o mesi ciascuna.</p>
@@ -807,10 +855,11 @@ body.noscroll{overflow:hidden}
 
 <nav class="tabbar" aria-label="Sezioni">
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
-  <a href="#storico" data-v="storico"><svg><use href="#i-stat"/></svg>Storico</a>
+  <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
+  <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
   <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquid.</a>
-  <a href="#book" data-v="book"><svg><use href="#i-book"/></svg>Book</a>
-  <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>News</a>
+  <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
+  <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
 </nav>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
@@ -934,7 +983,7 @@ function seg(id, onChange) {
   const W = R.weekly; if (!W) return;
   const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
   const mkt = (m, e) => m === "spot" ? (e < 0.995 ? `spot ${Math.round(e * 100)}%` : "spot 1x") : `perp ${e.toFixed(2).replace(".", ",")}x`;
-  $("wkSec").hidden = false;
+  $("wkSec").hidden = false; $("grSec").hidden = false;
   $("wkSub").textContent = `chiusura ${artD("del", fmtD(W.week))} · regime ${W.regime}`;
   const pc1 = x => pct(x, 1);
   const open = W.status === "aperto" || W.status === "uscita", sg = W.side === "short" ? -1 : 1;
@@ -1098,8 +1147,8 @@ function seg(id, onChange) {
       ...(W.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[W.reason] || W.reason}`, true]] : [])]);
   else $("wkPlan").innerHTML = "";
   // --- grafico settimanale (candele, EMA 21, SMA 40, ingresso, trailing) + MACD
-  setTimeout(function wkCharts() {   // dopo le definizioni dei grafici (chartOpts)
-    if (!window.LightweightCharts) return;
+  window.wkChartsInit = function wkCharts() {   // alla prima apertura di Grafico (route): il contenitore deve essere visibile per avere una larghezza
+    if (wkCharts.done || !window.LightweightCharts) return; wkCharts.done = true;
     const T = c.d.map(d => d), up = css("--green"), dn = css("--red");
     const ch = LightweightCharts.createChart($("wkChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1, scaleMargins: { top: .1, bottom: .08 } },
       localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));   // margini: il tick più alto non finisce sotto la barra dei periodi
@@ -1172,7 +1221,7 @@ function seg(id, onChange) {
     if (MB) { $("wkFull").textContent = "⤢"; $("wkFull").setAttribute("aria-label", "Schermo intero"); }
     document.addEventListener("keydown", e => { if (e.key === "Escape" && $("wkChartCard").classList.contains("full")) $("wkFull").click(); });
     ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); $("wkLeg").classList.toggle("act", i >= 0); });   // telefono: la riga dei valori compare solo toccando il grafico
-  }, 0);
+  };
   const H = W.history, M = H.m1;
   // "Limiti" in Come funziona: numeri dello storico del report (W3.2), così il testo non resta indietro quando cambia la strategia
   if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 25% allo stop: ${M.n} trade, ${Math.round(M.n * M.win_rate / 100)} in guadagno, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto.`;
@@ -1267,6 +1316,17 @@ function seg(id, onChange) {
       (o ? r("Stato", "aperto") : r("Uscita", `${fmtD(t.exit)} · ${usd(t.exit_px)}`) + r("Motivo dell'uscita", why[t.reason] || t.reason)) +
       r("Mercato", mkt(t.market, t.expo)) + r("Durata", wks(t) + " settimane") + r("Movimento del prezzo", pc1(t.move_pct)) +
       r("Sul capitale ETH", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + `</div>`); });
+})();
+
+// ---- Oggi: riga di stato delle posizioni ("BTC short +6,8% · ETH short +16,7%"), stessi numeri in evidenza nelle card di Posizioni; porta a Posizioni
+(function renderPosLine() {
+  const W = R.weekly, E = R.weekly_eth; if (!W && !E) return;
+  const st = (tag, o, v) => { const open = o.status === "aperto" || o.status === "uscita";
+    return `<span><b>${tag}</b> ${open ? `${o.side} <b class="${v >= 0 ? "pos" : "neg"}">${pct(v, 1)}</b>${o.status === "uscita" ? " · esce lunedì" : ""}` : o.status === "segnale" ? `segnale ${o.side} lunedì` : "flat"}</span>`; };
+  const draw = r => { $("posLine").innerHTML = `<span class="plK">Posizioni</span><span class="plV">` +
+    (W ? st("BTC", W, (W.side === "short" ? -1 : 1) * (r.px / W.entry_px - 1) * 100) : "") + (E ? st("ETH", E, E.pnl_pct) : "") +
+    `</span><span class="more"><span>Posizioni </span>›</span>`; };
+  draw(REF); window.onRef(draw); $("posLine").hidden = false;
 })();
 
 // ---- pre-analisi della prossima chiusura settimanale (report.preview, radar/preview.py): stima con i dati di oggi,
@@ -1552,26 +1612,36 @@ function renderCal() {
   $("banks").innerHTML = BK.slice(0, 2).map(bkRow).join("") + (bkMore.length ? `<details class="calPast"><summary>Altre ${bkMore.length} riunioni</summary><div class="banks">${bkMore.map(bkRow).join("")}</div></details>` : "")
     || `<div class="card"><p style="margin:0">Riunioni non disponibili in questo momento.</p></div>`;
 }
-// Fra 30 giorni (report.cone, radar/cone.py): intervalli e probabilità di tocco dalla volatilità. Nessuna previsione di direzione
+// Fra 30 giorni (report.cone, radar/cone.py): intervalli e probabilità di tocco dalla volatilità. Nessuna previsione di direzione.
+// Card: un dato grande (intervallo all'80%), la fascia con il prezzo attuale e i livelli sulla stessa scala, le probabilità a barre
+// ordinate per prezzo dall'alto al basso, la dicitura obbligatoria in piccolo; tutto il resto nel pannello Dettagli
 (function renderCone() {
   const C = R.cone && typeof R.cone === "object" ? R.cone : null;
   const ok = a => Array.isArray(a) && a.length === 2 && a.every(x => typeof x === "number" && isFinite(x));
   if (!C || !(C.price > 0) || !ok(C.i80) || !ok(C.i50) || !C.note) return;
   const r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
-  const lv = (Array.isArray(C.levels) ? C.levels : []).filter(o => o && o.label && o.price > 0 && typeof o.prob === "number").slice(0, 5);
-  const lo = C.i80[0], hi = C.i80[1], pad = (hi - lo) * .12, x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100));
+  const lv = (Array.isArray(C.levels) ? C.levels : []).filter(o => o && o.label && o.price > 0 && typeof o.prob === "number").slice(0, 5).sort((a, b) => b.price - a.price);
+  const col = o => /trailing|stop/i.test(o.label) ? "--orange" : /resist/i.test(o.label) ? "--red" : /support/i.test(o.label) ? "--green" : "--label3";
+  // scala unica: intervallo all'80%, prezzo attuale e livelli (anche quelli fuori dall'intervallo)
+  const all = [C.i80[0], C.i80[1], C.price].concat(lv.map(o => o.price)), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
+  const x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100)), xp = v => x(v).toFixed(2) + "%";
   const tgt = C.target ? new Date(C.target + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
   const drift = typeof C.drift30_pct === "number" && C.drift30_pct ? `Comprende solo la crescita media storica di BTC (${C.drift30_pct > 0 ? "+" : "−"}${nfIT(Math.abs(C.drift30_pct), 1)}% in 30 giorni), uguale ogni giorno: non è un segnale. ` : "";
-  const body = `<div class="cnRows"><div class="cnRow"><span>Prezzo attuale${C.date ? ` <small style="color:var(--label3)">· chiusura ${new Date(C.date + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "short", timeZone: "UTC" })}</small>` : ""}</span><b>${usd(C.price)}</b></div>
-      <div class="cnRow"><span>Intervallo probabile all'80%</span><b>${rng(C.i80)}</b></div>
-      <div class="cnRow"><span>Intervallo probabile al 50%</span><b>${rng(C.i50)}</b></div></div>
-    <div class="cnBar" role="img" aria-label="Intervalli all'80% e al 50% rispetto al prezzo attuale"><i style="left:${x(lo)}%;width:${x(hi) - x(lo)}%"></i><i class="b50" style="left:${x(C.i50[0])}%;width:${x(C.i50[1]) - x(C.i50[0])}%"></i><u style="left:${x(C.price)}%"></u></div>
-    ${lv.length ? `<p class="cnCap">Probabilità di toccare il livello entro 30 giorni</p>` + lv.map(o => `<div class="cnLv"><span>${esc(o.label)}</span><b>${usd(o.price)}</b><s><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></s><em>${Math.round(o.prob)}%</em></div>`).join("") : ""}`;
-  const cx = (Array.isArray(C.context) ? C.context : []).filter(o => o && o.label && o.text);
-  const cxH = cx.length ? `<div class="cxRows" style="margin-top:10px;border-top:1px solid var(--line)">${cx.map(o => `<div class="cxRow" style="grid-template-columns:5.6rem minmax(0,1fr)"><span>${esc(o.label)}</span><b style="font-weight:500">${esc(o.text)}</b></div>`).join("")}</div>` : "";
-  const note = `${cxH}<p class="cxNote">${esc(C.note)}</p>`;   /* card corta: deriva e nota sul contesto stanno nei Dettagli */
-  $("cnCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Fra 30 giorni")}${tgt ? ` <small class="cap" style="font-weight:500">· ${tgt}</small>` : ""}</b><span class="more">Dettagli ›</span></div>${body}${note}`;
+  const xn = x(C.price), al = xn < 14 ? " l" : xn > 86 ? " r" : "";
+  const scale = `<div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(C.i80)}, al 50% ${rng(C.i50)}, prezzo attuale ${usd(C.price)}">
+      <div class="rail"></div><div class="b80" style="left:${xp(C.i80[0])};width:${(x(C.i80[1]) - x(C.i80[0])).toFixed(2)}%"></div><div class="b50" style="left:${xp(C.i50[0])};width:${(x(C.i50[1]) - x(C.i50[0])).toFixed(2)}%"></div>
+      ${lv.map(o => `<i class="lv" style="left:${xp(o.price)};--c:var(${col(o)})" title="${esc(o.label)} ${usd(o.price)}"></i>`).join("")}
+      <div class="now" style="left:${xp(C.price)}"></div><span class="nowL${al}" style="left:${xp(C.price)}"><em>ora</em>${usd(C.price)}</span>
+      <span class="tk" style="left:${xp(C.i80[0])}">${r100(C.i80[0])}</span><span class="tk e" style="left:${xp(C.i80[1])}">${r100(C.i80[1])}</span></div>`;
+  const row = (o, i) => `<div class="cnLv${i ? "" : " first"}" style="--c:var(${col(o)})"><i></i><span>${esc(o.label)}</span><b>${usd(o.price)}</b><s><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></s><em>${Math.round(o.prob)}%</em></div>`;
+  const up = lv.filter(o => o.price >= C.price), dn = lv.filter(o => o.price < C.price);
+  const prob = lv.length ? `<div class="cnProb"><p class="cnCap">Probabilità di toccare il livello entro 30 giorni</p>${up.map(row).join("")}<div class="cnDiv"><em>ora</em>${usd(C.price)}</div>${dn.map((o, i) => row(o, 0)).join("")}</div>` : "";
+  $("cnCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Fra 30 giorni")}${tgt ? ` <small>· ${tgt}</small>` : ""}</b><span class="more">Dettagli ›</span></div>
+    <div class="cnGrid"><div class="cnMain"><span class="cnK">Intervallo probabile all'80%</span><div class="cnBig">${rng(C.i80)}</div>${scale}
+      <div class="cnKey"><span><i></i>80% dei casi</span><span><i class="k50"></i>50%: ${rng(C.i50)}</span></div></div>${prob}</div>
+    <p class="cxNote">${esc(C.note)}</p>`;
   $("cnSec").hidden = false;
+  const cx = (Array.isArray(C.context) ? C.context : []).filter(o => o && o.label && o.text);
   const L = C.live && C.live.n > 0 ? `Dal vivo: ${C.live.n} previsioni arrivate a scadenza, ${C.live.in80} con il prezzo dentro l'intervallo 80%.` : "Dal vivo: nessuna previsione è ancora arrivata a scadenza; ogni giorno la previsione viene registrata e fra 30 giorni confrontata con il prezzo.";
   $("cnCard").onclick = () => openSheet("Fra 30 giorni: quanto può muoversi BTC", `<div style="display:grid;gap:12px;min-width:0">
     <div class="list" style="box-shadow:none">
@@ -1581,18 +1651,30 @@ function renderCal() {
       ${typeof C.vol30_pct === "number" ? `<div class="row"><span class="k">Volatilità attesa a 30 giorni<small>movimento tipico, in più o in meno</small></span><span class="v strong">±${nfIT(C.vol30_pct, 1)}%</span></div>` : ""}
       ${lv.map(o => `<div class="row"><span class="k">${esc(o.label)} ${usd(o.price)}<small>${o.dist_pct > 0 ? "+" : "−"}${nfIT(Math.abs(o.dist_pct), 1)}% dal prezzo</small></span><span class="v strong">${Math.round(o.prob)}%</span></div>`).join("")}
     </div>
+    ${cx.length ? `<div class="list" style="box-shadow:none">${cx.map(o => `<div class="row"><span class="k">${esc(o.label)}<small>${esc(o.text)}</small></span></div>`).join("")}</div>` : ""}
     <p class="foot">Le percentuali sono la probabilità che il prezzo tocchi il livello almeno una volta entro 30 giorni, anche solo per un momento. ${cx.length && C.context_note ? esc(C.context_note) + " " : ""}${esc(drift)}${esc(C.note)}</p>
     <p class="foot">${esc(C.method || "")}</p>
     <p class="foot">${L} Non entra in W3.2: stop, trailing e decisioni restano quelli della strategia.</p></div>`);
 })();
-// Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità
+// Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità.
+// Tre tessere (Mercato / Fed / Dati): la prima parte del testo del server in evidenza, il resto sotto; colore di stato sobrio
 (function renderContext() {
   const C = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;
   const rows = C ? C.rows.filter(o => o && o.label && o.text) : [];
   if (!rows.length) return;
   const note = C.note ? `<p class="cxNote">${esc(C.note)}</p>` : "", warn = C.warn ? `<p class="cxWarn">${esc(C.warn)}</p>` : "";
+  const ICO = { Mercato: "i-sim", Fed: "i-fed", Dati: "i-stat" }, cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+  // testo del server "a, b · c · d" → titolo "a" e resto "b · c · d" (una parentesi in coda al titolo scende nel resto): nessuna parola persa
+  const split = t => { const p = String(t).split(" · "); let h = p.shift(), x = [];
+    const c = h.indexOf(", "); if (c > 0) { x.push(h.slice(c + 2)); h = h.slice(0, c); }
+    const m = /^(.*\S)\s*\(([^()]*)\)$/.exec(h); if (m) { h = m[1]; x.unshift(m[2]); }
+    return [cap(h), x.concat(p).join(" · ")]; };
+  // colore: mercato verde/rosso per il trend; Fed e dati arancione se stringono o salgono, azzurro se scendono, grigio altrimenti
+  const tone = (l, h) => l === "Mercato" ? (/rialzo/i.test(h) ? "--green" : /ribasso/i.test(h) ? "--red" : "--label3")
+    : /in rialzo|in salita|in aumento/i.test(h) ? "--orange" : /in calo|in discesa/i.test(h) ? "--teal" : "--label3";
   $("cxCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Contesto")}</b><span class="more">Dettagli ›</span></div>
-    <div class="cxRows">${rows.map(o => `<div class="cxRow"><span>${esc(o.label)}</span><b style="font-weight:500">${esc(o.text)}</b></div>`).join("")}</div>${warn}${note}`;
+    <div class="cxTiles">${rows.map(o => { const [h, x] = split(o.text);
+      return `<div class="cxT" style="--c:var(${tone(o.label, h)})"><span class="ico"><svg><use href="#${ICO[o.label] || "i-met"}"/></svg></span><div><span class="l">${esc(o.label)}</span><b>${esc(h)}</b>${x ? `<small>${esc(x)}</small>` : ""}</div></div>`; }).join("")}</div>${warn}${note}`;
   $("cxSec").hidden = false;
   const det = (C.details || []).filter(o => o && o.label);
   $("cxCard").onclick = () => openSheet("Contesto di mercato e politica economica", `<div style="display:grid;gap:12px;min-width:0">
@@ -1668,19 +1750,26 @@ function startLive() {
 }
 startLive();
 
-// ---- sezioni
-const VIEWS = ["oggi", "storico", "liquidazioni", "book", "notizie", "metodo"];   // Wallet: pagina nel repo ma non raggiungibile
+// ---- sezioni: Oggi · Posizioni · Grafico · Liquidazioni · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
+const BOOK_ON = false;   // true = riattiva la sezione Book (voce di menu e #book); false = nessuna voce, #book porta a Oggi e la pagina non apre connessioni
+const VIEWS = ["oggi", "posizioni", "grafico", "liquidazioni", "movimenti", "notizie", "metodo"].concat(BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
+const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi" };   // vecchi indirizzi
+const PAGE_OF = { liquidazioni: "liquidazioni", book: "book" };   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
 const viewEl = v => $("v-" + v) || (v === "book" ? $("book") : null);   // la pagina Book può usare id "book" o "v-book"
+(function () {   // Book riacceso: la voce torna nel menu, prima di Notizie
+  if (BOOK_ON && viewEl("book")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#book"; a.dataset.v = "book";
+    a.innerHTML = `<svg><use href="#i-book"/></svg>Book`; n.insertBefore(a, n.querySelector('[data-v="notizie"]')); });
+})();
 document.querySelectorAll('a[data-v]').forEach(a => { if (!viewEl(a.dataset.v)) a.hidden = true; });   // tab senza pagina: nascosto
-if ([...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length !== 6) document.querySelector(".tabbar").style.gridTemplateColumns = `repeat(${[...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length},1fr)`;
+document.querySelector(".tabbar").style.gridTemplateColumns = `repeat(${[...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length},1fr)`;
 function route() {
-  const ALIAS = { simulatore: "storico", statistiche: "storico" };   // vecchi link → Storico
   const v0 = (location.hash || "#oggi").slice(1), v = ALIAS[v0] || v0, ok = VIEWS.includes(v) && viewEl(v) ? v : "oggi";
-  if (v0 === "wallet") history.replaceState(null, "", "#oggi");   // pagina non ancora presente → Oggi
+  if (v0 !== ok && location.hash) history.replaceState(null, "", "#" + ok);   // vecchio indirizzo o pagina assente → la sezione giusta
   document.querySelectorAll(".view").forEach(el => el.hidden = el !== viewEl(ok));
+  if (ok === "grafico" && window.wkChartsInit) try { window.wkChartsInit(); } catch (e) { console.error(e); }
   // pagine in file separati (radar/pages/*.html): si registrano in window.PAGES e si inizializzano alla prima visita
-  const PG = (window.PAGES || {})[ok]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
-  Object.entries(window.PAGES || {}).forEach(([k, P]) => { if (k !== ok && P._done && P.hide) try { P.hide(); } catch (_) {} });
+  const pk = PAGE_OF[ok], PG = pk && (window.PAGES || {})[pk]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
+  Object.entries(window.PAGES || {}).forEach(([k, P]) => { if (k !== pk && P._done && P.hide) try { P.hide(); } catch (_) {} });
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
   setTimeout(() => { simChart && simChart.timeScale().fitContent(); detChart && detChart.timeScale().fitContent(); }, 60);
 }
