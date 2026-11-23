@@ -1,0 +1,2 @@
+date,logged_at,late,side,close,ema21,sma40,flow_p,pf1_date,pf1_p,pf1_src,pf2_date,pf2_p,pf2_src,pf3_date,pf3_p,pf3_src,fund7_p,fund7_src,decision_p,m_flow_p,m_fhot_p,m_fcold_p,flow_d,pf1_d,pf2_d,pf3_d,flow_d_at,d_flow,fund7_d,fund7_d_at,d_fund7,decision_d,changed
+2026-11-22,2026-11-23 00:02:33,False,-1,61271.08,74273.45,71970.71,-1.529554,2026-11-19,-1.532185,binance,2026-11-20,-1.649659,binance,2026-11-21,-1.406816,binance,5.83e-06,okx,nessuna,-1.529554,-0.00089417,0.00030583,-1.529554,-1.532185,-1.649659,-1.406816,2026-11-23 00:02:33,0.0,,,,,
