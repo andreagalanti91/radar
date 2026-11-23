@@ -409,6 +409,14 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 120**: il metodo di TraderA (linea su due massimi/minimi, rottura con slancio, ritest con confluenza EMA, stop sotto la
+base della rottura, obiettivo alla struttura precedente) si riproduce con una regola: su LMT stessi numeri entro lo 0,5%
+(calibrazione su un esempio), su NVDA 3 zone su 4. Applicata a tutti i casi non funziona: 20 azioni del Dow 2000 dal 2016, R medio
+−0,3…−0,5 per trade in entrambi i periodi, WR 14–16%, uguale al placebo con gli stessi stop e obiettivi (p 0,21–0,70); short
+sempre in perdita; confluenza e forza relativa non cambiano il segno; crypto con troppi pochi trade; dentro W3.2 né il ritest
+come ingresso (58k $ contro 78,5k $) né metà all'obiettivo di struttura (67k $) migliorano. Il rapporto 3–4R mostrato nei suoi
+piani si paga con l'85% di stop. Il suo eventuale vantaggio sta nella scelta dei casi: si misura solo in avanti (confronto.csv),
+non con un backtest. research/tradera_test/README.md (PREREG 9da09c8; revisione critica separata non eseguita). research/tradera_test/README.md (PREREG 9da09c8; revisione critica separata non eseguita: nulla adottato).
 **Lezione 119**: il Supertrend di TradingView (ATR 10, fattore 3; replica esatta di ta.supertrend, research/supertrend, PREREG
 24d63a0) non è un segnale. Dal 2021 su BTC: inversione long/short 16.215 $ (4h, DD −61%, 293 trade), 3.477 $ (1D, DD −84%),
 24.363 $ (1W, DD −83%); solo long 22.653 / 13.807 / 30.642 $ con DD −46/−54/−63%; solo short sempre in perdita; multi-intervallo

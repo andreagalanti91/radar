@@ -53,3 +53,13 @@ nuovo materiale. Fonti: screenshot inviati dall'utente in chat (non salvati nel 
 - Indirizzo del conto (se Hyperliquid): storico completo pubblico, comprese le operazioni perse.
 - Altri grafici con piano e, soprattutto, **l'esito**: quanti piani arrivano all'obiettivo e quanti allo stop.
 - Gestione della posizione dopo l'ingresso (sposta lo stop? prende profitto a parti?).
+
+## Esito del ciclo 23/11 (research/tradera_test, PREREG 9da09c8)
+- Replica **parziale**: il rilevatore a regole ritrova il piano LMT (linea 02/03 692 → 18/08 612,75, ingresso 569,00, stop 539,46,
+  obiettivo 692,00; scarti ≤ 0,5%, calibrato su questo esempio), 3 zone NVDA su 4 e la zona del suo acquisto BTC, ma nessun
+  segnale BTC il 21/11: quell'acquisto è "compra sulla zona", non rottura + ritest.
+- Applicato a tutti i casi (20 azioni del Dow 2000 dal 2016) il metodo **non funziona**: R medio −0,3…−0,5, WR 14–16%, come
+  ingressi a caso con gli stessi stop e obiettivi; short sempre in perdita; confluenza e forza relativa non cambiano il segno.
+  Crypto: troppo pochi trade (non dimostrabile). Dentro W3.2 nessun miglioramento.
+- Il suo vantaggio, se esiste, è nella scelta dei casi: si misura solo in avanti con research/tradera_test/confronto.csv
+  (ogni nuovo grafico → output del rilevatore alla stessa data → esito).

@@ -1,6 +1,6 @@
 # Stato — Ciclo di analisi e apprendimento sul metodo di TraderA (@TraderA_NB)
 
-**Stato:** IN CORSO · 23/11/2026 · Opus 5.5 medium (preferenza dell'utente), agenti radar-ricerca e radar-review
+**Stato:** COMPLETATO · 23/11/2026 · Opus 5.5 medium (preferenza dell'utente), agenti radar-ricerca e radar-review
 
 ## Prompt originale
 > Utilizza sempre Opus 5.5 Medio da ora. Avvia un ciclo di analisi e apprendimento, lui è analista tecnico
@@ -9,10 +9,10 @@ ritest con confluenza EMA, long 567,93/539,57/688,69 e short alternativo 567,65/
 12/26/50/200; forza relativa fra 42 crypto).
 
 ## Piano
-- [ ] 1. Replica meccanica sui suoi esempi (LMT, NVDA, BTC)   ← IN CORSO
-- [ ] 2. Backtest preregistrato su BTC e azioni negoziabili su OKX/Bitget
-- [ ] 3. Revisione critica (radar-review)
-- [ ] 4. Dossier, lezione 120, memoria; confronto in avanti con i nuovi grafici
+- [x] 1. Replica: parziale (LMT fedele ma calibrata su quell'esempio; NVDA 3 zone su 4; BTC zona sì, segnale no)
+- [x] 2. Backtest: azioni non funziona (WR 14–16%, R medio negativo in entrambi i periodi), crypto non dimostrabile, W3.2 non migliora — PREREG 9da09c8
+- [x] 3. Revisione critica separata: non eseguita (nulla adottato)
+- [x] 4. Dossier aggiornato, lezione 120, memoria
 
 ## Come riprendere
-**Prossima azione:** attendere l'esito dell'agente in research/tradera_test/.
+**Prossima azione:** a ogni nuovo grafico di TraderA: research/tradera_test/confronto.py → confronta() e aggiungi() in confronto.csv.

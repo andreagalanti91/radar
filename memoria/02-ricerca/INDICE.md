@@ -32,3 +32,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Supertrend 10/3 su 4h, giornaliero, settimanale; da solo e dentro W3.2 | non regge (0/11 e 0/4); il cambio 1W non chiude mai un trade | 119 | research/supertrend |
 | Ricerca Reddit sugli indicatori più citati (solo estratti: accesso bloccato) | lista corta per i test; consenso: nessun indicatore singolo dà vantaggio | — | research/reddit_indicatori |
 | TraderA (@TraderA_NB): dossier del metodo (trendline + ritest + confluenza medie, zone orizzontali, piani 3R long/short) | solo apprendimento, nessun test | — | research/tradera |
+| Replica e test del metodo di TraderA (trendline + ritest + confluenza EMA, obiettivo alla struttura) | replica parziale; azioni: non funziona (WR 14–16%); crypto: non dimostrabile; W3.2 non migliora | 120 | research/tradera_test (confronto.csv per i nuovi grafici) |

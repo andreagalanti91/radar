@@ -1,0 +1,20 @@
+[BTC] ultima chiusura 2026-11-22: 61271.08 · EMA50 73481.04 · EMA200 75148.14 · ATR 3011.32
+  linea attiva lato long: linea 2026-01-14 97924.49 → 2026-09-21 87395.67, valore domani 84742.41
+  attesa ritest lato short: linea 2026-07-01 57800.19 → 2026-08-14 62535.24, valore domani 73404.33, stop 75674.82, obiettivo 57800.19
+  zone entro ±25%: 44700.00–49000.00 (5); 52088.00–56552.82 (5); 57800.19–61844.00 (4); 64854.00–70079.99 (5); 71997.02–76606.00 (7)
+
+[ETH] ultima chiusura 2026-11-22: 1724.33 · EMA50 2147.32 · EMA200 2252.85 · ATR 111.90
+  linea attiva lato long: linea 2026-01-14 3402.89 → 2026-09-21 2807.34, valore domani 2657.26
+  linea attiva lato short: linea 2026-06-06 1505.68 → 2026-06-26 1512.00, valore domani 1559.40
+  zone entro ±25%: 1352.72–1440.00 (4); 1505.68–1626.01 (5); 1680.00–1751.00 (8); 2029.11–2159.00 (9)
+
+[LMT] ultima chiusura 2026-11-20: 565.50 · EMA50 572.15 · EMA200 552.44 · ATR 17.72
+  segnale ritest 2026-11-05 long: linea 574.82, stop 539.46, obiettivo 692.00, R:R 3.16, confluenza True, filtro R:R≥2 sì → APERTO (ultima 565.50)
+  linea attiva lato long: linea 2026-03-02 692.00 → 2026-10-30 657.00, valore domani 653.69
+  linea attiva lato short: linea 2025-12-02 437.25 → 2026-10-08 497.00, valore domani 505.98
+  zone entro ±25%: 402.38–443.41 (14); 445.49–491.07 (17); 494.20–516.00 (7); 612.75–657.00 (3)
+
+[NVDA] ultima chiusura 2026-11-20: 125.53 · EMA50 195.87 · EMA200 200.62 · ATR 10.71
+  segnale ritest 2026-10-07 long: linea 234.26, stop 227.93, obiettivo 236.54, R:R -0.10, confluenza False, filtro R:R≥2 no → obiettivo il 2026-10-08 a 236.54
+  segnale ritest 2026-11-03 short: linea 211.10, stop 220.21, obiettivo 164.27, R:R 3.14, confluenza True, filtro R:R≥2 sì → obiettivo il 2026-11-12 a 151.01
+  zone entro ±25%: 97.40–100.95 (2); 126.86–131.26 (2); 140.76–153.13 (4)
