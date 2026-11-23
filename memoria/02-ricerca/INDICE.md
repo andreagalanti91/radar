@@ -31,3 +31,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Portafoglio di trend su più mercati: 19 ETF (riferimento) e perpetui azioni/materie prime su OKX/Bitget | non funziona; accanto a W3.2 vale quanto la liquidità | 118 | research/trend_multi |
 | Supertrend 10/3 su 4h, giornaliero, settimanale; da solo e dentro W3.2 | non regge (0/11 e 0/4); il cambio 1W non chiude mai un trade | 119 | research/supertrend |
 | Ricerca Reddit sugli indicatori più citati (solo estratti: accesso bloccato) | lista corta per i test; consenso: nessun indicatore singolo dà vantaggio | — | research/reddit_indicatori |
+| TraderA (@TraderA_NB): dossier del metodo (trendline + ritest + confluenza medie, zone orizzontali, piani 3R long/short) | solo apprendimento, nessun test | — | research/tradera |
