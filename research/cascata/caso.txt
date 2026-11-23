@@ -1,0 +1,29 @@
+Dati: tool fino al 21/11, 22/11 chiusa, 2026-11-23 in corso (ultimo prezzo 63850)
+                open      high       low     close     atr1    vr  rA_S  eA_S  tail_S     D1     D3  lim1.25  toc1.25   lim1.5  toc1.5   lim2.0  toc2.0   lim2.5  toc2.5
+date                                                                                                                                                                    
+2026-11-16  65351.05  65696.16  63905.01  64882.87  2724.38  1.25  0.17  0.53    0.55  False  False  61946.0    False  61264.0   False  59902.0   False  58540.0   False
+2026-11-17  64882.88  65447.00  63336.00  64947.35  2657.72  1.45 -0.02  0.58    0.76  False  False  61561.0    False  60896.0   False  59567.0   False  58239.0   False
+2026-11-18  64947.36  65002.00  62062.97  63068.22  2618.67  1.30  0.72  1.10    0.34  False  False  61674.0    False  61019.0   False  59710.0   False  58401.0   False
+2026-11-19  63068.21  64080.80  61428.26  61986.73  2641.55  1.52  0.41  0.62    0.21  False  False  59766.0    False  59106.0   False  57785.0   False  56464.0   False
+2026-11-20  61986.73  62639.52  57778.35  58951.51  2642.34  2.50  1.15  1.59    0.24  False  False  58684.0     True  58023.0    True  56702.0   False  55381.0   False
+2026-11-21  58951.51  60996.00  55130.00  60215.77  2800.83  2.19 -0.45  1.36    0.87  False   True  55450.0     True  54750.0   False  53350.0   False  51949.0   False
+
+Decisione domenicale 22/11: {'close': 61271.08, 'ema21': 74273.44713342028, 'sma': 71970.715, 'flow': -1.5295535480082363, 'atr': 6999.274214761536, 'short': True, 'long': False}
+
+Capitale 50000 $ al 15/11 (flat). Valore al 2026-11-23 a 63850 $ (candela in corso, funding 22–23/11 non incluso):
+W3.2 (tiene)                       51045 $  P/L   +1045  contro W3.2      +0 | nessuna uscita |  | aperto: short dal 2026-11-16 a 65286 (espos. 0.972, segnale), stop 75764
+C1/C4 D1                           51045 $  P/L   +1045  contro W3.2      +0 | nessuna uscita |  | aperto: short dal 2026-11-16 a 65286 (espos. 0.972, segnale), stop 75764
+C5 D3 tutto R1                     51632 $  P/L   +1632  contro W3.2    +587 | uscita 2026-11-22 a 60276 | short 2026-11-16 a 65286 (espos. 0.972) → 2026-11-22 a 60276.0 [cascata, segnale] | aperto: short dal 2026-11-23 a 61210 (espos. 0.875, segnale), stop 78769
+C5' D3 tutto R2 5%                 51632 $  P/L   +1632  contro W3.2    +587 | uscita 2026-11-22 a 60276 | short 2026-11-16 a 65286 (espos. 0.972) → 2026-11-22 a 60276.0 [cascata, segnale] | aperto: short dal 2026-11-23 a 61210 (espos. 0.875, segnale), stop 78769
+D3 metà                            52364 $  P/L   +2364  contro W3.2   +1319 | uscita 2026-11-22 a 60276 |  | aperto: short dal 2026-11-16 a 65286 (espos. 0.972, segnale), stop 75764
+D3 tutto, nessun rientro (R3)      53683 $  P/L   +3683  contro W3.2   +2638 | uscita 2026-11-22 a 60276 | short 2026-11-16 a 65286 (espos. 0.972) → 2026-11-22 a 60276.0 [cascata, segnale] | flat
+C6 LIM 2 ATR                       51045 $  P/L   +1045  contro W3.2      +0 | nessuna uscita |  | aperto: short dal 2026-11-16 a 65286 (espos. 0.972, segnale), stop 75764
+vicino LIM 1,5 ATR                 53209 $  P/L   +3209  contro W3.2   +2164 | uscita 2026-11-20 a 58081 | short 2026-11-16 a 65286 (espos. 0.972) → 2026-11-20 a 58081.24 [cascata, segnale] | aperto: short dal 2026-11-23 a 61210 (espos. 0.875, segnale), stop 78769
+vicino LIM 1,25 ATR                52736 $  P/L   +2736  contro W3.2   +1690 | uscita 2026-11-20 a 58742 | short 2026-11-16 a 65286 (espos. 0.972) → 2026-11-20 a 58742.49 [cascata, segnale] | aperto: short dal 2026-11-23 a 61210 (espos. 0.875, segnale), stop 78769
+LIM 1,25 ATR, nessun rientro       54830 $  P/L   +4830  contro W3.2   +3785 | uscita 2026-11-20 a 58742 | short 2026-11-16 a 65286 (espos. 0.972) → 2026-11-20 a 58742.49 [cascata, segnale] | flat
+
+Posizione W3.2: short 0.7444 BTC da 65285.7 (nozionale 48600 $ su 50000).
+  chiusura a minimo 55.130 (non eseguibile): 55130 → P/L lordo +7560 $ (+15.6% sul prezzo)
+  chiusura a apertura 22/11 (eseguibile, con slippage): 60276 → P/L lordo +3729 $ (+7.7% sul prezzo)
+  chiusura a chiusura 21/11: 60216 → P/L lordo +3774 $ (+7.8% sul prezzo)
+  chiusura a ultimo prezzo 63850: 63850 → P/L lordo +1068 $ (+2.2% sul prezzo)

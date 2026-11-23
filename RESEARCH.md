@@ -409,6 +409,16 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 116**: uscire in profitto nel giorno di "cascata a favore" (movimento giornaliero ≥ 2 ATR con volume ≥ 2× la media, o
+crollo con rifiuto tipo 21/11/2026) e rientrare non migliora W3.2: 0/6 varianti passano (PREREG 9e437db); 34–73k $ contro
+78,5k, DD uguale o peggiore, ΣΔ per trade sempre negativa, p dei segni 0,63–0,97. Dopo una cascata a favore il trend di solito
+prosegue (10 su 14 a 7 giorni, estremo migliore in seguito 13 su 14) e il rientro compra peggio (−5/−14% sui rientri finali).
+Il minimo del giorno non è un prezzo eseguibile: l'uscita reale è l'apertura successiva (60.276 $, non 55.130) e un limite
+abbastanza vicino da essere preso (1,25–1,5 ATR giornalieri) fa 20–30k $. Test evento: dopo un crollo in chiusura con volume BTC
+non rimbalza, a 7 giorni scende ancora (−4,7 punti, 3 positivi su 12, p 0,036 senza Holm; nullo nel 2018–20 e su ETH); dopo un
+crollo con rifiuto effetto nullo. Nel caso del 21/11 l'uscita avrebbe reso +0,6/+2,6k $ su 50k: un caso, non una regola. Con le
+lezioni 105, 109 e 114: le decisioni giornaliere sulle posizioni settimanali non hanno mai migliorato W3.2; non riproporre
+senza dati nuovi (liquidazioni reali multi-borsa, test orario preregistrato). research/cascata/README.md (PREREG 9e437db; revisione critica separata non eseguita).
 **Lezione 115**: a 30 giorni la direzione di BTC non è prevedibile ma l'ampiezza sì: un cono da bootstrap dei rendimenti riscalati alla volatilità corrente è calibrato dal 2018 (intervallo 80% centrato nel 78% dei casi, 50% nel 51–55%, errore sulle probabilità di tocco 4,6 punti), con un guadagno piccolo sulla frequenza storica (Brier +2,1%, intervallo che comprende lo zero) e tre metodi indistinguibili. Condizionare la deriva al flusso perp non migliora in modo affidabile e peggiora la copertura 2024–26: flusso e liquidazioni restano descrittivi. Card "Fra 30 giorni" in dashboard (radar/cone.py), senza direzione. research/cono30/README.md (PREREG 17b9a49, ADDENDUM 3049ee9).
 **Lezione 114**: guardare ogni giorno "chi compra" (spot contro perp) e i livelli chiave non migliora W3.2 e non prevede il
 prezzo. Su BTC dal 2021 (Binance, eventi ≥ 5% in 3 giorni, 32–51 per classe) i rialzi guidati dai perp rendono a 7 giorni +1,3

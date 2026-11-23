@@ -1,0 +1,183 @@
+== W3.2 riprodotta: {'ALL': (78474, -21.1, 13, 92.3), 'IS': (33477, -19.3, 7, 100.0), 'OOS': (23488, -21.1, 6, 83.3), 'L': (25142, -37.3, 9, 55.6), 'ETH': (37575, -27.5, 15, 60.0)}
+
+== 1. Cascate a favore dentro i trade W3.2 (movimento nel verso del trade dall'apertura successiva; >0 prosegue, <0 rimbalza)
+definizione     giorno      trade  lato  guadagno_aperto    rA   vr  prezzo_uscita    f3    f7   f14  estremo_migliore_intra  estremo_migliore_chiusura  mfe_dopo  w32_dopo uscita_w32
+         D1 2022-01-21 2022-01-02 short             22.8  2.10 2.86        36445.3  -0.6  -3.5 -14.1                    True                       True       9.7     -28.6 2022-03-28
+         D1 2022-09-13 2022-08-14 short             16.9  2.48 2.01        20173.6   1.8   6.4   5.4                    True                       True      23.3      -3.6 2023-01-16
+         D1 2022-11-08 2022-08-14 short             23.6  3.29 3.63        18545.4   8.0   8.9  12.5                    True                       True      16.6     -12.7 2023-01-16
+         D1 2022-11-09 2022-08-14 short             34.4  3.16 3.27        15922.7  -5.6  -4.6  -4.3                    True                       True       2.8     -31.2 2023-01-16
+         D1 2023-03-13 2023-01-22  long              6.1  2.27 2.45        24112.3   3.7  14.9  12.5                    True                       True      31.9       7.7 2023-08-17
+         D1 2023-10-23 2023-10-22  long             10.2  3.82 3.37        33070.0   3.3   4.2   6.0                    True                       True      35.2      27.7 2024-01-01
+         D1 2024-02-28 2024-02-11  long             29.1  3.14 3.65        62432.1  -0.7   5.8  17.0                    True                       True      12.1      10.3 2024-03-11
+         D1 2024-03-04 2024-02-11  long             41.2  2.44 2.08        68245.7  -2.1   5.6  -0.9                    True                       True       2.6       0.9 2024-03-11
+         D1 2024-11-06 2024-09-22  long             18.7  2.81 3.06        75572.0   1.5  19.6  24.8                    True                       True      45.0      12.8 2025-02-26
+         D1 2024-11-11 2024-09-22  long             39.3  3.21 2.52        88648.0  -1.5   2.0   4.9                    True                       True      23.6      -3.8 2025-02-26
+         D1 2026-01-31 2025-11-30 short             12.8  2.05 2.14        78741.1   3.8  12.0  11.3                    True                       True      23.8       0.0 2026-04-27
+         D1 2026-02-05 2025-11-30 short             30.3  2.85 4.43        62909.9 -11.8  -5.3  -6.5                    True                      False       4.6     -25.2 2026-04-27
+         D1 2026-06-02 2026-05-24 short             13.3  2.38 2.66        66760.8   8.5   7.5   1.6                    True                       True      13.4      -9.8 2026-08-20
+         D1 2026-09-21 2026-08-23  long             11.3  2.47 2.05        86620.0  -2.6  -3.6  -1.0                   False                      False       0.8     -13.7 2026-11-09
+         D3 2022-01-24 2022-01-02 short             22.4 -0.18 2.61        36660.4  -1.4  -4.9 -19.6                   False                      False       6.4     -27.9 2022-03-28
+         D3 2022-02-24 2022-01-02 short             18.9 -0.52 2.60        38328.7   1.6 -10.8  -2.9                   False                       True       3.5     -22.3 2022-03-28
+         D3 2023-03-14 2023-01-22  long              8.5  0.53 2.34        24670.4  11.0  13.9  10.5                    True                       True      28.9       5.3 2023-08-17
+         D3 2023-04-26 2023-01-22  long             25.0  0.11 2.61        28415.3   2.9   2.1  -2.9                    True                       True      11.9      -8.6 2023-08-17
+         D3 2023-10-24 2023-10-22  long             13.0  0.78 2.93        33922.7  -0.1   2.1   4.4                    True                       True      31.8      24.5 2024-01-01
+         D3 2023-11-09 2023-10-22  long             22.2  1.02 2.24        36701.1   1.0  -1.5   1.6                    True                       True      21.8      15.1 2024-01-01
+         D3 2024-12-05 2024-09-22  long             52.3 -0.49 2.02        96945.6   4.3   3.2   0.5                    True                       True      13.0     -12.1 2025-02-26
+         D3 2025-01-20 2024-09-22  long             60.7  0.23 3.00       102260.0   1.6  -0.2  -0.9                   False                       True       4.9     -16.6 2025-02-26
+         D3 2026-01-30 2025-11-30 short              6.7  0.15 2.08        84260.5   6.6  16.2  18.3                    True                       True      28.8       6.6 2026-04-27
+BTC 2021+ D1: n 14 in 9 trade | media 3/7/14 g +0.4/+5.0/+4.9 | mediana +0.5/+5.7/+5.2 | prosegue (>0) 7/10/9 | estremo migliore dopo: intra 13/14, chiusura 12/14 | W3.2 esce meglio dell'apertura successiva 5/14 (media -4.9, mediana -3.7)
+BTC 2021+ D3: n 9 in 5 trade | media 3/7/14 g +3.1/+2.2/+1.0 | mediana +1.6/+2.1/+0.5 | prosegue (>0) 7/5/5 | estremo migliore dopo: intra 6/9, chiusura 8/9 | W3.2 esce meglio dell'apertura successiva 4/9 (media -4.0, mediana -8.6)
+BTC 2018-20 D1: n 7 in 4 trade | media 3/7/14 g +0.8/+5.7/+10.1 | mediana +0.6/+1.8/+12.3 | prosegue (>0) 4/5/5 | estremo migliore dopo: intra 6/7, chiusura 6/7 | W3.2 esce meglio dell'apertura successiva 5/7 (media +6.2, mediana +7.4)
+BTC 2018-20 D3: n 2 in 2 trade | media 3/7/14 g -2.9/+11.8/+17.5 | mediana -2.9/+11.8/+17.5 | prosegue (>0) 1/1/2 | estremo migliore dopo: intra 2/2, chiusura 2/2 | W3.2 esce meglio dell'apertura successiva 2/2 (media +26.9, mediana +26.9)
+ETH 2021+ D1: n 6 in 4 trade | media 3/7/14 g -1.9/-1.0/-0.1 | mediana -4.6/-3.2/-1.6 | prosegue (>0) 2/2/2 | estremo migliore dopo: intra 5/6, chiusura 5/6 | W3.2 esce meglio dell'apertura successiva 1/6 (media -26.4, mediana -26.5)
+ETH 2021+ D3: n 3 in 2 trade | media 3/7/14 g +1.8/+6.0/+16.2 | mediana +2.0/+7.6/+4.7 | prosegue (>0) 2/2/2 | estremo migliore dopo: intra 3/3, chiusura 3/3 | W3.2 esce meglio dell'apertura successiva 2/3 (media +1.7, mediana +14.5)
+
+== 2. Risultati (10.000 $, IS/OOS/2018-20/ETH ripartono da 10.000 $)
+W3.2                   fin  78474 CAGR  42.0 DD  -21.1 C/DD 1.990 n 13 WR  92.3 peg  -4.1 usc  0 sMigl  51561 | IS 33477/2.574 OOS 23488/1.639 | 18-20 25142/-37.3/0.966 usc 0 | ETH 37575/-27.5/0.919 usc 0
+C1 D1 tutto R1         fin  53945 CAGR  33.3 DD  -24.6 C/DD 1.351 n 23 WR  73.9 peg -14.1 usc 12 sMigl  35444 | IS 25688/1.504 OOS 21042/1.399 | 18-20 27504/-30.4/1.319 usc 7 | ETH 39886/-29.2/0.910 usc 4
+C2 D1 tutto R2 5%      fin  50670 CAGR  31.8 DD  -25.6 C/DD 1.242 n 25 WR  72.0 peg -14.1 usc 12 sMigl  33292 | IS 24550/1.364 OOS 20681/1.362 | 18-20 28024/-38.1/1.076 usc 8 | ETH 32462/-29.2/0.761 usc 4
+C3 D1 tutto R3         fin  65749 CAGR  37.8 DD  -21.1 C/DD 1.790 n 13 WR 100.0 peg   4.3 usc  9 sMigl  43200 | IS 27885/2.274 OOS 23579/1.647 | 18-20 13926/-34.7/0.337 usc 4 | ETH 46520/-27.5/1.088 usc 4
+C4 D1 metà             fin  73011 CAGR  40.3 DD  -21.1 C/DD 1.908 n 13 WR 100.0 peg   3.5 usc  9 sMigl  47971 | IS 30871/2.545 OOS 23677/1.656 | 18-20 19027/-31.6/0.757 usc 4 | ETH 42010/-27.5/1.007 usc 4
+C5 D3 tutto R1         fin  70568 CAGR  39.5 DD  -21.1 C/DD 1.869 n 20 WR  80.0 peg  -9.0 usc  8 sMigl  46366 | IS 29765/2.275 OOS 23756/1.664 | 18-20 23006/-37.3/0.860 usc 2 | ETH 42701/-30.4/0.924 usc 3
+C6 LIM 2ATR tutto R1   fin  34500 CAGR  23.5 DD  -23.8 C/DD 0.989 n 31 WR  74.2 peg -15.5 usc 21 sMigl  27653 | IS 19310/1.034 OOS 17902/0.958 | 18-20 23087/-30.4/1.058 usc 12 | ETH 23448/-35.8/0.437 usc 15
+Buy & hold ALL: {'final': 22549, 'cagr': 14.9, 'dd': -76.6, 'cdd': 0.194}
+Buy & hold IS: {'final': 14590, 'cagr': 13.4, 'dd': -76.6, 'cdd': 0.175}
+Buy & hold OOS: {'final': 15425, 'cagr': 16.3, 'dd': -53.0, 'cdd': 0.307}
+Buy & hold L: {'final': 21046, 'cagr': 28.2, 'dd': -81.2, 'cdd': 0.347}
+Buy & hold ETH: {'final': 24873, 'cagr': 16.8, 'dd': -79.3, 'cdd': 0.212}
+
+== Criteri
+C1 D1 tutto R1: c1 IS/OOS False | c2 2018-20 True | c3 DD True | c4 WR True | c5 senza 2 Δ migliori False (ΣΔ -37.5, senza 2 -57.3 punti log; Δ>0 2, Δ<0 7) | segni p 0.898 (non nulli 9) | c8 ETH False
+C2 D1 tutto R2 5%: c1 IS/OOS False | c2 2018-20 True | c3 DD True | c4 WR True | c5 senza 2 Δ migliori False (ΣΔ -43.7, senza 2 -54.1 punti log; Δ>0 3, Δ<0 6) | segni p 0.963 (non nulli 9) | c8 ETH False
+C3 D1 tutto R3: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 WR True | c5 senza 2 Δ migliori False (ΣΔ -17.7, senza 2 -45.0 punti log; Δ>0 5, Δ<0 4) | segni p 0.672 (non nulli 9) | c8 ETH True
+C4 D1 metà: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 WR True | c5 senza 2 Δ migliori False (ΣΔ -7.2, senza 2 -21.3 punti log; Δ>0 5, Δ<0 4) | segni p 0.645 (non nulli 9) | c8 ETH True
+C5 D3 tutto R1: c1 IS/OOS False | c2 2018-20 False | c3 DD True | c4 WR True | c5 senza 2 Δ migliori False (ΣΔ -10.6, senza 2 -31.0 punti log; Δ>0 2, Δ<0 3) | segni p 0.625 (non nulli 5) | c8 ETH True
+C6 LIM 2ATR tutto R1: c1 IS/OOS False | c2 2018-20 True | c3 DD True | c4 WR True | c5 senza 2 Δ migliori False (ΣΔ -82.2, senza 2 -102.7 punti log; Δ>0 4, Δ<0 8) | segni p 0.966 (non nulli 12) | c8 ETH False
+Holm: {'C5 D3 tutto R1': (0.625, False), 'C4 D1 metà': (0.645, False), 'C3 D1 tutto R3': (0.672, False), 'C1 D1 tutto R1': (0.898, False), 'C2 D1 tutto R2 5%': (0.963, False), 'C6 LIM 2ATR tutto R1': (0.966, False)}
+
+== Placebo (uscita in un giorno a caso dello stesso trade, non di cascata, con guadagno aperto entro ±5 punti; 500 ripetizioni)
+C1 D1 tutto R1: eventi 14 | C/DD 1.351 | placebo mediana 1.273 (5–95% 1.110–1.695), finale mediano 62560 | p 0.322
+C2 D1 tutto R2 5%: eventi 14 | C/DD 1.242 | placebo mediana 1.312 (5–95% 1.065–1.775), finale mediano 65061 | p 0.678
+C3 D1 tutto R3: eventi 14 | C/DD 1.790 | placebo mediana 1.919 (5–95% 1.787–2.008), finale mediano 73735 | p 0.942
+C4 D1 metà: eventi 9 | C/DD 1.908 | placebo mediana 1.924 (5–95% 1.887–1.963), finale mediano 74088 | p 0.766
+C5 D3 tutto R1: eventi 9 | C/DD 1.869 | placebo mediana 1.575 (5–95% 1.101–1.837), finale mediano 57203 | p 0.036
+C6 LIM 2ATR tutto R1: eventi 36 | C/DD 0.989 | placebo mediana 0.821 (5–95% 0.528–1.207), finale mediano 36748 | p 0.198
+
+== Vicini (2021+ finale/DD/C/DD/WR · IS · OOS · 2018-20 · ETH C/DD)
+C1 D1 tutto R1 · rA1,5: fin 50269 DD -24.6 C/DD 1.287 WR 72.0 usc 14 | IS 1.375 OOS 1.399 18-20 1.27 ETH 0.926
+C1 D1 tutto R1 · rA2,5: fin 64031 DD -24.7 C/DD 1.507 WR 78.9 usc 6 | IS 1.712 OOS 1.526 18-20 0.817 ETH 0.905
+C1 D1 tutto R1 · vr1,5: fin 54548 DD -21.2 C/DD 1.58 WR 76.0 usc 14 | IS 1.961 OOS 1.368 18-20 1.319 ETH 1.042
+C1 D1 tutto R1 · vr2,5: fin 63297 DD -24.6 C/DD 1.501 WR 71.4 usc 8 | IS 1.819 OOS 1.389 18-20 1.198 ETH 0.897
+C1 D1 tutto R1 · rP7%: fin 56632 DD -24.6 C/DD 1.396 WR 72.7 usc 10 | IS 1.504 OOS 1.504 18-20 1.319 ETH 0.891
+C5 D3 tutto R1 · eA1: fin 68421 DD -21.1 C/DD 1.835 WR 76.2 usc 9 | IS 2.275 OOS 1.595 18-20 1.09 ETH 0.765
+C5 D3 tutto R1 · eA1,5: fin 77479 DD -21.1 C/DD 1.975 WR 88.9 usc 6 | IS 2.153 OOS 1.99 18-20 0.86 ETH 0.81
+C5 D3 tutto R1 · eA2: fin 79040 DD -21.1 C/DD 1.998 WR 87.5 usc 4 | IS 2.164 OOS 2.027 18-20 0.977 ETH 0.796
+C5 D3 tutto R1 · tail1/3: fin 62298 DD -24.6 C/DD 1.486 WR 73.9 usc 11 | IS 1.535 OOS 1.678 18-20 1.294 ETH 0.831
+C5 D3 tutto R1 · vr1,5: fin 82608 DD -22.8 C/DD 1.9 WR 77.3 usc 11 | IS 1.879 OOS 2.403 18-20 0.746 ETH 0.825
+C2 D1 tutto R2 5% · X 3%: fin 49129 DD -25.6 C/DD 1.217 WR 72.0 usc 12 | IS 1.349 OOS 1.318 18-20 1.111 ETH 0.758
+C2 D1 tutto R2 5% · X 8%: fin 48323 DD -25.2 C/DD 1.222 WR 68.0 usc 12 | IS 1.473 OOS 1.077 18-20 0.866 ETH 0.765
+C6 LIM 2ATR tutto R1 · k 1.25: fin 20052 DD -34.0 C/DD 0.371 WR 68.5 usc 49 | IS 0.794 OOS 0.14 18-20 0.394 ETH 0.166
+C6 LIM 2ATR tutto R1 · k 1.5: fin 29677 DD -29.9 C/DD 0.681 WR 71.1 usc 36 | IS 0.807 OOS 0.598 18-20 0.542 ETH 0.281
+C6 LIM 2ATR tutto R1 · k 2.5: fin 48113 DD -21.2 C/DD 1.446 WR 76.9 usc 15 | IS 1.601 OOS 1.307 18-20 1.037 ETH 0.941
+W3.2 C/DD: ALL 1.99 IS 2.574 OOS 1.639 18-20 0.966 ETH 0.919
+
+== Verdetto per variante (c1 IS/OOS, c2 2018-20, c3 DD, c4 WR, c5 ≤2 trade, c6 Holm, c7 placebo, c8 ETH)
+C1 D1 tutto R1: NON PASSA ['c2', 'c3', 'c4'] veri, ['c1', 'c5', 'c6', 'c7', 'c8'] falsi
+C2 D1 tutto R2 5%: NON PASSA ['c2', 'c3', 'c4'] veri, ['c1', 'c5', 'c6', 'c7', 'c8'] falsi
+C3 D1 tutto R3: NON PASSA ['c3', 'c4', 'c8'] veri, ['c1', 'c2', 'c5', 'c6', 'c7'] falsi
+C4 D1 metà: NON PASSA ['c3', 'c4', 'c8'] veri, ['c1', 'c2', 'c5', 'c6', 'c7'] falsi
+C5 D3 tutto R1: NON PASSA ['c3', 'c4', 'c7', 'c8'] veri, ['c1', 'c2', 'c5', 'c6'] falsi
+C6 LIM 2ATR tutto R1: NON PASSA ['c2', 'c3', 'c4'] veri, ['c1', 'c5', 'c6', 'c7', 'c8'] falsi
+
+== Trade delle varianti C1 e C5 (2021+)
+C1 2021-01-31 long  2021-02-01→2021-02-22 dist    segnale move +73.1 pnl +52.2
+C1 2021-08-01 long  2021-08-02→2021-09-27 ema     segnale move +8.1 pnl +4.3
+C1 2021-10-03 long  2021-10-04→2021-11-08 dist    segnale move +31.0 pnl +20.9
+C1 2022-01-02 short 2022-01-03→2022-01-22 cascata segnale move +22.8 pnl +14.7
+C1 2022-03-27 long  2022-03-28→2022-04-11 ema     segnale move -10.2 pnl -7.2
+C1 2022-08-14 short 2022-08-15→2022-09-14 cascata segnale move +16.8 pnl +9.4
+C1 2022-10-16 short 2022-10-17→2022-11-09 cascata segnale move +3.5 pnl +2.1
+C1 2022-11-13 short 2022-11-14→2023-01-16 ema     segnale move -28.1 pnl -14.1
+C1 2023-01-22 long  2023-01-23→2023-03-14 cascata segnale move +6.0 pnl +5.5
+C1 2023-03-19 long  2023-03-20→2023-08-17 trail   segnale move -7.3 pnl -7.5
+C1 2023-10-22 long  2023-10-23→2023-10-24 cascata segnale move +10.0 pnl +9.8
+C1 2023-10-29 long  2023-10-30→2024-01-01 dist    segnale move +22.2 pnl +22.0
+C1 2024-02-11 long  2024-02-12→2024-02-29 cascata segnale move +29.0 pnl +28.8
+C1 2024-03-03 long  2024-03-04→2024-03-05 cascata segnale move +7.9 pnl +7.7
+C1 2024-09-22 long  2024-09-23→2024-11-07 cascata segnale move +18.6 pnl +16.8
+C1 2024-11-10 long  2024-11-11→2024-11-12 cascata segnale move +10.1 pnl +9.9
+C1 2024-11-17 long  2024-11-18→2025-02-26 trail   segnale move -5.2 pnl -5.4
+C1 2025-04-27 long  2025-04-28→2025-10-10 trail   segnale move +11.6 pnl +11.3
+C1 2025-11-30 short 2025-12-01→2026-02-01 cascata segnale move +12.7 pnl +12.0
+C1 2026-02-08 short 2026-02-09→2026-04-27 ema     segnale move -12.1 pnl -9.0
+C1 2026-05-24 short 2026-05-25→2026-06-03 cascata segnale move +13.2 pnl +13.3
+C1 2026-06-07 short 2026-06-08→2026-08-20 trail   segnale move -15.8 pnl -12.4
+C1 2026-08-23 long  2026-08-24→2026-09-22 cascata segnale move +11.2 pnl +11.0
+C5 2021-01-31 long  2021-02-01→2021-02-22 dist    segnale move +73.1 pnl +52.2
+C5 2021-08-01 long  2021-08-02→2021-09-27 ema     segnale move +8.1 pnl +4.3
+C5 2021-10-03 long  2021-10-04→2021-11-08 dist    segnale move +31.0 pnl +20.9
+C5 2022-01-02 short 2022-01-03→2022-01-25 cascata segnale move +22.3 pnl +14.4
+C5 2022-03-27 long  2022-03-28→2022-04-11 ema     segnale move -10.2 pnl -7.2
+C5 2022-08-14 short 2022-08-15→2023-01-16 ema     segnale move +13.9 pnl +8.3
+C5 2023-01-22 long  2023-01-23→2023-03-15 cascata segnale move +8.4 pnl +7.8
+C5 2023-03-19 long  2023-03-20→2023-04-27 cascata segnale move +1.4 pnl +1.2
+C5 2023-05-07 long  2023-05-08→2023-08-17 trail   segnale move -8.8 pnl -8.9
+C5 2023-10-22 long  2023-10-23→2023-10-25 cascata segnale move +12.9 pnl +12.7
+C5 2023-10-29 long  2023-10-30→2023-11-10 cascata segnale move +6.1 pnl +5.9
+C5 2023-11-12 long  2023-11-13→2024-01-01 dist    segnale move +13.9 pnl +13.6
+C5 2024-02-11 long  2024-02-12→2024-03-11 dist    segnale move +42.5 pnl +42.2
+C5 2024-09-22 long  2024-09-23→2024-12-06 cascata segnale move +52.2 pnl +47.4
+C5 2025-01-05 long  2025-01-06→2025-01-21 cascata segnale move +3.8 pnl +3.5
+C5 2025-04-27 long  2025-04-28→2025-10-10 trail   segnale move +11.6 pnl +11.3
+C5 2025-11-30 short 2025-12-01→2026-01-31 cascata segnale move +6.6 pnl +6.5
+C5 2026-02-08 short 2026-02-09→2026-04-27 ema     segnale move -12.1 pnl -9.0
+C5 2026-05-24 short 2026-05-25→2026-08-20 trail   segnale move +4.8 pnl +5.7
+C5 2026-08-23 long  2026-08-24→2026-11-09 ema     segnale move -3.9 pnl -4.1
+W3.2:
+   2021-01-31 long  2021-02-01→2021-02-22 dist    move +73.1 pnl +52.2
+   2021-08-01 long  2021-08-02→2021-09-27 ema     move +8.1 pnl +4.3
+   2021-10-03 long  2021-10-04→2021-11-08 dist    move +31.0 pnl +20.9
+   2022-01-02 short 2022-01-03→2022-03-28 ema     move +0.8 pnl +1.0
+   2022-08-14 short 2022-08-15→2023-01-16 ema     move +13.9 pnl +8.3
+   2023-01-22 long  2023-01-23→2023-08-17 trail   move +14.2 pnl +13.3
+   2023-10-22 long  2023-10-23→2024-01-01 dist    move +40.7 pnl +40.5
+   2024-02-11 long  2024-02-12→2024-03-11 dist    move +42.5 pnl +42.2
+   2024-09-22 long  2024-09-23→2025-02-26 trail   move +34.0 pnl +30.8
+   2025-04-27 long  2025-04-28→2025-10-10 trail   move +11.6 pnl +11.3
+   2025-11-30 short 2025-12-01→2026-04-27 ema     move +12.8 pnl +11.9
+   2026-05-24 short 2026-05-25→2026-08-20 trail   move +4.8 pnl +5.7
+   2026-08-23 long  2026-08-24→2026-11-09 ema     move -3.9 pnl -4.1
+
+== 3. Test evento: dopo una cascata (primo giorno, pausa 7 g) rendimento dall'apertura successiva alla chiusura a 3/7/14 g, in eccesso sulla media
+D1 ribasso BTC 2021+   n 12 | media 3/7/14 -2.95/-4.16/-3.58 (tutti i giorni +0.23/+0.55/+1.09) | eccesso -3.18/-4.71/-4.67 | p 0.03/0.036/0.136 | >0 3/12 3/12 2/11 | mediana 7 g -5.85
+     giorni: 2021-09-07, 2022-01-21, 2022-05-09, 2022-06-13, 2022-09-13, 2022-11-08, 2023-08-17, 2023-12-11, 2025-10-10, 2026-01-31, 2026-06-02, 2026-11-05
+D1 ribasso BTC 2021-23 n  8 | media 3/7/14 -2.95/-2.34/-3.10 (tutti i giorni +0.26/+0.58/+1.09) | eccesso -3.21/-2.92/-4.20 | p 0.115/0.346/0.342 | >0 2/8 3/8 2/8 | mediana 7 g -1.17
+D1 ribasso BTC 2024-26 n  4 | media 3/7/14 -2.96/-7.81/-4.84 (tutti i giorni +0.20/+0.51/+1.09) | eccesso -3.16/-8.32/-5.93 | p 0.121/0.012/0.183 | >0 1/4 0/4 0/3 | mediana 7 g -6.81
+D1 ribasso BTC 2018-20 n  6 | media 3/7/14 +0.33/+1.13/+3.54 (tutti i giorni +0.45/+1.08/+2.35) | eccesso -0.11/+0.05/+1.18 | p 0.964/0.991/0.84 | >0 3/6 3/6 4/6 | mediana 7 g +0.04
+D1 ribasso ETH 2021+   n  7 | media 3/7/14 -1.80/-0.09/+1.49 (tutti i giorni +0.34/+0.77/+1.53) | eccesso -2.14/-0.86/-0.04 | p 0.378/0.814/0.995 | >0 3/7 3/7 4/7 | mediana 7 g -0.88
+D1 rialzo  BTC 2021+   n  8 | media 3/7/14 +2.20/+8.95/+12.64 (tutti i giorni +0.23/+0.55/+1.09) | eccesso +1.97/+8.41/+11.55 | p 0.253/0.003/0.004 | >0 5/8 6/8 6/8 | mediana 7 g +12.89
+D1 rialzo  BTC 2021-23 n  4 | media 3/7/14 +2.07/+8.96/+12.19 (tutti i giorni +0.26/+0.58/+1.09) | eccesso +1.81/+8.38/+11.10 | p 0.511/0.065/0.082 | >0 3/4 3/4 3/4 | mediana 7 g +13.38
+D1 rialzo  BTC 2024-26 n  4 | media 3/7/14 +2.34/+8.95/+13.09 (tutti i giorni +0.20/+0.51/+1.09) | eccesso +2.14/+8.44/+12.00 | p 0.276/0.011/0.012 | >0 2/4 3/4 3/4 | mediana 7 g +9.90
+D1 rialzo  BTC 2018-20 n 11 | media 3/7/14 +1.58/+1.40/+4.37 (tutti i giorni +0.45/+1.08/+2.35) | eccesso +1.14/+0.32/+2.02 | p 0.558/0.912/0.645 | >0 8/11 7/11 8/11 | mediana 7 g +2.56
+D1 rialzo  ETH 2021+   n 10 | media 3/7/14 +6.89/+8.43/+5.28 (tutti i giorni +0.34/+0.77/+1.53) | eccesso +6.55/+7.67/+3.75 | p 0.005/0.023/0.407 | >0 8/10 8/10 7/10 | mediana 7 g +7.24
+D3 ribasso BTC 2021+   n 12 | media 3/7/14 +1.68/+0.26/+1.37 (tutti i giorni +0.23/+0.55/+1.09) | eccesso +1.45/-0.29/+0.28 | p 0.302/0.887/0.93 | >0 8/12 8/12 6/12 | mediana 7 g +2.57
+     giorni: 2021-01-11, 2021-04-18, 2021-12-04, 2022-01-24, 2022-02-24, 2024-07-05, 2024-08-05, 2025-02-03, 2025-02-28, 2025-10-10, 2025-11-21, 2026-01-30
+D3 ribasso BTC 2021-23 n  5 | media 3/7/14 +1.80/+1.40/+1.91 (tutti i giorni +0.26/+0.58/+1.09) | eccesso +1.54/+0.82/+0.82 | p 0.537/0.832/0.883 | >0 3/5 4/5 3/5 | mediana 7 g +3.45
+D3 ribasso BTC 2024-26 n  7 | media 3/7/14 +1.59/-0.56/+0.99 (tutti i giorni +0.20/+0.51/+1.09) | eccesso +1.39/-1.08/-0.10 | p 0.362/0.632/0.976 | >0 5/7 4/7 3/7 | mediana 7 g +2.23
+D3 ribasso BTC 2018-20 n  4 | media 3/7/14 -1.44/-6.83/-5.62 (tutti i giorni +0.45/+1.08/+2.35) | eccesso -1.88/-7.91/-7.97 | p 0.544/0.124/0.276 | >0 2/4 2/4 2/4 | mediana 7 g -7.29
+D3 ribasso ETH 2021+   n 17 | media 3/7/14 +1.22/+1.98/+5.41 (tutti i giorni +0.34/+0.77/+1.53) | eccesso +0.88/+1.21/+3.88 | p 0.572/0.615/0.259 | >0 11/17 10/17 11/17 | mediana 7 g +3.79
+D3 rialzo  BTC 2021+   n 10 | media 3/7/14 +2.63/+4.43/+5.55 (tutti i giorni +0.23/+0.55/+1.09) | eccesso +2.40/+3.89/+4.45 | p 0.13/0.108/0.202 | >0 8/10 7/10 7/10 | mediana 7 g +2.65
+D3 rialzo  BTC 2021-23 n  8 | media 3/7/14 +2.55/+5.17/+6.98 (tutti i giorni +0.26/+0.58/+1.09) | eccesso +2.29/+4.59/+5.89 | p 0.254/0.144/0.181 | >0 6/8 6/8 6/8 | mediana 7 g +3.63
+D3 rialzo  BTC 2024-26 n  2 | media 3/7/14 +2.95/+1.49/-0.19 (tutti i giorni +0.20/+0.51/+1.09) | eccesso +2.75/+0.98/-1.28 | p nan/nan/nan | >0 2/2 1/2 1/2 | mediana 7 g +1.49
+D3 rialzo  BTC 2018-20 n  5 | media 3/7/14 +4.53/+7.70/+6.42 (tutti i giorni +0.45/+1.08/+2.35) | eccesso +4.08/+6.63/+4.07 | p 0.161/0.153/0.534 | >0 4/5 4/5 3/5 | mediana 7 g +7.62
+D3 rialzo  ETH 2021+   n  2 | media 3/7/14 -1.77/+8.32/+25.57 (tutti i giorni +0.34/+0.77/+1.53) | eccesso -2.12/+7.55/+24.05 | p nan/nan/nan | >0 0/2 2/2 2/2 | mediana 7 g +8.32
+Holm sui 2 test primari (ribasso, 7 g, BTC 2021+): [(0.036, 'D1'), (0.887, 'D3')] → soglie 0,025 / 0,05: nessuno passa
+vicino D1 rA1,5: n 19 eccesso 3/7/14 -0.65/-1.93/-2.62 p 0.565/0.274/0.286
+vicino D1 vr1,5: n 14 eccesso 3/7/14 -2.97/-6.17/-6.04 p 0.026/0.003/0.038
+vicino D1 rP7%: n 16 eccesso 3/7/14 +1.30/-0.69/-1.74 p 0.284/0.706/0.5
+vicino D1 senza volume: n 14 eccesso 3/7/14 -2.97/-6.17/-6.04 p 0.026/0.003/0.038
+vicino D3 eA1,5: n 8 eccesso 3/7/14 +2.67/-0.94/-0.17 p 0.13/0.723/0.966
+vicino D3 eA2: n 5 eccesso 3/7/14 +4.88/-1.43/-1.97 p 0.035/0.657/0.684
+vicino D3 tail1/3: n 22 eccesso 3/7/14 +0.77/+0.89/-1.35 p 0.459/0.564/0.554
+vicino D3 vr1,5: n 18 eccesso 3/7/14 +1.68/+0.08/+1.92 p 0.148/0.959/0.442
+vicino D3 senza volume: n 22 eccesso 3/7/14 +1.31/-0.96/+0.26 p 0.209/0.537/0.91
