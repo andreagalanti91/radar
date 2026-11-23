@@ -1355,6 +1355,7 @@ passa il placebo solo in 2 varianti su 8 con vicini incoerenti; nessuna variante
 sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flusso_trader/README.md.
 
 ## Resoconti settimanali
+- Resoconto settimanale 23/11: chiusura del 22/11 a 61.271 $ → W3.2 resta SHORT dal 16/11 (ingresso 65.286, esposizione 0,972, trailing 75.764, EMA21 74.273, flusso −1,53σ, regime short); nessuna uscita; registro reale vuoto; guardia DD −3,2%, nessun allarme; registro provvisori: prima riga 22/11 (funding OKX provvisorio); dal 2021 10k → 83.129 $, DD −21,1%, 14 trade, WR 93%.
 - Resoconto settimanale 16/11: chiusura del 15/11 a 65.351 $ → SEGNALE SHORT W3 (regime short, flusso −0,93σ, EMA21 75.574): ingresso lunedì 16/11 all'apertura, esposizione 0,97, stop 82.163 $ (+25,7%), perdita allo stop ~12.600 $ su 50.000; registro dei trade reali vuoto; dal 2021 invariato 10k → 78.474 $, DD −21,1%, 13 trade, WR 92%.
 
 ## Errori operativi da non ripetere (aggiornata 22/11/2026)
