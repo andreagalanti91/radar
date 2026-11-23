@@ -95,7 +95,8 @@ jobs:
           # interruttore del riepilogo giornaliero (una volta al giorno, marker in data/state.json: radar.cli.brief_due)
           RADAR_DAILY_BRIEF: ${{ vars.RADAR_DAILY_BRIEF || '1' }}
           # capitale reale (variabili del repository): piani in dollari di W3 su CAPITAL×WEEKLY_SHARE
-          RADAR_CAPITAL: ${{ vars.RADAR_CAPITAL || '50000' }}
+          RADAR_CAPITAL: ${{ vars.RADAR_CAPITAL || '30000' }}
+          RADAR_ETH_CAPITAL: ${{ vars.RADAR_ETH_CAPITAL || '30000' }}
           RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '1.0' }}
           RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0' }}
           RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '0' }}

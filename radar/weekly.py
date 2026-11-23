@@ -59,7 +59,7 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
-CAPITAL = _env_float("RADAR_CAPITAL", 50000.0)
+CAPITAL = _env_float("RADAR_CAPITAL", 30000.0)   # capitale reale dichiarato dall'utente il 23/11/2026: 30.000 $ su BTC
 SHARE = _env_float("RADAR_WEEKLY_SHARE", 1.0)   # quota di RADAR_CAPITAL dedicata al settimanale
 
 
@@ -78,9 +78,9 @@ def _env_share(name: str, default: float) -> float:
 # Asset di W3.2 (decisione dell'utente del 22/11/2026: "Mantieni ETH nella strategia, inserisci dentro il Tool"; poi "non suddividere
 # 70-30: 10k su ETH, 10k su BTC"): stesse regole e parametri su ogni asset, ciascuno con il SUO capitale separato e il rischio 25%
 # allo stop su quel capitale. BTC = RADAR_CAPITAL × RADAR_WEEKLY_SHARE (come prima di ETH); ETH = RADAR_ETH_CAPITAL (predefinito
-# 10.000 $). Le percentuali dello storico non dipendono dal capitale; cambiano solo i dollari.
+# 30.000 $). Le percentuali dello storico non dipendono dal capitale; cambiano solo i dollari.
 ASSET_LIST = ("BTC", "ETH")
-ETH_CAPITAL = _env_float("RADAR_ETH_CAPITAL", 10000.0)
+ETH_CAPITAL = _env_float("RADAR_ETH_CAPITAL", 30000.0)   # 30.000 $ su ETH (utente, 23/11/2026)
 ASSET_SHARE = {"BTC": 1.0, "ETH": None}   # nessuna suddivisione: capitali separati
 ASSET_LIVE_START = {"BTC": LIVE_START, "ETH": "2026-11-22"}
 

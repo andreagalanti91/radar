@@ -6,7 +6,7 @@ Segnali di trading su **Bitcoin** con **una sola strategia: W3.2 settimanale**, 
 grandi (2–3 l'anno, da settimane a mesi): long in **spot senza leva**, short in perp solo in trend ribassista confermato,
 **perdita allo stop iniziale al massimo del 25%** della quota. Intorno alla strategia: dashboard aggiornata ogni ora, order book
 multi-borsa, liquidazioni, notizie e calendario, avvisi su Telegram.
-Dal 22/11/2026 W3.2 gira anche su **ETH** con le stesse regole: con **capitale separato**: 10.000 $ su BTC e 10.000 $ su ETH nei backtest; dal vivo BTC usa `RADAR_CAPITAL`, ETH `RADAR_ETH_CAPITAL` (predefinito 10.000 $).
+Dal 22/11/2026 W3.2 gira anche su **ETH** con le stesse regole: con **capitale separato**: 10.000 $ su BTC e 10.000 $ su ETH nei backtest; dal vivo BTC usa `RADAR_CAPITAL`, ETH `RADAR_ETH_CAPITAL` (predefinito 30.000 $).
 
 ## Performance di W3.2
 
@@ -86,7 +86,7 @@ Dimensione: esposizione = min(1, 25% / distanza dello stop iniziale). Flusso = m
 identico dal vivo e nel backtest.
 
 **Asset e capitale** (dal 22/11/2026): le stesse regole girano su BTC ed ETH (`weekly.evaluate(f, asset=...)`, `ASSET_LIST`).
-Capitale BTC = `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE`; capitale ETH = `RADAR_ETH_CAPITAL` (predefinito 10.000 $), separato
+Capitale BTC = `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE`; capitale ETH = `RADAR_ETH_CAPITAL` (predefinito 30.000 $), separato
 (0,70). Ciascun asset ha il suo tetto di rischio 25% allo stop **sulla propria quota** (con 50.000 $: BTC 35.000 $, ETH 15.000 $;
 uno stop pieno costa al massimo ~8.750 $ su BTC e ~3.750 $ su ETH). Dati ETH: `data/eth_spot.csv`, `eth_perp.csv`, `eth_funding.csv`,
 `eth_metrics.csv`, dalle stesse fonti di BTC (spot data-api.binance.vision, perp e funding archivio data.binance.vision, giorni
@@ -218,7 +218,7 @@ Prima di pubblicare: test che riproduce il problema, suite verde, render a 400 e
 |---|---|---|---|
 | `TELEGRAM_BOT_TOKEN` | secret | – | token del bot |
 | `TELEGRAM_CHAT_ID` | secret | – | chat che riceve gli avvisi e da cui si accettano i comandi |
-| `RADAR_CAPITAL` | variabile | 50000 | capitale su cui si calcolano i piani in dollari |
+| `RADAR_CAPITAL` | variabile | 30000 | capitale su cui si calcolano i piani in dollari |
 | `RADAR_WEEKLY_SHARE` | variabile | 1.0 | quota del capitale dedicata a W3.2 |
 | `RADAR_ETH_SHARE` | variabile | 0.30 | quota del capitale W3.2 su ETH (0 = ETH escluso dai piani in dollari); BTC = 1 − quota |
 | `RADAR_WALLETS` | variabile | 0 | `1` riaccende la sezione Wallet e la sentinella |
