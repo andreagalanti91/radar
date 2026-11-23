@@ -6,3 +6,4 @@
 4. Pubblicazione: test che riproduce il problema, suite verde, render 400/1280 con dati REALI, deploy, verifica sul sito.
 5. Mai committare file che un agente sta modificando; niente scraping contro i termini d'uso; confronti Coinbase/Binance in USD veri (USDT).
 6. Commit con le righe Co-Authored-By/Claude-Session; niente ID di modello nei file; niente PR se non richieste.
+7. Modello ed effort (utente, 23/11/2026): usare sempre Opus 5.5 con effort medium, anche per gli agenti (Agent: model "opus", effort "medium").
