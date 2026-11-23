@@ -1,6 +1,6 @@
 # Stato — Modello previsionale direzionale BTC (7 e 30 giorni)
 
-**Stato:** IN ATTESA DELL'UTENTE · 23/11/2026 · Fable 5.2 high (regia), agenti radar-ricerca, radar-review, radar-ui
+**Stato:** COMPLETATO · 23/11/2026 · Fable 5.2 high (regia), agenti radar-ricerca, radar-review, radar-ui
 
 ## Prompt originale
 > Nella conversazione analisi strategie abbiamo notato che questa 3.2 è la migliore. Adesso ti chiedo tramite apprendimento e
@@ -24,8 +24,8 @@ Ok per il resto fai tu analisi sulla migliore decisione da prendere. Procedi".
 
 - [x] 5. Secondo ciclo (regimi + politica economica): NON FUNZIONA, 0/6 modelli, 0/3 varianti su W3.2 — PREREG 3a6a973, lezione 113
 
+- [x] 6. Riquadro Contesto (mercato, Fed) in dashboard, online il 23/11; registro prospettico rifiutato dall'utente
+- [x] 7. Forza giornaliera (metodo del trader: spot contro perp, livelli flip): non regge, 0/8 varianti — lezione 114
+
 ## Come riprendere
-**Domanda in attesa:** l'utente vuole il registro prospettico? Una sola regola fissata ora (segno del flusso perp a 30 giorni con
-|pf| > 0,5), salvata ogni domenica prima dell'esito con research/previsionale/forecast_log.py, mostrata in dashboard come
-"in prova, non un segnale" e giudicata contro "sale sempre" dopo ≥ 100 previsioni risolte (~2 anni). Se sì: portare forecast_log
-nel tool con test, riga nella Pre-analisi, deploy.
+**Prossima azione:** nessuna. W3.2 invariata. Aperto: l'utente può dare il nome del trader per registrarne le chiamate (radar/xinbox.py).

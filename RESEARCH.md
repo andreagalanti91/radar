@@ -409,6 +409,19 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 114**: guardare ogni giorno "chi compra" (spot contro perp) e i livelli chiave non migliora W3.2 e non prevede il
+prezzo. Su BTC dal 2021 (Binance, eventi ≥ 5% in 3 giorni, 32–51 per classe) i rialzi guidati dai perp rendono a 7 giorni +1,3
+punti PIÙ di quelli guidati dallo spot (p 0,55; atteso il contrario), i rialzi "spot" valgono la media (0,0), le rotture a 20
+giorni e dei livelli swing confermate dallo spot rendono 2,7–2,9 punti MENO (p 0,23 / 0,085); su ETH segni incoerenti, niente
+di significativo; Holm su 13 test tutti 1,00. Su W3.2 0/8 varianti passano (PREREG 32bcbba): aspettare che perp e spot
+concordino per entrare costa 13–16k $ (62–65k contro 78,5k, come un ritardo a caso), il limite sul livello 7k (eseguito 1 volta su
+13), l'uscita sulla rottura guidata dallo spot con rientro il lunedì 4–14k senza ridurre il DD (placebo p 0,25–0,72). Dentro i
+trade W3.2 i 35 movimenti contrari "solo perp" non sono rientrati più spesso dei 14 "con spot". La regola "flip" (short alla
+perdita del supporto, obiettivo il livello successivo; esplorativa) fa 10k → 5,1k in 112 trade, e la conferma spot non la
+salva: i livelli del trader (81,4k, 74,4k, 60,3k) coincidono con quelli del tool, ma la chiamata riuscita è 1 rottura su 4–5.
+Il caso del 21–23/11 si riproduce (perp +626 M$, spot −21 M$ dal minimo, Binance) ma non ha valore previsionale. In dashboard
+solo come descrizione ("rimbalzo guidato dai perp / dallo spot") con avvertenza. Non riproporre senza dati nuovi: CVD
+multi-borsa o test orario preregistrato. research/forza_giornaliera/README.md. research/forza_giornaliera/README.md (PREREG 32bcbba, ADDENDUM 73583f7; revisione critica separata non eseguita).
 **Lezione 113**: adattare il previsionale ai regimi di mercato (trend su SMA200, volatilità) e alla politica economica (tasso Fed,
 liquidità netta, rendimento reale, curva, dollaro, VIX, FOMC, CPI; FRED dal 2015 con i ritardi di pubblicazione) non lo fa
 funzionare: AUC fuori campione 0,46–0,53 a 7 giorni e 0,40–0,59 a 30 giorni, mai ≥ 0,55 in entrambi i periodi, 0/6 modelli, Holm 1,00
