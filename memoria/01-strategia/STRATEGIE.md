@@ -33,6 +33,7 @@ Tutti i numeri: BTC, 10.000 $ dal 01/01/2021 al 15/11/2026, 1x, costi inclusi, s
 | TP +10/12,5/15% con rientro, trailing 1,5 ATR dopo +10% (su W3.2) | 22/11 | 43–56k $ contro 78,5k | nessuna adottata | 109 | research/tp_rientro |
 | DCA, uscite a scaglioni, TP, stop, distribuzione su W3.1 | 22/11 | migliore variante sotto W3.1 | nessuna adottata | 105 | research/ingressi_uscite |
 | W3.2 su ETH, SOL, S&P 500, Nasdaq, Dow, DAX, FTSE MIB, Nikkei, Russell, Euro Stoxx | 22/11 | ETH 34,8k (DD −27,5%); SOL 52,5k (DD −39,8%); indici 6,7–15,5k, tutti sotto il buy & hold | solo BTC (ETH al limite); ETH poi adottato con capitale separato per scelta dell'utente (22/11) | 110 | research/w32_multi |
+| Portafoglio di trend multi-mercato (ETF; perpetui su azioni e materie prime OKX/Bitget) | 23/11 | CAGR 4,5–5,1%, sotto 60/40 e S&P 500; long/short negativo | non adottato | 118 | research/trend_multi |
 | Regole EMA/SMA multi-intervallo (4.017 regole; esempio dell'utente SMA200 1D + 2 chiusure 4h) | 23/11 | scelta 8.584 $ in giudizio; esempio utente 4.412 $ dal 2021 | non adottate | 117 | research/ema_sma |
 | Uscita in profitto nel giorno di cascata, con o senza rientro | 23/11 | 34–73k $ contro 78,5k | non adottata | 116 | research/cascata |
 | Ingressi e uscite giornalieri con flusso spot/perp e livelli (metodo del trader seguito) | 23/11 | 62–74k $ contro 78,5k | non adottato | 114 | research/forza_giornaliera |

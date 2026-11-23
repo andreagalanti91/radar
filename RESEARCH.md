@@ -409,6 +409,13 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 118**: un portafoglio di trend-following (momentum 1/3/12 mesi, rischio uguale per mercato, senza leva, mensile) giudicato
+come portafoglio non regge né su 19 ETF di 5 classi né sull'universo negoziabile con perpetui OKX/Bitget (20 azioni del Dow 2000 +
+6 materie prime). Giudizio 2016–26: ETF long/flat 4,5% l'anno, DD −11,7% (60/40 8,9%, −21,2%; p 0,096); U2 long/flat 5,1%, DD
+−26,4% con funding 5% (equipesato 7,8%; S&P 13,8%; 0,7% con funding 10%); long/short in perdita ovunque; ribilanciamento
+settimanale peggiore; 150–180 ordini l'anno. Dimezza drawdown e rendimento insieme: accanto a W3.2 vale quanto la liquidità
+(70/30: CAGR/DD 2,10–2,20 contro 2,05 con T-bill). Anche sulle 10 maggiori capitalizzazioni di oggi il trend eguaglia soltanto
+il buy & hold (0,56). research/trend_multi/README.md (PREREG 3ca3620, ADDENDUM 4b8f2fc). research/trend_multi/README.md (PREREG 3ca3620, ADDENDUM 4b8f2fc; revisione critica separata non eseguita: nulla adottato).
 **Lezione 117**: EMA e SMA su 4h, giornaliero e settimanale (research/ema_sma, PREREG 9a33184; 4.017 regole regime × innesco ×
 uscita × lato, scoperta 2021–23, giudizio 2024–26, conferma 2018–20). Nessuna regola valida: la scelta perde in giudizio (8.584 $,
 DD −41%), l'esempio "long sopra la SMA200 giornaliera, inversione short a 2 chiusure 4h sotto una media" fa 10.000 → 4.412 $

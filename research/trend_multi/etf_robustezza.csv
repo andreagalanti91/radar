@@ -1,0 +1,33 @@
+lato,controllo,CAGR,vol,DD,CAGR_DD,Sharpe,batte_6040,ordini_anno,rotazione
+LF,base,4.49,6.7,-11.7,0.39,0.35,False,152,6.5
+LF,costi doppi,3.82,6.7,-12.5,0.31,0.25,False,151,6.5
+LF,liquidità 0,4.45,6.7,-11.7,0.38,0.34,False,152,6.5
+LF,liquidità SHY,4.48,6.7,-11.7,0.38,0.35,False,152,6.5
+LF,vol 40,4.35,6.8,-11.5,0.38,0.33,False,153,6.5
+LF,vol 90,4.61,6.7,-11.0,0.42,0.37,True,150,6.3
+LF,banda 1%,4.6,6.7,-11.5,0.4,0.36,False,153,6.2
+LF,settimanale,2.55,6.5,-17.0,0.15,0.07,False,420,15.5
+LF,segnale 3/6/12,4.5,7.1,-12.1,0.37,0.33,False,118,4.5
+LF,segnale 12m,3.2,7.6,-17.1,0.19,0.15,False,83,4.8
+LF,segnale SMA10,4.06,6.9,-13.7,0.3,0.28,False,91,5.1
+LF,senza azioni,2.61,5.5,-13.4,0.2,0.08,False,108,6.9
+LF,senza obbligazioni,6.07,8.3,-13.1,0.47,0.48,True,126,6.3
+LF,senza materie prime,3.69,6.7,-14.8,0.25,0.23,False,130,6.6
+LF,senza valute,5.08,8.6,-15.9,0.32,0.36,False,134,5.7
+LF,senza immobiliare,4.71,6.6,-11.0,0.43,0.38,True,146,6.4
+LS,base,-0.3,6.2,-25.9,-0.01,-0.39,False,177,10.3
+LS,costi doppi,-1.72,6.2,-28.9,-0.06,-0.62,False,177,10.3
+LS,liquidità 0,-0.31,6.2,-25.9,-0.01,-0.39,False,177,10.3
+LS,liquidità SHY,-0.34,6.1,-26.1,-0.01,-0.4,False,177,10.3
+LS,vol 40,-0.35,6.1,-26.7,-0.01,-0.4,False,176,10.4
+LS,vol 90,-0.27,6.2,-26.0,-0.01,-0.38,False,176,10.3
+LS,banda 1%,-0.37,6.2,-26.0,-0.01,-0.4,False,177,10.1
+LS,settimanale,-1.86,6.2,-23.8,-0.08,-0.64,False,494,24.4
+LS,segnale 3/6/12,0.96,5.8,-22.4,0.04,-0.2,False,131,6.6
+LS,segnale 12m,0.04,5.2,-15.3,0.0,-0.4,False,54,4.1
+LS,segnale SMA10,1.03,5.5,-20.0,0.05,-0.2,False,62,4.8
+LS,senza azioni,-0.95,5.4,-26.3,-0.04,-0.57,False,123,10.5
+LS,senza obbligazioni,0.44,7.7,-24.7,0.02,-0.2,False,147,10.1
+LS,senza materie prime,-0.52,6.0,-24.4,-0.02,-0.44,False,146,10.2
+LS,senza valute,0.05,7.2,-27.9,0.0,-0.27,False,155,10.1
+LS,senza immobiliare,-0.09,6.1,-25.2,-0.0,-0.36,False,170,10.3

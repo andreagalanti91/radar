@@ -28,3 +28,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Cono di probabilità a 30 giorni dalla volatilità (card "Fra 30 giorni") | calibrato, in uso come contesto; il flusso non lo migliora | 115 | research/cono30 |
 | Uscita di profitto nel giorno di cascata a favore, con rientro (su W3.2) | non regge (0/6); dentro i trade il trend prosegue 10 volte su 14 | 116 | research/cascata |
 | EMA/SMA su 4h, giornaliero e settimanale: atlante di 360 eventi e 4.017 regole di entrata/uscita long/short | nessuna regge; solo il trend lento long/flat ≈ buy & hold con metà DD | 117 | research/ema_sma (anche DATI*.md) |
+| Portafoglio di trend su più mercati: 19 ETF (riferimento) e perpetui azioni/materie prime su OKX/Bitget | non funziona; accanto a W3.2 vale quanto la liquidità | 118 | research/trend_multi |
