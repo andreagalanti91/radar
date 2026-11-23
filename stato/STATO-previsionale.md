@@ -22,6 +22,8 @@ Ok per il resto fai tu analisi sulla migliore decisione da prendere. Procedi".
 - [x] 3. Nulla in dashboard (non supera i criteri)
 - [x] 4. Lezione 112, memoria aggiornate
 
+- [x] 5. Secondo ciclo (regimi + politica economica): NON FUNZIONA, 0/6 modelli, 0/3 varianti su W3.2 — PREREG 3a6a973, lezione 113
+
 ## Come riprendere
 **Domanda in attesa:** l'utente vuole il registro prospettico? Una sola regola fissata ora (segno del flusso perp a 30 giorni con
 |pf| > 0,5), salvata ogni domenica prima dell'esito con research/previsionale/forecast_log.py, mostrata in dashboard come

@@ -23,3 +23,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | W3.2 su ETH, SOL e 8 indici (rischio 25%) | solo ETH al limite; SOL e indici no | 110 | research/w32_multi |
 | W3.2 sulle top 100 crypto (27 altcoin valutabili) | passa solo ETH (1/27) | 111 | research/w32_top100 |
 | Modello previsionale direzionale BTC a 7 e 30 giorni (logistica, ceppi, walk-forward) | non funziona: uguale a "sale sempre"; il solo flusso perp ha AUC ~0,6 (già in W3.2) | 112 | research/previsionale |
+| Previsionale con regimi di mercato e politica economica (Fed, liquidità, rendimenti, dollaro, VIX, CPI) | non funziona (0/6); la politica peggiora il flusso perp | 113 | research/previsionale2 |
