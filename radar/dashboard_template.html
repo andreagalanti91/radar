@@ -506,6 +506,11 @@ body.noscroll{overflow:hidden}
 .lvNow{display:flex;align-items:center;gap:8px;padding:6px 0;font:600 .78rem var(--font);color:var(--label);font-variant-numeric:tabular-nums}
 .lvNow::after{content:"";flex:1;height:2px;border-radius:1px;background:var(--label)}
 .tapHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cxRows{display:grid;margin-top:8px}
+.cxRow{display:grid;grid-template-columns:3.5rem minmax(0,1fr);gap:8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:.86rem;line-height:1.4}
+.cxRow:first-child{border-top:0}
+.cxRow span{font:500 .78rem var(--font);color:var(--label2)}
+.cxNote{margin:6px 0 0;font-size:.72rem;line-height:1.45;color:var(--label3)} .cxWarn{margin:6px 0 0;font-size:.76rem;line-height:1.4;color:var(--orange)}
 .tapHead b{font:600 1rem var(--font)}
 .tdRow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;margin-top:10px}
 .tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
@@ -648,6 +653,10 @@ body.noscroll{overflow:hidden}
           <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
         </div>
       </dialog>
+    </div>
+
+    <div class="section" id="cxSec" hidden>
+      <button type="button" class="card tapCard" id="cxCard" aria-haspopup="dialog"></button>
     </div>
 
     <div class="section" id="todaySec" hidden>
@@ -1523,6 +1532,21 @@ function renderCal() {
   $("banks").innerHTML = BK.slice(0, 2).map(bkRow).join("") + (bkMore.length ? `<details class="calPast"><summary>Altre ${bkMore.length} riunioni</summary><div class="banks">${bkMore.map(bkRow).join("")}</div></details>` : "")
     || `<div class="card"><p style="margin:0">Riunioni non disponibili in questo momento.</p></div>`;
 }
+// Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità
+(function renderContext() {
+  const C = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;
+  const rows = C ? C.rows.filter(o => o && o.label && o.text) : [];
+  if (!rows.length) return;
+  const note = C.note ? `<p class="cxNote">${esc(C.note)}</p>` : "", warn = C.warn ? `<p class="cxWarn">${esc(C.warn)}</p>` : "";
+  $("cxCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Contesto")}</b><span class="more">Dettagli ›</span></div>
+    <div class="cxRows">${rows.map(o => `<div class="cxRow"><span>${esc(o.label)}</span><b style="font-weight:500">${esc(o.text)}</b></div>`).join("")}</div>${warn}${note}`;
+  $("cxSec").hidden = false;
+  const det = (C.details || []).filter(o => o && o.label);
+  $("cxCard").onclick = () => openSheet("Contesto di mercato e politica economica", `<div style="display:grid;gap:12px;min-width:0">
+    <div class="list" style="box-shadow:none">${det.map(o => `<div class="row"><span class="k">${esc(o.label)}${o.text ? `<small>${esc(o.text)}</small>` : ""}</span><span class="v strong">${esc(o.value == null ? "–" : o.value)}</span></div>`).join("")}</div>
+    ${warn}<p class="foot">${esc(C.note || "")}</p>
+    <p class="foot">${esc(C.source || "")}${C.updated_utc ? " Aggiornato: " + new Date(C.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC." : ""}</p></div>`);
+})();
 // Oggi: eventi macro di oggi e domani, riunione di banca centrale entro 7 giorni, 3 notizie a impatto più alto delle ultime 24 ore
 function renderToday() {
   const now = Date.now(), t0 = dKey(now), t1 = dKey(now + 864e5);

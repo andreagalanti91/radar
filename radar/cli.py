@@ -288,6 +288,8 @@ def daily() -> None:
     report["news"] = _soft("notizie", fetch_news) or []
     report["calendar"] = _soft("calendario", fetch_calendar) or []
     report["banks"] = _soft("banche centrali", fetch_central_banks) or []   # prossime riunioni Fed (FOMC) e BCE
+    # riquadro "Contesto" (regime di mercato, Fed, CPI, VIX, FOMC): descrizione senza probabilità, nessun effetto su W3.2 (radar/context.py)
+    report["context"] = _soft("contesto di mercato e politica economica", lambda: mod("context").build(DATA_DIR, banks=report.get("banks")))
     # chiusura multi-asset (S&P, Nasdaq, oro, argento, dollaro, VIX, Treasury 10 anni): solo contesto (radar/macro.py)
     report["macro"] = _soft("chiusura multi-asset", lambda: mod("macro").build(DATA_DIR, weekly=report.get("weekly")))
     for k in ("levels", "liqmap", "orderbook", "preview"):
