@@ -1,0 +1,12 @@
+strat,2018-20_pos,2018-20_bh,2018-20_dd,2018-20_no2,2021-23_pos,2021-23_bh,2021-23_dd,2021-23_no2,2024-26_pos,2024-26_bh,2024-26_dd,2024-26_no2,periodi_ok,tutti
+S1_4h,True,True,True,True,True,True,False,True,False,False,False,False,1,False
+S2_4h,True,True,True,True,True,True,True,True,True,False,False,False,2,False
+S3_4h,False,False,False,False,True,False,False,False,False,False,False,False,0,False
+S1_1D,True,True,False,False,True,False,False,False,False,False,False,False,0,False
+S2_1D,True,True,False,False,True,True,False,False,True,False,False,False,0,False
+S3_1D,True,False,True,False,False,False,False,False,False,False,False,False,0,False
+S1_1W,True,True,False,False,True,True,False,False,True,True,True,True,1,False
+S2_1W,True,True,False,False,True,True,False,False,True,True,False,True,0,False
+S3_1W,False,False,False,False,True,False,True,False,True,True,True,False,0,False
+S4a,True,True,False,False,True,True,False,False,True,False,False,False,0,False
+S4b,True,True,True,True,True,True,False,True,False,False,False,False,1,False

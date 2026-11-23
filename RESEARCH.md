@@ -409,6 +409,17 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 119**: il Supertrend di TradingView (ATR 10, fattore 3; replica esatta di ta.supertrend, research/supertrend, PREREG
+24d63a0) non è un segnale. Dal 2021 su BTC: inversione long/short 16.215 $ (4h, DD −61%, 293 trade), 3.477 $ (1D, DD −84%),
+24.363 $ (1W, DD −83%); solo long 22.653 / 13.807 / 30.642 $ con DD −46/−54/−63%; solo short sempre in perdita; multi-intervallo
+13.727 $ e 10.209 $; contro 78.474 $ (DD −21%) di W3.2 e 22.549 $ del buy & hold. 0 oggetti su 11 validi, 0 celle su 176 nella
+mappa ATR 7–21 × fattore 2–4 (sul giornaliero 10/3 è la cella peggiore: il risultato dipende dal parametro), 0 su 7 su ETH; il
+2018–20 brillante (58.522 $) non si ripete. Win rate 35–40%, un cambio a settimana sul 4h, uno ogni 38 giorni sul giornaliero,
+uno l'anno sul settimanale; dopo un cambio il rendimento a 1–30 giorni non differisce dalla media (12 test, nessuno sotto 0,0042).
+Dentro W3.2: al posto del trailing 73.584 $ (il cambio 1W non scatta mai prima di EMA21/distribuzione/stop; 2018–20 18.105 $, DD
+−52%), uscita al cambio 1D 36.604 $, filtro d'ingresso 1D 62.660 $, uscita al cambio 4h 45.154 $: tutte peggiori. Il Supertrend è
+un trailing ATR disegnato: W3.2 ne ha già uno calibrato meglio. Resta contesto visivo (meglio il settimanale), non segnale; non
+operare sugli avvisi di cambio direzione. research/supertrend/README.md (PREREG 24d63a0; revisione critica separata non eseguita: nulla adottato).
 **Lezione 118**: un portafoglio di trend-following (momentum 1/3/12 mesi, rischio uguale per mercato, senza leva, mensile) giudicato
 come portafoglio non regge né su 19 ETF di 5 classi né sull'universo negoziabile con perpetui OKX/Bitget (20 azioni del Dow 2000 +
 6 materie prime). Giudizio 2016–26: ETF long/flat 4,5% l'anno, DD −11,7% (60/40 8,9%, −21,2%; p 0,096); U2 long/flat 5,1%, DD
