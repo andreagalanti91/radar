@@ -1,0 +1,12 @@
+conf,n_tot,finale_2018,c1_positivo,c2_batte_bh,c3_dd35,c4_non_conc,placebo_p,placebo_mediana,vicini_ok,c6_vicini,holm_soglia,c5_holm,VALIDA
+V1 R1 tz 1D,7,9448.0,False,False,False,False,0.7911,23636.0,0/11,False,0.0071,False,False
+V2 R2 tz 1D,6,5937.0,False,False,False,False,0.8571,20596.0,0/11,False,0.0083,False,False
+V3 R3 tz 1D,14,32781.0,True,False,False,False,0.2124,15263.0,5/14,False,0.0038,False,False
+V4 R1 tz 4h,41,5642.0,False,False,False,False,0.8656,16258.0,0/11,False,0.0125,False,False
+V5 R2 tz 4h,41,5360.0,False,False,False,False,0.8826,15696.0,0/11,False,0.0167,False,False
+V6 R3 tz 4h,77,7060.0,False,False,False,False,0.6612,9500.0,0/14,False,0.0056,False,False
+V7 R5 4h,70,3844.0,False,False,False,False,0.8601,8714.0,0/4,False,0.01,False,False
+A1 R1 pz 1D,4,9534.0,False,False,True,False,0.3548,8473.0,0/11,False,0.0042,False,False
+A2 R2 pz 1D,4,9364.0,False,False,True,False,0.3658,8422.0,0/11,False,0.0045,False,False
+A3 R1 cz 1D,0,10000.0,False,False,True,False,,,0/11,False,0.025,False,False
+A4 R2 cz 1D,0,10000.0,False,False,True,False,,,0/11,False,0.05,False,False

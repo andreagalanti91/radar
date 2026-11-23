@@ -33,3 +33,4 @@ Conclusione generale: dal 2021 solo il trend settimanale (W3) regge; tutto il re
 | Ricerca Reddit sugli indicatori più citati (solo estratti: accesso bloccato) | lista corta per i test; consenso: nessun indicatore singolo dà vantaggio | — | research/reddit_indicatori |
 | TraderA (@TraderA_NB): dossier del metodo (trendline + ritest + confluenza medie, zone orizzontali, piani 3R long/short) | solo apprendimento, nessun test | — | research/tradera |
 | Replica e test del metodo di TraderA (trendline + ritest + confluenza EMA, obiettivo alla struttura) | replica parziale; azioni: non funziona (WR 14–16%); crypto: non dimostrabile; W3.2 non migliora | 120 | research/tradera_test (confronto.csv per i nuovi grafici) |
+| Zeiierman ciclo 3: regola dell'utente "buy a −90, sell a −20" (giornaliero e 4h, dentro W3.2) | non regge (0/13); vende la forza | 121 | research/zeiierman3 |

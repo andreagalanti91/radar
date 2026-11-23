@@ -409,6 +409,16 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 121**: "compra quando la Zeiierman Trend Pressure è a −90, vendi a −20" (ciclo 3, research/zeiierman3, PREREG b421b1c,
+13 configurazioni, tre periodi) non regge. Z-Trend giornaliera: 2018–20 8,5k, 2021–23 12,8k, 2024–26 8,7k da 10k, DD −40/−68%;
+dal 2021 11,2k contro 21,1k del buy & hold e 78,5k di W3.2. Con stop a 2 ATR 13,3k / 21,5k / 11,4k, sotto il buy & hold in
+CAGR/DD nel 2018–20 e 2024–26, DD −48%, placebo p 0,21, vicini 5/14. Ingresso alla risalita sopra −90, 4h, rilascio blu con W3.2
+flat (lo "spiraglio" del ciclo 1): tutti in perdita in almeno due periodi su tre. Z-Pulse sotto −90 solo 4 giorni dal 2018, il
+Core mai. Dentro W3.2 il long aggiuntivo da flat porta il DD a −48% e la vendita di metà a −20 abbassa il DD (−14%) solo perché
+dimezza la posizione (placebo identico, p 0,51) e costa il 25%. Descrittivo: dopo "sotto −90" +6% a 30 giorni contro +3,5% (p
+0,27), con minimo successivo fino a −44%; dopo "sopra −20" BTC sale ancora (+9,9%): la regola vende la forza. Il 20–22/11/2026 la
+regola ha dato un buy mentre W3.2 è short: con W3.2 short il "buy" a −90 ha reso meno della media. Studio chiuso: tre cicli, 44
+regole, nessuna. Non riproporre senza un'ipotesi diversa dal "range a 120 giorni". research/zeiierman3/README.md (PREREG b421b1c; revisione critica separata non eseguita: nulla adottato).
 **Lezione 120**: il metodo di TraderA (linea su due massimi/minimi, rottura con slancio, ritest con confluenza EMA, stop sotto la
 base della rottura, obiettivo alla struttura precedente) si riproduce con una regola: su LMT stessi numeri entro lo 0,5%
 (calibrazione su un esempio), su NVDA 3 zone su 4. Applicata a tutti i casi non funziona: 20 azioni del Dow 2000 dal 2016, R medio
