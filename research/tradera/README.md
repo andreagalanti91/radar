@@ -1,4 +1,4 @@
-# TraderA (@TraderA_NB) — dossier del metodo · aggiornato al 23/11/2026
+# TraderA (@TraderA_NB) — dossier del metodo · aggiornato al 23/11/2026 (secondo invio)
 
 Scopo (richiesta dell'utente): **apprendere la sua strategia dalle sue analisi**, non fare backtest. Il dossier si aggiorna a ogni
 nuovo materiale. Fonti: screenshot inviati dall'utente in chat (non salvati nel repo). Nessuna lettura automatica di X.
@@ -9,6 +9,8 @@ nuovo materiale. Fonti: screenshot inviati dall'utente in chat (non salvati nel 
 | 1 | 21/11/2026 07:14 | Storico operazioni (interfaccia simile a Hyperliquid, non confermata) | Acquisto 7 BTC a 55.777,53 $ (~390.000 $), circa l'1,2% sopra il minimo del giorno (55.130 $) |
 | 2 | 11/2026 | Grafico LMT giornaliero | Linea di tendenza ribassista da giugno rotta a fine ottobre; ritest della linea a ~568 $ dove passano le medie; piano long 567,9 → stop 539,57 → obiettivo ~660 (≈3,3R); piano short alternativo 567,65 → stop 585,13 → obiettivo 499,69 (≈3,9R) |
 | 3 | 11/2026 | Grafico NVDA giornaliero (2023–2026) | EMA 12/26/50/200 e due SMA; quattro zone orizzontali da vecchi massimi/congestioni (140–150, 88–95, 44–50, 29–33 $); prezzo 145,98 $ arrivato nella zona 140–150 dopo un crollo da ~240 $ |
+| 4 | 11/2026 | Grafico LMT giornaliero, vista ampia (ott 2025 → nov 2026) | La linea di tendenza parte dal massimo di marzo 2026 (~683 $) e tocca il massimo di agosto (~610 $): due punti, poi la rottura a inizio novembre con un balzo fino a ~650 $. Obiettivo del long aggiornato a **688,69 $ = il massimo precedente** (non più ~660): ingresso 567,93, stop 539,57 → circa **4,3R**. Short alternativo invariato (567,65 / 585,13 / 499,69). Prezzo 595 $ dopo il ritracciamento da 650 |
+| 5 | inizio 11/2026 | Grafico di forza relativa: 42 crypto normalizzate a 0% dal 1/11, candele 15 minuti (Binance) | Classifica di chi sale di più e di meno nello stesso periodo: in testa LIT +27,2%, XMR +8,4%, ETH +6,9%, ZEC +5,8%, XRP +4,5%, BTC +3,6%; in coda HYPE −8,5%, XPL −20,7%, TRUMP −22,9% |
 
 ## Il metodo, come emerge finora
 1. **Struttura prima di tutto.** Disegna a mano:
@@ -29,6 +31,14 @@ nuovo materiale. Fonti: screenshot inviati dall'utente in chat (non salvati nel 
 9. **Strumenti caricati ma usati a seconda del caso:** profilo dei volumi (VRVP), Bollinger, Supertrend, volume, Ichimoku,
    "Monday Range" (massimo e minimo del lunedì come riferimento della settimana).
 10. **Mercati:** crypto (BTC) e azioni USA (LMT, NVDA), timeframe giornaliero per la struttura.
+11. **Obiettivo = struttura precedente.** Il target è il massimo (o minimo) precedente significativo, non un multiplo fisso del rischio:
+    su LMT ha spostato l'obiettivo da ~660 a 688,69 $, il massimo di marzo. Il rapporto rischio/rendimento ne risulta (3–4R).
+12. **La linea si traccia su due massimi significativi** (LMT: massimo di marzo e massimo di agosto) e si considera valida finché il
+    prezzo la rispetta; la rottura con forte slancio (LMT: +10% in pochi giorni) seguita dal ritorno sulla linea è il segnale.
+13. **Forza relativa per scegliere COSA negoziare.** Mette a confronto molte crypto dalla stessa data e cerca le più forti (per i
+    long) e le più deboli (per gli short): si opera il leader nella direzione del mercato, non un asset a caso.
+14. **Pazienza dopo l'ingresso.** Su LMT il prezzo è salito a ~650 $ e ridisceso a 595 $ senza che il piano cambiasse: stop e
+    obiettivo restano quelli della struttura, non si inseguono le oscillazioni.
 
 ## Confronto con ciò che il progetto ha già misurato (solo informativo)
 - Zone orizzontali e livello che cambia ruolo, applicati in modo meccanico a tutti i casi: nessun vantaggio (lezioni 75–77, 106,
@@ -36,6 +46,8 @@ nuovo materiale. Fonti: screenshot inviati dall'utente in chat (non salvati nel 
 - Medie come segnale: nessuna regola regge (117). Come contesto: coerente con l'uso che ne fa lui.
 - Obiettivo fisso a 3R: su trade di trend lunghi costa (109); per lui l'obiettivo è la struttura successiva, non un numero fisso.
 - Rottura di linea di tendenza + ritest con confluenza: **non testato**.
+- Forza relativa fra crypto: nei test W3.2 si trasferisce solo a ETH (lezioni 110–111); la classifica di forza a pochi giorni non è
+  mai stata testata come criterio di scelta.
 
 ## Da raccogliere per completare il quadro
 - Indirizzo del conto (se Hyperliquid): storico completo pubblico, comprese le operazioni perse.
