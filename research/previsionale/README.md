@@ -119,3 +119,21 @@ un'eventuale probabilità va prima misurata dal vivo con il registro delle previ
 
 File: PREREG.md, fc_data.py, fc_models.py, fc_run.py, fc_w32.py, fc_oggi.py, forecast_log.py, risultati.txt, risultati_w32.txt,
 tabella.csv, w32_varianti.csv, prob_h7.csv, prob_h30.csv, coef_h*.csv, calibrazione_h*.csv, oggi.json.
+
+## Revisione critica (agente separato, 23/11/2026)
+Il verdetto regge; nessun errore che sottovaluti il modello. Verifiche eseguite dal revisore con script propri, non salvati nel repo.
+- **AUC 0,38 a 30 giorni: effetto reale.** Bersaglio ricostruito in modo indipendente: 0 differenze. La causa è l'intercetta: la sola
+  frequenza base sale dopo i rialzi, cioè prima dei ribassi (AUC 0,378 / 0,369). I coefficienti di prezzo stimati sul 2015–20 si
+  rovesciano dopo. Segnale iniettato rifatto sulla pipeline: trovato (AUC 0,60 / 0,64), e non trovato se sfasato: nessun disallineamento.
+- **Correzione a questo README:** l'assenza di previsioni "giù" è un limite del disegno (base 58–63% con fascia fissa 45–55% e media
+  di tre modelli), non una prova. La prova che non funziona è l'AUC. Tolto il vincolo (soglia relativa, finestre mobili di 2–4 anni)
+  non emerge nulla: mai meglio di "sale sempre" in entrambi i periodi.
+- **Correzione:** la variante U30 su W3.2 supera tutti i criteri tranne "senza i 2 trade"; in pratica è "chiudi gli short dopo 2
+  settimane", non una previsione.
+- **Flusso perp da solo a 30 giorni (esplorativo, scelto a posteriori fra 12 variabili):** AUC 0,62 / 0,59; con |pf| > 0,5 direzioni
+  corrette 65,1% / 58,8% su 59% / 68% dei giorni, ma "sale sempre" sugli stessi giorni fa ~60,7%. Il modello a 12 variabili non lo
+  sfrutta perché la regolarizzazione scelta lo azzera, e con meno regolarizzazione le altre variabili aggiungono rumore.
+- **Secondo ciclo retrospettivo: no** (il 2021–26 è già stato guardato). Unico disegno motivato: prospettico, una sola regola fissata
+  ora (segno del flusso perp a 30 giorni con |pf| > 0,5), registrata ogni domenica con `forecast_log.py` e giudicata contro "sale
+  sempre" dopo almeno 100 previsioni risolte.
+- Lo script del segnale iniettato non è nel repo: da aggiungere se lo studio viene ripreso.

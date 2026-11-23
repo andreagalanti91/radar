@@ -1,6 +1,6 @@
 # Stato — Modello previsionale direzionale BTC (7 e 30 giorni)
 
-**Stato:** IN CORSO · 23/11/2026 · Fable 5.2 high (regia), agenti radar-ricerca, radar-review, radar-ui
+**Stato:** IN ATTESA DELL'UTENTE · 23/11/2026 · Fable 5.2 high (regia), agenti radar-ricerca, radar-review, radar-ui
 
 ## Prompt originale
 > Nella conversazione analisi strategie abbiamo notato che questa 3.2 è la migliore. Adesso ti chiedo tramite apprendimento e
@@ -17,10 +17,13 @@ Ok per il resto fai tu analisi sulla migliore decisione da prendere. Procedi".
   e meglio dei riferimenti (sale sempre, persistenza, segnale W3.2); registro delle previsioni salvate prima dell'esito.
 
 ## Piano
-- [ ] 1. radar-ricerca: PREREG (da solo), dataset, modelli, validazione walk-forward, test come filtro/dimensione di W3.2   ← IN CORSO
-- [ ] 2. radar-review: revisione critica
-- [ ] 3. Se passa: registro delle previsioni + riga in Pre-analisi/dashboard/Telegram, test, deploy; altrimenti solo report e lezione
-- [ ] 4. Memoria, RESEARCH.md (lezione 112), chiusura
+- [x] 1. Ricerca: NON FUNZIONA a 7 e 30 giorni (uguale a "sale sempre", AUC < 0,5, 0/8 test; su W3.2 0/8 varianti) — PREREG f656594
+- [x] 2. Revisione critica: verdetto confermato, nessun errore; correzioni annotate nel README
+- [x] 3. Nulla in dashboard (non supera i criteri)
+- [x] 4. Lezione 112, memoria aggiornate
 
 ## Come riprendere
-**Prossima azione:** attendere l'esito dell'agente di ricerca (research/previsionale/), poi revisione critica.
+**Domanda in attesa:** l'utente vuole il registro prospettico? Una sola regola fissata ora (segno del flusso perp a 30 giorni con
+|pf| > 0,5), salvata ogni domenica prima dell'esito con research/previsionale/forecast_log.py, mostrata in dashboard come
+"in prova, non un segnale" e giudicata contro "sale sempre" dopo ≥ 100 previsioni risolte (~2 anni). Se sì: portare forecast_log
+nel tool con test, riga nella Pre-analisi, deploy.

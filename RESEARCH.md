@@ -409,6 +409,14 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 112**: un modello previsionale direzionale a 7 e 30 giorni (12 variabili fissate prima, logistiche L2 e ceppi, media,
+walk-forward mensile dal 2015 con embargo) non ha direzionalità fuori campione: 49–51% a 7 giorni e 50–55% a 30 giorni, cioè
+"sale sempre" (non dice mai "giù"), AUC 0,38–0,49, 0/8 test significativi; riaddestrarlo o ricalibrarlo sugli errori non
+migliora il Brier; come filtro, dimensione o uscita di W3.2 0/8 varianti (toglie o accorcia gli short vincenti). Anche il regime
+W3.2 azzecca il segno a 7–30 giorni solo nel 49–51% dei casi: W3.2 guadagna con l'ampiezza dei trend, non con la frequenza. Con
+~35 osservazioni indipendenti per periodo a 30 giorni servirebbe il 71% per dimostrare qualcosa. Unico segnale stabile: il flusso
+perp (AUC 0,59–0,62 a 30 giorni da solo), già dentro W3.2. Non riproporre modelli multivariati di direzione su questi dati;
+un'eventuale probabilità va prima misurata dal vivo con il registro delle previsioni. research/previsionale/ (PREREG f656594). Prima di leggere un'AUC aggregata in walk-forward separare l'intercetta dalle variabili; una fascia fissa attorno al 50% con base al 60% impedisce i "giù" per costruzione. research/previsionale/README.md (PREREG f656594, revisione critica fatta).
 **Lezione 111**: W3.2 con i parametri di BTC sulle prime 100 crypto di oggi (72 dopo stablecoin/RWA, 57 con perp, 28 con ≥ 3 anni):
 passa il criterio, la conferma e il placebo con Holm solo ETH fra 27 altcoin (BTC 78.474 $, ETH 34.760 $); TRX e SOL rendono di più
 del B&H ma con DD −40/−44% e WR < 60%; altcoin mediana 8.344 $, DD −65%, WR 33%. Il portafoglio equipesato delle 27 altcoin fa
