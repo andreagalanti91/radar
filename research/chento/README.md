@@ -67,3 +67,14 @@ Ogni affermazione è confrontata con le candele orarie BTC-USD (Coinbase, UTC). 
 - Esito verificato a ogni giro sulle candele orarie: eseguito / non eseguito (7 giorni), stop, TP1 (metà, stop a pareggio),
   target, chiusura a 30 giorni; nella candela d'ingresso contano solo gli stop (prudente). /trader dà il riepilogo in R.
 - Ricostruzione della strategia: quando ci sono 20–30 operazioni registrate.
+
+## Aggiornamento 23/11/2026 — due post su X (forniti dall'utente in chat)
+| Data | Post | Tesi | Verifica sui nostri dati |
+|---|---|---|---|
+| 23/11 | "This pump seems weird" | Rimbalzo 55,1k → 61k fatto da leva: perp +880 M$ contro spot +23 M$ (37:1); "when spot leads a move has legs"; resta flat finché non recupera 62,5k con domanda spot | Numeri riprodotti nel segno e nell'ordine di grandezza (Binance, dal minimo a fine 22/11: perp +626 M$, spot −21 M$). Come regola dal 2021 non regge: i rialzi guidati dai perp rendono +1,8% a 7 giorni contro +0,55% di media (lezione 114) |
+| 23/11 | "Called the short at $81.4K" | Livelli flip 81,4k e 74,4k, obiettivo 48k; short alla perdita del livello; minimo 55,1k (−32%) | I livelli coincidono entro l'1% con gli swing settimanali del tool (80.600, 74.508, 60.000). Su questo caso ha fatto meglio di W3.2 (long fino al 09/11, short dal 16/11 a 65.286). La regola meccanica su tutti i casi dal 2021: 10.000 → 5.145 $, WR 23% (lezione 114) |
+
+Lettura: metodo coerente e dati corretti; il vantaggio, se c'è, sta nel giudizio con cui sceglie quando applicarlo, non nelle regole
+scritte. Chiamate aperte da seguire: obiettivo 48k; livello 62,5k come confine fra "squeeze" e inversione.
+Registro delle operazioni: `radar/xinbox.py` (l'utente inoltra post e screenshot al bot Telegram; `/trade` per i livelli; `/trader`
+per il riepilogo). Nessuna lettura automatica di X (termini d'uso). Studi collegati: research/flusso_trader, research/forza_giornaliera.
