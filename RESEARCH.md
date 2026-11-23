@@ -409,6 +409,7 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 115**: a 30 giorni la direzione di BTC non è prevedibile ma l'ampiezza sì: un cono da bootstrap dei rendimenti riscalati alla volatilità corrente è calibrato dal 2018 (intervallo 80% centrato nel 78% dei casi, 50% nel 51–55%, errore sulle probabilità di tocco 4,6 punti), con un guadagno piccolo sulla frequenza storica (Brier +2,1%, intervallo che comprende lo zero) e tre metodi indistinguibili. Condizionare la deriva al flusso perp non migliora in modo affidabile e peggiora la copertura 2024–26: flusso e liquidazioni restano descrittivi. Card "Fra 30 giorni" in dashboard (radar/cone.py), senza direzione. research/cono30/README.md (PREREG 17b9a49, ADDENDUM 3049ee9).
 **Lezione 114**: guardare ogni giorno "chi compra" (spot contro perp) e i livelli chiave non migliora W3.2 e non prevede il
 prezzo. Su BTC dal 2021 (Binance, eventi ≥ 5% in 3 giorni, 32–51 per classe) i rialzi guidati dai perp rendono a 7 giorni +1,3
 punti PIÙ di quelli guidati dallo spot (p 0,55; atteso il contrario), i rialzi "spot" valgono la media (0,0), le rotture a 20

@@ -1,0 +1,21 @@
+Variante flusso (esplorativa) · previsioni 2021-01-01 → 2026-10-16 (2115 giorni)
+
+== b ==
+2021-23: n 1095 · cop50 51.2% · cop80 78.2% · ECE tocco 6.8% · Brier 0.1766 · deriva media a 30 g +3.7% (min +2.8%, max +5.0%)
+2024-26: n 1020 · cop50 55.9% · cop80 78.1% · ECE tocco 4.3% · Brier 0.1404 · deriva media a 30 g +3.4% (min +2.9%, max +3.7%)
+2021-26: n 2115 · cop50 53.5% · cop80 78.2% · ECE tocco 5.2% · Brier 0.1591 · deriva media a 30 g +3.5% (min +2.8%, max +5.0%)
+
+== d1 ==
+2021-23: n 1095 · cop50 51.4% · cop80 79.2% · ECE tocco 5.9% · Brier 0.1752 · deriva media a 30 g +1.7% (min -1.4%, max +4.7%)
+2024-26: n 1020 · cop50 58.5% · cop80 79.3% · ECE tocco 4.1% · Brier 0.1384 · deriva media a 30 g +1.8% (min +0.0%, max +3.8%)
+2021-26: n 2115 · cop50 54.8% · cop80 79.2% · ECE tocco 4.9% · Brier 0.1574 · deriva media a 30 g +1.8% (min -1.4%, max +4.7%)
+
+== d2 ==
+2021-23: n 1095 · cop50 53.6% · cop80 78.2% · ECE tocco 4.3% · Brier 0.1766 · deriva media a 30 g +1.6% (min -4.7%, max +8.1%)
+2024-26: n 1020 · cop50 58.0% · cop80 78.8% · ECE tocco 3.4% · Brier 0.1381 · deriva media a 30 g +1.7% (min -2.6%, max +4.5%)
+2021-26: n 2115 · cop50 55.7% · cop80 78.5% · ECE tocco 3.7% · Brier 0.1580 · deriva media a 30 g +1.7% (min -4.7%, max +8.1%)
+
+== Criterio dell'addendum ==
+d1: Brier − Brier(b): 2021-23 -0.0014 · 2024-26 -0.0020 · 2021-26 -0.0017 (IC 95% -0.0045 / +0.0014) · migliora in entrambi: SÌ · calibrata: NO → NON adottata
+d2: Brier − Brier(b): 2021-23 -0.0000 · 2024-26 -0.0023 · 2021-26 -0.0011 (IC 95% -0.0048 / +0.0029) · migliora in entrambi: SÌ · calibrata: NO → NON adottata
+Esito: nessuna variante passa: la card usa il metodo base (b); flusso solo come riga descrittiva.
