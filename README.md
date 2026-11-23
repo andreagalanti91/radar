@@ -109,7 +109,7 @@ Pensata per il telefono (installabile dalla schermata Home), tema scuro e chiaro
 
 | Sezione | Contenuto |
 |---|---|
-| **Oggi** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, riquadro Contesto (regime di mercato, Fed, CPI, VIX, prossimo FOMC), notizie del giorno |
+| **Oggi** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, card "Fra 30 giorni" (intervalli e probabilità di toccare un livello, dalla volatilità), riquadro Contesto (regime di mercato, Fed, CPI, VIX, prossimo FOMC), notizie del giorno |
 | **Storico** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
 | **Liquidazioni** | mappa stimata delle liquidazioni, prezzi di liquidazione reali Hyperliquid, feed live |
 | **Book** | heatmap dell'order book a 30 minuti su sei borse, muri etichettati, liquidazioni live, sentiment descrittivo, muri ritirati o eseguiti |
@@ -121,6 +121,16 @@ netta, CPI annuo, VIX, prossima riunione FOMC); il dettaglio con le date dei dat
 mostra probabilità né medie storiche, perché nei test regimi e politica economica non hanno anticipato la direzione
 ([`research/previsionale2`](research/previsionale2/README.md), lezione 113); non entra in W3.2. Dati Fed da FRED al massimo una
 volta al giorno, cache in `data/context.csv`: se la fonte non risponde resta l'ultimo dato con la sua data.
+
+La card **Fra 30 giorni** ([`radar/cone.py`](radar/cone.py), `report["cone"]`, solo BTC) mostra il prezzo, l'intervallo
+probabile all'80% e al 50% fra 30 giorni e la probabilità di toccare entro 30 giorni cinque livelli scelti dal tool (trailing o
+stop della posizione W3.2 aperta, supporto e resistenza più vicini ad almeno il 3%, due numeri tondi). È un cono di probabilità
+calcolato dalla volatilità attuale, **non una previsione di direzione** (lezioni 112–113): bootstrap a blocchi dei rendimenti
+storici riscalati alla volatilità di oggi, con la sola crescita media storica; nello studio di calibrazione
+([`research/cono30`](research/cono30/README.md)) l'intervallo 80% ha contenuto il prezzo nel 78% dei casi (2018–26) e il
+guadagno sulla semplice frequenza storica è piccolo. Flusso perp e fascia di liquidazione stimata compaiono solo come righe
+descrittive: non cambiano le probabilità. Non entra in W3.2. Ogni previsione è registrata in `data/cone_log.csv` e confrontata
+con il prezzo dopo 30 giorni (copertura dal vivo).
 
 La pagina *Metodo* (regole complete e limiti) si apre dalla card della posizione. La sezione Wallet è in pausa dal 22/11/2026
 (`RADAR_WALLETS=0`). Le pagine stanno in [`radar/pages/`](radar/pages/) e sono incluse da [`radar/dashboard.py`](radar/dashboard.py).

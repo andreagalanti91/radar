@@ -1,0 +1,253 @@
+asset,variante,segnale,d_log_pct
+BTC,"E-in1 flusso 1g, K3",2021-01-31,-1.04
+BTC,"E-in1 flusso 1g, K3",2021-08-01,0.18
+BTC,"E-in1 flusso 1g, K3",2021-10-03,-0.0
+BTC,"E-in1 flusso 1g, K3",2022-01-02,-1.15
+BTC,"E-in1 flusso 1g, K3",2022-08-14,-1.82
+BTC,"E-in1 flusso 1g, K3",2023-01-22,-1.47
+BTC,"E-in1 flusso 1g, K3",2023-10-22,-9.78
+BTC,"E-in1 flusso 1g, K3",2024-02-11,0.0
+BTC,"E-in1 flusso 1g, K3",2024-09-22,-1.0
+BTC,"E-in1 flusso 1g, K3",2025-04-27,-1.33
+BTC,"E-in1 flusso 1g, K3",2025-11-30,2.24
+BTC,"E-in1 flusso 1g, K3",2026-05-24,-1.37
+BTC,"E-in1 flusso 1g, K3",2026-08-23,-1.65
+BTC,"E-in2 flusso 1g, K5",2021-01-31,-1.04
+BTC,"E-in2 flusso 1g, K5",2021-08-01,0.18
+BTC,"E-in2 flusso 1g, K5",2021-10-03,-0.0
+BTC,"E-in2 flusso 1g, K5",2022-01-02,-1.15
+BTC,"E-in2 flusso 1g, K5",2022-08-14,-7.57
+BTC,"E-in2 flusso 1g, K5",2023-01-22,-1.47
+BTC,"E-in2 flusso 1g, K5",2023-10-22,-9.78
+BTC,"E-in2 flusso 1g, K5",2024-02-11,0.0
+BTC,"E-in2 flusso 1g, K5",2024-09-22,-1.0
+BTC,"E-in2 flusso 1g, K5",2025-04-27,-1.33
+BTC,"E-in2 flusso 1g, K5",2025-11-30,1.26
+BTC,"E-in2 flusso 1g, K5",2026-05-24,-1.37
+BTC,"E-in2 flusso 1g, K5",2026-08-23,-0.14
+BTC,"E-in3 flusso 3g, K5",2021-01-31,0.0
+BTC,"E-in3 flusso 3g, K5",2021-08-01,-1.4
+BTC,"E-in3 flusso 3g, K5",2021-10-03,0.0
+BTC,"E-in3 flusso 3g, K5",2022-01-02,-5.71
+BTC,"E-in3 flusso 3g, K5",2022-08-14,-7.57
+BTC,"E-in3 flusso 3g, K5",2023-01-22,-0.0
+BTC,"E-in3 flusso 3g, K5",2023-10-22,-0.0
+BTC,"E-in3 flusso 3g, K5",2024-02-11,0.0
+BTC,"E-in3 flusso 3g, K5",2024-09-22,0.35
+BTC,"E-in3 flusso 3g, K5",2025-04-27,-1.33
+BTC,"E-in3 flusso 3g, K5",2025-11-30,-0.83
+BTC,"E-in3 flusso 3g, K5",2026-05-24,-3.24
+BTC,"E-in3 flusso 3g, K5",2026-08-23,-0.0
+BTC,E-in4 limite su livello,2021-01-31,0.0
+BTC,E-in4 limite su livello,2021-08-01,0.0
+BTC,E-in4 limite su livello,2021-10-03,0.0
+BTC,E-in4 limite su livello,2022-01-02,0.0
+BTC,E-in4 limite su livello,2022-08-14,0.0
+BTC,E-in4 limite su livello,2023-01-22,-1.53
+BTC,E-in4 limite su livello,2023-10-22,0.0
+BTC,E-in4 limite su livello,2024-02-11,0.33
+BTC,E-in4 limite su livello,2024-09-22,-0.0
+BTC,E-in4 limite su livello,2025-04-27,-3.27
+BTC,E-in4 limite su livello,2025-11-30,0.0
+BTC,E-in4 limite su livello,2026-05-24,-4.58
+BTC,E-in4 limite su livello,2026-08-23,-0.14
+BTC,"E-out1 tutto, L20, spot",2021-01-31,0.0
+BTC,"E-out1 tutto, L20, spot",2021-08-01,-3.21
+BTC,"E-out1 tutto, L20, spot",2021-10-03,0.0
+BTC,"E-out1 tutto, L20, spot",2022-01-02,0.0
+BTC,"E-out1 tutto, L20, spot",2022-08-14,-0.0
+BTC,"E-out1 tutto, L20, spot",2023-01-22,-6.59
+BTC,"E-out1 tutto, L20, spot",2023-10-22,0.0
+BTC,"E-out1 tutto, L20, spot",2024-02-11,0.0
+BTC,"E-out1 tutto, L20, spot",2024-09-22,6.58
+BTC,"E-out1 tutto, L20, spot",2025-04-27,-3.24
+BTC,"E-out1 tutto, L20, spot",2025-11-30,-3.78
+BTC,"E-out1 tutto, L20, spot",2026-05-24,-0.0
+BTC,"E-out1 tutto, L20, spot",2026-08-23,-0.0
+BTC,"E-out2 metà, L20, spot",2021-01-31,0.0
+BTC,"E-out2 metà, L20, spot",2021-08-01,-1.59
+BTC,"E-out2 metà, L20, spot",2021-10-03,0.0
+BTC,"E-out2 metà, L20, spot",2022-01-02,0.0
+BTC,"E-out2 metà, L20, spot",2022-08-14,0.0
+BTC,"E-out2 metà, L20, spot",2023-01-22,-3.23
+BTC,"E-out2 metà, L20, spot",2023-10-22,0.0
+BTC,"E-out2 metà, L20, spot",2024-02-11,0.0
+BTC,"E-out2 metà, L20, spot",2024-09-22,3.34
+BTC,"E-out2 metà, L20, spot",2025-04-27,-1.6
+BTC,"E-out2 metà, L20, spot",2025-11-30,-2.27
+BTC,"E-out2 metà, L20, spot",2026-05-24,0.0
+BTC,"E-out2 metà, L20, spot",2026-08-23,-0.0
+BTC,"E-out3 tutto, L10, spot",2021-01-31,0.0
+BTC,"E-out3 tutto, L10, spot",2021-08-01,-0.19
+BTC,"E-out3 tutto, L10, spot",2021-10-03,0.0
+BTC,"E-out3 tutto, L10, spot",2022-01-02,0.0
+BTC,"E-out3 tutto, L10, spot",2022-08-14,0.0
+BTC,"E-out3 tutto, L10, spot",2023-01-22,-14.45
+BTC,"E-out3 tutto, L10, spot",2023-10-22,0.0
+BTC,"E-out3 tutto, L10, spot",2024-02-11,0.0
+BTC,"E-out3 tutto, L10, spot",2024-09-22,6.58
+BTC,"E-out3 tutto, L10, spot",2025-04-27,-2.51
+BTC,"E-out3 tutto, L10, spot",2025-11-30,-3.78
+BTC,"E-out3 tutto, L10, spot",2026-05-24,-5.5
+BTC,"E-out3 tutto, L10, spot",2026-08-23,-0.0
+BTC,"E-out4 tutto, L20, con spot",2021-01-31,0.0
+BTC,"E-out4 tutto, L20, con spot",2021-08-01,-3.21
+BTC,"E-out4 tutto, L20, con spot",2021-10-03,0.0
+BTC,"E-out4 tutto, L20, con spot",2022-01-02,3.71
+BTC,"E-out4 tutto, L20, con spot",2022-08-14,-1.42
+BTC,"E-out4 tutto, L20, con spot",2023-01-22,-7.62
+BTC,"E-out4 tutto, L20, con spot",2023-10-22,0.0
+BTC,"E-out4 tutto, L20, con spot",2024-02-11,0.0
+BTC,"E-out4 tutto, L20, con spot",2024-09-22,6.58
+BTC,"E-out4 tutto, L20, con spot",2025-04-27,-7.97
+BTC,"E-out4 tutto, L20, con spot",2025-11-30,-6.62
+BTC,"E-out4 tutto, L20, con spot",2026-05-24,0.0
+BTC,"E-out4 tutto, L20, con spot",2026-08-23,-0.0
+BTC,controllo: ogni rottura 20g,2021-01-31,0.0
+BTC,controllo: ogni rottura 20g,2021-08-01,-3.21
+BTC,controllo: ogni rottura 20g,2021-10-03,0.0
+BTC,controllo: ogni rottura 20g,2022-01-02,0.7
+BTC,controllo: ogni rottura 20g,2022-08-14,-2.63
+BTC,controllo: ogni rottura 20g,2023-01-22,-9.28
+BTC,controllo: ogni rottura 20g,2023-10-22,0.0
+BTC,controllo: ogni rottura 20g,2024-02-11,0.0
+BTC,controllo: ogni rottura 20g,2024-09-22,6.58
+BTC,controllo: ogni rottura 20g,2025-04-27,-7.59
+BTC,controllo: ogni rottura 20g,2025-11-30,-27.8
+BTC,controllo: ogni rottura 20g,2026-05-24,-0.12
+BTC,controllo: ogni rottura 20g,2026-08-23,-8.33
+ETH,"E-in1 flusso 1g, K3",2021-03-07,0.0
+ETH,"E-in1 flusso 1g, K3",2021-08-08,-2.97
+ETH,"E-in1 flusso 1g, K3",2022-03-27,0.0
+ETH,"E-in1 flusso 1g, K3",2022-08-07,0.07
+ETH,"E-in1 flusso 1g, K3",2022-09-18,0.0
+ETH,"E-in1 flusso 1g, K3",2023-01-22,0.68
+ETH,"E-in1 flusso 1g, K3",2023-10-29,-2.85
+ETH,"E-in1 flusso 1g, K3",2024-01-21,9.48
+ETH,"E-in1 flusso 1g, K3",2024-06-02,-0.0
+ETH,"E-in1 flusso 1g, K3",2024-11-10,-4.5
+ETH,"E-in1 flusso 1g, K3",2025-02-02,0.0
+ETH,"E-in1 flusso 1g, K3",2025-07-13,0.0
+ETH,"E-in1 flusso 1g, K3",2026-05-03,0.93
+ETH,"E-in1 flusso 1g, K3",2026-08-23,-1.59
+ETH,"E-in1 flusso 1g, K3",2026-11-08,0.0
+ETH,"E-in2 flusso 1g, K5",2021-03-07,0.0
+ETH,"E-in2 flusso 1g, K5",2021-08-08,-5.99
+ETH,"E-in2 flusso 1g, K5",2022-03-27,-0.0
+ETH,"E-in2 flusso 1g, K5",2022-08-07,0.07
+ETH,"E-in2 flusso 1g, K5",2022-09-18,0.0
+ETH,"E-in2 flusso 1g, K5",2023-01-22,1.32
+ETH,"E-in2 flusso 1g, K5",2023-10-29,-2.85
+ETH,"E-in2 flusso 1g, K5",2024-01-21,10.21
+ETH,"E-in2 flusso 1g, K5",2024-06-02,-0.0
+ETH,"E-in2 flusso 1g, K5",2024-11-10,-4.5
+ETH,"E-in2 flusso 1g, K5",2025-02-02,-0.0
+ETH,"E-in2 flusso 1g, K5",2025-07-13,0.0
+ETH,"E-in2 flusso 1g, K5",2026-05-03,0.93
+ETH,"E-in2 flusso 1g, K5",2026-08-23,-1.59
+ETH,"E-in2 flusso 1g, K5",2026-11-08,0.0
+ETH,"E-in3 flusso 3g, K5",2021-03-07,0.0
+ETH,"E-in3 flusso 3g, K5",2021-08-08,0.0
+ETH,"E-in3 flusso 3g, K5",2022-03-27,0.0
+ETH,"E-in3 flusso 3g, K5",2022-08-07,5.66
+ETH,"E-in3 flusso 3g, K5",2022-09-18,0.0
+ETH,"E-in3 flusso 3g, K5",2023-01-22,0.0
+ETH,"E-in3 flusso 3g, K5",2023-10-29,-2.07
+ETH,"E-in3 flusso 3g, K5",2024-01-21,8.03
+ETH,"E-in3 flusso 3g, K5",2024-06-02,0.0
+ETH,"E-in3 flusso 3g, K5",2024-11-10,2.35
+ETH,"E-in3 flusso 3g, K5",2025-02-02,0.0
+ETH,"E-in3 flusso 3g, K5",2025-07-13,-4.08
+ETH,"E-in3 flusso 3g, K5",2026-05-03,0.7
+ETH,"E-in3 flusso 3g, K5",2026-08-23,0.77
+ETH,"E-in3 flusso 3g, K5",2026-11-08,0.0
+ETH,E-in4 limite su livello,2021-03-07,0.0
+ETH,E-in4 limite su livello,2021-08-08,0.0
+ETH,E-in4 limite su livello,2022-03-27,0.0
+ETH,E-in4 limite su livello,2022-08-07,0.05
+ETH,E-in4 limite su livello,2022-09-18,0.0
+ETH,E-in4 limite su livello,2023-01-22,-0.0
+ETH,E-in4 limite su livello,2023-10-29,-2.07
+ETH,E-in4 limite su livello,2024-01-21,0.0
+ETH,E-in4 limite su livello,2024-06-02,1.33
+ETH,E-in4 limite su livello,2024-11-10,0.0
+ETH,E-in4 limite su livello,2025-02-02,0.0
+ETH,E-in4 limite su livello,2025-07-13,-13.09
+ETH,E-in4 limite su livello,2026-05-03,0.91
+ETH,E-in4 limite su livello,2026-08-23,0.77
+ETH,E-in4 limite su livello,2026-11-08,0.0
+ETH,"E-out1 tutto, L20, spot",2021-03-07,0.0
+ETH,"E-out1 tutto, L20, spot",2021-08-08,0.0
+ETH,"E-out1 tutto, L20, spot",2022-03-27,0.0
+ETH,"E-out1 tutto, L20, spot",2022-08-07,1.25
+ETH,"E-out1 tutto, L20, spot",2022-09-18,-1.2
+ETH,"E-out1 tutto, L20, spot",2023-01-22,-0.19
+ETH,"E-out1 tutto, L20, spot",2023-10-29,0.0
+ETH,"E-out1 tutto, L20, spot",2024-01-21,-0.0
+ETH,"E-out1 tutto, L20, spot",2024-06-02,3.97
+ETH,"E-out1 tutto, L20, spot",2024-11-10,-0.0
+ETH,"E-out1 tutto, L20, spot",2025-02-02,0.0
+ETH,"E-out1 tutto, L20, spot",2025-07-13,-4.6
+ETH,"E-out1 tutto, L20, spot",2026-05-03,-0.0
+ETH,"E-out1 tutto, L20, spot",2026-08-23,0.0
+ETH,"E-out1 tutto, L20, spot",2026-11-08,0.0
+ETH,"E-out2 metà, L20, spot",2021-03-07,0.0
+ETH,"E-out2 metà, L20, spot",2021-08-08,0.0
+ETH,"E-out2 metà, L20, spot",2022-03-27,0.0
+ETH,"E-out2 metà, L20, spot",2022-08-07,0.29
+ETH,"E-out2 metà, L20, spot",2022-09-18,-0.73
+ETH,"E-out2 metà, L20, spot",2023-01-22,0.01
+ETH,"E-out2 metà, L20, spot",2023-10-29,-0.0
+ETH,"E-out2 metà, L20, spot",2024-01-21,0.0
+ETH,"E-out2 metà, L20, spot",2024-06-02,2.0
+ETH,"E-out2 metà, L20, spot",2024-11-10,0.0
+ETH,"E-out2 metà, L20, spot",2025-02-02,0.0
+ETH,"E-out2 metà, L20, spot",2025-07-13,-1.81
+ETH,"E-out2 metà, L20, spot",2026-05-03,-0.0
+ETH,"E-out2 metà, L20, spot",2026-08-23,0.0
+ETH,"E-out2 metà, L20, spot",2026-11-08,0.0
+ETH,"E-out3 tutto, L10, spot",2021-03-07,-4.39
+ETH,"E-out3 tutto, L10, spot",2021-08-08,0.0
+ETH,"E-out3 tutto, L10, spot",2022-03-27,0.0
+ETH,"E-out3 tutto, L10, spot",2022-08-07,3.19
+ETH,"E-out3 tutto, L10, spot",2022-09-18,-1.2
+ETH,"E-out3 tutto, L10, spot",2023-01-22,-0.19
+ETH,"E-out3 tutto, L10, spot",2023-10-29,-0.0
+ETH,"E-out3 tutto, L10, spot",2024-01-21,-0.0
+ETH,"E-out3 tutto, L10, spot",2024-06-02,3.97
+ETH,"E-out3 tutto, L10, spot",2024-11-10,0.0
+ETH,"E-out3 tutto, L10, spot",2025-02-02,0.0
+ETH,"E-out3 tutto, L10, spot",2025-07-13,-4.6
+ETH,"E-out3 tutto, L10, spot",2026-05-03,-0.0
+ETH,"E-out3 tutto, L10, spot",2026-08-23,-9.31
+ETH,"E-out3 tutto, L10, spot",2026-11-08,0.0
+ETH,"E-out4 tutto, L20, con spot",2021-03-07,0.0
+ETH,"E-out4 tutto, L20, con spot",2021-08-08,0.0
+ETH,"E-out4 tutto, L20, con spot",2022-03-27,0.0
+ETH,"E-out4 tutto, L20, con spot",2022-08-07,1.11
+ETH,"E-out4 tutto, L20, con spot",2022-09-18,-1.17
+ETH,"E-out4 tutto, L20, con spot",2023-01-22,-7.16
+ETH,"E-out4 tutto, L20, con spot",2023-10-29,0.0
+ETH,"E-out4 tutto, L20, con spot",2024-01-21,0.0
+ETH,"E-out4 tutto, L20, con spot",2024-06-02,0.21
+ETH,"E-out4 tutto, L20, con spot",2024-11-10,0.0
+ETH,"E-out4 tutto, L20, con spot",2025-02-02,4.75
+ETH,"E-out4 tutto, L20, con spot",2025-07-13,-4.6
+ETH,"E-out4 tutto, L20, con spot",2026-05-03,-3.84
+ETH,"E-out4 tutto, L20, con spot",2026-08-23,-0.0
+ETH,"E-out4 tutto, L20, con spot",2026-11-08,0.0
+ETH,controllo: ogni rottura 20g,2021-03-07,0.0
+ETH,controllo: ogni rottura 20g,2021-08-08,0.0
+ETH,controllo: ogni rottura 20g,2022-03-27,0.0
+ETH,controllo: ogni rottura 20g,2022-08-07,1.11
+ETH,controllo: ogni rottura 20g,2022-09-18,4.62
+ETH,controllo: ogni rottura 20g,2023-01-22,-2.72
+ETH,controllo: ogni rottura 20g,2023-10-29,0.0
+ETH,controllo: ogni rottura 20g,2024-01-21,0.0
+ETH,controllo: ogni rottura 20g,2024-06-02,-2.56
+ETH,controllo: ogni rottura 20g,2024-11-10,2.99
+ETH,controllo: ogni rottura 20g,2025-02-02,4.75
+ETH,controllo: ogni rottura 20g,2025-07-13,1.65
+ETH,controllo: ogni rottura 20g,2026-05-03,-3.84
+ETH,controllo: ogni rottura 20g,2026-08-23,-0.89
+ETH,controllo: ogni rottura 20g,2026-11-08,0.0

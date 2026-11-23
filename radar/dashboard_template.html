@@ -512,6 +512,22 @@ body.noscroll{overflow:hidden}
 .cxRow span{font:500 .78rem var(--font);color:var(--label2)}
 .cxNote{margin:6px 0 0;font-size:.72rem;line-height:1.45;color:var(--label3)} .cxWarn{margin:6px 0 0;font-size:.76rem;line-height:1.4;color:var(--orange)}
 .tapHead b{font:600 1rem var(--font)}
+/* card "Fra 30 giorni" (report.cone, radar/cone.py): cono di probabilità dalla volatilità, non dalla direzione */
+.cnRows{display:grid;margin-top:8px;font-variant-numeric:tabular-nums}
+.cnRow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:.86rem}
+.cnRow:first-child{border-top:0}
+.cnRow span{color:var(--label2);min-width:0} .cnRow b{font:600 .92rem var(--font);white-space:nowrap}
+.cnBar{position:relative;height:10px;margin:8px 0 4px;border-radius:5px;background:var(--fill)}
+.cnBar i{position:absolute;top:0;bottom:0;border-radius:5px;background:var(--tint);opacity:.28}
+.cnBar i.b50{opacity:.6}
+.cnBar u{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;border-radius:1px;background:var(--label)}
+.cnCap{margin:12px 0 0;font:600 .78rem var(--font);color:var(--label2)}
+.cnLv{display:grid;grid-template-columns:minmax(0,1fr) auto 44px 2.6rem;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:.86rem;font-variant-numeric:tabular-nums}
+.cnLv:first-of-type{border-top:0}
+.cnLv span{color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cnLv b{font:600 .92rem var(--font)} .cnLv em{font:600 .92rem var(--font);font-style:normal;text-align:right}
+.cnLv s{display:block;height:6px;border-radius:3px;background:var(--fill);overflow:hidden;text-decoration:none}
+.cnLv s i{display:block;height:100%;border-radius:3px;background:var(--tint);opacity:.6}
 .tdRow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;margin-top:10px}
 .tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
 .tdRow b{font:600 .9rem/1.35 var(--font);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -653,6 +669,10 @@ body.noscroll{overflow:hidden}
           <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
         </div>
       </dialog>
+    </div>
+
+    <div class="section" id="cnSec" hidden>
+      <button type="button" class="card tapCard" id="cnCard" aria-haspopup="dialog"></button>
     </div>
 
     <div class="section" id="cxSec" hidden>
@@ -1532,6 +1552,39 @@ function renderCal() {
   $("banks").innerHTML = BK.slice(0, 2).map(bkRow).join("") + (bkMore.length ? `<details class="calPast"><summary>Altre ${bkMore.length} riunioni</summary><div class="banks">${bkMore.map(bkRow).join("")}</div></details>` : "")
     || `<div class="card"><p style="margin:0">Riunioni non disponibili in questo momento.</p></div>`;
 }
+// Fra 30 giorni (report.cone, radar/cone.py): intervalli e probabilità di tocco dalla volatilità. Nessuna previsione di direzione
+(function renderCone() {
+  const C = R.cone && typeof R.cone === "object" ? R.cone : null;
+  const ok = a => Array.isArray(a) && a.length === 2 && a.every(x => typeof x === "number" && isFinite(x));
+  if (!C || !(C.price > 0) || !ok(C.i80) || !ok(C.i50) || !C.note) return;
+  const r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
+  const lv = (Array.isArray(C.levels) ? C.levels : []).filter(o => o && o.label && o.price > 0 && typeof o.prob === "number").slice(0, 5);
+  const lo = C.i80[0], hi = C.i80[1], pad = (hi - lo) * .12, x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100));
+  const tgt = C.target ? new Date(C.target + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
+  const drift = typeof C.drift30_pct === "number" && C.drift30_pct ? `Comprende solo la crescita media storica di BTC (${C.drift30_pct > 0 ? "+" : "−"}${nfIT(Math.abs(C.drift30_pct), 1)}% in 30 giorni), uguale ogni giorno: non è un segnale. ` : "";
+  const body = `<div class="cnRows"><div class="cnRow"><span>Prezzo attuale${C.date ? ` <small style="color:var(--label3)">· chiusura ${new Date(C.date + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "short", timeZone: "UTC" })}</small>` : ""}</span><b>${usd(C.price)}</b></div>
+      <div class="cnRow"><span>Intervallo probabile all'80%</span><b>${rng(C.i80)}</b></div>
+      <div class="cnRow"><span>Intervallo probabile al 50%</span><b>${rng(C.i50)}</b></div></div>
+    <div class="cnBar" role="img" aria-label="Intervalli all'80% e al 50% rispetto al prezzo attuale"><i style="left:${x(lo)}%;width:${x(hi) - x(lo)}%"></i><i class="b50" style="left:${x(C.i50[0])}%;width:${x(C.i50[1]) - x(C.i50[0])}%"></i><u style="left:${x(C.price)}%"></u></div>
+    ${lv.length ? `<p class="cnCap">Probabilità di toccare il livello entro 30 giorni</p>` + lv.map(o => `<div class="cnLv"><span>${esc(o.label)}</span><b>${usd(o.price)}</b><s><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></s><em>${Math.round(o.prob)}%</em></div>`).join("") : ""}`;
+  const cx = (Array.isArray(C.context) ? C.context : []).filter(o => o && o.label && o.text);
+  const cxH = cx.length ? `<div class="cxRows" style="margin-top:10px;border-top:1px solid var(--line)">${cx.map(o => `<div class="cxRow" style="grid-template-columns:5.6rem minmax(0,1fr)"><span>${esc(o.label)}</span><b style="font-weight:500">${esc(o.text)}</b></div>`).join("")}</div>` : "";
+  const note = `${cxH}<p class="cxNote">${esc(C.note)}</p>`;   /* card corta: deriva e nota sul contesto stanno nei Dettagli */
+  $("cnCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Fra 30 giorni")}${tgt ? ` <small class="cap" style="font-weight:500">· ${tgt}</small>` : ""}</b><span class="more">Dettagli ›</span></div>${body}${note}`;
+  $("cnSec").hidden = false;
+  const L = C.live && C.live.n > 0 ? `Dal vivo: ${C.live.n} previsioni arrivate a scadenza, ${C.live.in80} con il prezzo dentro l'intervallo 80%.` : "Dal vivo: nessuna previsione è ancora arrivata a scadenza; ogni giorno la previsione viene registrata e fra 30 giorni confrontata con il prezzo.";
+  $("cnCard").onclick = () => openSheet("Fra 30 giorni: quanto può muoversi BTC", `<div style="display:grid;gap:12px;min-width:0">
+    <div class="list" style="box-shadow:none">
+      <div class="row"><span class="k">Prezzo di partenza<small>chiusura del ${fmtD(C.date)}</small></span><span class="v strong">${usd(C.price)}</span></div>
+      <div class="row"><span class="k">Intervallo 80%<small>8 casi su 10 attesi qui dentro${tgt ? " il " + tgt : ""}</small></span><span class="v strong">${rng(C.i80)}</span></div>
+      <div class="row"><span class="k">Intervallo 50%<small>1 caso su 2</small></span><span class="v strong">${rng(C.i50)}</span></div>
+      ${typeof C.vol30_pct === "number" ? `<div class="row"><span class="k">Volatilità attesa a 30 giorni<small>movimento tipico, in più o in meno</small></span><span class="v strong">±${nfIT(C.vol30_pct, 1)}%</span></div>` : ""}
+      ${lv.map(o => `<div class="row"><span class="k">${esc(o.label)} ${usd(o.price)}<small>${o.dist_pct > 0 ? "+" : "−"}${nfIT(Math.abs(o.dist_pct), 1)}% dal prezzo</small></span><span class="v strong">${Math.round(o.prob)}%</span></div>`).join("")}
+    </div>
+    <p class="foot">Le percentuali sono la probabilità che il prezzo tocchi il livello almeno una volta entro 30 giorni, anche solo per un momento. ${cx.length && C.context_note ? esc(C.context_note) + " " : ""}${esc(drift)}${esc(C.note)}</p>
+    <p class="foot">${esc(C.method || "")}</p>
+    <p class="foot">${L} Non entra in W3.2: stop, trailing e decisioni restano quelli della strategia.</p></div>`);
+})();
 // Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità
 (function renderContext() {
   const C = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;

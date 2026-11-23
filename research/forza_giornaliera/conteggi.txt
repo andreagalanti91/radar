@@ -1,0 +1,82 @@
+== BTC · 2021-01-01 → 2026-11-15 · 2145 giorni · primo pz3 valido 2020-04-01
+-- H1/H2: primo giorno con movimento ≥ X in N giorni (pausa 7 g); n totale (2021–23 / 2024→) e classi perp/spot/misto
+rialzo N=2 X=4%: 177 (99/78) | D0=0.5: perp 46 (28/18) spot 39 (23/16) misto 92 (48/44) | D0=1.0: perp 28 (16/12) spot 22 (16/6) misto 127 (67/60) | trader$: perp 70 (51/19) spot 44 (15/29) misto 63 (33/30)
+rialzo N=2 X=5%: 145 (84/61) | D0=0.5: perp 48 (29/19) spot 29 (16/13) misto 68 (39/29) | D0=1.0: perp 28 (16/12) spot 18 (12/6) misto 99 (56/43) | trader$: perp 57 (42/15) spot 34 (11/23) misto 54 (31/23)
+rialzo N=2 X=6%: 120 (74/46) | D0=0.5: perp 42 (28/14) spot 21 (13/8) misto 57 (33/24) | D0=1.0: perp 24 (15/9) spot 14 (10/4) misto 82 (49/33) | trader$: perp 49 (37/12) spot 28 (11/17) misto 43 (26/17)
+rialzo N=2 X=8%: 73 (49/24) | D0=0.5: perp 28 (21/7) spot 11 (8/3) misto 34 (20/14) | D0=1.0: perp 19 (14/5) spot 9 (7/2) misto 45 (28/17) | trader$: perp 28 (23/5) spot 13 (7/6) misto 32 (19/13)
+rialzo N=3 X=4%: 194 (103/91) | D0=0.5: perp 53 (30/23) spot 49 (24/25) misto 92 (49/43) | D0=1.0: perp 34 (18/16) spot 25 (14/11) misto 135 (71/64) | trader$: perp 70 (44/26) spot 38 (12/26) misto 86 (47/39)
+rialzo N=3 X=5%: 163 (92/71) | D0=0.5: perp 50 (30/20) spot 37 (19/18) misto 76 (43/33) | D0=1.0: perp 33 (20/13) spot 18 (10/8) misto 112 (62/50) | trader$: perp 65 (46/19) spot 36 (13/23) misto 62 (33/29)
+rialzo N=3 X=6%: 140 (83/57) | D0=0.5: perp 43 (26/17) spot 28 (16/12) misto 69 (41/28) | D0=1.0: perp 32 (19/13) spot 15 (7/8) misto 93 (57/36) | trader$: perp 55 (39/16) spot 24 (7/17) misto 61 (37/24)
+rialzo N=3 X=8%: 89 (55/34) | D0=0.5: perp 34 (24/10) spot 14 (10/4) misto 41 (21/20) | D0=1.0: perp 27 (19/8) spot 9 (7/2) misto 53 (29/24) | trader$: perp 40 (32/8) spot 13 (5/8) misto 36 (18/18)
+rialzo N=5 X=4%: 212 (110/102) | D0=0.5: perp 60 (34/26) spot 54 (28/26) misto 98 (48/50) | D0=1.0: perp 39 (26/13) spot 36 (21/15) misto 137 (63/74) | trader$: perp 78 (51/27) spot 43 (15/28) misto 91 (44/47)
+rialzo N=5 X=5%: 191 (105/86) | D0=0.5: perp 56 (33/23) spot 50 (25/25) misto 85 (47/38) | D0=1.0: perp 37 (25/12) spot 28 (16/12) misto 126 (64/62) | trader$: perp 72 (49/23) spot 40 (14/26) misto 79 (42/37)
+rialzo N=5 X=6%: 164 (94/70) | D0=0.5: perp 50 (29/21) spot 43 (22/21) misto 71 (43/28) | D0=1.0: perp 34 (21/13) spot 26 (14/12) misto 104 (59/45) | trader$: perp 72 (49/23) spot 32 (11/21) misto 60 (34/26)
+rialzo N=5 X=8%: 117 (66/51) | D0=0.5: perp 39 (23/16) spot 26 (16/10) misto 52 (27/25) | D0=1.0: perp 31 (19/12) spot 18 (11/7) misto 68 (36/32) | trader$: perp 48 (34/14) spot 27 (10/17) misto 42 (22/20)
+ribasso N=2 X=4%: 154 (88/66) | D0=0.5: perp 54 (30/24) spot 34 (23/11) misto 66 (35/31) | D0=1.0: perp 26 (15/11) spot 17 (11/6) misto 111 (62/49) | trader$: perp 28 (17/11) spot 95 (50/45) misto 31 (21/10)
+ribasso N=2 X=5%: 120 (74/46) | D0=0.5: perp 46 (29/17) spot 25 (19/6) misto 49 (26/23) | D0=1.0: perp 26 (15/11) spot 13 (9/4) misto 81 (50/31) | trader$: perp 24 (15/9) spot 74 (41/33) misto 22 (18/4)
+ribasso N=2 X=6%: 97 (63/34) | D0=0.5: perp 38 (25/13) spot 22 (16/6) misto 37 (22/15) | D0=1.0: perp 19 (10/9) spot 12 (9/3) misto 66 (44/22) | trader$: perp 19 (12/7) spot 54 (32/22) misto 24 (19/5)
+ribasso N=2 X=8%: 55 (39/16) | D0=0.5: perp 20 (12/8) spot 12 (10/2) misto 23 (17/6) | D0=1.0: perp 10 (6/4) spot 6 (6/0) misto 39 (27/12) | trader$: perp 2 (1/1) spot 36 (23/13) misto 17 (15/2)
+ribasso N=3 X=4%: 165 (89/76) | D0=0.5: perp 46 (27/19) spot 44 (24/20) misto 75 (38/37) | D0=1.0: perp 22 (11/11) spot 21 (13/8) misto 122 (65/57) | trader$: perp 30 (19/11) spot 101 (51/50) misto 34 (19/15)
+ribasso N=3 X=5%: 141 (79/62) | D0=0.5: perp 51 (29/22) spot 32 (19/13) misto 58 (31/27) | D0=1.0: perp 26 (11/15) spot 17 (12/5) misto 98 (56/42) | trader$: perp 28 (17/11) spot 81 (42/39) misto 32 (20/12)
+ribasso N=3 X=6%: 107 (66/41) | D0=0.5: perp 37 (23/14) spot 26 (17/9) misto 44 (26/18) | D0=1.0: perp 21 (10/11) spot 14 (11/3) misto 72 (45/27) | trader$: perp 21 (13/8) spot 61 (37/24) misto 25 (16/9)
+ribasso N=3 X=8%: 66 (45/21) | D0=0.5: perp 22 (15/7) spot 16 (13/3) misto 28 (17/11) | D0=1.0: perp 16 (12/4) spot 8 (8/0) misto 42 (25/17) | trader$: perp 10 (7/3) spot 41 (25/16) misto 15 (13/2)
+ribasso N=5 X=4%: 180 (98/82) | D0=0.5: perp 53 (35/18) spot 40 (25/15) misto 87 (38/49) | D0=1.0: perp 36 (21/15) spot 24 (17/7) misto 120 (60/60) | trader$: perp 33 (18/15) spot 115 (61/54) misto 32 (19/13)
+ribasso N=5 X=5%: 154 (85/69) | D0=0.5: perp 49 (27/22) spot 32 (17/15) misto 73 (41/32) | D0=1.0: perp 32 (17/15) spot 20 (14/6) misto 102 (54/48) | trader$: perp 30 (17/13) spot 96 (50/46) misto 28 (18/10)
+ribasso N=5 X=6%: 134 (77/57) | D0=0.5: perp 44 (25/19) spot 29 (16/13) misto 61 (36/25) | D0=1.0: perp 30 (15/15) spot 14 (10/4) misto 90 (52/38) | trader$: perp 26 (17/9) spot 79 (42/37) misto 29 (18/11)
+ribasso N=5 X=8%: 85 (56/29) | D0=0.5: perp 30 (20/10) spot 22 (15/7) misto 33 (21/12) | D0=1.0: perp 20 (12/8) spot 13 (11/2) misto 52 (33/19) | trader$: perp 12 (8/4) spot 59 (38/21) misto 14 (10/4)
+-- H3: rottura in chiusura del massimo/minimo dei 20 (10) giorni precedenti (pausa 7 g), conferma spot sz3 nel verso
+rottura 10g su: 84 (40/44) | con spot (sz3 nel verso) 67 (35/32) | senza 17 (5/12) | classe D0=0,5: perp 34 (16/18) spot 23 (10/13) misto 27 (14/13)
+rottura 10g giù: 67 (33/34) | con spot (sz3 nel verso) 54 (29/25) | senza 13 (4/9) | classe D0=0,5: perp 25 (13/12) spot 17 (11/6) misto 25 (9/16)
+rottura 20g su: 62 (30/32) | con spot (sz3 nel verso) 54 (27/27) | senza 8 (3/5) | classe D0=0,5: perp 18 (9/9) spot 21 (11/10) misto 23 (10/13)
+rottura 20g giù: 45 (23/22) | con spot (sz3 nel verso) 35 (18/17) | senza 10 (5/5) | classe D0=0,5: perp 17 (9/8) spot 14 (8/6) misto 14 (6/8)
+rottura livello swing settimanale su: 92 (47/45) | con spot 64 (30/34) | senza 28 (17/11)
+rottura livello swing settimanale giù: 90 (45/45) | con spot 57 (32/25) | senza 33 (13/20)
+-- W3.2 BTC: 13 trade (aperto compreso) · long 9 short 4
+E-in: giorni 0..K−1 dal segnale (0 = domenica) con perp e spot nel verso (pzN·lato > 0 e szN·lato > 0); primo giorno utile per trade
+  N=1: primo giorno concorde per trade = [1, 3, 0, 1, 5, 3, 1, 0, 2, 1, 4, 2, None] (None = mai entro 5)
+  N=3: primo giorno concorde per trade = [0, 4, 0, 3, None, 0, 0, 0, 1, 1, None, 3, 0] (None = mai entro 5)
+E-out: giorni dentro i trade con chiusura oltre il minimo/massimo dei L giorni contro la posizione; di cui vendita/acquisto contrario guidato dallo spot (classe 'spot', D0=0,5), 'con spot' (sz3 contrario), 'solo perp' (classe 'perp')
+  L=10: giorni di rottura 73 · guidati dallo spot 15 (in 6 trade) · con spot 59 · solo perp 43
+  L=20: giorni di rottura 45 · guidati dallo spot 10 (in 5 trade) · con spot 32 · solo perp 23
+E-hold: movimenti contrari ≥ 5% in 3 giorni dentro i trade (primo giorno, pausa 7 g) per classe (D0=0,5)
+  {'perp': 35, 'spot': 14, 'misto': 24, 'nd': 0}
+== ETH · 2021-01-01 → 2026-11-15 · 2145 giorni · primo pz3 valido 2020-03-31
+-- H1/H2: primo giorno con movimento ≥ X in N giorni (pausa 7 g); n totale (2021–23 / 2024→) e classi perp/spot/misto
+rialzo N=2 X=4%: 212 (112/100) | D0=0.5: perp 67 (38/29) spot 45 (24/21) misto 100 (50/50) | D0=1.0: perp 38 (24/14) spot 22 (12/10) misto 152 (76/76) | trader$: perp 42 (27/15) spot 93 (48/45) misto 77 (37/40)
+rialzo N=2 X=5%: 193 (104/89) | D0=0.5: perp 72 (37/35) spot 35 (20/15) misto 86 (47/39) | D0=1.0: perp 44 (24/20) spot 19 (12/7) misto 130 (68/62) | trader$: perp 42 (23/19) spot 79 (45/34) misto 72 (36/36)
+rialzo N=2 X=6%: 167 (91/76) | D0=0.5: perp 61 (32/29) spot 31 (17/14) misto 75 (42/33) | D0=1.0: perp 39 (21/18) spot 14 (7/7) misto 114 (63/51) | trader$: perp 38 (22/16) spot 73 (41/32) misto 56 (28/28)
+rialzo N=2 X=8%: 113 (64/49) | D0=0.5: perp 45 (27/18) spot 23 (14/9) misto 45 (23/22) | D0=1.0: perp 28 (18/10) spot 11 (7/4) misto 74 (39/35) | trader$: perp 27 (19/8) spot 48 (29/19) misto 38 (16/22)
+rialzo N=3 X=4%: 218 (113/105) | D0=0.5: perp 64 (36/28) spot 53 (29/24) misto 101 (48/53) | D0=1.0: perp 35 (20/15) spot 31 (19/12) misto 152 (74/78) | trader$: perp 43 (25/18) spot 82 (37/45) misto 93 (51/42)
+rialzo N=3 X=5%: 207 (110/97) | D0=0.5: perp 64 (37/27) spot 43 (27/16) misto 100 (46/54) | D0=1.0: perp 34 (19/15) spot 26 (16/10) misto 147 (75/72) | trader$: perp 40 (22/18) spot 82 (37/45) misto 85 (51/34)
+rialzo N=3 X=6%: 183 (100/83) | D0=0.5: perp 63 (36/27) spot 38 (24/14) misto 82 (40/42) | D0=1.0: perp 33 (18/15) spot 25 (17/8) misto 125 (65/60) | trader$: perp 39 (23/16) spot 72 (38/34) misto 72 (39/33)
+rialzo N=3 X=8%: 137 (74/63) | D0=0.5: perp 53 (30/23) spot 28 (17/11) misto 56 (27/29) | D0=1.0: perp 32 (16/16) spot 17 (11/6) misto 88 (47/41) | trader$: perp 30 (20/10) spot 56 (28/28) misto 51 (26/25)
+rialzo N=5 X=4%: 229 (118/111) | D0=0.5: perp 59 (35/24) spot 60 (30/30) misto 110 (53/57) | D0=1.0: perp 37 (24/13) spot 42 (23/19) misto 150 (71/79) | trader$: perp 37 (24/13) spot 81 (39/42) misto 111 (55/56)
+rialzo N=5 X=5%: 219 (115/104) | D0=0.5: perp 66 (35/31) spot 53 (30/23) misto 100 (50/50) | D0=1.0: perp 39 (25/14) spot 38 (22/16) misto 142 (68/74) | trader$: perp 39 (26/13) spot 78 (38/40) misto 102 (51/51)
+rialzo N=5 X=6%: 206 (111/95) | D0=0.5: perp 75 (43/32) spot 47 (27/20) misto 84 (41/43) | D0=1.0: perp 39 (26/13) spot 32 (18/14) misto 135 (67/68) | trader$: perp 38 (25/13) spot 76 (36/40) misto 92 (50/42)
+rialzo N=5 X=8%: 166 (91/75) | D0=0.5: perp 63 (33/30) spot 39 (27/12) misto 64 (31/33) | D0=1.0: perp 36 (20/16) spot 26 (17/9) misto 104 (54/50) | trader$: perp 28 (19/9) spot 69 (38/31) misto 69 (34/35)
+ribasso N=2 X=4%: 191 (99/92) | D0=0.5: perp 63 (31/32) spot 46 (27/19) misto 82 (41/41) | D0=1.0: perp 38 (16/22) spot 22 (14/8) misto 131 (69/62) | trader$: perp 62 (34/28) spot 77 (33/44) misto 52 (32/20)
+ribasso N=2 X=5%: 157 (84/73) | D0=0.5: perp 56 (28/28) spot 39 (26/13) misto 62 (30/32) | D0=1.0: perp 28 (12/16) spot 19 (13/6) misto 110 (59/51) | trader$: perp 48 (29/19) spot 65 (31/34) misto 44 (24/20)
+ribasso N=2 X=6%: 130 (68/62) | D0=0.5: perp 46 (22/24) spot 30 (19/11) misto 54 (27/27) | D0=1.0: perp 24 (11/13) spot 13 (10/3) misto 93 (47/46) | trader$: perp 40 (26/14) spot 57 (25/32) misto 33 (17/16)
+ribasso N=2 X=8%: 93 (51/42) | D0=0.5: perp 27 (10/17) spot 26 (16/10) misto 40 (25/15) | D0=1.0: perp 13 (6/7) spot 13 (10/3) misto 67 (35/32) | trader$: perp 21 (16/5) spot 46 (23/23) misto 26 (12/14)
+ribasso N=3 X=4%: 204 (105/99) | D0=0.5: perp 69 (33/36) spot 51 (28/23) misto 84 (44/40) | D0=1.0: perp 40 (23/17) spot 29 (15/14) misto 135 (67/68) | trader$: perp 77 (43/34) spot 86 (35/51) misto 41 (27/14)
+ribasso N=3 X=5%: 174 (91/83) | D0=0.5: perp 61 (30/31) spot 47 (25/22) misto 66 (36/30) | D0=1.0: perp 33 (19/14) spot 28 (16/12) misto 113 (56/57) | trader$: perp 59 (33/26) spot 76 (33/43) misto 39 (25/14)
+ribasso N=3 X=6%: 150 (76/74) | D0=0.5: perp 52 (24/28) spot 42 (21/21) misto 56 (31/25) | D0=1.0: perp 32 (18/14) spot 22 (12/10) misto 96 (46/50) | trader$: perp 53 (30/23) spot 65 (28/37) misto 32 (18/14)
+ribasso N=3 X=8%: 111 (57/54) | D0=0.5: perp 34 (14/20) spot 28 (14/14) misto 49 (29/20) | D0=1.0: perp 18 (9/9) spot 15 (9/6) misto 78 (39/39) | trader$: perp 31 (20/11) spot 55 (27/28) misto 25 (10/15)
+ribasso N=5 X=4%: 214 (111/103) | D0=0.5: perp 63 (29/34) spot 56 (33/23) misto 95 (49/46) | D0=1.0: perp 42 (21/21) spot 35 (21/14) misto 137 (69/68) | trader$: perp 77 (40/37) spot 90 (38/52) misto 47 (33/14)
+ribasso N=5 X=5%: 188 (97/91) | D0=0.5: perp 65 (31/34) spot 48 (27/21) misto 75 (39/36) | D0=1.0: perp 43 (22/21) spot 30 (16/14) misto 115 (59/56) | trader$: perp 71 (39/32) spot 77 (33/44) misto 40 (25/15)
+ribasso N=5 X=6%: 167 (87/80) | D0=0.5: perp 61 (28/33) spot 44 (27/17) misto 62 (32/30) | D0=1.0: perp 39 (19/20) spot 27 (15/12) misto 101 (53/48) | trader$: perp 64 (35/29) spot 70 (31/39) misto 33 (21/12)
+ribasso N=5 X=8%: 125 (65/60) | D0=0.5: perp 33 (14/19) spot 36 (22/14) misto 56 (29/27) | D0=1.0: perp 26 (11/15) spot 21 (14/7) misto 78 (40/38) | trader$: perp 38 (21/17) spot 54 (25/29) misto 33 (19/14)
+-- H3: rottura in chiusura del massimo/minimo dei 20 (10) giorni precedenti (pausa 7 g), conferma spot sz3 nel verso
+rottura 10g su: 86 (47/39) | con spot (sz3 nel verso) 76 (42/34) | senza 10 (5/5) | classe D0=0,5: perp 29 (14/15) spot 24 (17/7) misto 33 (16/17)
+rottura 10g giù: 71 (31/40) | con spot (sz3 nel verso) 62 (29/33) | senza 9 (2/7) | classe D0=0,5: perp 27 (9/18) spot 19 (12/7) misto 25 (10/15)
+rottura 20g su: 60 (32/28) | con spot (sz3 nel verso) 54 (30/24) | senza 6 (2/4) | classe D0=0,5: perp 16 (8/8) spot 23 (14/9) misto 21 (10/11)
+rottura 20g giù: 46 (23/23) | con spot (sz3 nel verso) 41 (21/20) | senza 5 (2/3) | classe D0=0,5: perp 16 (4/12) spot 15 (10/5) misto 15 (9/6)
+-- W3.2 ETH: 15 trade (aperto compreso) · long 10 short 5
+E-in: giorni 0..K−1 dal segnale (0 = domenica) con perp e spot nel verso (pzN·lato > 0 e szN·lato > 0); primo giorno utile per trade
+  N=1: primo giorno concorde per trade = [0, 5, 0, 2, 0, None, 3, 4, 0, 1, 0, 0, 2, 3, 0] (None = mai entro 5)
+  N=3: primo giorno concorde per trade = [0, 0, 0, None, 0, 0, None, 5, 0, None, 0, 2, 3, None, 0] (None = mai entro 5)
+E-out: giorni dentro i trade con chiusura oltre il minimo/massimo dei L giorni contro la posizione; di cui vendita/acquisto contrario guidato dallo spot (classe 'spot', D0=0,5), 'con spot' (sz3 contrario), 'solo perp' (classe 'perp')
+  L=10: giorni di rottura 51 · guidati dallo spot 11 (in 7 trade) · con spot 47 · solo perp 18
+  L=20: giorni di rottura 28 · guidati dallo spot 8 (in 5 trade) · con spot 24 · solo perp 12
+E-hold: movimenti contrari ≥ 5% in 3 giorni dentro i trade (primo giorno, pausa 7 g) per classe (D0=0,5)
+  {'perp': 35, 'spot': 6, 'misto': 35, 'nd': 0}

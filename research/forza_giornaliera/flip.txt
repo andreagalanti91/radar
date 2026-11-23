@@ -1,0 +1,27 @@
+=== F1/F2 · short alla perdita del livello / sul ritest respinto · BTC 2021-01-01 → 2026-11-15 (10.000 $, 1x)
+F1 perdita del livello: finale 5145 $ · DD -70.0% · trade 112 · WR 23% · PF 0.82 · media -0.44% · peggiore -8.6% · durata mediana 2 g · 2021–23 7656 $ (PF 0.88) · 2024→ 6720 $ (PF 0.76)
+   classe spot: n 29 · WR 17% · media -1.07% · somma -31.2%
+   classe perp: n 32 · WR 22% · media -0.80% · somma -25.7%
+   classe misto: n 51 · WR 27% · media +0.14% · somma +7.1%
+   F1s: spot − resto -0.85 punti per trade · p 0.478 (permutazione, bilaterale)
+   solo segnali 'spot' (trade in sequenza, composto): 7085 $ con 29 trade
+F2 ritest respinto: finale 6327 $ · DD -62.5% · trade 64 · WR 30% · PF 0.85 · media -0.49% · peggiore -8.4% · durata mediana 4 g · 2021–23 6686 $ (PF 0.74) · 2024→ 9463 $ (PF 1.01)
+   classe spot: n 20 · WR 35% · media -0.14% · somma -2.9%
+   classe perp: n 20 · WR 25% · media -1.32% · somma -26.4%
+   classe misto: n 24 · WR 29% · media -0.08% · somma -1.9%
+   F2s: spot − resto +0.50 punti per trade · p 0.794 (permutazione, bilaterale)
+   solo segnali 'spot' (trade in sequenza, composto): 9231 $ con 20 trade
+F1 nel calo del 2026: 2026-09-04 short @79581 → stop 2026-09-19 -2.3%; 2026-10-08 short @81673 → stop 2026-10-11 -2.6%; 2026-10-12 short @81768 → stop 2026-10-13 -2.5%; 2026-10-14 short @81600 → stop 2026-10-21 -2.6%; 2026-10-22 short @81335 → tp 2026-10-30 +5.9%; 2026-11-05 short @76012 → tp 2026-11-14 +11.9%; 2026-11-14 short @64086 → open 2026-11-15 -2.1%
+
+=== F3 · W3.2 con uscita alla perdita del livello swing (rientro come E-out)
+W3.2: ALL 78474 $ DD -21.1 CDD 1.99 WR 92.3 | IS 33477 $ DD -19.3 CDD 2.574 WR 100.0 | OOS 23488 $ DD -21.1 CDD 1.639 WR 83.3
+F3 ogni perdita del livello: ALL 37269 $ DD -38.9 CDD 0.645 WR 69.2 | IS 24769 $ DD -22.5 CDD 1.57 WR 71.4 | OOS 15077 $ DD -38.9 CDD 0.395 WR 66.7 | uscite 67 · ΣΔ -74.5 · p segni 0.964
+F3s solo guidata dallo spot: ALL 49298 $ DD -28.8 CDD 1.085 WR 76.9 | IS 30173 $ DD -22.2 CDD 2.008 WR 100.0 | OOS 16371 $ DD -28.8 CDD 0.65 WR 50.0 | uscite 18 · ΣΔ -46.5 · p segni 0.961
+
+=== Livelli del trader contro i livelli oggettivi
+81,4k: al 2026-10-07 swing settimanale più vicino 80600 (-1.0%, noto dal 2025-12-14) · radar/levels zona più vicina 82275 [80600–84450] (+1.1%, forza 4)
+74,4k: al 2026-10-07 swing settimanale più vicino 74508 (+0.1%, noto dal 2025-05-04) · radar/levels zona più vicina 73968 [71997–74968] (-0.6%, forza 5)
+62,5k: al 2026-10-07 swing settimanale più vicino 60000 (-4.0%, noto dal 2026-03-01) · radar/levels zona più vicina 63170 [61844–65000] (+1.1%, forza 5)
+60,3k: al 2026-10-07 swing settimanale più vicino 60000 (-0.5%, noto dal 2026-03-01) · radar/levels zona più vicina 58946 [57800–60000] (-2.2%, forza 4)
+55,1k (minimo): al 2026-10-07 swing settimanale più vicino 57800 (+4.9%, noto dal 2026-07-26) · radar/levels zona più vicina 58946 [57800–60000] (+7.0%, forza 4)
+48k (obiettivo): al 2026-10-07 swing settimanale più vicino 57800 (+20.4%, noto dal 2026-07-26) · radar/levels zona più vicina 58946 [57800–60000] (+22.8%, forza 4)

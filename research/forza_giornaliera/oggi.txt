@@ -1,0 +1,50 @@
+
+===== BTC · dati orari spot fino a 2026-11-23 13:00:00 UTC (ultima ora in corso) · perp Binance orario fino a 2026-11-22 23:00:00
+Giornaliero Binance (delta netto taker in M$; vr = volume perp/spot; up3/dn3 = dal minimo/massimo di 3 giorni):
+               close       low      high  spot_usd  perp_usd     vr   up3   dn3   pz3   sz3 cl_buy cl_sell cl_buy_usd      hi20      lo20  pf14z  sf14z
+date                                                                                                                                                   
+2026-11-14  64150.00  63320.00  68446.21   -151.28   -810.74   8.73  0.01 -0.14 -2.08 -0.92  misto    perp      misto  81971.00  67568.00  -1.28   0.39
+2026-11-15  65351.05  62006.00  66132.01   -181.88    -14.39   8.60  0.05 -0.09 -1.43 -1.34  misto   misto      misto  81971.00  63320.00  -1.21  -0.16
+2026-11-16  64882.87  63905.01  65696.16     38.61   -290.17   8.34  0.05 -0.05 -0.96 -1.09  misto   misto      misto  81971.00  62006.00  -1.35  -0.30
+2026-11-17  64947.35  63336.00  65447.00    187.09     41.15   7.61  0.05 -0.02 -0.14  0.26  misto   misto       spot  81971.00  62006.00  -1.24   0.24
+2026-11-18  63068.22  62062.97  65002.00      8.23   -206.73  11.00  0.02 -0.04 -0.40  1.18   spot    perp       spot  81971.00  62006.00  -1.60  -0.03
+2026-11-19  61986.73  61428.26  64080.80    -74.48   -132.64  12.46  0.01 -0.05 -0.18  0.64   spot    perp       spot  81196.01  62006.00  -1.53   0.22
+2026-11-20  58951.51  57778.35  62639.52   -216.72   -683.25  10.79  0.02 -0.09 -0.75 -1.24  misto   misto      misto  81196.01  61428.26  -1.65  -0.51
+2026-11-21  60215.77  55130.00  60996.00   -210.71    -99.12   7.51  0.09 -0.06 -0.53 -1.58  misto    spot      misto  81196.01  57778.35  -1.41  -0.90
+2026-11-22  61271.08  58768.51  61669.99     18.43    263.32   9.90  0.11 -0.02 -0.25 -1.27  misto    spot      misto  81196.01  55130.00  -1.18  -0.79
+rapporto mediano dei volumi perp/spot a 180 giorni: 9.0
+minimo del 21/11: 55130 nell'ora 2026-11-21 06:00:00 UTC
+dal minimo del 21/11 a fine 21/11: prezzo 58067 → 60216 · spot Binance -39 M$ (vol 1766) · perp Binance +368 M$ su 18/18 ore (vol 14192) · contratti OKX +284 M$ (provvisorio, 18 ore) · rapporto perp/spot dei netti -9.4:1 · rapporto dei volumi 8.0
+22/11 (giorno intero): prezzo 60210 → 61271 · spot Binance +19 M$ (vol 1216) · perp Binance +258 M$ su 24/24 ore (vol 12029) · contratti OKX +232 M$ (provvisorio, 24 ore) · rapporto perp/spot dei netti +13.8:1 · rapporto dei volumi 9.9
+dal minimo a fine 22/11: prezzo 58067 → 61271 · spot Binance -21 M$ (vol 2981) · perp Binance +626 M$ su 42/42 ore (vol 26221) · contratti OKX +516 M$ (provvisorio, 42 ore) · rapporto perp/spot dei netti -30.3:1 · rapporto dei volumi 8.8
+23/11 fino all'ultima ora chiusa: prezzo 61351 → 61329 · spot Binance +2 M$ (vol 580) · perp Binance n.d. · contratti OKX +98 M$ (provvisorio, 13 ore)
+22/11 + 23/11: prezzo 60210 → 61329 · spot Binance +21 M$ (vol 1796) · perp Binance +258 M$ su 24/37 ore (vol 12029) · contratti OKX +330 M$ (provvisorio, 37 ore)
+massimo dopo il minimo: 61960 (2026-11-23 03:00:00) · ultimo prezzo 61226
+W3.2 al 2026-11-22: short dal 2026-11-16 a 65285.7 · trailing 75764 · P/L +5.9% · decisione in sospeso: None
+Regole (chiusura 2026-11-22): up3 +11.1% · pz3 -0.25 · sz3 -1.27 → classe acquisti 'misto' (versione in dollari: 'misto') · chiusura 61271 · massimo 20 g 81196 · minimo 20 g 55130
+E-out (non adottata): rottura contraria a 20 g = False; guidata dallo spot = False
+
+===== ETH · dati orari spot fino a 2026-11-23 13:00:00 UTC (ultima ora in corso) · perp Binance orario fino a 2026-11-22 23:00:00
+Giornaliero Binance (delta netto taker in M$; vr = volume perp/spot; up3/dn3 = dal minimo/massimo di 3 giorni):
+              close      low     high  spot_usd  perp_usd     vr   up3   dn3   pz3   sz3 cl_buy cl_sell cl_buy_usd    hi20     lo20  pf14z  sf14z
+date                                                                                                                                             
+2026-11-14  1769.20  1729.16  1936.49    -85.04   -732.80  15.75  0.02 -0.14 -1.65 -1.38  misto   misto      misto  2450.0  1895.95  -1.32  -1.80
+2026-11-15  1835.35  1711.08  1845.18    -50.20    146.59  12.66  0.07 -0.09 -0.89 -1.55  misto    spot      misto  2450.0  1729.16  -1.02  -2.00
+2026-11-16  1820.67  1787.11  1866.89    -11.11    -13.96  14.05  0.06 -0.06 -0.72 -1.26  misto    spot      misto  2450.0  1711.08  -1.13  -1.91
+2026-11-17  1824.88  1751.39  1843.49    -55.09   -230.94  14.37  0.07 -0.02  0.17 -1.03   perp    spot      misto  2450.0  1711.08  -1.19  -2.36
+2026-11-18  1777.19  1732.83  1826.58    -17.62      3.80  14.24  0.03 -0.05 -0.16 -0.82  misto    spot      misto  2450.0  1711.08  -1.48  -2.50
+2026-11-19  1757.32  1736.28  1817.57     -1.02     36.90  16.22  0.01 -0.05 -0.03 -0.68  misto    spot      misto  2450.0  1711.08  -1.30  -1.98
+2026-11-20  1623.09  1581.47  1770.55    -43.85   -646.19  13.50  0.03 -0.11 -0.78 -0.39  misto   misto      misto  2450.0  1711.08  -1.69  -2.06
+2026-11-21  1685.63  1538.00  1716.58    -61.70     58.52  10.31  0.10 -0.07 -0.56 -0.62  misto   misto      misto  2450.0  1581.47  -1.39  -2.04
+2026-11-22  1724.33  1648.35  1732.52      3.98     21.75  15.40  0.12 -0.03 -0.64 -0.62  misto   misto      misto  2450.0  1538.00  -1.06  -1.82
+rapporto mediano dei volumi perp/spot a 180 giorni: 13.9
+minimo del 21/11: 1538 nell'ora 2026-11-21 04:00:00 UTC
+dal minimo del 21/11 a fine 21/11: prezzo 1561 → 1686 · spot Binance -29 M$ (vol 821) · perp Binance +276 M$ su 20/20 ore (vol 8414) · contratti OKX +45 M$ (provvisorio, 20 ore) · rapporto perp/spot dei netti -9.5:1 · rapporto dei volumi 10.2
+22/11 (giorno intero): prezzo 1684 → 1724 · spot Binance +4 M$ (vol 398) · perp Binance +22 M$ su 24/24 ore (vol 6117) · contratti OKX +120 M$ (provvisorio, 24 ore) · rapporto perp/spot dei netti +5.4:1 · rapporto dei volumi 15.4
+dal minimo a fine 22/11: prezzo 1561 → 1724 · spot Binance -25 M$ (vol 1219) · perp Binance +298 M$ su 44/44 ore (vol 14531) · contratti OKX +165 M$ (provvisorio, 44 ore) · rapporto perp/spot dei netti -11.9:1 · rapporto dei volumi 11.9
+23/11 fino all'ultima ora chiusa: prezzo 1722 → 1722 · spot Binance -2 M$ (vol 211) · perp Binance n.d. · contratti OKX +80 M$ (provvisorio, 13 ore)
+22/11 + 23/11: prezzo 1684 → 1722 · spot Binance +2 M$ (vol 609) · perp Binance +22 M$ su 24/37 ore (vol 6117) · contratti OKX +200 M$ (provvisorio, 37 ore)
+massimo dopo il minimo: 1752 (2026-11-23 03:00:00) · ultimo prezzo 1722
+W3.2 al 2026-11-22: short dal 2026-11-09 a 2125.33 · trailing 2311 · P/L +15.2% · decisione in sospeso: None
+Regole (chiusura 2026-11-22): up3 +12.1% · pz3 -0.64 · sz3 -0.62 → classe acquisti 'misto' (versione in dollari: 'misto') · chiusura 1724 · massimo 20 g 2450 · minimo 20 g 1538
+E-out (non adottata): rottura contraria a 20 g = False; guidata dallo spot = False
