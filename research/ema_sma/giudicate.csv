@@ -1,0 +1,21 @@
+regola,descr,periodo,fin,cagr,dd,S,n,wr,fin_no2
+R1 scelta,SO G4 E0 4h SMA200 N1,conferma 2018-20,10231,0.8,-42.2,0.02,37,16.0,6053.0
+R1 scelta,SO G4 E0 4h SMA200 N1,scoperta 2021-23,16248,17.6,-23.8,0.74,47,23.0,9870.0
+R1 scelta,SO G4 E0 4h SMA200 N1,giudizio 2024-26,8584,-5.2,-41.2,-0.13,35,14.0,6006.0
+R1 scelta,SO G4 E0 4h SMA200 N1,intero 2021-26,13947,5.8,-51.3,0.11,82,20.0,8472.0
+R2 gemella,SO G5 E0 4h SMA200 N1,conferma 2018-20,9142,-2.9,-36.9,-0.08,34,12.0,5471.0
+R2 gemella,SO G5 E0 4h SMA200 N1,scoperta 2021-23,12914,8.9,-27.3,0.33,38,24.0,7845.0
+R2 gemella,SO G5 E0 4h SMA200 N1,giudizio 2024-26,9755,-0.9,-18.7,-0.05,27,15.0,6825.0
+R2 gemella,SO G5 E0 4h SMA200 N1,intero 2021-26,12597,4.0,-27.3,0.15,65,20.0,7652.0
+U esempio utente,INV G1 E0 4h EMA50 N2,conferma 2018-20,66137,87.7,-54.4,1.61,192,27.0,22536.0
+U esempio utente,INV G1 E0 4h EMA50 N2,scoperta 2021-23,6954,-11.4,-58.9,-0.19,232,24.0,3677.0
+U esempio utente,INV G1 E0 4h EMA50 N2,giudizio 2024-26,6345,-14.6,-64.5,-0.23,223,26.0,3852.0
+U esempio utente,INV G1 E0 4h EMA50 N2,intero 2021-26,4412,-13.0,-75.4,-0.17,455,25.0,2282.0
+buy & hold,,conferma 2018-20,21046,28.1,-81.2,0.35,1,,
+buy & hold,,scoperta 2021-23,14590,13.4,-76.6,0.18,1,,
+buy & hold,,giudizio 2024-26,15425,16.3,-53.0,0.31,1,,
+buy & hold,,intero 2021-26,22549,14.9,-76.6,0.19,1,,
+W3.2,radar/weekly.py,conferma 2018-20,25142,36.0,-37.3,0.97,9,56.0,
+W3.2,radar/weekly.py,scoperta 2021-23,33477,49.6,-19.3,2.57,7,100.0,
+W3.2,radar/weekly.py,giudizio 2024-26,23488,34.6,-21.1,1.64,6,83.0,
+W3.2,radar/weekly.py,intero 2021-26,78474,42.0,-21.1,1.99,13,92.0,

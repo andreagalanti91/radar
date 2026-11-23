@@ -1,0 +1,47 @@
+tempo 3 s | regole 4017 | valide 555 | CAGR>0 0.661 | S>B&H 0.488
+B&H scoperta {'fin': np.float64(14589.834), 'cagr': np.float64(0.134), 'dd': np.float64(-0.766), 'S': np.float64(0.175), 'n': 1}
+            score   n  valid   best  ammessa
+fam                                         
+INV|G1|C1D    0.0  72  0.042  2.411    False
+INV|G1|X      0.0  24  0.125  1.816    False
+INV|G2|C1D    0.0  72  0.014  2.603    False
+INV|G3|C1D    0.0  72  0.056  1.732    False
+INV|G2|X      0.0  24  0.042  1.916    False
+INV|G5|X      0.0  24  0.042  1.655    False
+INV|G4|C1D    0.0  72  0.000  0.000    False
+LO|G1|A       0.0   9  0.111  1.279    False
+LO|G1|C1D     0.0  72  0.028  0.953    False
+INV|G5|C1D    0.0  72  0.028  2.277    False
+INV|G4|X      0.0  24  0.000  0.000    False
+LO|G0|X       0.0  24  0.000  0.000    False
+SCELTA famiglia SO|G4|C4h ammessa True regola 1785 {'side': 'SO', 'reg': 'G4', 'ent': 'E0', 'xi': 21, 'xtype': 'C', 'xtf': '4h', 'xkind': 'SMA', 'xpar': '200', 'xn': 1, 'xclass': 'C4h', 'fam': 'SO|G4|C4h'}
+     side reg ent xtf xkind xpar  xn        fin   cagr     dd      S    n     wr  valid
+1785   SO  G4  E0  4h   SMA  200   1  16247.592  0.176 -0.238  0.740   47  0.234   True
+3181  INV  G1  E0  4h   EMA   50   2   6953.808 -0.114 -0.589 -0.194  232  0.237  False
+    rule     ns      s     v
+21  1785  0.660  0.740  True
+22  1786  0.636  0.742  True
+10  1774  0.616  1.047  True
+46  1845  0.581  0.636  True
+9   1773  0.555  1.071  True
+23  1787  0.527  0.528  True
+45  1844  0.476  0.581  True
+33  1832  0.476  0.371  True
+prime 15 regole valide:
+     side reg ent xtf xtype xkind       xpar  xn        fin   cagr     dd      S   n     wr
+3498  INV  G2  E2  1D     C   SMA         50   3  58555.070  0.803 -0.309  2.603  19  0.526
+3274  INV  G1  E1  1D     C   SMA         50   3  52975.692  0.744 -0.309  2.411  20  0.500
+3218  INV  G1  E0  1D     C   SMA         50   3  52975.695  0.744 -0.309  2.411  20  0.500
+4002  INV  G5  E2  1D     C   SMA         50   3  49294.964  0.703 -0.309  2.277  19  0.474
+3330  INV  G1  E2  1D     C   SMA         50   3  46634.495  0.671 -0.309  2.175  19  0.474
+2833   LS  G4  E0  4h     C   EMA        200   2  42224.130  0.617 -0.319  1.935  48  0.375
+3506  INV  G2  E2  4h     X   EMA  (50, 200)   0  43002.082  0.627 -0.327  1.916  21  0.476
+3282  INV  G1  E1  4h     X   EMA  (50, 200)   0  39060.631  0.575 -0.317  1.816  21  0.476
+3226  INV  G1  E0  4h     X   EMA  (50, 200)   0  39060.628  0.575 -0.317  1.816  21  0.476
+517    LO  G2  E2  4h     X   EMA   (20, 50)   0  24832.537  0.354 -0.201  1.762  15  0.400
+3610  INV  G3  E1  1D     C   SMA         50   3  36092.858  0.534 -0.309  1.732  20  0.450
+3554  INV  G3  E0  1D     C   SMA         50   3  36092.857  0.534 -0.309  1.732  20  0.450
+4000  INV  G5  E2  1D     C   SMA         50   1  39898.640  0.587 -0.340  1.727  39  0.308
+2628   LS  G2  E2  1D     C   SMA         50   3  39373.306  0.580 -0.345  1.678  15  0.467
+2853   LS  G4  E0  1D     C   EMA        100   1  38430.687  0.567 -0.338  1.677  23  0.391
+White RC {'zero': {'stat': 0.05341011492862748, 'p': 0.0875, 'best_rule': 3498, 'p_scelta': 0.8985}, 'bh': {'stat': 0.041934414610906176, 'p': 0.354, 'best_rule': 3498, 'p_scelta': 0.777}}

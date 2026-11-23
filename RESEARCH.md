@@ -409,6 +409,15 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 117**: EMA e SMA su 4h, giornaliero e settimanale (research/ema_sma, PREREG 9a33184; 4.017 regole regime × innesco ×
+uscita × lato, scoperta 2021–23, giudizio 2024–26, conferma 2018–20). Nessuna regola valida: la scelta perde in giudizio (8.584 $,
+DD −41%), l'esempio "long sopra la SMA200 giornaliera, inversione short a 2 chiusure 4h sotto una media" fa 10.000 → 4.412 $
+(DD −75%, 455 trade, WR 25%); il migliore della scoperta non si distingue dal caso (p 0,06–0,35) e la classifica non si conserva
+(rango 0,24). Regge solo il fatto generico già noto: medie lente giornaliere long/flat ≈ buy & hold con metà drawdown. Short su
+medie: mediana negativa in tutti i periodi; uscite a 4h peggiori di quelle giornaliere (24 trade l'anno, WR 25%); EMA = SMA; 2–3
+chiusure riducono i falsi segnali ma non il rendimento; un attraversamento è annullato entro 10 barre due volte su tre. Golden
+cross, ritest, stiramenti, pendenze: 18 eventi "ricorrenti" su 204, quanti per caso. Dentro W3.2 un'uscita o un filtro a 4h
+peggiorano (46.433 $ e 66.713 $ contro 78.474 $). Le medie restano contesto visivo (stato sui tre intervalli), non segnale. research/ema_sma/README.md (PREREG 9a33184; revisione critica separata non eseguita: nessuna regola promossa).
 **Lezione 116**: uscire in profitto nel giorno di "cascata a favore" (movimento giornaliero ≥ 2 ATR con volume ≥ 2× la media, o
 crollo con rifiuto tipo 21/11/2026) e rientrare non migliora W3.2: 0/6 varianti passano (PREREG 9e437db); 34–73k $ contro
 78,5k, DD uguale o peggiore, ΣΔ per trade sempre negativa, p dei segni 0,63–0,97. Dopo una cascata a favore il trend di solito

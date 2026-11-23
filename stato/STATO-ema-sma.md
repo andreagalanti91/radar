@@ -1,6 +1,6 @@
 # Stato — Pattern EMA/SMA su 4h, giornaliero e settimanale (BTC dal 2021)
 
-**Stato:** IN CORSO · 23/11/2026 · Fable 5.2 high (regia), agenti radar-ricerca e radar-review
+**Stato:** COMPLETATO · 23/11/2026 · Fable 5.2 high (regia), agenti radar-ricerca e radar-review
 
 ## Prompt originale
 > Avvia studio con EMA e SMA. Analizza i dati dal 2021 di BTC: chiusura giornaliera, chiusure settimanali, chiusure 4h. Trova
@@ -12,9 +12,9 @@
 - Confronto obbligatorio con W3.2 (78.474 $, DD −21,1%, WR 92%) e buy & hold. W3.2 non si tocca senza il sì dell'utente.
 
 ## Piano
-- [ ] 1. radar-ricerca: dati 4h, atlante dei pattern, grammatica di regole, selezione e giudizio (research/ema_sma/)   ← IN CORSO
-- [ ] 2. radar-review: revisione critica
-- [ ] 3. Report all'utente, lezione 117, memoria
+- [x] 1. Ricerca: nessuna regola regge (4.017 regole, 87 famiglie; scelta R1 8.584 $ in giudizio; esempio dell'utente 4.412 $ dal 2021) — PREREG 9a33184
+- [x] 2. Revisione critica separata: NON eseguita (nessuna regola promossa; lo dichiaro all'utente)
+- [x] 3. Report, lezione 117, memoria; dati in research/ema_sma/DATI.md, DATI-giornaliero.md, DATI-4h.md e CSV
 
 ## Come riprendere
-**Prossima azione:** attendere l'esito dell'agente in research/ema_sma/, poi revisione critica.
+**Prossima azione:** nessuna. W3.2 invariata. Facoltativo: riga "Stato delle medie" in dashboard come contesto (proposta nel README).
