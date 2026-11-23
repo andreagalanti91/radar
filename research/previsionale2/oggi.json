@@ -1,0 +1,106 @@
+{
+ "data_chiusura": "2026-11-21",
+ "close": 60215.77,
+ "regime": {
+  "T": "D",
+  "V": "A",
+  "close_su_sma200": -0.169,
+  "vol30": 0.024
+ },
+ "politica": {
+  "tasso": "RIALZO",
+  "bilancio": "STABILE",
+  "dff": 3.88,
+  "walcl13_pct": -0.06,
+  "ry": 2.88,
+  "vix_livello": 28.44,
+  "cpi_annuo": 3.7,
+  "giorni_al_fomc": 18,
+  "pol": 0.25,
+  "nl13": 0.562,
+  "dry": 0.2,
+  "curva": 0.28,
+  "usd": 3.754,
+  "vix": 3.348,
+  "fomc": 0.0,
+  "cpi": 1.0
+ },
+ "flusso": {
+  "pf": -1.595,
+  "sf": -0.514,
+  "rsi": -0.275,
+  "vol": 0.05
+ },
+ "h7": {
+  "base_complessiva": 0.546,
+  "base_del_regime": 0.537,
+  "R": {
+   "p": 0.495,
+   "soglie_relative": [
+    0.547,
+    0.581
+   ],
+   "chiamata": "giù"
+  },
+  "P": {
+   "p": 0.544,
+   "soglie_relative": [
+    0.55,
+    0.57
+   ],
+   "chiamata": "giù"
+  },
+  "RP": {
+   "p": 0.505,
+   "soglie_relative": [
+    0.539,
+    0.572
+   ],
+   "chiamata": "giù"
+  },
+  "PF": {
+   "p": 0.489,
+   "soglie_relative": [
+    0.554,
+    0.585
+   ],
+   "chiamata": "giù"
+  }
+ },
+ "h30": {
+  "base_complessiva": 0.578,
+  "base_del_regime": 0.553,
+  "R": {
+   "p": 0.546,
+   "soglie_relative": [
+    0.557,
+    0.603
+   ],
+   "chiamata": "giù"
+  },
+  "P": {
+   "p": 0.573,
+   "soglie_relative": [
+    0.577,
+    0.602
+   ],
+   "chiamata": "giù"
+  },
+  "RP": {
+   "p": 0.515,
+   "soglie_relative": [
+    0.579,
+    0.603
+   ],
+   "chiamata": "giù"
+  },
+  "PF": {
+   "p": 0.475,
+   "soglie_relative": [
+    0.585,
+    0.624
+   ],
+   "chiamata": "giù"
+  }
+ }
+}

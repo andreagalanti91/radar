@@ -409,6 +409,23 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 113**: adattare il previsionale ai regimi di mercato (trend su SMA200, volatilità) e alla politica economica (tasso Fed,
+liquidità netta, rendimento reale, curva, dollaro, VIX, FOMC, CPI; FRED dal 2015 con i ritardi di pubblicazione) non lo fa
+funzionare: AUC fuori campione 0,46–0,53 a 7 giorni e 0,40–0,59 a 30 giorni, mai ≥ 0,55 in entrambi i periodi, 0/6 modelli, Holm 1,00
+su 16 test dei due cicli; la base rate per regime ripete il difetto dell'intercetta (AUC 0,38–0,43 nel 2021–23: i regimi che
+rendevano fino al 2020 hanno reso meno dopo). La politica economica aggiunta al flusso perp lo PEGGIORA (ΔAUC −0,05 a 7 giorni, IC
+sotto zero; −0,07 a 30 giorni). Su W3.2 0/3 (il filtro "politica restrittiva" non scatta mai: W3.2 evita già quei long). Le fasi
+della Fed sono 1 episodio ciascuna e si contraddicono (rialzi 2015–18 +703%, 2022–23 −28%; tagli 2019 −16%): descrivono, non
+prevedono. Regime e politica vanno mostrati solo come contesto. Non riproporre modelli di direzione a 7–30 giorni su regimi o
+macro; resta valida solo la misura dal vivo con forecast_log.py. research/previsionale2/ (PREREG 3a6a973). research/previsionale2/README.md (PREREG 3a6a973; revisione critica separata non eseguita: stessa pipeline del primo ciclo già rivista, esito nullo).
+**Lezione 112**: un modello previsionale direzionale a 7 e 30 giorni (12 variabili fissate prima, logistiche L2 e ceppi, media,
+walk-forward mensile dal 2015 con embargo) non ha direzionalità fuori campione: 49–51% a 7 giorni e 50–55% a 30 giorni, cioè
+"sale sempre" (non dice mai "giù"), AUC 0,38–0,49, 0/8 test significativi; riaddestrarlo o ricalibrarlo sugli errori non
+migliora il Brier; come filtro, dimensione o uscita di W3.2 0/8 varianti (toglie o accorcia gli short vincenti). Anche il regime
+W3.2 azzecca il segno a 7–30 giorni solo nel 49–51% dei casi: W3.2 guadagna con l'ampiezza dei trend, non con la frequenza. Con
+~35 osservazioni indipendenti per periodo a 30 giorni servirebbe il 71% per dimostrare qualcosa. Unico segnale stabile: il flusso
+perp (AUC 0,59–0,62 a 30 giorni da solo), già dentro W3.2. Non riproporre modelli multivariati di direzione su questi dati;
+un'eventuale probabilità va prima misurata dal vivo con il registro delle previsioni. research/previsionale/ (PREREG f656594). Prima di leggere un'AUC aggregata in walk-forward separare l'intercetta dalle variabili; una fascia fissa attorno al 50% con base al 60% impedisce i "giù" per costruzione. research/previsionale/README.md (PREREG f656594, revisione critica fatta).
 **Lezione 111**: W3.2 con i parametri di BTC sulle prime 100 crypto di oggi (72 dopo stablecoin/RWA, 57 con perp, 28 con ≥ 3 anni):
 passa il criterio, la conferma e il placebo con Holm solo ETH fra 27 altcoin (BTC 78.474 $, ETH 34.760 $); TRX e SOL rendono di più
 del B&H ma con DD −40/−44% e WR < 60%; altcoin mediana 8.344 $, DD −65%, WR 33%. Il portafoglio equipesato delle 27 altcoin fa

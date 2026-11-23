@@ -1,0 +1,53 @@
+stato,giorni,episodi,episodi_30g,finestre_30g,r30_media,r30_mediana,su30,su7,dd_max,tabella,btc_fase,dff,bilancio_mld
+Tutti i giorni,4337,1,1,144,6.27,3.10,57.91,54.67,-83.19,0. Riferimento,,,
+"Tasso a zero, prima dei rialzi [2015-01 → 2015-12]",350,1,1,11,6.42,4.21,63.71,59.14,-45.66,1. Fasi storiche,45.27,0.13→0.15,4.51→4.48
+Rialzi 2015–18 (QT da 10/2017) [2015-12 → 2018-12],1099,1,1,36,9.63,4.53,60.15,57.96,-83.19,1. Fasi storiche,702.82,0.15→2.20,4.48→4.09
+Pausa 2019 (QT fino a 08/2019) [2018-12 → 2019-07],224,1,1,7,16.70,11.54,78.57,64.73,-27.91,1. Fasi storiche,148.93,2.20→2.40,4.09→3.80
+Tagli 2019 (bilancio risale da 09/2019) [2019-08 → 2020-03],216,1,1,7,-4.57,-4.51,39.81,41.20,-44.80,1. Fasi storiche,-15.57,2.39→1.58,3.80→4.16
+Emergenza: tasso zero + QE 2020–22 [2020-03 → 2022-03],743,1,1,24,10.49,6.10,60.30,57.07,-53.14,1. Fasi storiche,369.83,1.59→0.08,4.16→8.91
+Rialzi 2022–23 (QT da 06/2022) [2022-03 → 2023-07],497,1,1,16,-1.17,-2.52,43.46,45.88,-66.73,1. Fasi storiche,-28.27,0.08→5.08,8.91→8.27
+"Plateau 5,3% + QT 2023–24 [2023-07 → 2024-09]",420,1,1,14,6.96,4.54,64.76,57.14,-26.15,1. Fasi storiche,111.34,5.08→5.33,8.27→7.12
+Tagli 2024–25 [2024-09 → 2025-12],448,1,1,14,3.12,0.88,52.90,54.69,-32.02,1. Fasi storiche,46.18,5.33→3.89,7.12→6.54
+"Fermo ~3,6%, bilancio stabile 2026 [2025-12 → 2026-09]",280,1,1,9,0.30,2.33,61.07,49.64,-39.53,1. Fasi storiche,-17.63,3.89→3.63,6.54→6.74
+Rialzo 09/2026 → oggi [2026-09 → 2026-11],60,1,1,2,-7.25,-7.25,13.33,24.53,-25.94,1. Fasi storiche,-14.48,3.63→3.88,6.74→6.76
+RIALZO,1613,8,5,50,4.72,1.69,54.26,52.37,-83.19,"2. Direzione del tasso (meccanica, nota in tempo reale: DFF contro 126 giorni prima, ±0,125)",,,
+FERMO,1941,12,9,59,9.16,4.71,63.11,58.58,-53.14,"2. Direzione del tasso (meccanica, nota in tempo reale: DFF contro 126 giorni prima, ±0,125)",,,
+TAGLIO,783,4,4,25,2.21,0.81,52.36,49.68,-53.60,"2. Direzione del tasso (meccanica, nota in tempo reale: DFF contro 126 giorni prima, ±0,125)",,,
+QE,1037,6,4,31,5.59,2.05,54.10,54.19,-53.60,"3. Bilancio Fed (meccanica: WALCL a 91 giorni, ±1%)",,,
+STABILE,1669,18,5,48,8.55,4.81,61.93,56.32,-63.67,"3. Bilancio Fed (meccanica: WALCL a 91 giorni, ±1%)",,,
+QT,1631,12,4,49,4.40,2.02,56.28,53.28,-67.44,"3. Bilancio Fed (meccanica: WALCL a 91 giorni, ±1%)",,,
+RIALZO + QE,76,2,2,2,-9.90,-7.14,21.05,46.05,-16.66,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+RIALZO + STABILE,758,12,6,20,7.43,2.89,55.91,51.53,-63.67,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+RIALZO + QT,779,5,3,24,3.61,1.86,55.97,53.79,-67.44,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+FERMO + QE,630,4,2,19,7.42,1.91,53.49,55.71,-53.14,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+FERMO + STABILE,771,11,5,20,12.27,6.71,72.24,62.65,-41.69,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+FERMO + QT,540,7,4,15,6.75,3.18,61.30,56.11,-27.91,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+TAGLIO + QE,331,3,1,9,5.64,6.58,62.84,53.17,-53.60,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+TAGLIO + STABILE,140,7,1,2,-6.15,-3.74,36.43,47.14,-35.11,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+TAGLIO + QT,312,7,2,8,2.31,-0.42,48.40,47.12,-28.10,4. Tasso × bilancio (celle con ≥ 60 giorni),,,
+liquidità netta in aumento (nl13 > 0),2052,98,17,44,9.76,4.67,61.69,56.91,-53.60,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+liquidità netta in calo,2285,97,21,53,3.09,1.84,54.47,52.65,-67.44,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+restrittiva: tasso su + liquidità giù,1473,77,13,28,2.26,1.21,52.84,50.44,-67.44,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+rendimento reale in salita (dry > 0),2247,116,24,49,5.32,2.57,56.56,53.12,-60.01,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+rendimento reale in discesa,2090,115,22,42,7.27,3.53,59.33,56.32,-53.60,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+dollaro in salita (usd > 0),2432,73,24,57,3.93,1.51,53.41,54.43,-61.97,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+dollaro in discesa,1905,72,20,47,9.22,5.27,63.57,54.96,-59.34,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+curva invertita (10a − 2a < 0),792,5,1,26,4.72,1.74,56.19,53.16,-35.43,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+curva positiva,3545,6,4,116,6.62,3.48,58.29,55.00,-83.19,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+VIX > 25,562,57,5,7,6.80,5.93,64.70,59.36,-48.47,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+VIX ≤ 25,3775,58,23,110,6.19,2.67,56.90,53.97,-63.67,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+CPI annuo in salita,2124,25,24,69,4.87,1.30,53.14,53.80,-57.48,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+CPI annuo in discesa,1818,25,23,57,8.05,4.73,63.20,56.00,-45.66,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+FOMC entro 7 giorni,665,95,0,0,6.22,2.21,56.99,51.13,-39.50,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+nessun FOMC entro 7 giorni,3672,96,94,94,6.27,3.29,58.07,55.31,-47.83,"5. Altre condizioni di politica economica (meccaniche, con i ritardi di pubblicazione)",,,
+T=U rialzo (sopra SMA200 in salita),2339,34,10,69,8.31,3.30,57.16,54.41,-57.15,6. Regimi di mercato (meccanici),,,
+T=M misto,814,45,9,13,6.56,5.11,63.83,56.79,-36.20,6. Regimi di mercato (meccanici),,,
+T=D ribasso,1184,11,6,34,2.07,1.64,55.32,53.72,-66.73,6. Regimi di mercato (meccanici),,,
+V=A volatilità alta,2016,70,29,52,8.87,4.31,62.46,57.55,-63.67,6. Regimi di mercato (meccanici),,,
+V=B volatilità bassa,2291,69,29,55,4.08,1.83,54.04,52.41,-55.70,6. Regimi di mercato (meccanici),,,
+T=U · V=A,1244,52,11,28,10.22,4.46,59.41,57.96,-57.15,6. Regimi di mercato (meccanici),,,
+T=U · V=B,1095,52,11,23,6.09,2.43,54.54,50.37,-30.19,6. Regimi di mercato (meccanici),,,
+T=M · V=A,340,38,1,2,9.18,5.28,71.01,57.40,-26.47,6. Regimi di mercato (meccanici),,,
+T=M · V=B,474,38,5,5,4.67,3.95,58.69,56.36,-36.20,6. Regimi di mercato (meccanici),,,
+T=D · V=A,432,18,7,8,4.71,3.48,64.58,56.48,-40.25,6. Regimi di mercato (meccanici),,,
+T=D · V=B,722,22,10,17,0.73,0.11,50.28,52.91,-47.96,6. Regimi di mercato (meccanici),,,

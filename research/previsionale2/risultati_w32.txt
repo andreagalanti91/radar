@@ -1,0 +1,29 @@
+Buy & hold: 22,280 $, DD -76.6%
+Trade W3.2 e condizioni alla domenica del segnale (A restrittiva, B vol alta, C chiamata RP30):
+  2021-01-31 long  pnl +52.2%  A 0  B 1  C +0  (pol -0.02, nl13 +5.5%, T U, V A)
+  2021-08-01 long  pnl +4.3%  A 0  B 0  C +0  (pol +0.00, nl13 -0.4%, T M, V B)
+  2021-10-03 long  pnl +20.9%  A 0  B 1  C +0  (pol +0.03, nl13 +4.0%, T M, V A)
+  2022-01-02 short pnl +1.0%  A 0  B 0  C -1  (pol -0.01, nl13 -3.3%, T M, V B)
+  2022-08-14 short pnl +8.3%  A 1  B 0  C -1  (pol +2.00, nl13 -0.4%, T D, V B)
+  2023-01-22 long  pnl +13.3%  A 0  B 0  C -1  (pol +2.00, nl13 +3.2%, T M, V B)
+  2023-10-22 long  pnl +40.5%  A 0  B 0  C -1  (pol +0.25, nl13 +1.0%, T U, V B)
+  2024-02-11 long  pnl +42.2%  A 0  B 0  C +0  (pol +0.00, nl13 +3.4%, T U, V B)
+  2024-09-22 long  pnl +30.8%  A 0  B 0  C +1  (pol -0.50, nl13 -1.8%, T M, V B)
+  2025-04-27 long  pnl +11.3%  A 0  B 1  C +1  (pol +0.00, nl13 -0.4%, T U, V A)
+  2025-11-30 short pnl +11.9%  A 0  B 1  C -1  (pol -0.44, nl13 -5.0%, T M, V A)
+  2026-05-24 short pnl +5.7%  A 0  B 0  C -1  (pol -0.02, nl13 +4.1%, T D, V B)
+  2026-08-23 long  pnl -4.1%  A 0  B 1  C -1  (pol -0.01, nl13 -2.4%, T M, V A)
+A: giorni con condizione vera dal 2021 24%; eventi [] (0)
+B: giorni con condizione vera dal 2021 46%; eventi [] (0)
+C: giorni con condizione vera dal 2021 76%; eventi [('2023-01-22', 'blocked', 1), ('2023-01-29', 'blocked', 1), ('2023-10-22', 'blocked', 1), ('2026-08-23', 'blocked', 1), ('2026-08-30', 'blocked', 1)] (5)
+
+                                      variante    finale  rend     dd  trade    wr  cagr   mar  mar_2021-23  mar_2024-26  d_log  d_senza2  trade_cambiati  placebo_pct passa
+                                          W3.2 78473.921 6.847 -0.211     13 0.923 0.420 1.989        2.571        1.632  0.000     0.000               0          NaN  None
+A · niente nuovi long con politica restrittiva 78473.921 6.847 -0.211     13 0.923 0.420 1.989        2.571        1.632  0.000     0.000               0        0.915 False
+       B · esposizione ×0,5 in alta volatilità 54530.727 4.453 -0.193     13 0.923 0.335 1.734        1.883        1.634 -0.364    -0.385               5        0.670 False
+               C · blocco se RP 30 g contrario 58070.240 4.807 -0.211     12 0.917 0.349 1.653        1.771        1.726 -0.301    -0.542               5        1.000 False
+
+2018–20 (informativo): W3.2 25,142 $, DD -37.3%, trade 8
+  A: 28,041 $, DD -37.3%, trade 7, WR 57%
+  B: 25,212 $, DD -29.5%, trade 8, WR 50%
+  C: 13,454 $, DD -39.2%, trade 7, WR 43%

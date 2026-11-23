@@ -109,11 +109,18 @@ Pensata per il telefono (installabile dalla schermata Home), tema scuro e chiaro
 
 | Sezione | Contenuto |
 |---|---|
-| **Oggi** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, notizie del giorno |
+| **Oggi** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, riquadro Contesto (regime di mercato, Fed, CPI, VIX, prossimo FOMC), notizie del giorno |
 | **Storico** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
 | **Liquidazioni** | mappa stimata delle liquidazioni, prezzi di liquidazione reali Hyperliquid, feed live |
 | **Book** | heatmap dell'order book a 30 minuti su sei borse, muri etichettati, liquidazioni live, sentiment descrittivo, muri ritirati o eseguiti |
 | **News** | calendario economico, riunioni FOMC e BCE, notizie classificate per impatto |
+
+Il riquadro **Contesto** ([`radar/context.py`](radar/context.py), `report["context"]`) descrive in tre righe lo stato del mercato
+(trend rispetto alla media a 200 giorni, volatilità) e della politica economica (tasso Fed e ultima mossa, bilancio e liquidità
+netta, CPI annuo, VIX, prossima riunione FOMC); il dettaglio con le date dei dati è dietro "Dettagli". È contesto, non segnale: non
+mostra probabilità né medie storiche, perché nei test regimi e politica economica non hanno anticipato la direzione
+([`research/previsionale2`](research/previsionale2/README.md), lezione 113); non entra in W3.2. Dati Fed da FRED al massimo una
+volta al giorno, cache in `data/context.csv`: se la fonte non risponde resta l'ultimo dato con la sua data.
 
 La pagina *Metodo* (regole complete e limiti) si apre dalla card della posizione. La sezione Wallet è in pausa dal 22/11/2026
 (`RADAR_WALLETS=0`). Le pagine stanno in [`radar/pages/`](radar/pages/) e sono incluse da [`radar/dashboard.py`](radar/dashboard.py).
@@ -227,7 +234,7 @@ radar/                 il tool
   guard.py, coherence.py, provlog.py   soglie d'allarme, controlli di coerenza, registro provvisori/definitivi
   orderbook.py         registro dei muri e del sentiment, previsione 1h/4h
   liqmap.py, liqsnap.py, liqsources.py, liqcascade.py, liquidations.py   liquidazioni (stime e reali)
-  news.py, macro.py    notizie, calendario, chiusure multi-asset
+  news.py, macro.py, context.py   notizie, calendario, chiusure multi-asset, riquadro Contesto (mercato e Fed)
   telegram.py, journal.py, xinbox.py    messaggi, registro dei trade reali, post del trader seguito
   dashboard.py, dashboard_template.html, pages/   dashboard
   wallets.py, scout.py sentinella e balene Hyperliquid (in pausa)

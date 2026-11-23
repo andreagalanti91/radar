@@ -1,0 +1,4 @@
+h=7 segnale iniettato allineato: AUC di P 2021-23 0.765, 2024-26 0.799 (AUC del segnale da solo 0.791)
+h=7 segnale iniettato sfasato 400 g: AUC di P 2021-23 0.458, 2024-26 0.467 (AUC del segnale da solo 0.492)
+h=30 segnale iniettato allineato: AUC di P 2021-23 0.717, 2024-26 0.792 (AUC del segnale da solo 0.794)
+h=30 segnale iniettato sfasato 400 g: AUC di P 2021-23 0.400, 2024-26 0.561 (AUC del segnale da solo 0.454)

@@ -7,3 +7,4 @@
 - Test: tests/ (unittest, NON pytest): `python3 -m unittest discover -s tests -q` (273 OK al 22/11).
 - Dal 22/11: macro.py (chiusura giornaliera multi-asset, report.macro), pages/book.html (heatmap del book, solo browser), Wallet in pausa (RADAR_WALLETS=0, tab nascosta).
 - Dal 22/11 anche: guard.py (soglie d'allarme), provlog.py (provvisori vs definitivi), coherence.py (controlli di coerenza orari): solo avvisi.
+- Dal 23/11: context.py (riquadro "Contesto" in Oggi, report.context: trend su media a 200 giorni, volatilità, tasso Fed, bilancio/liquidità netta, CPI, VIX, FOMC; FRED 1 volta al giorno, cache data/context.csv; SOLO descrizione, niente probabilità, nessun effetto su W3.2 — lezione 113; tests/test_context.py).

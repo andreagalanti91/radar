@@ -33,6 +33,7 @@ Tutti i numeri: BTC, 10.000 $ dal 01/01/2021 al 15/11/2026, 1x, costi inclusi, s
 | TP +10/12,5/15% con rientro, trailing 1,5 ATR dopo +10% (su W3.2) | 22/11 | 43–56k $ contro 78,5k | nessuna adottata | 109 | research/tp_rientro |
 | DCA, uscite a scaglioni, TP, stop, distribuzione su W3.1 | 22/11 | migliore variante sotto W3.1 | nessuna adottata | 105 | research/ingressi_uscite |
 | W3.2 su ETH, SOL, S&P 500, Nasdaq, Dow, DAX, FTSE MIB, Nikkei, Russell, Euro Stoxx | 22/11 | ETH 34,8k (DD −27,5%); SOL 52,5k (DD −39,8%); indici 6,7–15,5k, tutti sotto il buy & hold | solo BTC (ETH al limite); ETH poi adottato con capitale separato per scelta dell'utente (22/11) | 110 | research/w32_multi |
+| Modello previsionale 7/30 giorni come filtro, dimensione o uscita di W3.2 | 23/11 | 0/8 varianti; filtri 56–68k $ | non adottato | 112 | research/previsionale |
 | W3.2 sulle top 100 crypto (27 altcoin con perp e ≥ 3 anni) | 22/11 | passa solo ETH; mediana altcoin 8.344 $, DD −65% | solo BTC ed ETH | 111 | research/w32_top100 |
 | W3.1 solo prezzo su 13 asset | 22/11 | 0/13 | solo BTC | 104 | research/multi_asset |
 | Order book e liquidazioni come supporto | 22/11 | nessun supporto (15 giorni) | rifare 20/12 e 03/2027 | 105 | research/book_liq |
