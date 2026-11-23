@@ -3,48 +3,33 @@
  "start": "2026-10-31",
  "capital0": 10000.0,
  "risk": 0.03,
- "capital": 10014.35,
+ "capital": 10108.34,
  "stats": {
-  "n": 0,
-  "wr": null,
-  "ret": 0.1,
+  "n": 1,
+  "wr": 100.0,
+  "ret": 1.1,
   "dd": 0.0
  },
- "open": {
-  "date": "2026-11-21",
-  "setup": "fundneg",
-  "side": "long",
-  "entry_time": "2026-11-22 12:00:00",
-  "entry": 61062.73,
-  "avg": 61123.79,
-  "stop": 58042.96,
-  "tp": 63228.58,
-  "fills": 1,
-  "exit": "open",
-  "exit_date": "2026-11-23",
-  "N": 0.811,
-  "pnl_pct": 0.14,
-  "pnl_usd": 14.35,
-  "risk": 0.03,
-  "pnl_unit": 0.001770063141049877,
-  "atr": 3019.77,
-  "levels": [
-   61062.73,
-   59552.85
-  ],
-  "exit_px": null,
-  "fill_time": null,
-  "exit_time": "2026-11-23 08:00:00",
-  "status": "aperto",
-  "filled": [
-   true,
-   false
-  ],
-  "limit_expiry": "2026-11-29 12:00:00",
-  "time_exit": "2026-12-06 12:00:00",
-  "size_usd": 8109.51
- },
- "trades": [],
+ "open": null,
+ "trades": [
+  {
+   "date": "2026-11-21",
+   "setup": "fundneg",
+   "side": "long",
+   "entry_time": "2026-11-22 12:00:00",
+   "entry": 61062.73,
+   "avg": 61123.79,
+   "stop": 58042.96,
+   "tp": 63228.58,
+   "fills": 1,
+   "exit": "tp",
+   "exit_date": "2026-11-23",
+   "N": 0.811,
+   "pnl_pct": 1.08,
+   "pnl_usd": 108.34,
+   "risk": 0.03
+  }
+ ],
  "equity": [
   [
    "2026-10-31",
@@ -140,64 +125,49 @@
   ],
   [
    "2026-11-23",
-   10014.35
+   10108.34
   ]
  ],
  "reference": {
   "start": "2022-03-01",
-  "n": 105,
-  "wr": 79.0,
-  "ret": 85.7,
+  "n": 106,
+  "wr": 79.2,
+  "ret": 87.4,
   "dd": -11.4
  },
- "updated": "2026-11-23 12:00:00",
+ "updated": "2026-11-23 16:00:00",
  "h2": {
   "version": "H2 v1",
   "start": "2026-10-31",
   "capital0": 10000.0,
   "risk": 0.03,
-  "capital": 10014.35,
+  "capital": 10108.34,
   "stats": {
-   "n": 0,
-   "wr": null,
-   "ret": 0.1,
+   "n": 1,
+   "wr": 100.0,
+   "ret": 1.1,
    "dd": 0.0
   },
-  "open": {
-   "date": "2026-11-21",
-   "setup": "fundneg",
-   "side": "long",
-   "entry_time": "2026-11-22 12:00:00",
-   "entry": 61062.73,
-   "avg": 61123.79,
-   "stop": 58042.96,
-   "tp": 63228.58,
-   "fills": 1,
-   "exit": "open",
-   "exit_date": "2026-11-23",
-   "N": 0.811,
-   "pnl_pct": 0.14,
-   "pnl_usd": 14.35,
-   "risk": 0.03,
-   "pnl_unit": 0.001770063141049877,
-   "atr": 3019.77,
-   "levels": [
-    61062.73,
-    59552.85
-   ],
-   "exit_px": null,
-   "fill_time": null,
-   "exit_time": "2026-11-23 08:00:00",
-   "status": "aperto",
-   "filled": [
-    true,
-    false
-   ],
-   "limit_expiry": "2026-11-29 12:00:00",
-   "time_exit": "2026-12-06 12:00:00",
-   "size_usd": 8109.51
-  },
-  "trades": [],
+  "open": null,
+  "trades": [
+   {
+    "date": "2026-11-21",
+    "setup": "fundneg",
+    "side": "long",
+    "entry_time": "2026-11-22 12:00:00",
+    "entry": 61062.73,
+    "avg": 61123.79,
+    "stop": 58042.96,
+    "tp": 63228.58,
+    "fills": 1,
+    "exit": "tp",
+    "exit_date": "2026-11-23",
+    "N": 0.811,
+    "pnl_pct": 1.08,
+    "pnl_usd": 108.34,
+    "risk": 0.03
+   }
+  ],
   "equity": [
    [
     "2026-10-31",
@@ -293,14 +263,14 @@
    ],
    [
     "2026-11-23",
-    10014.35
+    10108.34
    ]
   ],
   "reference": {
    "start": "2022-03-01",
-   "n": 105,
-   "wr": 79.0,
-   "ret": 85.7,
+   "n": 106,
+   "wr": 79.2,
+   "ret": 87.4,
    "dd": -11.4
   }
  },
@@ -315,51 +285,36 @@
    "m_long_sotto_sma40w": 0.6,
    "cap": 5.0
   },
-  "capital": 10022.09,
+  "capital": 10166.7,
   "stats": {
-   "n": 0,
-   "wr": null,
-   "ret": 0.2,
+   "n": 1,
+   "wr": 100.0,
+   "ret": 1.7,
    "dd": 0.0
   },
-  "open": {
-   "date": "2026-11-21",
-   "setup": "fundneg",
-   "side": "long",
-   "entry_time": "2026-11-22 12:00:00",
-   "entry": 61062.73,
-   "avg": 61123.79,
-   "stop": 58042.96,
-   "tp": 63228.58,
-   "fills": 1,
-   "exit": "open",
-   "exit_date": "2026-11-23",
-   "N": 1.248,
-   "pnl_pct": 0.22,
-   "pnl_usd": 22.09,
-   "risk": 0.0462,
-   "dt": 0.0968,
-   "below_sma40w": true,
-   "perp": false,
-   "pnl_unit": 0.001770063141049877,
-   "atr": 3019.77,
-   "levels": [
-    61062.73,
-    59552.85
-   ],
-   "exit_px": null,
-   "fill_time": null,
-   "exit_time": "2026-11-23 08:00:00",
-   "status": "aperto",
-   "filled": [
-    true,
-    false
-   ],
-   "limit_expiry": "2026-11-29 12:00:00",
-   "time_exit": "2026-12-06 12:00:00",
-   "size_usd": 12477.78
-  },
-  "trades": [],
+  "open": null,
+  "trades": [
+   {
+    "date": "2026-11-21",
+    "setup": "fundneg",
+    "side": "long",
+    "entry_time": "2026-11-22 12:00:00",
+    "entry": 61062.73,
+    "avg": 61123.79,
+    "stop": 58042.96,
+    "tp": 63228.58,
+    "fills": 1,
+    "exit": "tp",
+    "exit_date": "2026-11-23",
+    "N": 1.248,
+    "pnl_pct": 1.67,
+    "pnl_usd": 166.7,
+    "risk": 0.0462,
+    "dt": 0.0968,
+    "below_sma40w": true,
+    "perp": false
+   }
+  ],
   "equity": [
    [
     "2026-10-31",
@@ -455,14 +410,14 @@
    ],
    [
     "2026-11-23",
-    10022.09
+    10166.7
    ]
   ],
   "reference": {
    "start": "2022-03-01",
-   "n": 105,
-   "wr": 79.0,
-   "ret": 226.4,
+   "n": 106,
+   "wr": 79.2,
+   "ret": 230.4,
    "dd": -13.5,
    "trades": [
     {
@@ -1409,6 +1364,15 @@
      "perp": true,
      "N": 2.465,
      "pnl_pct": 3.56
+    },
+    {
+     "date": "2026-11-21",
+     "side": "long",
+     "risk": 0.0388,
+     "dt": 0.0735,
+     "perp": true,
+     "N": 1.05,
+     "pnl_pct": 1.4
     }
    ]
   },
