@@ -3,11 +3,11 @@
  "start": "2026-10-31",
  "capital0": 10000.0,
  "risk": 0.03,
- "capital": 10006.92,
+ "capital": 10016.13,
  "stats": {
   "n": 0,
   "wr": null,
-  "ret": 0.1,
+  "ret": 0.2,
   "dd": 0.0
  },
  "open": {
@@ -23,10 +23,10 @@
   "exit": "open",
   "exit_date": "2026-11-23",
   "N": 0.811,
-  "pnl_pct": 0.07,
-  "pnl_usd": 6.92,
+  "pnl_pct": 0.16,
+  "pnl_usd": 16.13,
   "risk": 0.03,
-  "pnl_unit": 0.0008533660989093654,
+  "pnl_unit": 0.0019892249338917065,
   "atr": 3019.77,
   "levels": [
    61062.73,
@@ -34,7 +34,7 @@
   ],
   "exit_px": null,
   "fill_time": null,
-  "exit_time": "2026-11-23 00:00:00",
+  "exit_time": "2026-11-23 04:00:00",
   "status": "aperto",
   "filled": [
    true,
@@ -140,27 +140,27 @@
   ],
   [
    "2026-11-23",
-   10006.92
+   10016.13
   ]
  ],
  "reference": {
   "start": "2022-03-01",
   "n": 105,
   "wr": 79.0,
-  "ret": 85.5,
+  "ret": 85.7,
   "dd": -11.4
  },
- "updated": "2026-11-23 04:00:00",
+ "updated": "2026-11-23 08:00:00",
  "h2": {
   "version": "H2 v1",
   "start": "2026-10-31",
   "capital0": 10000.0,
   "risk": 0.03,
-  "capital": 10006.92,
+  "capital": 10016.13,
   "stats": {
    "n": 0,
    "wr": null,
-   "ret": 0.1,
+   "ret": 0.2,
    "dd": 0.0
   },
   "open": {
@@ -176,10 +176,10 @@
    "exit": "open",
    "exit_date": "2026-11-23",
    "N": 0.811,
-   "pnl_pct": 0.07,
-   "pnl_usd": 6.92,
+   "pnl_pct": 0.16,
+   "pnl_usd": 16.13,
    "risk": 0.03,
-   "pnl_unit": 0.0008533660989093654,
+   "pnl_unit": 0.0019892249338917065,
    "atr": 3019.77,
    "levels": [
     61062.73,
@@ -187,7 +187,7 @@
    ],
    "exit_px": null,
    "fill_time": null,
-   "exit_time": "2026-11-23 00:00:00",
+   "exit_time": "2026-11-23 04:00:00",
    "status": "aperto",
    "filled": [
     true,
@@ -293,14 +293,14 @@
    ],
    [
     "2026-11-23",
-    10006.92
+    10016.13
    ]
   ],
   "reference": {
    "start": "2022-03-01",
    "n": 105,
    "wr": 79.0,
-   "ret": 85.5,
+   "ret": 85.7,
    "dd": -11.4
   }
  },
@@ -315,11 +315,11 @@
    "m_long_sotto_sma40w": 0.6,
    "cap": 5.0
   },
-  "capital": 10010.65,
+  "capital": 10024.82,
   "stats": {
    "n": 0,
    "wr": null,
-   "ret": 0.1,
+   "ret": 0.2,
    "dd": 0.0
   },
   "open": {
@@ -335,13 +335,13 @@
    "exit": "open",
    "exit_date": "2026-11-23",
    "N": 1.248,
-   "pnl_pct": 0.11,
-   "pnl_usd": 10.65,
+   "pnl_pct": 0.25,
+   "pnl_usd": 24.82,
    "risk": 0.0462,
    "dt": 0.0968,
    "below_sma40w": true,
    "perp": false,
-   "pnl_unit": 0.0008533660989093654,
+   "pnl_unit": 0.0019892249338917065,
    "atr": 3019.77,
    "levels": [
     61062.73,
@@ -349,7 +349,7 @@
    ],
    "exit_px": null,
    "fill_time": null,
-   "exit_time": "2026-11-23 00:00:00",
+   "exit_time": "2026-11-23 04:00:00",
    "status": "aperto",
    "filled": [
     true,
@@ -455,14 +455,14 @@
    ],
    [
     "2026-11-23",
-    10010.65
+    10024.82
    ]
   ],
   "reference": {
    "start": "2022-03-01",
    "n": 105,
    "wr": 79.0,
-   "ret": 226.1,
+   "ret": 226.6,
    "dd": -13.5,
    "trades": [
     {
