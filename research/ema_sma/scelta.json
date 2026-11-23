@@ -1,0 +1,27 @@
+{
+ "famiglia": "SO|G4|C4h",
+ "ammessa": true,
+ "regola": 1785,
+ "descr": {
+  "side": "SO",
+  "reg": "G4",
+  "ent": "E0",
+  "xi": 21,
+  "xtype": "C",
+  "xtf": "4h",
+  "xkind": "SMA",
+  "xpar": "200",
+  "xn": 1,
+  "xclass": "C4h",
+  "fam": "SO|G4|C4h"
+ },
+ "utente": 3181,
+ "punteggio_famiglia": 0.0,
+ "bh_scoperta": {
+  "fin": 14589.834444251059,
+  "cagr": 0.13428165719204488,
+  "dd": -0.7662925431645935,
+  "S": 0.17523550031884136,
+  "n": 1
+ }
+}

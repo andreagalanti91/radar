@@ -69,8 +69,8 @@ class TestNumeri(unittest.TestCase):
 class TestQuota(unittest.TestCase):
     def test_capitali_separati(self):
         # "non suddividere 70-30: 10k su ETH, 10k su BTC" (22/11): BTC resta su RADAR_CAPITAL × SHARE, ETH ha il suo capitale
-        self.assertAlmostEqual(weekly.ETH_CAPITAL, 10000.0)
-        self.assertAlmostEqual(weekly.asset_capital("ETH"), 10000.0)
+        self.assertAlmostEqual(weekly.ETH_CAPITAL, 30000.0)
+        self.assertAlmostEqual(weekly.asset_capital("ETH"), 30000.0)   # capitale reale dell'utente (23/11)
         self.assertAlmostEqual(weekly.asset_capital("BTC"), weekly.CAPITAL * weekly.SHARE)
         self.assertAlmostEqual(weekly.asset_capital("BTC", 10000.0), 10000.0)
 

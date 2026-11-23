@@ -305,7 +305,7 @@ class TestCorrezioniF3(unittest.TestCase):
             with mock.patch.dict("os.environ", {"RADAR_WEEKLY_SHARE": "0,5", "RADAR_CAPITAL": ""}), \
                     mock.patch("builtins.print") as pr:
                 importlib.reload(weekly)                                    # prima: ValueError all'import
-                self.assertEqual((weekly.SHARE, weekly.CAPITAL), (0.5, 50000.0))
+                self.assertEqual((weekly.SHARE, weekly.CAPITAL), (0.5, 30000.0))
             with mock.patch.dict("os.environ", {"RADAR_WEEKLY_SHARE": "mezzo"}), mock.patch("builtins.print") as pr:
                 importlib.reload(weekly)
                 self.assertEqual(weekly.SHARE, 1.0)
