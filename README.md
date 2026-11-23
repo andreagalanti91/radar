@@ -109,11 +109,13 @@ Pensata per il telefono (installabile dalla schermata Home), tema scuro e chiaro
 
 | Sezione | Contenuto |
 |---|---|
-| **Oggi** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding), grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, card "Fra 30 giorni" (intervalli e probabilità di toccare un livello, dalla volatilità), riquadro Contesto (regime di mercato, Fed, CPI, VIX, prossimo FOMC), notizie del giorno |
-| **Storico** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
+| **Oggi** | prezzo, riga di stato delle posizioni (BTC ed ETH, porta a Posizioni), card "Fra 30 giorni" (intervallo all'80% come fascia con prezzo e livelli, probabilità di toccare un livello, dalla volatilità), riquadro Contesto in tre tessere (Mercato, Fed, Dati), notizie del giorno |
+| **Posizioni** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding); da qui "Regole complete" apre la pagina *Metodo* |
+| **Grafico** | grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, scheda "Livelli vicini" (supporto, resistenza e cluster di liquidazione più vicini) |
 | **Liquidazioni** | mappa stimata delle liquidazioni, prezzi di liquidazione reali Hyperliquid, feed live |
-| **Book** | heatmap dell'order book a 30 minuti su sei borse, muri etichettati, liquidazioni live, sentiment descrittivo, muri ritirati o eseguiti |
-| **News** | calendario economico, riunioni FOMC e BCE, notizie classificate per impatto |
+| **Movimenti** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
+| **Notizie** | calendario economico, riunioni FOMC e BCE, notizie classificate per impatto |
+| *Book (spento)* | heatmap dell'order book: la pagina resta in `radar/pages/book.html` ma non ha voce di menu né apre connessioni; si riaccende con `BOOK_ON = true` in `radar/dashboard_template.html` |
 
 Il riquadro **Contesto** ([`radar/context.py`](radar/context.py), `report["context"]`) descrive in tre righe lo stato del mercato
 (trend rispetto alla media a 200 giorni, volatilità) e della politica economica (tasso Fed e ultima mossa, bilancio e liquidità
