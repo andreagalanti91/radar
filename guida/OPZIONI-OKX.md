@@ -353,7 +353,6 @@ Screenshot (dall'app in italiano, anche senza inviare ordini):
 7. **Saldo del conto di trading**: quale valuta l'app usa come "disponibile" per le opzioni UM (USD, USDC o USDT).
 8. **Riga delle scadenze scorsa verso destra**, fino al 25/12/2026, e la stessa catena filtrata su **Put**, con le colonne di prezzo visibili.
 9. **Menu a tendina** accanto a "Opzioni BTC UM", per vedere come si chiamano le inverse.
-10. Una tua decisione sulla soglia del punto 7 della sezione 9 (quando non comprare perché il prezzo si è già mosso).
 
 ## Fonti lette
 
