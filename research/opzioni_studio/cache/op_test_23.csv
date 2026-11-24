@@ -1,0 +1,24 @@
+n,verso,entra,esce,esito_csv,esito_motore,mult_csv,mult_motore,scarto,scarto_rel
+1,long,2018-01-08,2018-01-16,venduta,segnale,0.0074,0.0272,0.0198,2.6707
+2,long,2018-04-30,2018-05-14,venduta,segnale,0.2822,0.3532,0.071,0.2517
+3,short,2018-10-15,2019-04-02,scadenza,scadenza,3.7718,3.7765,0.0047,0.0012
+4,long,2019-05-13,2019-06-27,"uscita: nessuno scambio, volatilità del modello",segnale,4.4262,5.3565,0.9303,0.2102
+5,long,2020-02-10,2020-02-17,venduta,segnale,0.7426,0.7502,0.0076,0.0102
+6,short,2020-03-16,2020-04-27,scadenza,scadenza,0.0,0.0,0.0,0.0
+7,long,2020-05-04,2020-08-03,scadenza,scadenza,0.7887,0.7919,0.0032,0.0041
+8,long,2020-10-26,2020-11-23,venduta,segnale,5.7478,5.8892,0.1415,0.0246
+9,long,2020-12-14,2020-12-31,venduta,segnale,4.7355,4.7739,0.0385,0.0081
+10,long,2021-02-01,2021-02-22,uscita: scambi entro 4 giorni,segnale,6.1604,6.1597,-0.0007,-0.0001
+11,long,2021-08-02,2021-09-27,scadenza,scadenza,2.0823,2.1082,0.0259,0.0124
+12,long,2021-10-04,2021-11-08,scadenza,scadenza,3.0505,3.0502,-0.0003,-0.0001
+13,short,2022-01-03,2022-03-28,scadenza,scadenza,2.973,3.001,0.028,0.0094
+14,short,2022-08-15,2023-01-16,scadenza,scadenza,2.0325,2.0397,0.0072,0.0036
+15,long,2023-01-23,2023-08-17,scadenza,scadenza,0.5394,0.5356,-0.0038,-0.0071
+16,long,2023-10-23,2024-01-01,scadenza,scadenza,3.9933,4.0157,0.0224,0.0056
+17,long,2024-02-12,2024-03-11,venduta,segnale,5.3048,5.1925,-0.1123,-0.0212
+18,long,2024-09-23,2025-02-26,scadenza,scadenza,0.8912,0.9,0.0088,0.0099
+19,long,2025-04-28,2025-10-10,scadenza,scadenza,2.0632,2.0598,-0.0033,-0.0016
+20,short,2025-12-01,2026-04-27,scadenza,scadenza,0.308,0.342,0.0341,0.1107
+21,short,2026-05-25,2026-08-20,scadenza,scadenza,5.6888,5.7002,0.0114,0.002
+22,long,2026-08-24,2026-11-09,scadenza,scadenza,1.4928,1.5089,0.0161,0.0108
+23,short,2026-11-16,aperta,venduta,aperta,1.6279,1.732,0.1041,0.064
