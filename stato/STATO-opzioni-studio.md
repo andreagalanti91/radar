@@ -21,4 +21,4 @@ opzioni BTC, trova coerenza, analizza tutti i dati in tuo possesso. Avvia ciclo 
    commit e push sul branch di lavoro, riepilogo all'utente entro le 07:00 UTC.
 
 ## Prossima azione
-Attendere i due agenti della fase 2; poi fase 3.
+Fase 1 del motore consegnata e committata; ADDENDUM-1 committato. Attendere l'agente dati (superficie Deribit), poi riprova del motore sulle 23 operazioni con superficie.py ed esecuzione F1–F4 (agente ricerca), poi revisione critica.
