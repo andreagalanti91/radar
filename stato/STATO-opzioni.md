@@ -1,6 +1,6 @@
 # STATO · Sezione Opzioni (su carta) · avviato 24/11/2026
 
-Stato: IN DEPLOY
+Stato: COMPLETATO (24/11/2026) · in attesa dell'utente solo per il testo Telegram (non attivato)
 
 ## Richiesta
 Sezione "Opzioni" dal modulo dell'utente (`research/opzioni_import/`, specifica in `PROMPT.md`), come voce di menu separata;
@@ -14,7 +14,9 @@ spesa per operazione 1.500/2.000 $; simulazione della spesa con budget 50.000 $ 
 - Agente (Opus 5.5 medium): `radar/opzioni.py`, `tests/test_opzioni.py`, `data/opzioni_carta.json`, `data/opzioni/`, aggancio
   `_soft` in `radar/cli.py`, pagina Opzioni + riga in Oggi, `RADAR_OPZIONI_QUOTA` nel workflow, render 400/1280.
 
-## Da fare
+## Fatto: deploy e verifica sul sito (menu a 6 voci, TIENI put 65.000, 0 errori JS, nessun overflow a 400/1280)
+
+## Da fare (dopo conferma dell'utente)
 - Suite completa, commit, deploy (procedura standard), verifica sul sito.
 - Mostrare all'utente il testo Telegram proposto (NON attivarlo).
 
