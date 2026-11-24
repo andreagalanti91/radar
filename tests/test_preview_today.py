@@ -22,7 +22,12 @@ AN_KEYS = {"label", "n", "p7", "ci7", "p30", "ci30", "mean7"}
 LEVELS = {"supports": [{"price": 60000, "lo": 59000, "hi": 61000, "touches": 3, "weekly": True, "dist_pct": -6.0},
                        {"price": 40000, "lo": 39000, "hi": 41000, "touches": 0, "weekly": False, "dist_pct": -38.0}],
           "resistances": [{"price": 66000, "lo": 65000, "hi": 67000, "touches": 2, "weekly": False, "dist_pct": 2.5}]}
-REPORT = {"levels": LEVELS, "liqsources": {"total": {"24h": {"long_usd": 3e7, "short_usd": 1e7, "n": 10}}, "stale": False},
+# mappa unica dei livelli (report["livelli"]): stessi prezzi e distanze di LEVELS
+LIVELLI = {"prezzo": 64390.0, "livelli": [{"tipo": "resistenza", "prezzo": 66000.0}, {"tipo": "supporto", "prezzo": 60500.0},
+                                         {"tipo": "supporto", "prezzo": 40000.0, "provvisorio": True}, {"tipo": "media", "prezzo": 63000.0},
+                                         {"tipo": "liq_long", "prezzo": 62000.0, "usd": 0.05, "reale": False, "fonte": "stima"},
+                                         {"tipo": "liq_short", "prezzo": 68000.0, "usd": 0.02, "reale": True, "fonte": "on-chain"}]}
+REPORT = {"levels": LEVELS, "livelli": LIVELLI, "liqsources": {"total": {"24h": {"long_usd": 3e7, "short_usd": 1e7, "n": 10}}, "stale": False},
           "liqmap": {"price": 65000, "bins": [[62000, 500, 0], [68000, 0, 100]]}}
 
 
@@ -59,15 +64,17 @@ class TestSchema(unittest.TestCase):
         self.assertIn("position_block", p)
         self._check_today(p["today"])
         keys = [x["key"] for x in p["today"]["items"]]
-        for k in ("pf14z", "sf14z", "div", "funding", "oi7", "liq24h", "liqmap_imb", "dist_sma40", "dist_ema21"):
+        for k in ("pf14z", "sf14z", "div", "funding", "oi7", "liq24h", "liq_near", "dist_sma40", "dist_ema21"):
             self.assertIn(k, keys)
         self.assertTrue(all("lezion" in x["reliability"] or "stima" in x["reliability"] for x in p["today"]["items"]))
 
     def test_sr_tenuta_n4(self):
-        sr = preview.sr_rows(LEVELS)
+        sr = preview.sr_rows(LIVELLI)
         self.assertEqual([z["name"] for z in sr], ["R1", "S1", "S2"])
         r1, s1, s2 = sr
-        self.assertEqual((r1["hold_pct"], r1["random_pct"]), (80.0, 77.2))   # resistenza, 0–3%: tipo G con 8 tocchi → tutti i tipi
+        self.assertEqual((r1["hold_pct"], r1["random_pct"]), (80.0, 77.2))   # resistenza settimanale, 0–3%: 6 tocchi → tutti i tipi
+        self.assertEqual((r1["lo"], r1["hi"]), (66000.0, 66000.0))
+        self.assertEqual(preview.sr_rows(LEVELS), [])                        # il vecchio formato (radar/levels.py) non è più la fonte
         self.assertEqual((s1["hold_pct"], s1["random_pct"]), (70.9, 74.0))   # supporto settimanale 3–8% (86 tocchi)
         self.assertIsNone(s2["hold_pct"])                                     # oltre il 15%: fuori dal test
         self.assertEqual(preview.sr_rows(None), [])

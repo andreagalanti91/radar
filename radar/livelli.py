@@ -1,8 +1,9 @@
 """Livelli di BTC: supporti, resistenze, medie, Fibonacci, liquidazioni e zone di coincidenza (report["livelli"]).
 
 Portato da research/livelli_import/livelli.py (studio LIVELLI_BTC.md): definizioni e costanti invariate, cambia solo l'interfaccia
-(liquidazioni da più fonti, probabilità di tocco dal cono, giro orario). È l'UNICA mappa dei livelli mostrata in Oggi (card
-"Livelli e probabilità a 30 giorni") e in Grafico ("Livelli vicini"). Ingresso: giornaliero con indice di date e colonne
+(liquidazioni da più fonti, probabilità di tocco dal cono, giro orario). È l'UNICA mappa dei livelli (motore unico): Oggi (card
+"Livelli e probabilità a 30 giorni", forbice), Grafico (linee, fasce e tabella completa), Pre-analisi (radar/preview.py) e riepilogo
+Telegram "Oggi" leggono solo report["livelli"]; il browser ricalcola distanze e probabilità sul prezzo live con "tocco" (cone.touch_grid). Ingresso: giornaliero con indice di date e colonne
 open, high, low, close fino all'ultima chiusura COMPLETA (data/spot.csv tramite i caricatori del radar).
 
 Definizioni (identiche allo studio LIVELLI_BTC.md):
@@ -40,6 +41,8 @@ NOTA = ("I livelli sono contesto, non un segnale: dopo la rottura di un supporto
         "di circa l'11% nel punto peggiore dei 14 giorni successivi, più o meno quanto dopo un qualsiasi forte calo, e in 6 casi "
         "su 15 è rientrato sopra il livello entro 5 giorni.")
 NOTA_LIQ = "Le liquidazioni sono stime (mappa del tool, Coinglass), tranne quelle on-chain di Hyperliquid e Lighter, che sono posizioni reali."
+NOTA_PROB = ("Probabilità di toccare il livello almeno una volta entro 30 giorni, calcolate dalla volatilità attuale e non dalla "
+             "direzione: il tool non sa prevedere se BTC salirà o scenderà.")
 DEF = ("Supporti e resistenze: minimi e massimi di swing settimanali (estremo delle 5 settimane prima e dopo, noti 5 settimane "
        "dopo), attivi per 3 anni e finché una chiusura giornaliera non li rompe; più il minimo delle ultime 5 settimane, non "
        "ancora confermato. Medie mobili e Fibonacci sono riportati perché molto seguiti, non perché testati.")
@@ -158,6 +161,21 @@ def build(d: pd.DataFrame, liq_long: list[tuple] | None = None, liq_short: list[
                         for t, r in d.iloc[-candele:].iterrows()]}
 
 
+# ------------------------------------------------------------------ candele per il grafico (sezione Grafico della dashboard)
+def serie(f: pd.DataFrame) -> dict:
+    """Giornaliero completo in forma compatta: t0 (prima data) + array o/h/l/c (dollari interi) e v (volume spot in BTC, intero).
+    Date consecutive dal t0; se mancano giorni c'è anche l'array d delle date. 1D dal giornaliero, 1W e 1M aggregati nel browser."""
+    d = f[["open", "high", "low", "close"]].dropna()
+    vol = f["spot_vol"].reindex(d.index) if "spot_vol" in f else pd.Series(np.nan, index=d.index)
+    full = pd.date_range(d.index[0], d.index[-1], freq="D")
+    out = {"t0": str(d.index[0].date()), "n": int(len(d)),
+           "o": [round(x) for x in d["open"]], "h": [round(x) for x in d["high"]], "l": [round(x) for x in d["low"]],
+           "c": [round(x) for x in d["close"]], "v": [None if v != v else round(float(v)) for v in vol]}
+    if len(full) != len(d):
+        out["d"] = [str(t.date()) for t in d.index]
+    return out
+
+
 # ------------------------------------------------------------------ fonti delle liquidazioni
 def coinglass(path: Path, now: pd.Timestamp | None = None, max_days: int = COINGLASS_MAX_DAYS) -> tuple[list[dict], dict]:
     """File facoltativo compilato a mano: {"data": "AAAA-MM-GG HH:MM", "long": [[prezzo, miliardi], ...], "short": [...]}.
@@ -235,15 +253,21 @@ def compute(f: pd.DataFrame, report: dict | None = None, data_dir: Path | None =
     w = report.get("weekly") or {}
     tp = float(w.get("trail") or w.get("stop0") or 0) if w.get("status") == "aperto" else 0.0
     prices = [x["prezzo"] for x in out["livelli"]] + ([tp] if tp > 0 else [])
-    pr = cone.touch_probs(cone.history(f), prices, **({"n_paths": n_paths} if n_paths else {}))
+    # probabilità di tocco dai quantili dei cammini del cono (cone.touch_grid): gli stessi numeri che la dashboard ricalcola sul
+    # prezzo live con la stessa funzione in JS; alla chiusura coincidono con il calcolo del server
+    grid = cone.touch_grid(cone.history(f), **({"n_paths": n_paths} if n_paths else {}))
+    pr = [cone.grid_touch_prob(grid, out["prezzo"], x) for x in prices]
     add_probs(out, pr[:len(out["livelli"])], w, pr[-1] if tp > 0 else None)
+    i80, i50 = cone.grid_interval(grid, out["prezzo"], 0.8), cone.grid_interval(grid, out["prezzo"], 0.5)
     for x in out["livelli"]:
         x["prezzo"], x["dist"] = round(x["prezzo"], 2), round(x["dist"], 5)
     for z in out["zone"]:
         z["da"], z["a"] = round(z["da"], 2), round(z["a"], 2)
     out.update({"atr": round(out["atr"], 1), "fonti_liq": fonti, "coinglass": cg, "nota": NOTA, "nota_liq": NOTA_LIQ, "definizioni": DEF,
-                "orizzonte": cone.H})
+                "orizzonte": cone.H, "tocco": grid, "i80": [round(i80[0]), round(i80[1])], "i50": [round(i50[0]), round(i50[1])],
+                "nota_prob": NOTA_PROB, "serie": serie(f)})
     out.pop("liq_fonte", None)
+    out.pop("candele", None)          # il grafico usa "serie" (tutto il giornaliero con i volumi)
     return out
 
 

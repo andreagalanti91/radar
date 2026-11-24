@@ -304,29 +304,51 @@ def _bucket(d: float) -> str | None:
     return "0-3%" if d < 0.03 else "3-8%" if d < 0.08 else "8-15%" if d < 0.15 else None
 
 
-def sr_rows(levels: dict | None, tab: dict | None = None, min_touches: int = 20) -> list[dict]:
-    """Livelli del report con la tenuta storica D3 (N4) per lato, tipo e distanza; tipo con < min_touches tocchi → tutti i tipi.
-    Oltre il 15% di distanza: fuori dal test (None)."""
-    if not levels:
+def sr_rows(livelli: dict | None, tab: dict | None = None, min_touches: int = 20) -> list[dict]:
+    """Supporti e resistenze della mappa unica (report["livelli"], radar/livelli.py) con la tenuta storica D3 (N4) per lato,
+    tipo e distanza; tipo con < min_touches tocchi → tutti i tipi. Oltre il 15% di distanza: fuori dal test (None).
+    R1 = resistenza più vicina sopra il prezzo, S1 = supporto più vicino sotto; fascia = il livello stesso (lo = hi).
+    I minimi/massimi di swing settimanali sono di tipo W; il minimo delle 5 settimane non confermato usa la riga "tutti"."""
+    if not livelli or not isinstance(livelli.get("livelli"), list):
         return []
     tab = tab if tab is not None else _table(SR_HOLD)
     rows = {(r["side"], r["type"], r["dist"]): r for r in (tab or {}).get("rows", []) if r.get("scale") == "D3"}
+    px = float(livelli.get("prezzo") or 0)
     out = []
-    for key, tag in (("resistances", "R"), ("supports", "S")):
-        for i, z in enumerate(levels.get(key) or []):
+    for side, tag, up in (("resistenza", "R", True), ("supporto", "S", False)):
+        lv = sorted((x for x in livelli["livelli"] if x.get("tipo") == side and px > 0 and (x["prezzo"] > px) == up),
+                    key=lambda x: abs(x["prezzo"] - px))
+        for i, z in enumerate(lv):
             try:
-                d = float(z["dist_pct"]) / 100
-                side = "resistenza" if key == "resistances" else "supporto"
-                typ = "W" if z.get("weekly") else ("V" if not z.get("touches") else "G")
+                d = float(z["prezzo"]) / px - 1
+                typ = "tutti" if z.get("provvisorio") else "W"
                 b = _bucket(abs(d))
                 r = rows.get((side, typ, b)) if b else None
                 if b and (r is None or r["touches"] < min_touches):
                     r = rows.get((side, "tutti", b))
-                out.append({"name": f"{tag}{i + 1}", "lo": _num(z["lo"], 0), "hi": _num(z["hi"], 0), "dist_pct": _num(d * 100),
+                out.append({"name": f"{tag}{i + 1}", "lo": _num(z["prezzo"], 0), "hi": _num(z["prezzo"], 0), "dist_pct": _num(d * 100),
                             "hold_pct": r["hold_pct"] if r else None, "random_pct": r["random_pct"] if r else None})
             except Exception:  # noqa: BLE001
                 continue
     return sorted(out, key=lambda x: -(x["dist_pct"] if x["dist_pct"] is not None else 0))
+
+
+def liq_near(livelli: dict | None) -> dict | None:
+    """Fasce di liquidazione più vicine sopra (short) e sotto (long) dalla mappa unica (report["livelli"]): stima e on-chain
+    separate. {"long": {"stima": riga, "onchain": riga}, "short": {...}}; riga = {"prezzo", "dist_pct", "mld", "fonte"}."""
+    if not livelli or not isinstance(livelli.get("livelli"), list):
+        return None
+    px = float(livelli.get("prezzo") or 0)
+    out: dict = {}
+    for side, tipo, up in (("long", "liq_long", False), ("short", "liq_short", True)):
+        for src, reale in (("stima", False), ("onchain", True)):
+            cand = [x for x in livelli["livelli"] if x.get("tipo") == tipo and bool(x.get("reale")) == reale and px > 0
+                    and (x["prezzo"] > px) == up]
+            if cand:
+                x = min(cand, key=lambda q: abs(q["prezzo"] - px))
+                out.setdefault(side, {})[src] = {"prezzo": _num(x["prezzo"], 0), "dist_pct": _num((x["prezzo"] / px - 1) * 100, 1),
+                                                 "mld": _num(x.get("usd"), 3), "fonte": x.get("fonte")}
+    return out or None
 
 
 def _last(f: pd.DataFrame, k: str) -> float | None:
@@ -555,10 +577,16 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
             add("liq24h", "Liquidazioni 24h (exchange registrati)", f"long {_musd(lq['long'])} · short {_musd(lq['short'])}", rd,
                 "dicono quanta leva è stata pulita, non dove va il prezzo; dopo una cascata nessun vantaggio a comprare "
                 "(lezioni 72, 90, 92)")
-        imb = _liq_imb(report)
-        if imb is not None:
-            rd = ("bilanciata" if abs(imb) < 0.15 else "più short da liquidare sopra" if imb > 0 else "più long da liquidare sotto")
-            add("liqmap_imb", "Squilibrio mappa liquidazioni ±8% (stima)", f"{imb * 100:+.0f}%".replace("-", "−"), rd,
+        ln = liq_near((report or {}).get("livelli"))   # mappa unica dei livelli: le stesse fasce di Oggi e del Grafico
+        if ln:
+            def _lq(side: str) -> str:
+                o = (ln.get(side) or {}).get("stima")
+                return f"{side} {_usd(o['prezzo'])} ({_it(o['dist_pct'], 1)}%)" if o else f"{side} n.d."
+            oc = [f"{side} {_usd(o['prezzo'])} ({_it(o['dist_pct'], 1)}%)" for side in ("long", "short")
+                  for o in [(ln.get(side) or {}).get("onchain")] if o]
+            add("liq_near", "Liquidazioni più vicine (stima)", f"{_lq('long')} · {_lq('short')}",
+                "on-chain Hyperliquid/Lighter (reali): " + (" · ".join(oc) if oc else "nessuna fascia vicina")
+                + "; stesse fasce della card Livelli in Oggi e del Grafico",
                 "stima; non attira il prezzo e non rafforza gli S/R, vale al più 12–24 ore (lezioni 81, 93)")
         wk = w.iloc[-1]
         for key, col, lab in (("dist_sma40", "sma", "SMA40"), ("dist_ema21", "ema21", "EMA21")):
@@ -580,7 +608,7 @@ def today(f: pd.DataFrame, w: pd.DataFrame, report: dict | None, price: float, s
         print(f"[preview] sentiment non letto: {e!r}")
         sent = None
     try:
-        sr = sr_rows((report or {}).get("levels"))
+        sr = sr_rows((report or {}).get("livelli"))
     except Exception:  # noqa: BLE001
         sr = []
     try:

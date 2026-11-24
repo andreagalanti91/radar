@@ -16,8 +16,8 @@ Risposte: "Calcola sul prezzo live" · "Grafico 4h, giornaliero, settimanale e m
 - 4h dal browser (Binance, riserva Coinbase); 1D e 1W dai dati del tool; mensile costruito dal giornaliero.
 
 ## Piano
-- [ ] 1. radar-ui: Oggi panoramica, Grafico professionale, motore unico, Pre-analisi/Telegram allineati, test, render   ← IN CORSO
-- [ ] 2. Regia: suite, render, commit, deploy, verifica sul sito
+- [x] 1. Oggi forbice + Contesto + notizie; Grafico BTC 4h/1D/1W/1M con volumi, 11 interruttori, tabella completa; motore unico report["livelli"] anche per Pre-analisi e Telegram; calcolo live JS = Python; LIQ_ON=false; 398 test verdi
+- [ ] 2. Regia: commit, deploy, verifica sul sito   ← IN CORSO
 
 ## Come riprendere
 **Prossima azione:** attendere l'agente; poi suite, render, deploy.

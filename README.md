@@ -109,12 +109,12 @@ Pensata per il telefono (installabile dalla schermata Home), tema scuro e chiaro
 
 | Sezione | Contenuto |
 |---|---|
-| **Oggi** | prezzo, riga di stato delle posizioni (BTC ed ETH, porta a Posizioni), card "Livelli e probabilità a 30 giorni" (intervalli 80% e 50%, mappa unica dei livelli con la probabilità di toccarli, zone di confluenza), riquadro Contesto in tre tessere (Mercato, Fed, Dati), notizie del giorno |
+| **Oggi** | panoramica: prezzo, riga di stato delle posizioni (BTC ed ETH, porta a Posizioni), card "Livelli e probabilità a 30 giorni" ridotta alla forbice (intervalli 80% e 50%, primo supporto, prima resistenza, liquidazioni long e short più vicine stimate e on-chain, trailing W3.2; "Apri nel Grafico" per tutto il resto), riquadro Contesto in tre tessere (Mercato, Fed, Dati), notizie del giorno |
 | **Posizioni** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding); da qui "Regole complete" apre la pagina *Metodo* |
-| **Grafico** | grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, scheda "Livelli vicini" (supporto e resistenza della stessa mappa di Oggi, cluster di liquidazione più vicini) |
-| **Liquidazioni** | mappa stimata delle liquidazioni, prezzi di liquidazione reali Hyperliquid, feed live |
+| **Grafico** | solo BTC: candele e volumi a 4h, 1D, 1W, 1M; livelli della mappa unica come linee con interruttori (supporti, resistenze, liquidazioni long e short stimate/on-chain, medie, Fibonacci, storico, trailing W3.2, zone come fasce; scelte salvate sul dispositivo), mirino con OHLC e volume, marcatori dei trade W3.2 su 1D/1W, ultimo prezzo, schermo intero; sotto la tabella completa di livelli e zone (clic su una riga → il grafico la mostra) |
 | **Movimenti** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
 | **Notizie** | calendario economico, riunioni FOMC e BCE, notizie classificate per impatto |
+| *Liquidazioni (spenta)* | la pagina resta in `radar/pages/liquidazioni.html` ma non ha voce di menu, non si inizializza e non apre connessioni; `#liquidazioni` porta a Grafico; si riaccende con `LIQ_ON = true` in `radar/dashboard_template.html` |
 | *Book (spento)* | heatmap dell'order book: la pagina resta in `radar/pages/book.html` ma non ha voce di menu né apre connessioni; si riaccende con `BOOK_ON = true` in `radar/dashboard_template.html` |
 
 Il riquadro **Contesto** ([`radar/context.py`](radar/context.py), `report["context"]`) descrive in tre righe lo stato del mercato
@@ -124,7 +124,17 @@ mostra probabilità né medie storiche, perché nei test regimi e politica econo
 ([`research/previsionale2`](research/previsionale2/README.md), lezione 113); non entra in W3.2. Dati Fed da FRED al massimo una
 volta al giorno, cache in `data/context.csv`: se la fonte non risponde resta l'ultimo dato con la sua data.
 
-La card **Livelli e probabilità a 30 giorni** unisce la mappa dei livelli ([`radar/livelli.py`](radar/livelli.py),
+**Motore unico.** `report["livelli"]` ([`radar/livelli.py`](radar/livelli.py)) è la sola fonte di supporti, resistenze, medie,
+Fibonacci, livello storico, liquidazioni (stima e on-chain, separate) e zone per Oggi, Grafico (linee e tabella), Pre-analisi
+(`radar/preview.py`: righe S/R e "Liquidazioni più vicine") e riepilogo Telegram "Oggi" (R1/S1): nessun ricalcolo dei cluster nel
+browser. Il browser ricalcola solo distanze, probabilità di tocco e intervalli sul prezzo mostrato in testa alla pagina (live, o
+l'ultima chiusura dichiarata se il live manca) con `report["livelli"]["tocco"]`: quantili dei cammini del cono
+(`cone.touch_grid`; stessa funzione in Python `cone.grid_touch_prob` e in JS `lvTouch`, confrontate in `tests/test_grafico.py`).
+Il grafico usa `report["livelli"]["serie"]` (giornaliero completo con volumi; 1W e 1M aggregati nel browser); il 4h si scarica
+dal browser da Binance (`api.binance.com`, poi `data-api.binance.vision`) o, in riserva, da Coinbase (orarie aggregate a 4 ore).
+`radar/levels.py` resta interno: confluenza della mappa liquidazioni (liqmap), liqcascade e livelli della card storica del cono.
+
+La card **Livelli e probabilità a 30 giorni** (dal 24/11 la scala completa, le zone e il grafico sono nel Grafico) unisce la mappa dei livelli ([`radar/livelli.py`](radar/livelli.py),
 `report["livelli"]`) e il cono ([`radar/cone.py`](radar/cone.py), `report["cone"]`), solo BTC. In alto: prezzo (ultima chiusura
 giornaliera completa), intervallo probabile all'80% e al 50% fra 30 giorni, primo supporto e prima resistenza, prime liquidazioni
 di long sotto e di short sopra, ATR 14 giornaliero. Poi la scala dei livelli dal più alto al più basso (in vista il più vicino di

@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = Path(__file__).with_name("dashboard_template.html")
-PAGES = Path(__file__).with_name("pages")   # pagine separate: Liquidazioni, Book (spento: BOOK_ON nel template), Wallet (in pausa); HTML + script che si registra in window.PAGES
+PAGES = Path(__file__).with_name("pages")   # pagine separate: Liquidazioni (spenta: LIQ_ON nel template), Book (spento: BOOK_ON), Wallet (in pausa); HTML + script che si registra in window.PAGES
 BRAND = ROOT / "brand"
 MANIFEST = {
     "name": "Radar Signal BTC", "short_name": "Radar Signal", "start_url": "./#oggi", "display": "standalone",

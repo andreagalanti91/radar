@@ -197,21 +197,19 @@ class Dashboard(unittest.TestCase):
     T = (ROOT / "radar/dashboard_template.html").read_text()
 
     def test_card_unica(self):
-        blk = self.T[self.T.index("(function renderCone()"):self.T.index("// Contesto (report.context")]
+        blk = self.T[self.T.index("// ---- Mappa unica dei livelli"):self.T.index("// Contesto (report.context")]
         self.assertNotIn("Fra 30 giorni", self.T)
         self.assertIn("Livelli e probabilità a ${H} giorni", blk)
         self.assertIn("R.livelli", blk)
-        self.assertIn("C.note", blk)                                   # dicitura del cono, testuale
-        self.assertIn("L.nota", blk)
+        self.assertIn("volatilità, non dalla direzione", blk)          # diciture brevi in Oggi, complete nel Grafico
+        self.assertIn("L.nota_prob", blk)
         self.assertEqual(self.T.count('id="cnCard"'), 1)
         self.assertLess(self.T.index('id="cnCard"'), self.T.index('id="cxCard"'))
-        self.assertIn("lvChart", blk)                                  # grafico dell'ultimo anno nei Dettagli
-        self.assertIn("LightweightCharts.createChart", blk)
+        self.assertIn("LightweightCharts.createChart", blk)            # grafico con i livelli: sezione Grafico
         self.assertNotIn("new Chart(", self.T)                         # niente Chart.js
 
     def test_livelli_vicini_nuova_fonte(self):
         self.assertIn("const NEWLV = R.livelli", self.T)
-        self.assertIn("const LV = SRSRC;", self.T)
         sr = self.T[self.T.index("window.srLevels = px =>"):self.T.index("const REF_SUBS")]
         self.assertIn("NEWLV ?", sr)
         self.assertNotIn("R.levels", self.T.replace(": R.levels;", "", 2))   # report.levels solo come riserva in srLevels
