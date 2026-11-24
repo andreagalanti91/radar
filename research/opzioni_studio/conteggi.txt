@@ -82,3 +82,14 @@ atteso è la media del valore intrinseco a scadenza sui cammini, meno l'esercizi
 superficie del lunedì × 1,03 + commissione. Segnale se valore atteso / costo ≥ soglia (call o put; se entrambe, la
 maggiore). La qualità del confronto dipende dalla IV della superficie: qui è usata la IV proxy (DVOL / alla pari della
 domenica) solo per contare. Il risultato realizzato si misura poi con lo stesso motore delle altre famiglie.
+
+== RICONTEGGIO (fase 2) con la IV della superficie, soglie invariate
+IV superficie alla domenica: 2018-01-07 → 2026-11-15 (463 settimane); quintile a 52 sett. dal 2018-12-30
+c5 (ADDENDUM)          op  62 · IS  25 · OOS  37 · lati IS {2: 25} OOS {2: 37} · tempo 0.62 · con W3.2 0.56
+c1 IV < RV30           op  44 · IS  19 · OOS  25 · lati IS {2: 19} OOS {2: 25} · tempo 0.44 · con W3.2 0.48
+c3 quintile basso      op  32 · IS   9 · OOS  23 · lati IS {2: 9} OOS {2: 23} · tempo 0.33 · con W3.2 0.69
+f ≥ 1,4 (ADDENDUM)     op  79 · IS  35 · OOS  44 · lati IS {1: 34, -1: 1} OOS {1: 44} · tempo 0.79 · con W3.2 0.56
+f ≥ 1,3                op  86 · IS  40 · OOS  46 · lati IS {1: 39, -1: 1} OOS {1: 45, -1: 1} · tempo 0.85 · con W3.2 0.53
+f ≥ 1,5                op  73 · IS  32 · OOS  41 · lati IS {1: 31, -1: 1} OOS {1: 41} · tempo 0.72 · con W3.2 0.55
+Rapporto cono/costo con la superficie: call mediana 1.50 (≥1 nel 92%), put mediana 0.70 (≥1 nel 6%)
+c giudicabile (IS ≥ 20): sì · f con ≥ 20 per metà: sì

@@ -21,4 +21,4 @@ n,verso,entra,esce,esito_csv,esito_motore,mult_csv,mult_motore,scarto,scarto_rel
 20,short,2025-12-01,2026-04-27,scadenza,scadenza,0.308,0.342,0.0341,0.1107
 21,short,2026-05-25,2026-08-20,scadenza,scadenza,5.6888,5.7002,0.0114,0.002
 22,long,2026-08-24,2026-11-09,scadenza,scadenza,1.4928,1.5089,0.0161,0.0108
-23,short,2026-11-16,aperta,venduta,aperta,1.6279,1.732,0.1041,0.064
+23,short,2026-11-16,aperta,venduta,aperta,1.6279,2.0226,0.3947,0.2425

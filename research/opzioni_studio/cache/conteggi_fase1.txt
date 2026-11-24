@@ -1,0 +1,84 @@
+CONTEGGI DEI SEGNALI F3 (fase 1: nessun P&L). Decisione alla domenica, ingresso lunedì, opzione ≈30 giorni.
+Settimane di decisione: 2018-01-07 → 2026-11-15 (463); dati giornalieri fino al 2026-11-21.
+IS = ingressi 2018-01 → 2021-12, OOS = 2022-01 → 2026-11. Lati: 1 call, −1 put, 2 straddle.
+con_w32 = quota delle operazioni aperte mentre W3.2 è in posizione; stesso_lato = W3.2 in posizione dallo stesso lato;
+sovrapp. = giorni in opzione con W3.2 in posizione / giorni in opzione; tempo = quota dei giorni 2018→oggi in posizione.
+Riferimento W3.2: 23 operazioni dal 2018 (IS 12, OOS 11); tempo in posizione 0.53.
+Copertura dei dati: flusso perp vero dal 2020-04-12 (prima proxy CVD spot), funding dal 2020-01-01, IV proxy dal 2019-01-06 (DVOL dal 2021-03-24), quintile IV a 52 sett. dal 2019-12-29; liquidazioni solo dal 2026-10-30 (non usabili).
+
+== a · tendenza di solo prezzo
+candidata                                         op  IS  OOS call  put  str  sett con_w32 st.lato sovrapp  tempo contr  per anno
+a1 EMA20 in salita/discesa                        94  42   52   56   38    0   405    0.55    0.55    0.56   0.89    15  18:11 19:10 20:10 21:11 22:11 23:9 24:11 25:11 26:10
+                                                IS per lato {1: 25, -1: 17} · OOS per lato {1: 31, -1: 21}
+a2 EMA20 sopra/sotto SMA40                        90  41   49   57   33    0   407    0.53    0.53    0.53   0.90     2  18:11 19:10 20:9 21:11 22:9 23:10 24:11 25:10 26:9
+                                                IS per lato {1: 26, -1: 15} · OOS per lato {1: 31, -1: 18}
+
+== b · condizioni d'ingresso di W3.2 ogni settimana
+candidata                                         op  IS  OOS call  put  str  sett con_w32 st.lato sovrapp  tempo contr  per anno
+b flusso oltre ±0σ                                42  16   26   27   15    0   114    0.98    0.98    0.84   0.41     2  18:5 19:2 20:6 21:3 22:5 23:7 24:3 25:5 26:6
+                                                IS per lato {1: 12, -1: 4} · OOS per lato {1: 15, -1: 11}
+b flusso oltre ±0.5σ                              34  12   22   21   13    0    74    0.97    0.97    0.84   0.34     0  18:4 19:2 20:4 21:2 22:5 23:5 24:3 25:4 26:5
+                                                IS per lato {1: 8, -1: 4} · OOS per lato {1: 13, -1: 9}
+b flusso oltre ±1σ                                21   7   14   14    7    0    43    1.00    1.00    0.91   0.21     0  18:3 19:1 20:1 21:2 22:2 23:4 24:3 25:3 26:2
+                                                IS per lato {1: 4, -1: 3} · OOS per lato {1: 10, -1: 4}
+
+== c · volatilità a buon mercato → straddle
+candidata                                         op  IS  OOS call  put  str  sett con_w32 st.lato sovrapp  tempo contr  per anno
+c1 IV < RV30                                      37  16   21    0    0   37   100    0.43    0.00    0.45   0.37     0  19:7 20:7 21:2 22:4 23:4 24:5 25:3 26:5
+                                                IS per lato {2: 16} · OOS per lato {2: 21}
+c2 IV < 0,9·RV30                                  22  12   10    0    0   22    50    0.41    0.00    0.40   0.22     0  19:5 20:6 21:1 22:3 24:3 25:2 26:2
+                                                IS per lato {2: 12} · OOS per lato {2: 10}
+c3 IV nel quintile basso a 52 sett.               33   7   26    0    0   33   122    0.64    0.00    0.65   0.34     0  19:1 20:5 21:1 22:7 23:8 25:7 26:4
+                                                IS per lato {2: 7} · OOS per lato {2: 26}
+c4 IV nel decile basso a 52 sett.                 25   4   21    0    0   25    79    0.72    0.00    0.67   0.25     0  20:3 21:1 22:5 23:7 25:7 26:2
+                                                IS per lato {2: 4} · OOS per lato {2: 21}
+c5 c1 oppure c3 (testo del PREREG)                56  19   37    0    0   56   195    0.55    0.00    0.57   0.56     0  19:7 20:9 21:3 22:9 23:8 24:5 25:8 26:7
+                                                IS per lato {2: 19} · OOS per lato {2: 37}
+
+== d · compressione delle bande → straddle
+candidata                                         op  IS  OOS call  put  str  sett con_w32 st.lato sovrapp  tempo contr  per anno
+d1 Bollinger 20s, quintile basso a 52 sett.       30  15   15    0    0   30   122    0.37    0.00    0.37   0.30     0  18:7 19:3 20:3 21:2 22:4 23:5 24:3 25:3
+                                                IS per lato {2: 15} · OOS per lato {2: 15}
+d2 decile basso a 52 sett.                        21  11   10    0    0   21    80    0.38    0.00    0.40   0.21     0  18:6 19:1 20:3 21:1 22:4 23:3 24:1 25:2
+                                                IS per lato {2: 11} · OOS per lato {2: 10}
+d3 quintile basso a 104 sett.                     28  12   16    0    0   28   117    0.39    0.00    0.43   0.28     0  18:5 19:3 20:3 21:1 22:5 23:6 24:2 25:3
+                                                IS per lato {2: 12} · OOS per lato {2: 16}
+d4 quintile basso su tutta la storia              30   5   25    0    0   30   119    0.53    0.00    0.60   0.30     0  18:2 20:3 22:4 23:6 24:5 25:7 26:3
+                                                IS per lato {2: 5} · OOS per lato {2: 25}
+
+== e · dopo una cascata → call
+candidata                                         op  IS  OOS call  put  str  sett con_w32 st.lato sovrapp  tempo contr  per anno
+e1 chiusura −10% o peggio                         18  12    6   18    0    0    25    0.44    0.11    0.41   0.18     0  18:4 19:2 20:2 21:4 22:5 26:1
+                                                IS per lato {1: 12} · OOS per lato {1: 6}
+e2 chiusura −8% o peggio                          27  19    8   27    0    0    41    0.37    0.11    0.40   0.27     0  18:5 19:4 20:4 21:6 22:5 24:1 25:1 26:1
+                                                IS per lato {1: 19} · OOS per lato {1: 8}
+e3 chiusura −12% o peggio                         10   7    3   10    0    0    13    0.40    0.00    0.46   0.10     0  18:2 19:2 20:1 21:2 22:2 26:1
+                                                IS per lato {1: 7} · OOS per lato {1: 3}
+e4 minimo −10% sotto la chiusura precedente       32  21   11   32    0    0    50    0.34    0.12    0.35   0.33     0  18:4 19:5 20:5 21:7 22:5 23:1 24:3 25:1 26:1
+                                                IS per lato {1: 21} · OOS per lato {1: 11}
+
+== f · cono contro premio (IV proxy, provvisorio)
+candidata                                         op  IS  OOS call  put  str  sett con_w32 st.lato sovrapp  tempo contr  per anno
+f valore atteso del cono ≥ premio × 1.0           82  31   51   82    0    0   403    0.56    0.34    0.56   0.83     0  19:11 20:10 21:10 22:11 23:10 24:11 25:10 26:9
+                                                IS per lato {1: 31} · OOS per lato {1: 51}
+f valore atteso del cono ≥ premio × 1.2           79  30   49   79    0    0   344    0.54    0.32    0.56   0.80     0  19:11 20:10 21:9 22:11 23:9 24:10 25:10 26:9
+                                                IS per lato {1: 30} · OOS per lato {1: 49}
+f valore atteso del cono ≥ premio × 1.4           57  22   35   57    0    0   203    0.61    0.39    0.53   0.58     0  19:8 20:10 21:4 22:7 23:8 24:5 25:8 26:7
+                                                IS per lato {1: 22} · OOS per lato {1: 35}
+f valore atteso del cono ≥ premio × 1.5           44  18   26   44    0    0   147    0.57    0.36    0.59   0.45     0  19:6 20:10 21:2 22:5 23:8 24:2 25:6 26:5
+                                                IS per lato {1: 18} · OOS per lato {1: 26}
+f valore atteso del cono ≥ premio × 1.6           30  15   15   30    0    0    92    0.57    0.40    0.58   0.30     0  19:4 20:10 21:1 22:2 23:5 24:1 25:4 26:3
+                                                IS per lato {1: 15} · OOS per lato {1: 15}
+
+== F3.f · distribuzione del rapporto valore atteso del cono / premio (alla pari, 30 g, IV proxy)
+call: n 411 · quantili 10/25/50/75/90% 1.16 / 1.26 / 1.40 / 1.57 / 1.73 · quota ≥ 1: 0.98
+put : n 411 · quantili 10/25/50/75/90% 0.51 / 0.56 / 0.62 / 0.71 / 0.84 · quota ≥ 1: 0.02
+Nota: la deriva storica del cono (media dei rendimenti giornalieri dal 2014, ~+0,10–0,15%/giorno, ~+3–5% a 30 giorni) rende le call sistematicamente 'convenienti' e le put 'care': F3.f è in gran parte una call permanente.
+
+Come si confronteranno cono e premio in fase 2 (nessun rendimento calcolato qui): alla domenica, per il contratto che
+si comprerebbe lunedì (scadenza reale scelta dal motore, T giorni; prezzo d'esercizio sulla griglia reale), il cono di
+radar/cone.py è ricalcolato con la sola storia fino alla domenica e con orizzonte T (cone.simulate(horizon=T)); il valore
+atteso è la media del valore intrinseco a scadenza sui cammini, meno l'esercizio 0,02%; il costo è il premio della
+superficie del lunedì × 1,03 + commissione. Segnale se valore atteso / costo ≥ soglia (call o put; se entrambe, la
+maggiore). La qualità del confronto dipende dalla IV della superficie: qui è usata la IV proxy (DVOL / alla pari della
+domenica) solo per contare. Il risultato realizzato si misura poi con lo stesso motore delle altre famiglie.

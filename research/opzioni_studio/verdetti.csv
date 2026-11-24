@@ -1,0 +1,6 @@
+famiglia,cella,finale_OOS,dd_OOS,B0_OOS,c1_finale_dd,c2_senza2,c3_vicini,c4_f3,p,p_holm,c5_holm,migliore_di_B0,nota,utile,corr_B0,pf_OOS,n_IS,n_OOS
+F1,F1 14g alla pari,20050.0,-0.1271,21695.0,False,False,1/3,,0.7135,1.0,False,False,,,,,,
+F2,F2 U0 come B0,,,,,,,,,,,False,scelta IS = B0,,,,,
+F3,F3a tendenza,14947.0,-0.3156,21695.0,False,False,0/4,False,0.41,1.0,False,False,,False,0.45,1.35,47.0,57.0
+F3,F3c volatilità bassa → straddle,10801.0,-0.2928,21695.0,False,False,0/4,False,0.342,1.0,False,False,,False,0.22,1.16,30.0,45.0
+F3,"F3f cono ≥ 1,4 × costo",16809.0,-0.4157,21695.0,False,False,0/4,False,0.137,0.8220000000000001,False,False,,False,0.1,1.66,39.0,48.0

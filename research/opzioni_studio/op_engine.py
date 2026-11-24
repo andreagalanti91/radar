@@ -125,6 +125,10 @@ class Conf:
     quota: float = 0.05         # spesa in % del conto
     uscita: str = "U0"          # U0..U5
     straddle: bool = False
+    spread_k: float = 0.0       # spread a debito: gamba venduta x più fuori dal prezzo (0 = nessuna)
+    u_mult: float | None = None # moltiplicatore di U1/U2/U3 (vicini: 1,5 / 2,5 / 3,5)
+    u4_giorni: int = 7          # U4: giorni prima della scadenza
+    min_giorni: float = 0.0     # solo descrittivo: scadenze con almeno N giorni (se ce ne sono), come nello studio dell'utente
     spread: float = SPREAD
     fee: float = FEE
     fee_cap: float = FEE_CAP
@@ -171,9 +175,19 @@ def _settle_cache() -> pd.Series:
 
 
 class Motore:
+    """Ordine degli eventi di un giorno d: scadenza alle 08:00 e azioni all'istante del prezzatore (ora = 0 o 12 UTC):
+    uscite (di d all'apertura, "alla chiusura" di d−1, contrario, U4), rinnovo U5, ingressi, poi valutazione (U1–U3)."""
+
     def __init__(self, prezzatore, conf: Conf, settle: pd.Series | None = None):
         self.p, self.c = prezzatore, conf
         self.settle = _settle_cache() if settle is None else settle
+        self.ora = float(getattr(prezzatore, "ora", 0.0))
+
+    def t(self, d) -> pd.Timestamp:
+        return pd.Timestamp(d) + pd.Timedelta(hours=self.ora)
+
+    def giorni(self, d, exp) -> float:
+        return ((pd.Timestamp(exp) + EXP_H) - self.t(d)).total_seconds() / 86400
 
     # costi
     def _fee(self, S: float, prem: float, qty: float) -> float:
@@ -190,13 +204,16 @@ class Motore:
         return float(self.settle[pd.Timestamp(exp)])
 
     # scelta del contratto
-    def scegli(self, d: pd.Timestamp, tipo: str) -> tuple | None:
-        exps = [pd.Timestamp(e) for e in self.p.scadenze(d) if pd.Timestamp(e) + EXP_H > d + DAY]
+    def scegli(self, d: pd.Timestamp, tipo: str, mny: float | None = None, giorni: int | None = None) -> tuple | None:
+        exps = [pd.Timestamp(e) for e in self.p.scadenze(d) if self.giorni(d, e) >= 1.0]
         if not exps:
             return None
-        exp = min(exps, key=lambda e: (abs(anni(d, e) * 365 - self.c.giorni), -e.value))
+        g = self.c.giorni if giorni is None else giorni
+        if self.c.min_giorni and any(self.giorni(d, e) >= self.c.min_giorni for e in exps):
+            exps = [e for e in exps if self.giorni(d, e) >= self.c.min_giorni]
+        exp = min(exps, key=lambda e: (abs(self.giorni(d, e) - g), -e.value))
         S = self.p.spot(d)
-        x = self.c.mny if tipo == "C" else -self.c.mny
+        x = (self.c.mny if mny is None else mny) * (1 if tipo == "C" else -1)
         target = S * (1 + x)
         ks = list(self.p.strikes(d, exp)) if hasattr(self.p, "strikes") else []
         if ks:
@@ -207,18 +224,20 @@ class Motore:
         return exp, float(K), S
 
     def _mid(self, d, leg) -> float | None:
-        v, _q = self.p.prezzo(d, leg["exp"], leg["K"], leg["tipo"])
+        v, q = self.p.prezzo(d, leg["exp"], leg["K"], leg["tipo"])
+        leg.setdefault("qual", []).append(q)
         return None if v is None or not np.isfinite(v) else float(v)
 
     def _liq(self, d, legs, S) -> float:
-        """Valore di liquidazione delle gambe aperte al momento d (00:00)."""
+        """Valore di liquidazione delle gambe aperte all'istante di d (gambe vendute: si ricomprano alla lettera)."""
         tot = 0.0
         for g in legs:
             m = self._mid(d, g)
             m = g["last"] if m is None else m
             g["last"] = m
-            tot += g["qty"] * m * (1 - self.c.spread) - self._fee(S, m, g["qty"])
-        return max(tot, 0.0)
+            sg = g.get("segno", 1)
+            tot += sg * g["qty"] * m * (1 - sg * self.c.spread) - self._fee(S, m, g["qty"])
+        return tot
 
     def _sell(self, d, legs, S) -> float:
         v = self._liq(d, legs, S)
@@ -226,32 +245,63 @@ class Motore:
             g["open"] = False
         return v
 
-    def _open(self, d: pd.Timestamp, lato: int, cash: float) -> dict | None:
+    def _open(self, d: pd.Timestamp, lato: int, cash: float, quota: float | None = None, mny: float | None = None,
+              giorni: int | None = None, qty_btc: float | None = None) -> dict | None:
+        c = self.c
         tipi = ["C", "P"] if lato == 2 else ["C" if lato > 0 else "P"]
         legs, S = [], None
         for t in tipi:
-            ch = self.scegli(d, "C" if lato == 2 else t)   # straddle: stesso prezzo d'esercizio (alla pari) e scadenza
+            ch = self.scegli(d, "C" if lato == 2 else t, 0.0 if lato == 2 else mny, giorni)  # straddle: stesso K alla pari
             if ch is None:
                 return None
             exp, K, S = ch
-            m = self._mid(d, dict(exp=exp, K=K, tipo=t))
+            g = dict(exp=exp, K=K, tipo=t, segno=1, open=True)
+            m = self._mid(d, g)
             if m is None or m <= 0:
                 return None
-            legs.append(dict(exp=exp, K=K, tipo=t, mid0=m, last=m, open=True))
-        unit = sum(g["mid0"] * (1 + self.c.spread) + min(self.c.fee * S, self.c.fee_cap * g["mid0"]) for g in legs)
-        spend = self.c.quota * cash
-        q = spend / unit
+            g.update(mid0=m, last=m)
+            legs.append(g)
+            if c.spread_k and lato != 2:            # spread a debito: si vende la stessa scadenza più fuori dal prezzo
+                x = c.spread_k * (1 if t == "C" else -1)
+                ks = list(self.p.strikes(d, exp)) if hasattr(self.p, "strikes") else []
+                tg = S * (1 + (c.mny if mny is None else mny) * (1 if t == "C" else -1) + x)
+                K2 = min(ks, key=lambda k: (abs(k - tg), k)) if ks else round(tg / griglia_default(S)) * griglia_default(S)
+                g2 = dict(exp=exp, K=float(K2), tipo=t, segno=-1, open=True)
+                m2 = self._mid(d, g2)
+                if m2 is None or K2 == K:
+                    return None
+                g2.update(mid0=m2, last=m2)
+                legs.append(g2)
+        unit = sum(g["segno"] * g["mid0"] * (1 + g["segno"] * c.spread) + min(c.fee * S, c.fee_cap * g["mid0"]) for g in legs)
+        if unit <= 0:
+            return None
+        if qty_btc is None:
+            spend = (c.quota if quota is None else quota) * cash
+            q = spend / unit
+        else:
+            q, spend = qty_btc, qty_btc * unit
         for g in legs:
             g["qty"] = q
         return dict(entry=d, lato=lato, legs=legs, spend=spend, eq0=cash, S0=S, proceeds=0.0, renewed=False,
-                    exp=min(g["exp"] for g in legs), K=legs[0]["K"], half_done=False)
+                    exp=min(g["exp"] for g in legs), K=legs[0]["K"], half_done=False,
+                    giorni_scad=round(self.giorni(d, legs[0]["exp"]), 1))
+
+    def _settle(self, pos, d) -> float:
+        ST = self._regola(d)
+        val = 0.0
+        for g in pos["legs"]:
+            if g["open"] and g["exp"] == d:
+                iv = max(ST - g["K"], 0.0) if g["tipo"] == "C" else max(g["K"] - ST, 0.0)
+                val += g.get("segno", 1) * g["qty"] * iv - min(self.c.exer * ST * g["qty"], self.c.fee_cap * iv * g["qty"])
+                g["open"] = False
+        return val
 
     def simula(self, piano: Piano, days: pd.DatetimeIndex, start: str = "2018-01-01", end: str | None = None) -> dict:
         days = days[(days >= pd.Timestamp(start)) & ((days <= pd.Timestamp(end)) if end else True)]
         c = self.c
         cash, pos, trades = c.capitale, None, []
         eq = np.full(len(days), np.nan)
-        pend_open: int | None = None       # rinnovo U5 da comprare alle 00:00 del giorno
+        pend_open = None
 
         def chiudi(d, motivo, valore):
             nonlocal cash, pos
@@ -262,87 +312,86 @@ class Motore:
             trades.append(pos)
             pos = None
 
-        def apri(d, lato, **kw):
-            nonlocal cash, pos
-            x = self._open(d, lato, cash)
-            if x is None:
-                trades.append(dict(entry=d, lato=lato, saltata="nessun prezzo", spend=0.0, proceeds=0.0, ret=0.0, mult=np.nan))
+        def scadenza(d):
+            nonlocal cash, pos, pend_open
+            if pos is None or not any(g["open"] and g["exp"] == d for g in pos["legs"]):
                 return
-            x.update(kw)
-            cash -= x["spend"]
-            pos = x
+            val = self._settle(pos, d)
+            if not any(g["open"] for g in pos["legs"]):
+                was_gain = pos["proceeds"] + val > pos["spend"]
+                lato_r, renewed = pos["lato"], pos["renewed"]
+                chiudi(d, "scadenza", val)
+                if c.uscita == "U5" and not renewed and was_gain and piano.in_pos is not None:
+                    pend_open = (lato_r, d)
+            else:
+                pos["proceeds"] += val
+                cash += val
 
         for i, d in enumerate(days):
-            # 00:00 · uscite all'apertura
+            if self.ora >= 8:
+                scadenza(d)
+            # istante del giorno: uscite
             if pos is not None:
                 ex = None
-                if piano.mode == "eventi" and piano.uscite.get(d) == "apertura":
+                if piano.mode == "eventi" and (piano.uscite.get(d) == "apertura" or piano.uscite.get(d - DAY) == "chiusura") \
+                        and pos["entry"] < d:
                     ex = "segnale"
                 if piano.mode == "settimanale" and pos["lato"] in (1, -1) and piano.segnali.get(d, 0) == -pos["lato"]:
                     ex = "contrario"
-                if c.uscita == "U4" and d >= pos["exp"] - 7 * DAY:
+                if c.uscita == "U4" and d >= pos["exp"] - c.u4_giorni * DAY:
                     ex = "U4"
                 if ex:
-                    S = self.p.spot(d)
-                    chiudi(d, ex, self._sell(d, [g for g in pos["legs"] if g["open"]], S))
-            # 00:00 · ingressi
+                    chiudi(d, ex, self._sell(d, [g for g in pos["legs"] if g["open"]], self.p.spot(d)))
+            # ingressi
             if pos is None:
-                lato = None
+                lato, kw = None, {}
                 if pend_open is not None:
-                    lato, kw = pend_open, dict(rinnovo=True, renewed=True)
-                elif piano.mode == "eventi" and d in piano.ingressi:
-                    lato, kw = piano.ingressi[d], {}
-                elif piano.mode == "settimanale" and piano.segnali.get(d, 0):
-                    lato, kw = piano.segnali[d], {}
+                    lr, dexp = pend_open
+                    if piano.in_pos.get(d, 0) == lr and (piano.uscite.get(d) != "apertura"):
+                        lato, kw = lr, dict(rinnovo=True, renewed=True)
+                    pend_open = None
+                if lato is None and piano.mode == "eventi" and d in piano.ingressi:
+                    lato = piano.ingressi[d]
+                elif lato is None and piano.mode == "settimanale" and piano.segnali.get(d, 0):
+                    lato = piano.segnali[d]
                 if lato:
-                    apri(d, lato, **kw)
-            pend_open = None
-            # 08:00 · scadenza
-            if pos is not None and any(g["open"] and g["exp"] == d for g in pos["legs"]):
-                ST = self._regola(d)
-                val = 0.0
-                for g in pos["legs"]:
-                    if g["open"] and g["exp"] == d:
-                        iv = max(ST - g["K"], 0.0) if g["tipo"] == "C" else max(g["K"] - ST, 0.0)
-                        val += g["qty"] * iv - min(c.exer * ST * g["qty"], c.fee_cap * iv * g["qty"])
-                        g["open"] = False
-                if not any(g["open"] for g in pos["legs"]):
-                    was_gain = pos["proceeds"] + val > pos["spend"]
-                    lato_r, renewed = pos["lato"], pos["renewed"]
-                    chiudi(d, "scadenza", val)
-                    if c.uscita == "U5" and not renewed and was_gain and piano.in_pos is not None \
-                            and piano.in_pos.get(d + DAY, 0) == lato_r:
-                        pend_open = lato_r
-                else:
-                    pos["proceeds"] += val
-                    cash += val
-            # chiusura (= 00:00 del giorno dopo) · uscite alla chiusura, U1–U3, valutazione
-            n = d + DAY
-            if pos is not None:
-                S = self.p.spot(n)
-                legs = [g for g in pos["legs"] if g["open"]]
-                if piano.mode == "eventi" and piano.uscite.get(d) == "chiusura":
-                    chiudi(d, "segnale", self._sell(n, legs, S))
-                else:
-                    v = self._liq(n, legs, S)
-                    tgt = {"U1": 2.0, "U2": 3.0, "U3": 2.0}.get(c.uscita)
-                    if tgt and v >= tgt * pos["spend"] * (0.5 if pos["half_done"] else 1.0) and v > 0:
-                        if c.uscita == "U3" and not pos["half_done"]:
-                            for g in legs:
-                                g["qty"] /= 2
-                            half = self._liq(n, legs, S)
-                            pos["proceeds"] += half
-                            cash += half
-                            pos["half_done"] = True
-                        elif c.uscita != "U3":
-                            chiudi(d, c.uscita, self._sell(n, legs, S))
+                    x = self._open(d, lato, cash)
+                    if x is None:
+                        trades.append(dict(entry=d, lato=lato, saltata="nessun prezzo", spend=0.0, proceeds=0.0, ret=0.0,
+                                           mult=np.nan))
+                    else:
+                        x.update(kw)
+                        cash -= x["spend"]
+                        pos = x
+            # valutazione all'istante; U1–U3
             mark = 0.0
             if pos is not None:
-                mark = self._liq(n, [g for g in pos["legs"] if g["open"]], self.p.spot(n))
+                legs = [g for g in pos["legs"] if g["open"]]
+                S = self.p.spot(d)
+                v = self._liq(d, legs, S)
+                tgt = {"U1": c.u_mult or 2.0, "U2": c.u_mult or 3.0, "U3": c.u_mult or 2.0}.get(c.uscita)
+                if tgt and pos["entry"] < d and v >= tgt * pos["spend"] * (0.5 if pos["half_done"] else 1.0) and v > 0:
+                    if c.uscita == "U3" and not pos["half_done"]:
+                        for g in legs:
+                            g["qty"] /= 2
+                        half = v / 2
+                        pos["proceeds"] += half
+                        cash += half
+                        pos["half_done"] = True
+                        v = v / 2
+                    elif c.uscita != "U3":
+                        for g in legs:
+                            g["open"] = False
+                        chiudi(d, c.uscita, v)
+                        v = 0.0
+                mark = v if pos is not None else 0.0
+            if self.ora < 8:
+                scadenza(d)
+                if pos is None:
+                    mark = 0.0
             eq[i] = cash + mark
-        if pos is not None:   # posizione aperta all'ultimo giorno: chiusa al valore di liquidazione
-            n = days[-1] + DAY
-            v = self._liq(n, [g for g in pos["legs"] if g["open"]], self.p.spot(n))
+        if pos is not None:   # posizione aperta all'ultimo giorno: valutata al valore di liquidazione, esclusa dai conteggi
+            v = self._liq(days[-1], [g for g in pos["legs"] if g["open"]], self.p.spot(days[-1]))
             chiudi(days[-1], "aperta", v)
         return {"trades": [t for t in trades if "saltata" not in t], "saltate": [t for t in trades if "saltata" in t],
                 "equity": pd.Series(eq, days), "conf": c}
@@ -364,7 +413,8 @@ def metriche(ris: dict, da: str | None = None, a: str | None = None, capitale: f
     e = full[(full.index >= pd.Timestamp(da)) if da else full.index == full.index]
     if a:
         e = e[e.index <= pd.Timestamp(a)]
-    tr = [t for t in ris["trades"] if (not da or t["entry"] >= pd.Timestamp(da)) and (not a or t["entry"] <= pd.Timestamp(a))]
+    tr = [t for t in ris["trades"] if (not da or t["entry"] >= pd.Timestamp(da)) and (not a or t["entry"] <= pd.Timestamp(a))
+          and t.get("motivo") != "aperta"]
     if e.empty:
         return {}
     prev = full[full.index < e.index[0]]

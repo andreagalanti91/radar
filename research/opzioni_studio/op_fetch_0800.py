@@ -1,5 +1,5 @@
 """Opzioni · prezzo di regolamento approssimato: apertura della candela oraria Binance BTCUSDT delle 08:00 UTC di ogni giorno
-(le opzioni Deribit scadono alle 08:00 UTC). Fonte pubblica: data-api.binance.vision /api/v3/klines (1h).
+(le opzioni Deribit scadono alle 08:00 UTC) e delle 12:00 UTC (prezzo del momento per la superficie, ADDENDUM-1 punto 3). Fonte pubblica: data-api.binance.vision /api/v3/klines (1h).
 Uso una volta: python3 research/opzioni_studio/op_fetch_0800.py → research/opzioni_studio/cache/btc_0800.csv
 """
 from __future__ import annotations
@@ -29,11 +29,12 @@ def main(start: str = "2017-12-01") -> None:
         time.sleep(0.15)
     h = pd.DataFrame(rows, columns=["t", "open"]).drop_duplicates("t")
     h["t"] = pd.to_datetime(h["t"], unit="ms")
-    h = h[h["t"].dt.hour == 8]
-    out = pd.DataFrame({"date": h["t"].dt.normalize().dt.date, "open_0800": h["open"].to_numpy()})
+    h["date"] = h["t"].dt.normalize()
+    out = h[h["t"].dt.hour == 8].set_index("date")[["open"]].rename(columns={"open": "open_0800"})
+    out["open_1200"] = h[h["t"].dt.hour == 12].set_index("date")["open"]
     OUT.parent.mkdir(exist_ok=True)
-    out.to_csv(OUT, index=False)
-    print(OUT, len(out), out["date"].iloc[0], out["date"].iloc[-1])
+    out.to_csv(OUT)
+    print(OUT, len(out), out.index[0], out.index[-1], int(out["open_1200"].isna().sum()), "mezzogiorni mancanti")
 
 
 if __name__ == "__main__":

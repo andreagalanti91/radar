@@ -1,0 +1,319 @@
+CANCELLO · 23 operazioni, moltiplicatore (incasso / spesa) contro storico_prezzi_veri.csv
+ n      entra       contratto_csv contratto_motore_A  giorni_A  esito_A  mult_csv  mult_motore_A  scarto_rel_A qual_ingresso contratto_motore_B  giorni_B  esito_B  mult_motore_B  scarto_rel_B
+ 1 2018-01-08 BTC-26JAN18-16000-C  2018-01-26 16000C      17.8  segnale    0.0074         0.0319        3.2980        scambi  2018-01-26 15500C      17.8  segnale         0.0369        3.9708
+ 2 2018-04-30  BTC-25MAY18-9000-C   2018-05-25 9000C      24.8  segnale    0.2822         0.2043       -0.2759        scambi   2018-05-25 9000C      24.8  segnale         0.2043       -0.2759
+ 3 2018-10-15  BTC-28DEC18-6250-P   2018-12-28 6250P      73.8 scadenza    3.7718         5.7470        0.5237        scambi   2018-10-26 7000P      10.8 scadenza         1.3928       -0.6307
+ 4 2019-05-13  BTC-28JUN19-7000-C   2019-06-28 7000C      45.8 scadenza    4.4262         4.6500        0.0506        scambi   2019-05-31 7250C      17.8 scadenza         1.8117       -0.5907
+ 5 2020-02-10 BTC-27MAR20-10000-C  2020-03-27 10000C      45.8  segnale    0.7426         0.7548        0.0165        scambi  2020-02-28 10000C      17.8  segnale         0.5403       -0.2724
+ 6 2020-03-16  BTC-24APR20-5500-P   2020-04-24 5500P      38.8 scadenza    0.0000         0.0000        0.0000        scambi   2020-04-24 4500P      38.8 scadenza         0.0000        0.0000
+ 7 2020-05-04  BTC-29MAY20-9000-C   2020-05-29 9000C      24.8 scadenza    0.7887         0.9295        0.1785        scambi   2020-05-29 8500C      24.8 scadenza         1.2760        0.6178
+ 8 2020-10-26 BTC-27NOV20-13000-C  2020-11-27 13000C      31.8  segnale    5.7478         6.1705        0.0735        scambi  2020-11-27 13000C      31.8  segnale         6.1705        0.0735
+ 9 2020-12-14 BTC-29JAN21-19000-C  2021-01-29 19000C      45.8  segnale    4.7355         5.3957        0.1394        scambi  2021-01-01 19000C      17.8 scadenza         8.8115        0.8607
+10 2021-02-01 BTC-26FEB21-34000-C  2021-02-26 34000C      24.8  segnale    6.1604         4.8409       -0.2142        scambi  2021-02-26 34000C      24.8  segnale         4.8409       -0.2142
+11 2021-08-02 BTC-27AUG21-40000-C  2021-08-27 40000C      24.8 scadenza    2.0823         2.3472        0.1272        scambi  2021-08-27 40000C      24.8 scadenza         2.3472        0.1272
+12 2021-10-04 BTC-29OCT21-50000-C  2021-10-29 50000C      24.8 scadenza    3.0505         3.5597        0.1669        scambi  2021-10-29 50000C      24.8 scadenza         3.5597        0.1669
+13 2022-01-03 BTC-28JAN22-48000-P  2022-01-28 48000P      24.8 scadenza    2.9730         2.9748        0.0006        scambi  2022-01-28 48000P      24.8 scadenza         2.9748        0.0006
+14 2022-08-15 BTC-30SEP22-24000-P  2022-09-30 24000P      45.8 scadenza    2.0325         1.9076       -0.0615        scambi  2022-09-02 24000P      17.8 scadenza         2.8479        0.4012
+15 2023-01-23 BTC-24FEB23-23000-C  2023-02-24 23000C      31.8 scadenza    0.5394         0.5189       -0.0380        scambi  2023-02-24 23000C      31.8 scadenza         0.5189       -0.0380
+16 2023-10-23 BTC-24NOV23-30000-C  2023-11-24 30000C      31.8 scadenza    3.9933         3.6114       -0.0956        scambi  2023-11-24 31000C      31.8 scadenza         3.9192       -0.0185
+17 2024-02-12 BTC-29MAR24-48000-C  2024-03-29 48000C      45.8  segnale    5.3048         6.2809        0.1840        scambi  2024-03-01 48000C      17.8 scadenza         6.2306        0.1745
+18 2024-09-23 BTC-25OCT24-64000-C  2024-10-25 64000C      31.8 scadenza    0.8912         0.9803        0.1000        scambi  2024-10-25 63000C      31.8 scadenza         1.1133        0.2492
+19 2025-04-28 BTC-30MAY25-94000-C  2025-05-30 94000C      31.8 scadenza    2.0632         1.8483       -0.1041        scambi  2025-05-30 95000C      31.8 scadenza         1.8359       -0.1101
+20 2025-12-01 BTC-26DEC25-90000-P  2025-12-26 90000P      24.8 scadenza    0.3080         0.2299       -0.2534        scambi  2025-12-26 86000P      24.8 scadenza         0.0000       -1.0000
+21 2026-05-25 BTC-26JUN26-76000-P  2026-06-26 76000P      31.8 scadenza    5.6888         5.9692        0.0493        scambi  2026-06-26 78000P      31.8 scadenza         4.8936       -0.1398
+22 2026-08-24 BTC-25SEP26-78000-C  2026-09-25 78000C      31.8 scadenza    1.4928         1.4478       -0.0302        scambi  2026-09-25 78000C      31.8 scadenza         1.4478       -0.0302
+23 2026-11-16 BTC-25DEC26-65000-P  2026-12-25 65000P      38.8   aperta    1.6279         2.0085        0.2338        scambi  2026-12-25 64000P      38.8   aperta         2.0846        0.2806
+Scarto mediano relativo: A (contratto del CSV) +4.9% · B (contratto del motore) +0.0% · soglia ±15%
+Scarto mediano assoluto del moltiplicatore: A 0.215 · B 0.308
+CANCELLO SUPERATO
+B0 dal 2018: 10.000 → 49,712 $ · DD -12.8% · operazioni chiuse 22 · in guadagno 73%  (studio dell'utente: ≈ 50.642 $, fino al 23/11 e n. 9 tagliata al 31/12/2020)
+B0 dal 2019: 10.000 → 53,346 $ · DD -12.8% · operazioni chiuse 19 · in guadagno 79%  (studio dell'utente: ≈ 48.543 $, fino al 23/11 e n. 9 tagliata al 31/12/2020)
+
+== RICONTEGGIO c ed f con la IV della superficie (soglie dell'ADDENDUM-1, non cambiate)
+IV superficie alla domenica: 2018-01-07 → 2026-11-15 (463 settimane); quintile a 52 sett. dal 2018-12-30
+c5 (ADDENDUM)          op  62 · IS  25 · OOS  37 · lati IS {2: 25} OOS {2: 37} · tempo 0.62 · con W3.2 0.56
+c1 IV < RV30           op  44 · IS  19 · OOS  25 · lati IS {2: 19} OOS {2: 25} · tempo 0.44 · con W3.2 0.48
+c3 quintile basso      op  32 · IS   9 · OOS  23 · lati IS {2: 9} OOS {2: 23} · tempo 0.33 · con W3.2 0.69
+f ≥ 1,4 (ADDENDUM)     op  79 · IS  35 · OOS  44 · lati IS {1: 34, -1: 1} OOS {1: 44} · tempo 0.79 · con W3.2 0.56
+f ≥ 1,3                op  86 · IS  40 · OOS  46 · lati IS {1: 39, -1: 1} OOS {1: 45, -1: 1} · tempo 0.85 · con W3.2 0.53
+f ≥ 1,5                op  73 · IS  32 · OOS  41 · lati IS {1: 31, -1: 1} OOS {1: 41} · tempo 0.72 · con W3.2 0.55
+Rapporto cono/costo con la superficie: call mediana 1.50 (≥1 nel 92%), put mediana 0.70 (≥1 nel 6%)
+c giudicabile (IS ≥ 20): sì · f con ≥ 20 per metà: sì
+
+== RIFERIMENTI
+-- dal 2018
+W3.2 intera                                241,439 $ CAGR +43.1% DD -37.3% op  22 vinc  77% PF  8.29 pegg -25.1% serie -27.5% s2m   86,083
+W3.2 a metà                                 57,961 $ CAGR +21.9% DD -22.6% op  22 vinc  77% PF  8.29 pegg -12.5% serie -14.0% s2m   32,645
+Liquidità                                   10,000 $ CAGR  +0.0% DD   0.0% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+Buy & hold                                  43,903 $ CAGR +18.1% DD -81.2% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+B0                                          49,712 $ CAGR +19.8% DD -12.8% op  22 vinc  73% PF  8.40 pegg  -5.0% serie  -8.6% s2m   26,883
+-- dal 2021
+W3.2 intera                                 84,330 $ CAGR +43.6% DD -21.1% op  13 vinc  92% PF 59.15 pegg  -4.1% serie  -4.1% s2m   36,249
+W3.2 a metà                                 31,218 $ CAGR +21.3% DD -11.9% op  13 vinc  92% PF 59.15 pegg  -2.1% serie  -2.1% s2m   19,706
+Liquidità                                   10,000 $ CAGR  +0.0% DD   0.0% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+Buy & hold                                  20,819 $ CAGR +13.3% DD -76.6% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+B0                                          31,134 $ CAGR +21.3% DD  -9.8% op  13 vinc  85% PF 16.87 pegg  -5.0% serie  -5.0% s2m   19,597
+-- IS 2018–21
+W3.2 intera                                 54,910 $ CAGR +53.1% DD -37.3% op  12 vinc  67% PF  5.60 pegg -25.1% serie -27.5% s2m   21,046
+W3.2 a metà                                 26,404 $ CAGR +27.5% DD -22.6% op  12 vinc  67% PF  5.60 pegg -12.5% serie -14.0% s2m   15,429
+Liquidità                                   10,000 $ CAGR  +0.0% DD   0.0% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+Buy & hold                                  33,696 $ CAGR +35.5% DD -81.2% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+B0                                          22,914 $ CAGR +23.0% DD -12.8% op  12 vinc  67% PF  6.90 pegg  -5.0% serie  -8.6% s2m   13,094
+-- OOS 2022–26
+W3.2 intera                                 43,970 $ CAGR +35.4% DD -21.1% op  10 vinc  90% PF 40.28 pegg  -4.1% serie  -4.1% s2m   20,473
+W3.2 a metà                                 21,951 $ CAGR +17.4% DD -11.9% op  10 vinc  90% PF 40.28 pegg  -2.1% serie  -2.1% s2m   14,529
+Liquidità                                   10,000 $ CAGR  +0.0% DD   0.0% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+Buy & hold                                  13,029 $ CAGR  +5.6% DD -66.9% op   0 vinc    — PF     — pegg      — serie  +0.0% s2m   10,000
+B0                                          21,695 $ CAGR +17.2% DD  -9.8% op  10 vinc  80% PF 11.64 pegg  -5.0% serie  -5.0% s2m   13,656
+
+== F1 · struttura (scadenza × prezzo d'esercizio), uscite come B0
+-- dal 2018
+F1 14g 5% dentro                            27,337 $ CAGR +12.0% DD  -9.9% op  22 vinc  73% PF  6.00 pegg  -5.0% serie  -7.1% s2m   19,201
+F1 14g alla pari                            47,572 $ CAGR +19.2% DD -13.7% op  22 vinc  64% PF  7.12 pegg  -5.0% serie  -8.1% s2m   23,820
+F1 14g 5% fuori                             77,512 $ CAGR +25.9% DD -21.3% op  22 vinc  55% PF  7.01 pegg  -5.0% serie -18.9% s2m   23,984
+F1 14g 10% fuori                            70,492 $ CAGR +24.6% DD -35.2% op  22 vinc  32% PF  5.18 pegg  -5.0% serie -26.2% s2m   14,357
+F1 30g 5% dentro                            35,395 $ CAGR +15.3% DD -10.4% op  22 vinc  73% PF  7.56 pegg  -5.0% serie  -8.5% s2m   22,286
+F1 30g alla pari                            49,712 $ CAGR +19.8% DD -12.8% op  22 vinc  73% PF  8.40 pegg  -5.0% serie  -8.6% s2m   26,883
+F1 30g 5% fuori                             65,738 $ CAGR +23.6% DD -20.5% op  22 vinc  55% PF  6.80 pegg  -5.0% serie -13.6% s2m   28,407
+F1 30g 10% fuori                            74,120 $ CAGR +25.3% DD -25.2% op  22 vinc  50% PF  5.68 pegg  -5.0% serie -14.2% s2m   26,810
+F1 60g 5% dentro                            34,637 $ CAGR +15.0% DD -11.7% op  22 vinc  68% PF  8.41 pegg  -5.0% serie  -7.0% s2m   24,433
+F1 60g alla pari                            39,826 $ CAGR +16.8% DD -14.8% op  22 vinc  64% PF  6.99 pegg  -5.0% serie -10.1% s2m   26,628
+F1 60g 5% fuori                             45,014 $ CAGR +18.4% DD -15.9% op  22 vinc  64% PF  6.60 pegg  -5.0% serie -10.1% s2m   28,640
+F1 60g 10% fuori                            48,580 $ CAGR +19.5% DD -18.3% op  22 vinc  55% PF  5.94 pegg  -5.0% serie -11.0% s2m   28,936
+F1 90g 5% dentro                            32,492 $ CAGR +14.2% DD -11.2% op  22 vinc  64% PF  8.01 pegg  -4.5% serie  -6.5% s2m   23,083
+F1 90g alla pari                            35,954 $ CAGR +15.5% DD -14.3% op  22 vinc  64% PF  6.26 pegg  -4.9% serie  -9.7% s2m   24,799
+F1 90g 5% fuori                             41,790 $ CAGR +17.4% DD -15.8% op  22 vinc  64% PF  6.76 pegg  -5.0% serie -10.0% s2m   27,005
+F1 90g 10% fuori                            45,010 $ CAGR +18.4% DD -18.2% op  22 vinc  59% PF  6.66 pegg  -5.0% serie -10.9% s2m   27,270
+-- dal 2021
+F1 14g 5% dentro                            21,083 $ CAGR +13.5% DD  -7.7% op  13 vinc  77% PF  9.74 pegg  -5.0% serie  -5.0% s2m   14,808
+F1 14g alla pari                            31,896 $ CAGR +21.8% DD -12.7% op  13 vinc  69% PF 10.25 pegg  -5.0% serie  -5.0% s2m   16,931
+F1 14g 5% fuori                             48,058 $ CAGR +30.6% DD -19.0% op  13 vinc  69% PF 10.18 pegg  -5.0% serie  -5.0% s2m   16,578
+F1 14g 10% fuori                            40,912 $ CAGR +27.0% DD -35.2% op  13 vinc  38% PF  6.48 pegg  -5.0% serie -18.6% s2m   10,278
+F1 30g 5% dentro                            25,058 $ CAGR +16.9% DD  -7.1% op  13 vinc  85% PF 20.99 pegg  -3.9% serie  -3.9% s2m   17,298
+F1 30g alla pari                            31,134 $ CAGR +21.3% DD  -9.8% op  13 vinc  85% PF 16.87 pegg  -5.0% serie  -5.0% s2m   19,597
+F1 30g 5% fuori                             36,645 $ CAGR +24.7% DD -12.7% op  13 vinc  69% PF 10.34 pegg  -5.0% serie  -5.0% s2m   18,886
+F1 30g 10% fuori                            39,328 $ CAGR +26.2% DD -19.9% op  13 vinc  62% PF  7.14 pegg  -5.0% serie -14.2% s2m   17,593
+F1 60g 5% dentro                            22,704 $ CAGR +14.9% DD  -7.6% op  13 vinc  85% PF 21.82 pegg  -2.9% serie  -2.9% s2m   16,359
+F1 60g alla pari                            24,325 $ CAGR +16.3% DD -11.3% op  13 vinc  77% PF 13.17 pegg  -4.9% serie  -4.9% s2m   16,648
+F1 60g 5% fuori                             24,936 $ CAGR +16.8% DD -12.0% op  13 vinc  77% PF  9.21 pegg  -5.0% serie  -5.0% s2m   16,041
+F1 60g 10% fuori                            24,443 $ CAGR +16.4% DD -15.0% op  13 vinc  62% PF  6.63 pegg  -5.0% serie  -7.6% s2m   14,795
+F1 90g 5% dentro                            21,737 $ CAGR +14.1% DD  -8.6% op  13 vinc  77% PF 18.72 pegg  -2.9% serie  -2.9% s2m   16,072
+F1 90g alla pari                            22,816 $ CAGR +15.0% DD -12.7% op  13 vinc  77% PF 10.24 pegg  -4.9% serie  -4.9% s2m   15,918
+F1 90g 5% fuori                             24,130 $ CAGR +16.1% DD -13.3% op  13 vinc  77% PF 10.73 pegg  -5.0% serie  -5.0% s2m   16,149
+F1 90g 10% fuori                            24,640 $ CAGR +16.6% DD -15.0% op  13 vinc  69% PF  9.96 pegg  -5.0% serie  -5.0% s2m   15,823
+-- IS 2018–21
+F1 14g 5% dentro                            18,315 $ CAGR +16.3% DD  -9.9% op  12 vinc  75% PF  6.46 pegg  -5.0% serie  -7.1% s2m   13,858
+F1 14g alla pari                            23,726 $ CAGR +24.1% DD -13.7% op  12 vinc  67% PF  7.88 pegg  -5.0% serie  -8.1% s2m   14,994
+F1 14g 5% fuori                             28,463 $ CAGR +29.9% DD -21.3% op  12 vinc  50% PF  7.00 pegg  -5.0% serie -18.9% s2m   15,095
+F1 14g 10% fuori                            32,582 $ CAGR +34.4% DD -28.7% op  12 vinc  42% PF  6.03 pegg  -5.0% serie -26.2% s2m   13,954
+F1 30g 5% dentro                            19,284 $ CAGR +17.8% DD -10.4% op  12 vinc  67% PF  5.66 pegg  -5.0% serie  -8.5% s2m   12,624
+F1 30g alla pari                            22,914 $ CAGR +23.0% DD -12.8% op  12 vinc  67% PF  6.90 pegg  -5.0% serie  -8.6% s2m   13,094
+F1 30g 5% fuori                             26,155 $ CAGR +27.2% DD -20.5% op  12 vinc  50% PF  6.24 pegg  -5.0% serie -13.6% s2m   11,995
+F1 30g 10% fuori                            27,756 $ CAGR +29.1% DD -25.2% op  12 vinc  50% PF  5.90 pegg  -5.0% serie -13.7% s2m   11,156
+F1 60g 5% dentro                            18,640 $ CAGR +16.9% DD -11.7% op  12 vinc  58% PF  5.98 pegg  -5.0% serie  -7.0% s2m   13,542
+F1 60g alla pari                            20,380 $ CAGR +19.5% DD -14.8% op  12 vinc  50% PF  5.62 pegg  -5.0% serie -10.1% s2m   14,262
+F1 60g 5% fuori                             22,123 $ CAGR +22.0% DD -15.9% op  12 vinc  50% PF  5.69 pegg  -5.0% serie -10.1% s2m   14,946
+F1 60g 10% fuori                            23,802 $ CAGR +24.2% DD -18.3% op  12 vinc  50% PF  5.45 pegg  -5.0% serie -11.0% s2m   14,919
+F1 90g 5% dentro                            17,243 $ CAGR +14.6% DD -11.2% op  12 vinc  50% PF  5.40 pegg  -4.5% serie  -6.5% s2m   12,849
+F1 90g alla pari                            18,409 $ CAGR +16.5% DD -14.3% op  12 vinc  50% PF  4.98 pegg  -4.5% serie  -9.7% s2m   13,295
+F1 90g 5% fuori                             20,293 $ CAGR +19.4% DD -15.8% op  12 vinc  50% PF  5.50 pegg  -4.8% serie -10.0% s2m   13,709
+F1 90g 10% fuori                            21,228 $ CAGR +20.7% DD -18.2% op  12 vinc  50% PF  5.34 pegg  -5.0% serie -10.9% s2m   13,564
+-- OOS 2022–26
+F1 14g 5% dentro                            14,926 $ CAGR  +8.5% DD  -7.7% op  10 vinc  70% PF  5.34 pegg  -5.0% serie  -5.0% s2m   11,218
+F1 14g alla pari                            20,050 $ CAGR +15.3% DD -12.7% op  10 vinc  60% PF  6.28 pegg  -5.0% serie  -5.0% s2m   11,298
+F1 14g 5% fuori                             27,232 $ CAGR +22.7% DD -19.0% op  10 vinc  60% PF  7.02 pegg  -5.0% serie  -5.0% s2m   10,058
+F1 14g 10% fuori                            21,636 $ CAGR +17.1% DD -35.2% op  10 vinc  20% PF  4.49 pegg  -5.0% serie -18.6% s2m    6,884
+F1 30g 5% dentro                            18,354 $ CAGR +13.2% DD  -7.1% op  10 vinc  80% PF 13.91 pegg  -3.9% serie  -3.9% s2m   13,220
+F1 30g alla pari                            21,695 $ CAGR +17.2% DD  -9.8% op  10 vinc  80% PF 11.64 pegg  -5.0% serie  -5.0% s2m   13,656
+F1 30g 5% fuori                             25,134 $ CAGR +20.7% DD -12.7% op  10 vinc  60% PF  7.63 pegg  -5.0% serie  -5.0% s2m   12,954
+F1 30g 10% fuori                            26,704 $ CAGR +22.2% DD -19.9% op  10 vinc  50% PF  5.44 pegg  -5.0% serie -14.2% s2m   11,946
+F1 60g 5% dentro                            18,582 $ CAGR +13.5% DD  -7.3% op  10 vinc  80% PF 16.61 pegg  -2.9% serie  -2.9% s2m   13,389
+F1 60g alla pari                            19,542 $ CAGR +14.7% DD -11.3% op  10 vinc  80% PF 10.11 pegg  -4.9% serie  -4.9% s2m   13,374
+F1 60g 5% fuori                             20,347 $ CAGR +15.6% DD -12.0% op  10 vinc  80% PF  8.33 pegg  -5.0% serie  -5.0% s2m   13,089
+F1 60g 10% fuori                            20,410 $ CAGR +15.7% DD -15.0% op  10 vinc  60% PF  6.78 pegg  -5.0% serie  -7.6% s2m   12,353
+F1 90g 5% dentro                            18,843 $ CAGR +13.8% DD  -8.6% op  10 vinc  80% PF 16.47 pegg  -2.9% serie  -2.9% s2m   13,933
+F1 90g alla pari                            19,530 $ CAGR +14.7% DD -12.7% op  10 vinc  80% PF  8.72 pegg  -4.9% serie  -4.9% s2m   13,626
+F1 90g 5% fuori                             20,594 $ CAGR +15.9% DD -13.3% op  10 vinc  80% PF  9.22 pegg  -5.0% serie  -5.0% s2m   13,783
+F1 90g 10% fuori                            21,203 $ CAGR +16.6% DD -15.0% op  10 vinc  70% PF  9.50 pegg  -5.0% serie  -5.0% s2m   13,616
+
+== F2 · uscite sul contratto di B0
+-- dal 2018
+F2 U0 come B0                               49,712 $ CAGR +19.8% DD -12.8% op  22 vinc  73% PF  8.40 pegg  -5.0% serie  -8.6% s2m   26,883
+F2 U1 vendita a 2×                          20,819 $ CAGR  +8.6% DD -10.2% op  23 vinc  74% PF  4.29 pegg  -5.0% serie  -8.6% s2m   16,841
+F2 U2 vendita a 3×                          28,288 $ CAGR +12.4% DD -12.8% op  22 vinc  73% PF  5.49 pegg  -5.0% serie  -8.6% s2m   20,790
+F2 U3 metà a 2×                             32,736 $ CAGR +14.3% DD -10.2% op  22 vinc  73% PF  6.23 pegg  -5.0% serie  -8.6% s2m   21,338
+F2 U4 7 giorni prima                        29,104 $ CAGR +12.8% DD -13.3% op  22 vinc  64% PF  5.47 pegg  -5.0% serie  -8.6% s2m   18,659
+F2 U5 un rinnovo                            74,800 $ CAGR +25.4% DD -16.9% op  36 vinc  64% PF  5.02 pegg  -5.0% serie  -8.6% s2m   39,992
+-- dal 2021
+F2 U0 come B0                               31,134 $ CAGR +21.3% DD  -9.8% op  13 vinc  85% PF 16.87 pegg  -5.0% serie  -5.0% s2m   19,597
+F2 U1 vendita a 2×                          18,080 $ CAGR +10.6% DD  -5.3% op  14 vinc  86% PF  9.31 pegg  -5.0% serie  -5.0% s2m   15,211
+F2 U2 vendita a 3×                          24,991 $ CAGR +16.8% DD  -9.8% op  13 vinc  85% PF 13.36 pegg  -5.0% serie  -5.0% s2m   18,367
+F2 U3 metà a 2×                             23,899 $ CAGR +15.9% DD  -7.6% op  13 vinc  85% PF 12.73 pegg  -5.0% serie  -5.0% s2m   16,976
+F2 U4 7 giorni prima                        22,527 $ CAGR +14.8% DD  -6.5% op  13 vinc  77% PF 10.43 pegg  -3.7% serie  -3.7% s2m   15,584
+F2 U5 un rinnovo                            33,047 $ CAGR +22.5% DD -12.8% op  23 vinc  65% PF  4.70 pegg  -5.0% serie  -8.2% s2m   20,076
+-- IS 2018–21
+F2 U0 come B0                               22,914 $ CAGR +23.0% DD -12.8% op  12 vinc  67% PF  6.90 pegg  -5.0% serie  -8.6% s2m   13,094
+F2 U1 vendita a 2×                          14,345 $ CAGR  +9.4% DD -10.2% op  12 vinc  67% PF  3.39 pegg  -5.0% serie  -8.6% s2m   11,604
+F2 U2 vendita a 3×                          15,712 $ CAGR +12.0% DD -12.8% op  12 vinc  67% PF  4.03 pegg  -5.0% serie  -8.6% s2m   12,469
+F2 U3 metà a 2×                             18,336 $ CAGR +16.4% DD -10.2% op  12 vinc  67% PF  5.15 pegg  -5.0% serie  -8.6% s2m   12,635
+F2 U4 7 giorni prima                        18,757 $ CAGR +17.0% DD -13.3% op  12 vinc  58% PF  5.31 pegg  -5.0% serie  -8.6% s2m   12,678
+F2 U5 un rinnovo                            31,269 $ CAGR +33.0% DD -16.9% op  18 vinc  67% PF  6.00 pegg  -5.0% serie  -8.6% s2m   17,625
+-- OOS 2022–26
+F2 U0 come B0                               21,695 $ CAGR +17.2% DD  -9.8% op  10 vinc  80% PF 11.64 pegg  -5.0% serie  -5.0% s2m   13,656
+F2 U1 vendita a 2×                          14,513 $ CAGR  +7.9% DD  -5.3% op  11 vinc  82% PF  6.23 pegg  -5.0% serie  -5.0% s2m   12,664
+F2 U2 vendita a 3×                          18,004 $ CAGR +12.8% DD  -9.8% op  10 vinc  80% PF  8.68 pegg  -5.0% serie  -5.0% s2m   13,292
+F2 U3 metà a 2×                             17,854 $ CAGR +12.6% DD  -7.6% op  10 vinc  80% PF  8.57 pegg  -5.0% serie  -5.0% s2m   12,890
+F2 U4 7 giorni prima                        15,517 $ CAGR  +9.4% DD  -6.5% op  10 vinc  70% PF  5.78 pegg  -3.7% serie  -3.7% s2m   11,477
+F2 U5 un rinnovo                            23,922 $ CAGR +19.5% DD -12.8% op  18 vinc  61% PF  4.14 pegg  -5.0% serie  -8.2% s2m   14,532
+
+== F3 · segnali indipendenti (conto separato per segnale)
+-- dal 2018
+F3a tendenza                                18,626 $ CAGR  +7.2% DD -34.9% op 104 vinc  38% PF  1.32 pegg  -5.0% serie -28.8% s2m   10,094
+F3b flusso W3.2 ogni settimana              54,486 $ CAGR +21.0% DD -20.6% op  43 vinc  54% PF  3.30 pegg  -5.0% serie -18.1% s2m   29,228
+F3c volatilità bassa → straddle             13,661 $ CAGR  +3.6% DD -29.3% op  75 vinc  43% PF  1.34 pegg  -5.0% serie -13.7% s2m   10,108
+F3d compressione → straddle                 14,614 $ CAGR  +4.4% DD -16.8% op  33 vinc  55% PF  2.02 pegg  -5.0% serie -10.2% s2m   11,228
+F3e dopo cascata → call                      9,891 $ CAGR  -0.1% DD -29.8% op  19 vinc  42% PF  1.05 pegg  -5.0% serie -17.2% s2m    8,056
+F3f cono ≥ 1,4 × costo                      45,072 $ CAGR +18.5% DD -41.6% op  87 vinc  40% PF  1.91 pegg  -5.0% serie -36.3% s2m   23,782
+Rif. call sempre                            42,225 $ CAGR +17.6% DD -43.9% op 106 vinc  42% PF  1.71 pegg  -5.0% serie -28.5% s2m   22,279
+Rif. straddle sempre                        16,601 $ CAGR  +5.9% DD -23.5% op 106 vinc  42% PF  1.34 pegg  -5.0% serie -13.7% s2m   11,229
+-- dal 2021
+F3a tendenza                                13,051 $ CAGR  +4.6% DD -33.6% op  69 vinc  39% PF  1.22 pegg  -5.0% serie -15.5% s2m    8,122
+F3b flusso W3.2 ogni settimana              25,092 $ CAGR +16.9% DD -20.4% op  28 vinc  50% PF  2.82 pegg  -5.0% serie -18.1% s2m   15,136
+F3c volatilità bassa → straddle             10,387 $ CAGR  +0.7% DD -29.3% op  51 vinc  39% PF  1.10 pegg  -4.4% serie -13.7% s2m    7,801
+F3d compressione → straddle                 14,870 $ CAGR  +7.0% DD  -9.5% op  19 vinc  63% PF  3.75 pegg  -3.7% serie  -6.7% s2m   11,732
+F3e dopo cascata → call                      8,669 $ CAGR  -2.4% DD -29.8% op   9 vinc  33% PF  0.52 pegg  -5.0% serie -17.2% s2m    7,708
+F3f cono ≥ 1,4 × costo                      16,982 $ CAGR  +9.4% DD -41.6% op  55 vinc  34% PF  1.59 pegg  -5.0% serie -36.3% s2m    8,960
+Rif. call sempre                            18,471 $ CAGR +11.0% DD -43.9% op  70 vinc  41% PF  1.54 pegg  -5.0% serie -28.5% s2m    9,746
+Rif. straddle sempre                        12,971 $ CAGR  +4.5% DD -23.5% op  70 vinc  41% PF  1.22 pegg  -5.0% serie -13.7% s2m    8,904
+-- IS 2018–21
+F3a tendenza                                12,860 $ CAGR  +6.5% DD -34.9% op  47 vinc  34% PF  1.33 pegg  -5.0% serie -28.8% s2m    7,517
+F3b flusso W3.2 ogni settimana              28,326 $ CAGR +29.7% DD -20.6% op  18 vinc  67% PF  5.25 pegg  -5.0% serie  -9.8% s2m   16,019
+F3c volatilità bassa → straddle             12,690 $ CAGR  +6.1% DD -15.3% op  30 vinc  47% PF  1.70 pegg  -5.0% serie  -9.3% s2m    9,996
+F3d compressione → straddle                 10,032 $ CAGR  +0.1% DD -16.8% op  16 vinc  44% PF  1.07 pegg  -5.0% serie -10.2% s2m    8,364
+F3e dopo cascata → call                     11,560 $ CAGR  +3.7% DD -20.1% op  14 vinc  50% PF  1.52 pegg  -5.0% serie -14.3% s2m    9,415
+F3f cono ≥ 1,4 × costo                      26,814 $ CAGR +28.0% DD -23.2% op  39 vinc  46% PF  2.23 pegg  -5.0% serie -14.3% s2m   14,754
+Rif. call sempre                            22,620 $ CAGR +22.6% DD -31.1% op  48 vinc  42% PF  1.77 pegg  -5.0% serie -26.2% s2m   12,447
+Rif. straddle sempre                        11,769 $ CAGR  +4.2% DD -15.6% op  48 vinc  42% PF  1.30 pegg  -4.8% serie -10.2% s2m    9,085
+-- OOS 2022–26
+F3a tendenza                                14,947 $ CAGR  +8.6% DD -31.6% op  57 vinc  40% PF  1.35 pegg  -5.0% serie -15.5% s2m    9,302
+F3b flusso W3.2 ogni settimana              19,236 $ CAGR +14.3% DD -20.4% op  25 vinc  44% PF  2.31 pegg  -5.0% serie -18.1% s2m   11,603
+F3c volatilità bassa → straddle             10,801 $ CAGR  +1.6% DD -29.3% op  45 vinc  40% PF  1.16 pegg  -4.4% serie -13.7% s2m    8,112
+F3d compressione → straddle                 14,568 $ CAGR  +8.0% DD  -9.5% op  17 vinc  65% PF  3.79 pegg  -3.7% serie  -6.7% s2m   11,494
+F3e dopo cascata → call                      8,556 $ CAGR  -3.1% DD -25.4% op   5 vinc  20% PF  0.18 pegg  -5.0% serie -17.2% s2m    8,574
+F3f cono ≥ 1,4 × costo                      16,809 $ CAGR +11.2% DD -41.6% op  48 vinc  35% PF  1.66 pegg  -5.0% serie -36.3% s2m    8,869
+Rif. call sempre                            18,667 $ CAGR +13.6% DD -35.9% op  58 vinc  41% PF  1.65 pegg  -5.0% serie -28.5% s2m    9,849
+Rif. straddle sempre                        14,106 $ CAGR  +7.3% DD -23.5% op  58 vinc  43% PF  1.38 pegg  -5.0% serie -13.7% s2m    9,684
+
+== F4 e spread a debito (descrittivi)
+-- dal 2018
+F4 W3.2 metà su perp + protezione 10% fuori    29,829 $ CAGR +13.1% DD -33.6% op  22 vinc  59% PF  5.91 pegg -10.0% serie -11.6% s2m   18,011
+Spread a debito: alla pari − 15% fuori      33,766 $ CAGR +14.7% DD -11.0% op  22 vinc  73% PF  6.87 pegg  -5.0% serie  -8.3% s2m   24,130
+Spread a debito: alla pari − 20% fuori      36,872 $ CAGR +15.8% DD -11.2% op  22 vinc  73% PF  7.10 pegg  -5.0% serie  -8.3% s2m   24,484
+-- dal 2021
+F4 W3.2 metà su perp + protezione 10% fuori    21,195 $ CAGR +13.6% DD -13.4% op  13 vinc  69% PF 10.68 pegg  -3.7% serie  -3.7% s2m   14,476
+Spread a debito: alla pari − 15% fuori      26,651 $ CAGR +18.1% DD  -8.6% op  13 vinc  85% PF 18.07 pegg  -5.0% serie  -5.0% s2m   19,045
+Spread a debito: alla pari − 20% fuori      28,369 $ CAGR +19.4% DD  -9.2% op  13 vinc  85% PF 17.11 pegg  -5.0% serie  -5.0% s2m   18,838
+-- IS 2018–21
+F4 W3.2 metà su perp + protezione 10% fuori    17,710 $ CAGR +15.4% DD -33.6% op  12 vinc  50% PF  4.74 pegg -10.0% serie -11.6% s2m   11,023
+Spread a debito: alla pari − 15% fuori      16,364 $ CAGR +13.1% DD -11.0% op  12 vinc  67% PF  4.38 pegg  -5.0% serie  -8.3% s2m   12,832
+Spread a debito: alla pari − 20% fuori      16,953 $ CAGR +14.1% DD -11.2% op  12 vinc  67% PF  4.63 pegg  -5.0% serie  -8.3% s2m   12,869
+-- OOS 2022–26
+F4 W3.2 metà su perp + protezione 10% fuori    16,843 $ CAGR +11.2% DD -13.4% op  10 vinc  70% PF  9.03 pegg  -3.7% serie  -3.7% s2m   11,998
+Spread a debito: alla pari − 15% fuori      20,635 $ CAGR +16.0% DD  -8.6% op  10 vinc  80% PF 13.52 pegg  -5.0% serie  -5.0% s2m   14,746
+Spread a debito: alla pari − 20% fuori      21,749 $ CAGR +17.2% DD  -9.2% op  10 vinc  80% PF 12.93 pegg  -5.0% serie  -5.0% s2m   14,442
+
+== SCELTA SOLO SU IS (massimo capitale finale IS con DD IS non peggiore di B0 di oltre 3 punti) E GIUDIZIO OOS
+F1: scelta su IS = F1 14g alla pari (IS 23,726 $, DD -13.7%; B0 IS 22,914 $, DD -12.8%)
+F1 · F1 14g alla pari: OOS 20,050 $ DD -12.7% contro B0 21,695 $ DD -9.8% → (1) no · (2) senza le 2 migliori 11,298 contro 13,656 no · (3) vicini 1/3 no · (5) p 0.714, Holm ×15 = 1.000 no → non migliore di B0
+F2: scelta su IS = F2 U0 come B0 (IS 22,914 $, DD -12.8%)
+F2: la cella scelta è B0 stessa → nessun cambio d'uscita proposto
+
+== F3 · placebo (1.000 estrazioni di lunedì a caso in OOS, stesso numero e stessa sequenza di lati, stessa durata)
+F3a tendenza: reale 14,947 $ · placebo mediana 13,528 $, 95° pct 25,420 $ · p = 0.410
+F3c volatilità bassa → straddle: reale 10,801 $ · placebo mediana 9,983 $, 95° pct 13,383 $ · p = 0.342
+F3f cono ≥ 1,4 × costo: reale 16,809 $ · placebo mediana 11,598 $, 95° pct 20,963 $ · p = 0.137
+Rif. call sempre: reale 18,667 $ · placebo mediana 11,411 $, 95° pct 19,881 $ · p = 0.070
+
+== F3 · giudizio OOS (migliore di B0: 5 criteri; utile: OOS > 10.000 $, PF ≥ 1,2, punti 2–5, correlazione settimanale con B0 < 0,5)
+F3 · F3a tendenza: OOS 14,947 $ DD -31.6% contro B0 21,695 $ DD -9.8% → (1) no · (2) senza le 2 migliori 9,302 contro 13,656 no · (3) vicini 0/4 no · (4) op IS/OOS 47/57, placebo p 0.41 no · (5) p 0.410, Holm ×6 = 1.000 no → non migliore di B0
+   utile? OOS 14,947 $ · PF 1.35 · senza le 2 migliori 9,302 $ · vicini sopra 10.000 4/4 · placebo p 0.410 (Holm ×6 1.000) · corr. B0 0.45 → non utile
+F3 · F3c volatilità bassa → straddle: OOS 10,801 $ DD -29.3% contro B0 21,695 $ DD -9.8% → (1) no · (2) senza le 2 migliori 8,112 contro 13,656 no · (3) vicini 0/4 no · (4) op IS/OOS 30/45, placebo p 0.342 no · (5) p 0.342, Holm ×6 = 1.000 no → non migliore di B0
+   utile? OOS 10,801 $ · PF 1.16 · senza le 2 migliori 8,112 $ · vicini sopra 10.000 2/4 · placebo p 0.342 (Holm ×6 1.000) · corr. B0 0.22 → non utile
+F3 · F3f cono ≥ 1,4 × costo: OOS 16,809 $ DD -41.6% contro B0 21,695 $ DD -9.8% → (1) no · (2) senza le 2 migliori 8,869 contro 13,656 no · (3) vicini 0/4 no · (4) op IS/OOS 39/48, placebo p 0.137 no · (5) p 0.137, Holm ×6 = 0.822 no → non migliore di B0
+   utile? OOS 16,809 $ · PF 1.66 · senza le 2 migliori 8,869 $ · vicini sopra 10.000 3/4 · placebo p 0.137 (Holm ×6 0.822) · corr. B0 0.10 → non utile
+   riserva ADDENDUM: f contro 'call sempre' in OOS: 16,809 $ contro 18,667 $ → f NON la batte
+
+== DIAGNOSI (dal 2018)
+-- B0: 22 operazioni chiuse
+   migliori: 2020-12-14 +1 +39.1%; 2024-02-12 +1 +26.2%; 2020-10-26 +1 +25.9%
+   peggiori: 2020-03-16 -1 -5.0%; 2025-12-01 -1 -5.0%; 2018-01-08 +1 -4.8%
+   per anno (rendimento composto delle operazioni): 2018:-7% 2019:+4% 2020:+65% 2021:+43% 2022:+20% 2023:+12% 2024:+27% 2025:-1% 2026:+22%
+   per lato: put n 6 +32% · call n 16 +257%
+   per regime di IV all'ingresso (terzili 2018–26): IV alta n 8 +31% · IV bassa n 8 +79% · IV media n 6 +100%
+   prezzo d'ingresso non da 'scambi': 0% · quota media di valutazioni interpolate/estese: 14% · giorni alla scadenza: mediana 25 (min 11, max 39)
+-- F1 14g alla pari: 22 operazioni chiuse
+   migliori: 2026-05-25 -1 +40.3%; 2020-10-26 +1 +27.9%; 2020-12-14 +1 +23.7%
+   peggiori: 2020-03-16 -1 -5.0%; 2024-09-23 +1 -5.0%; 2025-12-01 -1 -5.0%
+   per anno (rendimento composto delle operazioni): 2018:-4% 2019:+1% 2020:+54% 2021:+59% 2022:+14% 2023:+11% 2024:-1% 2025:+3% 2026:+40%
+   per lato: put n 6 +47% · call n 16 +191%
+   per regime di IV all'ingresso (terzili 2018–26): IV alta n 8 +52% · IV bassa n 8 +66% · IV media n 6 +70%
+   prezzo d'ingresso non da 'scambi': 0% · quota media di valutazioni interpolate/estese: 8% · giorni alla scadenza: mediana 11 (min 4, max 18)
+-- F2 U0 come B0: 22 operazioni chiuse
+   migliori: 2020-12-14 +1 +39.1%; 2024-02-12 +1 +26.2%; 2020-10-26 +1 +25.9%
+   peggiori: 2020-03-16 -1 -5.0%; 2025-12-01 -1 -5.0%; 2018-01-08 +1 -4.8%
+   per anno (rendimento composto delle operazioni): 2018:-7% 2019:+4% 2020:+65% 2021:+43% 2022:+20% 2023:+12% 2024:+27% 2025:-1% 2026:+22%
+   per lato: put n 6 +32% · call n 16 +257%
+   per regime di IV all'ingresso (terzili 2018–26): IV alta n 8 +31% · IV bassa n 8 +79% · IV media n 6 +100%
+   prezzo d'ingresso non da 'scambi': 0% · quota media di valutazioni interpolate/estese: 14% · giorni alla scadenza: mediana 25 (min 11, max 39)
+-- F3a tendenza: 104 operazioni chiuse
+   migliori: 2019-04-22 +1 +37.6%; 2018-10-29 -1 +27.2%; 2024-10-28 +1 +24.7%
+   peggiori: 2018-01-08 +1 -5.0%; 2018-01-29 +1 -5.0%; 2018-03-05 +1 -5.0%
+   per anno (rendimento composto delle operazioni): 2018:-11% 2019:+1% 2020:+55% 2021:-2% 2022:+3% 2023:+19% 2024:+41% 2025:-20% 2026:-7%
+   per lato: put n 41 -18% · call n 63 +114%
+   per regime di IV all'ingresso (terzili 2018–26): IV alta n 35 -26% · IV bassa n 34 +60% · IV media n 35 +49%
+   prezzo d'ingresso non da 'scambi': 1% · quota media di valutazioni interpolate/estese: 9% · giorni alla scadenza: mediana 25 (min 18, max 39)
+-- F3c volatilità bassa → straddle: 75 operazioni chiuse
+   migliori: 2023-01-02 +2 +16.1%; 2019-04-29 +2 +15.5%; 2026-08-03 +2 +13.8%
+   peggiori: 2018-01-22 +2 -5.0%; 2024-08-12 +2 -4.4%; 2025-09-01 +2 -4.3%
+   per anno (rendimento composto delle operazioni): 2018:-10% 2019:+35% 2020:+8% 2021:-1% 2022:+5% 2023:+19% 2024:-10% 2025:-8% 2026:+1%
+   per lato: straddle n 75 +36%
+   per regime di IV all'ingresso (terzili 2018–26): IV alta n 19 -7% · IV bassa n 30 +46% · IV media n 26 -0%
+   prezzo d'ingresso non da 'scambi': 1% · quota media di valutazioni interpolate/estese: 8% · giorni alla scadenza: mediana 25 (min 4, max 39)
+-- F3f cono ≥ 1,4 × costo: 87 operazioni chiuse
+   migliori: 2023-01-02 +1 +46.1%; 2026-08-03 +1 +36.5%; 2019-04-29 +1 +36.2%
+   peggiori: 2018-01-08 +1 -5.0%; 2018-01-29 +1 -5.0%; 2018-04-30 +1 -5.0%
+   per anno (rendimento composto delle operazioni): 2018:-21% 2019:+125% 2020:+48% 2021:+1% 2022:-24% 2023:+98% 2024:+23% 2025:-15% 2026:+13%
+   per lato: put n 1 +1% · call n 86 +368%
+   per regime di IV all'ingresso (terzili 2018–26): IV alta n 23 -37% · IV bassa n 33 +192% · IV media n 31 +160%
+   prezzo d'ingresso non da 'scambi': 1% · quota media di valutazioni interpolate/estese: 9% · giorni alla scadenza: mediana 25 (min 11, max 46)
+
+== SENSIBILITÀ AI COSTI (differenza denaro-lettera per lato; commissioni invariate), dal 2018 e OOS
+B0                                 0%: 54,588 / 22,574 $ · 3%: 49,712 / 21,695 $ · 6%: 45,481 / 20,894 $
+F3a tendenza                       0%: 22,056 / 16,463 $ · 3%: 18,626 / 14,947 $ · 6%: 15,869 / 13,640 $
+F3c volatilità bassa → straddle    0%: 15,429 / 11,599 $ · 3%: 13,661 / 10,801 $ · 6%: 12,174 / 10,097 $
+F3f cono ≥ 1,4 × costo             0%: 53,213 / 18,235 $ · 3%: 45,072 / 16,809 $ · 6%: 38,504 / 15,560 $
+
+B0, giorni alla scadenza per operazione: 2018-01-08: 18, 2018-04-30: 25, 2018-10-15: 11, 2019-05-13: 18, 2020-02-10: 18, 2020-03-16: 39, 2020-05-04: 25, 2020-10-26: 32, 2020-12-14: 18, 2021-02-01: 25, 2021-08-02: 25, 2021-10-04: 25, 2022-01-03: 25, 2022-08-15: 18, 2023-01-23: 32, 2023-10-23: 32, 2024-02-12: 18, 2024-09-23: 32, 2025-04-28: 32, 2025-12-01: 25, 2026-05-25: 32, 2026-08-24: 32, 2026-11-16: 39
+
+Qualità dei prezzi usati (tutte le chiamate, valutazioni giornaliere comprese): scambi 93.7%, interpolata 6.3%
+
+== DESCRITTIVI AGGIUNTIVI (op_extra.py, dopo i verdetti): scelta della scadenza
+
+== B0 con il venerdì più vicino a 30 giorni (regola) contro il più vicino fra quelli ad almeno 21 giorni
+-- dal 2018
+B0                                          49,712 $ CAGR +19.8% DD -12.8% op  22 vinc  73% PF  8.40 pegg  -5.0% serie  -8.6% s2m   26,883
+B0 scadenza ≥ 21 giorni                     57,277 $ CAGR +21.7% DD -12.8% op  22 vinc  73% PF  9.71 pegg  -5.0% serie  -7.7% s2m   34,152
+Spread −20% con scadenza ≥ 21 giorni        32,895 $ CAGR +14.3% DD  -9.2% op  22 vinc  73% PF  6.98 pegg  -5.0% serie  -7.4% s2m   23,011
+-- dal 2021
+B0                                          31,134 $ CAGR +21.3% DD  -9.8% op  13 vinc  85% PF 16.87 pegg  -5.0% serie  -5.0% s2m   19,597
+B0 scadenza ≥ 21 giorni                     29,856 $ CAGR +20.4% DD  -9.8% op  13 vinc  85% PF 16.27 pegg  -5.0% serie  -5.0% s2m   18,754
+Spread −20% con scadenza ≥ 21 giorni        24,773 $ CAGR +16.7% DD  -9.2% op  13 vinc  85% PF 14.80 pegg  -5.0% serie  -5.0% s2m   17,330
+-- IS 2018–21
+B0                                          22,914 $ CAGR +23.0% DD -12.8% op  12 vinc  67% PF  6.90 pegg  -5.0% serie  -8.6% s2m   13,094
+B0 scadenza ≥ 21 giorni                     27,531 $ CAGR +28.8% DD -12.8% op  12 vinc  67% PF  9.01 pegg  -5.0% serie  -7.7% s2m   17,450
+Spread −20% con scadenza ≥ 21 giorni        17,320 $ CAGR +14.7% DD  -8.4% op  12 vinc  67% PF  5.23 pegg  -5.0% serie  -7.4% s2m   13,654
+-- OOS 2022–26
+B0                                          21,695 $ CAGR +17.2% DD  -9.8% op  10 vinc  80% PF 11.64 pegg  -5.0% serie  -5.0% s2m   13,656
+B0 scadenza ≥ 21 giorni                     20,805 $ CAGR +16.2% DD  -9.8% op  10 vinc  80% PF 11.05 pegg  -5.0% serie  -5.0% s2m   13,068
+Spread −20% con scadenza ≥ 21 giorni        18,992 $ CAGR +14.0% DD  -9.2% op  10 vinc  80% PF 10.61 pegg  -5.0% serie  -5.0% s2m   13,286
+giorni alla scadenza (≥ 21): 2018-01-08: 81, 2018-04-30: 25, 2018-10-15: 74, 2019-05-13: 46, 2020-02-10: 46, 2020-03-16: 39, 2020-05-04: 25, 2020-10-26: 32, 2020-12-14: 46, 2021-02-01: 25, 2021-08-02: 25, 2021-10-04: 25, 2022-01-03: 25, 2022-08-15: 46, 2023-01-23: 32, 2023-10-23: 32, 2024-02-12: 46, 2024-09-23: 32, 2025-04-28: 32, 2025-12-01: 25, 2026-05-25: 32, 2026-08-24: 32, 2026-11-16: 39
