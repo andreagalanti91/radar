@@ -260,7 +260,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(520px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);width:min(520px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -490,10 +490,8 @@ table.grid.pvSR td small{display:block;color:var(--label3);font-size:.68rem;marg
 .wkTools{display:flex;gap:6px;align-items:center;margin-left:auto}
 .wkTools button{font:600 .72rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;cursor:pointer;min-height:34px}
 .wkTools button[aria-pressed="true"]{background:var(--card);color:var(--label);box-shadow:0 1px 2px rgba(16,24,40,.1)}
-#wkChart{height:440px} #wkMacd{height:120px}
-@media (max-width:560px){#wkChart{height:400px}}
 .wkChartCard.full{position:fixed;inset:0;z-index:60;border-radius:0;margin:0!important;padding:14px 14px calc(14px + env(safe-area-inset-bottom));overflow:auto}
-.wkChartCard.full #wkChart{height:calc(100vh - 250px)} .wkChartCard.full #wkMacd{height:140px}
+.wkChartCard.full #gxChart{height:calc(100dvh - 260px)}
 body.noscroll{overflow:hidden}
 /* ---- telefono (≤ 700 px): "un colpo d'occhio per schermata". .mOnly esiste solo sul telefono, .mHide solo da 701 px in su
    (dentro un pannello, .inSheet, torna visibile). Il desktop non cambia. */
@@ -578,7 +576,34 @@ body.noscroll{overflow:hidden}
 .lvAll{margin-top:12px;border:0;border-radius:999px;background:var(--fill);color:var(--tint);font:600 .82rem var(--font);padding:8px 14px;cursor:pointer}
 .lvLeg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.74rem;color:var(--label2)}
 .lvLeg span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap} .lvLeg i{width:12px;height:3px;border-radius:2px;background:var(--c)}
-#lvChart{height:340px} @media (max-width:700px){#lvChart{height:280px}}
+/* Oggi: forbice (intervallo a sinistra, livelli più vicini a destra; uno sotto l'altro su telefono) */
+@media (min-width:900px){.cnGrid.cnF{grid-template-areas:"top lad"}}
+.cn .tapHead a.more{color:var(--tint);font:600 .82rem var(--font);text-decoration:none;white-space:nowrap}
+/* Grafico (solo BTC): candele e volumi, interruttori a pillola scorrevoli nel loro contenitore, riquadro dati, fasce delle zone, tabella */
+.gxTop{align-items:center;margin-bottom:10px} .gxTitle{display:inline-flex;align-items:baseline;gap:8px;min-width:0} .gxTitle b{font:600 1rem var(--font)}
+.gxSw{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;padding:2px 0 8px;margin:0 -2px}
+.gxSw::-webkit-scrollbar{display:none}
+.gxSw button{flex:none;display:inline-flex;align-items:center;gap:6px;font:600 .74rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+.gxSw button i{width:14px;height:3px;border-radius:2px;background:var(--c)}
+.gxSw button i.ds,.gxLeg i.ds{background:repeating-linear-gradient(90deg,var(--c) 0 4px,transparent 4px 7px)}
+.gxLeg i.dt{background:repeating-linear-gradient(90deg,var(--c) 0 2px,transparent 2px 4px)}
+.gxSw button i.zb,.gxLeg i.zb{height:10px;border-radius:2px;background:color-mix(in srgb,var(--c) 30%,transparent)}
+.gxSw button[aria-pressed="false"]{color:var(--label3);background:transparent;border-style:dashed} .gxSw button[aria-pressed="false"] i{opacity:.35}
+.gxData{display:flex;flex-wrap:wrap;gap:2px 12px;min-height:1.3rem;font-size:.76rem;color:var(--label2);font-variant-numeric:tabular-nums;margin-bottom:4px}
+.gxData b{color:var(--label);font-weight:600} .gxData .dt{color:var(--label);font-weight:600} .gxData .pos b{color:var(--green)} .gxData .neg b{color:var(--red)}
+.gxWrap{position:relative} #gxChart{height:440px}
+.gxBands{position:absolute;inset:0;pointer-events:none;z-index:2} .gxBands div{position:absolute;left:0;background:color-mix(in srgb,var(--c) 11%,transparent);border-top:1px solid color-mix(in srgb,var(--c) 30%,transparent);border-bottom:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.gxMsg{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;font-size:.86rem;color:var(--label2);background:color-mix(in srgb,var(--card) 82%,transparent)}
+.gxMsg.err{color:var(--label)} .gxMsgB{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.gxMsg button{font:600 .8rem var(--font);color:var(--tint);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;cursor:pointer}
+.gxMsg .spin{width:18px;height:18px;border-radius:50%;border:2px solid var(--line2);border-top-color:var(--tint);animation:gxs .8s linear infinite;display:block}
+@keyframes gxs{to{transform:rotate(360deg)}}
+.gxLeg{margin-top:8px}
+.gxT .lvL[role="button"],.gxT .lvZ[role="button"]{cursor:pointer} .gxT .lvL[role="button"]:hover{background:var(--fill)}
+.gxT .lvL.on,.gxT .lvZ.on{background:var(--tint-bg);box-shadow:inset 3px 0 0 var(--tint)}
+.gxScroll{margin-top:4px} .gxTbl{min-width:300px}
+.gxNotes{display:grid;gap:8px;margin-top:14px} .gxNotes .foot{margin:0}
+@media (max-width:700px){#gxChart{height:360px} .gxData{font-size:.72rem;gap:1px 9px}}
 /* Oggi · "Contesto" (report.context): tre tessere Mercato / Fed / Dati con icona e colore di stato sobrio */
 .cxTiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
 .cxT{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border-radius:var(--r-tile);background:var(--raise);border:1px solid var(--line);min-width:0}
@@ -623,14 +648,8 @@ body.noscroll{overflow:hidden}
   .track{height:84px;margin:0 8px}
   .track .lab.dn{top:62px}
   .wkMore small{display:none}
-  #wkLeg>span:not(.hov){display:none}
-  #wkLeg{display:block;margin-bottom:4px}
-  #wkLeg:not(.act){display:none}
-  #wkLeg .hov{display:block;margin-left:0;font-size:.72rem;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  #wkChartCard .wkTop>b{display:none}
-  #wkChartCard .wkTools{margin-left:0;width:100%;justify-content:space-between}
-  .wkMacdCap{display:none!important}
-  #wkChart{height:340px} #wkMacd{height:80px}
+  #gxCard .wkTools{margin-left:0;width:100%;justify-content:space-between}
+  #gxChart{height:360px}
   #todaySec>.sh{display:none}
   .app:has(#v-oggi:not([hidden]))>footer{display:none}
   #wkStatSec>.sh small,#wkStatSec>.foot{display:none}
@@ -665,7 +684,6 @@ body.noscroll{overflow:hidden}
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
     <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
-    <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquidazioni</a>
     <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
   </nav>
@@ -731,31 +749,27 @@ body.noscroll{overflow:hidden}
     </div>
   </div>
 
-<!-- ============ GRAFICO: grafico settimanale e scheda "Livelli vicini" (S/R e cluster di liquidazione più vicini) ============ -->
+<!-- ============ GRAFICO (solo BTC): candele e volumi 4h/1D/1W/1M, livelli della mappa unica (report.livelli) con interruttori, tabella completa ============ -->
   <div class="view" id="v-grafico" hidden>
     <div class="section" id="grSec" hidden>
-      <div class="card wkChartCard" id="wkChartCard">
-        <div class="wkTop" style="margin-bottom:8px"><b style="font:600 1rem var(--font)">Grafico settimanale</b>
-          <div class="wkTools"><div class="seg" id="wkRange" role="group" aria-label="Periodo"><button data-v="26">6M</button><button data-v="52">1A</button><button data-v="104">2A</button><button data-v="0" aria-pressed="true">Tutto</button></div>
-          <button id="wkLegB" class="mOnly" type="button">Legenda</button><button id="wkFull" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
-        <div class="wkLeg" id="wkLeg"></div>
-        <div id="wkChart" class="chart" role="img" aria-label="Candele settimanali di BTC con EMA 21, SMA 40, ingresso, trailing e supporti/resistenze"></div>
-        <div class="wkLeg wkMacdCap" style="margin:10px 0 4px"><span>MACD settimanale 8/21/5 · barre = MACD − segnale</span><span class="hov" style="color:var(--label3)">trascina per scorrere · pizzica o rotella per zoom</span></div>
-        <div id="wkMacd" class="chart" role="img" aria-label="Istogramma MACD settimanale 8/21/5"></div>
+      <div class="card wkChartCard gx" id="gxCard">
+        <div class="wkTop gxTop"><span class="gxTitle"><b>BTC</b><span class="cap" id="gxSub"></span></span>
+          <div class="wkTools"><div class="seg" id="gxTf" role="group" aria-label="Intervallo"><button data-v="4h">4h</button><button data-v="1d" aria-pressed="true">1D</button><button data-v="1w">1W</button><button data-v="1m">1M</button></div>
+          <button id="gxLast" type="button" title="Torna all'ultimo prezzo" aria-label="Torna all'ultimo prezzo">⇥</button><button id="gxFull" type="button" aria-pressed="false" title="Schermo intero">⤢ Espandi</button></div></div>
+        <div class="gxSw" id="gxSw" role="group" aria-label="Livelli sul grafico"></div>
+        <div class="gxData" id="gxData" aria-live="off"></div>
+        <div class="gxWrap"><div id="gxChart" class="chart" role="img" aria-label="Candele di BTC con volumi e livelli"></div><div class="gxBands" id="gxBands" aria-hidden="true"></div>
+          <div class="gxMsg" id="gxMsg" hidden></div></div>
+        <div class="lvLeg gxLeg" id="gxLeg"></div>
+        <p class="cxNote" id="gxNote1"></p>
       </div>
-      <button type="button" class="card tapCard" id="lvCard" style="margin-top:12px" hidden aria-haspopup="dialog"></button>
-      <div class="card sr sheetOnly" id="srCard" style="margin-top:12px" hidden>
-        <div class="wkTop"><b style="font:600 1rem var(--font)">Supporti e resistenze</b><span class="cap" id="srSub"></span></div>
-        <div class="srMap" id="srMap" role="img" aria-label="Mappa dei supporti e resistenze rispetto al prezzo"></div>
-        <div class="srTop" id="srTop"></div>
-        <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
-          <p class="foot" id="srFoot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
+      <div class="card gxT" id="gxTblCard" style="margin-top:12px">
+        <div class="tapHead"><b>Tutti i livelli <small id="gxTblN"></small></b></div>
+        <p class="cnCap" id="gxTblSub" style="margin-top:4px"></p>
+        <div class="scroll gxScroll"><div class="gxTbl" id="gxTbl"></div></div>
+        <div id="gxZon"></div>
+        <div class="gxNotes" id="gxNotes"></div>
       </div>
-      <a class="card lqCard sheetOnly" id="lqCard" href="#liquidazioni" style="margin-top:12px" hidden>
-        <div class="wkTop"><b style="font:600 1rem var(--font)">Liquidazioni vicine</b><span class="cap" id="lqCardSub">stima · Binance + OKX</span></div>
-        <div class="srTop" id="lqCardTop" style="margin-top:10px"></div>
-        <div class="wkTop" style="margin-top:10px;align-items:center"><span class="foot" id="lqCardNote" style="margin:0"></span><span class="more">Mappa completa →</span></div>
-      </a>
     </div>
   </div>
 
@@ -882,7 +896,6 @@ body.noscroll{overflow:hidden}
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
   <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
-  <a href="#liquidazioni" data-v="liquidazioni"><svg><use href="#i-liq"/></svg>Liquid.</a>
   <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
 </nav>
@@ -1014,7 +1027,7 @@ function seg(id, onChange) {
   const W = R.weekly; if (!W) return;
   const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
   const mkt = (m, e) => m === "spot" ? (e < 0.995 ? `spot ${Math.round(e * 100)}%` : "spot 1x") : `perp ${e.toFixed(2).replace(".", ",")}x`;
-  $("wkSec").hidden = false; $("grSec").hidden = false;
+  $("wkSec").hidden = false;
   $("wkSub").textContent = `chiusura ${artD("del", fmtD(W.week))} · regime ${W.regime}`;
   const pc1 = x => pct(x, 1);
   const open = W.status === "aperto" || W.status === "uscita", sg = W.side === "short" ? -1 : 1;
@@ -1090,65 +1103,7 @@ function seg(id, onChange) {
   $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
     HT.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}<br><small>${mkt(t.market, t.expo)}</small></td><td>${usd(t.entry_px)}</td>` +
       `<td>${t.reason === "open" ? "aperto" : fmtD(t.exit) + "<br><small>" + usd(t.exit_px) + "</small>"}</td><td>${why[t.reason] || t.reason}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pc1(t.pnl_pct)}</td></tr>`).join("");
-  // --- supporti e resistenze: mappa unica dei livelli (radar/livelli.py); report.levels (radar/levels.py) solo come riserva
-  const LV = SRSRC;
-  if (LV && (LV.supports.length || LV.resistances.length)) {
-    $("srCard").hidden = false;
-    const word = n => n >= 4 ? "forte" : n === 3 ? "media" : "debole";
-    const dots = n => `<span class="sbar" title="forza ${n} su 5"><span><i style="width:${n * 20}%"></i></span>${word(n)}</span>`;
-    const zone = o => o.lo === o.hi ? usd(o.price) : `${usd(o.lo)} – ${usd(o.hi)}`;
-    const dd = o => (o.price / REF.px - 1) * 100;   // distanza dal prezzo di riferimento (live quando c'è)
-    const drawSR = () => {
-    const SR = window.srLevels(REF.px), brk = o => o.broken ? (o.k0 === "s" ? "supporto rotto" : "resistenza rotta") : "";
-    const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}${o.broken ? ` <em class="srBrk">${brk(o)}</em>` : ""}</b>` +
-      (o.strength ? `<small>${pc1(dd(o))} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small>` : `<small>${pc1(dd(o))}${typeof o.prob === "number" ? ` · tocco in 30 g ${o.prob}%` : ""}</small><small>${escS(o.cosa || "")}</small>`) + `</div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
-    $("srTop").innerHTML = tile(SR.res[0], "r") + tile(SR.sup[0], "s");
-    // mappa: ogni zona è una barra sull'asse dei prezzi, alta quanto la sua forza; la linea bianca è il prezzo di oggi
-    const all = SR.sup.concat(SR.res);
-    const mn = Math.min(...all.map(o => o.lo), REF.px) * 0.985, mx = Math.max(...all.map(o => o.hi), REF.px) * 1.015, X = v => (v - mn) / (mx - mn) * 100;
-    const ticks = [mn, (mn + mx) / 2, mx].map((v, i) => `<span class="tk" style="left:${[4, 50, 96][i]}%">${Math.round(v / 1000)}k</span>`).join("");
-    $("srMap").innerHTML = `<div class="ax"></div>` + all.map(o => `<div class="z ${o.k}" style="left:${X(o.lo)}%;width:calc(${X(o.hi) - X(o.lo)}% + 4px);height:${o.strength ? 10 + o.strength * 11 : 32}px" title="${o.k === "r" ? "Resistenza" : "Supporto"} ${usd(o.price)}${o.strength ? " · forza " + word(o.strength) : ""} · ${pc1(dd(o))}"></div>`).join("") +
-      `<div class="now" style="left:${X(REF.px)}%"><b>ora ${usd(REF.px)}</b></div>` + ticks;
-    $("srSub").textContent = `${artD("aggiornati al", fmtD(LV.date))}`;
-    const row = (o, k) => o.strength == null ? `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b><small>${escS(o.cosa || "")}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${typeof o.prob === "number" ? "tocco " + o.prob + "%" : ""}</small></span></div>` : `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
-    const Rs = SR.res, Ss = SR.sup;
-    $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(REF.px)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
-    const nb = all.filter(o => o.broken).length;
-    $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti${nb ? ` · ${nb} ${nb === 1 ? "rotto" : "rotti"} ${artD("dal", fmtD(LV.date))}` : ""}`;
-    };
-    drawSR(); window.onRef(drawSR);
-    if (NEWLV) $("srFoot").textContent = "Stessa mappa della card Livelli in Oggi: minimi e massimi di swing settimanali (estremo delle 5 settimane prima e dopo) attivi per 3 anni e finché una chiusura giornaliera non li rompe, più il minimo delle ultime 5 settimane (non ancora confermato). Probabilità di tocco entro 30 giorni dalla volatilità, non dalla direzione. Contesto, non segnale: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.";
-  }
-  // --- liquidazioni vicine (stima del server, radar/liqmap.py): cluster significativo più vicino sopra e sotto
-  const LQ = R.liqmap;
-  if (LQ && (LQ.nearest_above || LQ.nearest_below)) {
-    $("lqCard").hidden = false;
-    const srNear = p => { const SR = window.srLevels(REF.px), z = SR.res.concat(SR.sup).find(o => o.lo * .995 <= p && p <= o.hi * 1.005); return z ? z.t : ""; };
-    const mm = x => x >= 1e9 ? "$" + (x / 1e9).toFixed(2).replace(".", ",") + "B" : "$" + Math.round(x / 1e6) + "M";
-    const tl = (o, k) => `<div class="srTile ${k}"><span>${k === "lu" ? "Sopra · short da liquidare" : "Sotto · long da liquidare"}</span><b>${o ? usd(o.price) : "–"}</b><small>${o ? pc1((o.price / REF.px - 1) * 100) + " · " + mm(o.usd) + (srNear(o.price) ? " · vicino a " + srNear(o.price) : "") : "nessuno entro ±10%"}</small></div>`;
-    const drawLq = () => { $("lqCardTop").innerHTML = tl(LQ.nearest_above, "lu") + tl(LQ.nearest_below, "ld");
-      $("lqCardSub").textContent = `stima · distanze da ${usd(REF.px)} (${REF.live ? "live" : REF.lab})`; };
-    drawLq(); window.onRef(drawLq);
-    // squilibrio ±5%: stessa funzione, stessa mappa e stesso prezzo della pagina Liquidazioni (window.liqImb5), arrotondato all'intero
-    const drawIm = () => { const L5 = window.liqImb5 ? window.liqImb5() : null, im = L5 ? L5.imb : (LQ.imb5 ? LQ.imb5.pct : 0);
-      $("lqCardNote").textContent = `Entro ±5%: ${Math.abs(im) < 15 ? "in equilibrio" : im > 0 ? "più short sopra" : "più long sotto"} (${(im > 0 ? "+" : im < 0 ? "−" : "") + Math.abs(im).toFixed(0) + "%"}). Contesto, non segnale.`; };
-    drawIm(); window.onRef(drawIm); window.addEventListener("lq:clusters", drawIm);
-  }
-  // --- telefono: S/R e liquidazioni in UNA scheda "Livelli vicini" (il più vicino sopra e sotto per tipo); tocco → pannello con le schede complete
-  if ((LV && (LV.supports.length || LV.resistances.length)) || (LQ && (LQ.nearest_above || LQ.nearest_below))) {   // LV = mappa unica (report.livelli)
-    const drawLv = () => {
-      const it = [], px = REF.px;
-      if (LV) { const SR = window.srLevels(px), r0 = SR.res[0], s0 = SR.sup[0];
-        if (r0) it.push([r0.broken ? "Resistenza · supporto rotto" : "Resistenza", r0.price, "--red"]); if (s0) it.push([s0.broken ? "Supporto · resistenza rotta" : "Supporto", s0.price, "--green"]); }
-      if (LQ) { if (LQ.nearest_above) it.push(["Liquidazioni short", LQ.nearest_above.price, "--teal"]); if (LQ.nearest_below) it.push(["Liquidazioni long", LQ.nearest_below.price, "--violet"]); }
-      it.sort((a, b) => b[1] - a[1]);
-      const row = q => `<div class="lvRow" style="--c:var(${q[2]})"><i></i><span>${q[0]}</span><b>${usd(q[1])}</b><em>${pc1((q[1] / px - 1) * 100)}</em></div>`;
-      $("lvCard").innerHTML = `<div class="tapHead"><b>Livelli vicini</b><span class="more">Dettagli ›</span></div><div class="lvRows">` +
-        it.filter(q => q[1] >= px).map(row).join("") + `<div class="lvNow">ora ${usd(px)}</div>` + it.filter(q => q[1] < px).map(row).join("") + `</div>`;
-    };
-    $("lvCard").hidden = false; drawLv(); window.onRef(drawLv);
-    $("lvCard").onclick = () => { const d = $("srCard").querySelector(".srAll"); if (d) d.open = true; sheetNodes("Livelli vicini", [$("srCard"), $("lqCard")]); };
-  }
+  // supporti, resistenze e liquidazioni: sezione Grafico (tabella completa sotto il grafico, mappa unica report.livelli)
   // --- condizioni d'ingresso long (e filtro MACD)
   const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
   const c = W.chart, lastC = c.c[c.c.length - 1];
@@ -1180,82 +1135,6 @@ function seg(id, onChange) {
   if (open) $("wkPlan").innerHTML = rows([[`Su ${usd(W.capital)}<small>${W.btc.toFixed(4).replace(".", ",")} BTC · stop iniziale ${usd(W.stop0)}</small>`, `${usd(W.notional)}`],
       ...(W.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[W.reason] || W.reason}`, true]] : [])]);
   else $("wkPlan").innerHTML = "";
-  // --- grafico settimanale (candele, EMA 21, SMA 40, ingresso, trailing) + MACD
-  window.wkChartsInit = function wkCharts() {   // alla prima apertura di Grafico (route): il contenitore deve essere visibile per avere una larghezza
-    if (wkCharts.done || !window.LightweightCharts) return; wkCharts.done = true;
-    const T = c.d.map(d => d), up = css("--green"), dn = css("--red");
-    const ch = LightweightCharts.createChart($("wkChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 1, scaleMargins: { top: .1, bottom: .08 } },
-      localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));   // margini: il tick più alto non finisce sotto la barra dei periodi
-    const cs = ch.addCandlestickSeries({ upColor: up, downColor: dn, borderVisible: false, wickUpColor: up, wickDownColor: dn, priceLineVisible: false, lastValueVisible: false,
-      priceFormat: { type: "price", precision: 0, minMove: 1 } });
-    cs.setData(T.map((t, i) => ({ time: t, open: c.o[i], high: c.h[i], low: c.l[i], close: c.c[i] })));
-    const line = (k, col, style) => { const s2 = ch.addLineSeries({ color: col, lineWidth: 2, lineStyle: style || 0, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
-      s2.setData(T.map((t, i) => ({ time: t, value: c[k][i] })).filter(p => p.value != null)); return s2; };
-    line("ema21", css("--s-ema")); line("sma40", css("--s-sma"), 2);
-    if (open) {
-      cs.createPriceLine({ price: W.trail, color: dn, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "Trailing" });
-      cs.createPriceLine({ price: W.entry_px, color: css("--label2"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Ingresso" });
-    }
-    // tutti gli ingressi e le uscite di W3.2 dal 2021 (storico + posizione aperta): freccia all'ingresso, pallino all'uscita
-    const bar = d => T.find(t => t >= d), k = v => v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + "k" : String(Math.round(v));
-    const mks = [], ev = {};   // ev: testo per la legenda quando il cursore è sulla settimana di un ingresso o di un'uscita
-    ((W.history || {}).trades || []).forEach(t => {
-      const L = t.side === "long", be = bar(t.entry), pn = pct(t.pnl_pct, 0);
-      if (be) { mks.push({ time: be, position: L ? "belowBar" : "aboveBar", color: L ? up : dn, shape: L ? "arrowUp" : "arrowDown", text: (L ? "Long " : "Short ") + k(t.entry_px) });
-        ev[be] = (ev[be] ? ev[be] + " · " : "") + `<b class="${L ? "pos" : "neg"}">${L ? "Long" : "Short"} ${usd(t.entry_px)}</b> ${t.reason === "open" ? "aperto" : "→ " + pn}`; }
-      const bx = t.reason === "open" ? null : bar(t.exit);
-      if (bx) { mks.push({ time: bx, position: L ? "aboveBar" : "belowBar", color: t.pnl_pct >= 0 ? up : dn, shape: "circle", text: pn });
-        ev[bx] = (ev[bx] ? ev[bx] + " · " : "") + `<b class="${t.pnl_pct >= 0 ? "pos" : "neg"}">uscita ${usd(t.exit_px)} ${pn}</b>`; }
-    });
-    mks.sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0);
-    let mkTxt = null;   // etichette solo quando c'è spazio (≥ 4 px per settimana): sul telefono con "Tutto" restano frecce e pallini
-    // ...e non a ridosso dei bordi del grafico, dove il testo (centrato sulla candela) verrebbe tagliato
-    const mkI = mks.map(m => T.indexOf(m.time));
-    const setMk = () => { const r = ch.timeScale().getVisibleLogicalRange(); if (!r) return;
-      const w = ch.timeScale().width(), bs = w / Math.max(1, r.to - r.from), on = bs >= 4;
-      const show = mks.map((m, j) => on && (mkI[j] - r.from) * bs >= m.text.length * 3.6 + 4 && (r.to - mkI[j]) * bs >= m.text.length * 3.6 + 4);
-      const key = show.map(Number).join("");
-      if (key !== mkTxt) { mkTxt = key; cs.setMarkers(mks.map((m, j) => show[j] ? m : { ...m, text: "" })); } };
-    setMk(); ch.timeScale().subscribeVisibleLogicalRangeChange(setMk);
-    const MB = isMobile(), nLv = MB ? 1 : 2;   // telefono: meno linee, etichette dell'asse leggibili
-    if (SRSRC) {   // S/R più vicini sul grafico (mappa unica dei livelli): 2 resistenze e 2 supporti, linee sottili punteggiate
-      const SRc = window.srLevels(REF.px);
-      SRc.res.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
-      SRc.sup.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
-    }
-    if (R.liqmap && !MB) {   // cluster di liquidazione stimati più vicini (significativi): 2 sopra e 2 sotto, linee punteggiate viola/azzurre
-      (R.liqmap.above || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--teal"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq S" }));
-      (R.liqmap.below || []).filter(o => o.sig).slice(0, 2).forEach(o => cs.createPriceLine({ price: o.price, color: css("--violet"), lineWidth: 1, lineStyle: 1, axisLabelVisible: true, title: "Liq L" }));
-    }
-    const mc = LightweightCharts.createChart($("wkMacd"), chartOpts({ timeScale: { visible: false, borderVisible: false }, rightPriceScale: { borderVisible: false, scaleMargins: { top: .1, bottom: .1 } },
-      localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));
-    const hs = mc.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 } });
-    hs.setData(T.map((t, i) => c.macd[i] == null ? null : ({ time: t, value: c.macd[i] - c.sig[i], color: c.macd[i] >= c.sig[i] ? "rgba(52,215,123,.55)" : "rgba(255,90,82,.55)" })).filter(Boolean));
-    const ml = mc.addLineSeries({ color: css("--s-ema"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
-    ml.setData(T.map((t, i) => ({ time: t, value: c.macd[i] })).filter(p => p.value != null));
-    const sl2 = mc.addLineSeries({ color: css("--s-sma"), lineWidth: 2, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
-    sl2.setData(T.map((t, i) => ({ time: t, value: c.sig[i] })).filter(p => p.value != null));
-    ch.timeScale().fitContent(); mc.timeScale().fitContent();
-    ch.timeScale().applyOptions({ rightOffset: 10 });
-    ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
-    const leg = (i, noHov) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
-      `<span style="color:var(--label2)">▲▼ ingresso · ● uscita</span>` + (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
-      (SRSRC ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
-      (R.liqmap && !MB ? `<span style="color:var(--violet)"><i class="dash" style="background:var(--violet)"></i><span style="color:var(--label2)">liquidazioni stimate (Liq L long · Liq S short)</span></span>` : "") +
-      (noHov ? "" : `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}` + (ev[T[i]] ? " · " + ev[T[i]] : "")}</span>`);
-    $("wkLeg").innerHTML = leg(T.length - 1);
-    const setRange = n => { const L = T.length; if (!n) { ch.timeScale().fitContent(); return; } ch.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - n) - 0.5, to: L - 0.5 + Math.max(4, n / 9) }); };
-    const rg = seg("wkRange", v => setRange(+v));
-    if (MB) { rg.set(52); setRange(52); }   // telefono: si parte dall'ultimo anno
-    $("wkLegB").onclick = () => openSheet("Legenda del grafico", `<div class="wkLeg" style="display:grid;gap:10px;font-size:.86rem">${leg(null, true)}<span><i style="background:var(--s-ema)"></i>MACD 8/21/5: barre verdi sopra il segnale, rosse sotto</span></div>
-      <p class="foot" style="margin:0">Trascina per scorrere, pizzica per lo zoom, tocca una candela per leggerne i valori. Sul telefono il grafico mostra solo la resistenza e il supporto più vicini; le liquidazioni sono nella scheda Livelli vicini.</p>`);
-    $("wkFull").onclick = () => { const on = !$("wkChartCard").classList.contains("full");
-      $("wkChartCard").classList.toggle("full", on); document.body.classList.toggle("noscroll", on);
-      $("wkFull").setAttribute("aria-pressed", on); $("wkFull").textContent = on ? "✕ Chiudi" : MB ? "⤢" : "⤢ Espandi"; };
-    if (MB) { $("wkFull").textContent = "⤢"; $("wkFull").setAttribute("aria-label", "Schermo intero"); }
-    document.addEventListener("keydown", e => { if (e.key === "Escape" && $("wkChartCard").classList.contains("full")) $("wkFull").click(); });
-    ch.subscribeCrosshairMove(e => { const i = e && e.time ? T.indexOf(e.time) : -1; $("wkLeg").innerHTML = leg(i >= 0 ? i : T.length - 1); $("wkLeg").classList.toggle("act", i >= 0); });   // telefono: la riga dei valori compare solo toccando il grafico
-  };
   const H = W.history, M = H.m1;
   // "Limiti" in Come funziona: numeri dello storico del report (W3.2), così il testo non resta indietro quando cambia la strategia
   if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 25% allo stop: ${M.n} trade, ${Math.round(M.n * M.win_rate / 100)} in guadagno, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto.`;
@@ -1495,7 +1374,7 @@ function seg(id, onChange) {
     `<tr><th colspan="5" class="grp">Tutti i giorni</th></tr>` + LC.rows.map(o => lrow(o)).join("") +
     (LC.base ? lrow({ label: "Media di tutti i giorni", ...LC.base }, true) : "") +
     ((LC.regime_rows || []).length ? `<tr><th colspan="5" class="grp">Solo nel regime attuale</th></tr>` + LC.regime_rows.map(o => lrow(o)).join("") : "") +
-    `</table></div></div>` + (LC.imb_now != null ? `<div class="list"><div class="row"><span class="k">Squilibrio attuale delle liquidazioni</span><span class="v strong">${sgn(LC.imb_now)}</span></div></div>` : "") +
+    `</table></div></div>` + (LC.imb_now != null ? `<div class="list"><div class="row"><span class="k">Squilibrio attuale della mappa ±8%<small>misura dello studio qui sopra (stima)</small></span><span class="v strong">${sgn(LC.imb_now)}</span></div></div>` : "") +
     (LC.note ? `<p class="foot">${LC.note}</p>` : "") : "";
   const ctxD = TD && (SR.length || AN || TD.note) ? `<h3>Livelli e situazioni simili</h3>` +
     (SR.length ? `<div class="card" style="padding:4px 6px"><div class="scroll">${srTbl(true)}</div></div>
@@ -1646,139 +1525,323 @@ function renderCal() {
   $("banks").innerHTML = BK.slice(0, 2).map(bkRow).join("") + (bkMore.length ? `<details class="calPast"><summary>Altre ${bkMore.length} riunioni</summary><div class="banks">${bkMore.map(bkRow).join("")}</div></details>` : "")
     || `<div class="card"><p style="margin:0">Riunioni non disponibili in questo momento.</p></div>`;
 }
-// Livelli e probabilità a 30 giorni (report.livelli, radar/livelli.py + report.cone, radar/cone.py): UNA mappa dei livelli
-// (supporti, resistenze, liquidazioni, medie, Fibonacci, storico, trailing W3.2) con la probabilità di toccarli entro 30 giorni,
-// calcolata con gli stessi cammini del cono (volatilità, non direzione). In vista i livelli più vicini; gli altri con "mostra tutti";
-// grafico dell'ultimo anno, fonti delle liquidazioni, nota fissa e affidabilità del cono nei Dettagli. Contesto, non segnale.
-(function renderCone() {
-  const C = R.cone && typeof R.cone === "object" ? R.cone : null;
+// ---- Mappa unica dei livelli (report.livelli, radar/livelli.py): UNICA fonte di supporti, resistenze, medie, Fibonacci, storico,
+// liquidazioni (stima e on-chain) e zone per Oggi e Grafico. Nel browser si ricalcolano solo distanze e probabilità di tocco sul
+// prezzo live (window.REF), con i quantili dei cammini del cono (report.livelli.tocco, radar/cone.py touch_grid): nessun ricalcolo
+// dei livelli o dei cluster di liquidazione. Senza prezzo live si usa la chiusura (e la pagina lo dice).
+// <calc> stesso calcolo di radar/cone.py (_interp, grid_touch_prob, grid_interval): tests/test_grafico.py lo esegue con node
+const lvInterp = (x, xp, fp) => {
+  if (x <= xp[0]) return fp[0];
+  if (x >= xp[xp.length - 1]) return fp[fp.length - 1];
+  let lo = 0, hi = xp.length - 1;
+  while (hi - lo > 1) { const mid = Math.floor((lo + hi) / 2); if (xp[mid] <= x) lo = mid; else hi = mid; }
+  const a = xp[lo], b = xp[hi];
+  return fp[lo] + (fp[hi] - fp[lo]) * (x - a) / (b - a);
+};
+const lvTouch = (G, price, level) => {
+  if (!(price > 0 && level > 0)) return NaN;
+  const k = Math.log(level / price);
+  if (k === 0) return 1;
+  const n = G.mx.length, q = [];
+  for (let i = 0; i < n; i++) q.push(i / (n - 1));
+  return k > 0 ? 1 - lvInterp(k, G.mx, q) : lvInterp(k, G.mn, q);
+};
+const lvInterval = (G, price, mass) => { const [lo, hi] = mass === 0.8 ? ["10", "90"] : ["25", "75"]; return [price * Math.exp(G.fine[lo]), price * Math.exp(G.fine[hi])]; };
+// </calc>
+const LVX = window.LVX = (() => {
   const L = R.livelli && typeof R.livelli === "object" && Array.isArray(R.livelli.livelli) && R.livelli.prezzo > 0 ? R.livelli : null;
-  const ok = a => Array.isArray(a) && a.length === 2 && a.every(x => typeof x === "number" && isFinite(x));
-  const hasC = !!(C && C.price > 0 && ok(C.i80) && ok(C.i50) && C.note);
-  if (!hasC && !L) return;
+  const G = L && L.tocco && Array.isArray(L.tocco.mx) && Array.isArray(L.tocco.mn) && L.tocco.mx.length > 10 && L.tocco.fine ? L.tocco : null;
+  // tipi: etichetta, colore (variabile CSS), stile della linea sul grafico (0 continua, 1 punteggiata, 2 tratteggiata)
   const LT = { resistenza: ["Resistenza", "--red"], supporto: ["Supporto", "--green"], liq_short: ["Liquidazioni short", "--teal"], liq_long: ["Liquidazioni long", "--violet"],
-    media: ["Media mobile", "--label3"], fibonacci: ["Fibonacci", "--tint"], storico: ["Livello storico", "--pink"], trailing: ["Trailing W3.2", "--orange"], tondo: ["Numero tondo", "--label3"] };
-  const px = L ? L.prezzo : C.price, H = (L && L.orizzonte) || (C && C.horizon) || 30;
-  // senza la mappa (giro vecchio) la scala usa i livelli del cono: trailing, S/R più vicini, numeri tondi
-  const lvs = (L ? L.livelli : (C.levels || []).map(o => ({ prezzo: o.price, dist: o.dist_pct / 100, prob: o.prob, fonte: "",
-      tipo: /trailing|stop/i.test(o.label) ? "trailing" : /resist/i.test(o.label) ? "resistenza" : /support/i.test(o.label) ? "supporto" : "tondo", cosa: o.label })))
-    .filter(o => o && o.prezzo > 0 && LT[o.tipo]).slice().sort((a, b) => b.prezzo - a.prezzo);
-  const pd = x => pct(x * 100, 1), r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
-  const pr = o => typeof o.prob === "number" ? o.prob : null, pc = v => v == null ? "–" : Math.round(v) + "%";
-  const nearest = (types, up) => lvs.filter(o => types.includes(o.tipo) && (up ? o.prezzo > px : o.prezzo < px)).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist))[0];
-  const src = o => !o.fonte || o.fonte === "prezzo" ? "" : /reale/.test(o.fonte) ? "on-chain" : /Coinglass/.test(o.fonte) ? "Coinglass" : "stima";
+    media: ["Media mobile", "--label3"], fibonacci: ["Fibonacci", "--tint"], storico: ["Livello storico", "--label2"], trailing: ["Trailing W3.2", "--orange"] };
+  const MED = { "SMA 50 giorni": "--mint", "SMA 200 giorni": "--indigo", "SMA 40 settimane": "--pink", "SMA 200 settimane": "--label3" };
+  const col = o => o.tipo === "media" && MED[o.cosa] ? MED[o.cosa] : (LT[o.tipo] || ["", "--label3"])[1];
+  const px = () => (window.REF && REF.px > 0) ? REF.px : L ? L.prezzo : R.price;   // lo stesso prezzo dell'intestazione: live, altrimenti l'ultima chiusura nota
+  const isLive = () => !!(window.REF && REF.live && REF.px > 0);
+  const prob = (o, p) => G ? Math.round(lvTouch(G, p, o.prezzo) * 100) : (typeof o.prob === "number" ? o.prob : null);
+  const rows = (p = px()) => !L ? [] : L.livelli.filter(o => o && o.prezzo > 0 && LT[o.tipo])
+    .map(o => ({ ...o, dist: o.prezzo / p - 1, prob: prob(o, p) })).sort((a, b) => b.prezzo - a.prezzo);
+  const zones = (p = px()) => !L ? [] : (L.zone || []).filter(z => z && z.da > 0 && z.a > 0).map(z => {
+    const ruolo = z.da > p ? "sopra" : z.a < p ? "sotto" : "a cavallo", edge = ruolo === "sopra" ? z.da : z.a;
+    return { ...z, ruolo, prob: ruolo === "a cavallo" ? 100 : G ? Math.round(lvTouch(G, p, edge) * 100) : z.prob }; });
+  const nearest = (rs, tipo, up, reale) => rs.filter(o => o.tipo === tipo && (up ? o.dist > 0 : o.dist < 0) && (reale == null || !!o.reale === reale))
+    .sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist))[0] || null;
+  const interval = (mass, p = px()) => G ? lvInterval(G, p, mass) : L && L[mass === 0.8 ? "i80" : "i50"] ? L[mass === 0.8 ? "i80" : "i50"] : null;
+  const src = o => !o.fonte || o.fonte === "prezzo" ? "" : o.reale ? "on-chain" : /Coinglass/.test(o.fonte) ? "Coinglass" : "stima";
   const mld = v => v >= 0.1 ? nfIT(v, 2) + " mld $" : Math.max(1, Math.round(v * 1000)) + " mln $";
-  // descrizione breve: per le liquidazioni importo e fonte corta (la fonte completa è nei Dettagli)
-  const info = o => /^liq_/.test(o.tipo) && typeof o.usd === "number" ? `${mld(o.usd)} · ${/reale/.test(o.fonte) ? "on-chain, reali" : /Coinglass/.test(o.fonte) ? esc(o.fonte) + " (stima)" : "stima Radar"}`
-    : esc(String(o.cosa || "").replace(/^ritracciamento di Fibonacci (\S+) dal minimo del ciclo al massimo storico$/, "$1 fra minimo del ciclo 2022 e massimo storico")) + (o.fonte && o.fonte !== "prezzo" && o.tipo !== "trailing" ? " · " + esc(o.fonte) : "");
-  const tgt = C && C.target ? new Date(C.target + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
-  const dLab = L ? artD("chiusura del", new Date(L.data + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "short", timeZone: "UTC" })) : "chiusura di ieri";
-  // --- in alto: intervallo probabile (dal cono) e riepilogo
-  let top = "";
-  if (hasC) {
-    const all = [C.i80[0], C.i80[1], C.price], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
-    const x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100)), xp = v => x(v).toFixed(2) + "%";
-    const xn = x(C.price), al = xn < 14 ? " l" : xn > 86 ? " r" : "";
-    top = `<span class="cnK">Intervallo probabile all'80%${tgt ? " al " + tgt : ""}</span><div class="cnBig">${rng(C.i80)}</div>
-      <div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(C.i80)}, al 50% ${rng(C.i50)}, prezzo ${usd(C.price)}">
-      <div class="rail"></div><div class="b80" style="left:${xp(C.i80[0])};width:${(x(C.i80[1]) - x(C.i80[0])).toFixed(2)}%"></div><div class="b50" style="left:${xp(C.i50[0])};width:${(x(C.i50[1]) - x(C.i50[0])).toFixed(2)}%"></div>
-      <div class="now" style="left:${xp(C.price)}"></div><span class="nowL${al}" style="left:${xp(C.price)}"><em>ora</em>${usd(C.price)}</span>
-      <span class="tk" style="left:${xp(C.i80[0])}">${r100(C.i80[0])}</span><span class="tk e" style="left:${xp(C.i80[1])}">${r100(C.i80[1])}</span></div>
-      <div class="cnKey"><span><i></i>80% dei casi</span><span><i class="k50"></i>50%: ${rng(C.i50)}</span></div>`;
-  }
-  const s1 = nearest(["supporto"], false), r1 = nearest(["resistenza"], true), ll = nearest(["liq_long"], false), ls = nearest(["liq_short"], true);
-  const kc = (k, o, c) => `<div style="--c:var(${c})"><span>${k}${o && src(o) ? " (" + src(o) + ")" : ""}</span><b>${o ? usd(o.prezzo) : "–"}</b><small>${o ? pd(o.dist) + (pr(o) != null ? ` · tocco ${pc(pr(o))}` : "") : "nessuno in vista"}</small></div>`;
-  top += `<div class="lvKs"><div><span>Prezzo</span><b>${usd(px)}</b><small>${dLab}</small></div>` +
-    (L && L.atr ? `<div><span>ATR 14 giorni</span><b>${usd(L.atr)}</b><small>${pct(L.atr / px * 100, 1).replace("+", "")} · movimento medio</small></div>` : "") +
-    kc("Primo supporto", s1, "--green") + kc("Prima resistenza", r1, "--red") + kc("Liq. long", ll, "--violet") + kc("Liq. short", ls, "--teal") + `</div>`;
-  // --- scala: dal più alto al più basso; in vista il più vicino di ogni tipo per lato (al massimo NV, i più vicini), così le
-  // fasce di liquidazione non coprono supporti e resistenze; gli altri con "mostra tutti". Riga del prezzo nel punto giusto
-  const NV = 10, byD = lvs.slice().sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist)), seen = new Set();
-  const near = new Set(byD.filter(o => { const k = o.tipo + (o.prezzo > px ? "+" : "-"); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, NV));
-  let rows = "", done = false, first = true;
-  const nowRow = () => `<div class="cnDiv"><em>ora</em>${usd(px)}</div>`;
-  lvs.forEach(o => {
-    if (!done && o.prezzo < px) { rows += nowRow(); done = true; first = true; }
-    const t = LT[o.tipo], p = pr(o);
-    rows += `<div class="lvL${first ? " first" : ""}${near.has(o) ? "" : " x"}${o.tipo === "trailing" ? " tr" : ""}" style="--c:var(${t[1]})"><i></i><b>${usd(o.prezzo)}</b><span class="d">${pd(o.dist)}</span>` +
-      `<span class="t"><b>${t[0]}</b><small>${info(o)}</small></span><span class="p">${p == null ? "" : `<s><i style="width:${Math.max(0, Math.min(100, p))}%"></i></s>`}<em>${pc(p)}</em></span></div>`;
-    first = false;
-  });
-  if (!done) rows += nowRow();
-  const lad = lvs.length ? `<p class="cnCap">Livelli dal più alto al più basso · probabilità di toccarli entro ${H} giorni</p>
-    <div class="lvH" aria-hidden="true"><span></span><span>Livello</span><span>Dist.</span><span>Tipo</span><span>Tocco</span></div>${rows}` : "";
-  // --- zone dove più livelli coincidono (bordo più vicino al prezzo → probabilità di raggiungerla)
-  const ZN = 4, zs = (L ? L.zone || [] : []).slice(), edge = z => z.ruolo === "sopra" ? z.da : z.ruolo === "sotto" ? z.a : px;
-  const zNear = new Set(zs.slice().sort((a, b) => Math.abs(edge(a) / px - 1) - Math.abs(edge(b) / px - 1)).slice(0, ZN));
-  const zRow = z => { const lf = Object.entries(z.liq_fonti || {}), tipi = (z.tipi || []).map(t => t === "fibonacci" ? "Fibonacci" : (LT[t] || [t])[0].toLowerCase()).join(", ");
-    return `<div class="lvZ${zNear.has(z) ? "" : " x"}" style="--c:var(${z.ruolo === "sopra" ? "--red" : z.ruolo === "sotto" ? "--green" : "--label"})"><span><b>${usd(z.da)} – ${usd(z.a)}</b>` +
-      `<small>${pd(z.da / px - 1)} / ${pd(z.a / px - 1)} · ${z.n} livelli: ${esc(tipi)}</small>` +
-      (lf.length ? `<small>liquidazioni nella zona: ${lf.map(([f, v]) => `${mld(v)} ${/reale/.test(f) ? "on-chain (reali)" : /Coinglass/.test(f) ? "Coinglass (stima)" : "stimate"}`).join(" · ")}</small>` : "") +
-      `</span><em>${z.ruolo === "a cavallo" ? "qui" : pc(z.prob)}<small><br>${z.ruolo === "a cavallo" ? "prezzo dentro" : "raggiunge"}</small></em></div>`; };
-  const zon = zs.length ? `<p class="cnCap">Zone dove più livelli coincidono (a meno del 3,2% l'uno dall'altro)</p>${zs.sort((a, b) => b.a - a.a).map(zRow).join("")}` : "";
-  const nx = lvs.length - Math.min(NV, lvs.length), nz = zs.length - Math.min(ZN, zs.length);
-  const more = nx + nz > 0 ? `<button type="button" class="lvAll" aria-expanded="false">Mostra tutti (${lvs.length} livelli${zs.length ? `, ${zs.length} zone` : ""})</button>` : "";
-  const notes = [hasC ? C.note : "", L ? L.nota : "", L ? L.nota_liq : ""].filter(Boolean).map(esc).join(" ");
-  $("cnCard").innerHTML = `<div class="tapHead"><b>Livelli e probabilità a ${H} giorni</b><button type="button" class="more" aria-haspopup="dialog">Dettagli ›</button></div>
-    <div class="cnGrid"><div class="cnTop">${top}</div><div class="cnLad">${lad}</div><div class="cnZon">${zon}</div></div>${more}
-    <p class="cxNote">${notes}</p>`;
-  $("cnSec").hidden = false;
-  const mb = $("cnCard").querySelector(".lvAll");
-  if (mb) mb.onclick = () => { const on = $("cnCard").classList.toggle("all"); mb.setAttribute("aria-expanded", on);
-    mb.textContent = on ? "Mostra solo i più vicini" : `Mostra tutti (${lvs.length} livelli${zs.length ? `, ${zs.length} zone` : ""})`; };
-  // --- Dettagli: grafico dell'ultimo anno con una linea per livello, fonti delle liquidazioni, nota fissa, affidabilità del cono
-  const cx = hasC ? (Array.isArray(C.context) ? C.context : []).filter(o => o && o.label && o.text) : [];
-  const LIVE = hasC && C.live && C.live.n > 0 ? `Dal vivo: ${C.live.n} previsioni arrivate a scadenza, ${C.live.in80} con il prezzo dentro l'intervallo 80%.` : "Dal vivo: nessuna previsione è ancora arrivata a scadenza; ogni giorno la previsione viene registrata e fra 30 giorni confrontata con il prezzo.";
-  const drift = hasC && typeof C.drift30_pct === "number" && C.drift30_pct ? `Il cono comprende solo la crescita media storica di BTC (${C.drift30_pct > 0 ? "+" : "−"}${nfIT(Math.abs(C.drift30_pct), 1)}% in 30 giorni), uguale ogni giorno: non è un segnale. ` : "";
-  const CG = L && L.coinglass || {}, FL = L && Array.isArray(L.fonti_liq) ? L.fonti_liq : [];
-  const cgTxt = CG.stato === "vecchio" ? `File Coinglass del ${esc(CG.data)} ignorato: più vecchio di 7 giorni.` : CG.stato === "illeggibile" ? "File Coinglass presente ma illeggibile: ignorato." : CG.stato === "assente" ? "Coinglass: nessun file compilato (data/coinglass_levels.json, facoltativo)." : "";
-  const fonti = FL.map(f => `<div class="row"><span class="k">${esc(f.fonte)}<small>${f.reale ? "posizioni reali on-chain" : "stima, non dati reali"}${f.agg ? " · aggiornata " + esc(String(f.agg).replace("T", " ").slice(0, 16)) : ""}</small></span><span class="v">${f.n} ${f.n === 1 ? "livello" : "livelli"}</span></div>`).join("");
-  const types = [...new Set(lvs.map(o => o.tipo))];
-  $("cnCard").querySelector(".tapHead .more").onclick = () => {
-    const b = openSheet(`Livelli e probabilità a ${H} giorni`, `<div style="display:grid;gap:12px;min-width:0">
-      ${L && Array.isArray(L.candele) && L.candele.length > 20 ? `<div class="card" style="padding:12px 10px 10px"><div id="lvChart" class="chart" role="img" aria-label="Prezzo di BTC nell'ultimo anno con i livelli"></div>
-        <div class="lvLeg" style="margin-top:8px">${types.map(t => `<span style="--c:var(${LT[t][1]})"><i></i>${LT[t][0]}</span>`).join("")}</div></div>` : ""}
-      <div class="list" style="box-shadow:none">
-        <div class="row"><span class="k">Prezzo di partenza<small>${dLab}</small></span><span class="v strong">${usd(px)}</span></div>
-        ${hasC ? `<div class="row"><span class="k">Intervallo 80%<small>8 casi su 10 attesi qui dentro${tgt ? " il " + tgt : ""}</small></span><span class="v strong">${rng(C.i80)}</span></div>
-        <div class="row"><span class="k">Intervallo 50%<small>1 caso su 2</small></span><span class="v strong">${rng(C.i50)}</span></div>` : ""}
-        ${hasC && typeof C.vol30_pct === "number" ? `<div class="row"><span class="k">Volatilità attesa a 30 giorni<small>movimento tipico, in più o in meno</small></span><span class="v strong">±${nfIT(C.vol30_pct, 1)}%</span></div>` : ""}
-        ${L && L.atr ? `<div class="row"><span class="k">ATR 14 giorni<small>movimento medio di un giorno: utile per la distanza degli stop</small></span><span class="v strong">${usd(L.atr)}</span></div>` : ""}
-      </div>
-      ${FL.length || cgTxt ? `<h3>Fonti delle liquidazioni</h3><div class="list" style="box-shadow:none">${fonti}${cgTxt ? `<div class="row"><span class="k"><small>${cgTxt}</small></span></div>` : ""}</div>` : ""}
-      ${cx.length ? `<div class="list" style="box-shadow:none">${cx.map(o => `<div class="row"><span class="k">${esc(o.label)}<small>${esc(o.text)}</small></span></div>`).join("")}</div>` : ""}
-      ${L ? `<p class="foot">${esc(L.nota)} ${esc(L.nota_liq)}</p><p class="foot">${esc(L.definizioni || "")}</p>` : ""}
-      ${hasC ? `<p class="foot">Le percentuali sono la probabilità che il prezzo tocchi il livello almeno una volta entro ${H} giorni, anche solo per un momento; per una zona, che ne raggiunga il bordo più vicino. ${cx.length && C.context_note ? esc(C.context_note) + " " : ""}${esc(drift)}${esc(C.note)}</p>
-      <p class="foot">${esc(C.method || "")}</p><p class="foot">${LIVE} Non entra in W3.2: stop, trailing e decisioni restano quelli della strategia.</p>` : ""}</div>`);
-    const el = b.querySelector("#lvChart");
-    if (el && window.LightweightCharts) requestAnimationFrame(() => lvChart(el));
+  // descrizione breve: per le liquidazioni importo e fonte, per gli altri la definizione del livello
+  const info = o => /^liq_/.test(o.tipo) && typeof o.usd === "number" ? `${mld(o.usd)} · ${o.reale ? "on-chain, posizioni reali" : /Coinglass/.test(o.fonte) ? escS(o.fonte) + " (stima)" : "stima Radar"}`
+    : escS(String(o.cosa || "").replace(/^ritracciamento di Fibonacci (\S+) dal minimo del ciclo al massimo storico$/, "$1 fra minimo del ciclo 2022 e massimo storico"));
+  const refLab = () => isLive() ? "prezzo live " + usd(REF.px) : `${REF.lab} ${usd(px())} (prezzo live non disponibile)`;
+  return { L, G, LT, MED, col, px, isLive, rows, zones, nearest, interval, src, mld, info, refLab, H: (L && L.orizzonte) || 30 };
+})();
+// riga della scala (Oggi e tabella del Grafico): pallino, prezzo, distanza, tipo con descrizione, probabilità di tocco
+const lvRow = (o, extra = "", lab = null) => { const t = LVX.LT[o.tipo], p = o.prob;
+  return `<div class="lvL${extra}" style="--c:var(${LVX.col(o)})" data-px="${o.prezzo}"><i></i><b>${usd(o.prezzo)}</b><span class="d">${pct(o.dist * 100, 1)}</span>` +
+    `<span class="t"><b>${lab || (o.tipo === "media" ? escS(o.cosa) : t[0])}</b><small>${o.tipo === "media" ? "media mobile" : LVX.info(o)}</small></span>` +
+    `<span class="p">${p == null ? "" : `<s><i style="width:${Math.max(0, Math.min(100, p))}%"></i></s>`}<em>${p == null ? "–" : p + "%"}</em></span></div>`; };
+
+// Oggi · "Livelli e probabilità a 30 giorni" = FORBICE: intervallo probabile 80/50% e i livelli che contano subito (primo supporto,
+// prima resistenza, liquidazioni long e short più vicine, stima e on-chain, trailing W3.2), con distanza e tocco sul prezzo live.
+// La scala completa, le zone e il grafico sono nel Grafico ("Apri nel Grafico").
+(function renderCone() {
+  const L = LVX.L; if (!L) return;
+  const H = LVX.H, r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
+  const tgt = new Date(Date.parse(L.data + "T00:00:00Z") + H * 864e5).toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" });
+  const draw = () => {
+    const px = LVX.px(), rs = LVX.rows(px), i80 = LVX.interval(0.8, px), i50 = LVX.interval(0.5, px);
+    let top = "";
+    if (i80 && i50) {
+      const all = [i80[0], i80[1], px], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
+      const x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100)), xp = v => x(v).toFixed(2) + "%";
+      const xn = x(px), al = xn < 14 ? " l" : xn > 86 ? " r" : "";
+      top = `<span class="cnK">Intervallo probabile all'80% al ${tgt}</span><div class="cnBig">${rng(i80)}</div>
+        <div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(i80)}, al 50% ${rng(i50)}, prezzo ${usd(px)}">
+        <div class="rail"></div><div class="b80" style="left:${xp(i80[0])};width:${(x(i80[1]) - x(i80[0])).toFixed(2)}%"></div><div class="b50" style="left:${xp(i50[0])};width:${(x(i50[1]) - x(i50[0])).toFixed(2)}%"></div>
+        <div class="now" style="left:${xp(px)}"></div><span class="nowL${al}" style="left:${xp(px)}"><em>${LVX.isLive() ? "live" : "chiusura"}</em>${usd(px)}</span>
+        <span class="tk" style="left:${xp(i80[0])}">${r100(i80[0])}</span><span class="tk e" style="left:${xp(i80[1])}">${r100(i80[1])}</span></div>
+        <div class="cnKey"><span><i></i>80% dei casi</span><span><i class="k50"></i>50%: ${rng(i50)}</span></div>`;
+    }
+    // forbice: dal più alto al più basso, con la riga del prezzo nel punto giusto
+    const pick = [[LVX.nearest(rs, "liq_short", true, true), "Liq. short on-chain"], [LVX.nearest(rs, "liq_short", true, false), "Liq. short stimate"],
+      [LVX.nearest(rs, "resistenza", true), "Prima resistenza"], [rs.find(o => o.tipo === "trailing") || null, "Trailing W3.2"],
+      [LVX.nearest(rs, "supporto", false), "Primo supporto"], [LVX.nearest(rs, "liq_long", false, false), "Liq. long stimate"], [LVX.nearest(rs, "liq_long", false, true), "Liq. long on-chain"]]
+      .filter(q => q[0]).sort((a, b) => b[0].prezzo - a[0].prezzo);
+    let lad = "", done = false, first = true;
+    const nowRow = () => `<div class="cnDiv"><em>${LVX.isLive() ? "live" : "chiusura"}</em>${usd(px)}</div>`;
+    pick.forEach(([o, lab]) => { if (!done && o.prezzo < px) { lad += nowRow(); done = true; first = true; }
+      lad += lvRow(o, (first ? " first" : "") + (o.tipo === "trailing" ? " tr" : ""), lab); first = false; });
+    if (!done) lad += nowRow();
+    $("cnCard").innerHTML = `<div class="tapHead"><b>Livelli e probabilità a ${H} giorni</b><a class="more" href="#grafico">Apri nel Grafico ›</a></div>
+      <div class="cnGrid cnF"><div class="cnTop">${top}</div><div class="cnLad"><p class="cnCap">Livelli più vicini · tocco entro ${H} giorni · da ${LVX.refLab()}</p>
+      <div class="lvH" aria-hidden="true"><span></span><span>Livello</span><span>Dist.</span><span>Tipo</span><span>Tocco</span></div>${lad}</div></div>
+      <p class="cxNote">Probabilità dalla volatilità, non dalla direzione. Livelli e liquidazioni sono contesto, non un segnale; liquidazioni stimate tranne quelle on-chain.</p>`;
   };
-  function lvChart(el) {
-    // tacche dei prezzi a sinistra; a destra un'etichetta per livello (HTML sopra il grafico) solo dove c'è posto: niente sovrapposizioni
-    const K = L.candele, lo = px * 0.72, hi = px * 1.6, vis = lvs.filter(o => o.prezzo >= lo && o.prezzo <= hi);
-    const ys = K.map(k => k.c).concat(vis.map(o => o.prezzo)), mn = Math.min(...ys), mx = Math.max(...ys);
-    const ch = LightweightCharts.createChart(el, chartOpts({ leftPriceScale: { visible: true, borderVisible: false, scaleMargins: { top: .05, bottom: .05 } },
-      rightPriceScale: { visible: false }, handleScroll: false, handleScale: false, localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));
-    const s = ch.addLineSeries({ priceScaleId: "left", color: css("--label"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true,
-      priceFormat: { type: "price", precision: 0, minMove: 1 }, autoscaleInfoProvider: () => ({ priceRange: { minValue: mn, maxValue: mx } }) });
-    s.setData(K.map(k => ({ time: k.d, value: k.c })));
-    const STY = { media: 2, fibonacci: 1, storico: 2, trailing: 2 };
-    vis.forEach(o => s.createPriceLine({ price: o.prezzo, color: css(LT[o.tipo][1]), lineWidth: 1, lineStyle: STY[o.tipo] || 0, axisLabelVisible: false, title: "" }));
-    const off = Math.ceil(62 * K.length / Math.max(120, el.clientWidth - 112));   // spazio a destra per le etichette
-    ch.timeScale().setVisibleLogicalRange({ from: 0, to: K.length - 1 + off });
-    el.style.position = "relative";
-    const box = document.createElement("div"); box.style.cssText = "position:absolute;inset:0;pointer-events:none;z-index:3"; el.appendChild(box);
-    const pri = ["trailing", "resistenza", "supporto", "storico", "fibonacci", "media", "liq_short", "liq_long"];
-    const place = () => {
-      const kept = [], y0 = s.priceToCoordinate(px), out = [];
-      if (y0 != null) { kept.push(y0); out.push([y0, usd(px), "--label", true]); }
-      vis.slice().sort((a, b) => pri.indexOf(a.tipo) - pri.indexOf(b.tipo) || Math.abs(a.dist) - Math.abs(b.dist)).forEach(o => {
-        const y = s.priceToCoordinate(o.prezzo); if (y == null || kept.some(v => Math.abs(v - y) < 16)) return; kept.push(y); out.push([y, nfIT(o.prezzo), LT[o.tipo][1], false]); });
-      box.innerHTML = out.map(([y, t, c, now]) => `<span style="position:absolute;right:2px;top:${(y - 7.5).toFixed(1)}px;height:15px;line-height:15px;padding:0 5px;border-radius:4px;font:600 .68rem var(--font);font-variant-numeric:tabular-nums;` +
-        (now ? "background:var(--label);color:var(--card)" : `background:var(--card);color:var(${c});box-shadow:inset 0 0 0 1px var(${c})`) + `">${t}</span>`).join("");
-    };
-    requestAnimationFrame(() => requestAnimationFrame(place)); ch.timeScale().subscribeSizeChange(() => requestAnimationFrame(place));
-  }
+  draw(); $("cnSec").hidden = false; window.onRef(draw);
+})();
+// ---- Grafico (solo BTC): candele + volumi su 4h, 1D, 1W, 1M; livelli della mappa unica (report.livelli) come linee orizzontali con
+// interruttori (salvati su questo dispositivo), zone come fasce, marcatori dei trade W3.2 su 1D/1W, tabella completa sotto.
+// 1D dal giornaliero del report (report.livelli.serie), 1W e 1M aggregati qui; 4h dal browser: Binance (api, poi data-api), riserva
+// Coinbase (candele orarie aggregate a 4 ore). Nessun ricalcolo dei livelli: distanze e tocco sul prezzo live con LVX.
+(function renderChart() {
+  const L = LVX.L, S = L && L.serie;
+  if (!S || !Array.isArray(S.c) || S.c.length < 60 || !S.t0) return;
+  $("grSec").hidden = false;
+  const DAY = 86400, t0 = Date.parse(S.t0 + "T00:00:00Z") / 1000;
+  const D = S.c.map((c, i) => ({ time: S.d ? Date.parse(S.d[i] + "T00:00:00Z") / 1000 : t0 + i * DAY, open: S.o[i], high: S.h[i], low: S.l[i], close: c, v: S.v ? S.v[i] : null }));
+  const agg = (bars, key) => { const out = []; let cur = null;
+    bars.forEach(b => { const k = key(b.time); if (!cur || cur.time !== k) { cur = { time: k, open: b.open, high: b.high, low: b.low, close: b.close, v: b.v }; out.push(cur); }
+      else { cur.high = Math.max(cur.high, b.high); cur.low = Math.min(cur.low, b.low); cur.close = b.close; cur.v = b.v == null ? cur.v : (cur.v || 0) + b.v; } });
+    return out; };
+  const monday = t => t - ((new Date(t * 1000).getUTCDay() + 6) % 7) * DAY;
+  const month1 = t => { const d = new Date(t * 1000); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1) / 1000; };
+  const TF = { "1d": { bars: D, lab: "giornaliero", n: 180, nM: 110 }, "1w": { bars: agg(D, monday), lab: "settimanale", n: 160, nM: 90 },
+    "1m": { bars: agg(D, month1), lab: "mensile", n: 0, nM: 0 }, "4h": { bars: null, lab: "4 ore", n: 180, nM: 110 } };
+  const sma = (bars, n) => bars.map((b, i) => i < n - 1 ? null : { time: b.time, value: bars.slice(i - n + 1, i + 1).reduce((s, x) => s + x.close, 0) / n }).filter(Boolean);
+  const ema = (bars, n) => { const k = 2 / (n + 1); let e = null; return bars.map((b, i) => { e = e == null ? b.close : b.close * k + e * (1 - k); return i < n - 1 ? null : { time: b.time, value: e }; }).filter(Boolean); };
+  // serie delle medie dove hanno senso: 1D le medie a 50/200 giorni, 1W quelle a 40/200 settimane e la EMA 21 di W3.2
+  const SER = { "1d": [["SMA 50 giorni", 50, sma], ["SMA 200 giorni", 200, sma]], "1w": [["SMA 40 settimane", 40, sma], ["SMA 200 settimane", 200, sma], ["EMA 21 settimane (W3.2)", 21, ema]], "1m": [], "4h": [] };
+  const SERC = { "EMA 21 settimane (W3.2)": "--s-ema" };
+  // interruttori: tipo di livello → chiave salvata
+  const SW = [["res", "Resistenze", "--red", o => o.tipo === "resistenza"], ["sup", "Supporti", "--green", o => o.tipo === "supporto"],
+    ["lls", "Liq. long stimate", "--violet", o => o.tipo === "liq_long" && !o.reale], ["llo", "Liq. long on-chain", "--violet", o => o.tipo === "liq_long" && !!o.reale],
+    ["lss", "Liq. short stimate", "--teal", o => o.tipo === "liq_short" && !o.reale], ["lso", "Liq. short on-chain", "--teal", o => o.tipo === "liq_short" && !!o.reale],
+    ["med", "Medie mobili", "--mint", o => o.tipo === "media"], ["fib", "Fibonacci", "--tint", o => o.tipo === "fibonacci"], ["sto", "Livello storico", "--label2", o => o.tipo === "storico"],
+    ["trl", "Trailing W3.2", "--orange", o => o.tipo === "trailing"], ["zon", "Zone", "--label2", null]];
+  const DEF = { res: 1, sup: 1, lls: 1, llo: 1, lss: 1, lso: 1, med: 1, fib: 0, sto: 0, trl: 1, zon: 1 };
+  const KEY = "radarGrafico";
+  let st = { sw: { ...DEF }, tf: "1d" };
+  try { const j = JSON.parse(localStorage.getItem(KEY) || "null"); if (j && j.sw) st = { sw: { ...DEF, ...j.sw }, tf: TF[j.tf] ? j.tf : "1d" }; } catch (_) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (_) {} };
+  const all0 = LVX.rows(L.prezzo), zs0 = L.zone || [];
+  const present = SW.filter(([k, , , f]) => k === "zon" ? zs0.length : all0.some(f));
+  const swOf = o => (SW.find(q => q[3] && q[3](o)) || [])[0];
+  $("gxSw").innerHTML = present.map(([k, lab, c]) => `<button type="button" data-k="${k}" aria-pressed="${!!st.sw[k]}" style="--c:var(${c})"><i class="${k === "zon" ? "zb" : /^l.o$/.test(k) ? "" : /^l.s$/.test(k) ? "ds" : ""}"></i>${lab}</button>`).join("");
+  // colori: le variabili CSS sono esadecimali; trasparenza per volumi e fasce
+  const rgba = (v, a) => { const h = css(v).replace("#", ""); if (h.length < 6) return css(v); return `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})`; };
+  const MB = isMobile(), up = css("--green"), dn = css("--red");
+  let ch = null, cs = null, vs = null, ser = [], lines = [], nowLine = null, hl = null, hlLine = null, tf = st.tf, cur = [], idx = new Map(), src4 = "", lab4 = 0;
+  const fmtT = t => { const d = new Date(t * 1000);
+    return tf === "4h" ? d.toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })
+      : tf === "1m" ? d.toLocaleDateString("it-IT", { month: "long", year: "numeric", timeZone: "UTC" })
+      : (tf === "1w" ? "settimana dal " : "") + d.toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }); };
+  const vol = v => v == null ? "–" : v >= 1e6 ? nfIT(v / 1e6, 2) + " mln BTC" : v >= 1e4 ? nfIT(v / 1e3, 1) + "k BTC" : nfIT(v) + " BTC";
+  // riquadro dati: OHLC, volume e variazione della candela sotto il mirino (altrimenti l'ultima)
+  const dataBox = i => { const b = cur[i]; if (!b) { $("gxData").innerHTML = ""; return; } const p = cur[i - 1], chg = p ? (b.close / p.close - 1) * 100 : null;
+    $("gxData").innerHTML = `<span class="dt">${fmtT(b.time)}</span><span>A <b>${nfIT(b.open)}</b></span><span>Max <b>${nfIT(b.high)}</b></span><span>Min <b>${nfIT(b.low)}</b></span><span>C <b>${nfIT(b.close)}</b></span>` +
+      `<span>Vol <b>${vol(b.v)}</b></span>${chg == null ? "" : `<span class="${chg >= 0 ? "pos" : "neg"}"><b>${pct(chg, 2)}</b></span>`}`; };
+  const msg = (html, err) => { const m = $("gxMsg"); m.hidden = !html; m.innerHTML = html || ""; m.classList.toggle("err", !!err); };
+  // ---- livelli: una price line per livello; etichetta sull'asse solo se non si sovrappone (priorità: prezzo, trailing, evidenziato, S/R, liquidazioni...)
+  const PRI = ["trailing", "resistenza", "supporto", "liq_long", "liq_short", "storico", "media", "fibonacci"];
+  const short = o => o.tipo === "resistenza" ? "R" : o.tipo === "supporto" ? "S" : o.tipo === "liq_long" ? (o.reale ? "Liq L on-chain" : "Liq L") : o.tipo === "liq_short" ? (o.reale ? "Liq S on-chain" : "Liq S")
+    : o.tipo === "media" ? String(o.cosa).replace("SMA ", "").replace(" giorni", "g").replace(" settimane", "s") : o.tipo === "fibonacci" ? "Fib " + ((/(\d+(,\d+)?%)/.exec(o.cosa) || [])[1] || "")
+    : o.tipo === "storico" ? "Storico" : o.tipo === "trailing" ? "Trailing" : "";
+  const STY = o => o.tipo === "trailing" ? 2 : o.tipo === "fibonacci" ? 1 : o.tipo === "storico" ? 2 : o.tipo === "media" ? 2 : /^liq_/.test(o.tipo) ? (o.reale ? 0 : 2) : 0;
+  const onSeries = o => o.tipo === "media" && SER[tf].some(q => q[0] === o.cosa);   // la media è già disegnata come serie: niente doppione della linea
+  const drawLevels = () => {
+    lines.forEach(q => cs.removePriceLine(q.line)); lines = [];
+    LVX.rows().forEach(o => { const k = swOf(o); if (!k || !st.sw[k]) return;
+      const line = cs.createPriceLine({ price: o.prezzo, color: css(LVX.col(o)), lineWidth: o.tipo === "trailing" || (/^liq_/.test(o.tipo) && o.reale) ? 2 : 1, lineStyle: STY(o),
+        lineVisible: !onSeries(o), axisLabelVisible: false, title: "" });
+      lines.push({ o, line, lab: false }); });
+    ser.forEach(q => q.s.applyOptions({ visible: !!st.sw.med }));
+    relabel();
+  };
+  const relabel = () => {
+    if (!cs) return; const h = $("gxChart").clientHeight - 26, kept = [];
+    const y0 = nowLine ? cs.priceToCoordinate(LVX.px()) : null; if (y0 != null) kept.push(y0);
+    if (hlLine && hl) { const y = cs.priceToCoordinate(hl); if (y != null) kept.push(y); }
+    lines.slice().sort((a, b) => PRI.indexOf(a.o.tipo) - PRI.indexOf(b.o.tipo) || Math.abs(a.o.dist) - Math.abs(b.o.dist)).forEach(q => {
+      const y = cs.priceToCoordinate(q.o.prezzo), ok = y != null && y > 4 && y < h && !kept.some(v => Math.abs(v - y) < 17);
+      if (ok) kept.push(y);
+      if (ok !== q.lab) { q.lab = ok; q.line.applyOptions({ axisLabelVisible: ok, title: ok && !MB ? short(q.o) : ok && MB && /^(liq_|trailing)/.test(q.o.tipo) ? short(q.o).replace(" on-chain", " oc") : "" }); } });
+    // zone come fasce (HTML sopra il grafico, sotto l'asse dei prezzi)
+    const box = $("gxBands"), w = ch ? ch.timeScale().width() : 0;
+    box.innerHTML = !st.sw.zon ? "" : LVX.zones().map(z => { const a = cs.priceToCoordinate(z.a), b = cs.priceToCoordinate(z.da); if (a == null || b == null) return "";
+      const top = Math.max(0, Math.min(a, b)), bot = Math.min(h, Math.max(a, b)); if (bot - top < 1) return "";
+      const c = z.ruolo === "sopra" ? "--red" : z.ruolo === "sotto" ? "--green" : "--label2";
+      return `<div style="top:${top.toFixed(1)}px;height:${Math.max(3, bot - top).toFixed(1)}px;width:${w}px;--c:var(${c})"></div>`; }).join("");
+  };
+  let rq = 0; const reL = () => { if (!rq) rq = requestAnimationFrame(() => { rq = 0; relabel(); }); };
+  // ---- marcatori dei trade W3.2 (1D e 1W): freccia all'ingresso, pallino all'uscita; testo solo se c'è spazio
+  let mks = [], mkTxt = null;
+  const markers = () => { mks = []; mkTxt = null; if (!(tf === "1d" || tf === "1w")) { cs.setMarkers([]); return; }
+    const T = cur.map(b => b.time), snap = s => { const t = Date.parse(s + "T00:00:00Z") / 1000, k = tf === "1w" ? monday(t) : t; return T.find(x => x >= k); };
+    const kk = v => v >= 1000 ? nfIT(v / 1000, 1) + "k" : nfIT(v);
+    (((R.weekly || {}).history || {}).trades || []).forEach(t => { const Lg = t.side === "long", be = snap(t.entry);
+      if (be) mks.push({ time: be, position: Lg ? "belowBar" : "aboveBar", color: Lg ? up : dn, shape: Lg ? "arrowUp" : "arrowDown", text: (Lg ? "Long " : "Short ") + kk(t.entry_px) });
+      const bx = t.reason === "open" || !t.exit ? null : snap(t.exit);
+      if (bx) mks.push({ time: bx, position: Lg ? "aboveBar" : "belowBar", color: t.pnl_pct >= 0 ? up : dn, shape: "circle", text: pct(t.pnl_pct, 0) }); });
+    mks.sort((a, b) => a.time - b.time); setMk(); };
+  const setMk = () => { if (!mks.length) { cs.setMarkers([]); return; } const r = ch.timeScale().getVisibleLogicalRange(); if (!r) return;
+    const on = ch.timeScale().width() / Math.max(1, r.to - r.from) >= 5, key = on ? "1" : "0";
+    if (key !== mkTxt) { mkTxt = key; cs.setMarkers(mks.map(m => on ? m : { ...m, text: "" })); } };
+  // ---- serie del periodo scelto
+  const setRange = () => { const n = MB ? TF[tf].nM : TF[tf].n, N = cur.length;
+    if (!n || N <= n) ch.timeScale().fitContent(); else ch.timeScale().setVisibleLogicalRange({ from: N - n, to: N - 1 + Math.max(4, Math.round(n / 14)) }); };
+  const show = bars => {
+    cur = bars; idx = new Map(bars.map((b, i) => [b.time, i]));
+    ch.applyOptions({ timeScale: { timeVisible: tf === "4h", secondsVisible: false } });
+    ch.priceScale("right").applyOptions({ mode: tf === "1w" || tf === "1m" ? 1 : 0 });   // scala logaritmica sugli intervalli lunghi
+    cs.setData(bars.map(b => ({ time: b.time, open: b.open, high: b.high, low: b.low, close: b.close })));
+    vs.setData(bars.map(b => ({ time: b.time, value: b.v || 0, color: b.close >= b.open ? rgba("--green", .38) : rgba("--red", .38) })));
+    ser.forEach(q => ch.removeSeries(q.s)); ser = [];
+    SER[tf].forEach(([name, n, f]) => { if (bars.length < n + 2) return; const c = css(SERC[name] || LVX.MED[name] || "--label2");
+      const s = ch.addLineSeries({ color: c, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, visible: !!st.sw.med });
+      s.setData(f(bars, n)); ser.push({ s, name, c }); });
+    setRange(); drawLevels(); markers(); dataBox(bars.length - 1); legend(); sub();
+  };
+  const sub = () => { $("gxSub").textContent = tf === "4h" ? `4 ore · ${src4 || "caricamento"}` : `${TF[tf].lab} · ${artD("chiusura del", new Date(L.data + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "short", timeZone: "UTC" }))}`; };
+  const legend = () => {
+    const it = present.filter(([k]) => st.sw[k] && k !== "med" && k !== "zon").map(([k, lab, c]) => `<span style="--c:var(${c})"><i class="${/^l.s$/.test(k) || k === "trl" || k === "sto" ? "ds" : k === "fib" ? "dt" : ""}"></i>${lab}</span>`);
+    if (st.sw.med) { ser.forEach(q => it.push(`<span style="--c:${q.c}"><i></i>${q.name}</span>`));
+      LVX.rows().filter(o => o.tipo === "media" && !onSeries(o)).forEach(o => it.push(`<span style="--c:var(${LVX.col(o)})"><i class="ds"></i>${escS(o.cosa)}</span>`)); }
+    if (st.sw.zon && present.some(q => q[0] === "zon")) it.push(`<span style="--c:var(--label2)"><i class="zb"></i>Zone di coincidenza</span>`);
+    if (tf === "1d" || tf === "1w") it.push(`<span>▲▼ ingresso · ● uscita W3.2</span>`);
+    it.push(`<span style="--c:var(--label)"><i></i>${LVX.isLive() ? "Prezzo live" : "Ultima chiusura"}</span>`);
+    $("gxLeg").innerHTML = it.join("");
+  };
+  const nowPx = () => { if (!cs) return; const p = LVX.px(), o = { price: p, color: css("--label"), lineWidth: 1, lineStyle: 0, axisLabelVisible: true, title: LVX.isLive() ? "live" : "", lineVisible: true };
+    if (nowLine) nowLine.applyOptions(o); else nowLine = cs.createPriceLine(o); };
+  // ---- 4 ore dal browser: Binance (api.binance.com, poi data-api.binance.vision), riserva Coinbase (orarie aggregate)
+  let k4 = null, k4t = 0, k4busy = false;
+  const getJ = (u, ms = 9000) => { const ac = window.AbortController ? new AbortController() : null, t = setTimeout(() => ac && ac.abort(), ms);
+    return fetch(u, { cache: "no-store", signal: ac ? ac.signal : undefined }).then(r => { clearTimeout(t); if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }); };
+  const bn = host => getJ(`https://${host}/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=500`).then(a => a.map(k => ({ time: k[0] / 1000, open: +k[1], high: +k[2], low: +k[3], close: +k[4], v: +k[5] })));
+  const cb = async () => { const end = Math.floor(Date.now() / 1000 / 14400) * 14400 + 14400; let raw = [];
+    for (let p = 0; p < 3; p++) { const e = end - p * 300 * 3600, s = e - 300 * 3600;
+      raw = raw.concat(await getJ(`https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=3600&start=${new Date(s * 1000).toISOString()}&end=${new Date(e * 1000).toISOString()}`)); }
+    const h = [...new Map(raw.map(r => [r[0], r])).values()].sort((a, b) => a[0] - b[0]).map(r => ({ time: r[0], open: r[3], high: r[2], low: r[1], close: r[4], v: r[5] }));
+    const out = agg(h, t => Math.floor(t / 14400) * 14400); return out.slice(1); };   // il primo blocco può essere incompleto
+  const load4h = async () => {
+    if (k4 && Date.now() - k4t < 3e5) return k4;
+    for (const [name, f] of [["Binance BTC/USDT", () => bn("api.binance.com")], ["Binance BTC/USDT", () => bn("data-api.binance.vision")], ["Coinbase BTC/USD", cb]]) {
+      try { const k = (await f()).filter(b => b.open > 0 && b.close > 0); if (k.length > 30) { k4 = k; k4t = Date.now(); src4 = name; return k; } } catch (_) {} }
+    throw new Error("nessuna fonte");
+  };
+  const go = async v => {
+    tf = v; st.tf = v; save(); $("gxTf").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v));
+    if (v !== "4h") { msg(""); show(TF[v].bars); return; }
+    if (k4busy) return; k4busy = true; msg(`<span class="spin"></span>Caricamento delle candele a 4 ore…`); sub();
+    try { const k = await load4h(); if (tf === "4h") { msg(""); show(k); } }
+    catch (e) { if (tf === "4h") { cur = []; cs.setData([]); vs.setData([]); ser.forEach(q => ch.removeSeries(q.s)); ser = []; cs.setMarkers([]); $("gxData").innerHTML = ""; $("gxBands").innerHTML = "";
+      src4 = "non disponibile"; sub();
+      msg(`Candele a 4 ore non disponibili: Binance e Coinbase non rispondono da questa rete.<span class="gxMsgB"><button type="button" data-a="retry">Riprova</button><button type="button" data-a="1d">Torna a 1D</button></span>`, true); } }
+    finally { k4busy = false; }
+  };
+  $("gxMsg").addEventListener("click", e => { const a = e.target.closest("button"); if (!a) return; if (a.dataset.a === "retry") go("4h"); else go("1d"); });
+  // ---- evidenziazione: clic su una riga della tabella → il grafico include e mette in risalto quel prezzo
+  const highlight = (p, row) => {
+    const same = hl === p; hl = same ? null : p;
+    document.querySelectorAll("#gxTbl .lvL.on, #gxZon .lvZ.on").forEach(e => e.classList.remove("on"));
+    if (hlLine) { cs.removePriceLine(hlLine); hlLine = null; }
+    if (hl != null) { if (row) row.classList.add("on");
+      hlLine = cs.createPriceLine({ price: hl, color: css("--tint"), lineWidth: 3, lineStyle: 0, axisLabelVisible: true, title: MB ? "" : "selezionato" });
+      $("gxCard").scrollIntoView({ behavior: "smooth", block: "start" }); }
+    ch.priceScale("right").applyOptions({ autoScale: true }); reL();
+  };
+  // ---- tabella completa: tutti i livelli (dal più alto al più basso, riga del prezzo) e le zone; distanze e tocco sul prezzo live
+  const table = () => {
+    const px = LVX.px(), rs = LVX.rows(px), H = LVX.H; let h = "", done = false, first = true;
+    const nowRow = () => `<div class="cnDiv"><em>${LVX.isLive() ? "live" : "chiusura"}</em>${usd(px)}</div>`;
+    rs.forEach(o => { if (!done && o.prezzo < px) { h += nowRow(); done = true; first = true; }
+      h += lvRow(o, (first ? " first" : "") + (o.tipo === "trailing" ? " tr" : "") + (hl === o.prezzo ? " on" : "")).replace('<div class="lvL', '<div role="button" tabindex="0" class="lvL'); first = false; });
+    if (!done) h += nowRow();
+    $("gxTbl").innerHTML = `<div class="lvH" aria-hidden="true"><span></span><span>Livello</span><span>Dist.</span><span>Tipo</span><span>Tocco</span></div>${h}`;
+    $("gxTblN").textContent = `· ${rs.length} livelli${(L.zone || []).length ? `, ${L.zone.length} zone` : ""}`;
+    $("gxTblSub").textContent = `Distanze e probabilità di tocco entro ${H} giorni da ${LVX.refLab()} · tocca una riga per vederla sul grafico`;
+    const zs = LVX.zones(px).sort((a, b) => b.a - a.a), tn = t => t === "fibonacci" ? "Fibonacci" : (LVX.LT[t] || [t])[0].toLowerCase();
+    $("gxZon").innerHTML = zs.length ? `<p class="cnCap" style="margin-top:14px">Zone dove più livelli coincidono (a meno del 3,2% l'uno dall'altro)</p>` + zs.map(z => { const lf = Object.entries(z.liq_fonti || {});
+      return `<div class="lvZ${hl === (z.da + z.a) / 2 ? " on" : ""}" role="button" tabindex="0" data-px="${(z.da + z.a) / 2}" style="--c:var(${z.ruolo === "sopra" ? "--red" : z.ruolo === "sotto" ? "--green" : "--label"})"><span><b>${usd(z.da)} – ${usd(z.a)}</b>` +
+        `<small>${pct((z.da / px - 1) * 100, 1)} / ${pct((z.a / px - 1) * 100, 1)} · ${z.n} livelli: ${escS((z.tipi || []).map(tn).join(", "))}</small>` +
+        (lf.length ? `<small>liquidazioni nella zona: ${lf.map(([f, v]) => `${LVX.mld(v)} ${/reale/.test(f) ? "on-chain (reali)" : /Coinglass/.test(f) ? "Coinglass (stima)" : "stimate"}`).join(" · ")}</small>` : "") +
+        `</span><em>${z.ruolo === "a cavallo" ? "qui" : z.prob + "%"}<small><br>${z.ruolo === "a cavallo" ? "prezzo dentro" : "raggiunge"}</small></em></div>`; }).join("") : "";
+  };
+  const onPick = e => { const r = e.target.closest("[data-px]"); if (!r || (e.type === "keydown" && e.key !== "Enter" && e.key !== " ")) return; if (e.type === "keydown") e.preventDefault(); highlight(+r.dataset.px, r); };
+  ["click", "keydown"].forEach(t => { $("gxTbl").addEventListener(t, onPick); $("gxZon").addEventListener(t, onPick); });
+  // note complete (dicitura obbligatoria su probabilità, livelli e liquidazioni), fonti e metodo
+  const C = R.cone && typeof R.cone === "object" ? R.cone : null, FL = Array.isArray(L.fonti_liq) ? L.fonti_liq : [], CG = L.coinglass || {};
+  const cgTxt = CG.stato === "vecchio" ? `File Coinglass del ${escS(CG.data)} ignorato: più vecchio di 7 giorni.` : CG.stato === "illeggibile" ? "File Coinglass presente ma illeggibile: ignorato." : "";
+  const G = L.tocco || {};
+  $("gxNote1").textContent = "Livelli e liquidazioni sono contesto, non un segnale: decide W3.2. Le liquidazioni sono stime, tranne quelle on-chain (linea continua).";
+  $("gxNotes").innerHTML = `<p class="foot">${escS(L.nota_prob || "")} Per una zona: probabilità di raggiungerne il bordo più vicino.</p>
+    <p class="foot">${escS(L.nota || "")} ${escS(L.nota_liq || "")}</p>
+    <details class="calPast"><summary>Fonti, definizioni e metodo</summary><div style="display:grid;gap:10px;margin-top:8px">
+      ${FL.length ? `<div class="list" style="box-shadow:none">${FL.map(f => `<div class="row"><span class="k">${escS(f.fonte)}<small>${f.reale ? "posizioni reali on-chain" : "stima, non dati reali"}${f.agg ? " · aggiornata " + escS(String(f.agg).replace("T", " ").slice(0, 16)) : ""}</small></span><span class="v">${f.n} ${f.n === 1 ? "livello" : "livelli"}</span></div>`).join("")}</div>` : ""}
+      ${cgTxt ? `<p class="foot">${cgTxt}</p>` : ""}
+      <p class="foot">${escS(L.definizioni || "")}</p>
+      <p class="foot">Probabilità e intervalli: ${escS(G.metodo || "cono a 30 giorni")}; ${nfIT(G.n_paths || 0)} cammini dalla chiusura ${artD("del", fmtD(L.data))}, ricalcolati sul prezzo live con gli stessi parametri (volatilità giornaliera ${nfIT((G.sigma || 0) * 100, 2)}%).${C && C.method ? " " + escS(C.method) : ""}</p>
+      <p class="foot">Candele: giornaliere del tool (Binance spot, volumi in BTC), settimanali e mensili aggregate dalle giornaliere; 4 ore da Binance o, in riserva, da Coinbase (orarie aggregate). Il mese e la settimana in corso sono parziali.</p>
+    </div></details>`;
+  // ---- avvio alla prima apertura di Grafico (il contenitore deve essere visibile per avere una larghezza)
+  window.grInit = function grInit() {
+    if (grInit.done || !window.LightweightCharts) return; grInit.done = true;
+    ch = LightweightCharts.createChart($("gxChart"), chartOpts({ rightPriceScale: { borderVisible: false, mode: 0, scaleMargins: { top: .08, bottom: .2 } },
+      crosshair: { mode: 0, vertLine: { color: css("--label3"), labelBackgroundColor: css("--label2") }, horzLine: { color: css("--label3"), labelBackgroundColor: css("--label2") } },
+      timeScale: { borderVisible: false, rightOffset: 6 }, localization: { locale: "it-IT", priceFormatter: v => nfIT(v), timeFormatter: t => fmtT(t) } }));
+    cs = ch.addCandlestickSeries({ upColor: up, downColor: dn, borderVisible: false, wickUpColor: up, wickDownColor: dn, priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "price", precision: 0, minMove: 1 },
+      autoscaleInfoProvider: orig => { const r = orig(); if (hl == null || !r || !r.priceRange) return r;   // prezzo evidenziato sempre in vista
+        const pad = Math.abs(hl) * .02; return { ...r, priceRange: { minValue: Math.min(r.priceRange.minValue, hl - pad), maxValue: Math.max(r.priceRange.maxValue, hl + pad) } }; } });
+    vs = ch.addHistogramSeries({ priceScaleId: "vol", priceLineVisible: false, lastValueVisible: false, priceFormat: { type: "volume" } });
+    ch.priceScale("vol").applyOptions({ scaleMargins: { top: .84, bottom: 0 }, visible: false });
+    nowPx();
+    ch.subscribeCrosshairMove(e => { const i = e && e.time != null && idx.has(e.time) ? idx.get(e.time) : cur.length - 1; dataBox(i); $("gxData").classList.toggle("act", !!(e && e.time != null)); });
+    ch.timeScale().subscribeVisibleLogicalRangeChange(() => { reL(); if (cs) setMk(); });
+    ch.timeScale().subscribeSizeChange(reL);
+    ["pointerup", "wheel", "touchend", "dblclick"].forEach(t => $("gxChart").addEventListener(t, () => setTimeout(reL, 30), { passive: true }));
+    go(tf);
+  };
+  $("gxSw").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const k = b.dataset.k; st.sw[k] = !st.sw[k]; b.setAttribute("aria-pressed", !!st.sw[k]); save();
+    if (cs) { drawLevels(); legend(); } });
+  $("gxTf").addEventListener("click", e => { const b = e.target.closest("button"); if (b && cs) go(b.dataset.v); });
+  $("gxLast").onclick = () => { if (ch) { ch.timeScale().scrollToRealTime(); } };
+  const full = $("gxFull");
+  full.onclick = () => { const on = !$("gxCard").classList.contains("full"); $("gxCard").classList.toggle("full", on); document.body.classList.toggle("noscroll", on);
+    full.setAttribute("aria-pressed", on); full.textContent = on ? "✕ Chiudi" : MB ? "⤢" : "⤢ Espandi"; setTimeout(reL, 80); };
+  if (MB) { full.textContent = "⤢"; full.setAttribute("aria-label", "Schermo intero"); }
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && $("gxCard").classList.contains("full")) full.click(); });
+  table();
+  window.onRef(() => { table(); if (cs) { nowPx(); reL(); legend(); } });
 })();
 // Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità.
 // Tre tessere (Mercato / Fed / Dati): la prima parte del testo del server in evidenza, il resto sotto; colore di stato sobrio
@@ -1874,13 +1937,19 @@ function startLive() {
 }
 startLive();
 
-// ---- sezioni: Oggi · Posizioni · Grafico · Liquidazioni · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
+// ---- sezioni: Oggi · Posizioni · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
 const BOOK_ON = false;   // true = riattiva la sezione Book (voce di menu e #book); false = nessuna voce, #book porta a Oggi e la pagina non apre connessioni
-const VIEWS = ["oggi", "posizioni", "grafico", "liquidazioni", "movimenti", "notizie", "metodo"].concat(BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
-const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi" };   // vecchi indirizzi
-const PAGE_OF = { liquidazioni: "liquidazioni", book: "book" };   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
+// true = riattiva la pagina Liquidazioni (radar/pages/liquidazioni.html: voce di menu dopo Grafico e #liquidazioni); false = nessuna voce,
+// #liquidazioni porta a Grafico, la pagina resta nel codice ma non si inizializza e non apre connessioni. Le liquidazioni mostrate sono
+// quelle della mappa unica (report.livelli) in Oggi e in Grafico; la pagina, se riaccesa, le ricalcola nel browser con dati live.
+const LIQ_ON = false;
+const VIEWS = ["oggi", "posizioni", "grafico", "movimenti", "notizie", "metodo"].concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
+const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
+const PAGE_OF = Object.assign({}, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
 const viewEl = v => $("v-" + v) || (v === "book" ? $("book") : null);   // la pagina Book può usare id "book" o "v-book"
-(function () {   // Book riacceso: la voce torna nel menu, prima di Notizie
+(function () {   // Liquidazioni o Book riaccesi: la voce torna nel menu (Liquidazioni prima di Movimenti, Book prima di Notizie)
+  if (LIQ_ON && viewEl("liquidazioni")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#liquidazioni"; a.dataset.v = "liquidazioni";
+    a.innerHTML = `<svg><use href="#i-liq"/></svg>${n.classList.contains("tabbar") ? "Liquid." : "Liquidazioni"}`; n.insertBefore(a, n.querySelector('[data-v="movimenti"]')); });
   if (BOOK_ON && viewEl("book")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#book"; a.dataset.v = "book";
     a.innerHTML = `<svg><use href="#i-book"/></svg>Book`; n.insertBefore(a, n.querySelector('[data-v="notizie"]')); });
 })();
@@ -1890,7 +1959,7 @@ function route() {
   const v0 = (location.hash || "#oggi").slice(1), v = ALIAS[v0] || v0, ok = VIEWS.includes(v) && viewEl(v) ? v : "oggi";
   if (v0 !== ok && location.hash) history.replaceState(null, "", "#" + ok);   // vecchio indirizzo o pagina assente → la sezione giusta
   document.querySelectorAll(".view").forEach(el => el.hidden = el !== viewEl(ok));
-  if (ok === "grafico" && window.wkChartsInit) try { window.wkChartsInit(); } catch (e) { console.error(e); }
+  if (ok === "grafico" && window.grInit) try { window.grInit(); } catch (e) { console.error(e); }
   // pagine in file separati (radar/pages/*.html): si registrano in window.PAGES e si inizializzano alla prima visita
   const pk = PAGE_OF[ok], PG = pk && (window.PAGES || {})[pk]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
   Object.entries(window.PAGES || {}).forEach(([k, P]) => { if (k !== pk && P._done && P.hide) try { P.hide(); } catch (_) {} });

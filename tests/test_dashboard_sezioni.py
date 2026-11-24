@@ -1,4 +1,4 @@
-"""Struttura delle sezioni (radar/dashboard_template.html): menu a 6 voci uguale su telefono e desktop, Book e "Come funziona"
+"""Struttura delle sezioni (radar/dashboard_template.html): menu a 5 voci uguale su telefono e desktop, Book e "Come funziona"
 fuori dal menu, vecchi indirizzi reindirizzati, Liquidazioni pagina a sé, card di Oggi con le diciture obbligatorie. Niente rete."""
 import re
 import tempfile
@@ -9,7 +9,7 @@ from radar.dashboard import render
 
 ROOT = Path(__file__).resolve().parents[1]
 T = (ROOT / "radar" / "dashboard_template.html").read_text()
-MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("grafico", "Grafico"), ("liquidazioni", "Liquidazioni"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]
+MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON)
 CORTE = {"Liquidazioni": "Liquid."}   # etichette accorciate nella barra in basso del telefono
 
 
@@ -24,15 +24,15 @@ class TestMenu(unittest.TestCase):
             box, links = _nav(T, pat)
             self.assertEqual([(h, t) for h, v, t in links], [(h, short.get(t, t)) for h, t in MENU])
             self.assertTrue(all(h == v for h, v, _ in links))
-            self.assertEqual(box.count("<a "), 6)
-            for w in ("Book", "Come funziona", "Storico", "#book", "#metodo"):
+            self.assertEqual(box.count("<a "), 5)
+            for w in ("Book", "Come funziona", "Storico", "#book", "#metodo", "Liquid", "#liquidazioni"):
                 self.assertNotIn(w, box)
         self.assertNotIn("Navigazione", T)
-        self.assertIn("grid-template-columns:repeat(6,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
+        self.assertIn("grid-template-columns:repeat(5,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
 
     def test_ogni_voce_ha_la_sua_pagina_e_icona(self):
         pages = "".join(f.read_text() for f in (ROOT / "radar" / "pages").glob("*.html"))
-        for v, _ in MENU:
+        for v, _ in MENU + [("liquidazioni", "")]:
             self.assertIn(f'<div class="view" id="v-{v}"', T + pages)
         for ico in re.findall(r'<use href="#([\w-]+)"/>', T):
             self.assertIn(f'<symbol id="{ico}"', T)
@@ -42,17 +42,19 @@ class TestMenu(unittest.TestCase):
         for old, new in (("storico", "movimenti"), ("simulatore", "movimenti"), ("statistiche", "movimenti"), ("wallet", "oggi")):
             self.assertRegex(alias, rf'\b{old}: "{new}"')
         self.assertIn('book: BOOK_ON ? "book" : "oggi"', alias)
-        self.assertNotIn("liquidazioni", alias)                                 # #liquidazioni resta una pagina a sé
+        self.assertIn('liquidazioni: LIQ_ON ? "liquidazioni" : "grafico"', alias)   # #liquidazioni porta a Grafico finché LIQ_ON = false
         self.assertIn('history.replaceState(null, "", "#" + ok)', T)            # l'indirizzo vecchio viene riscritto
         views = re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1)
-        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "grafico", "liquidazioni", "movimenti", "notizie", "metodo"])
+        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "grafico", "movimenti", "notizie", "metodo"])
+        self.assertIn('.concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : [])', T)
 
     def test_book_spento_ma_presente(self):
         self.assertIn("const BOOK_ON = false;", T)                              # una riga per riaccenderlo
         self.assertTrue((ROOT / "radar" / "pages" / "book.html").exists())
         self.assertNotIn('href="#book"', T.split("<script")[0])                 # nessun link nel markup
         # la pagina Book parte solo dal router, e solo se la sezione è tra quelle raggiungibili
-        self.assertIn('const PAGE_OF = { liquidazioni: "liquidazioni", book: "book" }', T)
+        self.assertIn('const PAGE_OF = Object.assign({}, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {})', T)
+        self.assertIn("const LIQ_ON = false;", T)
         self.assertIn("const pk = PAGE_OF[ok], PG = pk && (window.PAGES || {})[pk]", T)
         B = (ROOT / "radar" / "pages" / "book.html").read_text()
         reg = B[B.index("window.PAGES.book = {"):]
@@ -85,9 +87,11 @@ class TestStruttura(unittest.TestCase):
         p, g, m = self._view("posizioni"), self._view("grafico"), self._view("movimenti")
         for i in ('id="wkHero"', 'id="ethCard"', 'id="pvCard"', 'id="wkDlg"'):
             self.assertIn(i, p)
-        for i in ('id="wkChart"', 'id="wkMacd"', 'id="lvCard"', 'id="srCard"', 'id="lqCard" href="#liquidazioni"'):
+        for i in ('id="gxCard"', 'id="gxTf"', 'id="gxSw"', 'id="gxChart"', 'id="gxTbl"'):
             self.assertIn(i, g)
-        self.assertLess(g.index('id="wkChart"'), g.index('id="lvCard"'))
+        self.assertLess(g.index('id="gxChart"'), g.index('id="gxTbl"'))                 # tabella completa sotto il grafico
+        for i in ('id="wkMacd"', 'id="lvCard"', 'id="srCard"', 'id="lqCard"', "#liquidazioni"):
+            self.assertNotIn(i, g)
         self.assertNotIn("v-liquidazioni", T)                                   # Liquidazioni resta nel suo file, pagina a sé
         for i in ('id="wkStatSec"', 'id="ethStatSec"', 'id="simPanel"', 'id="simTrades"'):
             self.assertIn(i, m)
@@ -96,7 +100,7 @@ class TestStruttura(unittest.TestCase):
     def test_card_di_oggi(self):
         # un dato grande, fascia con prezzo e livelli sulla stessa scala, probabilità ordinate per prezzo, tre tessere di contesto
         for w in ('class="cnBig"', 'class="cnScale"', 'class="b80"', 'class="b50"', 'class="cnDiv"', ".sort((a, b) => b.price - a.price)",
-                  'class="cxTiles"', 'class="cxT"', "Dettagli ›"):
+                  'class="cxTiles"', 'class="cxT"', "Dettagli ›", "Apri nel Grafico ›"):
             self.assertIn(w, T)
         # le diciture arrivano dal report e restano in pagina, testuali
         self.assertIn('<p class="cxNote">${esc(C.note)}</p>', T)

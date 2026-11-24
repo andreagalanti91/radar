@@ -237,8 +237,8 @@ def today_brief(report: dict, day: str | None = None) -> str:
         r1 = next((z for z in sr if z["name"] == "R1"), None)
         s1 = next((z for z in sr if z["name"] == "S1"), None)
         for z, tag in ((r1, "R1"), (s1, "S1")):
-            if z and z.get("lo") is not None and z.get("hi") is not None:
-                l_px += f" · {tag} {_usd(z['lo'])}–{_usd(z['hi'])}"
+            if z and z.get("lo") is not None and z.get("hi") is not None:   # mappa unica dei livelli: un prezzo (lo = hi)
+                l_px += f" · {tag} {_usd(z['lo'])}" if z["lo"] == z["hi"] else f" · {tag} {_usd(z['lo'])}–{_usd(z['hi'])}"
         if pv:
             w3 = _w3_lines(pv, wk)
         elif wk:

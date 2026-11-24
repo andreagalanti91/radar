@@ -86,6 +86,63 @@ def touch_probs(ohlc: pd.DataFrame, prices: list[float], n_paths: int = N_PATH, 
     return [touch_prob(mx, mn, p["price"], float(x)) for x in prices]
 
 
+# ------------------------------------------------------------------ calcolo dal prezzo live (stessi cammini, nel browser)
+GRID_N = 401          # quantili dei cammini esportati per il browser (passo 0,25%: errore di tocco ≤ 0,25 punti)
+GRID_DEC = 6          # decimali dei logaritmi esportati
+
+
+def touch_grid(ohlc: pd.DataFrame, n_paths: int = N_PATH, seed: int = SEED) -> dict:
+    """Parametri per ricalcolare intervalli e probabilità di tocco su un prezzo diverso dalla chiusura (prezzo live), con gli
+    STESSI cammini del cono: i cammini sono rendimenti relativi al prezzo di partenza, quindi basta la loro distribuzione.
+    mx / mn = quantili (GRID_N, da 0 a 1) del logaritmo del massimo / minimo di ogni cammino; fine = quantili della chiusura
+    finale per gli intervalli 80% e 50%. Il calcolo del cono non cambia; lo stesso calcolo è in JS nella dashboard."""
+    ohlc = ohlc[["high", "low", "close"]].dropna()
+    p = prepare(ohlc)
+    end, mx, mn = simulate(p["zr"], p["zu"], p["zd"], p["sigma"], p["drift"], n_paths, seed)
+    q = np.linspace(0.0, 1.0, GRID_N)
+    r = lambda a: [round(float(x), GRID_DEC) for x in a]   # noqa: E731
+    return {"metodo": "bootstrap a blocchi di 10 giorni, volatilità di oggi, deriva media storica (radar/cone.py)",
+            "orizzonte": H, "data": str(pd.Timestamp(ohlc.index[-1]).date()), "prezzo": round(p["price"], 2),
+            "sigma": round(p["sigma"], 6), "drift": round(p["drift"], 6), "n_paths": int(n_paths), "seed": int(seed),
+            "mx": r(np.quantile(mx, q)), "mn": r(np.quantile(mn, q)),
+            "fine": {k: round(float(np.quantile(end, v)), GRID_DEC) for k, v in (("10", .1), ("25", .25), ("75", .75), ("90", .9))}}
+
+
+def _interp(x: float, xp: list[float], fp: list[float]) -> float:
+    """Interpolazione lineare (identica alla funzione JS della dashboard): fuori dai bordi il valore del bordo."""
+    if x <= xp[0]:
+        return fp[0]
+    if x >= xp[-1]:
+        return fp[-1]
+    lo, hi = 0, len(xp) - 1          # ricerca binaria: xp[lo] <= x < xp[hi]
+    while hi - lo > 1:
+        mid = (lo + hi) // 2
+        if xp[mid] <= x:
+            lo = mid
+        else:
+            hi = mid
+    a, b = xp[lo], xp[hi]
+    return fp[lo] + (fp[hi] - fp[lo]) * (x - a) / (b - a)
+
+
+def grid_touch_prob(grid: dict, price: float, level: float) -> float:
+    """Probabilità (0–1) di toccare `level` entro l'orizzonte partendo da `price`, dai quantili di touch_grid."""
+    if not (price > 0 and level > 0):
+        return float("nan")
+    k = math.log(level / price)
+    if k == 0:
+        return 1.0
+    n = len(grid["mx"])
+    q = [i / (n - 1) for i in range(n)]
+    return 1.0 - _interp(k, grid["mx"], q) if k > 0 else _interp(k, grid["mn"], q)
+
+
+def grid_interval(grid: dict, price: float, mass: float) -> tuple[float, float]:
+    """Intervallo 80% (mass 0,8) o 50% (0,5) della chiusura a fine orizzonte partendo da `price`."""
+    lo, hi = ("10", "90") if mass == 0.8 else ("25", "75")
+    return price * math.exp(grid["fine"][lo]), price * math.exp(grid["fine"][hi])
+
+
 def round_levels(price: float) -> list[float]:
     """Due numeri tondi: il primo sotto e il primo sopra il prezzo, distanti almeno il 5% (61.000 → 50.000 e 70.000)."""
     mag = 10 ** math.floor(math.log10(price))

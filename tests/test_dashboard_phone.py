@@ -99,10 +99,11 @@ class TestToolSemplice(unittest.TestCase):
         self.assertNotIn('class="wkPx"', T)                                  # il prezzo è già in testa alla pagina
 
     def test_livelli_una_scheda(self):
-        # una sola scheda "Livelli vicini" a ogni larghezza; mappa S/R e liquidazioni vicine solo nel pannello
-        self.assertIn('class="card tapCard" id="lvCard"', T)
-        self.assertIn('class="card sr sheetOnly" id="srCard"', T)
-        self.assertIn('class="card lqCard sheetOnly" id="lqCard"', T)
+        # dal 24/11 "Livelli vicini", S/R e liquidazioni vicine confluiscono nella tabella completa sotto il grafico (motore unico)
+        for gone in ('id="lvCard"', 'id="srCard"', 'id="lqCard"'):
+            self.assertNotIn(gone, T)
+        self.assertIn('<div class="scroll gxScroll"><div class="gxTbl" id="gxTbl"></div></div>', T)   # tabella scorrevole nel suo contenitore
+        self.assertIn(".gxSw{display:flex;gap:6px;overflow-x:auto", T)                                  # interruttori scorrevoli, mai la pagina
         self.assertIn(".sheetOnly:not(.inSheet){display:none!important}", T)
 
     def test_notizie_corte(self):
