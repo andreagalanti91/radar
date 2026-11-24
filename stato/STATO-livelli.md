@@ -1,6 +1,6 @@
 # Stato — Card unica "Livelli e probabilità a 30 giorni" in Oggi
 
-**Stato:** IN CORSO · 24/11/2026 · Opus 5.5 medium (regia), agente radar-ui
+**Stato:** COMPLETATO · 24/11/2026 · Opus 5.5 medium (regia), agente radar-ui
 
 ## Prompt originale
 > Prompt allegato (research/livelli_import/PROMPT.md): sezione "Livelli" in Oggi — mappa di supporti, resistenze, medie, Fibonacci,
@@ -19,7 +19,7 @@
 ## Piano
 - [x] 1. radar/livelli.py, report["livelli"], card unica in Oggi, Livelli vicini/S-R del Grafico/Liquidazioni sulla nuova mappa, 22 test (381 totali verdi), render 360/400/1280
   Restano su radar/levels.py: liqmap (confluenza), liqcascade, preview sr_rows (Pre-analisi in Posizioni + Telegram), cone.pick_levels
-- [ ] 2. Regia: commit, deploy, verifica sul sito   ← IN CORSO
+- [x] 2. Commit, deploy, verifica sul sito (24/11 09:17 UTC: card presente, 26 livelli, 4 zone, chiusura del 23/11)
 
 ## Come riprendere
-**Prossima azione:** attendere l'agente; poi suite, render, deploy.
+**Prossima azione:** facoltativa: allineare la Pre-analisi (sr_rows di radar/preview.py, anche Telegram) alla nuova mappa, se l utente lo chiede.
