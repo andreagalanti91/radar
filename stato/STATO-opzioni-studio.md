@@ -20,10 +20,20 @@ opzioni BTC, trova coerenza, analizza tutti i dati in tuo possesso. Avvia ciclo 
 4. Revisione critica (radar-review). 5. Eventuale secondo ciclo. 6. README con verdetto, lezione in RESEARCH.md, indici,
    commit e push sul branch di lavoro, riepilogo all'utente entro le 07:00 UTC.
 
-## Prossima azione
-Fase 1 del motore consegnata e committata; ADDENDUM-1 committato. Attendere l'agente dati (superficie Deribit), poi riprova del motore sulle 23 operazioni con superficie.py ed esecuzione F1–F4 (agente ricerca), poi revisione critica.
+## Avanzamento (24/11, 22:30 UTC)
+- Fase 1: motore, segnali, conteggi; ADDENDUM-1 committato da solo. FATTO.
+- Dati: superficie Deribit 2018–26 da scambi veri, validata (premio −3,1% mediano sulle 23 operazioni). FATTO.
+- Fase 2: cancello superato; F1–F4 eseguiti. Esito provvisorio: niente batte B0 (dal 2018 10.000 → 49.712 $, DD −12,8%);
+  nessun segnale F3 utile. Bozza in `research/opzioni_studio/README.md`. FATTO, committato.
+- Guida OKX: `guida/OPZIONI-OKX.md`. FATTA, committata (29 passaggi "[da verificare sull'app]").
+- Revisione critica (radar-review): IN CORSO.
 
-## Aggiunta dell'utente (24/11, 22:50 UTC)
+## Prossima azione
+Alla consegna della revisione: correggere README/motore se servono; decidere il secondo ciclo (ipotesi candidata: filtro
+sulla IV alta, da preregistrare con ADDENDUM-2 prima dell'esecuzione); poi lezione in RESEARCH.md, indici
+(research/README.md, memoria/02-ricerca/INDICE.md), commit, riepilogo all'utente entro le 07:00 UTC.
+
+## Aggiunta dell'utente (24/11, 21:50 UTC)
 "Includi anche la creazione di una guida dettagliata su come inserire operazioni su OKX." (con screenshot della catena
 opzioni dell'app: `guida/img/okx-catena-opzioni.png`). Agente dedicato in corso → `guida/OPZIONI-OKX.md`; i passaggi non
 verificabili vanno marcati "[da verificare sull'app]". Da committare alla consegna e includere nel riepilogo del mattino.
