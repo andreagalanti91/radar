@@ -264,6 +264,41 @@ def plan(side: int, close: float, atr: float, ema21: float, capital: float, asse
         ({"btc": round(notional / close, 4)} if asset == "BTC" else {})
 
 
+def exits_block(side: str, entry_px: float, price: float, best: float, trail: float, atr_w: float, ema21: float,
+                expo: float, capital: float, pnl_pct: float, fund7: float, flow: float) -> dict:
+    """Solo descrittivo (nessun effetto su segnali e uscite): per ciascuna delle tre uscite di W3.2 il livello, l'esito se
+    scattasse ora rispetto all'ingresso (costi come in simulate: slippage e commissione d'uscita, funding già pagato incluso
+    in pnl_pct) e la soglia oltre la quale diventa un'uscita in profitto. Percentuali in punti %, dollari sul capitale dell'asset."""
+    sg = 1 if side == "long" else -1
+    fee = FEE_SPOT if sg > 0 else FEE_PERP
+
+    def at(x: float) -> dict:   # esito se si esce al prezzo x
+        xs = x * (1 - SLIP * sg)
+        cap = pnl_pct / 100 + sg * expo * (xs - price) / entry_px - expo * xs / entry_px * fee
+        return {"pct_price": round(sg * (x / entry_px - 1) * 100, 2), "pct_cap": round(cap * 100, 2),
+                "usd": round(capital * cap, 0), "esito": "profitto" if cap > 0 else "perdita"}
+
+    thr = entry_px + sg * TRAIL_K * atr_w      # miglior chiusura oltre la quale il trailing passa dal lato del profitto
+    tr = {"level": round(trail, 2), "check": "ogni ora", "atr_w": round(atr_w, 2), "best": round(best, 2),
+          "soglia": round(thr, 2), "soglia_dist_pct": round((thr / price - 1) * 100, 2),
+          "soglia_ok": bool(sg * (trail - entry_px) > 0)} | at(trail)
+    em = {"level": round(ema21, 2), "check": "chiusura settimanale", "soglia": round(entry_px, 2),
+          "soglia_dist_pct": round((entry_px / ema21 - 1) * 100, 2), "soglia_ok": bool(sg * (ema21 - entry_px) > 0),
+          "settimane": None} | at(ema21)
+    # stima onesta solo nel caso semplice: prezzo fermo già dal lato del profitto, la EMA 21 (α = 2/22) gli si avvicina
+    # di una frazione fissa a settimana: settimane perché passi l'ingresso
+    if not em["soglia_ok"] and sg * (price - entry_px) > 0:
+        a = 2 / (EMA_X + 1)
+        em["settimane"] = int(np.ceil(np.log((entry_px - price) / (ema21 - price)) / np.log(1 - a)))
+    hot = fund7 > FUND_HOT if sg > 0 else fund7 < FUND_COLD
+    fl = flow < 0 if sg > 0 else flow > 0
+    di = {"check": "chiusura della domenica", "fund7": fund7, "fund_soglia": FUND_HOT if sg > 0 else FUND_COLD,
+          "fund_ok": bool(hot), "flow": flow, "flow_ok": bool(fl), "attiva": bool(hot and fl)} | at(price)
+    return {"side": side, "entry_px": round(entry_px, 2), "price": round(price, 2), "trail": tr, "ema21": em, "dist": di,
+            "calc": {"sg": sg, "expo": expo, "fee": fee, "slip": SLIP, "pnl_pct": pnl_pct, "px0": round(price, 2),
+                     "capital": round(capital, 0)}}
+
+
 def evaluate(f: pd.DataFrame, capital: float | None = None, asset: str = "BTC") -> dict:
     """Stato attuale W3.2 di un asset: nessuno / segnale (ingresso alla prossima apertura) / aperto / uscita (alla prossima
     apertura), con livelli e piano in dollari, più lo storico dal 2021 a 1x e 2x. `capital` = dollari dedicati all'asset
@@ -287,6 +322,7 @@ def evaluate(f: pd.DataFrame, capital: float | None = None, asset: str = "BTC") 
            "trend_age": int(wk["trend_age"]), "macd": float(wk["macd"]), "macd_sig": float(wk["macd_sig"]),
            "f1_ok": bool(wk["f1_ok"]), "old_trend": OLD_TREND,
            "ema20_up": bool(wk["ema20"] > w["ema20"].iloc[-2]),
+           "sma40_dn": bool(wk["sma"] < w["sma"].iloc[-5]), "sma40_4w": float(w["sma"].iloc[-5]),
            "chart": {k: [None if pd.isna(v) else round(float(v), 2) for v in wc[c]] for k, c in
                      (("o", "open"), ("h", "high"), ("l", "low"), ("c", "close"), ("ema21", "ema21"), ("sma40", "sma"),
                       ("macd", "macd"), ("sig", "macd_sig"))} | {"d": [str(x.date()) for x in wc.index]},
@@ -302,6 +338,8 @@ def evaluate(f: pd.DataFrame, capital: float | None = None, asset: str = "BTC") 
                    trail_usd=round(capital * o["expo"] * (o["trail"] / o["entry_px"] - 1) * sg, 0))
         if asset == "BTC":
             out["btc"] = out["qty"]
+        out["uscite"] = exits_block(o["side"], o["entry_px"], float(last["close"]), float(o["best"]), float(o["trail"]),
+                                    float(o["curatr"]), float(wk["ema21"]), o["expo"], capital, out["pnl_pct"], fund7, flow)
         if pd_ and pd_["kind"] == "exit":
             out.update(status="uscita", reason=pd_["arg"], exit_date=pd_["date"])
     elif pd_ and pd_["kind"] == "enter":
