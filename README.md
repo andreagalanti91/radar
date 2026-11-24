@@ -109,9 +109,9 @@ Pensata per il telefono (installabile dalla schermata Home), tema scuro e chiaro
 
 | Sezione | Contenuto |
 |---|---|
-| **Oggi** | prezzo, riga di stato delle posizioni (BTC ed ETH, porta a Posizioni), card "Fra 30 giorni" (intervallo all'80% come fascia con prezzo e livelli, probabilità di toccare un livello, dalla volatilità), riquadro Contesto in tre tessere (Mercato, Fed, Dati), notizie del giorno |
+| **Oggi** | prezzo, riga di stato delle posizioni (BTC ed ETH, porta a Posizioni), card "Livelli e probabilità a 30 giorni" (intervalli 80% e 50%, mappa unica dei livelli con la probabilità di toccarli, zone di confluenza), riquadro Contesto in tre tessere (Mercato, Fed, Dati), notizie del giorno |
 | **Posizioni** | posizione W3.2 BTC, card compatta ETH (stato, P&L sulla quota, stop/trailing, esposizione), Pre-analisi (solo BTC) della prossima chiusura (soglie, stop, flusso, funding); da qui "Regole complete" apre la pagina *Metodo* |
-| **Grafico** | grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, scheda "Livelli vicini" (supporto, resistenza e cluster di liquidazione più vicini) |
+| **Grafico** | grafico settimanale con EMA 21, SMA 40, S/R e liquidazioni vicine, scheda "Livelli vicini" (supporto e resistenza della stessa mappa di Oggi, cluster di liquidazione più vicini) |
 | **Liquidazioni** | mappa stimata delle liquidazioni, prezzi di liquidazione reali Hyperliquid, feed live |
 | **Movimenti** | trade di W3 con curva di equity contro BTC, storico W3.2 su ETH (riassunto e trade), registro dei trade reali, simulatore del capitale |
 | **Notizie** | calendario economico, riunioni FOMC e BCE, notizie classificate per impatto |
@@ -124,15 +124,37 @@ mostra probabilità né medie storiche, perché nei test regimi e politica econo
 ([`research/previsionale2`](research/previsionale2/README.md), lezione 113); non entra in W3.2. Dati Fed da FRED al massimo una
 volta al giorno, cache in `data/context.csv`: se la fonte non risponde resta l'ultimo dato con la sua data.
 
-La card **Fra 30 giorni** ([`radar/cone.py`](radar/cone.py), `report["cone"]`, solo BTC) mostra il prezzo, l'intervallo
-probabile all'80% e al 50% fra 30 giorni e la probabilità di toccare entro 30 giorni cinque livelli scelti dal tool (trailing o
-stop della posizione W3.2 aperta, supporto e resistenza più vicini ad almeno il 3%, due numeri tondi). È un cono di probabilità
-calcolato dalla volatilità attuale, **non una previsione di direzione** (lezioni 112–113): bootstrap a blocchi dei rendimenti
-storici riscalati alla volatilità di oggi, con la sola crescita media storica; nello studio di calibrazione
-([`research/cono30`](research/cono30/README.md)) l'intervallo 80% ha contenuto il prezzo nel 78% dei casi (2018–26) e il
-guadagno sulla semplice frequenza storica è piccolo. Flusso perp e fascia di liquidazione stimata compaiono solo come righe
-descrittive: non cambiano le probabilità. Non entra in W3.2. Ogni previsione è registrata in `data/cone_log.csv` e confrontata
-con il prezzo dopo 30 giorni (copertura dal vivo).
+La card **Livelli e probabilità a 30 giorni** unisce la mappa dei livelli ([`radar/livelli.py`](radar/livelli.py),
+`report["livelli"]`) e il cono ([`radar/cone.py`](radar/cone.py), `report["cone"]`), solo BTC. In alto: prezzo (ultima chiusura
+giornaliera completa), intervallo probabile all'80% e al 50% fra 30 giorni, primo supporto e prima resistenza, prime liquidazioni
+di long sotto e di short sopra, ATR 14 giornaliero. Poi la scala dei livelli dal più alto al più basso (in vista il più vicino di
+ogni tipo, gli altri con "Mostra tutti"): supporti e resistenze (minimi e massimi di swing settimanali a 5 settimane, attivi 3 anni e
+finché una chiusura giornaliera non li rompe, più il minimo delle ultime 5 settimane non confermato), medie a 50/200 giorni e
+40/200 settimane, Fibonacci 50/61,8/78,6% fra minimo del ciclo 2022–23 e massimo storico, livello storico 69.000 $ (riferimento,
+non resistenza), liquidazioni e trailing della posizione W3.2 aperta; per ognuno la **probabilità di toccarlo entro 30 giorni**,
+calcolata con gli stessi cammini del cono. Infine le zone dove più livelli coincidono (a meno del 3,2%), con le liquidazioni nella
+zona e la probabilità di raggiungerne il bordo più vicino. Nei Dettagli: grafico dell'ultimo anno con una linea per livello, fonti
+delle liquidazioni, nota fissa e affidabilità del cono. Definizioni e numeri della nota da
+[`research/livelli_import`](research/livelli_import/LIVELLI_BTC.md).
+
+Il cono è calcolato dalla volatilità attuale, **non è una previsione di direzione** (lezioni 112–113): bootstrap a blocchi dei
+rendimenti storici riscalati alla volatilità di oggi, con la sola crescita media storica; nello studio di calibrazione
+([`research/cono30`](research/cono30/README.md)) l'intervallo 80% ha contenuto il prezzo nel 78% dei casi (2018–26). I livelli
+sono contesto, non segnali. Né cono né livelli entrano in W3.2. Ogni previsione del cono è registrata in `data/cone_log.csv` e
+confrontata con il prezzo dopo 30 giorni (copertura dal vivo).
+
+Liquidazioni nella mappa, con la fonte su ogni riga: i 3 cluster significativi più vicini per lato della mappa **stimata** del tool
+(`radar/liqmap.py`, "stima Radar (OI Binance+OKX)"), i 3 livelli **reali** on-chain più vicini per lato di Hyperliquid e Lighter
+(`report["liqmap"]["onchain"]`) e, se presente, il file facoltativo `data/coinglass_levels.json`, compilato a mano leggendo la mappa
+di Coinglass (nessuno scraping):
+
+```json
+{"data": "2026-11-24 09:01", "long": [[54145, 0.7487], [51368, 1.18]], "short": [[76915, 0.7208], [91076, 0.8396]]}
+```
+
+`data` è l'ora italiana della lettura (AAAA-MM-GG HH:MM); `long` sono le liquidazioni di long (sotto il prezzo) e `short` quelle di
+short (sopra), come coppie [prezzo in $, miliardi di $]. Le righe compaiono con fonte "Coinglass, GG/MM/AAAA HH:MM" (stime). Un file
+più vecchio di 7 giorni è **ignorato** e la card lo dice nei Dettagli; un file illeggibile è ignorato allo stesso modo.
 
 La pagina *Metodo* (regole complete e limiti) si apre dalla card della posizione. La sezione Wallet è in pausa dal 22/11/2026
 (`RADAR_WALLETS=0`). Le pagine stanno in [`radar/pages/`](radar/pages/) e sono incluse da [`radar/dashboard.py`](radar/dashboard.py).

@@ -17,8 +17,9 @@
 - File originali copiati in research/livelli_import/ (fonte, riproducibilità).
 
 ## Piano
-- [ ] 1. radar-ui + logica: radar/livelli.py, report["livelli"], card unica, Livelli vicini, test, render   ← IN CORSO
-- [ ] 2. Regia: suite, render, commit, deploy, verifica sul sito, riepilogo
+- [x] 1. radar/livelli.py, report["livelli"], card unica in Oggi, Livelli vicini/S-R del Grafico/Liquidazioni sulla nuova mappa, 22 test (381 totali verdi), render 360/400/1280
+  Restano su radar/levels.py: liqmap (confluenza), liqcascade, preview sr_rows (Pre-analisi in Posizioni + Telegram), cone.pick_levels
+- [ ] 2. Regia: commit, deploy, verifica sul sito   ← IN CORSO
 
 ## Come riprendere
 **Prossima azione:** attendere l'agente; poi suite, render, deploy.

@@ -270,6 +270,9 @@ def daily() -> None:
     report["liqmap"] = _soft("mappa delle liquidazioni", lambda: mod("liqmap").update(report.get("levels"), DATA_DIR))
     # card "Fra 30 giorni": cono di probabilità dalla volatilità, non dalla direzione; solo lettura, nessun effetto su W3.2 (radar/cone.py)
     report["cone"] = _soft("cono a 30 giorni", lambda: mod("cone").build(f, report, DATA_DIR))
+    # mappa unica dei livelli (supporti, resistenze, medie, Fibonacci, liquidazioni, zone) con probabilità di tocco dal cono:
+    # contesto, non segnale; nessun effetto su W3.2 (radar/livelli.py, card "Livelli e probabilità a 30 giorni")
+    report["livelli"] = _soft("mappa dei livelli", lambda: mod("livelli").compute(f, report, DATA_DIR))
     # pre-analisi della prossima decisione W3 (chiusura della domenica) con i dati di oggi: solo lettura (radar/preview.py)
     report["preview"] = _soft("pre-analisi W3", lambda: mod("preview").build(f, report)) if wcur else None
     _soft("trader seguito (esiti)", lambda: mod("xinbox").evaluate_all())
@@ -294,7 +297,7 @@ def daily() -> None:
     report["context"] = _soft("contesto di mercato e politica economica", lambda: mod("context").build(DATA_DIR, banks=report.get("banks")))
     # chiusura multi-asset (S&P, Nasdaq, oro, argento, dollaro, VIX, Treasury 10 anni): solo contesto (radar/macro.py)
     report["macro"] = _soft("chiusura multi-asset", lambda: mod("macro").build(DATA_DIR, weekly=report.get("weekly")))
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone"):
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli"):
         if report.get(k) is None:
             report.pop(k, None)
     # solo W3 (W2 + MACD robusta, dal 12/11/2026) (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli

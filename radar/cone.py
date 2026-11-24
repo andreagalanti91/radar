@@ -77,6 +77,15 @@ def touch_prob(mx: np.ndarray, mn: np.ndarray, price: float, level: float) -> fl
     return float((mx >= k).mean()) if k > 0 else float((mn <= k).mean()) if k < 0 else 1.0
 
 
+def touch_probs(ohlc: pd.DataFrame, prices: list[float], n_paths: int = N_PATH, seed: int = SEED) -> list[float]:
+    """Probabilità di toccare ciascun prezzo entro l'orizzonte con gli STESSI cammini del cono (stessa storia, stesso seme di
+    compute): serve alla mappa dei livelli (radar/livelli.py). Il calcolo del cono non cambia."""
+    ohlc = ohlc[["high", "low", "close"]].dropna()
+    p = prepare(ohlc)
+    _, mx, mn = simulate(p["zr"], p["zu"], p["zd"], p["sigma"], p["drift"], n_paths, seed)
+    return [touch_prob(mx, mn, p["price"], float(x)) for x in prices]
+
+
 def round_levels(price: float) -> list[float]:
     """Due numeri tondi: il primo sotto e il primo sopra il prezzo, distanti almeno il 5% (61.000 → 50.000 e 70.000)."""
     mag = 10 ** math.floor(math.log10(price))
