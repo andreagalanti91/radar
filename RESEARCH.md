@@ -409,6 +409,42 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 121**: "compra quando la Zeiierman Trend Pressure è a −90, vendi a −20" (ciclo 3, research/zeiierman3, PREREG b421b1c,
+13 configurazioni, tre periodi) non regge. Z-Trend giornaliera: 2018–20 8,5k, 2021–23 12,8k, 2024–26 8,7k da 10k, DD −40/−68%;
+dal 2021 11,2k contro 21,1k del buy & hold e 78,5k di W3.2. Con stop a 2 ATR 13,3k / 21,5k / 11,4k, sotto il buy & hold in
+CAGR/DD nel 2018–20 e 2024–26, DD −48%, placebo p 0,21, vicini 5/14. Ingresso alla risalita sopra −90, 4h, rilascio blu con W3.2
+flat (lo "spiraglio" del ciclo 1): tutti in perdita in almeno due periodi su tre. Z-Pulse sotto −90 solo 4 giorni dal 2018, il
+Core mai. Dentro W3.2 il long aggiuntivo da flat porta il DD a −48% e la vendita di metà a −20 abbassa il DD (−14%) solo perché
+dimezza la posizione (placebo identico, p 0,51) e costa il 25%. Descrittivo: dopo "sotto −90" +6% a 30 giorni contro +3,5% (p
+0,27), con minimo successivo fino a −44%; dopo "sopra −20" BTC sale ancora (+9,9%): la regola vende la forza. Il 20–22/11/2026 la
+regola ha dato un buy mentre W3.2 è short: con W3.2 short il "buy" a −90 ha reso meno della media. Studio chiuso: tre cicli, 44
+regole, nessuna. Non riproporre senza un'ipotesi diversa dal "range a 120 giorni". research/zeiierman3/README.md (PREREG b421b1c; revisione critica separata non eseguita: nulla adottato).
+**Lezione 120**: il metodo di TraderA (linea su due massimi/minimi, rottura con slancio, ritest con confluenza EMA, stop sotto la
+base della rottura, obiettivo alla struttura precedente) si riproduce con una regola: su LMT stessi numeri entro lo 0,5%
+(calibrazione su un esempio), su NVDA 3 zone su 4. Applicata a tutti i casi non funziona: 20 azioni del Dow 2000 dal 2016, R medio
+−0,3…−0,5 per trade in entrambi i periodi, WR 14–16%, uguale al placebo con gli stessi stop e obiettivi (p 0,21–0,70); short
+sempre in perdita; confluenza e forza relativa non cambiano il segno; crypto con troppi pochi trade; dentro W3.2 né il ritest
+come ingresso (58k $ contro 78,5k $) né metà all'obiettivo di struttura (67k $) migliorano. Il rapporto 3–4R mostrato nei suoi
+piani si paga con l'85% di stop. Il suo eventuale vantaggio sta nella scelta dei casi: si misura solo in avanti (confronto.csv),
+non con un backtest. research/tradera_test/README.md (PREREG 9da09c8; revisione critica separata non eseguita). research/tradera_test/README.md (PREREG 9da09c8; revisione critica separata non eseguita: nulla adottato).
+**Lezione 119**: il Supertrend di TradingView (ATR 10, fattore 3; replica esatta di ta.supertrend, research/supertrend, PREREG
+24d63a0) non è un segnale. Dal 2021 su BTC: inversione long/short 16.215 $ (4h, DD −61%, 293 trade), 3.477 $ (1D, DD −84%),
+24.363 $ (1W, DD −83%); solo long 22.653 / 13.807 / 30.642 $ con DD −46/−54/−63%; solo short sempre in perdita; multi-intervallo
+13.727 $ e 10.209 $; contro 78.474 $ (DD −21%) di W3.2 e 22.549 $ del buy & hold. 0 oggetti su 11 validi, 0 celle su 176 nella
+mappa ATR 7–21 × fattore 2–4 (sul giornaliero 10/3 è la cella peggiore: il risultato dipende dal parametro), 0 su 7 su ETH; il
+2018–20 brillante (58.522 $) non si ripete. Win rate 35–40%, un cambio a settimana sul 4h, uno ogni 38 giorni sul giornaliero,
+uno l'anno sul settimanale; dopo un cambio il rendimento a 1–30 giorni non differisce dalla media (12 test, nessuno sotto 0,0042).
+Dentro W3.2: al posto del trailing 73.584 $ (il cambio 1W non scatta mai prima di EMA21/distribuzione/stop; 2018–20 18.105 $, DD
+−52%), uscita al cambio 1D 36.604 $, filtro d'ingresso 1D 62.660 $, uscita al cambio 4h 45.154 $: tutte peggiori. Il Supertrend è
+un trailing ATR disegnato: W3.2 ne ha già uno calibrato meglio. Resta contesto visivo (meglio il settimanale), non segnale; non
+operare sugli avvisi di cambio direzione. research/supertrend/README.md (PREREG 24d63a0; revisione critica separata non eseguita: nulla adottato).
+**Lezione 118**: un portafoglio di trend-following (momentum 1/3/12 mesi, rischio uguale per mercato, senza leva, mensile) giudicato
+come portafoglio non regge né su 19 ETF di 5 classi né sull'universo negoziabile con perpetui OKX/Bitget (20 azioni del Dow 2000 +
+6 materie prime). Giudizio 2016–26: ETF long/flat 4,5% l'anno, DD −11,7% (60/40 8,9%, −21,2%; p 0,096); U2 long/flat 5,1%, DD
+−26,4% con funding 5% (equipesato 7,8%; S&P 13,8%; 0,7% con funding 10%); long/short in perdita ovunque; ribilanciamento
+settimanale peggiore; 150–180 ordini l'anno. Dimezza drawdown e rendimento insieme: accanto a W3.2 vale quanto la liquidità
+(70/30: CAGR/DD 2,10–2,20 contro 2,05 con T-bill). Anche sulle 10 maggiori capitalizzazioni di oggi il trend eguaglia soltanto
+il buy & hold (0,56). research/trend_multi/README.md (PREREG 3ca3620, ADDENDUM 4b8f2fc). research/trend_multi/README.md (PREREG 3ca3620, ADDENDUM 4b8f2fc; revisione critica separata non eseguita: nulla adottato).
 **Lezione 117**: EMA e SMA su 4h, giornaliero e settimanale (research/ema_sma, PREREG 9a33184; 4.017 regole regime × innesco ×
 uscita × lato, scoperta 2021–23, giudizio 2024–26, conferma 2018–20). Nessuna regola valida: la scelta perde in giudizio (8.584 $,
 DD −41%), l'esempio "long sopra la SMA200 giornaliera, inversione short a 2 chiusure 4h sotto una media" fa 10.000 → 4.412 $

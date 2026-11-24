@@ -13,7 +13,7 @@
   --line:#e6e8ec; --line2:#d5d9e0;
   --label:#0f1218; --label2:#555c68; --label3:#878e99;
   --s-ema:#3d5bff; --s-sma:#c26a0e;
-  --tint:#2f4cf0; --violet:#7a4dff; --mint:#0ea47e; --green:#0f8a4a; --red:#d6342a; --orange:#c96a00; --teal:#0b8fb0; --indigo:#5b4dff;
+  --tint:#2f4cf0; --violet:#7a4dff; --mint:#0ea47e; --green:#0f8a4a; --red:#d6342a; --orange:#c96a00; --teal:#0b8fb0; --indigo:#5b4dff; --pink:#c2417a;
   --green-bg:#e8f6ee; --red-bg:#fdecea; --tint-bg:#eef1ff;
   --glow-a:transparent; --glow-b:transparent; --glow-btc:transparent;
   --chrome:rgba(255,255,255,.86);
@@ -30,7 +30,7 @@
   --line:#252931; --line2:#333843;
   --label:#f1f3f7; --label2:#a3aab6; --label3:#717884;
   --s-ema:#7088ff; --s-sma:#e9952c;
-  --tint:#7088ff; --violet:#a184ff; --mint:#5ef0c4; --green:#3fd185; --red:#ff6b5f; --orange:#f5a23a; --teal:#3cc8e6; --indigo:#8a7dff;
+  --tint:#7088ff; --violet:#a184ff; --mint:#5ef0c4; --green:#3fd185; --red:#ff6b5f; --orange:#f5a23a; --teal:#3cc8e6; --indigo:#8a7dff; --pink:#f283b0;
   --green-bg:rgba(63,209,133,.12); --red-bg:rgba(255,107,95,.12); --tint-bg:rgba(112,136,255,.14);
   --chrome:rgba(21,23,28,.84);
   --shadow:0 1px 2px rgba(0,0,0,.3);
@@ -523,10 +523,13 @@ body.noscroll{overflow:hidden}
 .posLine .plV b{font-weight:600}
 .posLine .more{color:var(--tint);font:600 .82rem var(--font);white-space:nowrap}
 @media (max-width:700px){.posLine .plK,.posLine .more span{display:none}}
-/* Oggi · card "Fra 30 giorni" (report.cone, radar/cone.py): cono di probabilità dalla volatilità, non dalla direzione.
-   Un dato grande (intervallo all'80%), la fascia con prezzo attuale e livelli sulla stessa scala, le probabilità a barre in ordine di prezzo */
-.cnGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:14px}
-@media (min-width:900px){.cnGrid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:36px;align-items:start}}
+/* Oggi · card "Livelli e probabilità a 30 giorni" (report.livelli, radar/livelli.py + report.cone, radar/cone.py): un'unica mappa dei
+   livelli con la probabilità di tocco dal cono (volatilità, non direzione). In alto prezzo, intervalli 80/50% e riepilogo; a destra
+   (sotto su telefono) la scala dei livelli più vicini con la riga del prezzo; poi le zone; il resto in "mostra tutti" e nei Dettagli */
+.cnGrid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "lad" "zon";gap:18px;margin-top:14px}
+@media (min-width:900px){.cnGrid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);grid-template-areas:"top lad" "zon lad";gap:14px 32px;align-items:start}}
+.cnTop{grid-area:top;min-width:0} .cnLad{grid-area:lad;min-width:0} .cnZon{grid-area:zon;min-width:0}
+.cn .tapHead button.more{border:0;background:none;padding:0;cursor:pointer;white-space:nowrap}
 .cnK{display:block;font:500 .76rem var(--font);color:var(--label3)}
 .cnBig{font:700 clamp(1.5rem,7.2vw,2.1rem)/1.1 var(--font);letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
 .cnScale{position:relative;height:80px;margin:14px 0 0}
@@ -543,17 +546,39 @@ body.noscroll{overflow:hidden}
 .cnKey{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
 .cnKey span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap} .cnKey i{width:10px;height:10px;border-radius:3px;background:color-mix(in srgb,var(--tint) 16%,transparent)} .cnKey i.k50{background:color-mix(in srgb,var(--tint) 42%,transparent)}
 .cnCap{margin:0 0 4px;font:500 .76rem var(--font);color:var(--label3)}
-.cnLv{display:grid;grid-template-columns:8px minmax(0,1fr) 4.2rem 84px 2.5rem;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:.86rem;font-variant-numeric:tabular-nums}
-.cnLv.first{border-top:0}
-.cnLv>i{width:8px;height:8px;border-radius:50%;background:var(--c)}
-.cnLv span{color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cnLv b{font:500 .86rem var(--font);color:var(--label2);text-align:right;font-variant-numeric:tabular-nums} .cnLv em{font:650 1rem var(--font);font-style:normal;text-align:right;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-@media (max-width:420px){.cnLv{grid-template-columns:8px minmax(0,1fr) 4.2rem 56px 2.4rem;gap:8px}}
-@media (max-width:380px){.cnLv{grid-template-columns:8px minmax(0,1fr) 4.1rem 40px 2.3rem}}
-.cnLv s{display:block;height:8px;border-radius:4px;background:var(--fill);overflow:hidden;text-decoration:none}
-.cnLv s i{display:block;height:100%;border-radius:4px;background:var(--tint)}
 .cnDiv{display:flex;align-items:center;gap:8px;padding:5px 0;font:600 .78rem var(--font);font-variant-numeric:tabular-nums}
 .cnDiv::after{content:"";flex:1;height:2px;border-radius:1px;background:var(--label)} .cnDiv em{margin-right:0}
+.lvKs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+@media (min-width:520px) and (max-width:899px){.lvKs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.lvKs>div{display:grid;gap:1px;min-width:0;padding:8px 10px;border-radius:12px;background:var(--raise);border:1px solid var(--line);border-left:3px solid var(--c,var(--line2))}
+.lvKs span{font:500 .7rem var(--font);color:var(--label3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvKs b{font:600 .98rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lvKs small{font-size:.7rem;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.lvL{display:grid;grid-template-columns:8px 4.6rem 3.3rem minmax(0,1fr) 5.6rem;gap:9px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.lvL.first{border-top:0}
+.lvL>i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.lvL>b{font:600 .86rem var(--font);text-align:right;white-space:nowrap}
+.lvL .d{font-size:.78rem;color:var(--label2);text-align:right;white-space:nowrap}
+.lvL .t{display:grid;min-width:0}
+.lvL .t b{font:600 .8rem var(--font);color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvL .t small{font-size:.7rem;line-height:1.3;color:var(--label3);overflow-wrap:anywhere}
+.lvL .p{display:flex;align-items:center;justify-content:flex-end;gap:6px}
+.lvL .p s{flex:1;display:block;height:6px;border-radius:3px;background:var(--fill);overflow:hidden;text-decoration:none}
+.lvL .p s i{display:block;height:100%;border-radius:3px;background:var(--tint)}
+.lvL .p em{font:650 .9rem var(--font);font-style:normal;min-width:2.3rem;text-align:right}
+.lvL.tr{background:color-mix(in srgb,var(--orange) 9%,transparent);border-radius:8px}
+.lvH{display:grid;grid-template-columns:8px 4.6rem 3.3rem minmax(0,1fr) 5.6rem;gap:9px;padding:0 0 4px;font:500 .68rem var(--font);color:var(--label3)}
+.lvH span:nth-child(2),.lvH span:nth-child(3),.lvH span:last-child{text-align:right}
+@media (max-width:440px){.lvL,.lvH{grid-template-columns:8px 4.3rem 2.9rem minmax(0,1fr) 2.5rem;gap:7px}.lvL .p s{display:none}}
+.lvZ{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;margin-top:6px;border-radius:10px;background:var(--raise);border-left:3px solid var(--c)}
+.lvZ b{font:600 .86rem var(--font);font-variant-numeric:tabular-nums}
+.lvZ small{display:block;font-size:.72rem;color:var(--label2);line-height:1.35;font-variant-numeric:tabular-nums}
+.lvZ em{font:650 .95rem var(--font);font-style:normal;text-align:right} .lvZ em small{color:var(--label3);font-size:.64rem;font-weight:500}
+.cn:not(.all) .x{display:none}
+.lvAll{margin-top:12px;border:0;border-radius:999px;background:var(--fill);color:var(--tint);font:600 .82rem var(--font);padding:8px 14px;cursor:pointer}
+.lvLeg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.74rem;color:var(--label2)}
+.lvLeg span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap} .lvLeg i{width:12px;height:3px;border-radius:2px;background:var(--c)}
+#lvChart{height:340px} @media (max-width:700px){#lvChart{height:280px}}
 /* Oggi · "Contesto" (report.context): tre tessere Mercato / Fed / Dati con icona e colore di stato sobrio */
 .cxTiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
 .cxT{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px 14px;border-radius:var(--r-tile);background:var(--raise);border:1px solid var(--line);min-width:0}
@@ -659,12 +684,12 @@ body.noscroll{overflow:hidden}
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
 
-<!-- ============ OGGI: stato delle posizioni in una riga, previsione a 30 giorni, contesto, notizie del giorno ============ -->
+<!-- ============ OGGI: stato delle posizioni in una riga, livelli e probabilità a 30 giorni, contesto, notizie del giorno ============ -->
   <div class="view" id="v-oggi">
     <a class="card posLine" id="posLine" href="#posizioni" hidden></a>
 
     <div class="section" id="cnSec" hidden>
-      <button type="button" class="card tapCard cn" id="cnCard" aria-haspopup="dialog"></button>
+      <div class="card cn" id="cnCard"></div>
     </div>
 
     <div class="section" id="cxSec" hidden>
@@ -724,7 +749,7 @@ body.noscroll{overflow:hidden}
         <div class="srMap" id="srMap" role="img" aria-label="Mappa dei supporti e resistenze rispetto al prezzo"></div>
         <div class="srTop" id="srTop"></div>
         <details class="srAll"><summary><span>Tutti i livelli</span><span id="srCount" class="cap"></span></summary><div id="srList"></div>
-          <p class="foot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
+          <p class="foot" id="srFoot" style="margin:8px 0 0">Zone oggettive da massimi e minimi swing (giornalieri e settimanali) e dal profilo di volume dell'ultimo anno; forza (debole, media, forte) da tocchi, timeframe, volume e recenza; nella mappa le barre più alte sono i livelli più forti. Sono una mappa per leggere il grafico, stop e prese di profitto: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.</p></details>
       </div>
       <a class="card lqCard sheetOnly" id="lqCard" href="#liquidazioni" style="margin-top:12px" hidden>
         <div class="wkTop"><b style="font:600 1rem var(--font)">Liquidazioni vicine</b><span class="cap" id="lqCardSub">stima · Binance + OKX</span></div>
@@ -931,9 +956,15 @@ const REF = window.REF = (() => {
   return { px: R.price, live: false, t: tC, lab: "chiusura " + artD("del", new Date(R.date).toLocaleDateString("it-IT", { day: "numeric", month: "short" })) };
 })();
 // S/R riclassificati sul prezzo di riferimento: sopra = resistenza, sotto = supporto; "rotto" se il prezzo l'ha attraversato
-// dall'ultimo aggiornamento del server (es. un supporto a 74.258 con il prezzo a 73.000 diventa resistenza, supporto rotto)
+// dall'ultimo aggiornamento del server (es. un supporto a 74.258 con il prezzo a 73.000 diventa resistenza, supporto rotto).
+// Fonte: la mappa unica dei livelli (report.livelli, radar/livelli.py), la stessa della card in Oggi; report.levels solo se manca
+const escS = t => String(t).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);   // esc è dichiarato più in basso
+const NEWLV = R.livelli && Array.isArray(R.livelli.livelli) ? R.livelli : null;
+const SRSRC = NEWLV ? { date: NEWLV.data, supports: NEWLV.livelli.filter(o => o.tipo === "supporto"), resistances: NEWLV.livelli.filter(o => o.tipo === "resistenza") } : R.levels;
 window.srLevels = px => {
-  const LV = R.levels; if (!LV) return { res: [], sup: [] };
+  const LV = NEWLV ? { supports: SRSRC.supports.map(o => ({ price: o.prezzo, lo: o.prezzo, hi: o.prezzo, cosa: o.cosa, prob: o.prob })),
+    resistances: SRSRC.resistances.map(o => ({ price: o.prezzo, lo: o.prezzo, hi: o.prezzo, cosa: o.cosa, prob: o.prob })) } : R.levels;
+  if (!LV) return { res: [], sup: [] };
   const all = (LV.supports || []).map(o => ({ ...o, k0: "s" })).concat((LV.resistances || []).map(o => ({ ...o, k0: "r" })))
     .map(o => { const k = o.price > px ? "r" : "s"; return { ...o, k, broken: k !== o.k0 }; });
   const res = all.filter(o => o.k === "r").sort((a, b) => a.price - b.price).map((o, i) => ({ ...o, i: i + 1, t: "R" + (i + 1) }));
@@ -1059,8 +1090,8 @@ function seg(id, onChange) {
   $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
     HT.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}<br><small>${mkt(t.market, t.expo)}</small></td><td>${usd(t.entry_px)}</td>` +
       `<td>${t.reason === "open" ? "aperto" : fmtD(t.exit) + "<br><small>" + usd(t.exit_px) + "</small>"}</td><td>${why[t.reason] || t.reason}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pc1(t.pnl_pct)}</td></tr>`).join("");
-  // --- supporti e resistenze (radar/levels.py)
-  const LV = R.levels;
+  // --- supporti e resistenze: mappa unica dei livelli (radar/livelli.py); report.levels (radar/levels.py) solo come riserva
+  const LV = SRSRC;
   if (LV && (LV.supports.length || LV.resistances.length)) {
     $("srCard").hidden = false;
     const word = n => n >= 4 ? "forte" : n === 3 ? "media" : "debole";
@@ -1069,29 +1100,32 @@ function seg(id, onChange) {
     const dd = o => (o.price / REF.px - 1) * 100;   // distanza dal prezzo di riferimento (live quando c'è)
     const drawSR = () => {
     const SR = window.srLevels(REF.px), brk = o => o.broken ? (o.k0 === "s" ? "supporto rotto" : "resistenza rotta") : "";
-    const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}${o.broken ? ` <em class="srBrk">${brk(o)}</em>` : ""}</b><small>${pc1(dd(o))} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small></div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
+    const tile = (o, k) => o ? `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza più vicina" : "Supporto più vicino"}</span><b>${usd(o.price)}${o.broken ? ` <em class="srBrk">${brk(o)}</em>` : ""}</b>` +
+      (o.strength ? `<small>${pc1(dd(o))} · ${dots(o.strength)}</small><small>zona ${zone(o)}</small>` : `<small>${pc1(dd(o))}${typeof o.prob === "number" ? ` · tocco in 30 g ${o.prob}%` : ""}</small><small>${escS(o.cosa || "")}</small>`) + `</div>` : `<div class="srTile ${k}"><span>${k === "r" ? "Resistenza" : "Supporto"}</span><b>–</b></div>`;
     $("srTop").innerHTML = tile(SR.res[0], "r") + tile(SR.sup[0], "s");
     // mappa: ogni zona è una barra sull'asse dei prezzi, alta quanto la sua forza; la linea bianca è il prezzo di oggi
     const all = SR.sup.concat(SR.res);
     const mn = Math.min(...all.map(o => o.lo), REF.px) * 0.985, mx = Math.max(...all.map(o => o.hi), REF.px) * 1.015, X = v => (v - mn) / (mx - mn) * 100;
     const ticks = [mn, (mn + mx) / 2, mx].map((v, i) => `<span class="tk" style="left:${[4, 50, 96][i]}%">${Math.round(v / 1000)}k</span>`).join("");
-    $("srMap").innerHTML = `<div class="ax"></div>` + all.map(o => `<div class="z ${o.k}" style="left:${X(o.lo)}%;width:calc(${X(o.hi) - X(o.lo)}% + 4px);height:${10 + o.strength * 11}px" title="${o.k === "r" ? "Resistenza" : "Supporto"} ${usd(o.price)} · forza ${word(o.strength)} · ${pc1(dd(o))}"></div>`).join("") +
+    $("srMap").innerHTML = `<div class="ax"></div>` + all.map(o => `<div class="z ${o.k}" style="left:${X(o.lo)}%;width:calc(${X(o.hi) - X(o.lo)}% + 4px);height:${o.strength ? 10 + o.strength * 11 : 32}px" title="${o.k === "r" ? "Resistenza" : "Supporto"} ${usd(o.price)}${o.strength ? " · forza " + word(o.strength) : ""} · ${pc1(dd(o))}"></div>`).join("") +
       `<div class="now" style="left:${X(REF.px)}%"><b>ora ${usd(REF.px)}</b></div>` + ticks;
     $("srSub").textContent = `${artD("aggiornati al", fmtD(LV.date))}`;
-    const row = (o, k) => `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
+    const row = (o, k) => o.strength == null ? `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b><small>${escS(o.cosa || "")}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${typeof o.prob === "number" ? "tocco " + o.prob + "%" : ""}</small></span></div>` : `<div class="srRow ${k}"><span class="t">${k === "r" ? "R" : "S"}${o.i}</span><span class="p"><b>${usd(o.price)}</b> ${dots(o.strength)}<small>zona ${zone(o)} · ${o.touches ? o.touches + (o.touches === 1 ? " tocco" : " tocchi") : "nodo di volume"}${o.weekly ? " · settimanale" : ""}${o.last ? " · ultimo " + fmtD(o.last) : ""}${o.broken ? ` · <b class="srBrk">${brk(o)}</b>` : ""}</small></span><span class="d">${pc1(dd(o))}<small>${o.volume ? "volume " + String(o.volume).replace(".", ",") + "%" : ""}</small></span></div>`;
     const Rs = SR.res, Ss = SR.sup;
     $("srList").innerHTML = Rs.slice().reverse().map(o => row(o, "r")).join("") + `<div class="srNow"><span>Prezzo ${usd(REF.px)}</span><i></i></div>` + Ss.map(o => row(o, "s")).join("");
     const nb = all.filter(o => o.broken).length;
     $("srCount").textContent = `${Rs.length} resistenze · ${Ss.length} supporti${nb ? ` · ${nb} ${nb === 1 ? "rotto" : "rotti"} ${artD("dal", fmtD(LV.date))}` : ""}`;
     };
     drawSR(); window.onRef(drawSR);
+    if (NEWLV) $("srFoot").textContent = "Stessa mappa della card Livelli in Oggi: minimi e massimi di swing settimanali (estremo delle 5 settimane prima e dopo) attivi per 3 anni e finché una chiusura giornaliera non li rompe, più il minimo delle ultime 5 settimane (non ancora confermato). Probabilità di tocco entro 30 giorni dalla volatilità, non dalla direzione. Contesto, non segnale: la ricerca non ha trovato un vantaggio nel fare trading sui soli livelli.";
   }
   // --- liquidazioni vicine (stima del server, radar/liqmap.py): cluster significativo più vicino sopra e sotto
   const LQ = R.liqmap;
   if (LQ && (LQ.nearest_above || LQ.nearest_below)) {
     $("lqCard").hidden = false;
+    const srNear = p => { const SR = window.srLevels(REF.px), z = SR.res.concat(SR.sup).find(o => o.lo * .995 <= p && p <= o.hi * 1.005); return z ? z.t : ""; };
     const mm = x => x >= 1e9 ? "$" + (x / 1e9).toFixed(2).replace(".", ",") + "B" : "$" + Math.round(x / 1e6) + "M";
-    const tl = (o, k) => `<div class="srTile ${k}"><span>${k === "lu" ? "Sopra · short da liquidare" : "Sotto · long da liquidare"}</span><b>${o ? usd(o.price) : "–"}</b><small>${o ? pc1((o.price / REF.px - 1) * 100) + " · " + mm(o.usd) + (o.sr ? " · vicino a " + o.sr : "") : "nessuno entro ±10%"}</small></div>`;
+    const tl = (o, k) => `<div class="srTile ${k}"><span>${k === "lu" ? "Sopra · short da liquidare" : "Sotto · long da liquidare"}</span><b>${o ? usd(o.price) : "–"}</b><small>${o ? pc1((o.price / REF.px - 1) * 100) + " · " + mm(o.usd) + (srNear(o.price) ? " · vicino a " + srNear(o.price) : "") : "nessuno entro ±10%"}</small></div>`;
     const drawLq = () => { $("lqCardTop").innerHTML = tl(LQ.nearest_above, "lu") + tl(LQ.nearest_below, "ld");
       $("lqCardSub").textContent = `stima · distanze da ${usd(REF.px)} (${REF.live ? "live" : REF.lab})`; };
     drawLq(); window.onRef(drawLq);
@@ -1101,7 +1135,7 @@ function seg(id, onChange) {
     drawIm(); window.onRef(drawIm); window.addEventListener("lq:clusters", drawIm);
   }
   // --- telefono: S/R e liquidazioni in UNA scheda "Livelli vicini" (il più vicino sopra e sotto per tipo); tocco → pannello con le schede complete
-  if ((LV && (LV.supports.length || LV.resistances.length)) || (LQ && (LQ.nearest_above || LQ.nearest_below))) {
+  if ((LV && (LV.supports.length || LV.resistances.length)) || (LQ && (LQ.nearest_above || LQ.nearest_below))) {   // LV = mappa unica (report.livelli)
     const drawLv = () => {
       const it = [], px = REF.px;
       if (LV) { const SR = window.srLevels(px), r0 = SR.res[0], s0 = SR.sup[0];
@@ -1184,7 +1218,7 @@ function seg(id, onChange) {
       if (key !== mkTxt) { mkTxt = key; cs.setMarkers(mks.map((m, j) => show[j] ? m : { ...m, text: "" })); } };
     setMk(); ch.timeScale().subscribeVisibleLogicalRangeChange(setMk);
     const MB = isMobile(), nLv = MB ? 1 : 2;   // telefono: meno linee, etichette dell'asse leggibili
-    if (R.levels) {   // S/R più vicini sul grafico: 2 resistenze e 2 supporti, linee sottili punteggiate
+    if (SRSRC) {   // S/R più vicini sul grafico (mappa unica dei livelli): 2 resistenze e 2 supporti, linee sottili punteggiate
       const SRc = window.srLevels(REF.px);
       SRc.res.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(255,90,82,.55)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "R" + (i + 1) }));
       SRc.sup.slice(0, nLv).forEach((o, i) => cs.createPriceLine({ price: o.price, color: "rgba(52,215,123,.6)", lineWidth: 1, lineStyle: 3, axisLabelVisible: true, title: "S" + (i + 1) }));
@@ -1206,7 +1240,7 @@ function seg(id, onChange) {
     ch.timeScale().subscribeVisibleLogicalRangeChange(r => r && mc.timeScale().setVisibleLogicalRange(r));
     const leg = (i, noHov) => `<span><i style="background:var(--s-ema)"></i>EMA 21</span><span style="color:var(--s-sma)"><i class="dash" style="background:var(--s-sma)"></i><span style="color:var(--label2)">SMA 40</span></span>` +
       `<span style="color:var(--label2)">▲▼ ingresso · ● uscita</span>` + (open ? `<span><i class="dash" style="background:${dn};color:${dn}"></i>Trailing</span>` : "") +
-      (R.levels ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
+      (SRSRC ? `<span><i class="dash" style="background:var(--label2)"></i>S/R più vicini</span>` : "") +
       (R.liqmap && !MB ? `<span style="color:var(--violet)"><i class="dash" style="background:var(--violet)"></i><span style="color:var(--label2)">liquidazioni stimate (Liq L long · Liq S short)</span></span>` : "") +
       (noHov ? "" : `<span class="hov">${i == null ? "" : `${fmtD(T[i])} · chiusura ${usd(c.c[i])} · EMA 21 ${usd(c.ema21[i])} · SMA 40 ${c.sma40[i] ? usd(c.sma40[i]) : "–"}` + (ev[T[i]] ? " · " + ev[T[i]] : "")}</span>`);
     $("wkLeg").innerHTML = leg(T.length - 1);
@@ -1612,49 +1646,139 @@ function renderCal() {
   $("banks").innerHTML = BK.slice(0, 2).map(bkRow).join("") + (bkMore.length ? `<details class="calPast"><summary>Altre ${bkMore.length} riunioni</summary><div class="banks">${bkMore.map(bkRow).join("")}</div></details>` : "")
     || `<div class="card"><p style="margin:0">Riunioni non disponibili in questo momento.</p></div>`;
 }
-// Fra 30 giorni (report.cone, radar/cone.py): intervalli e probabilità di tocco dalla volatilità. Nessuna previsione di direzione.
-// Card: un dato grande (intervallo all'80%), la fascia con il prezzo attuale e i livelli sulla stessa scala, le probabilità a barre
-// ordinate per prezzo dall'alto al basso, la dicitura obbligatoria in piccolo; tutto il resto nel pannello Dettagli
+// Livelli e probabilità a 30 giorni (report.livelli, radar/livelli.py + report.cone, radar/cone.py): UNA mappa dei livelli
+// (supporti, resistenze, liquidazioni, medie, Fibonacci, storico, trailing W3.2) con la probabilità di toccarli entro 30 giorni,
+// calcolata con gli stessi cammini del cono (volatilità, non direzione). In vista i livelli più vicini; gli altri con "mostra tutti";
+// grafico dell'ultimo anno, fonti delle liquidazioni, nota fissa e affidabilità del cono nei Dettagli. Contesto, non segnale.
 (function renderCone() {
   const C = R.cone && typeof R.cone === "object" ? R.cone : null;
+  const L = R.livelli && typeof R.livelli === "object" && Array.isArray(R.livelli.livelli) && R.livelli.prezzo > 0 ? R.livelli : null;
   const ok = a => Array.isArray(a) && a.length === 2 && a.every(x => typeof x === "number" && isFinite(x));
-  if (!C || !(C.price > 0) || !ok(C.i80) || !ok(C.i50) || !C.note) return;
-  const r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
-  const lv = (Array.isArray(C.levels) ? C.levels : []).filter(o => o && o.label && o.price > 0 && typeof o.prob === "number").slice(0, 5).sort((a, b) => b.price - a.price);
-  const col = o => /trailing|stop/i.test(o.label) ? "--orange" : /resist/i.test(o.label) ? "--red" : /support/i.test(o.label) ? "--green" : "--label3";
-  // scala unica: intervallo all'80%, prezzo attuale e livelli (anche quelli fuori dall'intervallo)
-  const all = [C.i80[0], C.i80[1], C.price].concat(lv.map(o => o.price)), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
-  const x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100)), xp = v => x(v).toFixed(2) + "%";
-  const tgt = C.target ? new Date(C.target + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
-  const drift = typeof C.drift30_pct === "number" && C.drift30_pct ? `Comprende solo la crescita media storica di BTC (${C.drift30_pct > 0 ? "+" : "−"}${nfIT(Math.abs(C.drift30_pct), 1)}% in 30 giorni), uguale ogni giorno: non è un segnale. ` : "";
-  const xn = x(C.price), al = xn < 14 ? " l" : xn > 86 ? " r" : "";
-  const scale = `<div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(C.i80)}, al 50% ${rng(C.i50)}, prezzo attuale ${usd(C.price)}">
+  const hasC = !!(C && C.price > 0 && ok(C.i80) && ok(C.i50) && C.note);
+  if (!hasC && !L) return;
+  const LT = { resistenza: ["Resistenza", "--red"], supporto: ["Supporto", "--green"], liq_short: ["Liquidazioni short", "--teal"], liq_long: ["Liquidazioni long", "--violet"],
+    media: ["Media mobile", "--label3"], fibonacci: ["Fibonacci", "--tint"], storico: ["Livello storico", "--pink"], trailing: ["Trailing W3.2", "--orange"], tondo: ["Numero tondo", "--label3"] };
+  const px = L ? L.prezzo : C.price, H = (L && L.orizzonte) || (C && C.horizon) || 30;
+  // senza la mappa (giro vecchio) la scala usa i livelli del cono: trailing, S/R più vicini, numeri tondi
+  const lvs = (L ? L.livelli : (C.levels || []).map(o => ({ prezzo: o.price, dist: o.dist_pct / 100, prob: o.prob, fonte: "",
+      tipo: /trailing|stop/i.test(o.label) ? "trailing" : /resist/i.test(o.label) ? "resistenza" : /support/i.test(o.label) ? "supporto" : "tondo", cosa: o.label })))
+    .filter(o => o && o.prezzo > 0 && LT[o.tipo]).slice().sort((a, b) => b.prezzo - a.prezzo);
+  const pd = x => pct(x * 100, 1), r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
+  const pr = o => typeof o.prob === "number" ? o.prob : null, pc = v => v == null ? "–" : Math.round(v) + "%";
+  const nearest = (types, up) => lvs.filter(o => types.includes(o.tipo) && (up ? o.prezzo > px : o.prezzo < px)).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist))[0];
+  const src = o => !o.fonte || o.fonte === "prezzo" ? "" : /reale/.test(o.fonte) ? "on-chain" : /Coinglass/.test(o.fonte) ? "Coinglass" : "stima";
+  const mld = v => v >= 0.1 ? nfIT(v, 2) + " mld $" : Math.max(1, Math.round(v * 1000)) + " mln $";
+  // descrizione breve: per le liquidazioni importo e fonte corta (la fonte completa è nei Dettagli)
+  const info = o => /^liq_/.test(o.tipo) && typeof o.usd === "number" ? `${mld(o.usd)} · ${/reale/.test(o.fonte) ? "on-chain, reali" : /Coinglass/.test(o.fonte) ? esc(o.fonte) + " (stima)" : "stima Radar"}`
+    : esc(String(o.cosa || "").replace(/^ritracciamento di Fibonacci (\S+) dal minimo del ciclo al massimo storico$/, "$1 fra minimo del ciclo 2022 e massimo storico")) + (o.fonte && o.fonte !== "prezzo" && o.tipo !== "trailing" ? " · " + esc(o.fonte) : "");
+  const tgt = C && C.target ? new Date(C.target + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
+  const dLab = L ? artD("chiusura del", new Date(L.data + "T00:00:00Z").toLocaleDateString("it-IT", { day: "numeric", month: "short", timeZone: "UTC" })) : "chiusura di ieri";
+  // --- in alto: intervallo probabile (dal cono) e riepilogo
+  let top = "";
+  if (hasC) {
+    const all = [C.i80[0], C.i80[1], C.price], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
+    const x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100)), xp = v => x(v).toFixed(2) + "%";
+    const xn = x(C.price), al = xn < 14 ? " l" : xn > 86 ? " r" : "";
+    top = `<span class="cnK">Intervallo probabile all'80%${tgt ? " al " + tgt : ""}</span><div class="cnBig">${rng(C.i80)}</div>
+      <div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(C.i80)}, al 50% ${rng(C.i50)}, prezzo ${usd(C.price)}">
       <div class="rail"></div><div class="b80" style="left:${xp(C.i80[0])};width:${(x(C.i80[1]) - x(C.i80[0])).toFixed(2)}%"></div><div class="b50" style="left:${xp(C.i50[0])};width:${(x(C.i50[1]) - x(C.i50[0])).toFixed(2)}%"></div>
-      ${lv.map(o => `<i class="lv" style="left:${xp(o.price)};--c:var(${col(o)})" title="${esc(o.label)} ${usd(o.price)}"></i>`).join("")}
       <div class="now" style="left:${xp(C.price)}"></div><span class="nowL${al}" style="left:${xp(C.price)}"><em>ora</em>${usd(C.price)}</span>
-      <span class="tk" style="left:${xp(C.i80[0])}">${r100(C.i80[0])}</span><span class="tk e" style="left:${xp(C.i80[1])}">${r100(C.i80[1])}</span></div>`;
-  const row = (o, i) => `<div class="cnLv${i ? "" : " first"}" style="--c:var(${col(o)})"><i></i><span>${esc(o.label)}</span><b>${usd(o.price)}</b><s><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></s><em>${Math.round(o.prob)}%</em></div>`;
-  const up = lv.filter(o => o.price >= C.price), dn = lv.filter(o => o.price < C.price);
-  const prob = lv.length ? `<div class="cnProb"><p class="cnCap">Probabilità di toccare il livello entro 30 giorni</p>${up.map(row).join("")}<div class="cnDiv"><em>ora</em>${usd(C.price)}</div>${dn.map((o, i) => row(o, 0)).join("")}</div>` : "";
-  $("cnCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Fra 30 giorni")}${tgt ? ` <small>· ${tgt}</small>` : ""}</b><span class="more">Dettagli ›</span></div>
-    <div class="cnGrid"><div class="cnMain"><span class="cnK">Intervallo probabile all'80%</span><div class="cnBig">${rng(C.i80)}</div>${scale}
-      <div class="cnKey"><span><i></i>80% dei casi</span><span><i class="k50"></i>50%: ${rng(C.i50)}</span></div></div>${prob}</div>
-    <p class="cxNote">${esc(C.note)}</p>`;
+      <span class="tk" style="left:${xp(C.i80[0])}">${r100(C.i80[0])}</span><span class="tk e" style="left:${xp(C.i80[1])}">${r100(C.i80[1])}</span></div>
+      <div class="cnKey"><span><i></i>80% dei casi</span><span><i class="k50"></i>50%: ${rng(C.i50)}</span></div>`;
+  }
+  const s1 = nearest(["supporto"], false), r1 = nearest(["resistenza"], true), ll = nearest(["liq_long"], false), ls = nearest(["liq_short"], true);
+  const kc = (k, o, c) => `<div style="--c:var(${c})"><span>${k}${o && src(o) ? " (" + src(o) + ")" : ""}</span><b>${o ? usd(o.prezzo) : "–"}</b><small>${o ? pd(o.dist) + (pr(o) != null ? ` · tocco ${pc(pr(o))}` : "") : "nessuno in vista"}</small></div>`;
+  top += `<div class="lvKs"><div><span>Prezzo</span><b>${usd(px)}</b><small>${dLab}</small></div>` +
+    (L && L.atr ? `<div><span>ATR 14 giorni</span><b>${usd(L.atr)}</b><small>${pct(L.atr / px * 100, 1).replace("+", "")} · movimento medio</small></div>` : "") +
+    kc("Primo supporto", s1, "--green") + kc("Prima resistenza", r1, "--red") + kc("Liq. long", ll, "--violet") + kc("Liq. short", ls, "--teal") + `</div>`;
+  // --- scala: dal più alto al più basso; in vista il più vicino di ogni tipo per lato (al massimo NV, i più vicini), così le
+  // fasce di liquidazione non coprono supporti e resistenze; gli altri con "mostra tutti". Riga del prezzo nel punto giusto
+  const NV = 10, byD = lvs.slice().sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist)), seen = new Set();
+  const near = new Set(byD.filter(o => { const k = o.tipo + (o.prezzo > px ? "+" : "-"); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, NV));
+  let rows = "", done = false, first = true;
+  const nowRow = () => `<div class="cnDiv"><em>ora</em>${usd(px)}</div>`;
+  lvs.forEach(o => {
+    if (!done && o.prezzo < px) { rows += nowRow(); done = true; first = true; }
+    const t = LT[o.tipo], p = pr(o);
+    rows += `<div class="lvL${first ? " first" : ""}${near.has(o) ? "" : " x"}${o.tipo === "trailing" ? " tr" : ""}" style="--c:var(${t[1]})"><i></i><b>${usd(o.prezzo)}</b><span class="d">${pd(o.dist)}</span>` +
+      `<span class="t"><b>${t[0]}</b><small>${info(o)}</small></span><span class="p">${p == null ? "" : `<s><i style="width:${Math.max(0, Math.min(100, p))}%"></i></s>`}<em>${pc(p)}</em></span></div>`;
+    first = false;
+  });
+  if (!done) rows += nowRow();
+  const lad = lvs.length ? `<p class="cnCap">Livelli dal più alto al più basso · probabilità di toccarli entro ${H} giorni</p>
+    <div class="lvH" aria-hidden="true"><span></span><span>Livello</span><span>Dist.</span><span>Tipo</span><span>Tocco</span></div>${rows}` : "";
+  // --- zone dove più livelli coincidono (bordo più vicino al prezzo → probabilità di raggiungerla)
+  const ZN = 4, zs = (L ? L.zone || [] : []).slice(), edge = z => z.ruolo === "sopra" ? z.da : z.ruolo === "sotto" ? z.a : px;
+  const zNear = new Set(zs.slice().sort((a, b) => Math.abs(edge(a) / px - 1) - Math.abs(edge(b) / px - 1)).slice(0, ZN));
+  const zRow = z => { const lf = Object.entries(z.liq_fonti || {}), tipi = (z.tipi || []).map(t => t === "fibonacci" ? "Fibonacci" : (LT[t] || [t])[0].toLowerCase()).join(", ");
+    return `<div class="lvZ${zNear.has(z) ? "" : " x"}" style="--c:var(${z.ruolo === "sopra" ? "--red" : z.ruolo === "sotto" ? "--green" : "--label"})"><span><b>${usd(z.da)} – ${usd(z.a)}</b>` +
+      `<small>${pd(z.da / px - 1)} / ${pd(z.a / px - 1)} · ${z.n} livelli: ${esc(tipi)}</small>` +
+      (lf.length ? `<small>liquidazioni nella zona: ${lf.map(([f, v]) => `${mld(v)} ${/reale/.test(f) ? "on-chain (reali)" : /Coinglass/.test(f) ? "Coinglass (stima)" : "stimate"}`).join(" · ")}</small>` : "") +
+      `</span><em>${z.ruolo === "a cavallo" ? "qui" : pc(z.prob)}<small><br>${z.ruolo === "a cavallo" ? "prezzo dentro" : "raggiunge"}</small></em></div>`; };
+  const zon = zs.length ? `<p class="cnCap">Zone dove più livelli coincidono (a meno del 3,2% l'uno dall'altro)</p>${zs.sort((a, b) => b.a - a.a).map(zRow).join("")}` : "";
+  const nx = lvs.length - Math.min(NV, lvs.length), nz = zs.length - Math.min(ZN, zs.length);
+  const more = nx + nz > 0 ? `<button type="button" class="lvAll" aria-expanded="false">Mostra tutti (${lvs.length} livelli${zs.length ? `, ${zs.length} zone` : ""})</button>` : "";
+  const notes = [hasC ? C.note : "", L ? L.nota : "", L ? L.nota_liq : ""].filter(Boolean).map(esc).join(" ");
+  $("cnCard").innerHTML = `<div class="tapHead"><b>Livelli e probabilità a ${H} giorni</b><button type="button" class="more" aria-haspopup="dialog">Dettagli ›</button></div>
+    <div class="cnGrid"><div class="cnTop">${top}</div><div class="cnLad">${lad}</div><div class="cnZon">${zon}</div></div>${more}
+    <p class="cxNote">${notes}</p>`;
   $("cnSec").hidden = false;
-  const cx = (Array.isArray(C.context) ? C.context : []).filter(o => o && o.label && o.text);
-  const L = C.live && C.live.n > 0 ? `Dal vivo: ${C.live.n} previsioni arrivate a scadenza, ${C.live.in80} con il prezzo dentro l'intervallo 80%.` : "Dal vivo: nessuna previsione è ancora arrivata a scadenza; ogni giorno la previsione viene registrata e fra 30 giorni confrontata con il prezzo.";
-  $("cnCard").onclick = () => openSheet("Fra 30 giorni: quanto può muoversi BTC", `<div style="display:grid;gap:12px;min-width:0">
-    <div class="list" style="box-shadow:none">
-      <div class="row"><span class="k">Prezzo di partenza<small>chiusura del ${fmtD(C.date)}</small></span><span class="v strong">${usd(C.price)}</span></div>
-      <div class="row"><span class="k">Intervallo 80%<small>8 casi su 10 attesi qui dentro${tgt ? " il " + tgt : ""}</small></span><span class="v strong">${rng(C.i80)}</span></div>
-      <div class="row"><span class="k">Intervallo 50%<small>1 caso su 2</small></span><span class="v strong">${rng(C.i50)}</span></div>
-      ${typeof C.vol30_pct === "number" ? `<div class="row"><span class="k">Volatilità attesa a 30 giorni<small>movimento tipico, in più o in meno</small></span><span class="v strong">±${nfIT(C.vol30_pct, 1)}%</span></div>` : ""}
-      ${lv.map(o => `<div class="row"><span class="k">${esc(o.label)} ${usd(o.price)}<small>${o.dist_pct > 0 ? "+" : "−"}${nfIT(Math.abs(o.dist_pct), 1)}% dal prezzo</small></span><span class="v strong">${Math.round(o.prob)}%</span></div>`).join("")}
-    </div>
-    ${cx.length ? `<div class="list" style="box-shadow:none">${cx.map(o => `<div class="row"><span class="k">${esc(o.label)}<small>${esc(o.text)}</small></span></div>`).join("")}</div>` : ""}
-    <p class="foot">Le percentuali sono la probabilità che il prezzo tocchi il livello almeno una volta entro 30 giorni, anche solo per un momento. ${cx.length && C.context_note ? esc(C.context_note) + " " : ""}${esc(drift)}${esc(C.note)}</p>
-    <p class="foot">${esc(C.method || "")}</p>
-    <p class="foot">${L} Non entra in W3.2: stop, trailing e decisioni restano quelli della strategia.</p></div>`);
+  const mb = $("cnCard").querySelector(".lvAll");
+  if (mb) mb.onclick = () => { const on = $("cnCard").classList.toggle("all"); mb.setAttribute("aria-expanded", on);
+    mb.textContent = on ? "Mostra solo i più vicini" : `Mostra tutti (${lvs.length} livelli${zs.length ? `, ${zs.length} zone` : ""})`; };
+  // --- Dettagli: grafico dell'ultimo anno con una linea per livello, fonti delle liquidazioni, nota fissa, affidabilità del cono
+  const cx = hasC ? (Array.isArray(C.context) ? C.context : []).filter(o => o && o.label && o.text) : [];
+  const LIVE = hasC && C.live && C.live.n > 0 ? `Dal vivo: ${C.live.n} previsioni arrivate a scadenza, ${C.live.in80} con il prezzo dentro l'intervallo 80%.` : "Dal vivo: nessuna previsione è ancora arrivata a scadenza; ogni giorno la previsione viene registrata e fra 30 giorni confrontata con il prezzo.";
+  const drift = hasC && typeof C.drift30_pct === "number" && C.drift30_pct ? `Il cono comprende solo la crescita media storica di BTC (${C.drift30_pct > 0 ? "+" : "−"}${nfIT(Math.abs(C.drift30_pct), 1)}% in 30 giorni), uguale ogni giorno: non è un segnale. ` : "";
+  const CG = L && L.coinglass || {}, FL = L && Array.isArray(L.fonti_liq) ? L.fonti_liq : [];
+  const cgTxt = CG.stato === "vecchio" ? `File Coinglass del ${esc(CG.data)} ignorato: più vecchio di 7 giorni.` : CG.stato === "illeggibile" ? "File Coinglass presente ma illeggibile: ignorato." : CG.stato === "assente" ? "Coinglass: nessun file compilato (data/coinglass_levels.json, facoltativo)." : "";
+  const fonti = FL.map(f => `<div class="row"><span class="k">${esc(f.fonte)}<small>${f.reale ? "posizioni reali on-chain" : "stima, non dati reali"}${f.agg ? " · aggiornata " + esc(String(f.agg).replace("T", " ").slice(0, 16)) : ""}</small></span><span class="v">${f.n} ${f.n === 1 ? "livello" : "livelli"}</span></div>`).join("");
+  const types = [...new Set(lvs.map(o => o.tipo))];
+  $("cnCard").querySelector(".tapHead .more").onclick = () => {
+    const b = openSheet(`Livelli e probabilità a ${H} giorni`, `<div style="display:grid;gap:12px;min-width:0">
+      ${L && Array.isArray(L.candele) && L.candele.length > 20 ? `<div class="card" style="padding:12px 10px 10px"><div id="lvChart" class="chart" role="img" aria-label="Prezzo di BTC nell'ultimo anno con i livelli"></div>
+        <div class="lvLeg" style="margin-top:8px">${types.map(t => `<span style="--c:var(${LT[t][1]})"><i></i>${LT[t][0]}</span>`).join("")}</div></div>` : ""}
+      <div class="list" style="box-shadow:none">
+        <div class="row"><span class="k">Prezzo di partenza<small>${dLab}</small></span><span class="v strong">${usd(px)}</span></div>
+        ${hasC ? `<div class="row"><span class="k">Intervallo 80%<small>8 casi su 10 attesi qui dentro${tgt ? " il " + tgt : ""}</small></span><span class="v strong">${rng(C.i80)}</span></div>
+        <div class="row"><span class="k">Intervallo 50%<small>1 caso su 2</small></span><span class="v strong">${rng(C.i50)}</span></div>` : ""}
+        ${hasC && typeof C.vol30_pct === "number" ? `<div class="row"><span class="k">Volatilità attesa a 30 giorni<small>movimento tipico, in più o in meno</small></span><span class="v strong">±${nfIT(C.vol30_pct, 1)}%</span></div>` : ""}
+        ${L && L.atr ? `<div class="row"><span class="k">ATR 14 giorni<small>movimento medio di un giorno: utile per la distanza degli stop</small></span><span class="v strong">${usd(L.atr)}</span></div>` : ""}
+      </div>
+      ${FL.length || cgTxt ? `<h3>Fonti delle liquidazioni</h3><div class="list" style="box-shadow:none">${fonti}${cgTxt ? `<div class="row"><span class="k"><small>${cgTxt}</small></span></div>` : ""}</div>` : ""}
+      ${cx.length ? `<div class="list" style="box-shadow:none">${cx.map(o => `<div class="row"><span class="k">${esc(o.label)}<small>${esc(o.text)}</small></span></div>`).join("")}</div>` : ""}
+      ${L ? `<p class="foot">${esc(L.nota)} ${esc(L.nota_liq)}</p><p class="foot">${esc(L.definizioni || "")}</p>` : ""}
+      ${hasC ? `<p class="foot">Le percentuali sono la probabilità che il prezzo tocchi il livello almeno una volta entro ${H} giorni, anche solo per un momento; per una zona, che ne raggiunga il bordo più vicino. ${cx.length && C.context_note ? esc(C.context_note) + " " : ""}${esc(drift)}${esc(C.note)}</p>
+      <p class="foot">${esc(C.method || "")}</p><p class="foot">${LIVE} Non entra in W3.2: stop, trailing e decisioni restano quelli della strategia.</p>` : ""}</div>`);
+    const el = b.querySelector("#lvChart");
+    if (el && window.LightweightCharts) requestAnimationFrame(() => lvChart(el));
+  };
+  function lvChart(el) {
+    // tacche dei prezzi a sinistra; a destra un'etichetta per livello (HTML sopra il grafico) solo dove c'è posto: niente sovrapposizioni
+    const K = L.candele, lo = px * 0.72, hi = px * 1.6, vis = lvs.filter(o => o.prezzo >= lo && o.prezzo <= hi);
+    const ys = K.map(k => k.c).concat(vis.map(o => o.prezzo)), mn = Math.min(...ys), mx = Math.max(...ys);
+    const ch = LightweightCharts.createChart(el, chartOpts({ leftPriceScale: { visible: true, borderVisible: false, scaleMargins: { top: .05, bottom: .05 } },
+      rightPriceScale: { visible: false }, handleScroll: false, handleScale: false, localization: { locale: "it-IT", priceFormatter: v => nfIT(v) } }));
+    const s = ch.addLineSeries({ priceScaleId: "left", color: css("--label"), lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: true,
+      priceFormat: { type: "price", precision: 0, minMove: 1 }, autoscaleInfoProvider: () => ({ priceRange: { minValue: mn, maxValue: mx } }) });
+    s.setData(K.map(k => ({ time: k.d, value: k.c })));
+    const STY = { media: 2, fibonacci: 1, storico: 2, trailing: 2 };
+    vis.forEach(o => s.createPriceLine({ price: o.prezzo, color: css(LT[o.tipo][1]), lineWidth: 1, lineStyle: STY[o.tipo] || 0, axisLabelVisible: false, title: "" }));
+    const off = Math.ceil(62 * K.length / Math.max(120, el.clientWidth - 112));   // spazio a destra per le etichette
+    ch.timeScale().setVisibleLogicalRange({ from: 0, to: K.length - 1 + off });
+    el.style.position = "relative";
+    const box = document.createElement("div"); box.style.cssText = "position:absolute;inset:0;pointer-events:none;z-index:3"; el.appendChild(box);
+    const pri = ["trailing", "resistenza", "supporto", "storico", "fibonacci", "media", "liq_short", "liq_long"];
+    const place = () => {
+      const kept = [], y0 = s.priceToCoordinate(px), out = [];
+      if (y0 != null) { kept.push(y0); out.push([y0, usd(px), "--label", true]); }
+      vis.slice().sort((a, b) => pri.indexOf(a.tipo) - pri.indexOf(b.tipo) || Math.abs(a.dist) - Math.abs(b.dist)).forEach(o => {
+        const y = s.priceToCoordinate(o.prezzo); if (y == null || kept.some(v => Math.abs(v - y) < 16)) return; kept.push(y); out.push([y, nfIT(o.prezzo), LT[o.tipo][1], false]); });
+      box.innerHTML = out.map(([y, t, c, now]) => `<span style="position:absolute;right:2px;top:${(y - 7.5).toFixed(1)}px;height:15px;line-height:15px;padding:0 5px;border-radius:4px;font:600 .68rem var(--font);font-variant-numeric:tabular-nums;` +
+        (now ? "background:var(--label);color:var(--card)" : `background:var(--card);color:var(${c});box-shadow:inset 0 0 0 1px var(${c})`) + `">${t}</span>`).join("");
+    };
+    requestAnimationFrame(() => requestAnimationFrame(place)); ch.timeScale().subscribeSizeChange(() => requestAnimationFrame(place));
+  }
 })();
 // Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità.
 // Tre tessere (Mercato / Fed / Dati): la prima parte del testo del server in evidenza, il resto sotto; colore di stato sobrio

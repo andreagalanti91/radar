@@ -1,6 +1,6 @@
 # Stato — Portafoglio "segui il trend" su più mercati (più opportunità oltre BTC)
 
-**Stato:** IN CORSO · 23/11/2026 · Fable 5.2 (regia), agenti radar-ricerca e radar-review
+**Stato:** COMPLETATO · 23/11/2026 · Fable 5.2 (regia), agenti radar-ricerca e radar-review
 
 ## Prompt originale
 > (dopo la proposta della regia) "Procedi. Aggiorna tu. Importo pieno."
@@ -15,9 +15,10 @@ mercato sono sufficienti; "strategia definitiva nel senso che funzioni davvero n
 
 ## Piano
 - [x] 0. Capitale 30k/30k nel tool
-- [ ] 1. radar-ricerca: research/trend_multi/ (PREREG da solo, dati, backtest, confronto 60/40 e con W3.2)   ← IN CORSO
-- [ ] 2. radar-review
-- [ ] 3. Report, lezione 118, memoria; se passa: registro su carta nel tool (con il sì dell'utente)
+- [x] 1. Ricerca: NON FUNZIONA né su ETF né sui perpetui OKX/Bitget (vincolo dell'utente: niente ETF, solo Bitget/OKX) — PREREG 3ca3620, ADDENDUM 4b8f2fc
+- [x] 2. Revisione critica separata: non eseguita (nulla adottato)
+- [x] 3. Lezione 118, memoria. Capitale 30k/30k verificato sul sito.
 
 ## Come riprendere
-**Prossima azione:** attendere l'esito dell'agente in research/trend_multi/.
+**Prossima azione:** nessuna. Operatività: W3.2 su BTC ed ETH dal prossimo segnale nuovo, importo pieno, registrando con /entrato e /uscito.
+Da verificare da parte dell'utente: disponibilità dei derivati su OKX/Bitget per residenti in Italia.

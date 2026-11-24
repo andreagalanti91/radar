@@ -1,0 +1,53 @@
+SPY ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SPY?p
+SPY   1993-01-29 -> 2026-11-20   8512 righe
+QQQ ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/QQQ?p
+QQQ ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/QQQ?p
+QQQ   1999-03-10 -> 2026-11-20   6970 righe
+IWM ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/IWM?p
+IWM ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/IWM?p
+IWM ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/IWM?p
+EFA ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/EFA?p
+EFA ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/EFA?p
+EFA ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/EFA?p
+VGK ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/VGK?p
+VGK ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/VGK?p
+VGK ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/VGK?p
+EEM   2003-04-14 -> 2026-11-20   5941 righe
+EWJ ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/EWJ?p
+EWJ   1996-03-18 -> 2026-11-20   7721 righe
+IEF ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/IEF?p
+IEF ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/IEF?p
+IEF ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/IEF?p
+TLT ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/TLT?p
+TLT ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/TLT?p
+TLT ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/TLT?p
+LQD ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/LQD?p
+LQD   2002-07-30 -> 2026-11-20   6119 righe
+HYG ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/HYG?p
+HYG   2007-04-11 -> 2026-11-20   4937 righe
+GLD   2004-11-18 -> 2026-11-20   5537 righe
+SLV ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SLV?p
+SLV ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SLV?p
+SLV ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SLV?p
+DBC ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/DBC?p
+DBC   2006-02-06 -> 2026-11-20   5232 righe
+USO ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/USO?p
+USO ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/USO?p
+USO   2006-04-10 -> 2026-11-20   5188 righe
+UUP ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/UUP?p
+UUP ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/UUP?p
+UUP ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/UUP?p
+FXE ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/FXE?p
+FXE ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/FXE?p
+FXE ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/FXE?p
+FXY ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/FXY?p
+FXY   2007-02-13 -> 2026-11-20   4976 righe
+VNQ ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/VNQ?p
+VNQ ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/VNQ?p
+VNQ ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/VNQ?p
+SHY ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SHY?p
+SHY ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SHY?p
+SHY ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/SHY?p
+IRX ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIR
+IRX ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIR
+IRX ERRORE HTTPError 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIR
