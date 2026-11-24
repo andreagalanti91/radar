@@ -1,6 +1,6 @@
 # STATO · Studio notturno sulle opzioni BTC · avviato 24/11/2026 21:50 UTC · termine 25/11 07:00 UTC (8:00 italiane)
 
-Stato: IN CORSO
+Stato: COMPLETATO (24/11/2026, 23:10 UTC) · in attesa dell'utente per le proposte
 
 ## Prompt originale (per intero)
 "Avvia un ciclo di studio e approfondimento sulle opzioni BTC. Analizza con ciclo di auto-apprendimento notturno (fino alle
@@ -28,10 +28,20 @@ opzioni BTC, trova coerenza, analizza tutti i dati in tuo possesso. Avvia ciclo 
 - Guida OKX: `guida/OPZIONI-OKX.md`. FATTA, committata (29 passaggi "[da verificare sull'app]").
 - Revisione critica (radar-review): IN CORSO.
 
-## Prossima azione
-Alla consegna della revisione: correggere README/motore se servono; decidere il secondo ciclo (ipotesi candidata: filtro
-sulla IV alta, da preregistrare con ADDENDUM-2 prima dell'esecuzione); poi lezione in RESEARCH.md, indici
-(research/README.md, memoria/02-ricerca/INDICE.md), commit, riepilogo all'utente entro le 07:00 UTC.
+- Revisione critica: nessun errore di calcolo; errore di specifica su B0 (finestra 20–50 giorni) → ADDENDUM-2. FATTO.
+- Secondo ciclo (B0r, prezzi veri Deribit, descrittivi per chi opera a mano) e verifica finale indipendente; 8 correzioni al
+  README applicate. FATTO.
+- Lezione 122 in RESEARCH.md, indici aggiornati, guida aggiornata. FATTO, committato sul branch di lavoro.
+
+## Esito
+Niente batte le 7 regole sul segnale di W3.2 (B0r: 45–48k $ dal 2018 su 10k, operazioni chiuse; perdita massima 5% per
+operazione). Nessun segnale indipendente utile. Nessuna modifica al tool.
+
+## Proposte in attesa dell'utente (nessuna applicata)
+1. Riga Telegram "Opzione (su carta): …" (testi nel messaggio del 24/11).
+2. Registro sulla carta del segnale F3d (compressione → straddle), solo osservazione.
+3. Screenshot dell'app OKX per togliere i "[da verificare sull'app]" dalla guida.
+4. Confronto dal vivo OKX contro Deribit sulle prossime operazioni (l'archivio giornaliero della catena lo consente già).
 
 ## Aggiunta dell'utente (24/11, 21:50 UTC)
 "Includi anche la creazione di una guida dettagliata su come inserire operazioni su OKX." (con screenshot della catena

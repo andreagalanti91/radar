@@ -412,11 +412,12 @@ sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 g
 **Lezione 122**: opzioni su BTC (ciclo notturno 24–25/11, research/opzioni_studio, PREREG e9cc4fe + due addendum, superficie di
 volatilità Deribit 2018–26 da scambi veri). Comprare opzioni non crea un vantaggio proprio: la regola in uso sulla carta (segnale
 di W3.2, call/put al venerdì più vicino a 30 giorni fra 20 e 50, alla pari, 5% del conto, vendita all'uscita di W3.2) vale
-45–51k $ dal 2018 su 10k e 27–30k dal 2021 (prezzi veri e superficie), circa come W3.2 a metà, con perdita massima del 5% per
+45–48k $ dal 2018 su 10k e 27–28k dal 2021 sulle operazioni chiuse (prezzi veri e superficie), circa come W3.2 a metà, con perdita massima del 5% per
 operazione. Scadenze 14/60/90 giorni, prezzi d'esercizio fuori o dentro, prese di profitto a 2×/3×, rinnovi, opzione al posto
 dello stop e sei segnali indipendenti (tendenza, flusso settimanale, volatilità bassa, compressione, dopo cascata, cono contro
-premio) non la battono in OOS: le occasioni "in più" sono esposizione alla salita di BTC (placebo p ≥ 0,22). Ogni giorno di
-ritardo sull'ingresso toglie il 10–15% del risultato; saltare l'ingresso se BTC si è mosso oltre il 3% peggiora. Errori da non
+premio) non la battono in OOS: le occasioni "in più" sono esposizione alla salita di BTC (placebo p ≥ 0,22). Il ritardo
+d'ingresso costa soprattutto oltre le 48 ore (il primo giorno dipende da 2 operazioni); la soglia "non entrare se BTC si è mosso
+oltre il 3%" non è giustificata. I descrittivi che dipendono da 2–3 operazioni vanno dati con il conteggio migliorano/peggiorano. Errori da non
 ripetere: simulare il riferimento con la regola esatta del tool (senza la finestra 20–50 giorni B0 era sbagliato, corretto dalla
 revisione); verificare il cancello sul conto composto e non solo sulla mediana per operazione; dare il risultato come
 forchetta (i prezzi ricostruiti spostano il conto composto fino al 15%); non eseguire filtri nati dalla diagnosi degli stessi dati.

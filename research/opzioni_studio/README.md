@@ -7,10 +7,12 @@ Nessun segnale F3 è "utile" come fonte di occasioni in più: placebo p fra 0,22
 
 Con 10.000 $ e il 5% del conto per operazione, B0r vale una **forchetta**, non un numero esatto:
 
-| | Prezzi veri degli scambi Deribit (solo operazioni chiuse) | Superficie (con l'operazione aperta valutata al 21/11) |
+| | Prezzi veri degli scambi Deribit | Superficie |
 |---|---|---|
-| Dal 2018 | ≈ 45.000 $ | ≈ 51.000 $ (DD −12,8%) |
-| Dal 2021 | ≈ 27.000 $ | ≈ 30.000 $ (DD −9,8%) |
+| Dal 2018, solo operazioni chiuse | 45.000 $ | 48.258 $ |
+| Dal 2018, con l'operazione aperta valutata al 21/11 (guadagno non realizzato) | ≈ 47.900 $ | 50.875 $ (DD −12,8%) |
+| Dal 2021, solo operazioni chiuse | 27.343 $ | 28.320 $ |
+| Dal 2021, con l'operazione aperta | ≈ 29.100 $ | 29.856 $ (DD −9,8%) |
 
 B0r rende circa quanto W3.2 a metà dimensione (57.961 $ / 31.218 $) e non perde mai più del 5% per operazione. Il primo ciclo
 riportava 49.712 $ dal 2018: quel numero usava il venerdì più vicino a 30 giorni senza la finestra 20–50 giorni della regola 3
@@ -45,7 +47,7 @@ I risultati del primo ciclo (senza finestra) sono in `ciclo1/`. Il motore ha i t
   contratti 56.390 $ (+15%). Circa 9 punti di questa differenza vengono dalla sola n. 3 del 2018: senza di essa, 43.125 contro
   45.573 $. L'incertezza dei prezzi sul conto composto è quindi di circa ±15%.
 - **B0r con prezzi veri** (scambio vero del contratto più vicino all'istante, entro ±6 ore: 21 ingressi su 21 e 7 uscite su 7;
-  scarto mediano 0,7 ore):
+  scarto mediano 0,4 ore all'ingresso, massimo 3,3 ore; si usa l'ultimo scambio, a prescindere dal lato denaro o lettera):
 
 | Periodo | Prezzi veri | Superficie | Differenza |
 |---|---|---|---|
@@ -132,8 +134,22 @@ della domenica):
 | Mercoledì 00:00 | 37.500 | 25.610 | 18.494 | 12 di 20 | 18.290 | 16.354 |
 | Giovedì 00:00 | 32.030 | 22.091 | 17.690 | 10 di 20 | 13.072 | 10.698 |
 
-- **Il ritardo costa**: ogni giorno di attesa toglie circa il 10–15% del risultato dal 2018.
-- **La soglia del 3% fa peggio di "entra comunque"**: esclude proprio i segnali partiti forte (2019-05 m 4,65, 2021-02 m 4,84).
+- **Il ritardo costa, ma non in modo uniforme.** Il primo giorno vale −17% sul conto, ma per l'85% è dovuto a 2 operazioni partite
+  forte (2019-05 e 2023-10): senza di esse ≈ −3%. Da lunedì 00:00 a martedì 00:00 peggiorano 11 operazioni e migliorano 8. Oltre le
+  48 ore il peggioramento è diffuso (15 operazioni su 19 peggiorano fra 48 e 72 ore).
+- **La soglia del 3% non è giustificata.** Con ingresso a mezzogiorno del lunedì esclude 2 vincenti grandi e 3 perdenti: il saldo
+  (−20%) dipende da 2 operazioni e in OOS la soglia fa meglio (20.773 contro 19.734 $). Con ingressi a 24 ore o più tardi esclude
+  soprattutto vincenti (6 su 8 a 48 ore, 10 su 10 a 72) e peggiora nettamente.
+- **Ricampionamento con ipotesi più severe** (verifica finale; 1.500 $ fissi, 3 anni):
+
+| Ipotesi | Probabilità di perdita | Risultato mediano | 5° percentile |
+|---|---|---|---|
+| Storico | 0,9% | +18.100 $ | +4.900 $ |
+| Solo moltiplicatori OOS | 1,1% | +15.200 $ | +3.700 $ |
+| Senza le 3 operazioni migliori | 3,0% | +11.700 $ | +1.300 $ |
+| Senza le 3 migliori e numero di operazioni casuale | 5,0% | +10.600 $ | 0 $ |
+| Operazioni in guadagno al 50% | 11,4% | +9.300 $ | −3.000 $ |
+| Al 50% e senza le 3 migliori | 17,4% | +5.900 $ | −3.800 $ |
 
 **Cosa aspettarsi su 3 anni** (circa 7 operazioni; 10.000 estrazioni con reinserimento dei 20 moltiplicatori di B0r):
 
@@ -152,17 +168,20 @@ Per chi vuole segnali per operare in opzioni su BTC:
 - **Quale segnale usare**: solo il segnale di W3.2, con le 7 regole. Call se long, put se short. Il venerdì più vicino a 30
   giorni fra quelli a 20–50 giorni, prezzo d'esercizio più vicino al prezzo, 5% del conto o una cifra fissa. Si vende quando
   W3.2 esce, mai rinnovare.
-- **Cosa aspettarsi**: circa 2–3 operazioni l'anno. Su 10.000 $ dal 2018 fra 45.000 e 51.000 $, dal 2021 fra 27.000 e 30.000 $,
-  con DD intorno al −10/−13% e perdita massima del 5% per operazione. Con 1.500–2.000 $ a operazione, in 3 anni il risultato tipico
-  è +18.000 / +24.000 $, con una probabilità di perdita intorno all'1% se i segnali restano come nello storico.
+- **Cosa aspettarsi**: circa 2–3 operazioni l'anno. Su 10.000 $ dal 2018 fra 45.000 e 48.000 $ sulle operazioni chiuse, dal 2021
+  fra 27.000 e 28.000 $, con DD intorno al −10/−13% e perdita massima del 5% per operazione. Con 1.500 $ a operazione il risultato
+  tipico su 3 anni è intorno a +18.000 $ (+24.000 $ con 2.000 $) **se i segnali restano come nel 2018–26**: in quel caso la
+  probabilità di chiudere 3 anni in perdita è dell'1–5% (5% togliendo le 3 operazioni migliori). Se le operazioni in guadagno
+  scendessero al 50%, salirebbe al 12–19%, con un risultato tipico di +6.000 / +9.000 $ a 1.500 $ per operazione.
 - **Cosa evitare**:
   - opzioni fra un segnale e l'altro (a, c, e, f e "call sempre": esposizione senza vantaggio dimostrato);
   - scadenze sotto 20 giorni;
   - prese di profitto a 2× o 3×;
   - rinnovi;
   - l'opzione al posto dello stop.
-- **Quando entrare**: il prima possibile dopo la chiusura della domenica; l'ingresso a mezzogiorno del lunedì costa già circa il 3%.
-  Non usare la soglia del 3%: toglie i segnali migliori.
+- **Quando entrare**: il lunedì, senza rimandare. La differenza fra 00:00 e 12:00 è dentro il rumore (9 operazioni peggiorano, 10
+  migliorano); il costo vero arriva con 1–3 giorni di ritardo. La soglia del 3% non è giustificata: non migliora in modo stabile e
+  con ingressi tardivi toglie i segnali migliori.
 - **Solo in osservazione**: F3d (compressione → straddle) sulla carta, se l'utente lo approva; non si opera.
 
 ## Limiti
@@ -176,6 +195,12 @@ Per chi vuole segnali per operare in opzioni su BTC:
   rafforzato.
 - **Campione piccolo**: 20 operazioni chiuse per B0r, 10 in OOS. Flusso perp vero solo dal 2020-04, funding dal 2020-01, dati
   fino al 2026-11-21.
+- **Prezzi veri**: sono gli ultimi scambi del contratto, anche da 0,1 BTC e talvolta al prezzo denaro (es. ingresso del 2022-08):
+  il costo d'ingresso può essere sottostimato.
+- **Descrittivi sul ritardo**: l'ingresso alle 00:00 usa la superficie dell'intera giornata, che contiene prezzi successivi.
+- **Operazioni saltate nel 2018** (nessun venerdì quotato fra 20 e 50 giorni): 2018-01-08 era una perdita di W3.2 (−25%);
+  2018-10-15 era uno short di W3.2 in guadagno (+16,7%) e la put sarebbe stata probabilmente redditizia. Nel complesso il salto
+  non gonfia B0r.
 
 ## Deviazioni dal PREREG (dichiarate)
 - **Holm per F1 e F2**: test appaiato a segni casuali sulle operazioni contro il riferimento, moltiplicato per 15 e per 5. Per F3
@@ -199,8 +224,9 @@ terzili, quindi il filtro non tocca la regola in uso.
 
 ## Lezione proposta per RESEARCH.md
 "N. (opzioni, 25/11/2026) Comprare opzioni su BTC non crea un vantaggio proprio. La regola in uso (B0r: segnale di W3.2, venerdì più vicino a 30
-giorni fra 20 e 50, alla pari, 5%) vale 45–51k $ dal 2018 su 10k (prezzi veri e superficie), circa come W3.2 a metà, con perdita
-massima del 5%. Struttura, uscite, rinnovi e segnali indipendenti non la battono in OOS: le occasioni in più sono esposizione alla
-salita di BTC (placebo p ≥ 0,22). Prima di confrontare, simulare la regola esattamente come è scritta nel tool: senza la finestra
-20–50 giorni il riferimento era sbagliato. E dare il risultato come forchetta: i prezzi ricostruiti spostano il conto composto
-fino al 15%."
+giorni fra 20 e 50, alla pari, 5%) vale 45–48k $ dal 2018 su 10k sulle operazioni chiuse (prezzi veri e superficie), circa come W3.2 a
+metà, con perdita massima del 5%. Struttura, uscite, rinnovi e segnali indipendenti non la battono in OOS: le occasioni in più sono
+esposizione alla salita di BTC (placebo p ≥ 0,22). Prima di confrontare, simulare la regola esattamente come è scritta nel tool:
+senza la finestra 20–50 giorni il riferimento era sbagliato. Dare il risultato come forchetta a parità di operazioni: i prezzi
+ricostruiti spostano il conto composto fino al 15%. I descrittivi per chi opera a mano dipendono da 2–3 operazioni: vanno riportati
+con il conteggio di quante operazioni migliorano e quante peggiorano."
