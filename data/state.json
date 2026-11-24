@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-22",
+  "date": "2026-11-23",
   "last_signal_date": "2026-11-21",
   "intraday_keys": [
     "2026-11-21:confirm",
@@ -3070,9 +3070,9 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-24T05:56:27",
-  "heartbeat": "2026-11-23",
-  "daily_brief": "2026-11-23",
+  "last_run": "2026-11-24T07:02:57",
+  "heartbeat": "2026-11-24",
+  "daily_brief": "2026-11-24",
   "tg_offset": 77505152,
   "guard": {
     "last": {
