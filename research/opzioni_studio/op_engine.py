@@ -128,6 +128,7 @@ class Conf:
     spread_k: float = 0.0       # spread a debito: gamba venduta x più fuori dal prezzo (0 = nessuna)
     u_mult: float | None = None # moltiplicatore di U1/U2/U3 (vicini: 1,5 / 2,5 / 3,5)
     u4_giorni: int = 7          # U4: giorni prima della scadenza
+    finestra: tuple | None = None  # ADDENDUM-2: solo scadenze fra (min, max) giorni; nessuna → operazione saltata
     min_giorni: float = 0.0     # solo descrittivo: scadenze con almeno N giorni (se ce ne sono), come nello studio dell'utente
     spread: float = SPREAD
     fee: float = FEE
@@ -206,6 +207,9 @@ class Motore:
     # scelta del contratto
     def scegli(self, d: pd.Timestamp, tipo: str, mny: float | None = None, giorni: int | None = None) -> tuple | None:
         exps = [pd.Timestamp(e) for e in self.p.scadenze(d) if self.giorni(d, e) >= 1.0]
+        if self.c.finestra:
+            lo, hi = self.c.finestra
+            exps = [e for e in exps if lo <= self.giorni(d, e) <= hi]
         if not exps:
             return None
         g = self.c.giorni if giorni is None else giorni

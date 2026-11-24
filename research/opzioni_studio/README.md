@@ -1,129 +1,206 @@
-# Opzioni su BTC: struttura, uscite e segnali · ciclo notturno 24–25/11/2026 · BOZZA
+# Opzioni su BTC: struttura, uscite e segnali · ciclo notturno 24–25/11/2026 (PREREG + ADDENDUM-1 + ADDENDUM-2)
 
-**Verdetto: niente batte B0, che resta la regola sulla carta.** Le 7 regole (segnale di W3.2, call o put alla pari a circa 30
-giorni, 5% del conto, vendita all'uscita di W3.2, mai rinnovare) restano invariate. Nessuna struttura (F1), nessuna uscita (F2) e
-nessun segnale indipendente (F3) supera i criteri preregistrati (PREREG + ADDENDUM-1). Nessun segnale F3 risulta nemmeno "utile"
-come fonte di occasioni in più: le operazioni aumentano, il vantaggio no (placebo p da 0,14 a 0,41). Con i prezzi della superficie Deribit, B0 porta 10.000 $ a
-**49.712 $ dal 2018** (DD −12,8%) e a **21.695 $ in OOS 2022–26** (DD −9,8%). Sono valori vicini a W3.2 a metà dimensione
-(57.961 $ / 21.951 $), con perdita massima per operazione del 5%.
+**Verdetto: niente batte la regola in uso. Il segnale per operare in opzioni su BTC resta quello di W3.2 con le 7 regole
+(B0r).** Nessuna struttura (F1), nessuna uscita (F2) e nessun segnale indipendente (F3) supera i criteri preregistrati contro B0r.
+Nessun segnale F3 è "utile" come fonte di occasioni in più: placebo p fra 0,22 e 0,31 e, senza le 2 operazioni migliori, sotto
+10.000 $.
+
+Con 10.000 $ e il 5% del conto per operazione, B0r vale una **forchetta**, non un numero esatto:
+
+| | Prezzi veri degli scambi Deribit (solo operazioni chiuse) | Superficie (con l'operazione aperta valutata al 21/11) |
+|---|---|---|
+| Dal 2018 | ≈ 45.000 $ | ≈ 51.000 $ (DD −12,8%) |
+| Dal 2021 | ≈ 27.000 $ | ≈ 30.000 $ (DD −9,8%) |
+
+B0r rende circa quanto W3.2 a metà dimensione (57.961 $ / 31.218 $) e non perde mai più del 5% per operazione. Il primo ciclo
+riportava 49.712 $ dal 2018: quel numero usava il venerdì più vicino a 30 giorni senza la finestra 20–50 giorni della regola 3
+(`radar/opzioni.py`, GG_MIN/GG_MAX), con 6 operazioni su 23 a 11–18 giorni. Era un errore di specifica, corretto con l'ADDENDUM-2.
 
 ## Cosa è stato provato
-- **Cancello** (PREREG, ADDENDUM-1 punto 6): il motore con `superficie.py` rifà le 23 operazioni di `storico_prezzi_veri.csv`.
-  Scarto mediano del moltiplicatore +4,9% con il contratto del CSV e +0,0% con il contratto scelto dal motore, contro una
-  soglia di ±15%: **superato**. Il singolo caso però è disperso (scarto mediano assoluto 0,2–0,3 sul moltiplicatore), perché in 6
-  operazioni su 23 il venerdì più vicino a 30 giorni ne dista solo 18, mentre lo studio dell'utente usava quello a 46.
-- **F1**: scadenza 14/30/60/90 giorni × prezzo d'esercizio 5% dentro, alla pari, 5% e 10% fuori (16 celle).
-- **F2**: uscite U0–U5 sul contratto di B0 (6 celle).
+- **B0r** (regola in uso): segnale di W3.2, call se long e put se short, ingresso lunedì 12:00 UTC. Scadenza: il venerdì
+  scambiato più vicino a 30 giorni **fra 20 e 50 giorni**; se non ce n'è, l'operazione si salta (2018-01-08 e 2018-10-15). Prezzo
+  d'esercizio più vicino sulla griglia reale, 5% del conto, vendita all'uscita di W3.2, mai rinnovi.
+- **F1**: scadenza ≈14/30/60/90 giorni (finestre 10–20, 20–50, 45–80, 70–120) × prezzo d'esercizio 5% dentro, alla pari, 5% e 10%
+  fuori (16 celle).
+- **F2**: uscite U0–U5.
 - **F3**: segnali a–f con le soglie dell'ADDENDUM-1, più "call sempre" e "straddle sempre" come riferimenti.
 - **F4 e spread a debito**: descrittivi.
-- **Riferimenti**: W3.2 intera, W3.2 a metà, liquidità, buy & hold.
-- **Regole comuni**: 10.000 $, ogni periodo simulato da solo partendo da 10.000 $ e senza posizioni; costi del PREREG; valutazione
-  giornaliera al valore di liquidazione.
-- **Esecuzione**: `python3 op_fase2.py` (circa 15 minuti, di cui 4 × 1.000 placebo), poi `python3 op_extra.py`. Uscite:
-  `risultati.txt`, `griglia_F1.csv`, `uscite_F2.csv`, `segnali_F3.csv`, `verdetti.csv`, `operazioni_*.csv`, `placebo.csv`,
-  `equity.csv`, `cache/cancello_23.csv`. Il motore ha i test in `op_test.py` (9 test, verdi).
+- **Regole comuni**: ogni periodo è simulato da solo partendo da 10.000 $; costi del PREREG (3% del premio per lato, commissione
+  0,03% con tetto 12,5%, esercizio 0,02%); valutazione giornaliera al valore di liquidazione.
+- **Prezzi**: superficie di volatilità implicita Deribit 2018–26 (`superficie.py`), F = prezzo Binance delle 12:00.
 
-## Risultati (10.000 $; finale e DD giornaliero)
+Esecuzione:
+
+| Script | Cosa fa | File prodotti |
+|---|---|---|
+| `op_fase2.py` (≈ 15 min) | cancello, famiglie e criteri | `risultati.txt`, `griglia_F1.csv`, `uscite_F2.csv`, `segnali_F3.csv`, `verdetti.csv`, `placebo.csv`, `equity.csv`, `operazioni_*.csv` |
+| `op_veri.py` | B0r con gli scambi veri | `b0r_prezzi_veri.csv` |
+| `op_d.py` | descrittivi per chi opera a mano | `descrittivi_D.txt` |
+
+I risultati del primo ciclo (senza finestra) sono in `ciclo1/`. Il motore ha i test in `op_test.py` (9 test, verdi).
+
+## Cancello (rafforzato, ADDENDUM-2 C)
+- **Stesso contratto del CSV, prezzi della superficie**: scarto mediano del moltiplicatore +4,9% (soglia ±15%), superato.
+- **Conto composto (5% per operazione, n. 1–22)**: con i moltiplicatori veri del CSV 49.101 $, con il motore sugli stessi
+  contratti 56.390 $ (+15%). Circa 9 punti di questa differenza vengono dalla sola n. 3 del 2018: senza di essa, 43.125 contro
+  45.573 $. L'incertezza dei prezzi sul conto composto è quindi di circa ±15%.
+- **B0r con prezzi veri** (scambio vero del contratto più vicino all'istante, entro ±6 ore: 21 ingressi su 21 e 7 uscite su 7;
+  scarto mediano 0,7 ore):
+
+| Periodo | Prezzi veri | Superficie | Differenza |
+|---|---|---|---|
+| Dal 2018 | 45.000 $ | 48.258 $ | −6,8% |
+| Dal 2021 | 27.343 $ | 28.320 $ | −3,4% |
+| IS 2018–21 | 22.771 $ | 24.454 $ | −6,9% |
+| OOS 2022–26 | 19.762 $ | 19.734 $ | +0,1% |
+
+Operazioni chiuse, conto composto. Tutte le differenze sono dentro l'incertezza di ±15%.
+
+## Risultati (10.000 $; finale e DD giornaliero; superficie)
 | Strategia | Dal 2018 | DD | Dal 2021 | DD | IS 2018–21 | DD | OOS 2022–26 | DD | Op. IS/OOS | PF OOS |
 |---|---|---|---|---|---|---|---|---|---|---|
 | W3.2 intera | 241.439 | −37,3 | 84.330 | −21,1 | 54.910 | −37,3 | 43.970 | −21,1 | 12/10 | 40,3 |
 | W3.2 a metà | 57.961 | −22,6 | 31.218 | −11,9 | 26.404 | −22,6 | 21.951 | −11,9 | 12/10 | 40,3 |
 | Buy & hold | 43.903 | −81,2 | 20.819 | −76,6 | 33.696 | −81,2 | 13.029 | −66,9 | — | — |
-| **B0** | **49.712** | −12,8 | **31.134** | −9,8 | **22.914** | −12,8 | **21.695** | −9,8 | 12/10 | 11,6 |
-| F1 scelta su IS: 14 g alla pari | 47.572 | −13,7 | 31.896 | −12,7 | 23.726 | −13,7 | 20.050 | −12,7 | 12/10 | 6,3 |
-| F2 scelta su IS: U0 (= B0) | = B0 | | | | | | | | | |
-| F3a tendenza | 18.626 | −34,9 | 13.051 | −33,6 | 12.860 | −34,9 | 14.947 | −31,6 | 47/57 | 1,35 |
-| F3b flusso W3.2 ogni settimana (descr.) | 54.486 | −20,6 | 25.092 | −20,4 | 28.326 | −20,6 | 19.236 | −20,4 | 18/25 | 2,31 |
-| F3c volatilità bassa → straddle | 13.661 | −29,3 | 10.387 | −29,3 | 12.690 | −15,3 | 10.801 | −29,3 | 30/45 | 1,16 |
-| F3d compressione → straddle (descr.) | 14.614 | −16,8 | 14.870 | −9,5 | 10.032 | −16,8 | 14.568 | −9,5 | 16/17 | 3,79 |
-| F3e dopo cascata → call (descr.) | 9.891 | −29,8 | 8.669 | −29,8 | 11.560 | −20,1 | 8.556 | −25,4 | 14/5 | 0,18 |
-| F3f cono ≥ 1,4 × costo | 45.072 | −41,6 | 16.982 | −41,6 | 26.814 | −23,2 | 16.809 | −41,6 | 39/48 | 1,66 |
-| Rif. call sempre | 42.225 | −43,9 | 18.471 | −43,9 | 22.620 | −31,1 | 18.667 | −35,9 | 48/58 | 1,65 |
-| Rif. straddle sempre | 16.601 | −23,5 | 12.971 | −23,5 | 11.769 | −15,6 | 14.106 | −23,5 | 48/58 | 1,38 |
-| F4 W3.2 metà su perp + protezione (descr.) | 29.829 | −33,6 | 21.195 | −13,4 | 17.710 | −33,6 | 16.843 | −13,4 | 12/10 | 9,0 |
-| Spread a debito alla pari − 20% (descr.) | 36.872 | −11,2 | 28.369 | −9,2 | 16.953 | −11,2 | 21.749 | −9,2 | 12/10 | 12,9 |
+| **B0r (regola in uso)** | **50.875** | −12,8 | **29.856** | −9,8 | **24.454** | −12,8 | **20.805** | −9,8 | 10/10 | 11,1 |
+| F1 scelta su IS: 30 g 5% fuori | 66.347 | −15,0 | 33.608 | −12,7 | 28.784 | −15,0 | 23.050 | −12,7 | 10/10 | 7,0 |
+| F2 scelta su IS: U0 (= B0r) | = B0r | | | | | | | | | |
+| F2 U5 un rinnovo | 47.168 | −14,4 | 29.137 | −12,8 | 22.364 | −14,4 | 21.091 | −12,8 | 13/17 | 3,6 |
+| F3a tendenza | 20.441 | −34,9 | 13.607 | −32,4 | 13.537 | −34,9 | 15.583 | −28,0 | 46/55 | 1,39 |
+| F3b flusso W3.2 ogni settimana (descr.) | 50.005 | −19,1 | 24.565 | −19,1 | 26.554 | −19,1 | 18.831 | −19,1 | 15/23 | 2,34 |
+| F3c volatilità bassa → straddle | 12.756 | −28,5 | 10.282 | −28,5 | 12.003 | −14,1 | 10.662 | −28,5 | 22/41 | 1,15 |
+| F3d compressione → straddle (descr.) | 15.650 | −13,8 | 15.285 | −6,6 | 10.451 | −13,8 | 14.975 | −6,6 | 13/15 | 5,07 |
+| F3e dopo cascata → call (descr.) | 10.730 | −26,3 | 9.724 | −26,3 | 12.691 | −20,1 | 8.455 | −26,3 | 11/5 | 0,17 |
+| F3f cono ≥ 1,4 × costo | 36.507 | −39,8 | 12.614 | −38,5 | 29.287 | −28,2 | 12.466 | −38,5 | 36/45 | 1,39 |
+| Rif. call sempre | 44.447 | −43,9 | 18.471 | −43,9 | 23.811 | −31,1 | 18.667 | −35,9 | 47/58 | 1,65 |
+| Rif. straddle sempre | 16.500 | −23,5 | 12.971 | −23,5 | 11.697 | −15,6 | 14.106 | −23,5 | 47/58 | 1,38 |
+| F4 W3.2 metà su perp + protezione (descr.) | 29.231 | −33,2 | 21.244 | −13,4 | 17.315 | −33,2 | 16.882 | −13,4 | 12/10 | 9,1 |
+| Spread a debito alla pari − 20% (descr.) | 31.514 | −9,2 | 24.773 | −9,2 | 16.593 | −8,4 | 18.992 | −9,2 | 10/10 | 10,6 |
 
-Le griglie complete, con CAGR, quota in guadagno, perdita peggiore, serie peggiore e risultato senza le 2 migliori operazioni,
-sono in `risultati.txt` e nei CSV. Riconteggio con la IV della superficie: c 25/37 operazioni (giudicabile, IS ≥ 20); f 35/44.
+Le griglie complete, con CAGR, quota in guadagno, perdita peggiore, serie peggiore e risultato senza le 2 migliori, sono in
+`risultati.txt` e nei CSV. Riconteggio con la IV della superficie: c 25/37 operazioni (giudicabile), f 36/45.
 
-## Criteri, uno per uno (OOS 2022–26 contro B0 21.695 $, DD −9,8%)
-| Cella | (1) finale > B0 e DD ≤ +3 punti | (2) senza le 2 migliori | (3) vicini | (4) ≥ 20 per metà e placebo | (5) Holm | Esito |
+## Criteri, uno per uno (OOS 2022–26 contro B0r: 20.805 $, DD −9,8%, 13.068 $ senza le 2 migliori)
+| Cella | (1) finale > B0r e DD ≤ +3 punti | (2) senza le 2 migliori | (3) vicini | (4) ≥ 20 per metà e placebo | (5) Holm | Esito |
 |---|---|---|---|---|---|---|
-| F1 14 g alla pari | no (20.050; −12,7%) | no (11.298 contro 13.656) | 1/3 | — | p 0,71 → 1,00 | non migliore |
-| F2 U0 | scelta IS = B0 | | | | | nessun cambio |
-| F3a | no (14.947; −31,6%) | no (9.302) | 0/4 | 47/57, p 0,41 | 1,00 | non migliore, non utile |
-| F3c | no (10.801; −29,3%) | no (8.112) | 0/4 | 30/45, p 0,34 | 1,00 | non migliore, non utile |
-| F3f | no (16.809; −41,6%) | no (8.869) | 0/4 | 39/48, p 0,14 | 0,82 | non migliore, non utile; non batte "call sempre" (18.667) |
+| F1 30 g 5% fuori | sì (23.050; −12,7%) | no (12.205) | 2/4 | — | p 0,27 → 1,00 | non migliore |
+| F2 U0 | scelta IS = B0r | | | | | nessun cambio |
+| F3a | no (15.583; −28,0%) | no (9.698) | 0/4 | 46/55, p 0,28 | 1,00 | non migliore, non utile (correlazione con B0r 0,50) |
+| F3c | no (10.662; −28,5%) | no (8.348) | 0/4 | 22/41, p 0,22 | 1,00 | non migliore, non utile (PF 1,15) |
+| F3f | no (12.466; −38,5%) | no (6.577) | 0/4 | 36/45, p 0,31 | 1,00 | non migliore, non utile; non batte "call sempre" (18.667) |
 
-Criterio "utile" (OOS sopra 10.000 $, PF ≥ 1,2, punti 2–5, correlazione settimanale con B0 < 0,5): nessuno lo soddisfa.
-- **F3a**: PF 1,35, correlazione 0,45, ma placebo p 0,41.
-- **F3c**: PF 1,16.
-- **F3f**: PF 1,66, correlazione 0,10, ma placebo p 0,14 e scende a 8.869 $ senza le 2 migliori.
-- **Rif. call sempre**: placebo p 0,07.
+**Contro B0r i verdetti non cambiano rispetto al primo ciclo.** Cambia solo la cella scelta in F1: era "14 g alla pari", ora è
+"30 g 5% fuori". Questa cella fa più di B0r in OOS, ma perché è più leva: senza le 2 migliori operazioni scende sotto B0r e solo 2
+vicini su 4 restano sopra.
+
+**U5 (un rinnovo)** nel primo ciclo, contro il vecchio B0: OOS 23.922 $, DD −12,8% contro −9,8%.
+- Supera il punto 2: 14.532 $ contro 13.656 $ senza le 2 migliori.
+- Non supera il punto 1, per 0,02 punti di DD.
+- Non supera i vicini.
+- Viola la regola 7 ("mai rinnovare").
+- È soprattutto più esposizione: 36 operazioni contro 22 dal 2018.
+
+Con B0r non è scelta su IS (22.364 contro 24.454 $) e in OOS, senza le 2 migliori, scende sotto B0r (12.787 contro 13.068 $).
 
 ## Cosa dicono i dati
-- **Il guadagno di B0 viene dai segnali di W3.2, non dall'opzione.** Le 3 operazioni migliori di B0 (12/2020 +39%, 02/2024 +26%,
-  10/2020 +26% sul conto) sono le stesse di W3.2. Per anno: 2018 −7%, 2025 −1%, gli altri anni positivi. Call +257% su 16 operazioni, put +32% su 6.
-- **Le varianti che sembrano migliori lo sembrano solo guardando l'OOS.**
-  - Struttura: in OOS fanno più di B0 "30 g 5% fuori" (25.134 $) e "14 g 5% fuori" (27.232 $), ma con DD fra −13% e −21%. In IS le
-    stesse celle superano il limite di DD e la regola preregistrata non le sceglie.
-  - Uscite: "U5 un rinnovo" fa 23.922 $ in OOS (DD −12,8%), ma in IS aveva DD −16,9% contro −12,8%. Togliendo le 2 operazioni migliori
-    nessuna resta chiaramente sopra B0.
-- **Più occasioni = esposizione quasi continua, non un vantaggio.** a ed f stanno in posizione l'80–90% del tempo e somigliano a
-  "compra una call ogni mese" (f contro call sempre in OOS: 16.809 contro 18.667 $). Il placebo con date a caso fa quasi
-  altrettanto: è la deriva di BTC, pagata con DD del 35–44%.
-- **La volatilità implicita "bassa" non paga lo straddle** (F3c 10.801 $ in OOS, PF 1,16, placebo p 0,34). La compressione delle
-  bande (d) va meglio (14.568 $, DD −9,5%, PF 3,8) ma con 16/17 operazioni resta descrittiva.
-- **Le perdite delle opzioni direzionali mensili si concentrano nei momenti di IV alta.** Composto per terzile di IV
-  all'ingresso: F3a −26% (alta) contro +60% (bassa) e +49% (media); F3f −37% contro +192% e +160%. B0 invece è positivo in tutti
-  e tre i terzili (+31%, +79%, +100%). I terzili sono calcolati su tutto il 2018–26: è una diagnosi, non una regola.
-- **La scadenza conta molto più di quanto pensassimo.** Con il venerdì più vicino a 30 giorni, nel 2018–20 e in 6 operazioni su
-  23 la scadenza è a 11–18 giorni. Imponendo almeno 21 giorni, B0 fa 57.277 $ dal 2018 (+15%) ma 20.805 $ in OOS (−4%):
-  nessun segno stabile, solo caso.
-- **I costi non cambiano le conclusioni.** Con differenza denaro-lettera 0/3/6% per lato B0 fa 54.588/49.712/45.481 $ dal
-  2018. L'ordine fra le strategie non cambia.
-- **Spread a debito** (descrittivo): stesso rendimento di B0 in OOS (21.749 $, DD −9,2%), meno dal 2018 (36.872 $), perché taglia i
-  movimenti grandi del 2020–21. Richiede di vendere una gamba.
-- **F4** (W3.2 a metà senza stop, con put o call 10% fuori come protezione): 29.829 $ dal 2018 con DD −33,6% contro W3.2 a metà
-  57.961 $ e −22,6%. La protezione costa più di quanto protegga.
+- **Il guadagno viene dai segnali di W3.2, non dall'opzione.** Le 3 operazioni migliori di B0r (02/2024, 10/2020, 12/2020: +25–26%
+  sul conto) sono le stesse di W3.2. Per lato: call +290% su 15 operazioni, put +24% su 5. B0r è positivo in tutti e tre i terzili
+  di volatilità implicita all'ingresso.
+- **Più occasioni non vuol dire più vantaggio.** a ed f stanno in posizione l'80–90% del tempo: sono "una call ogni mese" con
+  DD del 30–40% (f contro call sempre in OOS: 12.466 contro 18.667 $). Le date a caso fanno quasi altrettanto (placebo p
+  0,22–0,31).
+- **Le scadenze sotto i 20 giorni sono escluse dalla regola in uso**, e i dati spiegano perché. Con il venerdì più vicino senza
+  limiti, nel 2018–20 la scadenza cadeva a 11–18 giorni e il risultato della singola operazione diventava molto più casuale (ciclo 1).
+- **Prese di profitto a 2× o 3×, vendita 7 giorni prima e rinnovo peggiorano o non migliorano B0r.** OOS 14.779 / 16.616 / 17.634 /
+  19.175 / 21.091 $ contro 20.805 $. Le prese di profitto tagliano proprio le operazioni che fanno il risultato.
+- **L'opzione al posto dello stop (F4) costa più di quanto protegga**: 29.231 $ dal 2018 con DD −33% contro W3.2 a metà 57.961 $ e −22,6%.
+  **Lo spread a debito** taglia i movimenti grandi: 31.514 $ dal 2018 e 18.992 $ in OOS.
+- **Costi**: con differenza denaro-lettera 0/3/6% per lato B0r fa 56.650 / 50.875 / 45.923 $ dal 2018. L'ordine fra le strategie
+  non cambia.
+- **Unica eccezione da tenere d'occhio: F3d (compressione delle bande → straddle).** In OOS 14.975 $, DD −6,6%, PF 5,1, ma con
+  13/15 operazioni resta descrittivo (meno di 20 per metà).
+
+## Per chi opera a mano (ADDENDUM-2 D, descrittivi su B0r, operazioni chiuse)
+**Ritardo d'ingresso e soglia del 3%** (conto composto da 10.000 $; soglia = si entra solo se BTC è entro ±3% dalla chiusura
+della domenica):
+
+| Ingresso | Dal 2018 | Dal 2021 | OOS | Con la soglia del 3%: operazioni | Dal 2018 | OOS |
+|---|---|---|---|---|---|---|
+| Lunedì 00:00 | 49.785 | 29.139 | 20.217 | 20 di 20 | 49.785 | 20.217 |
+| Lunedì 12:00 (B0r) | 48.258 | 28.320 | 19.734 | 15 di 20 | 38.406 | 20.773 |
+| Martedì 00:00 | 41.063 | 25.829 | 17.871 | 15 di 20 | 30.859 | 14.372 |
+| Mercoledì 00:00 | 37.500 | 25.610 | 18.494 | 12 di 20 | 18.290 | 16.354 |
+| Giovedì 00:00 | 32.030 | 22.091 | 17.690 | 10 di 20 | 13.072 | 10.698 |
+
+- **Il ritardo costa**: ogni giorno di attesa toglie circa il 10–15% del risultato dal 2018.
+- **La soglia del 3% fa peggio di "entra comunque"**: esclude proprio i segnali partiti forte (2019-05 m 4,65, 2021-02 m 4,84).
+
+**Cosa aspettarsi su 3 anni** (circa 7 operazioni; 10.000 estrazioni con reinserimento dei 20 moltiplicatori di B0r):
+
+| Quota per operazione | Percentili 5 / 25 / 50 / 75 / 95 | Probabilità di perdita | Serie peggiore di premi persi |
+|---|---|---|---|
+| 5% del conto (da 10.000 $) | 11.473 / 14.519 / 17.353 / 20.700 / 26.834 $ | 1,2% | mediana 1 operazione (−5%), 5° percentile −9,8% |
+| 1.500 $ fissi | +4.784 / +12.367 / +18.182 / +24.038 / +32.710 $ | 1,1% | mediana −1.500 $, 5° percentile −3.000 $ |
+| 2.000 $ fissi | +6.379 / +16.489 / +24.243 / +32.050 / +43.613 $ | 1,1% | mediana −2.000 $, 5° percentile −4.000 $ |
+
+Nello storico, con 1.500 $ fissi per operazione si sarebbero guadagnati +52.136 $ dal 2018; con 2.000 $, +69.515 $. Questi numeri
+presuppongono che i segnali di W3.2 restino buoni come nel 2018–26: il 25% delle operazioni in perdita, il 10% con il premio perso
+del tutto.
 
 ## Cosa significa per l'operatività
-Per chi vuole operare in opzioni su BTC, il segnale operativo resta uno solo: **B0, cioè le 7 regole**. A ogni segnale di
-W3.2 si compra una call o una put alla pari a circa 30 giorni, con il 5% del conto, e la si vende quando W3.2 esce. Rende quanto
-W3.2 a metà con perdita massima del 5% per operazione. Nessun segnale aggiuntivo ha mostrato un vantaggio: non conviene comprare
-opzioni fra un segnale e l'altro. Unica nota pratica: quando il venerdì più vicino a 30 giorni è a meno di 3 settimane, il
-risultato della singola operazione diventa molto più casuale. Non è dimostrato che convenga sceglierne uno più lontano.
+Per chi vuole segnali per operare in opzioni su BTC:
+- **Quale segnale usare**: solo il segnale di W3.2, con le 7 regole. Call se long, put se short. Il venerdì più vicino a 30
+  giorni fra quelli a 20–50 giorni, prezzo d'esercizio più vicino al prezzo, 5% del conto o una cifra fissa. Si vende quando
+  W3.2 esce, mai rinnovare.
+- **Cosa aspettarsi**: circa 2–3 operazioni l'anno. Su 10.000 $ dal 2018 fra 45.000 e 51.000 $, dal 2021 fra 27.000 e 30.000 $,
+  con DD intorno al −10/−13% e perdita massima del 5% per operazione. Con 1.500–2.000 $ a operazione, in 3 anni il risultato tipico
+  è +18.000 / +24.000 $, con una probabilità di perdita intorno all'1% se i segnali restano come nello storico.
+- **Cosa evitare**:
+  - opzioni fra un segnale e l'altro (a, c, e, f e "call sempre": esposizione senza vantaggio dimostrato);
+  - scadenze sotto 20 giorni;
+  - prese di profitto a 2× o 3×;
+  - rinnovi;
+  - l'opzione al posto dello stop.
+- **Quando entrare**: il prima possibile dopo la chiusura della domenica; l'ingresso a mezzogiorno del lunedì costa già circa il 3%.
+  Non usare la soglia del 3%: toglie i segnali migliori.
+- **Solo in osservazione**: F3d (compressione → straddle) sulla carta, se l'utente lo approva; non si opera.
 
 ## Limiti
-- **Prezzi ricostruiti, non il book.** Superficie dalle 12:00 UTC con il prezzo Binance delle 12:00 come F (non il future);
-  93,7% delle chiamate da scambi del giorno, 6,3% interpolate. Il regolamento è l'apertura oraria Binance delle 08:00, non
-  l'indice Deribit; 8 giorni senza candela oraria sono interpolati.
-- **Scadenze**: solo quelle presenti nel campione di scambi del giorno o dei 3 giorni prima, quindi poche nel 2018–19.
-  **Griglia degli strike**: ricostruita dagli scambi visti fino al giorno (`op_griglia.py`).
-- **Campione piccolo**: 22 operazioni chiuse per B0 (10 in OOS). Flusso perp vero solo dal 2020-04, funding dal 2020-01. Dati
-  fino al 2026-11-21; l'operazione aperta del 16/11 è valutata a quella data ed esclusa dai conteggi.
-- **Placebo di F3**: lunedì a caso con la stessa durata. Quando non si trovano date senza sovrapposizioni dopo 200 tentativi,
-  alcune operazioni placebo si saltano.
+- **Tempi**: ingresso alle 12:00 UTC del lunedì, circa 12 ore dopo il segnale. Le uscite di W3.2 durante la giornata si vendono il
+  giorno dopo.
+- **Superficie**: quella del giorno include scambi dopo le 12:00 (lieve anticipo).
+- **Regolamento**: apertura oraria Binance delle 08:00, non l'indice Deribit.
+- **Prezzi**: incertezza di circa ±15% sul conto composto. F è il prezzo spot, non il future.
+- **Placebo sbilanciato a favore del segnale**: con molte operazioni le date a caso a volte si saltano, quindi il placebo ha
+  meno esposizione (per questo "call sempre" ha p 0,03 contro le sue stesse date a caso). Il verdetto negativo su F3 ne esce
+  rafforzato.
+- **Campione piccolo**: 20 operazioni chiuse per B0r, 10 in OOS. Flusso perp vero solo dal 2020-04, funding dal 2020-01, dati
+  fino al 2026-11-21.
 
 ## Deviazioni dal PREREG (dichiarate)
-- **Holm per F1 e F2**: il PREREG non fissa il test. Usato un test appaiato a segni casuali sulle differenze per operazione
-  rispetto a B0 (10.000 permutazioni), moltiplicato per 15 (F1) o 5 (F2). Per F3 si usa il p del placebo × 6.
-- **Scelta su IS**: il capitale finale IS più alto fra le celle con DD IS non peggiore di B0 di oltre 3 punti. Il PREREG dice
-  solo "scelta su IS".
+- **Holm per F1 e F2**: test appaiato a segni casuali sulle operazioni contro il riferimento, moltiplicato per 15 e per 5. Per F3
+  si usa il p del placebo × 6.
+- **Scelta su IS**: il finale IS più alto fra le celle con DD non peggiore del riferimento di oltre 3 punti.
 - **Vicini**: F1 sono le celle adiacenti della griglia. F2 sono i parametri ±: 1,5/2,5×, 2,5/3,5×, 5/10 giorni; per U5, 21/45
-  giorni. F3 sono le soglie adiacenti e le scadenze 21/45 giorni (per a anche 5% fuori). Per le celle con 2–3 vicini serve
-  ≥ 75%.
-- **"Utile", punto 2**: interpretato come "resta sopra 10.000 $ senza le 2 migliori", perché un segnale utile non deve battere B0.
-- **Descrittivi aggiunti dopo i verdetti** (`op_extra.py`): B0 con scadenza ad almeno 21 giorni, e lo spread −20% con lo stesso vincolo.
+  giorni. F3 sono le soglie adiacenti e le scadenze 21/45 giorni (finestra 20–50).
+- **"Utile", punto 2**: interpretato come "sopra 10.000 $ senza le 2 migliori".
+- **Secondo ciclo**: ammesso dal PREREG per l'errore di specifica del riferimento. Tutto è esplorativo, come scritto
+  nell'ADDENDUM-2.
 
-## Ipotesi per un secondo ciclo (una sola, nata dalla diagnosi)
-Le opzioni direzionali mensili (F3a, F3f, call sempre) perdono quasi solo quando entrano con IV alta. Ipotesi: "call o put alla pari
-a 30 giorni solo se la IV a 30 giorni è sotto il terzile alto delle ultime 52 settimane, calcolato solo sul passato". Da provare
-su F3a e su "call sempre", giudicandola contro "call sempre" e contro B0, con placebo nello stesso regime di IV. Esplorativa per
-PREREG. Non riguarda B0, che è positivo anche con IV alta.
+## Secondo ciclo (ADDENDUM-2): cosa è stato fatto
+- A. B0r con la finestra 20–50 giorni della regola in uso, diventato il riferimento; 2 operazioni del 2018 saltate.
+- B. F1, F2 e F3 rieseguiti con finestre coerenti e giudicati contro B0r: nessun verdetto cambia.
+- C. Cancello sul conto composto e B0r con gli scambi veri di Deribit.
+- D. Descrittivi per chi opera a mano.
+
+**Non è stato eseguito il filtro sulla volatilità implicita alta** proposto dalla diagnosi del primo ciclo. I terzili erano
+calcolati sugli stessi dati 2018–26, OOS compreso: sarebbe stata una pesca a posteriori. Inoltre B0r è positivo in tutti i
+terzili, quindi il filtro non tocca la regola in uso.
 
 ## Lezione proposta per RESEARCH.md
-"Opzioni su BTC (ciclo 24–25/11, superficie Deribit 2018–26): comprare opzioni non crea un vantaggio proprio. B0 vale quanto
-i segnali di W3.2 a metà dimensione, con perdita massima del 5% per operazione; struttura, uscite e segnali indipendenti non lo
-battono in OOS. I segnali "in più" sono esposizione quasi continua alla deriva di BTC (placebo p ≥ 0,14). La scelta della scadenza
-(18 contro 46 giorni) sposta il risultato del 15% senza segno stabile: è rumore, non una leva."
+"N. (opzioni, 25/11/2026) Comprare opzioni su BTC non crea un vantaggio proprio. La regola in uso (B0r: segnale di W3.2, venerdì più vicino a 30
+giorni fra 20 e 50, alla pari, 5%) vale 45–51k $ dal 2018 su 10k (prezzi veri e superficie), circa come W3.2 a metà, con perdita
+massima del 5%. Struttura, uscite, rinnovi e segnali indipendenti non la battono in OOS: le occasioni in più sono esposizione alla
+salita di BTC (placebo p ≥ 0,22). Prima di confrontare, simulare la regola esattamente come è scritta nel tool: senza la finestra
+20–50 giorni il riferimento era sbagliato. E dare il risultato come forchetta: i prezzi ricostruiti spostano il conto composto
+fino al 15%."

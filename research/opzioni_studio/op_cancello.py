@@ -40,6 +40,14 @@ class Forzato:
         return getattr(self.b, k)
 
 
+FIN = (20, 50)   # ADDENDUM-2: finestra della regola in uso (radar/opzioni.py GG_MIN/GG_MAX); None = ciclo 1
+
+
+def conto(m) -> float:
+    """Conto composto da 10.000 $ con il 5% speso per operazione: 10.000 × Π(1 + 0,05 (mult − 1))."""
+    return 10_000 * float(pd.Series(m).dropna().apply(lambda x: 1 + 0.05 * (x - 1)).prod())
+
+
 def contratti() -> dict:
     c = pd.read_csv(S.CSV_VERI)
     out = {}
@@ -50,10 +58,10 @@ def contratti() -> dict:
     return out
 
 
-def per_operazione(pz, last) -> pd.DataFrame:
+def per_operazione(pz, last, fin=None) -> pd.DataFrame:
     c = pd.read_csv(S.CSV_VERI)
     days = pd.date_range("2018-01-01", last)
-    m = E.Motore(pz, E.Conf(exer=0.00015))
+    m = E.Motore(pz, E.Conf(exer=0.00015, finestra=fin))
     rows = []
     for _, r in c.iterrows():
         d0 = pd.Timestamp(r["entra"])
@@ -62,6 +70,11 @@ def per_operazione(pz, last) -> pd.DataFrame:
             d1 = pd.Timestamp(r["esce"])
             usc[d1] = "apertura" if d1.dayofweek == 0 else "chiusura"
         res = m.simula(E.Piano("eventi", {d0: 1 if r["verso"] == "long" else -1}, usc), days, str(d0.date()))
+        if not res["trades"]:
+            rows.append({"n": r["n"], "entra": r["entra"], "contratto_csv": r["contratto"], "contratto_motore": "saltata",
+                         "esito": "saltata (nessun venerdì fra 20 e 50 giorni)", "mult_csv": round(r["mult"], 4),
+                         "mult_motore": np.nan, "scarto_rel": np.nan, "giorni": np.nan, "qual_ingresso": None})
+            continue
         t = res["trades"][0]
         g = t["legs"][0]
         rows.append({"n": r["n"], "entra": r["entra"], "contratto_csv": r["contratto"],
@@ -77,25 +90,33 @@ def main() -> list[str]:
     last = S.frame().index[-1]
     base = PrezzatoreSuperficie()
     a = per_operazione(Forzato(base, contratti()), last)
-    b = per_operazione(base, last)
+    b = per_operazione(base, last, FIN)
     t = a.merge(b[["n", "contratto_motore", "giorni", "esito", "mult_motore", "scarto_rel"]], on="n", suffixes=("_A", "_B"))
     t.to_csv(HERE / "cache" / "cancello_23.csv", index=False)
     out.append("CANCELLO · 23 operazioni, moltiplicatore (incasso / spesa) contro storico_prezzi_veri.csv")
     out.append(t.to_string(index=False))
     mA, mB = a["scarto_rel"].median(), b["scarto_rel"].median()
-    out.append(f"Scarto mediano relativo: A (contratto del CSV) {mA:+.1%} · B (contratto del motore) {mB:+.1%} · soglia ±15%")
+    out.append(f"Scarto mediano relativo (prova del prezzatore, stesso contratto): A {mA:+.1%} · soglia ±15% "
+               f"(B, contratto diverso, solo informativo: {mB:+.1%})")
+    ch = a["n"] < 23
+    out.append(f"Conto composto (5% per operazione, n. 1–22 chiuse): moltiplicatori veri del CSV {conto(a.loc[ch, 'mult_csv']):,.0f} $ · "
+               f"motore sugli stessi contratti (A) {conto(a.loc[ch, 'mult_motore']):,.0f} $ · senza la n. 3: CSV "
+               f"{conto(a.loc[ch & (a['n'] != 3), 'mult_csv']):,.0f} $, A {conto(a.loc[ch & (a['n'] != 3), 'mult_motore']):,.0f} $")
+    okb = b["mult_motore"].notna() & (b["n"] < 23)
+    out.append(f"B (contratto della regola 20–50 giorni, {int(okb.sum())} operazioni, saltate "
+               f"{int(b['mult_motore'].isna().sum())}): conto composto {conto(b.loc[okb, 'mult_motore']):,.0f} $")
     out.append(f"Scarto mediano assoluto del moltiplicatore: A {(a['mult_motore'] - a['mult_csv']).abs().median():.3f} · "
                f"B {(b['mult_motore'] - b['mult_csv']).abs().median():.3f}")
-    ok = abs(mA) <= 0.15 and abs(mB) <= 0.15
+    ok = abs(mA) <= 0.15
     out.append("CANCELLO " + ("SUPERATO" if ok else "NON SUPERATO: ci si ferma"))
     # B0 in sequenza (uscite vere di W3.2, n. 9 al 2021-01-04)
     tr = pd.read_csv(HERE / "cache" / "op_w32_trades.csv")
     days = pd.date_range("2018-01-01", last)
     pi = E.piano_w32(tr, days)
     for lab, da in (("dal 2018", "2018-01-01"), ("dal 2019", "2019-01-01")):
-        r = E.Motore(base, E.Conf()).simula(pi, days, da)
+        r = E.Motore(base, E.Conf(finestra=FIN)).simula(pi, days, da)
         m = E.metriche(r)
-        out.append(f"B0 {lab}: 10.000 → {m['finale']:,.0f} $ · DD {m['dd']:.1%} · operazioni chiuse {m['n']} · "
+        out.append(f"B0r {lab} (saltate {len(r['saltate'])}): 10.000 → {m['finale']:,.0f} $ · DD {m['dd']:.1%} · operazioni chiuse {m['n']} · "
                    f"in guadagno {m['quota_guadagno']:.0%}  (studio dell'utente: {'≈ 50.642' if da < '2019' else '≈ 48.543'} $, "
                    "fino al 23/11 e n. 9 tagliata al 31/12/2020)")
     print("\n".join(out))

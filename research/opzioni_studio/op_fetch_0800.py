@@ -29,6 +29,7 @@ def main(start: str = "2017-12-01") -> None:
         time.sleep(0.15)
     h = pd.DataFrame(rows, columns=["t", "open"]).drop_duplicates("t")
     h["t"] = pd.to_datetime(h["t"], unit="ms")
+    h[["t", "open"]].to_csv(OUT.parent / "btc_1h.csv", index=False)   # tutte le ore (ritardi d'ingresso, ADDENDUM-2 D)
     h["date"] = h["t"].dt.normalize()
     out = h[h["t"].dt.hour == 8].set_index("date")[["open"]].rename(columns={"open": "open_0800"})
     out["open_1200"] = h[h["t"].dt.hour == 12].set_index("date")["open"]
