@@ -22,3 +22,8 @@ opzioni BTC, trova coerenza, analizza tutti i dati in tuo possesso. Avvia ciclo 
 
 ## Prossima azione
 Fase 1 del motore consegnata e committata; ADDENDUM-1 committato. Attendere l'agente dati (superficie Deribit), poi riprova del motore sulle 23 operazioni con superficie.py ed esecuzione F1–F4 (agente ricerca), poi revisione critica.
+
+## Aggiunta dell'utente (24/11, 22:50 UTC)
+"Includi anche la creazione di una guida dettagliata su come inserire operazioni su OKX." (con screenshot della catena
+opzioni dell'app: `guida/img/okx-catena-opzioni.png`). Agente dedicato in corso → `guida/OPZIONI-OKX.md`; i passaggi non
+verificabili vanno marcati "[da verificare sull'app]". Da committare alla consegna e includere nel riepilogo del mattino.
