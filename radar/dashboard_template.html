@@ -513,6 +513,19 @@ body.noscroll{overflow:hidden}
 .cxNote{margin:14px 0 0;font-size:.7rem;line-height:1.45;color:var(--label3)} .cxWarn{margin:10px 0 0;font-size:.76rem;line-height:1.4;color:var(--orange)}
 .tapHead b{font:600 1rem var(--font)}
 .tapHead b small{font:500 .76rem var(--font);color:var(--label3)}
+/* Posizioni · "Quando esce": le tre uscite di W3.2 divise tra perdita e profitto (report.weekly[_eth].uscite) */
+.qx{margin-top:14px;display:grid;gap:8px;min-width:0}
+.qx .qxH{font:600 .8rem var(--font);color:var(--label2)}
+.qxG{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:701px){.qxG{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.qxC{border-radius:14px;padding:8px 12px 4px;background:var(--red-bg);min-width:0} .qxC.gain{background:var(--green-bg)}
+.qxC .qxT{font:600 .76rem var(--font);color:var(--red);padding-bottom:2px} .qxC.gain .qxT{color:var(--green)}
+.qxR{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:7px 0;border-top:1px solid color-mix(in srgb,var(--label3) 22%,transparent)}
+.qxR .k{min-width:0;font:500 .86rem/1.3 var(--font);color:var(--label)} .qxR .k small{display:block;margin-top:2px;font-size:.72rem;color:var(--label3)}
+.qxR .v{flex:none;text-align:right;font-variant-numeric:tabular-nums;line-height:1.3} .qxR .v b{font:600 .9rem var(--font)} .qxR .v small{display:block;font-size:.72rem;color:var(--label3)}
+.qxC.loss .qxR .v b{color:var(--red)} .qxC.gain .qxR .v b{color:var(--green)}
+.posLine{flex-wrap:wrap} .posLine .plX{flex-basis:100%;font-size:.8rem;line-height:1.4;color:var(--label2);white-space:normal}
+.posLine .plX .neg,.posLine .plX .pos{font-weight:600}
 /* Oggi · riga di stato delle posizioni: porta a Posizioni */
 .posLine{display:flex;align-items:center;gap:6px 12px;padding:13px 16px;color:var(--label);text-decoration:none;font-size:.92rem;font-variant-numeric:tabular-nums}
 .posLine .plK{font:500 .76rem var(--font);color:var(--label3)}
@@ -734,8 +747,9 @@ body.noscroll{overflow:hidden}
         <div class="dlgHead"><b id="wkDlgT">Perché la posizione è aperta e quando si chiude</b><button type="button" id="wkDlgX">Chiudi</button></div>
         <div class="dlgBody">
           <div class="card prose" id="wkWhy"></div>
+          <div class="card" id="wkQxD" style="margin-top:12px" hidden></div>
       <div class="wkGrid">
-        <div class="list checks"><div class="cap2">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
+        <div class="list checks"><div class="cap2" id="wkCondH">Condizioni d'ingresso long</div><div id="wkConds"></div></div>
         <div class="list checks"><div class="cap2" id="wkExitH">Uscite da sorvegliare</div><div id="wkExits"></div></div>
       </div>
       <div id="wkPlan" style="margin-top:12px"></div>
@@ -1023,6 +1037,45 @@ function seg(id, onChange) {
 }
 
 // ---- segnale settimanale W3.2 (radar/weekly.py): stato in Oggi, storico in Statistiche
+// ---- "Quando esce" (report.weekly[_eth].uscite, radar/weekly.exits_block): ogni uscita di W3.2 nel gruppo "in perdita" o
+// "in profitto" secondo l'esito se scattasse ora (rispetto all'ingresso, costi e funding inclusi); per le uscite oggi in perdita,
+// la soglia oltre la quale diventano in profitto. Distanze ed esito della distribuzione ricalcolati sul prezzo mostrato.
+function qxAt(U, x) {   // stessa formula di exits_block: P&L al prezzo del server + movimento fino a x, slippage e commissione d'uscita
+  const c = U.calc, xs = x * (1 - c.slip * c.sg);
+  const cap = c.pnl_pct / 100 + c.sg * c.expo * (xs - c.px0) / U.entry_px - c.expo * xs / U.entry_px * c.fee;
+  return { pct_cap: cap * 100, usd: c.capital * cap, esito: cap > 0 ? "profitto" : "perdita" };
+}
+const qxFz = x => (x * 100).toFixed(3).replace(".", ",").replace("-", "−") + "%";
+function qxParts(U, px) {
+  const L = U.side === "long", T = U.trail, E = U.ema21, D = U.dist, dn = qxAt(U, px), r100 = v => { const q = v >= 10000 ? 100 : v >= 1000 ? 10 : 1; return Math.round(v / q) * q; };
+  const d = v => pct((v / px - 1) * 100, 1) + " dal prezzo";
+  const out = o => `<b>${o.usd >= 0 ? "+" : "−"}${usd(Math.abs(o.usd))}</b><small>${pct(o.pct_cap, 1)} sul capitale</small>`;
+  const zero = `<b>da ~$0</b><small>poi cresce</small>`;
+  const loss = [], gain = [];
+  (T.esito === "profitto" ? gain : loss).push([`Trailing a ${usd(T.level)}`, `${d(T.level)} · controllo ogni ora`, out(T)]);
+  (E.esito === "profitto" ? gain : loss).push([`Chiusura sett. ${L ? "sotto" : "sopra"} ${usd(E.level)}`, `EMA 21 · ${d(E.level)} · domenica, esce lunedì`, out(E)]);
+  if (T.esito !== "profitto") gain.push([`Chiusura ${L ? "sopra" : "sotto"} ~${usd(r100(T.soglia))}`, `il trailing passa ${L ? "sopra" : "sotto"} l'ingresso · ${d(T.soglia)} · l'ATR cambia ogni settimana`, zero]);
+  if (E.esito !== "profitto") gain.push([`EMA 21 ${L ? "sopra" : "sotto"} ${usd(U.entry_px)}`, `oggi ${usd(E.level)} (${pct(E.soglia_dist_pct, 1)})${E.settimane ? ` · ~${E.settimane} sett. a prezzo fermo` : ""} · poi chiusura ${L ? "sotto" : "sopra"}`, zero]);
+  (dn.esito === "profitto" ? gain : loss).push(["Distribuzione", `funding 7g ${qxFz(D.fund7)} (serve ${L ? "&gt;" : "&lt;"} ${qxFz(D.fund_soglia)}) ${D.fund_ok ? "✓" : "✕"} · flusso ${sgn(D.flow)}σ (serve ${L ? "&lt;" : "&gt;"} 0) ${D.flow_ok ? "✓" : "✕"} · alla chiusura della domenica`, out(dn)]);
+  return { loss, gain, L, T, E, dn, r100 };
+}
+function qxHtml(U, px, head = true) {
+  if (!U || !U.calc) return "";
+  const P = qxParts(U, px), row = r => `<div class="qxR"><span class="k">${r[0]}<small>${r[1]}</small></span><span class="v">${r[2]}</span></div>`;
+  const col = (cls, t, list) => `<div class="qxC ${cls}"><div class="qxT">${t}</div>${list.length ? list.map(row).join("") : `<div class="qxR"><span class="k"><small>nessuna uscita da questo lato</small></span></div>`}</div>`;
+  return `<div class="qx">${head ? `<div class="qxH">Quando esce · ingresso ${usd(U.entry_px)}</div>` : ""}<div class="qxG">${col("loss", "In perdita se…", P.loss)}${col("gain", "In profitto se…", P.gain)}</div></div>`;
+}
+// frase compatta per Oggi: "Esce in perdita sopra 74.273 (chiusura settimanale) o a 75.764 (trailing) · in profitto con chiusura sotto ~47.800 o per distribuzione"
+function qxLine(U, px) {
+  if (!U || !U.calc) return "";
+  const P = qxParts(U, px), L = P.L, T = P.T, E = P.E, lo = [], hi = [];
+  const ema = `${L ? "sotto" : "sopra"} ${usd(E.level)} (chiusura settimanale)`, tr = `a ${usd(T.level)} (trailing)`;
+  (E.esito === "profitto" ? hi : lo).push(ema); (T.esito === "profitto" ? hi : lo).push(tr);
+  if (T.esito !== "profitto") hi.push(`con chiusura ${L ? "sopra" : "sotto"} ~${usd(P.r100(T.soglia))}`);
+  (P.dn.esito === "profitto" ? hi : lo).push("per distribuzione");
+  return (lo.length ? `esce <span class="neg">in perdita</span> ${lo.join(" o ")}` : "") + (lo.length && hi.length ? " · " : "") +
+    (hi.length ? `${lo.length ? "" : "esce "}<span class="pos">in profitto</span> ${hi.join(" o ")}` : "");
+}
 (function renderWeekly() {
   const W = R.weekly; if (!W) return;
   const side = x => x === "long" ? "Long" : "Short", why = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
@@ -1036,6 +1089,7 @@ function seg(id, onChange) {
   const expoRow = () => part ? `<div class="wkCush"><span>Esposizione <b>${expoP(W.expo)} del capitale</b> (${usd(W.notional)} su ${usd(W.capital)}) · tetto di rischio 25% allo stop, il resto in liquidità</span></div>` : "";
   const nextSun = (() => { const d = new Date(W.week); d.setDate(d.getDate() + 7); return d; })();
   const weeksIn = open ? Math.max(1, Math.round((new Date(W.date) - new Date(W.entry)) / 6.048e8)) : 0;
+  const tUsd = W.uscite ? W.uscite.trail.usd : W.trail_usd;   // trailing in $: costi e funding inclusi (stesso numero di "Quando esce")
   // --- stato
   let hero = "";
   // posizione aperta: tutto (punto "Ora", % dall'ingresso, valore, cuscinetto) sullo stesso prezzo di riferimento, ridisegnato al massimo ogni 5 s
@@ -1061,13 +1115,13 @@ function seg(id, onChange) {
         <div class="rail"></div><div class="risk" style="${sg > 0 ? `left:0;width:${X(W.trail)}` : `left:${X(W.trail)};right:0`}"></div>
         <div class="${move >= 0 ? "gain" : "loss"}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></div>
         ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
-      <div class="wkCush"><span>Trailing a <b>${pc1(cush)}</b> dal prezzo${W.trail_usd >= 0 ? ", in guadagno" : ""}</span></div>${expoRow()}`;
+      <div class="wkCush"><span>Trailing a <b>${pc1(cush)}</b> dal prezzo${tUsd >= 0 ? ", in guadagno" : ""}</span></div>${expoRow()}${qxHtml(W.uscite, px)}`;
     return `<div class="wkBig">${pc1(move)}<small>dall'ingresso a ${usd(W.entry_px)} · su ${usd(W.notional)} oggi <span class="nw">${usd(val)} (${(diff >= 0 ? "+" : "−") + usd(Math.abs(diff))})</span></small></div>
       <div class="track" role="img" aria-label="Percorso del prezzo: trailing ${usd(W.trail)}, ingresso ${usd(W.entry_px)}, prezzo ${usd(px)}, ${sg > 0 ? "massimo" : "minimo"} ${usd(best)}">
         <div class="rail"></div><div class="risk" style="${sg > 0 ? `left:0;width:${X(W.trail)}` : `left:${X(W.trail)};right:0`}"></div>
         <div class="${move >= 0 ? "gain" : "loss"}" style="left:${X(a)};width:calc(${X(b)} - ${X(a)})"></div>
         ${pts.map(dot).join("")}${pts.map(lab).join("")}</div>
-      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(cush)}</b> · ${W.trail_usd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(W.trail_usd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>${expoRow()}`;
+      <div class="wkCush"><span>Cuscinetto fino al trailing <b>${pc1(cush)}</b> · ${tUsd >= 0 ? "a quel livello resti in guadagno di" : "a quel livello perdi"} <b>${usd(Math.abs(tUsd))}</b></span><span>Prossima decisione: domenica ${nextSun.toLocaleDateString("it-IT", { day: "numeric", month: "short" })}</span></div>${expoRow()}${qxHtml(W.uscite, px)}`;
   };
   if (open) {
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(W.market, W.expo)}</span>
@@ -1085,60 +1139,88 @@ function seg(id, onChange) {
   }
   hero += `<button type="button" class="wkMore" id="wkMore"><span>${open ? "Perché è aperta e quando si chiude" : W.status === "segnale" ? "Perché c'è il segnale e come si esegue" : "Cosa serve per entrare"}<small>${open ? "condizioni, uscite, piano in dollari e tutti i trade dal 2021" : "condizioni, uscite e tutti i trade dal 2021"}</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
   $("wkHero").innerHTML = hero;
-  // --- overlay con condizioni, uscite, piano e storico (prima erano in pagina)
+  // --- overlay con condizioni, uscite, piano e storico: stesso pannello per BTC (W) ed ETH (R.weekly_eth, dal pulsante della card ETH).
+  // Testi, condizioni e uscite seguono il lato della posizione (o del segnale; da flat il lato del regime, entrambi se neutro).
   const dlg = $("wkDlg");
-  $("wkMore").onclick = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); };
+  const openDlg = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); };
   $("wkDlgX").onclick = () => dlg.close ? dlg.close() : dlg.removeAttribute("open");
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
   $("wkRules").addEventListener("click", () => dlg.close && dlg.close());
-  $("wkDlgT").textContent = open ? "Perché la posizione è aperta e quando si chiude" : W.status === "segnale" ? "Il segnale di questa settimana" : "Cosa serve per entrare";
-  $("wkWhy").innerHTML = open
-    ? `<p><b>Perché è aperta.</b> ${artD("Alla chiusura del", fmtD(W.signal_date || W.entry))} BTC ha chiuso ${W.side === "long" ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${W.side === "long" ? "rialzista (sopra la SMA 40)" : "ribassista (sotto la SMA 40)"}, il flusso dei perp nella stessa direzione${W.side === "long" ? " e il filtro MACD a posto" : ""}: ingresso all'apertura del lunedì ${fmtD(W.entry)} a ${usd(W.entry_px)}.</p>
-       <p><b>Quanto capitale.</b> ${part ? `Il ${expoP(W.expo)} del capitale (${usd(W.notional)} su ${usd(W.capital)}): con lo stop iniziale a ${usd(W.stop0)} l'esposizione piena avrebbe rischiato più del 25% del capitale, quindi W3.2 entra con meno e tiene il resto in liquidità (tetto di rischio 25% allo stop, ${W.side === "long" ? "anche sui long" : "sugli short"}).` : `Esposizione piena: lo stop iniziale a ${usd(W.stop0)} costa meno del 25% del capitale (tetto di rischio di W3.2${W.side === "long" ? ", anche sui long" : ""}).`}</p>
-       <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo tocca il trailing a ${usd(W.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${W.side === "long" ? "sotto" : "sopra"} la EMA 21, oggi ${usd(W.ema21)} (si esce il lunedì); un segnale di distribuzione (funding alto con flusso che si gira). Il trailing è <b>a cricchetto</b>: ${W.side === "long" ? "sale con il prezzo e non scende mai" : "scende con il prezzo e non sale mai"}, ricalcolato a ogni aggiornamento (su Telegram quando si sposta).</p>`
-    : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>
-       <p>Lo stop iniziale costa al massimo il 25% del capitale (tetto di rischio di W3.2, long e short): se è più lontano si entra con una parte del capitale. Poi il trailing è a cricchetto: si sposta solo a favore.</p>`;
-  const HT = (W.history || {}).trades || [];
-  $("wkTrN").textContent = `${HT.length} trade`;
-  $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
-    HT.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}<br><small>${mkt(t.market, t.expo)}</small></td><td>${usd(t.entry_px)}</td>` +
-      `<td>${t.reason === "open" ? "aperto" : fmtD(t.exit) + "<br><small>" + usd(t.exit_px) + "</small>"}</td><td>${why[t.reason] || t.reason}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pc1(t.pnl_pct)}</td></tr>`).join("");
-  // supporti, resistenze e liquidazioni: sezione Grafico (tabella completa sotto il grafico, mappa unica report.livelli)
-  // --- condizioni d'ingresso long (e filtro MACD)
   const chk = (ok, k, d, v) => `<div class="row ${ok ? "ok" : "no"}"><span class="ic" aria-label="${ok ? "soddisfatta" : "non soddisfatta"}">${ok ? "✓" : "✕"}</span><span class="k">${k}<small>${d}</small></span><span class="v">${v}</span></div>`;
-  const c = W.chart, lastC = c.c[c.c.length - 1];
-  $("wkConds").innerHTML = [
-    chk(lastC > W.sma40, "Trend: sopra la SMA 40 settimane", `media ${usd(W.sma40)}`, pc1((lastC / W.sma40 - 1) * 100)),
-    chk(W.ema20_up, "EMA 20 settimanale in salita", "il trend accelera", W.ema20_up ? "sì" : "no"),
-    chk(lastC > W.ema21, "Chiusura sopra la EMA 21", `EMA 21 ${usd(W.ema21)}`, pc1((lastC / W.ema21 - 1) * 100)),
-    chk(W.flow > 0, "Flusso dei perp positivo", "CVD perp 14 giorni (pf14z)", sgn(W.flow) + "σ"),
-    chk(W.f1_ok, "Filtro MACD 8/21/5", W.trend_age >= W.old_trend ? `trend vecchio (${W.trend_age} sett.): serve MACD sopra segnale e zero` : `trend giovane (${W.trend_age} sett.): non serve`, W.macd > W.macd_sig ? "MACD ↑" : "MACD ↓"),
-  ].join("");
-  // --- uscite da sorvegliare (vicinanza 0–100%)
   const meter = (f, hot) => `<div class="meter${hot ? " hot" : ""}"><i style="width:${Math.round(Math.max(0, Math.min(1, f)) * 100)}%"></i></div>`;
-  if (open) {
-    const fD = Math.max(0, W.fund7) / 0.0009;
-    // distanze sempre dal prezzo di riferimento (live quando c'è): movimento necessario per arrivare al livello
-    const drawEx = () => { const mT = W.trail / REF.px - 1, dT = -sg * mT, fT = 1 - Math.min(1, Math.max(0, dT) / 0.25);
-      const mE = W.ema21 / REF.px - 1, dE = -sg * mE, fE = 1 - Math.min(1, Math.max(0, dE) / 0.25), past = dE < 0;
-    $("wkExits").innerHTML = [
-      `<div class="row"><span class="k">Trailing 2,5 ATR<small>controllo orario · ${usd(W.trail)}</small></span><span class="v">${pc1(mT * 100)}${meter(fT, fT > 0.7)}</span></div>`,
-      `<div class="row"><span class="k">Chiusura ${sg > 0 ? "sotto" : "sopra"} la EMA 21<small>${usd(W.ema21)} · ${past ? `<b style="color:var(--orange)">oggi ${sg > 0 ? "sotto" : "sopra"}: conta la chiusura di domenica</b>` : "(decide la chiusura di domenica)"}</small></span><span class="v"${past ? ' style="color:var(--orange)"' : ""}>${pc1(mE * 100)}${meter(fE, dE < 0.03)}</span></div>`,
-      `<div class="row"><span class="k">Distribuzione<small>funding 7g sopra 0,09% e flusso negativo</small></span><span class="v">${W.dist_now ? "attiva" : (W.fund7 * 100).toFixed(3).replace(".", ",") + "%"}${meter(fD, W.dist_now)}</span></div>`,
-    ].join(""); };
-    drawEx(); window.onRef(drawEx);
-  } else {
-    $("wkExitH").textContent = "Uscite (con posizione aperta)";
-    $("wkExits").innerHTML = `<div class="row"><span class="k">Trailing 2,5 ATR settimanali, chiusura sotto la EMA 21 o distribuzione<small>Si attivano quando c'è una posizione aperta.</small></span></div>`;
+  const fz = x => (x * 100).toFixed(3).replace(".", ",").replace("-", "−") + "%";
+  let DX = null;   // asset mostrato nel pannello: { X, tag, live }
+  const pxOf = () => DX.live ? REF.px : DX.X.price;   // BTC: prezzo di riferimento (live); ETH: ultima chiusura del report
+  function condsHtml(X, sd) {
+    const c = X.chart, lastC = c.c[c.c.length - 1], s4 = X.sma40_4w != null ? X.sma40_4w : (c.sma40 || [])[c.sma40.length - 5];
+    if (sd === "short") return [
+      chk(lastC < X.sma40, "Trend: sotto la SMA 40 settimane", `media ${usd(X.sma40)}`, pc1((lastC / X.sma40 - 1) * 100)),
+      chk(X.sma40_dn != null ? X.sma40_dn : s4 != null && X.sma40 < s4, "SMA 40 in calo su 4 settimane", s4 != null ? `4 settimane fa ${usd(s4)}` : "il trend scende", s4 != null ? pc1((X.sma40 / s4 - 1) * 100) : "–"),
+      chk(!X.ema20_up, "EMA 20 settimanale in calo", "il ribasso accelera", X.ema20_up ? "no" : "sì"),
+      chk(lastC < X.ema21, "Chiusura sotto la EMA 21", `EMA 21 ${usd(X.ema21)}`, pc1((lastC / X.ema21 - 1) * 100)),
+      chk(X.flow < 0, "Flusso dei perp negativo", "CVD perp 14 giorni (pf14z)", sgn(X.flow) + "σ"),
+    ].join("");
+    return [
+      chk(lastC > X.sma40, "Trend: sopra la SMA 40 settimane", `media ${usd(X.sma40)}`, pc1((lastC / X.sma40 - 1) * 100)),
+      chk(X.ema20_up, "EMA 20 settimanale in salita", "il trend accelera", X.ema20_up ? "sì" : "no"),
+      chk(lastC > X.ema21, "Chiusura sopra la EMA 21", `EMA 21 ${usd(X.ema21)}`, pc1((lastC / X.ema21 - 1) * 100)),
+      chk(X.flow > 0, "Flusso dei perp positivo", "CVD perp 14 giorni (pf14z)", sgn(X.flow) + "σ"),
+      chk(X.f1_ok, "Filtro MACD 8/21/5", X.trend_age >= X.old_trend ? `trend vecchio (${X.trend_age} sett.): serve MACD sopra segnale e zero` : `trend giovane (${X.trend_age} sett.): non serve`, X.macd > X.macd_sig ? "MACD ↑" : "MACD ↓"),
+    ].join("");
   }
-  // --- dettagli in dollari (sotto, in forma compatta)
-  if (open) $("wkPlan").innerHTML = rows([[`Su ${usd(W.capital)}<small>${W.btc.toFixed(4).replace(".", ",")} BTC · stop iniziale ${usd(W.stop0)}</small>`, `${usd(W.notional)}`],
-      ...(W.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[W.reason] || W.reason}`, true]] : [])]);
-  else $("wkPlan").innerHTML = "";
+  // uscite da sorvegliare (vicinanza 0–100%), distanze sempre dal prezzo mostrato
+  function drawEx() {
+    if (!DX) return;
+    const X = DX.X, xo = X.status === "aperto" || X.status === "uscita", xs = X.side === "short" ? -1 : 1, px = pxOf();
+    if (!xo) { $("wkExitH").textContent = "Uscite (con posizione aperta)";
+      $("wkExits").innerHTML = `<div class="row"><span class="k">Trailing 2,5 ATR settimanali, chiusura oltre la EMA 21 o distribuzione<small>Long: chiusura sotto la EMA 21, distribuzione con funding 7g sopra 0,09% e flusso negativo. Short: chiusura sopra la EMA 21, distribuzione con funding 7g sotto −0,03% e flusso positivo. Si attivano solo con una posizione aperta.</small></span></div>`;
+      $("wkQxD").hidden = true; return; }
+    $("wkExitH").textContent = "Uscite da sorvegliare";
+    const mT = X.trail / px - 1, dT = -xs * mT, fT = 1 - Math.min(1, Math.max(0, dT) / 0.25);
+    const mE = X.ema21 / px - 1, dE = -xs * mE, fE = 1 - Math.min(1, Math.max(0, dE) / 0.25), past = dE < 0;
+    const fD = xs > 0 ? Math.max(0, X.fund7) / 0.0009 : Math.max(0, -X.fund7) / 0.0003;
+    const flOk = xs > 0 ? X.flow < 0 : X.flow > 0;
+    $("wkExits").innerHTML = [
+      `<div class="row"><span class="k">Trailing 2,5 ATR<small>controllo orario · ${usd(X.trail)}</small></span><span class="v">${pc1(mT * 100)}${meter(fT, fT > 0.7)}</span></div>`,
+      `<div class="row"><span class="k">Chiusura ${xs > 0 ? "sotto" : "sopra"} la EMA 21<small>${usd(X.ema21)} · ${past ? `<b style="color:var(--orange)">oggi ${xs > 0 ? "sotto" : "sopra"}: conta la chiusura di domenica</b>` : "(decide la chiusura di domenica)"}</small></span><span class="v"${past ? ' style="color:var(--orange)"' : ""}>${pc1(mE * 100)}${meter(fE, dE < 0.03)}</span></div>`,
+      `<div class="row"><span class="k">Distribuzione<small>funding 7g ${xs > 0 ? "sopra 0,09%" : "sotto −0,03%"} e flusso ${xs > 0 ? "negativo" : "positivo"} · oggi flusso ${sgn(X.flow)}σ ${flOk ? "✓" : "✕"}</small></span><span class="v">${X.dist_now ? "attiva" : fz(X.fund7)}${meter(fD, X.dist_now)}</span></div>`,
+    ].join("");
+    if (X.uscite) { $("wkQxD").innerHTML = qxHtml(X.uscite, px).replace('class="qx"', 'class="qx" style="margin-top:0"'); $("wkQxD").hidden = false; } else $("wkQxD").hidden = true;
+  }
+  window.onRef(() => { if (DX && DX.live) drawEx(); });
+  window.wkDlgOpen = (X, tag, live) => {
+    DX = { X, tag, live };
+    const xo = X.status === "aperto" || X.status === "uscita", L = X.side === "long";
+    const xpart = xo && X.expo < 0.995, qty = X.btc != null ? X.btc : X.qty;
+    $("wkDlgT").textContent = (tag === "BTC" ? "" : tag + " · ") + (xo ? "Perché la posizione è aperta e quando si chiude" : X.status === "segnale" ? "Il segnale di questa settimana" : "Cosa serve per entrare");
+    $("wkWhy").innerHTML = xo
+      ? `<p><b>Perché è aperta.</b> ${artD("Alla chiusura del", fmtD(X.signal_date || X.entry))} ${tag} ha chiuso ${L ? "sopra" : "sotto"} la EMA 21 settimanale con il trend ${L ? "rialzista (sopra la SMA 40, EMA 20 in salita)" : "ribassista (sotto la SMA 40 in calo, EMA 20 in calo)"}, il flusso dei perp ${L ? "positivo e il filtro MACD a posto" : "negativo"}: ingresso ${L ? "long in spot" : "short in perp"} all'apertura del lunedì ${fmtD(X.entry)} a ${usd(X.entry_px)}.</p>
+       <p><b>Quanto capitale.</b> ${xpart ? `Il ${expoP(X.expo)} del capitale (${usd(X.notional)} su ${usd(X.capital)}): con lo stop iniziale a ${usd(X.stop0)} l'esposizione piena avrebbe rischiato più del 25% del capitale, quindi W3.2 entra con meno e tiene il resto in liquidità (tetto di rischio 25% allo stop, long e short).` : `Esposizione piena: lo stop iniziale a ${usd(X.stop0)} costa meno del 25% del capitale (tetto di rischio di W3.2).`}</p>
+       <p><b>Quando si chiude.</b> Alla prima di queste: il prezzo ${L ? "scende al" : "sale al"} trailing a ${usd(X.trail)} (controllo ogni ora, alert subito); una chiusura settimanale ${L ? "sotto" : "sopra"} la EMA 21, oggi ${usd(X.ema21)} (si esce il lunedì); un segnale di distribuzione (${L ? "funding 7g sopra 0,09%/giorno con flusso perp negativo" : "funding 7g sotto −0,03%/giorno con flusso perp positivo"}, si esce il lunedì). Il trailing è <b>a cricchetto</b>: ${L ? "sale con il prezzo e non scende mai" : "scende con il prezzo e non sale mai"}, ricalcolato a ogni aggiornamento (su Telegram quando si sposta).</p>`
+      : `<p>Si entra alla chiusura della domenica solo con tutte le condizioni verdi qui sotto, circa 2–3 volte l'anno. Il segnale arriva su Telegram con importo e stop.</p>
+       <p>Lo stop iniziale costa al massimo il 25% del capitale (tetto di rischio di W3.2, long e short): se è più lontano si entra con una parte del capitale. Poi il trailing è a cricchetto: si sposta solo a favore.</p>`;
+    // condizioni: del lato della posizione o del segnale; da flat quelle del regime (entrambe se neutro)
+    const sd = X.side || (X.regime === "short" ? "short" : X.regime === "long" ? "long" : null);
+    if (sd) { $("wkCondH").textContent = `Condizioni d'ingresso ${sd}`; $("wkConds").innerHTML = condsHtml(X, sd); }
+    else { $("wkCondH").textContent = "Condizioni d'ingresso long e short";
+      $("wkConds").innerHTML = `<div class="cap2">Long</div>${condsHtml(X, "long")}<div class="cap2">Short</div>${condsHtml(X, "short")}`; }
+    drawEx();
+    if (xo) $("wkPlan").innerHTML = rows([[`Su ${usd(X.capital)}<small>${String(qty).replace(".", ",")} ${tag} · stop iniziale ${usd(X.stop0)}</small>`, `${usd(X.notional)}`],
+        ...(X.status === "uscita" ? [["Uscita", `all'apertura di lunedì · ${why[X.reason] || X.reason}`, true]] : [])]);
+    else $("wkPlan").innerHTML = "";
+    const XT = (X.history || {}).trades || [], XM = (X.history || {}).m1;
+    $("wkTrN").textContent = `${tag} · ${XT.length} trade`;
+    $("wkTrAll").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Prezzo</th><th>Uscita</th><th>Motivo</th><th>Risultato</th></tr>` +
+      XT.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}<br><small>${mkt(t.market, t.expo)}</small></td><td>${usd(t.entry_px)}</td>` +
+        `<td>${t.reason === "open" ? "aperto" : fmtD(t.exit) + "<br><small>" + usd(t.exit_px) + "</small>"}</td><td>${why[t.reason] || t.reason}</td><td class="${t.pnl_pct >= 0 ? "pos" : "neg"}">${pc1(t.pnl_pct)}</td></tr>`).join("");
+    if (XM) $("wkNote").textContent = `${tag} · storico dal 2021: ${XM.n} trade, ${nfS(XM.per_year)} l'anno, WR ${nfS(XM.win_rate)}%, medio ${pct(XM.avg_pct, 1)}, peggiore ${pct(XM.worst_pct, 1)}, DD giornaliero ${pct(XM.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
+    openDlg();
+  };
+  $("wkMore").onclick = () => window.wkDlgOpen(W, "BTC", true);
+  // supporti, resistenze e liquidazioni: sezione Grafico (tabella completa sotto il grafico, mappa unica report.livelli)
   const H = W.history, M = H.m1;
   // "Limiti" in Come funziona: numeri dello storico del report (W3.2), così il testo non resta indietro quando cambia la strategia
   if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 25% allo stop: ${M.n} trade, ${Math.round(M.n * M.win_rate / 100)} in guadagno, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto.`;
-  $("wkNote").textContent = `Storico dal 2021: ${M.n} trade, ${nfS(M.per_year)} l'anno, WR ${nfS(M.win_rate)}%, medio ${pct(M.avg_pct, 1)}, peggiore ${pct(M.worst_pct, 1)}, DD giornaliero ${pct(M.max_dd_pct, 1)}. Long in spot, short in perp con tetto di rischio.`;
   $("wkStatSec").hidden = false;
   $("wkStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${M.n} trade`;
   const Y = Object.keys(M.years);
@@ -1200,7 +1282,7 @@ function seg(id, onChange) {
     const pnlUsd = E.capital * E.pnl_pct / 100, weeks = Math.max(1, Math.round((new Date(E.date) - new Date(E.entry)) / 6.048e8));
     h = `<div class="wkTop"><span class="wkBadge ${E.side}"><i></i>ETH · ${side(E.side)} ${E.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(E.market, E.expo)}</span><span class="cap">${artD("dal", fmtD(E.entry))} · ${weeks} sett.</span></div>
       <div class="wkBig">${pct(E.pnl_pct, 1)}<small>sul ${quota}: ${(pnlUsd >= 0 ? "+" : "−") + usd(Math.abs(pnlUsd))} · prezzo ${pc1(E.move_pct)} dall'ingresso a ${usd(E.entry_px)}</small></div>
-      <div class="wkFacts"><div><span>Stop/trailing</span><b>${usd(E.trail)}</b></div><div><span>Esposizione</span><b>${Math.round(E.expo * 100)}% · ${usd(E.notional)}</b></div><div><span>Chiusura ETH</span><b>${usd(E.price)}</b></div></div>`;
+      <div class="wkFacts"><div><span>Stop/trailing</span><b>${usd(E.trail)}</b></div><div><span>Esposizione</span><b>${Math.round(E.expo * 100)}% · ${usd(E.notional)}</b></div><div><span>Chiusura ETH</span><b>${usd(E.price)}</b></div></div>${qxHtml(E.uscite, E.price)}`;
   } else if (E.status === "segnale") {
     const p = E.plan;
     h = `<div class="wkTop"><span class="wkBadge sig"><i></i>ETH · segnale ${E.side} · ingresso lunedì</span><span class="cap">chiusura ${artD("del", fmtD(E.signal_date))}</span></div>
@@ -1211,7 +1293,9 @@ function seg(id, onChange) {
       <div class="wkBig">${usd(E.price)}<small>chiusura ETH ${artD("del", fmtD(E.date))} · regime ${E.regime} · ${quota}</small></div>`;
   }
   h += `<p class="foot" style="margin:0">Stesse regole di BTC (rischio 25% allo stop sul capitale ETH). Dal 2021: ${E.history.m1.n} trade, WR ${nfS(E.history.m1.win_rate)}%, DD ${pc1(E.history.m1.max_dd_pct)}.</p>`;
+  h += `<button type="button" class="wkMore" id="ethMore"><span>${open ? "Perché è aperta e quando si chiude" : E.status === "segnale" ? "Perché c'è il segnale e come si esegue" : "Cosa serve per entrare"}<small>condizioni, uscite e tutti i trade ETH dal 2021</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
   $("ethCard").innerHTML = h; $("ethCard").hidden = false;
+  $("ethMore").onclick = () => window.wkDlgOpen && window.wkDlgOpen(E, "ETH", false);
   // --- Storico
   const H = E.history, M = H.m1;
   $("ethStatSec").hidden = false;
@@ -1238,7 +1322,8 @@ function seg(id, onChange) {
     return `<span><b>${tag}</b> ${open ? `${o.side} <b class="${v >= 0 ? "pos" : "neg"}">${pct(v, 1)}</b>${o.status === "uscita" ? " · esce lunedì" : ""}` : o.status === "segnale" ? `segnale ${o.side} lunedì` : "flat"}</span>`; };
   const draw = r => { $("posLine").innerHTML = `<span class="plK">Posizioni</span><span class="plV">` +
     (W ? st("BTC", W, (W.side === "short" ? -1 : 1) * (r.px / W.entry_px - 1) * 100) : "") + (E ? st("ETH", E, E.pnl_pct) : "") +
-    `</span><span class="more"><span>Posizioni </span>›</span>`; };
+    `</span><span class="more"><span>Posizioni </span>›</span>` +
+    (W && W.uscite && (W.status === "aperto" || W.status === "uscita") ? `<span class="plX" id="plX"><b>BTC</b> ${qxLine(W.uscite, r.px)}</span>` : ""); };
   draw(REF); window.onRef(draw); $("posLine").hidden = false;
 })();
 
