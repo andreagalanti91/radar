@@ -297,7 +297,10 @@ def daily() -> None:
     report["context"] = _soft("contesto di mercato e politica economica", lambda: mod("context").build(DATA_DIR, banks=report.get("banks")))
     # chiusura multi-asset (S&P, Nasdaq, oro, argento, dollaro, VIX, Treasury 10 anni): solo contesto (radar/macro.py)
     report["macro"] = _soft("chiusura multi-asset", lambda: mod("macro").build(DATA_DIR, weekly=report.get("weekly")))
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli"):
+    # opzioni su BTC "sulla carta" con i segnali di W3.2 (radar/opzioni.py, pagina Opzioni): catena OKX, registro
+    # data/opzioni_carta.json, archivio data/opzioni/. Legge solo W3.2, non invia ordini; OKX giù = ultimo dato, giro intatto
+    report["opzioni"] = _soft("opzioni su carta", lambda: mod("opzioni").giro(wcur, DATA_DIR)) if wcur else None
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni"):
         if report.get(k) is None:
             report.pop(k, None)
     # solo W3 (W2 + MACD robusta, dal 12/11/2026) (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli

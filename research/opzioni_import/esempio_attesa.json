@@ -1,0 +1,192 @@
+{
+ "aggiornato": "2026-11-24T17:40+00:00",
+ "w3": {
+  "stato": "nessuno",
+  "verso": null,
+  "segnale": null,
+  "entra": null,
+  "prezzo_in": null,
+  "prezzo": 60144.0
+ },
+ "capitale": 45000,
+ "quota_pct": 5.0,
+ "budget": 2250,
+ "registro": [],
+ "storico": [],
+ "regole": [
+  "Segnale di W3.2, senza modifiche",
+  "Long: call · short: put",
+  "Scadenza: il venerdì più vicino a 30 giorni",
+  "Prezzo d'esercizio: il più vicino al prezzo",
+  "Spesa: 5% del capitale di W3.2",
+  "Si vende quando W3.2 esce; se scade prima, si resta fuori",
+  "Mai rinnovare, mai aumentare dopo una perdita, mai vendere opzioni"
+ ],
+ "azione": "attesa",
+ "titolo": "Nessun segnale di W3.2: nessuna opzione da comprare",
+ "testo": "Sotto, per riferimento, cosa si comprerebbe oggi se arrivasse un segnale.",
+ "esempio": {
+  "long": {
+   "contratto": {
+    "id": "BTC-USD_UM-261225-60000-C",
+    "tipo": "call",
+    "strike": 60000.0,
+    "scadenza": "2026-12-25",
+    "scadenza_ora_utc": "08:00",
+    "giorni": 30.6,
+    "denaro": 3495.0,
+    "lettera": 3525.0,
+    "vol_pct": 50,
+    "delta": 0.5345665660218009,
+    "termine": 60144.2,
+    "famiglia": "linear"
+   },
+   "quantita": {
+    "contratti": 63,
+    "btc": 0.63,
+    "controvalore": 37891,
+    "spesa": 2232.12,
+    "quota": 0.05,
+    "costo_contratto": 35.43,
+    "commissioni": 11.37,
+    "perdita_massima": 2232.12,
+    "perdita_massima_pct": 4.96,
+    "pareggio": 63543,
+    "pareggio_pct": 5.7,
+    "differenziale_pct": 0.9
+   },
+   "scenari": [
+    {
+     "mossa_pct": -30,
+     "btc": 42101,
+     "valore": 0,
+     "risultato": -2232,
+     "sul_capitale_pct": -5.0
+    },
+    {
+     "mossa_pct": -20,
+     "btc": 48115,
+     "valore": 0,
+     "risultato": -2232,
+     "sul_capitale_pct": -5.0
+    },
+    {
+     "mossa_pct": -10,
+     "btc": 54130,
+     "valore": 0,
+     "risultato": -2232,
+     "sul_capitale_pct": -5.0
+    },
+    {
+     "mossa_pct": 0,
+     "btc": 60144,
+     "valore": 84,
+     "risultato": -2148,
+     "sul_capitale_pct": -4.8
+    },
+    {
+     "mossa_pct": 10,
+     "btc": 66159,
+     "valore": 3872,
+     "risultato": 1639,
+     "sul_capitale_pct": 3.6
+    },
+    {
+     "mossa_pct": 20,
+     "btc": 72173,
+     "valore": 7660,
+     "risultato": 5428,
+     "sul_capitale_pct": 12.1
+    },
+    {
+     "mossa_pct": 30,
+     "btc": 78187,
+     "valore": 11448,
+     "risultato": 9216,
+     "sul_capitale_pct": 20.5
+    }
+   ]
+  },
+  "short": {
+   "contratto": {
+    "id": "BTC-USD_UM-261225-60000-P",
+    "tipo": "put",
+    "strike": 60000.0,
+    "scadenza": "2026-12-25",
+    "scadenza_ora_utc": "08:00",
+    "giorni": 30.6,
+    "denaro": 3340.0,
+    "lettera": 3370.0,
+    "vol_pct": 50,
+    "delta": -0.46459549820558005,
+    "termine": 60144.2,
+    "famiglia": "linear"
+   },
+   "quantita": {
+    "contratti": 66,
+    "btc": 0.66,
+    "controvalore": 39695,
+    "spesa": 2236.11,
+    "quota": 0.05,
+    "costo_contratto": 33.88,
+    "commissioni": 11.91,
+    "perdita_massima": 2236.11,
+    "perdita_massima_pct": 4.97,
+    "pareggio": 56612,
+    "pareggio_pct": -5.9,
+    "differenziale_pct": 0.9
+   },
+   "scenari": [
+    {
+     "mossa_pct": -30,
+     "btc": 42101,
+     "valore": 11808,
+     "risultato": 9572,
+     "sul_capitale_pct": 21.3
+    },
+    {
+     "mossa_pct": -20,
+     "btc": 48115,
+     "valore": 7838,
+     "risultato": 5601,
+     "sul_capitale_pct": 12.4
+    },
+    {
+     "mossa_pct": -10,
+     "btc": 54130,
+     "valore": 3867,
+     "risultato": 1631,
+     "sul_capitale_pct": 3.6
+    },
+    {
+     "mossa_pct": 0,
+     "btc": 60144,
+     "valore": 0,
+     "risultato": -2236,
+     "sul_capitale_pct": -5.0
+    },
+    {
+     "mossa_pct": 10,
+     "btc": 66159,
+     "valore": 0,
+     "risultato": -2236,
+     "sul_capitale_pct": -5.0
+    },
+    {
+     "mossa_pct": 20,
+     "btc": 72173,
+     "valore": 0,
+     "risultato": -2236,
+     "sul_capitale_pct": -5.0
+    },
+    {
+     "mossa_pct": 30,
+     "btc": 78187,
+     "valore": 0,
+     "risultato": -2236,
+     "sul_capitale_pct": -5.0
+    }
+   ]
+  }
+ }
+}

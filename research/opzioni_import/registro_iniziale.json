@@ -1,0 +1,24 @@
+[
+ {
+  "chiave": "2026-11-15|short",
+  "verso": "short",
+  "segnale": "2026-11-15",
+  "entra": "2026-11-16",
+  "prezzo_btc_in": 65285.7,
+  "capitale": 45000.0,
+  "quota": 0.05,
+  "stato": "aperta",
+  "id": "BTC-USD_UM-261211-65000-P",
+  "tipo": "put",
+  "strike": 65000.0,
+  "scadenza": "2026-12-11",
+  "scadenza_iso": "2026-12-11T08:00:00+00:00",
+  "registrata": "2026-11-16T00:00+00:00",
+  "prezzo_in": 2774.64,
+  "vol_in_pct": null,
+  "contratti": 80,
+  "btc": 0.8,
+  "spesa": 2235.38,
+  "nota": "ricostruita: prezzo d'ingresso dall'apertura del 16/11 del contratto inverso BTC-USD-261211-65000-P su OKX (0,0425 BTC × 65.286 $); capitale d'esempio 45.000 $"
+ }
+]

@@ -102,6 +102,8 @@ jobs:
           RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '0' }}
           # sezione Wallet (scout balene, avvisi e comandi) in pausa dal 22/11/2026: RADAR_WALLETS=1 la riaccende
           RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}
+          # opzioni su carta (pagina Opzioni): quota del capitale W3.2 BTC per operazione, frazione, tetto 0.10 (radar/opzioni.py)
+          RADAR_OPZIONI_QUOTA: ${{ vars.RADAR_OPZIONI_QUOTA || '0.05' }}
         run: python -m radar.cli daily
       - name: Salva cache dati e stato
         id: push

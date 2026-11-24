@@ -1,4 +1,4 @@
-"""Struttura delle sezioni (radar/dashboard_template.html): menu a 5 voci uguale su telefono e desktop, Book e "Come funziona"
+"""Struttura delle sezioni (radar/dashboard_template.html): menu a 6 voci (Opzioni dal 24/11) uguale su telefono e desktop, Book e "Come funziona"
 fuori dal menu, vecchi indirizzi reindirizzati, Liquidazioni pagina a sé, card di Oggi con le diciture obbligatorie. Niente rete."""
 import re
 import tempfile
@@ -9,7 +9,7 @@ from radar.dashboard import render
 
 ROOT = Path(__file__).resolve().parents[1]
 T = (ROOT / "radar" / "dashboard_template.html").read_text()
-MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON)
+MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("opzioni", "Opzioni"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON)
 CORTE = {"Liquidazioni": "Liquid."}   # etichette accorciate nella barra in basso del telefono
 
 
@@ -24,11 +24,11 @@ class TestMenu(unittest.TestCase):
             box, links = _nav(T, pat)
             self.assertEqual([(h, t) for h, v, t in links], [(h, short.get(t, t)) for h, t in MENU])
             self.assertTrue(all(h == v for h, v, _ in links))
-            self.assertEqual(box.count("<a "), 5)
+            self.assertEqual(box.count("<a "), 6)
             for w in ("Book", "Come funziona", "Storico", "#book", "#metodo", "Liquid", "#liquidazioni"):
                 self.assertNotIn(w, box)
         self.assertNotIn("Navigazione", T)
-        self.assertIn("grid-template-columns:repeat(5,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
+        self.assertIn("grid-template-columns:repeat(6,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
 
     def test_ogni_voce_ha_la_sua_pagina_e_icona(self):
         pages = "".join(f.read_text() for f in (ROOT / "radar" / "pages").glob("*.html"))
@@ -45,7 +45,7 @@ class TestMenu(unittest.TestCase):
         self.assertIn('liquidazioni: LIQ_ON ? "liquidazioni" : "grafico"', alias)   # #liquidazioni porta a Grafico finché LIQ_ON = false
         self.assertIn('history.replaceState(null, "", "#" + ok)', T)            # l'indirizzo vecchio viene riscritto
         views = re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1)
-        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "grafico", "movimenti", "notizie", "metodo"])
+        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "opzioni", "grafico", "movimenti", "notizie", "metodo"])
         self.assertIn('.concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : [])', T)
 
     def test_book_spento_ma_presente(self):
