@@ -300,7 +300,14 @@ def daily() -> None:
     # opzioni su BTC "sulla carta" con i segnali di W3.2 (radar/opzioni.py, pagina Opzioni): catena OKX, registro
     # data/opzioni_carta.json, archivio data/opzioni/. Legge solo W3.2, non invia ordini; OKX giù = ultimo dato, giro intatto
     report["opzioni"] = _soft("opzioni su carta", lambda: mod("opzioni").giro(wcur, DATA_DIR)) if wcur else None
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni"):
+    # pagina Scanner, solo informativa (radar/scanner.py): TRX sulla carta con il cancello di BTC (registro data/trx_carta.json dal
+    # 25/11/2026, ricalcolo a giorno nuovo) e stato settimanale di W3.2 sulle crypto dello studio w32_asset2 (data/scanner.json,
+    # ricalcolo solo a settimana nuova; dati grezzi in .scanner-cache/, fuori da git). Nessun ordine né avviso, nessun effetto su
+    # W3.2 di BTC ed ETH; rete giù = ultimo risultato con l'avviso
+    report["trx_carta"] = _soft("TRX sulla carta", lambda: mod("scanner").trx_giro(f, DATA_DIR))
+    report["scanner"] = (_soft("scanner settimanale", lambda: mod("scanner").giro(f, DATA_DIR))
+                         or _soft("scanner (ultimo salvato)", lambda: mod("scanner").ultimo(DATA_DIR)))
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner"):
         if report.get(k) is None:
             report.pop(k, None)
     # solo W3 (W2 + MACD robusta, dal 12/11/2026) (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli

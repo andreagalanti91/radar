@@ -1,0 +1,362 @@
+ticker,symbol,id_cg,name,rank_oggi,mcap_oggi_bn,rank_2020,symbol_2020,slug_2020,rank_20200105,mcap_2020_mn,escluso,rank_cg_20200124,chain,bn_spot,bn_perp
+BTC,BTC,bitcoin,Bitcoin,1.0,1181.72,1.0,BTC,bitcoin,1.0,134570.8,,1.0,"[{""base"": ""BTC"", ""fac"": 1, ""until"": null, ""spot"": ""BTCUSDT"", ""perp"": ""BTCUSDT""}]",True,BTCUSDT
+ETH,ETH,ethereum,Ethereum,2.0,200.33,2.0,ETH,ethereum,2.0,14698.5,,2.0,"[{""base"": ""ETH"", ""fac"": 1, ""until"": null, ""spot"": ""ETHUSDT"", ""perp"": ""ETHUSDT""}]",True,ETHUSDT
+USDT,USDT,tether,Tether,3.0,174.64,4.0,USDT,tether,4.0,4125.3,stablecoin,6.0,,,
+BNB,BNB,binancecoin,BNB,4.0,70.84,8.0,BNB,binance-coin,8.0,2200.9,,9.0,"[{""base"": ""BNB"", ""fac"": 1, ""until"": null, ""spot"": ""BNBUSDT"", ""perp"": ""BNBUSDT""}]",True,BNBUSDT
+USDC,USDC,usd-coin,USDC,5.0,69.03,23.0,USDC,usd-coin,23.0,520.9,stablecoin,25.0,,,
+XRP,XRP,ripple,XRP,6.0,58.12,3.0,XRP,xrp,3.0,8536.1,,3.0,"[{""base"": ""XRP"", ""fac"": 1, ""until"": null, ""spot"": ""XRPUSDT"", ""perp"": ""XRPUSDT""}]",True,XRPUSDT
+SOL,SOL,solana,Solana,7.0,40.13,,,,,,,,"[{""base"": ""SOL"", ""fac"": 1, ""until"": null, ""spot"": ""SOLUSDT"", ""perp"": ""SOLUSDT""}]",True,SOLUSDT
+TRX,TRX,tron,TRON,8.0,29.3,11.0,TRX,tron,12.0,916.4,,12.0,"[{""base"": ""TRX"", ""fac"": 1, ""until"": null, ""spot"": ""TRXUSDT"", ""perp"": ""TRXUSDT""}]",True,TRXUSDT
+FIGR_HELOC,FIGR_HELOC,figure-heloc,Figure Heloc,9.0,28.38,,,,,,rwa/fondo,,,,
+HYPE,HYPE,hyperliquid,Hyperliquid,10.0,13.86,,,,,,,,"[{""base"": ""HYPE"", ""fac"": 1, ""until"": null, ""spot"": ""HYPEUSDT"", ""perp"": ""HYPEUSDT""}]",True,HYPEUSDT
+ZEC,ZEC,zcash,Zcash,11.0,12.39,35.0,ZEC,zcash,34.0,242.9,,26.0,"[{""base"": ""ZEC"", ""fac"": 1, ""until"": null, ""spot"": ""ZECUSDT"", ""perp"": ""ZECUSDT""}]",True,ZECUSDT
+XMR,XMR,monero,Monero,12.0,9.53,16.0,XMR,monero,10.0,813.7,,13.0,"[{""base"": ""XMR"", ""fac"": 1, ""until"": null, ""spot"": ""XMRUSDT"", ""perp"": ""XMRUSDT""}]",True,XMRUSDT
+DOGE,DOGE,dogecoin,Dogecoin,13.0,8.52,34.0,DOGE,dogecoin,31.0,253.7,,32.0,"[{""base"": ""DOGE"", ""fac"": 1, ""until"": null, ""spot"": ""DOGEUSDT"", ""perp"": ""DOGEUSDT""}]",True,DOGEUSDT
+LEO,LEO,leo-token,LEO Token,14.0,8.36,14.0,LEO,unus-sed-leo,15.0,823.6,,17.0,"[{""base"": ""LEO"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+LINK,LINK,chainlink,Chainlink,15.0,6.68,18.0,LINK,chainlink,20.0,665.8,,18.0,"[{""base"": ""LINK"", ""fac"": 1, ""until"": null, ""spot"": ""LINKUSDT"", ""perp"": ""LINKUSDT""}]",True,LINKUSDT
+WBT,WBT,whitebit,WhiteBIT Coin,16.0,6.61,,,,,,,,"[{""base"": ""WBT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+USDS,USDS,usds,USDS,17.0,6.36,,,,,,stablecoin,,,,
+ADA,ADA,cardano,Cardano,18.0,5.36,13.0,ADA,cardano,13.0,888.9,,10.0,"[{""base"": ""ADA"", ""fac"": 1, ""until"": null, ""spot"": ""ADAUSDT"", ""perp"": ""ADAUSDT""}]",True,ADAUSDT
+USDE,USDE,ethena-usde,Ethena USDe,19.0,4.89,,,,,,stablecoin,,,,
+DAI,DAI,dai,Dai,20.0,4.36,,,,,,stablecoin,,,,
+XLM,XLM,stellar,Stellar,21.0,4.36,10.0,XLM,stellar,11.0,926.8,,11.0,"[{""base"": ""XLM"", ""fac"": 1, ""until"": null, ""spot"": ""XLMUSDT"", ""perp"": ""XLMUSDT""}]",True,XLMUSDT
+BCH,BCH,bitcoin-cash,Bitcoin Cash,22.0,3.95,5.0,BCH,bitcoin-cash,5.0,3874.6,,4.0,"[{""base"": ""BCHABC"", ""fac"": 1, ""until"": null, ""spot"": ""BCHABCUSDT"", ""perp"": null}, {""base"": ""BCH"", ""fac"": 1, ""until"": null, ""spot"": ""BCHUSDT"", ""perp"": ""BCHUSDT""}]",True,BCHUSDT
+NEAR,NEAR,near,NEAR Protocol,23.0,3.73,,,,,,,,"[{""base"": ""NEAR"", ""fac"": 1, ""until"": null, ""spot"": ""NEARUSDT"", ""perp"": ""NEARUSDT""}]",True,NEARUSDT
+LTC,LTC,litecoin,Litecoin,24.0,3.14,6.0,LTC,litecoin,6.0,2783.7,,7.0,"[{""base"": ""LTC"", ""fac"": 1, ""until"": null, ""spot"": ""LTCUSDT"", ""perp"": ""LTCUSDT""}]",True,LTCUSDT
+CC,CC,canton-network,Canton,25.0,3.02,,,,,,,,"[{""base"": ""CC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""CCUSDT""}]",False,CCUSDT
+AVAX,AVAX,avalanche-2,Avalanche,26.0,2.89,,,,,,,,"[{""base"": ""AVAX"", ""fac"": 1, ""until"": null, ""spot"": ""AVAXUSDT"", ""perp"": ""AVAXUSDT""}]",True,AVAXUSDT
+USD1,USD1,usd1-wlfi,USD1,27.0,2.85,,,,,,stablecoin,,,,
+XAUT,XAUT,tether-gold,Tether Gold,28.0,2.84,,,,,,"oro/materie prime,rwa/fondo",,,,
+RLUSD,RLUSD,ripple-usd,Ripple USD,29.0,2.79,,,,,,stablecoin,,,,
+UNI,UNI,uniswap,Uniswap,30.0,2.76,,,,,,,,"[{""base"": ""UNI"", ""fac"": 1, ""until"": null, ""spot"": ""UNIUSDT"", ""perp"": ""UNIUSDT""}]",True,UNIUSDT
+TON,GRAM,the-open-network,Gram (prev. Toncoin),31.0,2.66,,,,,,,,"[{""base"": ""TON"", ""fac"": 1, ""until"": null, ""spot"": ""TONUSDT"", ""perp"": ""TONUSDT""}]",True,TONUSDT
+SUI,SUI,sui,Sui,32.0,2.65,,,,,,,,"[{""base"": ""SUI"", ""fac"": 1, ""until"": null, ""spot"": ""SUIUSDT"", ""perp"": ""SUIUSDT""}]",True,SUIUSDT
+USDG,USDG,global-dollar,Global Dollar,33.0,2.61,,,,,,stablecoin,,,,
+USDY,USDY,ondo-us-dollar-yield,Ondo US Dollar Yield,34.0,2.38,,,,,,"rwa/fondo,stablecoin",,,,
+PYUSD,PYUSD,paypal-usd,PayPal USD,35.0,2.31,,,,,,stablecoin,,,,
+HBAR,HBAR,hedera-hashgraph,Hedera,36.0,2.22,175.0,HBAR,hedera-hashgraph,165.0,19.9,,,"[{""base"": ""HBAR"", ""fac"": 1, ""until"": null, ""spot"": ""HBARUSDT"", ""perp"": ""HBARUSDT""}]",True,HBARUSDT
+USYC,USYC,hashnote-usyc,Circle USYC,37.0,2.12,,,,,,rwa/fondo,,,,
+EURSAFO,EURSAFO,spiko-amundi-overnight-swap-fund-eur,Spiko Amundi Overnight Swap Fund (EUR),38.0,2.07,,,,,,rwa/fondo,,,,
+TAO,TAO,bittensor,Bittensor,39.0,2.06,,,,,,,,"[{""base"": ""TAO"", ""fac"": 1, ""until"": null, ""spot"": ""TAOUSDT"", ""perp"": ""TAOUSDT""}]",True,TAOUSDT
+QNT,QNT,quant-network,Quant,40.0,2.06,102.0,QNT,quant,105.0,44.8,,98.0,"[{""base"": ""QNT"", ""fac"": 1, ""until"": null, ""spot"": ""QNTUSDT"", ""perp"": ""QNTUSDT""}]",True,QNTUSDT
+SHIB,SHIB,shiba-inu,Shiba Inu,41.0,2.06,,,,,,,,"[{""base"": ""SHIB"", ""fac"": 1, ""until"": null, ""spot"": ""SHIBUSDT"", ""perp"": ""1000SHIBUSDT""}]",True,1000SHIBUSDT
+CRO,CRO,crypto-com-chain,Cronos,42.0,2.02,27.0,CRO,crypto-com-coin,27.0,441.3,,24.0,"[{""base"": ""CRO"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+RAIN,RAIN,rain,Rain,43.0,1.99,,,,,,,,"[{""base"": ""RAIN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+M,M,memecore,MemeCore,44.0,1.73,,,,,,,,"[{""base"": ""M"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""MUSDT""}]",False,MUSDT
+USDF,USDF,falcon-finance,Falcon USD,45.0,1.71,,,,,,stablecoin,,,,
+OKB,OKB,okb,OKB,46.0,1.66,53.0,OKB,okb,51.0,105.8,,20.0,"[{""base"": ""OKB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+U,U,united-stables,United Stables,47.0,1.6,,,,,,stablecoin,,,,
+PAXG,PAXG,pax-gold,PAX Gold,48.0,1.57,,,,,,"oro/materie prime,rwa/fondo",,,,
+BUIDL,BUIDL,blackrock-usd-institutional-digital-liquidity-fund,BlackRock USD Institutional Digital Liquidity Fund,49.0,1.55,,,,,,rwa/fondo,,,,
+USDD,USDD,usdd,USDD,50.0,1.5,,,,,,stablecoin,,,,
+PEPE,PEPE,pepe,Pepe,51.0,1.46,,,,,,,,"[{""base"": ""PEPE"", ""fac"": 1, ""until"": null, ""spot"": ""PEPEUSDT"", ""perp"": ""1000PEPEUSDT""}]",True,1000PEPEUSDT
+AAVE,AAVE,aave,Aave,52.0,1.42,,,,,,,,"[{""base"": ""AAVE"", ""fac"": 1, ""until"": null, ""spot"": ""AAVEUSDT"", ""perp"": ""AAVEUSDT""}]",True,AAVEUSDT
+BTW,BTW,bitway,Bitway,53.0,1.33,,,,,,,,"[{""base"": ""BTW"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""BTWUSDT""}]",False,BTWUSDT
+ONDO,ONDO,ondo-finance,Ondo,54.0,1.32,,,,,,,,"[{""base"": ""ONDO"", ""fac"": 1, ""until"": null, ""spot"": ""ONDOUSDT"", ""perp"": ""ONDOUSDT""}]",True,ONDOUSDT
+BFUSD,BFUSD,bfusd,BFUSD,55.0,1.32,,,,,,stablecoin,,,,
+HTX,HTX,htx-dao,HTX DAO,56.0,1.3,,,,,,,,"[{""base"": ""HTX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+WLFI,WLFI,world-liberty-financial,World Liberty Financial,57.0,1.3,,,,,,,,"[{""base"": ""WLFI"", ""fac"": 1, ""until"": null, ""spot"": ""WLFIUSDT"", ""perp"": ""WLFIUSDT""}]",True,WLFIUSDT
+ENA,ENA,ethena,Ethena,58.0,1.29,,,,,,,,"[{""base"": ""ENA"", ""fac"": 1, ""until"": null, ""spot"": ""ENAUSDT"", ""perp"": ""ENAUSDT""}]",True,ENAUSDT
+ASTER,ASTER,aster-2,Aster,59.0,1.23,,,,,,,,"[{""base"": ""ASTER"", ""fac"": 1, ""until"": null, ""spot"": ""ASTERUSDT"", ""perp"": ""ASTERUSDT""}]",True,ASTERUSDT
+VVV,VVV,venice-token,Venice Token,60.0,1.21,,,,,,,,"[{""base"": ""VVV"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""VVVUSDT""}]",False,VVVUSDT
+MNT,MNT,mantle,Mantle,61.0,1.18,,,,,,,,"[{""base"": ""MNT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+JST,JST,just,JUST,62.0,1.18,,,,,,,,"[{""base"": ""JST"", ""fac"": 1, ""until"": null, ""spot"": ""JSTUSDT"", ""perp"": ""JSTUSDT""}]",True,JSTUSDT
+DOT,DOT,polkadot,Polkadot,63.0,1.11,,,,,,,,"[{""base"": ""DOT"", ""fac"": 1, ""until"": null, ""spot"": ""DOTUSDT"", ""perp"": ""DOTUSDT""}]",True,DOTUSDT
+ICP,ICP,internet-computer,Internet Computer,64.0,1.1,,,,,,,,"[{""base"": ""ICP"", ""fac"": 1, ""until"": null, ""spot"": ""ICPUSDT"", ""perp"": ""ICPUSDT""}]",True,ICPUSDT
+MORPHO,MORPHO,morpho,Morpho,65.0,1.09,,,,,,,,"[{""base"": ""MORPHO"", ""fac"": 1, ""until"": null, ""spot"": ""MORPHOUSDT"", ""perp"": ""MORPHOUSDT""}]",True,MORPHOUSDT
+BGB,BGB,bitget-token,Bitget Token,66.0,1.07,,,,,,,,"[{""base"": ""BGB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+OUSD,OUSD,open-usd,Open USD,67.0,1.0,,,,,,stablecoin,,,,
+SKY,SKY,sky,Sky,68.0,0.95,,,,,,,,"[{""base"": ""SKY"", ""fac"": 1, ""until"": null, ""spot"": ""SKYUSDT"", ""perp"": ""SKYUSDT""}]",True,SKYUSDT
+USDGO,USDGO,usdgo,USDGO,69.0,0.92,,,,,,stablecoin,,,,
+ETC,ETC,ethereum-classic,Ethereum Classic,70.0,0.91,21.0,ETC,ethereum-classic,21.0,541.9,,15.0,"[{""base"": ""ETC"", ""fac"": 1, ""until"": null, ""spot"": ""ETCUSDT"", ""perp"": ""ETCUSDT""}]",True,ETCUSDT
+WLD,WLD,worldcoin-wld,Worldcoin,71.0,0.88,,,,,,,,"[{""base"": ""WLD"", ""fac"": 1, ""until"": null, ""spot"": ""WLDUSDT"", ""perp"": ""WLDUSDT""}]",True,WLDUSDT
+PUMP,PUMP,pump-fun,Pump.fun,72.0,0.84,,,,,,,,"[{""base"": ""PUMP"", ""fac"": 1, ""until"": null, ""spot"": ""PUMPUSDT"", ""perp"": ""PUMPUSDT""}]",True,PUMPUSDT
+KCS,KCS,kucoin-shares,KuCoin,73.0,0.81,64.0,KCS,kucoin-shares,61.0,76.8,,56.0,"[{""base"": ""KCS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+PIEVERSE,PIEVERSE,pieverse,Pieverse,74.0,0.8,,,,,,,,"[{""base"": ""PIEVERSE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""PIEVERSEUSDT""}]",False,PIEVERSEUSDT
+POL,POL,polygon-ecosystem-token,POL (ex-MATIC),75.0,0.8,112.0,MATIC,matic-network,115.0,37.7,,87.0,"[{""base"": ""MATIC"", ""fac"": 1, ""until"": null, ""spot"": ""MATICUSDT"", ""perp"": ""MATICUSDT""}, {""base"": ""POL"", ""fac"": 1, ""until"": null, ""spot"": ""POLUSDT"", ""perp"": ""POLUSDT""}]",True,POLUSDT
+PEARL,PEARL,pearl-2,Pearl,76.0,0.8,,,,,,,,"[{""base"": ""PEARL"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NIGHT,NIGHT,midnight-3,Midnight,77.0,0.79,,,,,,,,"[{""base"": ""NIGHT"", ""fac"": 1, ""until"": null, ""spot"": ""NIGHTUSDT"", ""perp"": ""NIGHTUSDT""}]",True,NIGHTUSDT
+ARB,ARB,arbitrum,Arbitrum,78.0,0.77,,,,,,,,"[{""base"": ""ARB"", ""fac"": 1, ""until"": null, ""spot"": ""ARBUSDT"", ""perp"": ""ARBUSDT""}]",True,ARBUSDT
+KAS,KAS,kaspa,Kaspa,79.0,0.72,,,,,,,,"[{""base"": ""KAS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""KASUSDT""}]",False,KASUSDT
+JUP,JUP,jupiter-exchange-solana,Jupiter,80.0,0.72,,,,,,,,"[{""base"": ""JUP"", ""fac"": 1, ""until"": null, ""spot"": ""JUPUSDT"", ""perp"": ""JUPUSDT""}]",True,JUPUSDT
+ALGO,ALGO,algorand,Algorand,81.0,0.71,47.0,ALGO,algorand,47.0,115.8,,41.0,"[{""base"": ""ALGO"", ""fac"": 1, ""until"": null, ""spot"": ""ALGOUSDT"", ""perp"": ""ALGOUSDT""}]",True,ALGOUSDT
+GHO,GHO,gho,GHO,82.0,0.7,,,,,,stablecoin,,,,
+USTB,USTB,superstate-short-duration-us-government-securities-fund-ustb,Invesco Short Duration US Government Securities Fund,83.0,0.69,,,,,,rwa/fondo,,,,
+RENDER,RENDER,render-token,Render,84.0,0.69,,,,,,,,"[{""base"": ""RNDR"", ""fac"": 1, ""until"": null, ""spot"": ""RNDRUSDT"", ""perp"": ""RNDRUSDT""}, {""base"": ""RENDER"", ""fac"": 1, ""until"": null, ""spot"": ""RENDERUSDT"", ""perp"": ""RENDERUSDT""}]",True,RENDERUSDT
+ATOM,ATOM,cosmos,Cosmos Hub,85.0,0.68,15.0,ATOM,cosmos,16.0,813.8,,19.0,"[{""base"": ""ATOM"", ""fac"": 1, ""until"": null, ""spot"": ""ATOMUSDT"", ""perp"": ""ATOMUSDT""}]",True,ATOMUSDT
+GT,GT,gatechain-token,Gate,86.0,0.67,,,,,,,,"[{""base"": ""GT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NEXO,NEXO,nexo,NEXO,87.0,0.61,90.0,NEXO,nexo,79.0,54.7,,74.0,"[{""base"": ""NEXO"", ""fac"": 1, ""until"": null, ""spot"": ""NEXOUSDT"", ""perp"": null}]",True,
+PI,PI,pi-network,Pi Network,88.0,0.61,,,,,,,,"[{""base"": ""PI"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+JAAA,JAAA,janus-henderson-anemoy-aaa-clo-fund,Janus Henderson Anemoy AAA CLO Fund,89.0,0.6,,,,,,rwa/fondo,,,,
+INJ,INJ,injective-protocol,Injective,90.0,0.58,,,,,,,,"[{""base"": ""INJ"", ""fac"": 1, ""until"": null, ""spot"": ""INJUSDT"", ""perp"": ""INJUSDT""}]",True,INJUSDT
+LIT,LIT,lighter,Lighter,91.0,0.58,,,,,,,,"[{""base"": ""LIT"", ""fac"": 1, ""until"": null, ""spot"": ""LITUSDT"", ""perp"": ""LITUSDT""}]",True,LITUSDT
+USD0,USD0,usual-usd,Usual USD,92.0,0.54,,,,,,stablecoin,,,,
+BDX,BDX,beldex,Beldex,93.0,0.53,50.0,BDX,beldex,54.0,110.1,,,"[{""base"": ""BDX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+XDC,XDC,xdce-crowd-sale,XDC Network,94.0,0.51,,,,,,,,"[{""base"": ""XDC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+EURC,EURC,euro-coin,EURC,95.0,0.5,,,,,,stablecoin,,,,
+TUSD,TUSD,true-usd,TrueUSD,96.0,0.49,42.0,TUSD,trueusd,42.0,154.8,stablecoin,38.0,,,
+STX,STX,blockstack,Stacks,97.0,0.49,,,,,,,,"[{""base"": ""STX"", ""fac"": 1, ""until"": null, ""spot"": ""STXUSDT"", ""perp"": ""STXUSDT""}]",True,STXUSDT
+CAKE,CAKE,pancakeswap-token,PancakeSwap,98.0,0.47,,,,,,,,"[{""base"": ""CAKE"", ""fac"": 1, ""until"": null, ""spot"": ""CAKEUSDT"", ""perp"": ""CAKEUSDT""}]",True,CAKEUSDT
+EUTBL,EUTBL,eutbl,Spiko EU T-Bills Money Market Fund,99.0,0.47,,,,,,rwa/fondo,,,,
+ETHFI,ETHFI,ether-fi,Ether.fi,100.0,0.45,,,,,,,,"[{""base"": ""ETHFI"", ""fac"": 1, ""until"": null, ""spot"": ""ETHFIUSDT"", ""perp"": ""ETHFIUSDT""}]",True,ETHFIUSDT
+FIL,FIL,filecoin,Filecoin,101.0,0.45,,,,,,,,"[{""base"": ""FIL"", ""fac"": 1, ""until"": null, ""spot"": ""FILUSDT"", ""perp"": ""FILUSDT""}]",True,FILUSDT
+FLR,FLR,flare-networks,Flare,102.0,0.44,,,,,,,,"[{""base"": ""FLR"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+DASH,DASH,dash,Dash,103.0,0.44,28.0,DASH,dash,26.0,413.3,,16.0,"[{""base"": ""DASH"", ""fac"": 1, ""until"": null, ""spot"": ""DASHUSDT"", ""perp"": ""DASHUSDT""}]",True,DASHUSDT
+币安人生,币安人生,bianrensheng,币安人生 (BinanceLife),104.0,0.43,,,,,,,,"[{""base"": ""\u5e01\u5b89\u4eba\u751f"", ""fac"": 1, ""until"": null, ""spot"": ""\u5e01\u5b89\u4eba\u751fUSDT"", ""perp"": ""\u5e01\u5b89\u4eba\u751fUSDT""}]",True,币安人生USDT
+STABLE,STABLE,stable-2,​​Stable,105.0,0.43,,,,,,,,"[{""base"": ""STABLE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""STABLEUSDT""}]",False,STABLEUSDT
+VET,VET,vechain,VeChain,106.0,0.41,30.0,VET,vechain,30.0,310.5,,29.0,"[{""base"": ""VET"", ""fac"": 1, ""until"": null, ""spot"": ""VETUSDT"", ""perp"": ""VETUSDT""}]",True,VETUSDT
+ZRO,ZRO,layerzero,LayerZero,107.0,0.4,,,,,,,,"[{""base"": ""ZRO"", ""fac"": 1, ""until"": null, ""spot"": ""ZROUSDT"", ""perp"": ""ZROUSDT""}]",True,ZROUSDT
+YLDS,YLDS,ylds,YLDS,108.0,0.38,,,,,,stablecoin,,,,
+SOFID,SOFID,sofiusd,SoFiUSD,109.0,0.38,,,,,,stablecoin,,,,
+PYTH,PYTH,pyth-network,Pyth Network,110.0,0.38,,,,,,,,"[{""base"": ""PYTH"", ""fac"": 1, ""until"": null, ""spot"": ""PYTHUSDT"", ""perp"": ""PYTHUSDT""}]",True,PYTHUSDT
+HASH,HASH,hash-2,Provenance Blockchain,111.0,0.37,,,,,,,,"[{""base"": ""HASH"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+FF,FF,falcon-finance-ff,Falcon Finance,112.0,0.36,,,,,,,,"[{""base"": ""FF"", ""fac"": 1, ""until"": null, ""spot"": ""FFUSDT"", ""perp"": ""FFUSDT""}]",True,FFUSDT
+DRV,DRV,derive,Derive,113.0,0.35,,,,,,,,"[{""base"": ""DRV"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+REUSD,REUSD,re-protocol-reusd,Re Protocol reUSD,114.0,0.34,,,,,,stablecoin,,,,
+KITE,KITE,kite-2,Kite,115.0,0.33,,,,,,,,"[{""base"": ""KITE"", ""fac"": 1, ""until"": null, ""spot"": ""KITEUSDT"", ""perp"": ""KITEUSDT""}]",True,KITEUSDT
+RAY,RAY,raydium,Raydium,116.0,0.33,,,,,,,,"[{""base"": ""RAY"", ""fac"": 1, ""until"": null, ""spot"": ""RAYUSDT"", ""perp"": ""RAYUSDT""}, {""base"": ""RAYSOL"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""RAYSOLUSDT""}]",True,RAYSOLUSDT
+APT,APT,aptos,Aptos,117.0,0.32,,,,,,,,"[{""base"": ""APT"", ""fac"": 1, ""until"": null, ""spot"": ""APTUSDT"", ""perp"": ""APTUSDT""}]",True,APTUSDT
+TIA,TIA,celestia,Celestia,118.0,0.32,,,,,,,,"[{""base"": ""TIA"", ""fac"": 1, ""until"": null, ""spot"": ""TIAUSDT"", ""perp"": ""TIAUSDT""}]",True,TIAUSDT
+OUSG,OUSG,ousg,Ondo Short-Term U.S. Government Bond Fund,119.0,0.31,,,,,,rwa/fondo,,,,
+KAU,KAU,kinesis-gold,Kinesis Gold,120.0,0.31,,,,,,"oro/materie prime,rwa/fondo",,,,
+AERO,AERO,aero,Aero,121.0,0.3,,,,,,,,"[{""base"": ""AERO"", ""fac"": 1, ""until"": null, ""spot"": ""AEROUSDT"", ""perp"": ""AEROUSDT""}]",True,AEROUSDT
+BTTC,BTT,bittorrent,BitTorrent,122.0,0.29,81.0,BTT,bittorrent,82.0,61.5,,62.0,"[{""base"": ""BTT"", ""fac"": 1000, ""until"": ""2022-02-11"", ""spot"": ""BTTUSDT"", ""perp"": ""BTTUSDT""}, {""base"": ""BTTC"", ""fac"": 1, ""until"": null, ""spot"": ""BTTCUSDT"", ""perp"": ""1000BTTCUSDT""}]",True,1000BTTCUSDT
+APEPE,APEPE,ape-and-pepe,Ape and Pepe,123.0,0.29,,,,,,,,"[{""base"": ""APEPE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BSV,BSV,bitcoin-cash-sv,Bitcoin SV,124.0,0.28,9.0,BSV,bitcoin-sv,9.0,1813.3,,5.0,"[{""base"": ""BSV"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""BSVUSDT""}]",False,BSVUSDT
+SUN,SUN,sun-token,Sun Token,125.0,0.28,,,,,,,,"[{""base"": ""SUN"", ""fac"": 1, ""until"": null, ""spot"": ""SUNUSDT"", ""perp"": ""SUNUSDT""}]",True,SUNUSDT
+CRV,CRV,curve-dao-token,Curve DAO,126.0,0.28,,,,,,,,"[{""base"": ""CRV"", ""fac"": 1, ""until"": null, ""spot"": ""CRVUSDT"", ""perp"": ""CRVUSDT""}]",True,CRVUSDT
+FDUSD,FDUSD,first-digital-usd,First Digital USD,127.0,0.27,,,,,,stablecoin,,,,
+APXUSD,APXUSD,apxusd,apxUSD,128.0,0.27,,,,,,stablecoin,,,,
+PENGU,PENGU,pudgy-penguins,Pudgy Penguins,129.0,0.26,,,,,,,,"[{""base"": ""PENGU"", ""fac"": 1, ""until"": null, ""spot"": ""PENGUUSDT"", ""perp"": ""PENGUUSDT""}]",True,PENGUUSDT
+SAFO,SAFO,safo,Spiko Amundi Overnight Swap Fund,130.0,0.25,,,,,,rwa/fondo,,,,
+UB,UB,unibase,Unibase,131.0,0.25,,,,,,,,"[{""base"": ""UB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""UBUSDT""}]",False,UBUSDT
+GRASS,GRASS,grass,Grass,132.0,0.25,,,,,,,,"[{""base"": ""GRASS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""GRASSUSDT""}]",False,GRASSUSDT
+LUNC,LUNC,terra-luna,Terra Luna Classic,133.0,0.25,59.0,LUNA,terra-luna,70.0,89.2,,94.0,"[{""base"": ""LUNA"", ""fac"": 1, ""until"": ""2022-05-13"", ""spot"": ""LUNAUSDT"", ""perp"": ""LUNAUSDT""}, {""base"": ""LUNC"", ""fac"": 1, ""until"": null, ""spot"": ""LUNCUSDT"", ""perp"": ""1000LUNCUSDT""}]",True,1000LUNCUSDT
+SPX,SPX,spx6900,SPX6900,134.0,0.25,,,,,,,,"[{""base"": ""SPX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""SPXUSDT""}]",False,SPXUSDT
+FET,FET,fetch-ai,Artificial Superintelligence Alliance,135.0,0.24,148.0,FET,fetch,161.0,28.1,,,"[{""base"": ""FET"", ""fac"": 1, ""until"": null, ""spot"": ""FETUSDT"", ""perp"": ""FETUSDT""}]",True,FETUSDT
+TRUMP,TRUMP,official-trump,Official Trump,136.0,0.24,,,,,,,,"[{""base"": ""TRUMP"", ""fac"": 1, ""until"": null, ""spot"": ""TRUMPUSDT"", ""perp"": ""TRUMPUSDT""}]",True,TRUMPUSDT
+VIRTUAL,VIRTUAL,virtual-protocol,Virtuals Protocol,137.0,0.23,,,,,,,,"[{""base"": ""VIRTUAL"", ""fac"": 1, ""until"": null, ""spot"": ""VIRTUALUSDT"", ""perp"": ""VIRTUALUSDT""}]",True,VIRTUALUSDT
+XTZ,XTZ,tezos,Tezos,138.0,0.23,12.0,XTZ,tezos,14.0,911.3,,14.0,"[{""base"": ""XTZ"", ""fac"": 1, ""until"": null, ""spot"": ""XTZUSDT"", ""perp"": ""XTZUSDT""}]",True,XTZUSDT
+STRK,STRK,starknet,Starknet,139.0,0.23,,,,,,,,"[{""base"": ""STRK"", ""fac"": 1, ""until"": null, ""spot"": ""STRKUSDT"", ""perp"": ""STRKUSDT""}]",True,STRKUSDT
+OZO,OZO,ozone-chain,Ozone Chain,140.0,0.23,,,,,,,,"[{""base"": ""OZO"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+PC0000031,PC0000031,tradable-na-rent-financing-platform-sstn,Tradable NA Rent Financing Platform SSTN,141.0,0.23,,,,,,rwa/fondo,,,,
+GNO,GNO,gnosis,Gnosis,142.0,0.22,,,,,,,,"[{""base"": ""GNO"", ""fac"": 1, ""until"": null, ""spot"": ""GNOUSDT"", ""perp"": null}]",True,
+XPL,XPL,plasma,Plasma,143.0,0.22,,,,,,,,"[{""base"": ""XPL"", ""fac"": 1, ""until"": null, ""spot"": ""XPLUSDT"", ""perp"": ""XPLUSDT""}]",True,XPLUSDT
+OHM,OHM,olympus,Olympus,144.0,0.22,,,,,,,,"[{""base"": ""OHM"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+FRAX,FRAX,frax,Legacy Frax Dollar,145.0,0.22,,,,,,stablecoin,,,,
+SEI,SEI,sei-network,Sei,146.0,0.22,,,,,,,,"[{""base"": ""SEI"", ""fac"": 1, ""until"": null, ""spot"": ""SEIUSDT"", ""perp"": ""SEIUSDT""}]",True,SEIUSDT
+PENDLE,PENDLE,pendle,Pendle,147.0,0.21,,,,,,,,"[{""base"": ""PENDLE"", ""fac"": 1, ""until"": null, ""spot"": ""PENDLEUSDT"", ""perp"": ""PENDLEUSDT""}]",True,PENDLEUSDT
+MGLO,MGLO,midas-fasanara-global-open,Midas Fasanara Global Open,148.0,0.2,,,,,,rwa/fondo,,,,
+USX,USX,usx,USX,149.0,0.2,,,,,,stablecoin,,,,
+BP,BP,backpack,Backpack,150.0,0.19,,,,,,,,"[{""base"": ""BP"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+USAT,USAT,usa,USAT,151.0,0.19,,,,,,"rwa/fondo,stablecoin",,,,
+LDO,LDO,lido-dao,Lido DAO,152.0,0.19,,,,,,,,"[{""base"": ""LDO"", ""fac"": 1, ""until"": null, ""spot"": ""LDOUSDT"", ""perp"": ""LDOUSDT""}]",True,LDOUSDT
+EURCV,EURCV,societe-generale-forge-eurcv,EUR CoinVertible,153.0,0.19,,,,,,stablecoin,,,,
+BONK,BONK,bonk,Bonk,154.0,0.18,,,,,,,,"[{""base"": ""BONK"", ""fac"": 1, ""until"": null, ""spot"": ""BONKUSDT"", ""perp"": ""1000BONKUSDT""}]",True,1000BONKUSDT
+BTSE,BTSE,btse-token,BTSE Token,155.0,0.18,,,,,,,,"[{""base"": ""BTSE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+DCR,DCR,decred,Decred,156.0,0.18,40.0,DCR,decred,38.0,178.8,,34.0,"[{""base"": ""DCR"", ""fac"": 1, ""until"": null, ""spot"": ""DCRUSDT"", ""perp"": null}]",True,
+KAIA,KAIA,kaia,Kaia,157.0,0.18,,,,,,,,"[{""base"": ""KAIA"", ""fac"": 1, ""until"": null, ""spot"": ""KAIAUSDT"", ""perp"": ""KAIAUSDT""}]",True,KAIAUSDT
+NFT,NFT,apenft,AINFT,158.0,0.18,,,,,,,,"[{""base"": ""NFT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NVDAB,NVDAB,nvidia-bstocks,NVIDIA (bStocks Tokenized Stock),159.0,0.18,,,,,,"rwa/azione tokenizzata,rwa/fondo",,,,
+USTBL,USTBL,spiko-us-t-bills-money-market-fund,Spiko US T-Bills Money Market Fund,160.0,0.17,,,,,,rwa/fondo,,,,
+SHFL,SHFL,shuffle-2,Shuffle,161.0,0.17,,,,,,,,"[{""base"": ""SHFL"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+GRT,GRT,the-graph,The Graph,162.0,0.17,,,,,,,,"[{""base"": ""GRT"", ""fac"": 1, ""until"": null, ""spot"": ""GRTUSDT"", ""perp"": ""GRTUSDT""}]",True,GRTUSDT
+COMP,COMP,compound-governance-token,Compound,163.0,0.17,,,,,,,,"[{""base"": ""COMP"", ""fac"": 1, ""until"": null, ""spot"": ""COMPUSDT"", ""perp"": ""COMPUSDT""}]",True,COMPUSDT
+KOGE,KOGE,bnb48-club-token,KOGE,164.0,0.17,,,,,,,,"[{""base"": ""KOGE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ZBCN,ZBCN,zebec-network,Zebec Network,165.0,0.17,,,,,,,,"[{""base"": ""ZBCN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+CFX,CFX,conflux-token,Conflux,166.0,0.17,,,,,,,,"[{""base"": ""CFX"", ""fac"": 1, ""until"": null, ""spot"": ""CFXUSDT"", ""perp"": ""CFXUSDT""}]",True,CFXUSDT
+RUNE,RUNE,thorchain,THORChain,167.0,0.17,,,,,,,,"[{""base"": ""RUNE"", ""fac"": 1, ""until"": null, ""spot"": ""RUNEUSDT"", ""perp"": ""RUNEUSDT""}]",True,RUNEUSDT
+BEAMX,BEAM,beam-2,Beam,168.0,0.16,,,,,,,,"[{""base"": ""BEAMX"", ""fac"": 1, ""until"": null, ""spot"": ""BEAMXUSDT"", ""perp"": ""BEAMXUSDT""}]",True,BEAMXUSDT
+PC0000033,PC0000033,tradable-apac-diversified-finance-provider-sstn,Tradable APAC Diversified Finance Provider SSTN,169.0,0.16,,,,,,rwa/fondo,,,,
+USDAI,USDAI,usdai,USDai,170.0,0.16,,,,,,stablecoin,,,,
+OP,OP,optimism,Optimism,171.0,0.16,,,,,,,,"[{""base"": ""OP"", ""fac"": 1, ""until"": null, ""spot"": ""OPUSDT"", ""perp"": ""OPUSDT""}]",True,OPUSDT
+FLOKI,FLOKI,floki,FLOKI,172.0,0.16,,,,,,,,"[{""base"": ""FLOKI"", ""fac"": 1, ""until"": null, ""spot"": ""FLOKIUSDT"", ""perp"": ""1000FLOKIUSDT""}]",True,1000FLOKIUSDT
+JASMY,JASMY,jasmycoin,JasmyCoin,173.0,0.15,,,,,,,,"[{""base"": ""JASMY"", ""fac"": 1, ""until"": null, ""spot"": ""JASMYUSDT"", ""perp"": ""JASMYUSDT""}]",True,JASMYUSDT
+DGAI,DGAI,dgrid-ai,DGrid AI,174.0,0.15,,,,,,,,"[{""base"": ""DGAI"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+GUSD,GUSD,gusd,GUSD,175.0,0.15,,,,,,stablecoin,,,,
+AR,AR,arweave,Arweave,176.0,0.15,,,,,,,,"[{""base"": ""AR"", ""fac"": 1, ""until"": null, ""spot"": ""ARUSDT"", ""perp"": ""ARUSDT""}]",True,ARUSDT
+AUSD,AUSD,agora-dollar,AUSD,177.0,0.15,,,,,,stablecoin,,,,
+KAG,KAG,kinesis-silver,Kinesis Silver,178.0,0.15,,,,,,"oro/materie prime,rwa/fondo",,,,
+GOMINING,GOMINING,gmt-token,GoMining Token,179.0,0.15,,,,,,,,"[{""base"": ""GOMINING"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+CAP,CAP,cap-4,Cap,180.0,0.15,,,,,,,,"[{""base"": ""CAP"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""CAPUSDT""}]",False,CAPUSDT
+CARDS,CARDS,collector-crypt,Collector Crypt,181.0,0.15,,,,,,,,"[{""base"": ""CARDS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+IOTA,IOTA,iota,IOTA,182.0,0.15,25.0,MIOTA,iota,25.0,468.4,,23.0,"[{""base"": ""IOTA"", ""fac"": 1, ""until"": null, ""spot"": ""IOTAUSDT"", ""perp"": ""IOTAUSDT""}]",True,IOTAUSDT
+ENS,ENS,ethereum-name-service,Ethereum Name Service,183.0,0.14,,,,,,,,"[{""base"": ""ENS"", ""fac"": 1, ""until"": null, ""spot"": ""ENSUSDT"", ""perp"": ""ENSUSDT""}]",True,ENSUSDT
+ZAMA,ZAMA,zama,Zama,184.0,0.14,,,,,,,,"[{""base"": ""ZAMA"", ""fac"": 1, ""until"": null, ""spot"": ""ZAMAUSDT"", ""perp"": ""ZAMAUSDT""}]",True,ZAMAUSDT
+SENT,SENT,sentient,Sentient,185.0,0.14,,,,,,,,"[{""base"": ""SENT"", ""fac"": 1, ""until"": null, ""spot"": ""SENTUSDT"", ""perp"": ""SENTUSDT""}]",True,SENTUSDT
+AKT,AKT,akash-network,Akash Network,186.0,0.14,,,,,,,,"[{""base"": ""AKT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""AKTUSDT""}]",False,AKTUSDT
+CRVUSD,CRVUSD,crvusd,crvUSD,187.0,0.14,,,,,,stablecoin,,,,
+KMNO,KMNO,kamino,Kamino,188.0,0.14,,,,,,,,"[{""base"": ""KMNO"", ""fac"": 1, ""until"": null, ""spot"": ""KMNOUSDT"", ""perp"": ""KMNOUSDT""}]",True,KMNOUSDT
+GEOD,GEOD,geodnet,Geodnet,189.0,0.13,,,,,,,,"[{""base"": ""GEOD"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+PC0000097,PC0000097,tradable-latam-fintech-sstn,Tradable LatAm Fintech SSTN,190.0,0.13,,,,,,rwa/fondo,,,,
+CASH,CASH,cash-4,CASH,191.0,0.13,,,,,,stablecoin,,,,
+NVDAX,NVDAX,nvidia-xstock,NVIDIA xStock,192.0,0.13,,,,,,"rwa/azione tokenizzata,rwa/fondo",,,,
+APYUSD,APYUSD,apyusd,apyUSD,193.0,0.13,,,,,,stablecoin,,,,
+MX,MX,mx-token,MX,194.0,0.13,180.0,MX,mx-token,,19.0,,,"[{""base"": ""MX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+JPYSC,JPYSC,jpysc,JPYSC,195.0,0.13,,,,,,stablecoin,,,,
+THETA,THETA,theta-token,Theta Network,196.0,0.13,65.0,THETA,theta,64.0,76.2,,45.0,"[{""base"": ""THETA"", ""fac"": 1, ""until"": null, ""spot"": ""THETAUSDT"", ""perp"": ""THETAUSDT""}]",True,THETAUSDT
+MON,MON,monad,Monad,197.0,0.13,,,,,,,,"[{""base"": ""MON"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": ""MONUSDT""}]",False,MONUSDT
+BORG,BORG,swissborg,SwissBorg,198.0,0.13,,,,,,,,"[{""base"": ""BORG"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+JTO,JTO,jito-governance-token,Jito,199.0,0.13,,,,,,,,"[{""base"": ""JTO"", ""fac"": 1, ""until"": null, ""spot"": ""JTOUSDT"", ""perp"": ""JTOUSDT""}]",True,JTOUSDT
+TWT,TWT,trust-wallet-token,Trust Wallet,200.0,0.13,,,,,,,,"[{""base"": ""TWT"", ""fac"": 1, ""until"": null, ""spot"": ""TWTUSDT"", ""perp"": ""TWTUSDT""}]",True,TWTUSDT
+A,EOS,,EOS,,,7.0,EOS,eos,7.0,2548.3,,8.0,"[{""base"": ""EOS"", ""fac"": 1, ""until"": null, ""spot"": ""EOSUSDT"", ""perp"": ""EOSUSDT""}, {""base"": ""A"", ""fac"": 1, ""until"": null, ""spot"": ""AUSDT"", ""perp"": ""AUSDT""}]",True,AUSDT
+HT,HT,,Huobi Token,,,17.0,HT,huobi-token,17.0,678.7,,22.0,"[{""base"": ""HT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NEO,NEO,,Neo,,,19.0,NEO,neo,18.0,652.7,,21.0,"[{""base"": ""NEO"", ""fac"": 1, ""until"": null, ""spot"": ""NEOUSDT"", ""perp"": ""NEOUSDT""}]",True,NEOUSDT
+MIN,MIN,,MINDOL,,,20.0,MIN,mindol,24.0,638.8,,,"[{""base"": ""MIN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+999,999,,999,,,22.0,999,999-coin,19.0,523.2,,,"[{""base"": ""999"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+HEDG,HEDG,,HedgeTrade,,,24.0,HEDG,hedgetrade,22.0,516.8,,,"[{""base"": ""HEDG"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+MKR,MKR,,Maker,,,26.0,MKR,maker,28.0,448.3,,27.0,"[{""base"": ""MKR"", ""fac"": 1, ""until"": null, ""spot"": ""MKRUSDT"", ""perp"": ""MKRUSDT""}]",True,MKRUSDT
+ONT,ONT,,Ontology,,,29.0,ONT,ontology,29.0,348.6,,28.0,"[{""base"": ""ONT"", ""fac"": 1, ""until"": null, ""spot"": ""ONTUSDT"", ""perp"": ""ONTUSDT""}]",True,ONTUSDT
+XEM,XEM,,NEM,,,31.0,XEM,nem,32.0,291.3,,30.0,"[{""base"": ""XEM"", ""fac"": 1, ""until"": null, ""spot"": ""XEMUSDT"", ""perp"": ""XEMUSDT""}]",True,XEMUSDT
+BAT,BAT,,Basic Attention Token,,,32.0,BAT,basic-attention-token,33.0,272.6,,31.0,"[{""base"": ""BAT"", ""fac"": 1, ""until"": null, ""spot"": ""BATUSDT"", ""perp"": ""BATUSDT""}]",True,BATUSDT
+INO,INO,,INO COIN,,,33.0,INO,ino-coin,36.0,264.2,,,"[{""base"": ""INO"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+PAX,PAX,,Paxos Standard,,,36.0,PAX,paxos-standard,35.0,223.7,stablecoin,33.0,,,
+FTT,FTT,,FTX Token,,,37.0,FTT,ftx-token,37.0,215.6,,65.0,"[{""base"": ""FTT"", ""fac"": 1, ""until"": null, ""spot"": ""FTTUSDT"", ""perp"": ""FTTUSDT""}]",True,FTTUSDT
+SNX,SNX,,Synthetix Network Token,,,38.0,SNX,synthetix-network-token,39.0,198.4,,50.0,"[{""base"": ""SNX"", ""fac"": 1, ""until"": null, ""spot"": ""SNXUSDT"", ""perp"": ""SNXUSDT""}]",True,SNXUSDT
+INB,INB,,Insight Chain,,,39.0,INB,insight-chain,40.0,189.3,,,"[{""base"": ""INB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+QTUM,QTUM,,Qtum,,,41.0,QTUM,qtum,41.0,161.1,,35.0,"[{""base"": ""QTUM"", ""fac"": 1, ""until"": null, ""spot"": ""QTUMUSDT"", ""perp"": ""QTUMUSDT""}]",True,QTUMUSDT
+THR,THR,,ThoreCoin,,,43.0,THR,thorecoin,44.0,124.3,,,"[{""base"": ""THR"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+THX,THX,,ThoreNext,,,44.0,THX,thorenext,46.0,120.6,,,"[{""base"": ""THX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ZRX,ZRX,,0x,,,45.0,ZRX,0x,48.0,119.3,,39.0,"[{""base"": ""ZRX"", ""fac"": 1, ""until"": null, ""spot"": ""ZRXUSDT"", ""perp"": ""ZRXUSDT""}]",True,ZRXUSDT
+RVN,RVN,,Ravencoin,,,46.0,RVN,ravencoin,45.0,118.1,,40.0,"[{""base"": ""RVN"", ""fac"": 1, ""until"": null, ""spot"": ""RVNUSDT"", ""perp"": ""RVNUSDT""}]",True,RVNUSDT
+PZM,PZM,,PRIZM,,,48.0,PZM,prizm,43.0,112.8,,,"[{""base"": ""PZM"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+CNX,CNX,,Cryptonex,,,49.0,CNX,cryptonex,50.0,110.1,,,"[{""base"": ""CNX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+HOT,HOT,,Holo,,,51.0,HOT,holo,49.0,105.9,,43.0,"[{""base"": ""HOT"", ""fac"": 1, ""until"": null, ""spot"": ""HOTUSDT"", ""perp"": ""HOTUSDT""}]",True,HOTUSDT
+CENNZ,CENNZ,,Centrality,,,52.0,CENNZ,centrality,65.0,105.8,,,"[{""base"": ""CENNZ"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+REP,REP,,Augur,,,54.0,REP,augur,52.0,102.3,,37.0,"[{""base"": ""REP"", ""fac"": 1, ""until"": null, ""spot"": ""REPUSDT"", ""perp"": null}]",True,
+WAVES,WAVES,,Waves,,,55.0,WAVES,waves,57.0,100.8,,53.0,"[{""base"": ""WAVES"", ""fac"": 1, ""until"": null, ""spot"": ""WAVESUSDT"", ""perp"": ""WAVESUSDT""}]",True,WAVESUSDT
+SEELE,SEELE,,Seele,,,56.0,SEELE,seele,53.0,97.0,,59.0,"[{""base"": ""SEELE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BTG,BTG,,Bitcoin Gold,,,57.0,BTG,bitcoin-gold,55.0,95.8,,36.0,"[{""base"": ""BTG"", ""fac"": 1, ""until"": null, ""spot"": ""BTGUSDT"", ""perp"": null}]",True,
+OMG,OMG,,OmiseGO,,,58.0,OMG,omisego,58.0,90.0,,46.0,"[{""base"": ""OMG"", ""fac"": 1, ""until"": null, ""spot"": ""OMGUSDT"", ""perp"": ""OMGUSDT""}]",True,OMGUSDT
+ZB,ZB,,ZB Token,,,60.0,ZB,zb-token,59.0,87.1,,,"[{""base"": ""ZB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+XNO,NANO,,Nano,,,61.0,NANO,nano,60.0,87.0,,51.0,"[{""base"": ""NANO"", ""fac"": 1, ""until"": null, ""spot"": ""NANOUSDT"", ""perp"": null}, {""base"": ""XNO"", ""fac"": 1, ""until"": null, ""spot"": ""XNOUSDT"", ""perp"": null}]",True,
+XIN,XIN,,Mixin,,,62.0,XIN,mixin,63.0,85.6,,,"[{""base"": ""XIN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ABBC,ABBC,,ABBC Coin,,,63.0,ABBC,abbc-coin,67.0,84.1,,,"[{""base"": ""ABBC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+KBC,KBC,,Karatgold Coin,,,66.0,KBC,karatgold-coin,66.0,75.6,oro/materie prime,,,,
+MOF,MOF,,Molecular Future,,,67.0,MOF,molecular-future,62.0,74.5,,,"[{""base"": ""MOF"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+CCA,CCA,,Counos Coin,,,68.0,CCA,counos-coin,73.0,73.2,,,"[{""base"": ""CCA"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+FST,FST,,1irstcoin,,,69.0,FST,1irstcoin,76.0,69.9,,,"[{""base"": ""FST"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+LSK,LSK,,Lisk,,,70.0,LSK,lisk,69.0,69.6,,47.0,"[{""base"": ""LSK"", ""fac"": 1, ""until"": null, ""spot"": ""LSKUSDT"", ""perp"": ""LSKUSDT""}]",True,LSKUSDT
+DGB,DGB,,DigiByte,,,71.0,DGB,digibyte,71.0,69.4,,57.0,"[{""base"": ""DGB"", ""fac"": 1, ""until"": null, ""spot"": ""DGBUSDT"", ""perp"": ""DGBUSDT""}]",True,DGBUSDT
+BTM,BTM,,Bytom,,,72.0,BTM,bytom,77.0,68.3,,42.0,"[{""base"": ""BTM"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+SXP,SXP,,Swipe,,,73.0,SXP,swipe,56.0,68.0,,44.0,"[{""base"": ""SXP"", ""fac"": 1, ""until"": null, ""spot"": ""SXPUSDT"", ""perp"": ""SXPUSDT""}]",True,SXPUSDT
+ENJ,ENJ,,Enjin Coin,,,74.0,ENJ,enjin-coin,83.0,64.3,,60.0,"[{""base"": ""ENJ"", ""fac"": 1, ""until"": null, ""spot"": ""ENJUSDT"", ""perp"": ""ENJUSDT""}]",True,ENJUSDT
+BCD,BCD,,Bitcoin Diamond,,,75.0,BCD,bitcoin-diamond,80.0,64.0,,49.0,"[{""base"": ""BCD"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+FAB,FAB,,FABRK,,,76.0,FAB,fabrk,85.0,63.8,,,"[{""base"": ""FAB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+MCO,MCO,,MCO,,,77.0,MCO,crypto-com,75.0,63.8,,63.0,"[{""base"": ""MCO"", ""fac"": 1, ""until"": null, ""spot"": ""MCOUSDT"", ""perp"": null}]",True,
+GAP,GAP,,GAPS,,,78.0,GAP,gaps,81.0,62.6,,,"[{""base"": ""GAP"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+EON,EON,,Dimension Chain,,,79.0,EON,dimension-chain,72.0,62.4,,,"[{""base"": ""EON"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+KMD,KMD,,Komodo,,,80.0,KMD,komodo,74.0,62.1,,64.0,"[{""base"": ""KMD"", ""fac"": 1, ""until"": null, ""spot"": ""KMDUSDT"", ""perp"": null}]",True,
+ZEN,ZEN,,Horizen,,,82.0,ZEN,horizen,84.0,61.5,,58.0,"[{""base"": ""ZEN"", ""fac"": 1, ""until"": null, ""spot"": ""ZENUSDT"", ""perp"": ""ZENUSDT""}]",True,ZENUSDT
+IOST,IOST,,IOST,,,83.0,IOST,iostoken,86.0,60.9,,66.0,"[{""base"": ""IOST"", ""fac"": 1, ""until"": null, ""spot"": ""IOSTUSDT"", ""perp"": ""IOSTUSDT""}]",True,IOSTUSDT
+ICX,ICX,,ICON,,,84.0,ICX,icon,87.0,60.7,,61.0,"[{""base"": ""ICX"", ""fac"": 1, ""until"": null, ""spot"": ""ICXUSDT"", ""perp"": ""ICXUSDT""}]",True,ICXUSDT
+VSYS,VSYS,,v.systems,,,85.0,VSYS,v-systems,78.0,59.9,,69.0,"[{""base"": ""VSYS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+XVG,XVG,,Verge,,,86.0,XVG,verge,88.0,59.0,,72.0,"[{""base"": ""XVG"", ""fac"": 1, ""until"": null, ""spot"": ""XVGUSDT"", ""perp"": ""XVGUSDT""}]",True,XVGUSDT
+SC,SC,,Siacoin,,,87.0,SC,siacoin,89.0,57.1,,68.0,"[{""base"": ""SC"", ""fac"": 1, ""until"": null, ""spot"": ""SCUSDT"", ""perp"": ""SCUSDT""}]",True,SCUSDT
+BXK,BXK,,Bitbook Gambling,,,88.0,BXK,bitbook-gambling,96.0,56.4,,,"[{""base"": ""BXK"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NOAH,NOAH,,Noah Coin,,,89.0,NOAH,noah-coin,136.0,55.3,,,"[{""base"": ""NOAH"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+EKT,EKT,,EDUCare,,,91.0,EKT,educare,123.0,53.9,,,"[{""base"": ""EKT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BCN,BCN,,Bytecoin,,,92.0,BCN,bytecoin-bcn,93.0,52.5,,79.0,"[{""base"": ""BCN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+MONA,MONA,,MonaCoin,,,93.0,MONA,monacoin,94.0,52.2,,54.0,"[{""base"": ""MONA"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NRG,NRG,,Energi,,,94.0,NRG,energi,97.0,50.1,,86.0,"[{""base"": ""NRG"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+HC,HC,,HyperCash,,,95.0,HC,hypercash,98.0,50.0,,70.0,"[{""base"": ""HC"", ""fac"": 1, ""until"": null, ""spot"": ""HCUSDT"", ""perp"": null}]",True,
+BRZE,BRZE,,Breezecoin,,,96.0,BRZE,breezecoin,92.0,47.8,,,"[{""base"": ""BRZE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+MB,MB,,MineBee,,,97.0,MB,minebee,99.0,46.7,,,"[{""base"": ""MB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+STEEM,STEEM,,Steem,,,98.0,STEEM,steem,104.0,46.5,,75.0,"[{""base"": ""STEEM"", ""fac"": 1, ""until"": null, ""spot"": ""STEEMUSDT"", ""perp"": ""STEEMUSDT""}]",True,STEEMUSDT
+ZIL,ZIL,,Zilliqa,,,99.0,ZIL,zilliqa,100.0,46.2,,76.0,"[{""base"": ""ZIL"", ""fac"": 1, ""until"": null, ""spot"": ""ZILUSDT"", ""perp"": ""ZILUSDT""}]",True,ZILUSDT
+DX,DX,,DxChain Token,,,100.0,DX,dxchain-token,102.0,45.6,,67.0,"[{""base"": ""DX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+QC,QC,,QCash,,,101.0,QC,qcash,101.0,44.8,,,"[{""base"": ""QC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+SLV,SLV,,Silverway,,,103.0,SLV,silverway,116.0,43.3,,,"[{""base"": ""SLV"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BOTX,BOTX,,botXcoin,,,104.0,BOTX,botxcoin,103.0,43.1,,,"[{""base"": ""BOTX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BTS,BTS,,BitShares,,,105.0,BTS,bitshares,106.0,41.2,,77.0,"[{""base"": ""BTS"", ""fac"": 1, ""until"": null, ""spot"": ""BTSUSDT"", ""perp"": ""BTSUSDT""}]",True,BTSUSDT
+SAI,SAI,,Single Collateral DAI ,,,106.0,SAI,single-collateral-dai,112.0,40.8,stablecoin,,,,
+FXC,FXC,,Flexacoin,,,107.0,FXC,flexacoin,95.0,40.7,,,"[{""base"": ""FXC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ARDR,ARDR,,Ardor,,,108.0,ARDR,ardor,111.0,40.2,,83.0,"[{""base"": ""ARDR"", ""fac"": 1, ""until"": null, ""spot"": ""ARDRUSDT"", ""perp"": null}]",True,
+AE,AE,,Aeternity,,,109.0,AE,aeternity,110.0,39.8,,73.0,"[{""base"": ""AE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+XET,XET,,ETERNAL TOKEN,,,110.0,XET,eternal-token,108.0,39.4,,,"[{""base"": ""XET"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+JUL,JUL,,Joule,,,111.0,JUL,joule,113.0,38.1,,,"[{""base"": ""JUL"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+LA,LA,,LATOKEN,,,113.0,LA,latoken,124.0,35.6,,,"[{""base"": ""LA"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null, ""nota"": ""LAUSDT su Binance = Lagrange (dal 2025), non LATOKEN del 2020""}]",False,
+EURS,EURS,,STASIS EURO,,,114.0,EURS,stasis-euro,120.0,35.6,stablecoin,,,,
+ETN,ETN,,Electroneum,,,115.0,ETN,electroneum,122.0,35.1,,90.0,"[{""base"": ""ETN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+STRAX,STRAT,,Stratis,,,116.0,STRAT,stratis,138.0,35.1,,97.0,"[{""base"": ""STRAT"", ""fac"": 1, ""until"": null, ""spot"": ""STRATUSDT"", ""perp"": null}, {""base"": ""STRAX"", ""fac"": 1, ""until"": null, ""spot"": ""STRAXUSDT"", ""perp"": ""STRAXUSDT""}]",True,STRAXUSDT
+MANA,MANA,,Decentraland,,,117.0,MANA,decentraland,114.0,35.0,,82.0,"[{""base"": ""MANA"", ""fac"": 1, ""until"": null, ""spot"": ""MANAUSDT"", ""perp"": ""MANAUSDT""}]",True,MANAUSDT
+DGD,DGD,,DigixDAO,,,118.0,DGD,digixdao,119.0,34.8,,71.0,"[{""base"": ""DGD"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+VIC,TOMO,,TomoChain,,,119.0,TOMO,tomochain,139.0,34.4,,,"[{""base"": ""TOMO"", ""fac"": 1, ""until"": null, ""spot"": ""TOMOUSDT"", ""perp"": ""TOMOUSDT""}, {""base"": ""VIC"", ""fac"": 1, ""until"": null, ""spot"": ""VICUSDT"", ""perp"": ""VICUSDT""}]",True,VICUSDT
+BCZERO,BCZERO,,Buggyra Coin Zero,,,120.0,BCZERO,buggyra-coin-zero,121.0,34.3,,,"[{""base"": ""BCZERO"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+CRPT,CRPT,,Crypterium,,,121.0,CRPT,crpt,118.0,33.8,,96.0,"[{""base"": ""CRPT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+SOLVE,SOLVE,,SOLVE,,,122.0,SOLVE,solve,127.0,33.7,,,"[{""base"": ""SOLVE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+CIX100,CIX100,,Cryptoindex.com 100,,,123.0,CIX100,cryptoindex-com-100,126.0,33.3,rwa/fondo,,,,
+NEX,NEX,,Nash Exchange,,,124.0,NEX,nash-exchange,135.0,33.2,,,"[{""base"": ""NEX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BF,BF,,BitForex Token,,,125.0,BF,bitforex-token,131.0,32.8,,,"[{""base"": ""BF"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BTMX,BTMX,,BitMax Token,,,126.0,BTMX,bitmax-token,128.0,32.7,,80.0,"[{""base"": ""BTMX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+KNC,KNC,,Kyber Network,,,127.0,KNC,kyber-network,117.0,32.4,,85.0,"[{""base"": ""KNC"", ""fac"": 1, ""until"": null, ""spot"": ""KNCUSDT"", ""perp"": ""KNCUSDT""}]",True,KNCUSDT
+SNT,SNT,,Status,,,128.0,SNT,status,133.0,32.0,,,"[{""base"": ""SNT"", ""fac"": 1, ""until"": null, ""spot"": ""SNTUSDT"", ""perp"": ""SNTUSDT""}]",True,SNTUSDT
+CSC,CSC,,CasinoCoin,,,129.0,CSC,casinocoin,90.0,32.0,,,"[{""base"": ""CSC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+MAID,MAID,,MaidSafeCoin,,,130.0,MAID,maidsafecoin,107.0,31.9,,89.0,"[{""base"": ""MAID"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BNK,BNK,,Bankera,,,131.0,BNK,bankera,129.0,31.3,,,"[{""base"": ""BNK"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+RIF,RIF,,RSK Infrastructure Framework,,,132.0,RIF,rsk-infrastructure-framework,125.0,31.2,,81.0,"[{""base"": ""RIF"", ""fac"": 1, ""until"": null, ""spot"": ""RIFUSDT"", ""perp"": ""RIFUSDT""}]",True,RIFUSDT
+CCC,CCC,,Clipper Coin,,,133.0,CCC,clipper-coin,151.0,31.0,,,"[{""base"": ""CCC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ECOREAL,ECOREAL,,Ecoreal Estate,,,134.0,ECOREAL,ecoreal-estate,142.0,31.0,,,"[{""base"": ""ECOREAL"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+RLC,RLC,,iExec RLC,,,135.0,RLC,rlc,130.0,31.0,,93.0,"[{""base"": ""RLC"", ""fac"": 1, ""until"": null, ""spot"": ""RLCUSDT"", ""perp"": ""RLCUSDT""}]",True,RLCUSDT
+PUNDIX,NPXS,,Pundi X,,,136.0,NPXS,pundi-x,148.0,30.6,,,"[{""base"": ""NPXS"", ""fac"": 0.001, ""until"": null, ""spot"": ""NPXSUSDT"", ""perp"": null}, {""base"": ""PUNDIX"", ""fac"": 1, ""until"": null, ""spot"": ""PUNDIXUSDT"", ""perp"": ""PUNDIXUSDT""}]",True,PUNDIXUSDT
+DGTX,DGTX,,Digitex Futures,,,137.0,DGTX,digitex-futures,137.0,30.4,,,"[{""base"": ""DGTX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+GRIN,GRIN,,Grin,,,138.0,GRIN,grin,141.0,29.9,,,"[{""base"": ""GRIN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ENG,ENG,,Enigma,,,139.0,ENG,enigma,149.0,29.4,,,"[{""base"": ""ENG"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NET,NET,,NEXT,,,140.0,NET,next,132.0,29.4,,,"[{""base"": ""NET"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null, ""nota"": ""NETUSDT su Binance dal 2026-08 = altra moneta, non NEXT del 2020""}]",False,
+ETP,ETP,,Metaverse ETP,,,141.0,ETP,metaverse,145.0,29.2,,,"[{""base"": ""ETP"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+VLX,VLX,,Velas,,,142.0,VLX,velas,159.0,29.0,,,"[{""base"": ""VLX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+GLM,GNT,,Golem,,,143.0,GNT,golem-network-tokens,154.0,28.8,,91.0,"[{""base"": ""GNT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}, {""base"": ""GLM"", ""fac"": 1, ""until"": null, ""spot"": ""GLMUSDT"", ""perp"": ""GLMUSDT""}]",True,GLMUSDT
+ADK,ADK,,Aidos Kuneen,,,144.0,ADK,aidos-kuneen,147.0,28.7,,,"[{""base"": ""ADK"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+USDK,USDK,,USDK,,,145.0,USDK,usdk,153.0,28.6,stablecoin,,,,
+BTC2,BTC2,,Bitcoin 2,,,146.0,BTC2,bitcoin2,134.0,28.3,,,"[{""base"": ""BTC2"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BEAM,BEAM,,Beam,,,147.0,BEAM,beam,140.0,28.2,,99.0,"[{""base"": ""BEAM"", ""fac"": 1, ""until"": null, ""spot"": ""BEAMUSDT"", ""perp"": null}]",True,
+CHZ,CHZ,,Chiliz,,,149.0,CHZ,chiliz,152.0,28.0,,,"[{""base"": ""CHZ"", ""fac"": 1, ""until"": null, ""spot"": ""CHZUSDT"", ""perp"": ""CHZUSDT""}]",True,CHZUSDT
+GNY,GNY,,GNY,,,150.0,GNY,gny,,27.6,,,"[{""base"": ""GNY"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ELF,ELF,,aelf,,,151.0,ELF,aelf,150.0,27.1,,,"[{""base"": ""ELF"", ""fac"": 1, ""until"": null, ""spot"": ""ELFUSDT"", ""perp"": null}]",True,
+FIRO,XZC,,Zcoin,,,152.0,XZC,zcoin,144.0,27.1,,84.0,"[{""base"": ""XZC"", ""fac"": 1, ""until"": null, ""spot"": ""XZCUSDT"", ""perp"": null}, {""base"": ""FIRO"", ""fac"": 1, ""until"": null, ""spot"": ""FIROUSDT"", ""perp"": null}]",True,
+REN,REN,,Ren,,,153.0,REN,ren,146.0,25.8,,95.0,"[{""base"": ""REN"", ""fac"": 1, ""until"": null, ""spot"": ""RENUSDT"", ""perp"": ""RENUSDT""}]",True,RENUSDT
+GXC,GXC,,GXChain,,,154.0,GXC,gxchain,160.0,25.7,,,"[{""base"": ""GXC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+JWL,JWL,,Jewel,,,155.0,JWL,jewel,143.0,25.1,,,"[{""base"": ""JWL"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+DTR,DTR,,Dynamic Trading Rights,,,156.0,DTR,dynamic-trading-rights,156.0,24.9,,,"[{""base"": ""DTR"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+HPT,HPT,,Huobi Pool Token,,,157.0,HPT,huobi-pool-token,155.0,24.6,,,"[{""base"": ""HPT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ELA,ELA,,Elastos,,,158.0,ELA,elastos,158.0,24.5,,,"[{""base"": ""ELA"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+PLC,PLC,,PLATINCOIN,,,159.0,PLC,platincoin,157.0,24.1,,,"[{""base"": ""PLC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+RCN,RCN,,Ripio Credit Network,,,160.0,RCN,ripio-credit-network,163.0,23.1,,,"[{""base"": ""RCN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BRD,BRD,,Bread,,,161.0,BRD,bread,166.0,22.8,,,"[{""base"": ""BRD"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BZ,BZ,,Bit-Z Token,,,162.0,BZ,bit-z-token,164.0,22.8,,,"[{""base"": ""BZ"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null, ""nota"": ""BZUSDT su Binance dal 2026-04 = altra moneta, non Bit-Z Token del 2020""}]",False,
+AGVC,AGVC,,AgaveCoin,,,163.0,AGVC,agavecoin,167.0,22.6,,,"[{""base"": ""AGVC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+HYN,HYN,,Hyperion,,,164.0,HYN,hyperion,173.0,22.6,,,"[{""base"": ""HYN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+WICC,WICC,,WaykiChain,,,165.0,WICC,waykichain,171.0,22.1,,,"[{""base"": ""WICC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+VEST,VEST,,VestChain,,,166.0,VEST,vestchain,169.0,22.0,,,"[{""base"": ""VEST"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+VERI,VERI,,Veritaseum,,,167.0,VERI,veritaseum,180.0,21.4,,,"[{""base"": ""VERI"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+FUN,FUN,,FunFair,,,168.0,FUN,funfair,176.0,21.3,,,"[{""base"": ""FUN"", ""fac"": 1, ""until"": null, ""spot"": ""FUNUSDT"", ""perp"": ""FUNUSDT""}]",True,FUNUSDT
+AION,AION,,Aion,,,169.0,AION,aion,168.0,21.2,,,"[{""base"": ""AION"", ""fac"": 1, ""until"": null, ""spot"": ""AIONUSDT"", ""perp"": null}]",True,
+S,FTM,,Fantom,,,170.0,FTM,fantom,183.0,20.7,,,"[{""base"": ""FTM"", ""fac"": 1, ""until"": null, ""spot"": ""FTMUSDT"", ""perp"": ""FTMUSDT""}, {""base"": ""S"", ""fac"": 1, ""until"": null, ""spot"": ""SUSDT"", ""perp"": ""SUSDT""}]",True,SUSDT
+DCN,DCN,,Dentacoin,,,171.0,DCN,dentacoin,,20.7,,,"[{""base"": ""DCN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+QBIT,QBIT,,Qubitica,,,172.0,QBIT,qubitica,175.0,20.6,,,"[{""base"": ""QBIT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+R,R,,Revain,,,173.0,R,revain,181.0,20.2,,,"[{""base"": ""R"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+LRC,LRC,,Loopring,,,174.0,LRC,loopring,178.0,20.2,,,"[{""base"": ""LRC"", ""fac"": 1, ""until"": null, ""spot"": ""LRCUSDT"", ""perp"": ""LRCUSDT""}]",True,LRCUSDT
+NAS,NAS,,Nebulas,,,176.0,NAS,nebulas-token,185.0,19.8,,,"[{""base"": ""NAS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+PPT,PPT,,Populous,,,177.0,PPT,populous,184.0,19.6,,,"[{""base"": ""PPT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+RDD,RDD,,ReddCoin,,,178.0,RDD,reddcoin,174.0,19.6,,,"[{""base"": ""RDD"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+TNT,TNT,,Tierion,,,179.0,TNT,tierion,179.0,19.2,,,"[{""base"": ""TNT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+LAMB,LAMB,,Lambda,,,181.0,LAMB,lambda,182.0,19.0,,92.0,"[{""base"": ""LAMB"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+IOTX,IOTX,,IoTeX,,,182.0,IOTX,iotex,186.0,18.9,,,"[{""base"": ""IOTX"", ""fac"": 1, ""until"": null, ""spot"": ""IOTXUSDT"", ""perp"": ""IOTXUSDT""}]",True,IOTXUSDT
+DPT,DPT,,Diamond Platform Token,,,183.0,DPT,diamond-platform-token,194.0,18.9,,,"[{""base"": ""DPT"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BNT,BNT,,Bancor,,,184.0,BNT,bancor,,18.8,,,"[{""base"": ""BNT"", ""fac"": 1, ""until"": null, ""spot"": ""BNTUSDT"", ""perp"": ""BNTUSDT""}]",True,BNTUSDT
+DIVI,DIVI,,Divi,,,185.0,DIVI,divi,,18.6,,,"[{""base"": ""DIVI"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+OXEN,LOKI,,Loki,,,186.0,LOKI,loki,,18.4,,,"[{""base"": ""OXEN"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+BHD,BHD,,BitcoinHD,,,187.0,BHD,bitcoinhd,188.0,18.4,,,"[{""base"": ""BHD"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+WIN,WIN,,WINk,,,188.0,WIN,wink-tronbet,190.0,18.4,,,"[{""base"": ""WIN"", ""fac"": 1, ""until"": null, ""spot"": ""WINUSDT"", ""perp"": null}]",True,
+ILC,ILC,,ILCoin,,,189.0,ILC,ilcoin,191.0,18.3,,,"[{""base"": ""ILC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+WAN,WAN,,Wanchain,,,190.0,WAN,wanchain,189.0,18.3,,,"[{""base"": ""WAN"", ""fac"": 1, ""until"": null, ""spot"": ""WANUSDT"", ""perp"": null}]",True,
+NULS,NULS,,NULS,,,191.0,NULS,nuls,198.0,18.3,,,"[{""base"": ""NULS"", ""fac"": 1, ""until"": null, ""spot"": ""NULSUSDT"", ""perp"": ""NULSUSDT""}]",True,NULSUSDT
+XMX,XMX,,XMax,,,192.0,XMX,xmax,187.0,18.3,,,"[{""base"": ""XMX"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+XAC,XAC,,General Attention Currency,,,193.0,XAC,general-attention-currency,192.0,17.9,,,"[{""base"": ""XAC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+NEW,NEW,,Newton,,,194.0,NEW,newton,177.0,17.9,,,"[{""base"": ""NEW"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+ARK,ARK,,Ark,,,195.0,ARK,ark,199.0,17.6,,,"[{""base"": ""ARK"", ""fac"": 1, ""until"": null, ""spot"": ""ARKUSDT"", ""perp"": ""ARKUSDT""}]",True,ARKUSDT
+IGNIS,IGNIS,,Ignis,,,196.0,IGNIS,ignis,,17.6,,,"[{""base"": ""IGNIS"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+YOU,YOU,,YOU COIN,,,197.0,YOU,you-coin,,17.4,,,"[{""base"": ""YOU"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+DRG,DRG,,Dragon Coins,,,198.0,DRG,dragon-coins,,17.3,,,"[{""base"": ""DRG"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+EDC,EDC,,EDC Blockchain,,,199.0,EDC,edc-blockchain,,17.3,,,"[{""base"": ""EDC"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,
+TRUE,TRUE,,TrueChain,,,200.0,TRUE,truechain,197.0,17.2,,,"[{""base"": ""TRUE"", ""fac"": 1, ""until"": null, ""spot"": null, ""perp"": null}]",False,

@@ -260,13 +260,13 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(520px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(7,1fr);width:min(560px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
 .tabbar a[aria-current="page"]{color:var(--tint);background:var(--tint-bg);font-weight:600}
-@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.66rem;letter-spacing:-.01em;border-radius:18px}}   /* 6 voci: etichette intere anche a 360 px */
-@media (max-width:380px){.tabbar a{font-size:.62rem}}
+@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.62rem;letter-spacing:-.02em;border-radius:18px}.tabbar svg{width:21px;height:21px}}   /* 7 voci (Scanner dal 25/11): etichette intere anche a 360 px */
+@media (max-width:380px){.tabbar{padding:4px;width:calc(100% - 12px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.58rem;letter-spacing:-.03em}}
 
 /* grafici */
 .chart{height:330px}
@@ -690,6 +690,33 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
 .opLine .opTag{padding:4px 8px;font-size:.66rem}
 .opLine .plV small{color:var(--label3);font-size:.76rem}
 @media (max-width:700px){#opSec>.sh small{display:none}}
+/* Scanner (pagina a sé, radar/scanner.py): TRX sulla carta con il cancello di BTC e stato settimanale di W3.2 sulle altcoin. Solo informativa */
+#scBody,#trxBody{display:grid;min-width:0}
+.scWarn{font-weight:500}
+.scTag{display:inline-flex;align-items:center;justify-content:center;font:700 .68rem/1 var(--font);letter-spacing:.04em;padding:5px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);white-space:nowrap;text-transform:uppercase}
+.scTag.long{--c:var(--green)} .scTag.short{--c:var(--red)} .scTag.flat,.scTag.nd{--c:var(--label2)} .scTag.nuovo{--c:var(--tint)} .scTag.uscita{--c:var(--orange)} .scTag.carta{--c:var(--orange);text-transform:none;letter-spacing:0;font-weight:600}
+.scHead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px} .scHead b{font:600 1rem/1.3 var(--font);letter-spacing:-.01em}
+.scTiles{margin-top:14px;grid-template-columns:repeat(var(--n,4),minmax(0,1fr))}
+@media (max-width:560px){.scTiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.scTiles>div{background:var(--card2);box-shadow:none} .scTiles small{overflow-wrap:anywhere}
+.scCond{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.scCond span{font-size:.76rem;padding:4px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:var(--label2);white-space:nowrap}
+.scCond span.ok{color:var(--green)} .scCond span.no{color:var(--red)}
+.scNew{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.scNew span{font:600 .78rem var(--font);padding:5px 10px;border-radius:999px;background:var(--tint-bg);color:var(--tint)}
+.scNew span.x{background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)}
+.scTools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 4px}
+.scTools input{flex:1 1 140px;min-width:0;font:500 .84rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+.scTools .seg button{padding:6px 11px;font-size:.76rem}
+table.grid.scT{font-size:.8rem;width:auto;min-width:100%} table.grid.scT td{padding:8px 9px} table.grid.scT th{padding:6px 9px;cursor:pointer;-webkit-user-select:none;user-select:none}
+table.grid.scT th[aria-sort]{color:var(--tint)}
+table.grid.scT td:first-child,table.grid.scT th:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
+table.grid.scT td:first-child{background:color-mix(in srgb,var(--label) 4%,var(--card))}
+table.grid.scT tr.nuovo td{background:var(--tint-bg)} table.grid.scT tr.nuovo td:first-child{background:color-mix(in srgb,var(--tint) 16%,var(--card))}
+table.grid.scT td small{display:block;color:var(--label3);font-size:.68rem;margin-top:1px;white-space:normal;max-width:130px;margin-left:auto}
+table.grid.scT td:first-child small{margin-left:0;max-width:none;white-space:nowrap}
+table.grid.scT .tk{font-weight:600}
+@media (max-width:700px){#scSec>.sh small{display:none}}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
@@ -708,6 +735,7 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
   <symbol id="i-graf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5v3M7 15.5v4M17 4.5v4M17 15.5v3"/><rect x="4.8" y="6.5" width="4.4" height="9" rx="1.4"/><rect x="14.8" y="8.5" width="4.4" height="7" rx="1.4"/></g></symbol>
   <symbol id="i-fed" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5l8-5 8 5M4.5 19.5h15M6.5 10v7M10.2 10v7M13.8 10v7M17.5 10v7"/></g></symbol>
   <symbol id="i-opz" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18.5h16"/><path d="M5 16.5c3.5 0 5-9 7-9s3.5 9 7 9"/><path d="M12 7.5V4"/></g></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20"/><path d="M7.5 12l2-2.5 1.8 1.5 2.2-3"/></g></symbol>
   <symbol id="i-warn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/></g><circle cx="12" cy="17" r="1.1" fill="currentColor"/></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
@@ -719,6 +747,7 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
     <a href="#opzioni" data-v="opzioni"><svg><use href="#i-opz"/></svg>Opzioni</a>
+    <a href="#scanner" data-v="scanner"><svg><use href="#i-scan"/></svg>Scanner</a>
     <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
     <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
@@ -793,6 +822,16 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
       <div class="sh">Opzioni · W3.2 a rischio definito <small id="opSub"></small></div>
       <div class="opPaper" id="opPaper"><svg><use href="#i-warn"/></svg><span><b>Operatività sulla carta: nessun ordine viene inviato.</b> Radar segue l'opzione su un registro con i prezzi pubblici di OKX; comprare o vendere resta una decisione manuale.</span></div>
       <div id="opBody"></div>
+    </div>
+  </div>
+
+<!-- ============ SCANNER (solo informativa): TRX sulla carta con il cancello di BTC e stato settimanale di W3.2 sulle altcoin (report.trx_carta, report.scanner, radar/scanner.py) ============ -->
+  <div class="view" id="v-scanner" hidden>
+    <div class="section" id="scSec">
+      <div class="sh">Scanner · W3.2 fuori da BTC ed ETH <small id="scSub"></small></div>
+      <div class="opPaper scWarn" id="scWarn"><svg><use href="#i-warn"/></svg><span><b>Pagina informativa.</b> Lo studio del 25/11/2026 (lezione 123) mostra che scegliere gli asset con un buon passato non funziona: non è un segnale per mettere capitale.</span></div>
+      <div id="trxBody"></div>
+      <div id="scBody"></div>
     </div>
   </div>
 
@@ -943,6 +982,7 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
   <a href="#opzioni" data-v="opzioni"><svg><use href="#i-opz"/></svg>Opzioni</a>
+  <a href="#scanner" data-v="scanner"><svg><use href="#i-scan"/></svg>Scanner</a>
   <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
   <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
@@ -1433,6 +1473,111 @@ function qxLine(U, px) {
     (P && P.risultato != null ? `<span><b class="${cls(P.risultato)}">${sg(P.risultato)}</b></span>` : Q ? `<span>${Q.quantita.contratti} contratti · ${px(Q.quantita.spesa)}</span>` : "") +
     `</span><span class="more"><span>Opzioni </span>›</span>`;
   L.hidden = false;
+})();
+
+// ---- Scanner (pagina a sé): report.trx_carta (TRX sulla carta, registro dal 25/11/2026) e report.scanner (stato settimanale di W3.2
+// sulle crypto dello studio w32_asset2), radar/scanner.py. Solo informativa: nessun ordine, nessun avviso, nessun effetto su W3.2.
+(function renderScanner() {
+  const e = escS, T = R.trx_carta, S = R.scanner;
+  const dIt = d => d ? new Date(String(d).slice(0, 10) + "T00:00:00Z").toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }) : "–";
+  const p5 = x => x == null ? "–" : nfIT(x, x >= 100 ? 2 : x >= 1 ? 4 : 5);
+  const tag = (k, t) => `<span class="scTag ${k}">${e(t || k)}</span>`;
+  const tile = (k, v, s, c) => `<div><span>${k}</span><b class="${c || ""}">${v}</b>${s ? `<small>${s}</small>` : ""}</div>`;
+  const cls = x => x == null ? "" : x >= 0 ? "pos" : "neg";
+  const sg$ = x => x == null ? "–" : (x > 0 ? "+" : "") + usd(x);
+  const condChips = c => !c ? "" : `<div class="scCond">` +
+    `<span class="${c.px_sma > 0 ? "ok" : "no"}">prezzo ${c.px_sma > 0 ? "sopra" : "sotto"} la SMA 40w</span>` +
+    `<span class="${c.ema20 > 0 ? "ok" : "no"}">EMA 20 in ${c.ema20 > 0 ? "salita" : "discesa"}</span>` +
+    `<span class="${c.flow == null ? "" : c.flow > 0 ? "ok" : "no"}">flusso perp ${c.flow == null ? "n.d." : nfIT(c.flow, 2)}</span>` +
+    `<span class="${c.macd ? "ok" : "no"}">MACD ${c.macd ? "sopra segnale e zero" : "non ripartito"}${c.f1 ? "" : " · filtro attivo"}</span>` +
+    `<span>regime ${e(c.regime)}</span></div>`;
+  // ---- Blocco 1 · TRX sulla carta
+  let h = "";
+  if (!T || !T.stato) {
+    h = `<div class="card"><div class="scHead"><b>TRX sulla carta · W3.2 con il cancello di BTC</b>${tag("carta", "sulla carta: nessun capitale, nessun ordine")}</div>` +
+      `<p class="opNote">Registro di TRX non disponibile in questo aggiornamento${T && T.dati && T.dati.nota ? ": " + e(T.dati.nota) : "."}</p></div>`;
+  } else {
+    const st = T.stato, c = st.cond || {}, pe = st.pending;
+    const lato = pe && pe.tipo === "enter" ? pe.verso : st.lato;
+    const statoTxt = pe && pe.tipo === "enter" ? `segnale ${e(pe.verso)} del ${dIt(pe.segnale)}: ingresso all'apertura di lunedì` :
+      pe && pe.tipo === "exit" ? `uscita decisa il ${dIt(pe.segnale)} (${e(pe.motivo || "")}): all'apertura di lunedì` :
+      st.lato !== "flat" ? `dal ${dIt(st.ingresso)} a ${p5(st.prezzo_in)} · trailing ${p5(st.trailing)}` : e(st.perche || "");
+    h = `<div class="card"><div class="scHead">${tag(lato || "flat", (lato || "flat").toUpperCase())}<b>TRX sulla carta · W3.2 con il cancello di BTC</b>${tag("carta", T.nota)}</div>` +
+      `<p class="opNote" style="margin-top:8px">${statoTxt}</p>` +
+      `<div class="tiles scTiles" style="--n:4">` +
+      tile("TRX", p5(st.prezzo), `chiusura del ${dIt(st.data)}`) +
+      tile("Cancello · W3.2 su BTC", e(st.btc), `domenica ${dIt(st.domenica)}`) +
+      tile("Capitale sulla carta", usd(T.capitale_ora), `da ${usd(T.capitale)} il ${dIt(T.inizio)} · ${sg$(T.risultato_usd)} (${pct(T.risultato_pct, 1)})`, cls(T.risultato_usd)) +
+      tile("Operazioni chiuse", nfIT(T.chiuse, 0), T.chiuse < 3 ? "meno di 3: il registro non basta per giudicare" : "") + `</div>` +
+      condChips(c);
+    const OP = T.operazioni || [];
+    h += `<div class="opH">Registro dal ${dIt(T.inizio)}</div>` + (OP.length ? `<div class="scroll"><table class="grid opT"><tr><th>Verso</th><th>Segnale</th><th>Ingresso</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Risultato</th><th>Su 10.000 $</th></tr>` +
+      OP.slice().reverse().map(r => `<tr><td>${e(r.verso)}</td><td>${dIt(r.segnale)}</td><td>${dIt(r.ingresso)}</td><td>${p5(r.prezzo_in)}</td><td>${r.uscita ? dIt(r.uscita) : "aperta"}</td><td>${r.uscita ? p5(r.prezzo_out) : p5(r.ultimo) + "<small>ultimo</small>"}</td>` +
+        `<td>${e(r.motivo || "")}${r.nota ? `<small>${e(r.nota)}</small>` : ""}</td><td class="${cls(r.pnl_pct)}">${pct(r.pnl_pct, 2)}</td><td class="${cls(r.esito_usd)}">${sg$(r.esito_usd)}</td></tr>`).join("") + `</table></div>`
+      : `<p class="opNote" style="margin-top:0">Registro vuoto: la prima riga nasce al primo ingresso di TRX con W3.2 su BTC nello stesso verso. Ci si aspettano 1–3 operazioni in 12 mesi.</p>`);
+    const F = T.rif || {}, V = T.valutazioni || [];
+    h += `<p class="opNote">Prezzi con slittamento 0,1% (long in spot, short in perp con esposizione al rischio 25% allo stop); risultato sul capitale di carta, commissioni e funding inclusi.</p>` +
+      `<p class="opNote"><b>Riferimento storico</b> (${e(F.nota || "backtest")}): dal ${dIt(F.dal).slice(3)} ${usd(F.fin)} da $10.000, DD ${pct(F.dd, 1)}, ${F.n} trade, WR ${F.wr}%; senza i due migliori ${usd(F.senza_due_migliori)}.</p>` +
+      `<p class="opNote"><b>Valutazioni</b>: ${V.map(v => `${v.cosa} il ${dIt(v.data)} (fra ${nfIT(v.giorni, 0)} giorni)`).join(" · ")}. Operazioni, risultato, DD, confronto con BTC ed ETH nello stesso periodo; la decisione spetta all'utente.</p>` +
+      `<details class="opMore" style="margin-top:8px"><summary>Regole fissate il 25/11/2026</summary><ol class="opRules">${(T.regole || []).map(r => `<li>${e(r)}</li>`).join("")}</ol></details>` +
+      ((T.dati || {}).ritardo ? `<p class="opNote"><b class="neg">${e(T.dati.nota || "dati non aggiornati")}</b></p>` : `<p class="opNote">Dati fino al ${dIt(T.dati_fino)} · aggiornato ${e(String(T.aggiornato || "").replace("T", " ").replace("+00:00", ""))} UTC.</p>`) + `</div>`;
+  }
+  $("trxBody").innerHTML = h;
+  // ---- Blocco 2 · Scanner settimanale
+  const B = $("scBody");
+  if (!S || !S.righe || !S.righe.length) {
+    B.innerHTML = `<div class="card" style="margin-top:12px"><p class="opNote" style="margin:0">Scanner non disponibile in questo aggiornamento${S && S.dati && S.dati.nota ? ": " + e(S.dati.nota) : "."}</p></div>`;
+    return;
+  }
+  const C = S.conteggi || {}, D = S.dati || {}, RW = S.righe;
+  const byT = Object.fromEntries(RW.map(r => [r.t, r]));
+  let g = `<div class="card" style="margin-top:12px"><div class="scHead"><b>Scanner settimanale · W3.2 con i parametri di BTC</b>${tag("nd", "chiusura del " + dIt(S.settimana))}</div>` +
+    `<div class="tiles scTiles" style="--n:4">` + tile("Long", nfIT(C.long, 0), `su ${S.n} monete`, "pos") + tile("Short", nfIT(C.short, 0), "", "neg") +
+    tile("Flat", nfIT(C.flat, 0), C.nd ? `${C.nd} non calcolabili` : "") + tile("W3.2 su BTC", e(S.btc || "–"), "riferimento per la concordanza") + `</div>`;
+  const chip = (t, x) => `<span class="${x || ""}">${e(t)} ${byT[t] && byT[t].lato ? (x ? "↦ flat" : byT[t].lato) : ""}</span>`;
+  g += `<div class="opH">Ingressi nuovi della settimana</div>` + ((S.nuovi || []).length ? `<div class="scNew">${S.nuovi.map(t => chip(t)).join("")}</div>` : `<p class="opNote" style="margin-top:0">Nessun ingresso nuovo.</p>`) +
+    ((S.uscite || []).length ? `<div class="opH">Uscite della settimana</div><div class="scNew">${S.uscite.map(t => chip(t, "x")).join("")}</div>` : "");
+  g += `<div class="scTools"><div class="hscroll"><div class="seg" id="scSeg" role="group" aria-label="Filtro">` +
+    [["tutte", "Tutte"], ["long", "Long"], ["short", "Short"], ["flat", "Flat"], ["nuovi", "Nuovi"]].map(([k, l], i) => `<button type="button" data-f="${k}" aria-pressed="${i === 0}">${l}</button>`).join("") +
+    `</div></div><input id="scQ" type="search" placeholder="Cerca moneta" aria-label="Cerca moneta" autocomplete="off"></div>`;
+  const COLS = [["t", "Moneta"], ["lato", "Stato"], ["sett", "Sett."], ["dsma", "Prezzo/SMA 40w"], ["ema20", "EMA 20"], ["flow", "Flusso perp"], ["macd", "MACD"], ["trail", "Trailing"], ["btc", "vs BTC"], ["qc", "Criteri 1–5"], ["dd", "DD"], ["wr", "WR"], ["p", "p placebo"], ["q4", "Con cancello"]];
+  g += `<div class="scroll"><table class="grid scT" id="scT"></table></div>` +
+    `<p class="opNote">Stato alla chiusura della domenica (UTC) con le decisioni di quel giorno applicate: un segnale della domenica conta già come posizione (ingresso all'apertura di lunedì). ` +
+    `Criteri dello studio (W3.2 da sola dal suo inizio): 1 CAGR/DD sopra il buy &amp; hold · 2 DD ≥ −35% · 3 WR ≥ 60% · 4 IS e OOS positivi · 5 ≥ 8 trade; p = placebo (2.000 prove). "Con cancello" = criteri passati entrando solo con BTC nello stesso verso (Q4); solo TRX li passa davvero. Brevi = meno di 3 anni di storia: solo descrittivo.</p>` +
+    `<p class="opNote">Dati: Binance (spot e perp USDT-M con taker buy, funding), OKX o Bitget per il funding del mese in corso · finestra ${nfIT(S.finestra_giorni, 0)} giorni · calcolato ${e(String(S.calcolato || "").replace("T", " ").replace("+00:00", ""))} UTC` +
+    (D.richieste != null ? ` · ${nfIT(D.richieste, 0)} richieste, ${nfIT(D.secondi, 0)} s` : "") + `.` +
+    (D.ritardo || S.provvisorio ? ` <b class="neg">${e(D.nota || "risultato provvisorio")}</b>` : "") + ((D.errori || []).length ? ` Dati non aggiornati per: ${e(D.errori.join(", "))}.` : "") + `</p></div>`;
+  B.innerHTML = g;
+  const val = (r, k) => { const c = r.cond || {}, q = (r.q || {}).q1, q4 = (r.q || {}).q4;
+    return { t: r.t, lato: r.lato || "~", sett: r.sett, dsma: c.dsma, ema20: c.ema20, flow: c.flow, macd: c.macd == null ? null : +c.macd, trail: r.trail, btc: r.btc || "",
+      qc: q ? q.c : null, dd: q ? q.dd : null, wr: q ? q.wr : null, p: q ? q.p : null, q4: q4 ? q4.c : null }[k]; };
+  const st = { f: "tutte", q: "", k: "rk", dir: 1 };
+  const row = r => { const c = r.cond || {}, q = (r.q || {}).q1, q4 = (r.q || {}).q4, nuovo = r.evento === "ingresso";
+    const stato = r.lato == null ? tag("nd", "n.d.") + `<small>${e(r.nd || "")}</small>` : tag(r.lato, r.lato) + (nuovo ? ` ${tag("nuovo", "nuovo")}` : r.evento === "uscita" ? ` ${tag("uscita", "uscita")}` : "") +
+      (r.evento === "uscita" && r.motivo ? `<small>${e(r.motivo)}</small>` : r.ing ? `<small>dal ${dIt(r.ing).slice(0, 5)}</small>` : "");
+    return `<tr class="${nuovo ? "nuovo" : ""}"><td><span class="tk">${e(r.t)}</span><small>${r.rk ? "#" + r.rk + " · " : ""}${e(r.cl === "breve" ? "breve" : "")}${r.bg ? " Bitget" : ""}${r.ok ? " OKX" : ""}</small></td>` +
+      `<td>${stato}</td><td>${r.lato && r.lato !== "flat" ? nfIT(r.sett, 0) : "–"}</td>` +
+      `<td class="${cls(c.dsma)}">${c.dsma == null ? "–" : pct(c.dsma, 1)}</td><td class="${c.ema20 == null ? "" : c.ema20 > 0 ? "pos" : "neg"}">${c.ema20 == null ? "–" : c.ema20 > 0 ? "salita" : "discesa"}</td>` +
+      `<td class="${cls(c.flow)}">${c.flow == null ? "–" : nfIT(c.flow, 2)}</td><td>${c.macd == null ? "–" : c.macd ? "ok" : "no"}${c.f1 === false ? "<small>filtro attivo</small>" : ""}</td>` +
+      `<td>${r.trail == null ? "–" : p5(r.trail)}${r.mv != null ? `<small class="${cls(r.mv)}">${pct(r.mv, 1)}</small>` : ""}</td><td>${e(r.btc || "–")}</td>` +
+      `<td>${q ? `${q.c}/5` + (q.f ? `<small>manca ${e(q.f)}</small>` : "") : "–"}</td><td>${q ? pct(q.dd, 1) : "–"}</td><td>${q && q.wr != null ? nfIT(q.wr, 0) + "%" : "–"}</td>` +
+      `<td>${q && q.p != null ? nfIT(q.p, 4) : "–"}</td><td>${q4 ? `${q4.c}/5${q4.ok ? " ✓" : ""}` : "–"}</td></tr>`; };
+  const draw = () => {
+    let rs = RW.filter(r => st.f === "tutte" ? true : st.f === "nuovi" ? r.evento === "ingresso" : r.lato === st.f)
+      .filter(r => !st.q || (r.t + " " + (r.n || "")).toLowerCase().includes(st.q));
+    if (st.k !== "rk") rs = rs.slice().sort((a, b) => { const x = val(a, st.k), y = val(b, st.k);
+      if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
+      return (typeof x === "string" ? x.localeCompare(y) : x - y) * st.dir; });
+    $("scT").innerHTML = `<tr>${COLS.map(([k, l]) => `<th data-k="${k}"${st.k === k ? ` aria-sort="${st.dir > 0 ? "ascending" : "descending"}"` : ""}>${l}${st.k === k ? (st.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr>` +
+      (rs.length ? rs.map(row).join("") : `<tr><td colspan="${COLS.length}">Nessuna moneta con questo filtro.</td></tr>`);
+  };
+  draw();
+  $("scSeg").addEventListener("click", ev => { const b = ev.target.closest("button"); if (!b) return; st.f = b.dataset.f;
+    $("scSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(); });
+  $("scQ").addEventListener("input", ev => { st.q = ev.target.value.trim().toLowerCase(); draw(); });
+  $("scT").addEventListener("click", ev => { const th = ev.target.closest("th"); if (!th) return; const k = th.dataset.k;
+    if (st.k === k) { st.dir = -st.dir; if (st.dir > 0) st.k = "rk"; } else { st.k = k; st.dir = 1; } draw(); });
+  $("scSub").textContent = `informativa · settimana chiusa il ${dIt(S.settimana)}`;
 })();
 
 // ---- pre-analisi della prossima chiusura settimanale (report.preview, radar/preview.py): stima con i dati di oggi,
@@ -2130,13 +2275,13 @@ function startLive() {
 }
 startLive();
 
-// ---- sezioni: Oggi · Posizioni · Opzioni · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
+// ---- sezioni: Oggi · Posizioni · Opzioni · Scanner · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
 const BOOK_ON = false;   // true = riattiva la sezione Book (voce di menu e #book); false = nessuna voce, #book porta a Oggi e la pagina non apre connessioni
 // true = riattiva la pagina Liquidazioni (radar/pages/liquidazioni.html: voce di menu dopo Grafico e #liquidazioni); false = nessuna voce,
 // #liquidazioni porta a Grafico, la pagina resta nel codice ma non si inizializza e non apre connessioni. Le liquidazioni mostrate sono
 // quelle della mappa unica (report.livelli) in Oggi e in Grafico; la pagina, se riaccesa, le ricalcola nel browser con dati live.
 const LIQ_ON = false;
-const VIEWS = ["oggi", "posizioni", "opzioni", "grafico", "movimenti", "notizie", "metodo"].concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
+const VIEWS = ["oggi", "posizioni", "opzioni", "scanner", "grafico", "movimenti", "notizie", "metodo"].concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
 const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
 const PAGE_OF = Object.assign({}, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
 const viewEl = v => $("v-" + v) || (v === "book" ? $("book") : null);   // la pagina Book può usare id "book" o "v-book"

@@ -1,0 +1,300 @@
+ticker,spot,perp,funding
+BTC,binance spot BTCUSDT 2018-06-01..2026-11-24,binance perp BTCUSDT 2020-01-01..2026-11-24,binance funding BTCUSDT 2020-01-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ETH,binance spot ETHUSDT 2018-06-01..2026-11-24,binance perp ETHUSDT 2020-01-01..2026-11-24,binance funding ETHUSDT 2020-01-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BNB,binance spot BNBUSDT 2018-06-01..2026-11-24,binance perp BNBUSDT 2020-02-10..2026-11-24,binance funding BNBUSDT 2020-02-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+XRP,binance spot XRPUSDT 2018-06-01..2026-11-24,binance perp XRPUSDT 2020-01-06..2026-11-24,binance funding XRPUSDT 2020-01-06..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+SOL,binance spot SOLBUSD (BUSD~USD) 2020-04-10..2023-12-15 | binance spot SOLUSDT 2020-08-11..2026-11-24,binance perp SOLUSDT 2020-09-14..2026-11-24,binance funding SOLUSDT 2020-09-13..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+TRX,binance spot TRXUSDT 2018-06-11..2026-11-24,binance perp TRXUSDT 2020-01-15..2026-11-24,binance funding TRXUSDT 2020-01-15..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+HYPE,binance spot HYPEUSDT 2026-09-24..2026-11-24,binance perp HYPEUSDT 2025-05-30..2026-11-24,binance funding HYPEUSDT 2025-05-30..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ZEC,binance spot ZECUSDT 2019-03-21..2026-11-24,binance perp ZECUSDT 2020-02-05..2026-11-24,binance funding ZECUSDT 2020-02-04..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+XMR,binance spot XMRUSDT 2019-03-15..2024-02-20,binance perp XMRUSDT 2020-02-03..2026-11-23,binance funding XMRUSDT 2020-02-01..2026-10-31
+DOGE,binance spot DOGEUSDT 2019-07-05..2026-11-24,binance perp DOGEUSDT 2020-07-10..2026-11-24,binance funding DOGEUSDT 2020-07-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+LEO,okx spot (senza tbv) 2020-01-01..2026-11-24,,
+LINK,binance spot LINKUSDT 2019-01-16..2026-11-24,binance perp LINKUSDT 2020-01-17..2026-11-24,binance funding LINKUSDT 2020-01-17..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+WBT,,,
+ADA,binance spot ADAUSDT 2018-06-01..2026-11-24,binance perp ADAUSDT 2020-01-31..2026-11-24,binance funding ADAUSDT 2020-01-19..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+XLM,binance spot XLMUSDT 2018-06-01..2026-11-24,binance perp XLMUSDT 2020-01-20..2026-11-24,binance funding XLMUSDT 2020-01-19..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BCH,binance spot BCHABCUSDT 2018-11-16..2019-11-28 | binance spot BCHUSDT 2019-11-28..2026-11-24,binance perp BCHUSDT 2020-01-01..2026-11-24,binance funding BCHUSDT 2020-01-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+NEAR,binance spot NEARUSDT 2020-10-14..2026-11-24,binance perp NEARUSDT 2020-10-15..2026-11-24,binance funding NEARUSDT 2020-10-14..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+LTC,binance spot LTCUSDT 2018-06-01..2026-11-24,binance perp LTCUSDT 2020-01-09..2026-11-24,binance funding LTCUSDT 2020-01-09..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+CC,,binance perp CCUSDT 2025-10-31..2026-11-24,binance funding CCUSDT 2025-10-31..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+AVAX,binance spot AVAXUSDT 2020-09-22..2026-11-24,binance perp AVAXUSDT 2020-09-23..2026-11-24,binance funding AVAXUSDT 2020-09-22..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+UNI,binance spot UNIUSDT 2020-09-17..2026-11-24,binance perp UNIUSDT 2020-09-18..2026-11-24,binance funding UNIUSDT 2020-09-17..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+TON,binance spot TONUSDT 2024-08-08..2026-06-30,binance perp TONUSDT 2024-03-01..2026-06-23,binance funding TONUSDT 2024-03-01..2026-06-23
+SUI,binance spot SUIUSDT 2023-05-03..2026-11-24,binance perp SUIUSDT 2023-05-03..2026-11-23,binance funding SUIUSDT 2023-05-03..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+HBAR,binance spot HBARUSDT 2019-09-29..2026-11-24,binance perp HBARUSDT 2021-03-17..2026-11-24,binance funding HBARUSDT 2021-03-17..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+TAO,bitget spot TAOUSDT (senza tbv) 2023-03-30..2024-04-10 | binance spot TAOUSDT 2024-04-11..2026-11-24,binance perp TAOUSDT 2024-04-11..2026-11-24,binance funding TAOUSDT 2024-04-11..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+QNT,binance spot QNTUSDT 2021-07-29..2026-11-24,binance perp QNTUSDT 2022-10-20..2026-11-24,binance funding QNTUSDT 2022-10-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+SHIB,binance spot SHIBUSDT 2021-05-10..2026-11-24,binance perp 1000SHIBUSDT 2021-05-10..2026-11-24,binance funding 1000SHIBUSDT 2021-05-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+CRO,okx spot (senza tbv) 2020-01-01..2026-11-24,okx swap (senza tbv) 2021-04-09..2026-11-24,okx funding (solo ~3 mesi) 2026-08-24..2026-11-25
+RAIN,,,
+M,,binance perp MUSDT 2025-07-07..2026-11-24,binance funding MUSDT 2025-07-07..2026-10-31
+OKB,okx spot (senza tbv) 2018-03-23..2026-11-24,okx swap (senza tbv) 2025-09-04..2026-11-24,okx funding (solo ~3 mesi) 2026-08-24..2026-11-25
+PEPE,binance spot PEPEUSDT 2023-05-05..2026-11-24,binance perp 1000PEPEUSDT 2023-05-05..2026-11-24,binance funding 1000PEPEUSDT 2023-05-05..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+AAVE,binance spot AAVEUSDT 2020-10-15..2026-11-24,binance perp AAVEUSDT 2020-10-16..2026-11-24,binance funding AAVEUSDT 2020-10-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BTW,,binance perp BTWUSDT 2026-06-04..2026-11-24,binance funding BTWUSDT 2026-06-04..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ONDO,binance spot ONDOUSDT 2025-04-11..2026-11-24,binance perp ONDOUSDT 2024-01-20..2026-11-24,binance funding ONDOUSDT 2024-01-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+HTX,,,
+WLFI,binance spot WLFIUSDT 2025-09-01..2026-11-24,binance perp WLFIUSDT 2025-08-23..2026-11-23,binance funding WLFIUSDT 2025-08-23..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ENA,binance spot ENAUSDT 2024-04-02..2026-11-24,binance perp ENAUSDT 2024-04-02..2026-11-24,binance funding ENAUSDT 2024-04-02..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ASTER,binance spot ASTERUSDT 2025-10-06..2026-11-24,binance perp ASTERUSDT 2025-09-19..2026-11-24,binance funding ASTERUSDT 2025-09-19..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+VVV,,binance perp VVVUSDT 2025-01-29..2026-11-24,binance funding VVVUSDT 2025-01-29..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+MNT,,,
+JST,binance spot JSTUSDT 2020-08-11..2026-11-24,binance perp JSTUSDT 2025-04-28..2026-11-24,binance funding JSTUSDT 2025-04-28..2026-10-31
+DOT,binance spot DOTUSDT 2020-08-18..2026-11-24,binance perp DOTUSDT 2020-08-22..2026-11-24,binance funding DOTUSDT 2020-08-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ICP,binance spot ICPUSDT 2021-05-11..2026-11-24,binance perp ICPUSDT 2021-05-11..2026-11-24,binance funding ICPUSDT 2022-09-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+MORPHO,binance spot MORPHOUSDT 2025-10-03..2026-11-24,binance perp MORPHOUSDT 2024-11-27..2026-11-24,binance funding MORPHOUSDT 2024-11-27..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BGB,,,
+SKY,binance spot SKYUSDT 2025-09-17..2026-11-24,binance perp SKYUSDT 2025-09-09..2026-11-24,binance funding SKYUSDT 2025-09-09..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ETC,binance spot ETCUSDT 2018-06-12..2026-11-24,binance perp ETCUSDT 2020-01-16..2026-11-24,binance funding ETCUSDT 2020-01-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+WLD,binance spot WLDUSDT 2023-07-24..2026-11-24,binance perp WLDUSDT 2023-07-24..2026-11-24,binance funding WLDUSDT 2023-07-24..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+PUMP,binance spot PUMPUSDT 2025-09-11..2026-11-24,binance perp PUMPUSDT 2025-04-12..2026-11-24,binance funding PUMPUSDT 2025-04-12..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+KCS,,,
+PIEVERSE,,binance perp PIEVERSEUSDT 2025-11-14..2026-11-24,binance funding PIEVERSEUSDT 2025-11-14..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+POL,binance spot MATICUSDT 2019-04-26..2024-09-10 | binance spot POLUSDT 2024-09-13..2026-11-24,binance perp MATICUSDT 2020-10-22..2024-09-04 | binance perp POLUSDT 2024-09-13..2026-11-24,binance funding MATICUSDT 2020-10-22..2024-09-04 | binance funding POLUSDT 2024-09-13..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+PEARL,,,
+NIGHT,binance spot NIGHTUSDT 2026-03-11..2026-11-24,binance perp NIGHTUSDT 2025-12-10..2026-11-24,binance funding NIGHTUSDT 2025-12-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ARB,binance spot ARBUSDT 2023-03-23..2026-11-24,binance perp ARBUSDT 2023-03-23..2026-11-24,binance funding ARBUSDT 2023-03-23..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+KAS,,binance perp KASUSDT 2023-11-17..2026-11-24,binance funding KASUSDT 2023-11-16..2026-10-31
+JUP,binance spot JUPUSDT 2024-01-31..2026-11-24,binance perp JUPUSDT 2024-01-31..2026-11-24,binance funding JUPUSDT 2024-02-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ALGO,binance spot ALGOUSDT 2019-06-22..2026-11-24,binance perp ALGOUSDT 2020-06-16..2026-11-24,binance funding ALGOUSDT 2020-06-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+RENDER,binance spot RNDRUSDT 2021-11-27..2024-07-22 | binance spot RENDERUSDT 2024-07-26..2026-11-24,binance perp RNDRUSDT 2023-02-03..2024-07-16 | binance perp RENDERUSDT 2024-07-26..2026-11-24,binance funding RNDRUSDT 2023-02-03..2024-07-16 | binance funding RENDERUSDT 2024-07-26..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ATOM,binance spot ATOMUSDT 2019-04-29..2026-11-24,binance perp ATOMUSDT 2020-02-07..2026-11-24,binance funding ATOMUSDT 2020-02-06..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+GT,,,
+NEXO,binance spot NEXOUSDT 2022-04-29..2026-11-24,,
+PI,okx spot (senza tbv) 2025-02-20..2026-11-24,okx swap (senza tbv) 2025-02-20..2026-11-24,okx funding (solo ~3 mesi) 2026-08-24..2026-11-25
+INJ,binance spot INJUSDT 2020-10-21..2026-11-24,binance perp INJUSDT 2022-08-17..2026-11-24,binance funding INJUSDT 2022-08-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+LIT,binance spot LITUSDT 2021-02-04..2025-02-10,binance perp LITUSDT 2021-02-18..2026-11-24,binance funding LITUSDT 2021-02-18..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BDX,,,
+XDC,,,
+STX,binance spot STXUSDT 2019-10-25..2026-11-24,binance perp STXUSDT 2023-02-21..2026-11-24,binance funding STXUSDT 2023-02-21..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+CAKE,binance spot CAKEUSDT 2021-02-19..2026-11-24,binance perp CAKEUSDT 2023-11-02..2026-11-24,binance funding CAKEUSDT 2023-11-02..2026-10-31
+ETHFI,binance spot ETHFIUSDT 2024-03-18..2026-11-24,binance perp ETHFIUSDT 2024-03-18..2026-11-24,binance funding ETHFIUSDT 2024-03-18..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+FIL,binance spot FILUSDT 2020-10-15..2026-11-24,binance perp FILUSDT 2020-10-16..2026-11-24,binance funding FILUSDT 2020-10-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+FLR,okx spot (senza tbv) 2023-01-10..2026-11-24,,
+DASH,binance spot DASHUSDT 2019-03-28..2026-11-24,binance perp DASHUSDT 2020-02-04..2026-11-24,binance funding DASHUSDT 2020-02-04..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+币安人生,binance spot 币安人生USDT 2026-01-07..2026-11-24,binance perp 币安人生USDT 2025-10-20..2026-11-24,binance funding 币安人生USDT 2025-10-20..2026-10-31
+STABLE,,binance perp STABLEUSDT 2025-11-06..2026-11-24,binance funding STABLEUSDT 2025-11-06..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+VET,binance spot VETUSDT 2018-07-25..2026-11-24,binance perp VETUSDT 2020-02-14..2026-11-23,binance funding VETUSDT 2020-02-14..2026-10-31
+ZRO,binance spot ZROUSDT 2024-06-20..2026-11-24,binance perp ZROUSDT 2024-06-20..2026-11-23,binance funding ZROUSDT 2024-06-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+PYTH,binance spot PYTHUSDT 2024-02-02..2026-11-24,binance perp PYTHUSDT 2023-11-22..2026-11-24,binance funding PYTHUSDT 2023-11-22..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+HASH,,,
+FF,binance spot FFUSDT 2025-09-29..2026-11-24,binance perp FFUSDT 2025-09-29..2026-11-24,binance funding FFUSDT 2025-09-29..2026-10-31
+DRV,,,
+KITE,binance spot KITEUSDT 2025-11-03..2026-11-24,binance perp KITEUSDT 2025-10-29..2026-11-24,binance funding KITEUSDT 2025-10-29..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+RAY,binance spot RAYUSDT 2021-08-10..2026-11-24,binance perp RAYUSDT 2021-08-20..2022-11-15 | binance perp RAYSOLUSDT 2024-12-10..2026-11-24,binance funding RAYUSDT 2021-08-19..2022-11-15 | binance funding RAYSOLUSDT 2024-12-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+APT,binance spot APTUSDT 2022-10-19..2026-11-24,binance perp APTUSDT 2022-10-19..2026-11-24,binance funding APTUSDT 2022-10-18..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+TIA,binance spot TIAUSDT 2023-10-31..2026-11-24,binance perp TIAUSDT 2023-10-31..2026-11-24,binance funding TIAUSDT 2023-10-31..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+AERO,binance spot AEROUSDT 2026-07-17..2026-11-24,binance perp AEROUSDT 2024-12-04..2026-11-24,binance funding AEROUSDT 2024-12-04..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BTTC,binance spot BTTUSDT 2019-02-01..2022-01-17 | binance spot BTTCUSDT 2022-01-25..2026-11-24,binance perp BTTUSDT 2021-04-06..2022-01-14 | binance perp 1000BTTCUSDT 2022-01-26..2022-04-11,binance funding BTTUSDT 2021-04-06..2022-01-14 | binance funding 1000BTTCUSDT 2022-01-26..2022-04-11
+APEPE,,,
+BSV,,binance perp BSVUSDT 2023-10-20..2026-11-24,binance funding BSVUSDT 2023-10-20..2026-10-31
+SUN,binance spot SUNUSDT 2020-09-21..2026-11-24,binance perp SUNUSDT 2024-08-22..2026-11-24,binance funding SUNUSDT 2024-08-22..2026-10-31
+CRV,binance spot CRVUSDT 2020-08-15..2026-11-24,binance perp CRVUSDT 2020-09-01..2026-11-24,binance funding CRVUSDT 2020-09-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+PENGU,binance spot PENGUUSDT 2024-12-17..2026-11-24,binance perp PENGUUSDT 2024-12-17..2026-11-24,binance funding PENGUUSDT 2024-12-17..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+UB,,binance perp UBUSDT 2025-09-12..2026-11-23,binance funding UBUSDT 2025-09-12..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+GRASS,,binance perp GRASSUSDT 2024-11-08..2026-11-24,binance funding GRASSUSDT 2024-11-08..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+LUNC,binance spot LUNAUSDT 2020-08-21..2022-05-12 | binance spot LUNCUSDT 2022-09-09..2026-11-24,binance perp LUNAUSDT 2021-01-28..2022-05-12 | binance perp 1000LUNCUSDT 2022-09-09..2026-11-24,binance funding LUNAUSDT 2021-01-28..2022-05-12 | binance funding 1000LUNCUSDT 2022-09-09..2026-10-31
+SPX,,binance perp SPXUSDT 2024-12-10..2026-11-23,binance funding SPXUSDT 2024-12-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+FET,binance spot FETUSDT 2019-02-28..2026-11-24,binance perp FETUSDT 2023-01-17..2026-11-24,binance funding FETUSDT 2023-01-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+TRUMP,binance spot TRUMPUSDT 2025-01-19..2026-11-24,binance perp TRUMPUSDT 2025-01-18..2026-11-24,binance funding TRUMPUSDT 2025-01-18..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+VIRTUAL,binance spot VIRTUALUSDT 2025-04-11..2026-11-24,binance perp VIRTUALUSDT 2024-12-10..2026-11-24,binance funding VIRTUALUSDT 2024-12-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+XTZ,binance spot XTZUSDT 2019-09-24..2026-11-24,binance perp XTZUSDT 2020-02-06..2026-11-23,binance funding XTZUSDT 2020-02-04..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+STRK,binance spot STRKUSDT 2024-02-20..2026-11-24,binance perp STRKUSDT 2024-02-20..2026-11-24,binance funding STRKUSDT 2024-02-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+OZO,,,
+GNO,binance spot GNOUSDT 2021-08-30..2026-11-24,,
+XPL,binance spot XPLUSDT 2025-09-25..2026-11-24,binance perp XPLUSDT 2025-08-22..2026-11-24,binance funding XPLUSDT 2025-08-22..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+OHM,,,
+SEI,binance spot SEIUSDT 2023-08-15..2026-11-24,binance perp SEIUSDT 2023-08-17..2026-11-24,binance funding SEIUSDT 2023-08-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+PENDLE,binance spot PENDLEUSDT 2023-07-03..2026-11-24,binance perp PENDLEUSDT 2023-07-28..2026-11-24,binance funding PENDLEUSDT 2023-07-25..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BP,,,
+LDO,binance spot LDOUSDT 2022-05-09..2026-11-24,binance perp LDOUSDT 2022-09-22..2026-11-24,binance funding LDOUSDT 2022-09-22..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BONK,binance spot BONKUSDT 2023-12-15..2026-11-24,binance perp 1000BONKUSDT 2023-11-22..2026-11-24,binance funding 1000BONKUSDT 2023-11-22..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BTSE,,,
+DCR,binance spot DCRUSDT 2020-07-30..2026-11-24,,
+KAIA,binance spot KAIAUSDT 2024-10-31..2026-11-24,binance perp KAIAUSDT 2024-12-04..2026-11-24,binance funding KAIAUSDT 2024-12-04..2026-10-31
+NFT,okx spot (senza tbv) 2021-11-11..2026-11-24,,
+SHFL,,,
+GRT,binance spot GRTUSDT 2020-12-17..2026-11-24,binance perp GRTUSDT 2020-12-19..2026-11-24,binance funding GRTUSDT 2020-12-19..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+COMP,binance spot COMPUSDT 2020-06-25..2026-11-24,binance perp COMPUSDT 2020-06-30..2026-11-24,binance funding COMPUSDT 2020-06-30..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+KOGE,,,
+ZBCN,okx spot (senza tbv) 2024-04-16..2026-11-24,,
+CFX,binance spot CFXUSDT 2021-03-29..2026-11-24,binance perp CFXUSDT 2023-02-20..2026-11-24,binance funding CFXUSDT 2023-02-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+RUNE,binance spot RUNEUSDT 2020-09-04..2026-11-24,binance perp RUNEUSDT 2020-09-04..2026-11-24,binance funding RUNEUSDT 2020-09-04..2026-10-31
+BEAMX,binance spot BEAMXUSDT 2023-11-14..2026-11-24,binance perp BEAMXUSDT 2023-11-17..2026-11-24,binance funding BEAMXUSDT 2023-11-17..2026-10-31
+OP,binance spot OPUSDT 2022-06-01..2026-11-24,binance perp OPUSDT 2022-06-01..2026-11-24,binance funding OPUSDT 2022-06-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+FLOKI,binance spot FLOKIUSDT 2023-05-05..2026-11-24,binance perp 1000FLOKIUSDT 2023-05-06..2026-11-24,binance funding 1000FLOKIUSDT 2023-05-06..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+JASMY,binance spot JASMYUSDT 2021-11-22..2026-11-24,binance perp JASMYUSDT 2022-04-20..2026-11-24,binance funding JASMYUSDT 2022-04-19..2026-10-31
+DGAI,,okx swap (senza tbv) 2026-09-03..2026-11-24,okx funding (solo ~3 mesi) 2026-09-03..2026-11-25
+AR,binance spot ARUSDT 2021-05-14..2026-11-24,binance perp ARUSDT 2021-09-28..2026-11-24,binance funding ARUSDT 2021-09-27..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+GOMINING,,,
+CAP,,binance perp CAPUSDT 2026-06-27..2026-11-24,binance funding CAPUSDT 2026-06-27..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+CARDS,okx spot (senza tbv) 2026-06-25..2026-11-24,,
+IOTA,binance spot IOTAUSDT 2018-06-01..2026-11-24,binance perp IOTAUSDT 2020-02-12..2026-11-24,binance funding IOTAUSDT 2020-02-12..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ENS,binance spot ENSUSDT 2021-11-10..2026-11-24,binance perp ENSUSDT 2021-11-30..2026-11-24,binance funding ENSUSDT 2021-11-29..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ZAMA,binance spot ZAMAUSDT 2026-02-02..2026-11-24,binance perp ZAMAUSDT 2026-01-09..2026-11-23,binance funding ZAMAUSDT 2026-01-09..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+SENT,binance spot SENTUSDT 2026-01-22..2026-11-24,binance perp SENTUSDT 2025-11-14..2026-11-24,binance funding SENTUSDT 2025-11-14..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+AKT,,binance perp AKTUSDT 2024-11-18..2026-11-24,binance funding AKTUSDT 2024-11-18..2026-10-31
+KMNO,binance spot KMNOUSDT 2025-05-06..2026-11-24,binance perp KMNOUSDT 2024-12-20..2026-11-24,binance funding KMNOUSDT 2024-12-20..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+GEOD,,,
+MX,,,
+THETA,binance spot THETAUSDT 2019-04-10..2026-11-24,binance perp THETAUSDT 2020-05-27..2026-11-24,binance funding THETAUSDT 2020-05-26..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+MON,,binance perp MONUSDT 2025-10-10..2026-11-24,binance funding MONUSDT 2025-10-10..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BORG,,,
+JTO,binance spot JTOUSDT 2023-12-07..2026-11-24,binance perp JTOUSDT 2023-12-08..2026-11-24,binance funding JTOUSDT 2023-12-08..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+TWT,binance spot TWTUSDT 2021-01-27..2026-11-24,binance perp TWTUSDT 2023-11-03..2026-11-24,binance funding TWTUSDT 2023-11-03..2026-10-31
+A,binance spot EOSUSDT 2018-06-01..2025-05-26 | binance spot AUSDT 2025-05-28..2026-11-24,binance perp EOSUSDT 2020-01-08..2025-05-21 | binance perp AUSDT 2025-05-28..2026-11-24,binance funding EOSUSDT 2020-01-08..2025-05-21 | binance funding AUSDT 2025-05-28..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+HT,,,
+NEO,binance spot NEOUSDT 2018-06-01..2026-11-24,binance perp NEOUSDT 2020-02-17..2026-11-24,binance funding NEOUSDT 2020-02-17..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+MIN,,,
+999,,,
+HEDG,,,
+MKR,binance spot MKRUSDT 2020-07-23..2025-09-15,binance perp MKRUSDT 2020-08-13..2025-09-08,binance funding MKRUSDT 2020-08-13..2025-09-08
+ONT,binance spot ONTUSDT 2018-06-08..2026-11-24,binance perp ONTUSDT 2020-02-11..2026-11-24,binance funding ONTUSDT 2020-02-11..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+XEM,binance spot XEMUSDT 2020-11-24..2024-06-17,binance perp XEMUSDT 2021-03-03..2024-12-09,binance funding XEMUSDT 2021-03-03..2024-12-09
+BAT,binance spot BATUSDT 2019-03-04..2026-11-24,binance perp BATUSDT 2020-02-13..2026-11-24,binance funding BATUSDT 2020-02-13..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+INO,,,
+FTT,binance spot FTTUSDT 2019-12-20..2026-11-24,binance perp FTTUSDT 2022-04-15..2022-11-14,binance funding FTTUSDT 2022-04-14..2022-11-14
+SNX,binance spot SNXUSDT 2020-07-09..2026-11-24,binance perp SNXUSDT 2020-08-14..2026-11-24,binance funding SNXUSDT 2020-08-14..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+INB,,,
+QTUM,binance spot QTUMUSDT 2018-06-01..2026-11-24,binance perp QTUMUSDT 2020-02-20..2026-11-24,binance funding QTUMUSDT 2020-03-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+THR,,,
+THX,,,
+ZRX,binance spot ZRXUSDT 2019-02-28..2026-11-24,binance perp ZRXUSDT 2020-06-24..2026-11-24,binance funding ZRXUSDT 2020-06-24..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+RVN,binance spot RVNUSDT 2019-09-25..2026-11-24,binance perp RVNUSDT 2021-02-23..2026-11-24,binance funding RVNUSDT 2021-02-23..2026-10-31
+PZM,,,
+CNX,,,
+HOT,binance spot HOTUSDT 2019-02-18..2026-11-24,binance perp HOTUSDT 2021-03-30..2026-11-24,binance funding HOTUSDT 2021-03-30..2026-10-31
+CENNZ,,,
+REP,binance spot REPUSDT 2020-06-12..2022-12-22,,
+WAVES,binance spot WAVESUSDT 2019-01-18..2024-06-17,binance perp WAVESUSDT 2020-08-12..2024-06-11,binance funding WAVESUSDT 2020-08-12..2024-06-11
+SEELE,,,
+BTG,binance spot BTGUSDT 2021-04-16..2022-10-24,,
+OMG,binance spot OMGUSDT 2019-04-03..2024-06-17,binance perp OMGUSDT 2020-07-02..2025-01-31,binance funding OMGUSDT 2020-07-01..2025-01-31
+ZB,,,
+XNO,binance spot NANOUSDT 2019-04-03..2022-01-24 | binance spot XNOUSDT 2022-01-28..2026-11-24,,
+XIN,,,
+ABBC,,,
+MOF,,,
+CCA,,,
+FST,,,
+LSK,binance spot LSKUSDT 2020-02-06..2026-11-24,binance perp LSKUSDT 2024-01-25..2026-11-24,binance funding LSKUSDT 2024-01-25..2026-10-31
+DGB,binance spot DGBUSDT 2020-07-20..2026-11-24,binance perp DGBUSDT 2021-04-21..2024-04-01,binance funding DGBUSDT 2021-04-20..2024-04-01
+BTM,,,
+SXP,binance spot SXPUSDT 2020-07-20..2026-04-01,binance perp SXPUSDT 2020-07-21..2025-12-05,binance funding SXPUSDT 2020-07-21..2025-12-05
+ENJ,binance spot ENJUSDT 2019-04-18..2026-11-24,binance perp ENJUSDT 2020-09-29..2026-11-24,binance funding ENJUSDT 2020-09-29..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+BCD,,,
+FAB,,,
+MCO,binance spot MCOUSDT 2019-11-19..2020-10-23,,
+GAP,,,
+EON,,,
+KMD,binance spot KMDUSDT 2020-08-11..2025-07-04,,
+ZEN,binance spot ZENUSDT 2020-07-06..2026-11-24,binance perp ZENUSDT 2020-11-24..2026-11-23,binance funding ZENUSDT 2020-11-24..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+IOST,binance spot IOSTUSDT 2019-03-22..2026-11-24,binance perp IOSTUSDT 2020-02-21..2026-11-24,binance funding IOSTUSDT 2020-02-21..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ICX,binance spot ICXUSDT 2018-06-13..2026-09-03,binance perp ICXUSDT 2020-09-15..2026-08-26,binance funding ICXUSDT 2020-09-14..2026-08-26
+VSYS,,,
+XVG,binance spot XVGUSDT 2021-06-06..2026-11-24,binance perp XVGUSDT 2023-07-05..2026-11-24,binance funding XVGUSDT 2023-07-04..2026-10-31
+SC,binance spot SCUSDT 2020-07-06..2026-11-24,binance perp SCUSDT 2021-04-12..2022-06-17,binance funding SCUSDT 2021-04-12..2022-06-17
+BXK,,,
+NOAH,,,
+EKT,,,
+BCN,,,
+MONA,,,
+NRG,,,
+HC,binance spot HCUSDT 2019-09-25..2020-11-10,,
+BRZE,,,
+MB,,,
+STEEM,binance spot STEEMUSDT 2022-04-22..2026-11-24,binance perp STEEMUSDT 2023-11-08..2026-11-24,binance funding STEEMUSDT 2023-11-08..2026-10-31
+ZIL,binance spot ZILUSDT 2019-02-19..2026-11-24,binance perp ZILUSDT 2020-06-18..2026-11-24,binance funding ZILUSDT 2020-06-17..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+DX,,,
+QC,,,
+SLV,,,
+BOTX,,,
+BTS,binance spot BTSUSDT 2020-02-06..2023-12-07,binance perp BTSUSDT 2021-02-01..2022-08-18,binance funding BTSUSDT 2021-02-01..2022-08-18
+FXC,,,
+ARDR,binance spot ARDRUSDT 2020-05-15..2026-07-10,,
+AE,,,
+XET,,,
+JUL,,,
+LA,,,okx funding (solo ~3 mesi) 2026-08-24..2026-11-25
+ETN,,,
+STRAX,binance spot STRATUSDT 2020-02-19..2020-11-12 | binance spot STRAXUSDT 2020-11-18..2026-11-24,binance perp STRAXUSDT 2023-10-11..2024-03-15,binance funding STRAXUSDT 2023-10-10..2024-03-15
+MANA,binance spot MANAUSDT 2020-08-06..2026-11-24,binance perp MANAUSDT 2021-03-15..2026-11-24,binance funding MANAUSDT 2021-03-15..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+DGD,,,
+VIC,binance spot TOMOUSDT 2019-08-24..2023-11-20 | binance spot VICUSDT 2023-11-24..2026-08-17,binance perp TOMOUSDT 2020-10-12..2023-11-14 | binance perp VICUSDT 2025-03-12..2026-08-07,binance funding TOMOUSDT 2020-10-12..2023-11-14 | binance funding VICUSDT 2025-03-12..2026-08-07
+BCZERO,,,
+CRPT,,,
+SOLVE,,,
+NEX,,,
+BF,,,
+BTMX,,,
+KNC,binance spot KNCUSDT 2020-06-12..2026-11-24,binance perp KNCUSDT 2020-06-22..2026-11-24,binance funding KNCUSDT 2020-06-22..2026-10-31
+SNT,binance spot SNTUSDT 2023-05-19..2025-04-16,binance perp SNTUSDT 2023-11-02..2024-05-13,binance funding SNTUSDT 2023-11-02..2024-05-13
+CSC,,,
+MAID,,,
+BNK,,,
+RIF,binance spot RIFUSDT 2021-01-07..2026-11-24,binance perp RIFUSDT 2023-10-21..2026-11-24,binance funding RIFUSDT 2023-10-21..2026-10-31
+CCC,,,
+ECOREAL,,,
+RLC,binance spot RLCUSDT 2019-11-14..2026-11-24,binance perp RLCUSDT 2020-07-31..2026-11-24,binance funding RLCUSDT 2020-07-31..2026-10-31
+PUNDIX,binance spot NPXSUSDT 2019-08-13..2021-04-05 | binance spot PUNDIXUSDT 2021-04-09..2026-11-24,binance perp PUNDIXUSDT 2025-04-30..2026-11-24,binance funding PUNDIXUSDT 2025-04-30..2026-10-31
+DGTX,,,
+GRIN,,,
+ENG,,,
+NET,,,okx funding (solo ~3 mesi) 2026-08-24..2026-11-25
+ETP,,,
+VLX,,,
+GLM,binance spot GLMUSDT 2023-03-17..2026-11-24,binance perp GLMUSDT 2024-02-22..2026-11-24,binance funding GLMUSDT 2024-02-22..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+ADK,,,
+BTC2,,,
+BEAM,binance spot BEAMUSDT 2019-09-21..2023-01-26,,
+CHZ,binance spot CHZUSDT 2019-09-06..2026-11-24,binance perp CHZUSDT 2021-01-21..2026-11-24,binance funding CHZUSDT 2021-01-01..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+GNY,,,
+ELF,binance spot ELFUSDT 2021-09-08..2025-04-16,,
+FIRO,binance spot XZCUSDT 2020-04-07..2021-01-25 | binance spot FIROUSDT 2021-01-29..2025-04-16,,
+REN,binance spot RENUSDT 2019-09-25..2024-12-10,binance perp RENUSDT 2020-10-13..2024-12-03,binance funding RENUSDT 2020-10-13..2024-12-03
+GXC,,,
+JWL,,,
+DTR,,,
+HPT,,,
+ELA,,,
+PLC,,,
+RCN,,,
+BRD,,,
+BZ,,,okx funding (solo ~3 mesi) 2026-08-24..2026-11-25
+AGVC,,,
+HYN,,,
+WICC,,,
+VEST,,,
+VERI,,,
+FUN,binance spot FUNUSDT 2019-08-27..2026-04-23,binance perp FUNUSDT 2025-03-31..2026-04-15,binance funding FUNUSDT 2025-03-31..2026-04-15
+AION,binance spot AIONUSDT 2020-02-19..2023-02-27,,
+S,binance spot FTMUSDT 2019-06-11..2025-01-13 | binance spot SUSDT 2025-01-16..2026-11-24,binance perp FTMUSDT 2020-09-24..2025-01-06 | binance perp SUSDT 2025-01-16..2026-11-24,binance funding FTMUSDT 2020-09-23..2025-01-06 | binance funding SUSDT 2025-01-16..2026-10-31 | okx funding (mese non archiviato da Binance) 2026-11-01..2026-11-24
+DCN,,,
+QBIT,,,
+R,,,
+LRC,binance spot LRCUSDT 2020-06-12..2026-04-01,binance perp LRCUSDT 2020-10-19..2026-03-24,binance funding LRCUSDT 2020-10-19..2026-03-24
+NAS,,,
+PPT,,,
+RDD,,,
+TNT,,,
+LAMB,,,
+IOTX,binance spot IOTXUSDT 2019-11-14..2026-11-24,binance perp IOTXUSDT 2021-08-12..2026-11-24,binance funding IOTXUSDT 2021-08-11..2026-10-31
+DPT,,,
+BNT,binance spot BNTUSDT 2020-02-06..2026-11-24,binance perp BNTUSDT 2023-08-10..2026-11-24,binance funding BNTUSDT 2021-01-01..2026-10-31
+DIVI,,,
+OXEN,,,
+BHD,,,
+WIN,binance spot WINUSDT 2019-08-01..2026-11-24,,
+ILC,,,
+WAN,binance spot WANUSDT 2019-08-27..2026-04-23,,
+NULS,binance spot NULSUSDT 2018-07-23..2025-04-16,binance perp NULSUSDT 2024-08-26..2025-04-14,binance funding NULSUSDT 2024-08-26..2025-04-14
+XMX,,,
+XAC,,,
+NEW,,,
+ARK,binance spot ARKUSDT 2023-09-22..2026-11-24,binance perp ARKUSDT 2023-09-19..2026-11-24,binance funding ARKUSDT 2023-09-19..2026-10-31
+IGNIS,,,
+YOU,,,
+DRG,,,
+EDC,,,
+TRUE,,,

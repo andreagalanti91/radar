@@ -1,0 +1,501 @@
+Rank,Name,Symbol,marketcap,price (USD),country
+1,Apple,AAPL,5145409617920,354.07,United States
+2,NVIDIA,NVDA,3751960903680,155.38,United States
+3,Microsoft,MSFT,3684357898240,496.13,United States
+4,Alphabet (Google),GOOG,3400274280448,276.58,United States
+5,Amazon,AMZN,2728046362624,252.29,United States
+6,TSMC,TSM,1811116457984,349.2,Taiwan
+7,SpaceX,SPCX,1708633620480,125.81,United States
+8,Saudi Aramco,2222.SR,1694383352182,7.00426,Saudi Arabia
+9,Tesla,TSLA,1520546873344,384.68,United States
+10,Meta Platforms (Facebook),META,1507722133504,589.82,United States
+11,Broadcom,AVGO,1437244456960,301.08,United States
+12,Eli Lilly,LLY,1253803819008,1407.59,United States
+13,Berkshire Hathaway,BRK-B,1226293772288,577.21,United States
+14,Anthropic,ANT,1094794870784,81.905,United States
+15,Walmart,WMT,1049713967104,132.31,United States
+16,JPMorgan Chase,JPM,842093821952,317.1,United States
+17,Samsung,005930.KS,828305505816,127.198,South Korea
+18,Visa,V,777628155904,416.78,United States
+19,Micron Technology,MU,712559034368,629.79,United States
+20,AMD,AMD,683988942848,413.27,United States
+21,Johnson & Johnson,JNJ,665525026816,276.46,United States
+22,Exxon Mobil,XOM,645455347712,158.23,United States
+23,Mastercard,MA,564034273280,647.44,United States
+24,SK Hynix,000660.KS,541228387552,767.511,South Korea
+25,AbbVie,ABBV,530779799552,300.28,United States
+26,ASML,ASML,514941222912,1336.06,Netherlands
+27,China Construction Bank,601939.SS,494512003482,1.89033,China
+28,Costco,COST,483768729600,1091.71,United States
+29,Coca-Cola,KO,419951706112,97.62,United States
+30,Agricultural Bank of China,601288.SS,418285495274,1.19516,China
+31,Chevron,CVX,407285170176,208.73,United States
+32,Procter & Gamble,PG,399748038656,172.47,United States
+33,Tencent,TCEHY,394109790000,43.63,China
+34,Roche,RO.SW,392714226623,492.885,Switzerland
+35,Palantir,PLTR,388362797056,161.18,United States
+36,Cisco,CSCO,370550702080,93.99,United States
+37,Bank of China,601988.SS,362840910639,1.12609,China
+38,CXMT,688825.SS,357254420048,5.04489,China
+39,Home Depot,HD,352930365440,353.69,United States
+40,Merck,MRK,349004857344,141.57,United States
+41,ICBC,1398.HK,347573024496,0.975216,China
+42,Oracle,ORCL,341389017088,109.5,United States
+43,Bank of America,BAC,335074164736,48.56,United States
+44,General Electric,GE,328636923904,318.03,United States
+45,UnitedHealth,UNH,306332205056,341.88,United States
+46,Novartis,NVS,291622387712,154.41,Switzerland
+47,Intel,INTC,291261972480,54.8,United States
+48,Palo Alto Networks,PANW,289804779520,352.99,United States
+49,Philip Morris International,PM,286714691584,183.95,United States
+50,AstraZeneca,AZN,284128116736,183.2,United Kingdom
+51,HSBC,HSBC,280263000064,82.03,United Kingdom
+52,Kweichow Moutai,600519.SS,276819072169,221.441,China
+53,Nestlé,NESN.SW,265372620691,103.169,Switzerland
+54,Morgan Stanley,MS,263826161664,168.79,United States
+55,RTX,RTX,263586217984,195.33,United States
+56,Shell,SHEL,263487602688,93.42,United Kingdom
+57,Royal Bank Of Canada,RY,261837225984,189.13,Canada
+58,Thermo Fisher Scientific,TMO,257738244096,695.62,United States
+59,L'Oréal,OR.PA,257206915402,482.28,France
+60,Applied Materials,AMAT,256935116800,323.76,United States
+61,Amgen,AMGN,256356892672,473.935,United States
+62,Caterpillar,CAT,247389143040,540.63,United States
+63,Toyota,TM,246421815296,209.97,Japan
+64,Lam Research,LRCX,245037383680,196.16,United States
+65,Wells Fargo,WFC,243720241152,81.19,United States
+66,Netflix,NFLX,241739415552,58.87,United States
+67,SAP,SAP,240940138496,208.75,Germany
+68,Linde,LIN,237268271104,516.83,United Kingdom
+69,Texas Instruments,TXN,236154798080,258.44,United States
+70,Goldman Sachs,GS,232484061184,806.02,United States
+71,IBM,IBM,222689361920,235.62,United States
+72,Gilead Sciences,GILD,221139959808,178.29,United States
+73,Mitsubishi UFJ Financial,MUFG,219203846144,19.47,Japan
+74,PetroChina,0857.HK,218874614648,1.1959,China
+75,China Mobile,0941.HK,217409785855,10.0264,China
+76,CrowdStrike,CRWD,217311592448,210.86,United States
+77,Arista Networks,ANET,212959100928,168.56,United States
+78,Siemens,SIE.DE,212871671996,278.55,Germany
+79,LVMH,MC.PA,211826443775,431.744,France
+80,Alibaba,BABA,211110051840,84.86,China
+81,Walt Disney,DIS,209250713600,122.51,United States
+82,American Express,AXP,206952464384,308.63,United States
+83,Reliance Industries,RELIANCE.NS,200057667013,14.7835,India
+84,Inditex,ITX.MC,198649134277,63.7716,Spain
+85,McDonald,MCD,198113787904,280.7,United States
+86,Verizon,VZ,195459252224,47.16,United States
+87,Pepsico,PEP,194435891200,142.68,United States
+88,GE Vernova,GEV,190739546112,720.65,United States
+89,Toronto Dominion Bank,TD,188956360704,115.71,Canada
+90,Citigroup,C,188445032448,113.85,United States
+91,Dell,DELL,187742781440,295.28,United States
+92,Commonwealth Bank,CBA.AX,186639825837,111.618,Australia
+93,TotalEnergies,TTE,186636926976,85.2,France
+94,International Holding Company,IHC.AE,186398329929,84.98,United Arab Emirates
+95,Allianz SE,ALV.DE,186260737132,498.031,Germany
+96,Abbott Laboratories,ABT,182529327104,105.39,United States
+97,Amphenol,APH,181416624128,73.47,United States
+98,Welltower,WELL,179837124608,245.14,United States
+99,Novo Nordisk,NVO,177615732736,40.31,Denmark
+100,Nextera Energy,NEE,177390157824,84.58,United States
+101,T-Mobile US,TMUS,177216307200,167.3,United States
+102,BlackRock,BLK,176973873152,1146.03,United States
+103,BHP Group,BHP,176912203776,69.61,Australia
+104,QUALCOMM,QCOM,176507207680,164.96,United States
+105,MediaTek,2454.TW,175527292233,109.902,Taiwan
+106,KLA,KLAC,174140915712,133.65,United States
+107,Arm Holdings,ARM,172869189632,161.56,United Kingdom
+108,Union Pacific Corporation,UNP,172825837568,290.83,United States
+109,Shopify,SHOP,170219716608,132.31,Canada
+110,CM Bank,3968.HK,169541618645,6.72255,China
+111,China Shenhua Energy,601088.SS,168755659462,7.78055,China
+112,Airbus,AIR.PA,167150831823,211.814,Netherlands
+113,Fast Retailing,9983.T,166051789001,541.133,Japan
+114,Iberdrola,IBE.MC,165917300510,24.9945,Spain
+115,Carvana,CVNA,165649350656,65.96,United States
+116,Santander,SAN,165523652608,11.49,Spain
+117,Deere &amp; Company (John Deere),DE,165485297664,613.76,United States
+118,Pfizer,PFE,162217836544,28.46,United States
+119,Charles Schwab,SCHW,162089385984,93.91,United States
+120,Sony,SONY,161967177728,27.79,Japan
+121,Danaher,DHR,161171865600,229.09,United States
+122,ConocoPhillips,COP,159189598208,134.64,United States
+123,Salesforce,CRM,159052972032,193.26,United States
+124,TJX Companies,TJX,158242258944,143.86,United States
+125,Anheuser-Busch Inbev,BUD,157668147200,80.07,Belgium
+126,AT&T,T,154130513920,22.88,United States
+127,Analog Devices,ADI,151644766208,312.95,United States
+128,Intuitive Surgical,ISRG,150602825728,434.46,United States
+129,Ping An Insurance,601318.SS,149206838382,8.23999,China
+130,China Life Insurance,601628.SS,148958143623,5.27011,China
+131,Recruit,6098.T,148262069577,106.883,Japan
+132,Blackstone Group,BX,147322470400,119.35,United States
+133,Prosus,PRX.AS,147162425977,33.6797,Netherlands
+134,Schneider Electric,SU.PA,145333471435,247.32,France
+135,CATL,300750.SZ,144802164314,31.2934,China
+136,DBS Group,D05.SI,144208556337,50.7062,Singapore
+137,Chubb,CB,143421079552,375.37,Switzerland
+138,Hermès,RMS.PA,143139723390,1368.41,France
+139,Bharti Airtel,BHARTIARTL.NS,143010803704,22.9204,India
+140,Vertex Pharmaceuticals,VRTX,142974959616,563.92,United States
+141,Sumitomo Mitsui Financial Group,SMFG,141973012480,22.47,Japan
+142,HDFC Bank,HDB,141784317952,27.56,India
+143,ABB,ABBN.SW,141196243638,78.2494,Switzerland
+144,Unilever,UL,140464144384,65.23,United Kingdom
+145,Deutsche Telekom,DTE.DE,140308035224,29.3371,Germany
+146,Rolls-Royce Holdings,RR.L,139379954550,17.0333,United Kingdom
+147,Hitachi,6501.T,138096967155,31.1417,Japan
+148,Jio Platforms Limited,JPL.NS,137787632757,14.9622,India
+149,Accenture,ACN,137240133632,232.32,Ireland
+150,UBS,UBS,136816058368,45.15,Switzerland
+151,Progressive,PGR,136152326144,235.68,United States
+152,Lockheed Martin,LMT,135514251264,586.63,United States
+153,Safran,SAF.PA,135172559897,327.171,France
+154,Banco Bilbao Vizcaya Argentaria,BBVA,132335968256,24.26,Spain
+155,Uber,UBER,132110802944,64.7,United States
+156,S&P Global,SPGI,131953786880,455.17,United States
+157,Air Liquide,AI.PA,131319479344,205.776,France
+158,Boeing,BA,129636876288,163.59,United States
+159,Lowe's Companies,LOW,129625915392,231.04,United States
+160,ICICI Bank,IBN,128964001792,35.9,India
+161,Interactive Brokers,IBKR,127293972480,74.71,United States
+162,Bristol-Myers Squibb,BMY,126774206464,62.02,United States
+163,AppLovin,APP,126270119936,381.11,United States
+164,CNOOC,0883.HK,125262474257,2.63544,China
+165,British American Tobacco,BTI,125030711296,58.24,United Kingdom
+166,Sanofi,SNY,124622938112,51.9,France
+167,McKesson,MCK,124472672256,1078.09,United States
+168,Altria Group,MO,124458352640,74.82,United States
+169,PDD Holdings (Pinduoduo),PDD,124148645888,87.22,China
+170,UniCredit,UCG.MI,124113485445,82.8375,Italy
+171,Eaton,ETN,124036390912,319.27,Ireland
+172,Prologis,PLD,123789541376,127.32,United States
+173,Investor AB,INVE-B.ST,123720181886,40.3824,Sweden
+174,Stryker Corporation,SYK,123374338048,324.08,United States
+175,Spotify,SPOT,123261837312,599.74,Sweden
+176,Medtronic,MDT,122963525632,96.13,Ireland
+177,Automatic Data Processing,ADP,122687283200,310.79,United States
+178,Starbucks,SBUX,121283829760,106.38,United States
+179,Bank of Communications,601328.SS,121264377305,1.37233,China
+180,Compagnie Financière Richemont,CFR.SW,120990704908,205.787,Switzerland
+181,Rio Tinto,RIO,119043342336,73.19,United Kingdom
+182,Marvell Technology,MRVL,118382206976,131.57,United States
+183,Foxconn Industrial Internet,601138.SS,118018150071,5.94727,China
+184,China Yangtze Power,600900.SS,117414518672,4.79865,China
+185,Southern Copper,SCCO,116773191680,136.85,United States
+186,Mitsubishi Corporation,8058.T,115877508150,31.6315,Japan
+187,Parker-Hannifin,PH,114273951744,906.24,United States
+188,State Bank of India,SBIN.NS,113767555958,12.325,India
+189,Zurich Insurance Group,ZURN.SW,113629943748,760.732,Switzerland
+190,Mizuho Financial Group,MFG,113485553664,9.4,Japan
+191,Bank of Montreal,BMO,111736078336,160.75,Canada
+192,Keyence,6861.T,111598957366,92.0309,Japan
+193,Tokyo Electron,8035.T,111231047066,49.1397,Japan
+194,Seagate Technology,STX,110758641664,482.48,Ireland
+195,CME Group,CME,110691057664,309.25,United States
+196,BP,BP,110160642048,42.77,United Kingdom
+197,Southern Company,SO,109568606208,94.11,United States
+198,Capital One,COF,109094060032,181.36,United States
+199,Booking Holdings (Booking.com),BKNG,109056352256,146.64,United States
+200,BNP Paribas,BNP.PA,108233290894,98.753,France
+201,Midea,000333.SZ,107852404936,14.1347,China
+202,Siemens Energy,ENR.F,107738168641,126.624,Germany
+203,Advantest,6857.T,107676187538,149.115,Japan
+204,Postal Savings Bank of China,601658.SS,107649534799,0.896369,China
+205,Intesa Sanpaolo,ISP.MI,107607134277,6.21965,Italy
+206,Marriott International,MAR,107181056000,416.23,United States
+207,Sinopec,600028.SS,105276622326,0.872346,China
+208,Tokio Marine,8766.T,105220284875,3.75283,Japan
+209,Scotiabank,BNS,103758987264,85.13,Canada
+210,Newmont,NEM,103597170688,99.69,United States
+211,Airbnb,ABNB,103469129728,173.39,United States
+212,CVS Health,CVS,103240777728,80.69,United States
+213,Enbridge,ENB,103063789568,46.24,Canada
+214,Cloudflare,NET,102962511872,287.29,United States
+215,Western Digital,WDC,102545866752,273.95,United States
+216,Enel,ENEL.MI,102266823109,10.3085,Italy
+217,Regeneron Pharmaceuticals,REGN,102112346112,987.09,United States
+218,Duke Energy,DUK,102110601216,130.96,United States
+219,BYD,002594.SZ,101915149661,11.1783,China
+220,Marsh & McLennan Companies,MRSH,101360640000,213.16,United States
+221,Petrobras,PBR,100983218176,15.67,Brazil
+222,GSK plc,GSK,100914864128,50.07,United Kingdom
+223,HCA Healthcare,HCA,100638138368,481.77,United States
+224,AXA,CS.PA,100301701936,49.5734,France
+225,Itōchū Shōji,8001.T,97971776347,14.2427,Japan
+226,Tata Consultancy Services,TCS.NS,97798969118,27.0306,India
+227,Intercontinental Exchange,ICE,97738752000,174.89,United States
+228,BNY Mellon (Bank of New York Mellon),BNY,97718321152,145.22,United States
+229,Fortinet,FTNT,97349042176,132.5,United States
+230,Waste Management,WM,97305239552,244.71,United States
+231,Equinix,EQIX,97282752512,982.77,United States
+232,Marathon Petroleum,MPC,96703774720,355.16,United States
+233,3M,MMM,96700768256,187.14,United States
+234,Al Rajhi Bank,1120.SR,96668444705,16.1114,Saudi Arabia
+235,SoftBank Group Corp.,9984.T,96509544935,16.9336,Japan
+236,AIA,1299.HK,96272106294,9.34396,Hong Kong
+237,CIBC (Canadian Imperial Bank of Commerce),CM,95996018688,105.73,Canada
+238,Snowflake,SNOW,95640551424,271.09,United States
+239,ServiceNow,NOW,95218499584,91.74,United States
+240,General Dynamics,GD,94997143552,351.55,United States
+241,United Parcel Service,UPS,94368350208,110.83,United States
+242,Phillips 66,PSX,92427640832,236.95,United States
+243,CSX Corporation,CSX,92317392896,50.08,United States
+244,Moderna,MRNA,92002713600,227.38,United States
+245,Equinor,EQNR,91965759488,38.88,Norway
+246,OCBC Bank,O39.SI,91802550088,20.4203,Singapore
+247,Zijin Mining,601899.SS,91707545402,3.44885,China
+248,Canadian Natural Resources,CNQ,91133116416,44.78,Canada
+249,Waters Corporation,WAT,90832003072,462.17,United States
+250,Valero Energy,VLO,90545405952,324.67,United States
+251,U.S. Bancorp,USB,90485186560,58.07,United States
+252,Adobe,ADBE,90325532672,232.08,United States
+253,Comcast,CMCSA,90124533760,25.38,United States
+254,Cintas,CTAS,89643671552,225.76,United States
+255,Quanta Services,PWR,88845279232,589.64,United States
+256,Sandisk,SNDK,88731639808,77.95,United States
+257,Trane Technologies,TT,88540979200,404.49,Ireland
+258,Brookfield Corporation,BN,87879884800,39.48,Canada
+259,EssilorLuxottica,EL.PA,87819484796,191.588,France
+260,Corning,GLW,87750934528,101.87,United States
+261,Motorola Solutions,MSI,87640219648,530.08,United States
+262,Foxconn (Hon Hai Precision Industry),2317.TW,87629965798,6.22626,Taiwan
+263,Simon Property Group,SPG,86998507520,229.83,United States
+264,CaixaBank,CABK.MC,86897665264,12.5246,Spain
+265,PNC Financial Services,PNC,86743605248,218.62,United States
+266,Xiaomi,XIACF,86178029568,3.35,China
+267,Ecolab,ECL,86142877696,307.14,United States
+268,Emerson,EMR,86119227392,156.98,United States
+269,Constellation Energy,CEG,86087827456,244.84,United States
+270,Cambricon Technologies,688256.SS,85723638950,136.317,China
+271,KKR & Co.,KKR,85465407488,93.09,United States
+272,ING,ING,85403516928,30.14,Netherlands
+273,NTT (Nippon Telegraph &amp; Telephone),9432.T,85174744305,1.05501,Japan
+274,Sherwin-Williams,SHW,85174288384,352.56,United States
+275,Royal Caribbean Group,RCL,85127970816,318.27,United States
+276,Mondelez International,MDLZ,84823826432,67.01,United States
+277,American Tower,AMT,84789886976,182.83,United States
+278,Elevance Health,ELV,84514586624,391.17,United States
+279,Dior,CDI.PA,84462619719,468.169,France
+280,Howmet Aerospace,HWM,83842736128,210.84,United States
+281,Moody's,MCO,83694649344,485.4,United States
+282,National Grid,NGG,82733801472,82.29,United Kingdom
+283,Delta Electronics,2308.TW,82627035427,31.8097,Taiwan
+284,Monster Beverage,MNST,82548277248,42.17,United States
+285,Williams Companies,WMB,82513362944,66.0,United States
+286,Johnson Controls,JCI,82251366400,137.04,Ireland
+287,Mitsui Bussan,8031.T,82162682851,29.151,Japan
+288,The Travelers Companies,TRV,82156847104,400.87,United States
+289,TAQA,TAQA.AE,81434161761,0.72,United Arab Emirates
+290,Cadence Design Systems,CDNS,81380818944,296.6,United States
+291,Brookfield Asset Management,BAM,81172209664,50.8,Canada
+292,Hilton Worldwide,HLT,81062789120,364.32,United States
+293,Munich RE (Münchener Rück),MUV2.DE,80756864337,641.873,Germany
+294,CPKC (Canadian Pacific Kansas City),CP,80712073216,92.82,Canada
+295,Illinois Tool Works,ITW,80641753088,283.75,United States
+296,Westpac Banking,WBC.AX,79991410183,23.4211,Australia
+297,Target,TGT,79708454912,176.06,United States
+298,CITIC Bank,601998.SS,79705543610,1.43239,China
+299,Synopsys,SNPS,79494709248,414.82,United States
+300,Agnico Eagle Mines,AEM,79097806848,156.46,Canada
+301,Colgate-Palmolive,CL,78887911424,99.24,United States
+302,Northrop Grumman,NOC,78254809088,550.84,United States
+303,Enterprise Products,EPD,77637779456,36.0,United States
+304,Warner Bros. Discovery,WBD,77595885568,30.95,United States
+305,Chugai Pharmaceutical,4519.T,77514911376,47.105,Japan
+306,Bajaj Finance,BAJFINANCE.NS,77388982927,12.2102,India
+307,Republic Services,RSG,76814884864,252.15,United States
+308,Sberbank,SBER.ME,76813346152,3.53,Russia
+309,O'Reilly Automotive,ORLY,76539510784,95.43,United States
+310,ANZ Bank,ANZ.AX,76404893253,25.375,Australia
+311,Grupo México,GMBXF,76295004160,9.75,Mexico
+312,EOG Resources,EOG,76004597760,146.59,United States
+313,Atlas Copco,ATCO-B.ST,75920215627,15.556,Sweden
+314,Canadian National Railway,CNI,75250352128,125.48,Canada
+315,National Australia Bank,NAB.AX,74465076134,23.9342,Australia
+316,ENI,E,74178510848,52.26,Italy
+317,Itaú Unibanco,ITUB,74068008960,6.72,Brazil
+318,Intuit,INTU,73771073536,279.42,United States
+319,Arthur J. Gallagher & Co.,AJG,73544957952,286.82,United States
+320,MercadoLibre,MELI,73526075392,1450.31,Argentina
+321,America Movil,AMX,73523011584,24.63,Mexico
+322,Suncor Energy,SU,73482641408,63.83,Canada
+323,Aon,AON,72740208640,342.86,United Kingdom
+324,ADNOC Gas,ADNOCGAS.AE,72722430827,0.95,United Arab Emirates
+325,Ross Stores,ROST,72554266624,226.18,United States
+326,The Cigna Group,CI,72463204352,275.0,United States
+327,Takeda Pharmaceutical,TAK,72204697600,22.6,Japan
+328,FedEx,FDX,72201322496,308.29,United States
+329,Zhongji Innolight,300308.SZ,71832899158,61.4096,China
+330,SoftBank Corp.,9434.T,71588145888,1.49397,Japan
+331,Norfolk Southern,NSC,71482015744,318.24,United States
+332,Vingroup Company,VIC.VN,71394406113,9.52085,Vietnam
+333,Honeywell,HON,71348543488,224.82,United States
+334,WuXi AppTec,2359.HK,71117646919,23.4332,China
+335,Generali,G.MI,71111434081,47.3966,Italy
+336,Merck KGaA,MRK.DE,70980749191,163.257,Germany
+337,BAE Systems,BA.L,70896288960,24.2604,United Kingdom
+338,Apollo Global Management,APO,70757441536,119.84,United States
+339,Barclays,BCS,70587916288,21.29,United Kingdom
+340,Lloyds Banking Group,LYG,70360227840,4.96,United Kingdom
+341,DoorDash,DASH,69812887552,160.13,United States
+342,Ferrari,RACE,69692825600,397.82,Italy
+343,Manulife Financial,MFC,69481431040,42.06,Canada
+344,General Motors,GM,69440987136,82.32,United States
+345,SLB (Schlumberger),SLB,69358632960,46.99,United States
+346,American Electric Power,AEP,69318205440,127.3,United States
+347,Kinder Morgan,KMI,69237391360,31.08,United States
+348,KIOXIA Holdings Corporation,285A.T,69200021374,43.2994,Japan
+349,Air Products and Chemicals,APD,68718727168,308.58,United States
+350,RELX,RELX,68537389056,39.54,United Kingdom
+351,Freeport-McMoRan,FCX,68489498624,47.73,United States
+352,ENGIE,ENGI.PA,68420225004,26.9306,France
+353,DHL Group (Deutsche Post),DHL.DE,68382410259,61.6058,Germany
+354,Glencore,GLCNF,68075491328,5.82,Switzerland
+355,Nongfu Spring,9633.HK,67542292599,6.00565,China
+356,Japan Post Bank,7182.T,67463931474,18.94,Japan
+357,Vinci,DG.PA,67242824393,122.238,France
+358,Vertiv Holdings,VRT,66931204096,173.82,United States
+359,Allstate,ALL,66907873280,270.39,United States
+360,Cencora,COR,66728443904,349.68,United States
+361,Kimberly-Clark,KMB,66706505728,108.7,United States
+362,Nintendo,7974.T,65898913409,56.4117,Japan
+363,First Abu Dhabi Bank,FAB.AE,65814027825,5.96,United Arab Emirates
+364,CSL,CSL.AX,65668377077,136.842,Australia
+365,W. W. Grainger,GWW,65447116800,1398.02,United States
+366,KDDI,9433.T,65200392850,17.6903,Japan
+367,Industrial Bank,601166.SS,65075440223,3.07498,China
+368,ASE Group,ASX,64748138496,29.33,Taiwan
+369,Cardinal Health,CAH,64637366272,279.65,United States
+370,TC Energy,TRP,64631218176,62.04,Canada
+371,Energy Transfer LP,ET,64338632704,18.68,United States
+372,NetEase,NTES,64303796224,100.43,China
+373,Boston Scientific,BSX,63979749376,44.14,United States
+374,United Rentals,URI,63754276864,1029.68,United States
+375,Digital Realty,DLR,63646695424,165.32,United States
+376,Delta Electronics (Thailand),DELTA.BK,63047205739,5.05436,Thailand
+377,Japan Tobacco,2914.T,62759944896,35.3492,Japan
+378,Shin-Etsu Chemical,4063.T,62623170396,34.4888,Japan
+379,Volvo Group,VOLV-A.ST,62434407512,30.7037,Sweden
+380,SK Square,402340.KS,62352123211,473.174,South Korea
+381,MetLife,MET,62347743232,99.21,United States
+382,Cement Roadstone Holding,CRH,62305513472,93.66,Ireland
+383,Infineon,IFX.DE,62222885657,47.8396,Germany
+384,Aflac,AFL,62211678208,125.78,United States
+385,London Stock Exchange,LSEG.L,62184722395,130.287,United Kingdom
+386,Argenx,ARGX,62027673600,986.35,Netherlands
+387,Public Storage,PSA,62017081344,331.92,United States
+388,Larsen &amp; Toubro,LT.NS,61811173997,44.9246,India
+389,Deutsche Börse,DB1.DE,61669849494,346.095,Germany
+390,TransDigm Group,TDG,61649391616,1129.32,United States
+391,Bank of China (Hong Kong),2388.HK,61446366026,5.81175,Hong Kong
+392,Deutsche Bank,DB,61278003200,33.05,Germany
+393,Edwards Lifesciences,EW,61019000832,106.12,United States
+394,Targa Resources,TRGP,60755263488,283.17,United States
+395,NatWest Group,NWG,60636344320,15.37,United Kingdom
+396,Cheniere Energy,LNG,60446404608,296.01,United States
+397,NXP Semiconductors,NXPI,60341485568,239.4,Netherlands
+398,Nordea Bank,NDA-FI.HE,60287200843,17.7642,Finland
+399,Fastenal,FAST,59969449984,52.27,United States
+400,Becton Dickinson,BDX,59925098496,220.0,United States
+401,Compass Group,CPG.L,59902296064,35.23,United Kingdom
+402,TE Connectivity,TEL,59836137472,208.71,Switzerland
+403,Datadog,DDOG,59709218816,165.38,United States
+404,Emirates NBD Bank PJSC,EMIRATESNBD.AE,59643767794,9.44239,United Arab Emirates
+405,UCB,UCB.VI,59396959311,311.529,Belgium
+406,Dominion Energy,D,59186003968,67.29,United States
+407,Robinhood,HOOD,59117252608,65.65,United States
+408,Nasdaq,NDAQ,59059134464,106.42,United States
+409,Great-West Lifeco,GWO.TO,58922458874,66.0418,Canada
+410,Loblaw Companies,L.TO,58411643827,50.8579,Canada
+411,Wesfarmers,WES.AX,58316746837,51.3553,Australia
+412,CITIC Securities,600030.SS,58178721473,3.72361,China
+413,The Saudi National Bank,1180.SR,58147810168,9.79744,Saudi Arabia
+414,Monolithic Power Systems,MPWR,58041724928,1190.16,United States
+415,Mitsubishi Electric,6503.T,57509051280,28.096,Japan
+416,Nu Holdings,NU,57385013248,11.86,Brazil
+417,Ma'aden,1211.SR,57316562359,14.7655,Saudi Arabia
+418,Truist Financial Corporation,TFC,56904232960,47.48,United States
+419,Cummins,CMI,56831709184,414.83,United States
+420,Realty Income,O,56791576576,59.55,United States
+421,MPLX,MPLX,56678862848,55.95,United States
+422,Emirates Telecom (Etisalat Group),EAND.AE,56592359228,6.51,United Arab Emirates
+423,Macquarie Group Limited,MQG.AX,56405973592,147.993,Australia
+424,IDEXX Laboratories,IDXX,56102125568,712.08,United States
+425,Bayer,BAYN.DE,55923594353,56.9241,Germany
+426,Diageo,DEO,55895846912,100.37,United Kingdom
+427,Hong Kong Exchanges & Clearing,0388.HK,55885412953,44.2132,Hong Kong
+428,Nucor,NUE,55788404736,248.01,United States
+429,Delta Air Lines,DAL,55593594880,84.5,United States
+430,Mitsubishi Heavy Industries,7011.T,55475891196,16.5034,Japan
+431,Paccar,PCAR,55462072320,105.34,United States
+432,Standard Chartered,STAN.L,55139743873,25.5421,United Kingdom
+433,Lonza,LONN.SW,55003480031,787.516,Switzerland
+434,Kotak Mahindra Bank,KOTAKBANK.NS,54836730876,5.51214,India
+435,Imperial Oil,IMO,54725050368,115.94,Canada
+436,Barrick Gold,B,54689497088,33.58,Canada
+437,Fubon Financial,2881.TW,54595312932,3.99506,Taiwan
+438,Garmin,GRMN,54343925760,282.02,Switzerland
+439,Alimentation Couche-Tard,ATD.TO,54300584557,59.1534,Canada
+440,Nan Ya Plastics,1303.TW,54161830019,6.82928,Taiwan
+441,NAURA Technology Group,002371.SZ,54103045952,74.3221,China
+442,Luxshare Precision,002475.SZ,54027342338,6.97727,China
+443,AutoZone,AZO,54007619584,3355.69,United States
+444,National Bank of Canada,NA.TO,53975540247,140.988,Canada
+445,Saudi Telecom Company,7010.SR,53856914036,10.8049,Saudi Arabia
+446,Swiss Re,SREN.SW,53814097258,182.47,Switzerland
+447,LG Energy Solution,373220.KS,53792098820,229.881,South Korea
+448,Hindustan Unilever,HINDUNILVR.NS,53502458822,22.771,India
+449,Oneok,OKE,53455892480,84.79,United States
+450,Autodesk,ADSK,53441298432,255.7,United States
+451,Occidental Petroleum,OXY,53374382080,53.38,United States
+452,Shanghai Pudong Development Bank,600000.SS,53357748870,1.60205,China
+453,Hewlett Packard Enterprise,HPE,53350809600,40.19,United States
+454,Singtel,Z74.SI,53325436690,3.27562,Singapore
+455,E.ON,EOAN.DE,53136208580,20.3347,Germany
+456,Nike,NKE,53099790336,35.75,United States
+457,Siemens Healthineers,SHL.DE,53009533665,47.3638,Germany
+458,Wheaton Precious Metals,WPM,52958433280,116.6,Canada
+459,Hyundai,005380.KS,52841329489,200.82,South Korea
+460,Murata Manufacturing (Murata Seisakusho),6981.T,52563860623,29.0944,Japan
+461,Medline,MDLN,52258885632,39.71,United States
+462,Ametek,AME,52165259264,227.48,United States
+463,Xcel Energy,XEL,51873083392,80.815,United States
+464,Corteva,CTVA,51807772672,77.65,United States
+465,Agilent Technologies,A,51746369536,183.52,United States
+466,Thales,HO.PA,51645120323,251.258,France
+467,Sempra,SRE,51518464000,78.76,United States
+468,Coca-Cola European Partners,CCEP,51441082368,117.32,United Kingdom
+469,Heineken,HEIA.AS,51233970101,91.818,Netherlands
+470,Galderma Group,GALD.SW,51110286713,219.18,Switzerland
+471,Keurig Dr Pepper,KDP,51108614144,35.8,United States
+472,Crédit Agricole,ACA.PA,50846857333,16.8125,France
+473,China Telecom,0728.HK,50718610180,0.554259,China
+474,Entergy,ETR,50625781760,105.95,United States
+475,Infosys,INFY,50589200384,12.49,India
+476,Vivmark Residential,VMRK,50082975744,64.64,United States
+477,eBay,EBAY,49945026560,113.77,United States
+478,Lukoil,LKOH.ME,49760214805,70.93,Russia
+479,Hoya,7741.T,49669829814,149.774,Japan
+480,Société Générale,GLE.PA,49544461964,69.1315,France
+481,Swire Pacific,0019.HK,49379356054,13.6109,Hong Kong
+482,SMIC,0981.HK,49282171745,5.75562,China
+483,Samsung Biologics,207940.KS,49268610715,1015.65,South Korea
+484,Diamondback Energy,FANG,49161457664,176.1,United States
+485,Honeywell Aerospace,HONA,49067020288,154.77,United States
+486,Sun Pharmaceutical,SUNPHARMA.NS,48944274680,20.3991,India
+487,Ferguson Enterprises,FERG,48845926400,252.24,United Kingdom
+488,MS&amp;AD Insurance,8725.T,48749448254,34.3067,Japan
+489,RWE,RWE.DE,48597628247,62.3058,Germany
+490,Cenovus Energy,CVE,48544677888,26.86,Canada
+491,Danone,BN.PA,48543186663,75.3664,France
+492,Holcim Group,HOLN.SW,48467066406,87.6241,Switzerland
+493,Humana,HUM,48367980544,402.72,United States
+494,Meituan,3690.HK,48339968818,7.83234,China
+495,DSV,DSV.VI,48184479758,201.98,Denmark
+496,L3Harris Technologies,LHX,48054681600,258.08,United States
+497,PICC Property and Casualty Company Limited,2328.HK,48007865998,2.15836,China
+498,Adani Ports & SEZ,ADANIPORTS.NS,47974348233,20.8226,India
+499,The People's Insurance Company (PICC),601319.SS,47941085703,1.08405,China
+500,Maruti Suzuki India,MARUTI.NS,47899718851,152.352,India

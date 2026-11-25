@@ -136,10 +136,10 @@ console.log(JSON.stringify({ oggi: oggi.map(o => [o.tipo, o.prezzo, o.reale, o.p
 
 
 class Navigazione(unittest.TestCase):
-    def test_menu_sei_voci(self):   # Opzioni dal 24/11/2026
+    def test_menu_sette_voci(self):   # Opzioni dal 24/11/2026, Scanner dal 25/11/2026
         side = re.findall(r'data-v="(\w+)"', T[T.index('<nav aria-label="Sezioni">'):T.index("</nav>")])
         tab = re.findall(r'data-v="(\w+)"', T[T.index('<nav class="tabbar"'):T.index("</nav>", T.index('<nav class="tabbar"'))])
-        self.assertEqual(side, ["oggi", "posizioni", "opzioni", "grafico", "movimenti", "notizie"])
+        self.assertEqual(side, ["oggi", "posizioni", "opzioni", "scanner", "grafico", "movimenti", "notizie"])
         self.assertEqual(tab, side)
 
     def test_liquidazioni_spenta_e_reindirizzata(self):

@@ -46,12 +46,15 @@ ogni confronto: W3.1 dal 01/01/2021, 10.000 → 27.190 $, drawdown −9,8%, 13 t
 
 | Cartella | Contenuto | Esito |
 |---|---|---|
+| [`w32_asset2`](w32_asset2/README.md) | W3.2 su top 200 crypto (oggi e 2020) e top 100 azioni dal 2020, cancello BTC, screener annuale, SOL e TAO | non si trasferisce; TRX solo in osservazione (123) |
+| [`peso_btc_eth`](peso_btc_eth/README.md) | peso del capitale fra BTC ed ETH con W3.2 | 50/50 resta; 100/0 non promosso (124) |
 | [`multi_asset`](multi_asset/README.md) · [`ema200_vix`](ema200_vix/LOGICA.md) | W3.1 solo prezzo su 13 asset, EMA200 + VIX | non si trasferisce (104) |
 | [`top50`](top50/) · [`top10_w3`](top10_w3/README.md) · [`w2_alt`](w2_alt/) | W2/W3 su altre crypto e indici | solo BTC (74) |
 | [`short_w2`](short_w2/README.md) | strategie short dedicate | non promosse (80) |
 | [`intraday`](intraday/) · [`intraday2`](intraday2/README.md) | intraday 1h/4h | rimosso dal tool (78, 82) |
 | [`chento`](chento/README.md) | trader seguito | registro dei segnali (90) |
 | [`scout`](scout/PREREG.md) | criteri delle balene Hyperliquid | in uso nella sezione Wallet (in pausa) |
+| [`opzioni_studio`](opzioni_studio/README.md) · [`opzioni_sim`](opzioni_sim/README.md) · [`opzioni_import`](opzioni_import/OPZIONI_W32.md) | opzioni su BTC con i segnali di W3.2: struttura, uscite, segnali indipendenti; spesa per operazione; studio e modulo dell'utente | le 7 regole restano, nessun segnale in più (122) |
 
 ## File sciolti
 

@@ -409,6 +409,37 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 124**: peso del capitale fra BTC ed ETH con W3.2 (research/peso_btc_eth, PREREG c7d618a). Dal 06/2020 il CAGR/DD del
+conto unico cresce con la quota di BTC in ogni periodo e in ogni data di partenza (50/50 2,44 · 2/3 2,62 · 100% 2,92; OOS 2023→
+1,13 · 1,21 · 1,33); la regola preregistrata sceglie BTC 100% e passa i 4 criteri (6/6 date, DD OOS −27,0 contro −24,5).
+Ricampionamento: 73% (limite superiore: eredita il bias). Il vantaggio non viene da un DD più piccolo (ETH pesa 3,8 punti
+su 20,6 nel DD massimo; più BTC peggiora un po' il DD) ma dal rendimento più alto di BTC (2020, 2022–24; ETH vince solo nel 2025),
+in parte gonfiato dal fatto che W3 è stata sviluppata su BTC. Ribilanciare ogni gennaio peggiora sempre. Una griglia di pesi che
+cresce in modo monotono sceglie per forza l'estremo: nei prossimi studi va dichiarato prima un limite di concentrazione. Con un asset
+servito a sviluppare la strategia il gate non basta: va confrontato con la soglia di pareggio (qui il vantaggio si azzera con −10
+punti l'anno su BTC, su un distacco di ~18). Revisione: 100/0 non promosso; 50/50 resta; 2/3–1/3 solo come preferenza dell'utente.
+**Lezione 123**: W3.2 su 79 crypto valutabili (top 200 di oggi e del 2020, dal 06/2020) e 124 azioni (top 100 di oggi e del 2019,
+dal 2020): con i parametri di BTC nessuna altcoin passa criteri, conferma e placebo con Holm (ETH e STX passano 1–5 ma non Holm su 79);
+top 200 del 2020 0 su 54; azioni 0 su 124 anche con il flusso Chaikin 20 sedute. Il cancello "solo nel verso di W3.2 su BTC" porta
+il DD mediano delle altcoin da −56% a −39% e fa passare solo TRX (87,2k $, DD −22,5%, WR 83%, 12 trade, p 0,0005; due trade fanno
+quasi tutto: senza i due migliori 17,0k $); BTC + ETH + TRX: CAGR/DD 2,13 contro 1,80 dal 2021, ma dal 06/2020 il semplice
+ripeso BTC 2/3 – ETH 1/3 fa meglio (2,62). Il placebo e Holm non proteggono dalla concentrazione su 1–2 movimenti: nei prossimi
+studi servono sempre "senza i due migliori" e il confronto con il ripeso dei capitali già in uso, e 20.000 prove di placebo
+quando Holm è su più di 20 asset. Trailing e rischio per classe non migliorano in OOS. Uno screener
+annuale "chi ha passato i criteri" perde contro BTC + ETH (8,5k contro 22,8k dal 2022). SOL (DD −40%, WR 48%, −10% dal 2024) e TAO
+(−35%) non vanno operati con W3.2. research/w32_asset2/README.md (PREREG f40f7a6).
+**Lezione 122**: opzioni su BTC (ciclo notturno 24–25/11, research/opzioni_studio, PREREG e9cc4fe + due addendum, superficie di
+volatilità Deribit 2018–26 da scambi veri). Comprare opzioni non crea un vantaggio proprio: la regola in uso sulla carta (segnale
+di W3.2, call/put al venerdì più vicino a 30 giorni fra 20 e 50, alla pari, 5% del conto, vendita all'uscita di W3.2) vale
+45–48k $ dal 2018 su 10k e 27–28k dal 2021 sulle operazioni chiuse (prezzi veri e superficie), circa come W3.2 a metà, con perdita massima del 5% per
+operazione. Scadenze 14/60/90 giorni, prezzi d'esercizio fuori o dentro, prese di profitto a 2×/3×, rinnovi, opzione al posto
+dello stop e sei segnali indipendenti (tendenza, flusso settimanale, volatilità bassa, compressione, dopo cascata, cono contro
+premio) non la battono in OOS: le occasioni "in più" sono esposizione alla salita di BTC (placebo p ≥ 0,22). Il ritardo
+d'ingresso costa soprattutto oltre le 48 ore (il primo giorno dipende da 2 operazioni); la soglia "non entrare se BTC si è mosso
+oltre il 3%" non è giustificata. I descrittivi che dipendono da 2–3 operazioni vanno dati con il conteggio migliorano/peggiorano. Errori da non
+ripetere: simulare il riferimento con la regola esatta del tool (senza la finestra 20–50 giorni B0 era sbagliato, corretto dalla
+revisione); verificare il cancello sul conto composto e non solo sulla mediana per operazione; dare il risultato come
+forchetta (i prezzi ricostruiti spostano il conto composto fino al 15%); non eseguire filtri nati dalla diagnosi degli stessi dati.
 **Lezione 121**: "compra quando la Zeiierman Trend Pressure è a −90, vendi a −20" (ciclo 3, research/zeiierman3, PREREG b421b1c,
 13 configurazioni, tre periodi) non regge. Z-Trend giornaliera: 2018–20 8,5k, 2021–23 12,8k, 2024–26 8,7k da 10k, DD −40/−68%;
 dal 2021 11,2k contro 21,1k del buy & hold e 78,5k di W3.2. Con stop a 2 ATR 13,3k / 21,5k / 11,4k, sotto il buy & hold in

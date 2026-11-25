@@ -1,0 +1,4147 @@
+{
+"fonte": "research/w32_asset2 (25/11/2026): universe.csv, data/sources.csv, data/ops.csv, risultati_crypto.csv, risultati_q4.csv",
+"criteri": {
+"1": "CAGR/DD > buy & hold",
+"2": "DD ≥ −35%",
+"3": "WR ≥ 60%",
+"4": "IS e OOS positivi",
+"5": "≥ 8 trade"
+},
+"n": 129,
+"monete": [
+{
+"ticker": "BTC",
+"nome": "Bitcoin",
+"rank_oggi": 1,
+"classe": "valutabile",
+"spot": "BTCUSDT",
+"perp": "BTCUSDT",
+"div": 1,
+"okx": "BTC-USDT-SWAP",
+"bitget": "BTCUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 5,
+"f": "",
+"fin": 225069.0,
+"dd": -21.1,
+"wr": 94.0,
+"n": 17,
+"cd": 2.92,
+"bh": 0.43,
+"p": 0.0015,
+"da": "2020-06-01"
+},
+"q4": null
+}
+},
+{
+"ticker": "ETH",
+"nome": "Ethereum",
+"rank_oggi": 2,
+"classe": "valutabile",
+"spot": "ETHUSDT",
+"perp": "ETHUSDT",
+"div": 1,
+"okx": "ETH-USDT-SWAP",
+"bitget": "ETHUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 5,
+"f": "",
+"fin": 53394.0,
+"dd": -27.5,
+"wr": 62.0,
+"n": 16,
+"cd": 1.07,
+"bh": 0.45,
+"p": 0.0045,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 4,
+"f": "3",
+"fin": 30796.0,
+"dd": -28.2,
+"wr": 58.0,
+"n": 12,
+"cd": 0.67,
+"bh": 0.45,
+"p": 0.0205,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "BNB",
+"nome": "BNB",
+"rank_oggi": 4,
+"classe": "valutabile",
+"spot": "BNBUSDT",
+"perp": "BNBUSDT",
+"div": 1,
+"okx": "BNB-USDT-SWAP",
+"bitget": "BNBUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "1,2,3",
+"fin": 31694.0,
+"dd": -67.4,
+"wr": 31.0,
+"n": 29,
+"cd": 0.29,
+"bh": 1.0,
+"p": 0.1384,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 2,
+"f": "1,2,3",
+"fin": 66985.0,
+"dd": -39.6,
+"wr": 39.0,
+"n": 18,
+"cd": 0.86,
+"bh": 1.0,
+"p": 0.014,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "XRP",
+"nome": "XRP",
+"rank_oggi": 6,
+"classe": "valutabile",
+"spot": "XRPUSDT",
+"perp": "XRPUSDT",
+"div": 1,
+"okx": "XRP-USDT-SWAP",
+"bitget": "XRPUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 3814.0,
+"dd": -79.7,
+"wr": 29.0,
+"n": 31,
+"cd": -0.17,
+"bh": 0.32,
+"p": 0.4198,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 8359.0,
+"dd": -56.8,
+"wr": 37.0,
+"n": 19,
+"cd": -0.05,
+"bh": 0.32,
+"p": 0.2859,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "SOL",
+"nome": "Solana",
+"rank_oggi": 7,
+"classe": "valutabile",
+"spot": "SOLUSDT",
+"perp": "SOLUSDT",
+"div": 1,
+"okx": "SOL-USDT-SWAP",
+"bitget": "SOLUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 80661.0,
+"dd": -39.8,
+"wr": 48.0,
+"n": 23,
+"cd": 1.07,
+"bh": 0.69,
+"p": 0.0115,
+"da": "2021-01-11"
+},
+"q4": {
+"c": 4,
+"f": "2",
+"fin": 52037.0,
+"dd": -40.1,
+"wr": 60.0,
+"n": 15,
+"cd": 0.81,
+"bh": 0.69,
+"p": 0.023,
+"da": "2021-01-11",
+"ok": false
+}
+}
+},
+{
+"ticker": "TRX",
+"nome": "TRON",
+"rank_oggi": 8,
+"classe": "valutabile",
+"spot": "TRXUSDT",
+"perp": "TRXUSDT",
+"div": 1,
+"okx": "TRX-USDT-SWAP",
+"bitget": "TRXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 90570.0,
+"dd": -44.4,
+"wr": 59.0,
+"n": 22,
+"cd": 0.91,
+"bh": 0.83,
+"p": 0.0005,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 87198.0,
+"dd": -22.5,
+"wr": 83.0,
+"n": 12,
+"cd": 1.76,
+"bh": 0.83,
+"p": 0.0005,
+"da": "2020-06-01",
+"ok": true
+}
+}
+},
+{
+"ticker": "HYPE",
+"nome": "Hyperliquid",
+"rank_oggi": 10,
+"classe": "breve",
+"spot": "HYPEUSDT",
+"perp": "HYPEUSDT",
+"div": 1,
+"okx": "HYPE-USDT-SWAP",
+"bitget": "HYPEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 0,
+"f": "1,2,3,4,5",
+"fin": 9515.0,
+"dd": -37.2,
+"wr": 33.0,
+"n": 3,
+"cd": -0.18,
+"bh": 3.64,
+"p": null,
+"da": "2026-03-02"
+},
+"q4": null
+}
+},
+{
+"ticker": "ZEC",
+"nome": "Zcash",
+"rank_oggi": 11,
+"classe": "valutabile",
+"spot": "ZECUSDT",
+"perp": "ZECUSDT",
+"div": 1,
+"okx": "ZEC-USDT-SWAP",
+"bitget": "ZECUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 12091.0,
+"dd": -68.4,
+"wr": 30.0,
+"n": 30,
+"cd": 0.04,
+"bh": 0.54,
+"p": 0.1664,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 4,
+"f": "3",
+"fin": 43155.0,
+"dd": -22.7,
+"wr": 56.0,
+"n": 9,
+"cd": 1.12,
+"bh": 0.54,
+"p": 0.008,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "XMR",
+"nome": "Monero",
+"rank_oggi": 12,
+"classe": "valutabile",
+"spot": null,
+"perp": "XMRUSDT",
+"div": 1,
+"okx": null,
+"bitget": "XMRUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 3301.0,
+"dd": -88.7,
+"wr": 24.0,
+"n": 33,
+"cd": -0.18,
+"bh": 0.46,
+"p": 0.6662,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 6234.0,
+"dd": -63.2,
+"wr": 22.0,
+"n": 18,
+"cd": -0.11,
+"bh": 0.46,
+"p": 0.6897,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "DOGE",
+"nome": "Dogecoin",
+"rank_oggi": 13,
+"classe": "valutabile",
+"spot": "DOGEUSDT",
+"perp": "DOGEUSDT",
+"div": 1,
+"okx": "DOGE-USDT-SWAP",
+"bitget": "DOGEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "1,2,3",
+"fin": 43898.0,
+"dd": -77.3,
+"wr": 33.0,
+"n": 36,
+"cd": 0.36,
+"bh": 0.7,
+"p": 0.0375,
+"da": "2020-10-26"
+},
+"q4": {
+"c": 2,
+"f": "1,2,3",
+"fin": 35168.0,
+"dd": -55.2,
+"wr": 50.0,
+"n": 20,
+"cd": 0.42,
+"bh": 0.7,
+"p": 0.0615,
+"da": "2020-10-26",
+"ok": false
+}
+}
+},
+{
+"ticker": "LINK",
+"nome": "Chainlink",
+"rank_oggi": 15,
+"classe": "valutabile",
+"spot": "LINKUSDT",
+"perp": "LINKUSDT",
+"div": 1,
+"okx": "LINK-USDT-SWAP",
+"bitget": "LINKUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 11364.0,
+"dd": -49.9,
+"wr": 38.0,
+"n": 26,
+"cd": 0.04,
+"bh": 0.14,
+"p": 0.1079,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 10319.0,
+"dd": -41.1,
+"wr": 40.0,
+"n": 15,
+"cd": 0.01,
+"bh": 0.14,
+"p": 0.3003,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "ADA",
+"nome": "Cardano",
+"rank_oggi": 18,
+"classe": "valutabile",
+"spot": "ADAUSDT",
+"perp": "ADAUSDT",
+"div": 1,
+"okx": "ADA-USDT-SWAP",
+"bitget": "ADAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 38687.0,
+"dd": -46.5,
+"wr": 46.0,
+"n": 24,
+"cd": 0.5,
+"bh": 0.11,
+"p": 0.0155,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 4,
+"f": "2",
+"fin": 51887.0,
+"dd": -48.5,
+"wr": 64.0,
+"n": 14,
+"cd": 0.6,
+"bh": 0.11,
+"p": 0.0115,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "XLM",
+"nome": "Stellar",
+"rank_oggi": 21,
+"classe": "valutabile",
+"spot": "XLMUSDT",
+"perp": "XLMUSDT",
+"div": 1,
+"okx": "XLM-USDT-SWAP",
+"bitget": "XLMUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 4928.0,
+"dd": -79.8,
+"wr": 33.0,
+"n": 30,
+"cd": -0.13,
+"bh": 0.1,
+"p": 0.1949,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 7243.0,
+"dd": -63.5,
+"wr": 31.0,
+"n": 16,
+"cd": -0.08,
+"bh": 0.1,
+"p": 0.3143,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "BCH",
+"nome": "Bitcoin Cash",
+"rank_oggi": 22,
+"classe": "valutabile",
+"spot": "BCHUSDT",
+"perp": "BCHUSDT",
+"div": 1,
+"okx": "BCH-USDT-SWAP",
+"bitget": "BCHUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 11104.0,
+"dd": -63.3,
+"wr": 41.0,
+"n": 29,
+"cd": 0.03,
+"bh": -0.03,
+"p": 0.049,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 23196.0,
+"dd": -43.0,
+"wr": 56.0,
+"n": 16,
+"cd": 0.32,
+"bh": -0.03,
+"p": 0.027,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "NEAR",
+"nome": "NEAR Protocol",
+"rank_oggi": 23,
+"classe": "valutabile",
+"spot": "NEARUSDT",
+"perp": "NEARUSDT",
+"div": 1,
+"okx": "NEAR-USDT-SWAP",
+"bitget": "NEARUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 5375.0,
+"dd": -75.7,
+"wr": 33.0,
+"n": 24,
+"cd": -0.14,
+"bh": 0.08,
+"p": 0.3898,
+"da": "2021-07-19"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 13496.0,
+"dd": -49.7,
+"wr": 55.0,
+"n": 11,
+"cd": 0.12,
+"bh": 0.08,
+"p": 0.094,
+"da": "2021-07-19",
+"ok": false
+}
+}
+},
+{
+"ticker": "LTC",
+"nome": "Litecoin",
+"rank_oggi": 24,
+"classe": "valutabile",
+"spot": "LTCUSDT",
+"perp": "LTCUSDT",
+"div": 1,
+"okx": "LTC-USDT-SWAP",
+"bitget": "LTCUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 4128.0,
+"dd": -87.4,
+"wr": 28.0,
+"n": 29,
+"cd": -0.15,
+"bh": -0.02,
+"p": 0.4583,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9718.0,
+"dd": -67.7,
+"wr": 36.0,
+"n": 14,
+"cd": -0.01,
+"bh": -0.02,
+"p": 0.2759,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "CC",
+"nome": "Canton",
+"rank_oggi": 25,
+"classe": "breve",
+"spot": null,
+"perp": "CCUSDT",
+"div": 1,
+"okx": "CC-USDT-SWAP",
+"bitget": "CCUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "AVAX",
+"nome": "Avalanche",
+"rank_oggi": 26,
+"classe": "valutabile",
+"spot": "AVAXUSDT",
+"perp": "AVAXUSDT",
+"div": 1,
+"okx": "AVAX-USDT-SWAP",
+"bitget": "AVAXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 6331.0,
+"dd": -65.4,
+"wr": 40.0,
+"n": 25,
+"cd": -0.12,
+"bh": -0.09,
+"p": 0.3688,
+"da": "2021-06-28"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 14870.0,
+"dd": -38.9,
+"wr": 55.0,
+"n": 11,
+"cd": 0.2,
+"bh": -0.09,
+"p": 0.1359,
+"da": "2021-06-28",
+"ok": false
+}
+}
+},
+{
+"ticker": "UNI",
+"nome": "Uniswap",
+"rank_oggi": 30,
+"classe": "valutabile",
+"spot": "UNIUSDT",
+"perp": "UNIUSDT",
+"div": 1,
+"okx": "UNI-USDT-SWAP",
+"bitget": "UNIUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 8344.0,
+"dd": -53.4,
+"wr": 32.0,
+"n": 22,
+"cd": -0.06,
+"bh": -0.26,
+"p": 0.2664,
+"da": "2021-06-21"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 14163.0,
+"dd": -37.8,
+"wr": 40.0,
+"n": 15,
+"cd": 0.18,
+"bh": -0.26,
+"p": 0.1069,
+"da": "2021-06-21",
+"ok": false
+}
+}
+},
+{
+"ticker": "SUI",
+"nome": "Sui",
+"rank_oggi": 32,
+"classe": "breve",
+"spot": "SUIUSDT",
+"perp": "SUIUSDT",
+"div": 1,
+"okx": "SUI-USDT-SWAP",
+"bitget": "SUIUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 12975.0,
+"dd": -39.4,
+"wr": 33.0,
+"n": 9,
+"cd": 0.25,
+"bh": -0.28,
+"p": null,
+"da": "2024-02-05"
+},
+"q4": null
+}
+},
+{
+"ticker": "HBAR",
+"nome": "Hedera",
+"rank_oggi": 36,
+"classe": "valutabile",
+"spot": "HBARUSDT",
+"perp": "HBARUSDT",
+"div": 1,
+"okx": "HBAR-USDT-SWAP",
+"bitget": "HBARUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 16428.0,
+"dd": -42.0,
+"wr": 42.0,
+"n": 24,
+"cd": 0.23,
+"bh": -0.24,
+"p": 0.077,
+"da": "2021-07-05"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 21367.0,
+"dd": -38.9,
+"wr": 50.0,
+"n": 18,
+"cd": 0.39,
+"bh": -0.24,
+"p": 0.0495,
+"da": "2021-07-05",
+"ok": false
+}
+}
+},
+{
+"ticker": "TAO",
+"nome": "Bittensor",
+"rank_oggi": 39,
+"classe": "breve",
+"spot": "TAOUSDT",
+"perp": "TAOUSDT",
+"div": 1,
+"okx": "TAO-USDT-SWAP",
+"bitget": "TAOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 6512.0,
+"dd": -52.2,
+"wr": 21.0,
+"n": 14,
+"cd": -0.32,
+"bh": -0.29,
+"p": null,
+"da": "2024-07-29"
+},
+"q4": null
+}
+},
+{
+"ticker": "QNT",
+"nome": "Quant",
+"rank_oggi": 40,
+"classe": "valutabile",
+"spot": "QNTUSDT",
+"perp": "QNTUSDT",
+"div": 1,
+"okx": "QNT-USDT-SWAP",
+"bitget": "QNTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 2390.0,
+"dd": -77.7,
+"wr": 25.0,
+"n": 20,
+"cd": -0.4,
+"bh": 0.02,
+"p": 0.7416,
+"da": "2023-02-06"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 5002.0,
+"dd": -53.8,
+"wr": 27.0,
+"n": 11,
+"cd": -0.31,
+"bh": 0.02,
+"p": 0.7991,
+"da": "2023-02-06",
+"ok": false
+}
+}
+},
+{
+"ticker": "SHIB",
+"nome": "Shiba Inu",
+"rank_oggi": 41,
+"classe": "valutabile",
+"spot": "SHIBUSDT",
+"perp": "1000SHIBUSDT",
+"div": 1000,
+"okx": "SHIB-USDT-SWAP",
+"bitget": "SHIBUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5508.0,
+"dd": -60.8,
+"wr": 32.0,
+"n": 22,
+"cd": -0.19,
+"bh": -0.4,
+"p": 0.2964,
+"da": "2022-02-14"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 8172.0,
+"dd": -45.5,
+"wr": 42.0,
+"n": 12,
+"cd": -0.09,
+"bh": -0.4,
+"p": 0.2109,
+"da": "2022-02-14",
+"ok": false
+}
+}
+},
+{
+"ticker": "M",
+"nome": "MemeCore",
+"rank_oggi": 44,
+"classe": "breve",
+"spot": null,
+"perp": "MUSDT",
+"div": 1,
+"okx": null,
+"bitget": "MUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "4,5",
+"fin": 10093.0,
+"dd": -24.1,
+"wr": 67.0,
+"n": 3,
+"cd": 0.06,
+"bh": -1.01,
+"p": null,
+"da": "2026-04-13"
+},
+"q4": null
+}
+},
+{
+"ticker": "PEPE",
+"nome": "Pepe",
+"rank_oggi": 51,
+"classe": "breve",
+"spot": "PEPEUSDT",
+"perp": "1000PEPEUSDT",
+"div": 1000,
+"okx": "PEPE-USDT-SWAP",
+"bitget": "PEPEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 11414.0,
+"dd": -53.0,
+"wr": 31.0,
+"n": 13,
+"cd": 0.09,
+"bh": 0.68,
+"p": null,
+"da": "2024-02-05"
+},
+"q4": null
+}
+},
+{
+"ticker": "AAVE",
+"nome": "Aave",
+"rank_oggi": 52,
+"classe": "valutabile",
+"spot": "AAVEUSDT",
+"perp": "AAVEUSDT",
+"div": 1,
+"okx": "AAVE-USDT-SWAP",
+"bitget": "AAVEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 11066.0,
+"dd": -56.0,
+"wr": 42.0,
+"n": 19,
+"cd": 0.03,
+"bh": -0.19,
+"p": 0.2379,
+"da": "2021-07-19"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 13354.0,
+"dd": -37.8,
+"wr": 56.0,
+"n": 9,
+"cd": 0.15,
+"bh": -0.19,
+"p": 0.1904,
+"da": "2021-07-19",
+"ok": false
+}
+}
+},
+{
+"ticker": "BTW",
+"nome": "Bitway",
+"rank_oggi": 53,
+"classe": "breve",
+"spot": null,
+"perp": "BTWUSDT",
+"div": 1,
+"okx": "BTW-USDT-SWAP",
+"bitget": "BTWUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "ONDO",
+"nome": "Ondo",
+"rank_oggi": 54,
+"classe": "breve",
+"spot": "ONDOUSDT",
+"perp": "ONDOUSDT",
+"div": 1,
+"okx": "ONDO-USDT-SWAP",
+"bitget": "ONDOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 6630.0,
+"dd": -42.3,
+"wr": 11.0,
+"n": 9,
+"cd": -0.42,
+"bh": -0.46,
+"p": null,
+"da": "2024-10-21"
+},
+"q4": null
+}
+},
+{
+"ticker": "WLFI",
+"nome": "World Liberty Financial",
+"rank_oggi": 57,
+"classe": "breve",
+"spot": "WLFIUSDT",
+"perp": "WLFIUSDT",
+"div": 1,
+"okx": "WLFI-USDT-SWAP",
+"bitget": "WLFIUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 4,
+"f": "5",
+"fin": 10604.0,
+"dd": -3.2,
+"wr": 100.0,
+"n": 1,
+"cd": 3.89,
+"bh": -1.62,
+"p": null,
+"da": "2026-05-25"
+},
+"q4": null
+}
+},
+{
+"ticker": "ENA",
+"nome": "Ethena",
+"rank_oggi": 58,
+"classe": "breve",
+"spot": "ENAUSDT",
+"perp": "ENAUSDT",
+"div": 1,
+"okx": "ENA-USDT-SWAP",
+"bitget": "ENAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 7848.0,
+"dd": -30.8,
+"wr": 43.0,
+"n": 7,
+"cd": -0.39,
+"bh": -0.79,
+"p": null,
+"da": "2025-01-06"
+},
+"q4": null
+}
+},
+{
+"ticker": "ASTER",
+"nome": "Aster",
+"rank_oggi": 59,
+"classe": "breve",
+"spot": "ASTERUSDT",
+"perp": "ASTERUSDT",
+"div": 1,
+"okx": "ASTER-USDT-SWAP",
+"bitget": "ASTERUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "VVV",
+"nome": "Venice Token",
+"rank_oggi": 60,
+"classe": "breve",
+"spot": null,
+"perp": "VVVUSDT",
+"div": 1,
+"okx": "VVV-USDT-SWAP",
+"bitget": "VVVUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 0,
+"f": "1,2,3,4,5",
+"fin": 12544.0,
+"dd": -41.0,
+"wr": 40.0,
+"n": 5,
+"cd": 0.58,
+"bh": 22.76,
+"p": null,
+"da": "2025-11-03"
+},
+"q4": null
+}
+},
+{
+"ticker": "JST",
+"nome": "JUST",
+"rank_oggi": 62,
+"classe": "breve",
+"spot": "JSTUSDT",
+"perp": "JSTUSDT",
+"div": 1,
+"okx": null,
+"bitget": "JSTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "1,5",
+"fin": 21388.0,
+"dd": -33.6,
+"wr": 60.0,
+"n": 5,
+"cd": 2.4,
+"bh": 8.81,
+"p": null,
+"da": "2025-08-11"
+},
+"q4": null
+}
+},
+{
+"ticker": "DOT",
+"nome": "Polkadot",
+"rank_oggi": 63,
+"classe": "valutabile",
+"spot": "DOTUSDT",
+"perp": "DOTUSDT",
+"div": 1,
+"okx": "DOT-USDT-SWAP",
+"bitget": "DOTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 11077.0,
+"dd": -50.0,
+"wr": 52.0,
+"n": 23,
+"cd": 0.04,
+"bh": -0.46,
+"p": 0.4463,
+"da": "2021-05-24"
+},
+"q4": {
+"c": 4,
+"f": "4",
+"fin": 14711.0,
+"dd": -23.4,
+"wr": 73.0,
+"n": 11,
+"cd": 0.31,
+"bh": -0.46,
+"p": 0.1539,
+"da": "2021-05-24",
+"ok": false
+}
+}
+},
+{
+"ticker": "ICP",
+"nome": "Internet Computer",
+"rank_oggi": 64,
+"classe": "valutabile",
+"spot": "ICPUSDT",
+"perp": "ICPUSDT",
+"div": 1,
+"okx": "ICP-USDT-SWAP",
+"bitget": "ICPUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 6628.0,
+"dd": -68.1,
+"wr": 35.0,
+"n": 20,
+"cd": -0.12,
+"bh": -0.42,
+"p": 0.6242,
+"da": "2022-02-14"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 10473.0,
+"dd": -48.5,
+"wr": 36.0,
+"n": 11,
+"cd": 0.02,
+"bh": -0.42,
+"p": 0.3028,
+"da": "2022-02-14",
+"ok": false
+}
+}
+},
+{
+"ticker": "MORPHO",
+"nome": "Morpho",
+"rank_oggi": 65,
+"classe": "breve",
+"spot": "MORPHOUSDT",
+"perp": "MORPHOUSDT",
+"div": 1,
+"okx": "MORPHO-USDT-SWAP",
+"bitget": "MORPHOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 0,
+"f": "1,2,3,4,5",
+"fin": 6066.0,
+"dd": -43.3,
+"wr": 14.0,
+"n": 7,
+"cd": -0.77,
+"bh": -0.28,
+"p": null,
+"da": "2025-09-01"
+},
+"q4": null
+}
+},
+{
+"ticker": "SKY",
+"nome": "Sky",
+"rank_oggi": 68,
+"classe": "breve",
+"spot": "SKYUSDT",
+"perp": "SKYUSDT",
+"div": 1,
+"okx": "SKY-USDT-SWAP",
+"bitget": "SKYUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "ETC",
+"nome": "Ethereum Classic",
+"rank_oggi": 70,
+"classe": "valutabile",
+"spot": "ETCUSDT",
+"perp": "ETCUSDT",
+"div": 1,
+"okx": "ETC-USDT-SWAP",
+"bitget": "ETCUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 10629.0,
+"dd": -79.4,
+"wr": 36.0,
+"n": 28,
+"cd": 0.01,
+"bh": -0.03,
+"p": 0.0965,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 7546.0,
+"dd": -36.0,
+"wr": 50.0,
+"n": 8,
+"cd": -0.12,
+"bh": -0.03,
+"p": 0.4883,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "WLD",
+"nome": "Worldcoin",
+"rank_oggi": 71,
+"classe": "breve",
+"spot": "WLDUSDT",
+"perp": "WLDUSDT",
+"div": 1,
+"okx": "WLD-USDT-SWAP",
+"bitget": "WLDUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 4980.0,
+"dd": -56.0,
+"wr": 23.0,
+"n": 13,
+"cd": -0.42,
+"bh": -0.72,
+"p": null,
+"da": "2024-04-29"
+},
+"q4": null
+}
+},
+{
+"ticker": "PUMP",
+"nome": "Pump.fun",
+"rank_oggi": 72,
+"classe": "breve",
+"spot": "PUMPUSDT",
+"perp": "PUMPUSDT",
+"div": 1,
+"okx": "PUMP-USDT-SWAP",
+"bitget": "PUMPUSDT",
+"da": "2025-07-10",
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 11281.0,
+"dd": -20.0,
+"wr": 50.0,
+"n": 2,
+"cd": 1.08,
+"bh": 1.03,
+"p": null,
+"da": "2026-04-13"
+},
+"q4": null
+}
+},
+{
+"ticker": "PIEVERSE",
+"nome": "Pieverse",
+"rank_oggi": 74,
+"classe": "breve",
+"spot": null,
+"perp": "PIEVERSEUSDT",
+"div": 1,
+"okx": "PIEVERSE-USDT-SWAP",
+"bitget": "PIEVERSEUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "POL",
+"nome": "POL (ex-MATIC)",
+"rank_oggi": 75,
+"classe": "valutabile",
+"spot": "POLUSDT",
+"perp": "POLUSDT",
+"div": 1,
+"okx": "POL-USDT-SWAP",
+"bitget": "POLUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 13484.0,
+"dd": -73.0,
+"wr": 38.0,
+"n": 29,
+"cd": 0.07,
+"bh": 0.02,
+"p": 0.0595,
+"da": "2021-02-08"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 6511.0,
+"dd": -54.3,
+"wr": 30.0,
+"n": 10,
+"cd": -0.13,
+"bh": 0.02,
+"p": 0.4883,
+"da": "2021-02-08",
+"ok": false
+}
+}
+},
+{
+"ticker": "NIGHT",
+"nome": "Midnight",
+"rank_oggi": 77,
+"classe": "breve",
+"spot": "NIGHTUSDT",
+"perp": "NIGHTUSDT",
+"div": 1,
+"okx": "NIGHT-USDT-SWAP",
+"bitget": "NIGHTUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "ARB",
+"nome": "Arbitrum",
+"rank_oggi": 78,
+"classe": "breve",
+"spot": "ARBUSDT",
+"perp": "ARBUSDT",
+"div": 1,
+"okx": "ARB-USDT-SWAP",
+"bitget": "ARBUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9664.0,
+"dd": -38.0,
+"wr": 33.0,
+"n": 9,
+"cd": -0.03,
+"bh": -0.6,
+"p": null,
+"da": "2023-12-25"
+},
+"q4": null
+}
+},
+{
+"ticker": "KAS",
+"nome": "Kaspa",
+"rank_oggi": 79,
+"classe": "breve",
+"spot": null,
+"perp": "KASUSDT",
+"div": 1,
+"okx": null,
+"bitget": "KASUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 4,
+"f": "3",
+"fin": 12337.0,
+"dd": -23.4,
+"wr": 50.0,
+"n": 8,
+"cd": 0.42,
+"bh": -0.64,
+"p": null,
+"da": "2024-08-19"
+},
+"q4": null
+}
+},
+{
+"ticker": "JUP",
+"nome": "Jupiter",
+"rank_oggi": 80,
+"classe": "breve",
+"spot": "JUPUSDT",
+"perp": "JUPUSDT",
+"div": 1,
+"okx": "JUP-USDT-SWAP",
+"bitget": "JUPUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5085.0,
+"dd": -54.9,
+"wr": 29.0,
+"n": 14,
+"cd": -0.51,
+"bh": -0.55,
+"p": null,
+"da": "2024-11-04"
+},
+"q4": null
+}
+},
+{
+"ticker": "ALGO",
+"nome": "Algorand",
+"rank_oggi": 81,
+"classe": "valutabile",
+"spot": "ALGOUSDT",
+"perp": "ALGOUSDT",
+"div": 1,
+"okx": "ALGO-USDT-SWAP",
+"bitget": "ALGOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 22350.0,
+"dd": -33.4,
+"wr": 42.0,
+"n": 19,
+"cd": 0.42,
+"bh": -0.21,
+"p": 0.025,
+"da": "2020-10-05"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 15836.0,
+"dd": -33.4,
+"wr": 46.0,
+"n": 13,
+"cd": 0.23,
+"bh": -0.21,
+"p": 0.1199,
+"da": "2020-10-05",
+"ok": false
+}
+}
+},
+{
+"ticker": "RENDER",
+"nome": "Render",
+"rank_oggi": 84,
+"classe": "valutabile",
+"spot": "RENDERUSDT",
+"perp": "RENDERUSDT",
+"div": 1,
+"okx": "RENDER-USDT-SWAP",
+"bitget": "RENDERUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 11933.0,
+"dd": -28.9,
+"wr": 29.0,
+"n": 14,
+"cd": 0.18,
+"bh": -0.19,
+"p": 0.3673,
+"da": "2023-05-22"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 12683.0,
+"dd": -22.0,
+"wr": 38.0,
+"n": 8,
+"cd": 0.32,
+"bh": -0.19,
+"p": 0.2524,
+"da": "2023-05-22",
+"ok": false
+}
+}
+},
+{
+"ticker": "ATOM",
+"nome": "Cosmos Hub",
+"rank_oggi": 85,
+"classe": "valutabile",
+"spot": "ATOMUSDT",
+"perp": "ATOMUSDT",
+"div": 1,
+"okx": "ATOM-USDT-SWAP",
+"bitget": "ATOMUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 2715.0,
+"dd": -78.1,
+"wr": 34.0,
+"n": 29,
+"cd": -0.23,
+"bh": -0.12,
+"p": 0.7031,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 6446.0,
+"dd": -42.9,
+"wr": 12.0,
+"n": 8,
+"cd": -0.15,
+"bh": -0.12,
+"p": 0.7576,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "INJ",
+"nome": "Injective",
+"rank_oggi": 90,
+"classe": "valutabile",
+"spot": "INJUSDT",
+"perp": "INJUSDT",
+"div": 1,
+"okx": "INJ-USDT-SWAP",
+"bitget": "INJUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 30595.0,
+"dd": -44.7,
+"wr": 44.0,
+"n": 18,
+"cd": 0.73,
+"bh": 0.4,
+"p": 0.082,
+"da": "2022-12-05"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 31197.0,
+"dd": -43.6,
+"wr": 50.0,
+"n": 12,
+"cd": 0.76,
+"bh": 0.4,
+"p": 0.1004,
+"da": "2022-12-05",
+"ok": false
+}
+}
+},
+{
+"ticker": "LIT",
+"nome": "Lighter",
+"rank_oggi": 91,
+"classe": "breve",
+"spot": null,
+"perp": "LITUSDT",
+"div": 1,
+"okx": "LIT-USDT-SWAP",
+"bitget": "LITUSDT",
+"da": "2025-12-23",
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "STX",
+"nome": "Stacks",
+"rank_oggi": 97,
+"classe": "valutabile",
+"spot": "STXUSDT",
+"perp": "STXUSDT",
+"div": 1,
+"okx": "STX-USDT-SWAP",
+"bitget": "STXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 5,
+"f": "",
+"fin": 23352.0,
+"dd": -28.4,
+"wr": 73.0,
+"n": 11,
+"cd": 0.98,
+"bh": -0.2,
+"p": 0.0075,
+"da": "2023-06-12"
+},
+"q4": {
+"c": 4,
+"f": "4",
+"fin": 20670.0,
+"dd": -27.5,
+"wr": 75.0,
+"n": 8,
+"cd": 0.85,
+"bh": -0.2,
+"p": 0.0145,
+"da": "2023-06-12",
+"ok": false
+}
+}
+},
+{
+"ticker": "CAKE",
+"nome": "PancakeSwap",
+"rank_oggi": 98,
+"classe": "breve",
+"spot": "CAKEUSDT",
+"perp": "CAKEUSDT",
+"div": 1,
+"okx": null,
+"bitget": "CAKEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 3189.0,
+"dd": -80.4,
+"wr": 22.0,
+"n": 18,
+"cd": -0.42,
+"bh": -0.25,
+"p": null,
+"da": "2024-02-19"
+},
+"q4": null
+}
+},
+{
+"ticker": "ETHFI",
+"nome": "Ether.fi",
+"rank_oggi": 100,
+"classe": "breve",
+"spot": "ETHFIUSDT",
+"perp": "ETHFIUSDT",
+"div": 1,
+"okx": "ETHFI-USDT-SWAP",
+"bitget": "ETHFIUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 7994.0,
+"dd": -38.4,
+"wr": 38.0,
+"n": 8,
+"cd": -0.29,
+"bh": -0.6,
+"p": null,
+"da": "2024-12-23"
+},
+"q4": null
+}
+},
+{
+"ticker": "FIL",
+"nome": "Filecoin",
+"rank_oggi": 101,
+"classe": "valutabile",
+"spot": "FILUSDT",
+"perp": "FILUSDT",
+"div": 1,
+"okx": "FIL-USDT-SWAP",
+"bitget": "FILUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 6222.0,
+"dd": -61.2,
+"wr": 44.0,
+"n": 18,
+"cd": -0.14,
+"bh": -0.57,
+"p": 0.7591,
+"da": "2021-07-19"
+},
+"q4": {
+"c": 4,
+"f": "4",
+"fin": 10919.0,
+"dd": -25.3,
+"wr": 70.0,
+"n": 10,
+"cd": 0.07,
+"bh": -0.57,
+"p": 0.4518,
+"da": "2021-07-19",
+"ok": false
+}
+}
+},
+{
+"ticker": "DASH",
+"nome": "Dash",
+"rank_oggi": 103,
+"classe": "valutabile",
+"spot": "DASHUSDT",
+"perp": "DASHUSDT",
+"div": 1,
+"okx": "DASH-USDT-SWAP",
+"bitget": "DASHUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9450.0,
+"dd": -61.9,
+"wr": 40.0,
+"n": 25,
+"cd": -0.01,
+"bh": -0.12,
+"p": 0.095,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 19285.0,
+"dd": -40.8,
+"wr": 33.0,
+"n": 9,
+"cd": 0.26,
+"bh": -0.12,
+"p": 0.0535,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "STABLE",
+"nome": "​​Stable",
+"rank_oggi": 105,
+"classe": "breve",
+"spot": null,
+"perp": "STABLEUSDT",
+"div": 1,
+"okx": "STABLE-USDT-SWAP",
+"bitget": "STABLEUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "VET",
+"nome": "VeChain",
+"rank_oggi": 106,
+"classe": "valutabile",
+"spot": "VETUSDT",
+"perp": "VETUSDT",
+"div": 1,
+"okx": null,
+"bitget": "VETUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 4,
+"f": "2",
+"fin": 93522.0,
+"dd": -41.0,
+"wr": 70.0,
+"n": 23,
+"cd": 1.0,
+"bh": -0.04,
+"p": 0.001,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 38712.0,
+"dd": -33.1,
+"wr": 77.0,
+"n": 13,
+"cd": 0.7,
+"bh": -0.04,
+"p": 0.005,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "ZRO",
+"nome": "LayerZero",
+"rank_oggi": 107,
+"classe": "breve",
+"spot": "ZROUSDT",
+"perp": "ZROUSDT",
+"div": 1,
+"okx": "ZRO-USDT-SWAP",
+"bitget": "ZROUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 9357.0,
+"dd": -23.0,
+"wr": 29.0,
+"n": 7,
+"cd": -0.17,
+"bh": -0.54,
+"p": null,
+"da": "2025-03-24"
+},
+"q4": null
+}
+},
+{
+"ticker": "PYTH",
+"nome": "Pyth Network",
+"rank_oggi": 110,
+"classe": "breve",
+"spot": "PYTHUSDT",
+"perp": "PYTHUSDT",
+"div": 1,
+"okx": "PYTH-USDT-SWAP",
+"bitget": "PYTHUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 7998.0,
+"dd": -25.1,
+"wr": 20.0,
+"n": 10,
+"cd": -0.38,
+"bh": -0.6,
+"p": null,
+"da": "2024-08-26"
+},
+"q4": null
+}
+},
+{
+"ticker": "FF",
+"nome": "Falcon Finance",
+"rank_oggi": 112,
+"classe": "breve",
+"spot": "FFUSDT",
+"perp": "FFUSDT",
+"div": 1,
+"okx": null,
+"bitget": "FFUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "KITE",
+"nome": "Kite",
+"rank_oggi": 115,
+"classe": "breve",
+"spot": "KITEUSDT",
+"perp": "KITEUSDT",
+"div": 1,
+"okx": "KITE-USDT-SWAP",
+"bitget": "KITEUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "RAY",
+"nome": "Raydium",
+"rank_oggi": 116,
+"classe": "valutabile",
+"spot": "RAYUSDT",
+"perp": "RAYSOLUSDT",
+"div": 1,
+"okx": "RAY-USDT-SWAP",
+"bitget": "RAYUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 4,
+"f": "3",
+"fin": 11476.0,
+"dd": -33.9,
+"wr": 50.0,
+"n": 8,
+"cd": 0.09,
+"bh": -0.02,
+"p": 0.1004,
+"da": "2022-05-16"
+},
+"q4": {
+"c": 2,
+"f": "3,4,5",
+"fin": 10637.0,
+"dd": -33.9,
+"wr": 43.0,
+"n": 7,
+"cd": 0.04,
+"bh": -0.02,
+"p": 0.2584,
+"da": "2022-05-16",
+"ok": false
+}
+}
+},
+{
+"ticker": "APT",
+"nome": "Aptos",
+"rank_oggi": 117,
+"classe": "valutabile",
+"spot": "APTUSDT",
+"perp": "APTUSDT",
+"div": 1,
+"okx": "APT-USDT-SWAP",
+"bitget": "APTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 10382.0,
+"dd": -34.1,
+"wr": 58.0,
+"n": 12,
+"cd": 0.03,
+"bh": -0.61,
+"p": 0.4393,
+"da": "2023-07-24"
+},
+"q4": {
+"c": 2,
+"f": "3,4,5",
+"fin": 8799.0,
+"dd": -29.4,
+"wr": 57.0,
+"n": 7,
+"cd": -0.13,
+"bh": -0.61,
+"p": 0.3403,
+"da": "2023-07-24",
+"ok": false
+}
+}
+},
+{
+"ticker": "TIA",
+"nome": "Celestia",
+"rank_oggi": 118,
+"classe": "breve",
+"spot": "TIAUSDT",
+"perp": "TIAUSDT",
+"div": 1,
+"okx": "TIA-USDT-SWAP",
+"bitget": "TIAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 7555.0,
+"dd": -26.6,
+"wr": 33.0,
+"n": 9,
+"cd": -0.43,
+"bh": -0.71,
+"p": null,
+"da": "2024-08-05"
+},
+"q4": null
+}
+},
+{
+"ticker": "AERO",
+"nome": "Aero",
+"rank_oggi": 121,
+"classe": "breve",
+"spot": "AEROUSDT",
+"perp": "AEROUSDT",
+"div": 1,
+"okx": "AERO-USDT-SWAP",
+"bitget": "AEROUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 9599.0,
+"dd": -24.0,
+"wr": 50.0,
+"n": 6,
+"cd": -0.14,
+"bh": -0.73,
+"p": null,
+"da": "2025-09-08"
+},
+"q4": null
+}
+},
+{
+"ticker": "BSV",
+"nome": "Bitcoin SV",
+"rank_oggi": 124,
+"classe": "breve",
+"spot": null,
+"perp": "BSVUSDT",
+"div": 1,
+"okx": null,
+"bitget": "BSVUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 9090.0,
+"dd": -28.9,
+"wr": 38.0,
+"n": 13,
+"cd": -0.14,
+"bh": -0.47,
+"p": null,
+"da": "2024-07-22"
+},
+"q4": null
+}
+},
+{
+"ticker": "SUN",
+"nome": "Sun Token",
+"rank_oggi": 125,
+"classe": "breve",
+"spot": "SUNUSDT",
+"perp": "SUNUSDT",
+"div": 1,
+"okx": null,
+"bitget": "SUNUSDT",
+"da": "2021-06-18",
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 10682.0,
+"dd": -30.3,
+"wr": 50.0,
+"n": 8,
+"cd": 0.11,
+"bh": -0.58,
+"p": null,
+"da": "2024-12-09"
+},
+"q4": null
+}
+},
+{
+"ticker": "CRV",
+"nome": "Curve DAO",
+"rank_oggi": 126,
+"classe": "valutabile",
+"spot": "CRVUSDT",
+"perp": "CRVUSDT",
+"div": 1,
+"okx": "CRV-USDT-SWAP",
+"bitget": "CRVUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 7467.0,
+"dd": -56.4,
+"wr": 45.0,
+"n": 20,
+"cd": -0.09,
+"bh": -0.42,
+"p": 0.3543,
+"da": "2021-05-17"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 7249.0,
+"dd": -47.2,
+"wr": 50.0,
+"n": 14,
+"cd": -0.12,
+"bh": -0.42,
+"p": 0.5207,
+"da": "2021-05-17",
+"ok": false
+}
+}
+},
+{
+"ticker": "PENGU",
+"nome": "Pudgy Penguins",
+"rank_oggi": 129,
+"classe": "breve",
+"spot": "PENGUUSDT",
+"perp": "PENGUUSDT",
+"div": 1,
+"okx": "PENGU-USDT-SWAP",
+"bitget": "PENGUUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,5",
+"fin": 11202.0,
+"dd": -20.0,
+"wr": 50.0,
+"n": 4,
+"cd": 0.51,
+"bh": -0.95,
+"p": null,
+"da": "2025-09-22"
+},
+"q4": null
+}
+},
+{
+"ticker": "UB",
+"nome": "Unibase",
+"rank_oggi": 131,
+"classe": "breve",
+"spot": null,
+"perp": "UBUSDT",
+"div": 1,
+"okx": "UB-USDT-SWAP",
+"bitget": "UBUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "GRASS",
+"nome": "Grass",
+"rank_oggi": 132,
+"classe": "breve",
+"spot": null,
+"perp": "GRASSUSDT",
+"div": 1,
+"okx": "GRASS-USDT-SWAP",
+"bitget": "GRASSUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 5059.0,
+"dd": -54.8,
+"wr": 25.0,
+"n": 8,
+"cd": -0.75,
+"bh": -0.58,
+"p": null,
+"da": "2025-08-11"
+},
+"q4": null
+}
+},
+{
+"ticker": "LUNC",
+"nome": "Terra Luna Classic",
+"rank_oggi": 133,
+"classe": "valutabile",
+"spot": "LUNCUSDT",
+"perp": "1000LUNCUSDT",
+"div": 1000,
+"okx": null,
+"bitget": "LUNCUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 10510.0,
+"dd": -53.3,
+"wr": 33.0,
+"n": 9,
+"cd": 0.02,
+"bh": -0.88,
+"p": 0.4833,
+"da": "2021-05-24"
+},
+"q4": {
+"c": 3,
+"f": "4,5",
+"fin": 15910.0,
+"dd": -20.1,
+"wr": 67.0,
+"n": 3,
+"cd": 0.44,
+"bh": -0.88,
+"p": 0.1259,
+"da": "2021-05-24",
+"ok": false
+}
+}
+},
+{
+"ticker": "SPX",
+"nome": "SPX6900",
+"rank_oggi": 134,
+"classe": "breve",
+"spot": null,
+"perp": "SPXUSDT",
+"div": 1,
+"okx": "SPX-USDT-SWAP",
+"bitget": "SPXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 8496.0,
+"dd": -33.6,
+"wr": 33.0,
+"n": 6,
+"cd": -0.38,
+"bh": -0.87,
+"p": null,
+"da": "2025-09-15"
+},
+"q4": null
+}
+},
+{
+"ticker": "FET",
+"nome": "Artificial Superintelligence Alliance",
+"rank_oggi": 135,
+"classe": "valutabile",
+"spot": "FETUSDT",
+"perp": "FETUSDT",
+"div": 1,
+"okx": "FET-USDT-SWAP",
+"bitget": "FETUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 14799.0,
+"dd": -41.5,
+"wr": 44.0,
+"n": 16,
+"cd": 0.28,
+"bh": -0.25,
+"p": 0.0895,
+"da": "2023-05-08"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 10440.0,
+"dd": -54.6,
+"wr": 33.0,
+"n": 12,
+"cd": 0.02,
+"bh": -0.25,
+"p": 0.2759,
+"da": "2023-05-08",
+"ok": false
+}
+}
+},
+{
+"ticker": "TRUMP",
+"nome": "Official Trump",
+"rank_oggi": 136,
+"classe": "breve",
+"spot": "TRUMPUSDT",
+"perp": "TRUMPUSDT",
+"div": 1,
+"okx": "TRUMP-USDT-SWAP",
+"bitget": "TRUMPUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 4,
+"f": "5",
+"fin": 10164.0,
+"dd": -23.1,
+"wr": 67.0,
+"n": 6,
+"cd": 0.06,
+"bh": -0.92,
+"p": null,
+"da": "2025-10-20"
+},
+"q4": null
+}
+},
+{
+"ticker": "VIRTUAL",
+"nome": "Virtuals Protocol",
+"rank_oggi": 137,
+"classe": "breve",
+"spot": "VIRTUALUSDT",
+"perp": "VIRTUALUSDT",
+"div": 1,
+"okx": "VIRTUAL-USDT-SWAP",
+"bitget": "VIRTUALUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 8500.0,
+"dd": -31.3,
+"wr": 33.0,
+"n": 6,
+"cd": -0.41,
+"bh": -0.82,
+"p": null,
+"da": "2025-09-15"
+},
+"q4": null
+}
+},
+{
+"ticker": "XTZ",
+"nome": "Tezos",
+"rank_oggi": 138,
+"classe": "valutabile",
+"spot": "XTZUSDT",
+"perp": "XTZUSDT",
+"div": 1,
+"okx": "XTZ-USDT-SWAP",
+"bitget": "XTZUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9231.0,
+"dd": -59.0,
+"wr": 54.0,
+"n": 24,
+"cd": -0.02,
+"bh": -0.32,
+"p": 0.081,
+"da": "2020-06-29"
+},
+"q4": {
+"c": 3,
+"f": "2,4",
+"fin": 11445.0,
+"dd": -53.8,
+"wr": 67.0,
+"n": 9,
+"cd": 0.04,
+"bh": -0.32,
+"p": 0.1349,
+"da": "2020-06-29",
+"ok": false
+}
+}
+},
+{
+"ticker": "STRK",
+"nome": "Starknet",
+"rank_oggi": 139,
+"classe": "breve",
+"spot": "STRKUSDT",
+"perp": "STRKUSDT",
+"div": 1,
+"okx": "STRK-USDT-SWAP",
+"bitget": "STRKUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 11356.0,
+"dd": -28.9,
+"wr": 56.0,
+"n": 9,
+"cd": 0.23,
+"bh": -0.8,
+"p": null,
+"da": "2024-11-25"
+},
+"q4": null
+}
+},
+{
+"ticker": "XPL",
+"nome": "Plasma",
+"rank_oggi": 143,
+"classe": "breve",
+"spot": "XPLUSDT",
+"perp": "XPLUSDT",
+"div": 1,
+"okx": "XPL-USDT-SWAP",
+"bitget": "XPLUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "3,4,5",
+"fin": 10339.0,
+"dd": -12.0,
+"wr": 33.0,
+"n": 3,
+"cd": 0.57,
+"bh": -1.14,
+"p": null,
+"da": "2026-05-25"
+},
+"q4": null
+}
+},
+{
+"ticker": "SEI",
+"nome": "Sei",
+"rank_oggi": 146,
+"classe": "breve",
+"spot": "SEIUSDT",
+"perp": "SEIUSDT",
+"div": 1,
+"okx": "SEI-USDT-SWAP",
+"bitget": "SEIUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 8548.0,
+"dd": -29.1,
+"wr": 40.0,
+"n": 10,
+"cd": -0.21,
+"bh": -0.7,
+"p": null,
+"da": "2024-05-20"
+},
+"q4": null
+}
+},
+{
+"ticker": "PENDLE",
+"nome": "Pendle",
+"rank_oggi": 147,
+"classe": "breve",
+"spot": "PENDLEUSDT",
+"perp": "PENDLEUSDT",
+"div": 1,
+"okx": "PENDLE-USDT-SWAP",
+"bitget": "PENDLEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 2751.0,
+"dd": -72.5,
+"wr": 17.0,
+"n": 12,
+"cd": -0.54,
+"bh": -0.55,
+"p": null,
+"da": "2024-04-08"
+},
+"q4": null
+}
+},
+{
+"ticker": "LDO",
+"nome": "Lido DAO",
+"rank_oggi": 152,
+"classe": "valutabile",
+"spot": "LDOUSDT",
+"perp": "LDOUSDT",
+"div": 1,
+"okx": "LDO-USDT-SWAP",
+"bitget": "LDOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5126.0,
+"dd": -55.9,
+"wr": 18.0,
+"n": 17,
+"cd": -0.29,
+"bh": -0.5,
+"p": 0.919,
+"da": "2023-02-13"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 6379.0,
+"dd": -42.4,
+"wr": 20.0,
+"n": 10,
+"cd": -0.26,
+"bh": -0.5,
+"p": 0.9085,
+"da": "2023-02-13",
+"ok": false
+}
+}
+},
+{
+"ticker": "BONK",
+"nome": "Bonk",
+"rank_oggi": 154,
+"classe": "breve",
+"spot": "BONKUSDT",
+"perp": "1000BONKUSDT",
+"div": 1000,
+"okx": "BONK-USDT-SWAP",
+"bitget": "1000BONKUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 9987.0,
+"dd": -33.9,
+"wr": 30.0,
+"n": 10,
+"cd": -0.0,
+"bh": -0.67,
+"p": null,
+"da": "2024-08-26"
+},
+"q4": null
+}
+},
+{
+"ticker": "KAIA",
+"nome": "Kaia",
+"rank_oggi": 157,
+"classe": "breve",
+"spot": "KAIAUSDT",
+"perp": "KAIAUSDT",
+"div": 1,
+"okx": null,
+"bitget": "KAIAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "4,5",
+"fin": 9579.0,
+"dd": -25.4,
+"wr": 60.0,
+"n": 5,
+"cd": -0.13,
+"bh": -0.82,
+"p": null,
+"da": "2025-08-04"
+},
+"q4": null
+}
+},
+{
+"ticker": "GRT",
+"nome": "The Graph",
+"rank_oggi": 162,
+"classe": "valutabile",
+"spot": "GRTUSDT",
+"perp": "GRTUSDT",
+"div": 1,
+"okx": "GRT-USDT-SWAP",
+"bitget": "GRTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 23333.0,
+"dd": -44.3,
+"wr": 50.0,
+"n": 12,
+"cd": 0.4,
+"bh": -0.54,
+"p": 0.023,
+"da": "2021-09-20"
+},
+"q4": {
+"c": 4,
+"f": "5",
+"fin": 12187.0,
+"dd": -21.9,
+"wr": 67.0,
+"n": 6,
+"cd": 0.18,
+"bh": -0.54,
+"p": 0.1619,
+"da": "2021-09-20",
+"ok": false
+}
+}
+},
+{
+"ticker": "COMP",
+"nome": "Compound",
+"rank_oggi": 163,
+"classe": "valutabile",
+"spot": "COMPUSDT",
+"perp": "COMPUSDT",
+"div": 1,
+"okx": "COMP-USDT-SWAP",
+"bitget": "COMPUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 2167.0,
+"dd": -85.1,
+"wr": 29.0,
+"n": 21,
+"cd": -0.28,
+"bh": -0.42,
+"p": 0.6612,
+"da": "2021-03-29"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 2770.0,
+"dd": -75.3,
+"wr": 11.0,
+"n": 9,
+"cd": -0.27,
+"bh": -0.42,
+"p": 0.9605,
+"da": "2021-03-29",
+"ok": false
+}
+}
+},
+{
+"ticker": "CFX",
+"nome": "Conflux",
+"rank_oggi": 166,
+"classe": "valutabile",
+"spot": "CFXUSDT",
+"perp": "CFXUSDT",
+"div": 1,
+"okx": "CFX-USDT-SWAP",
+"bitget": "CFXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 7772.0,
+"dd": -41.0,
+"wr": 45.0,
+"n": 11,
+"cd": -0.17,
+"bh": -0.49,
+"p": 0.5702,
+"da": "2023-06-05"
+},
+"q4": {
+"c": 1,
+"f": "2,3,4,5",
+"fin": 7709.0,
+"dd": -36.5,
+"wr": 57.0,
+"n": 7,
+"cd": -0.2,
+"bh": -0.49,
+"p": 0.6932,
+"da": "2023-06-05",
+"ok": false
+}
+}
+},
+{
+"ticker": "RUNE",
+"nome": "THORChain",
+"rank_oggi": 167,
+"classe": "valutabile",
+"spot": "RUNEUSDT",
+"perp": "RUNEUSDT",
+"div": 1,
+"okx": null,
+"bitget": "RUNEUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 32906.0,
+"dd": -45.8,
+"wr": 59.0,
+"n": 17,
+"cd": 0.53,
+"bh": -0.44,
+"p": 0.014,
+"da": "2021-06-07"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 33771.0,
+"dd": -26.2,
+"wr": 64.0,
+"n": 11,
+"cd": 0.95,
+"bh": -0.44,
+"p": 0.014,
+"da": "2021-06-07",
+"ok": false
+}
+}
+},
+{
+"ticker": "OP",
+"nome": "Optimism",
+"rank_oggi": 171,
+"classe": "valutabile",
+"spot": "OPUSDT",
+"perp": "OPUSDT",
+"div": 1,
+"okx": "OP-USDT-SWAP",
+"bitget": "OPUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 10380.0,
+"dd": -43.8,
+"wr": 44.0,
+"n": 9,
+"cd": 0.02,
+"bh": -0.63,
+"p": 0.4043,
+"da": "2023-03-06"
+},
+"q4": {
+"c": 2,
+"f": "3,4,5",
+"fin": 7633.0,
+"dd": -30.4,
+"wr": 40.0,
+"n": 5,
+"cd": -0.23,
+"bh": -0.63,
+"p": 0.8016,
+"da": "2023-03-06",
+"ok": false
+}
+}
+},
+{
+"ticker": "FLOKI",
+"nome": "FLOKI",
+"rank_oggi": 172,
+"classe": "breve",
+"spot": "FLOKIUSDT",
+"perp": "1000FLOKIUSDT",
+"div": 1000,
+"okx": "FLOKI-USDT-SWAP",
+"bitget": "FLOKIUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 4516.0,
+"dd": -61.6,
+"wr": 29.0,
+"n": 17,
+"cd": -0.4,
+"bh": -0.18,
+"p": null,
+"da": "2024-02-05"
+},
+"q4": null
+}
+},
+{
+"ticker": "JASMY",
+"nome": "JasmyCoin",
+"rank_oggi": 173,
+"classe": "valutabile",
+"spot": "JASMYUSDT",
+"perp": "JASMYUSDT",
+"div": 1,
+"okx": null,
+"bitget": "JASMYUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 13910.0,
+"dd": -58.1,
+"wr": 43.0,
+"n": 21,
+"cd": 0.14,
+"bh": -0.23,
+"p": 0.1179,
+"da": "2022-08-29"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 12380.0,
+"dd": -51.0,
+"wr": 47.0,
+"n": 15,
+"cd": 0.1,
+"bh": -0.23,
+"p": 0.1339,
+"da": "2022-08-29",
+"ok": false
+}
+}
+},
+{
+"ticker": "AR",
+"nome": "Arweave",
+"rank_oggi": 176,
+"classe": "valutabile",
+"spot": "ARUSDT",
+"perp": "ARUSDT",
+"div": 1,
+"okx": "AR-USDT-SWAP",
+"bitget": "ARUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 12346.0,
+"dd": -59.0,
+"wr": 46.0,
+"n": 13,
+"cd": 0.08,
+"bh": -0.44,
+"p": 0.1249,
+"da": "2022-02-14"
+},
+"q4": {
+"c": 2,
+"f": "2,3,5",
+"fin": 16254.0,
+"dd": -41.4,
+"wr": 57.0,
+"n": 7,
+"cd": 0.26,
+"bh": -0.44,
+"p": 0.045,
+"da": "2022-02-14",
+"ok": false
+}
+}
+},
+{
+"ticker": "CAP",
+"nome": "Cap",
+"rank_oggi": 180,
+"classe": "breve",
+"spot": null,
+"perp": "CAPUSDT",
+"div": 1,
+"okx": "CAP-USDT-SWAP",
+"bitget": "CAPUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "IOTA",
+"nome": "IOTA",
+"rank_oggi": 182,
+"classe": "valutabile",
+"spot": "IOTAUSDT",
+"perp": "IOTAUSDT",
+"div": 1,
+"okx": "IOTA-USDT-SWAP",
+"bitget": "IOTAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 17776.0,
+"dd": -51.0,
+"wr": 52.0,
+"n": 25,
+"cd": 0.18,
+"bh": -0.27,
+"p": 0.037,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 15194.0,
+"dd": -47.2,
+"wr": 54.0,
+"n": 13,
+"cd": 0.14,
+"bh": -0.27,
+"p": 0.1109,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "ENS",
+"nome": "Ethereum Name Service",
+"rank_oggi": 183,
+"classe": "valutabile",
+"spot": "ENSUSDT",
+"perp": "ENSUSDT",
+"div": 1,
+"okx": "ENS-USDT-SWAP",
+"bitget": "ENSUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 6620.0,
+"dd": -67.2,
+"wr": 29.0,
+"n": 17,
+"cd": -0.14,
+"bh": -0.31,
+"p": 0.3343,
+"da": "2022-08-15"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 7763.0,
+"dd": -32.5,
+"wr": 38.0,
+"n": 8,
+"cd": -0.18,
+"bh": -0.31,
+"p": 0.6802,
+"da": "2022-08-15",
+"ok": false
+}
+}
+},
+{
+"ticker": "ZAMA",
+"nome": "Zama",
+"rank_oggi": 184,
+"classe": "breve",
+"spot": "ZAMAUSDT",
+"perp": "ZAMAUSDT",
+"div": 1,
+"okx": "ZAMA-USDT-SWAP",
+"bitget": "ZAMAUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "SENT",
+"nome": "Sentient",
+"rank_oggi": 185,
+"classe": "breve",
+"spot": "SENTUSDT",
+"perp": "SENTUSDT",
+"div": 1,
+"okx": "SENT-USDT-SWAP",
+"bitget": "SENTUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "AKT",
+"nome": "Akash Network",
+"rank_oggi": 186,
+"classe": "breve",
+"spot": null,
+"perp": "AKTUSDT",
+"div": 1,
+"okx": null,
+"bitget": "AKTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 0,
+"f": "1,2,3,4,5",
+"fin": 6825.0,
+"dd": -36.0,
+"wr": 29.0,
+"n": 7,
+"cd": -0.73,
+"bh": -0.69,
+"p": null,
+"da": "2025-08-25"
+},
+"q4": null
+}
+},
+{
+"ticker": "KMNO",
+"nome": "Kamino",
+"rank_oggi": 188,
+"classe": "breve",
+"spot": "KMNOUSDT",
+"perp": "KMNOUSDT",
+"div": 1,
+"okx": "KMNO-USDT-SWAP",
+"bitget": "KMNOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "2,3,4,5",
+"fin": 6668.0,
+"dd": -41.5,
+"wr": 50.0,
+"n": 6,
+"cd": -0.7,
+"bh": -0.82,
+"p": null,
+"da": "2025-09-22"
+},
+"q4": null
+}
+},
+{
+"ticker": "THETA",
+"nome": "Theta Network",
+"rank_oggi": 196,
+"classe": "valutabile",
+"spot": "THETAUSDT",
+"perp": "THETAUSDT",
+"div": 1,
+"okx": "THETA-USDT-SWAP",
+"bitget": "THETAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 28502.0,
+"dd": -59.8,
+"wr": 53.0,
+"n": 15,
+"cd": 0.31,
+"bh": -0.21,
+"p": 0.066,
+"da": "2020-09-14"
+},
+"q4": {
+"c": 4,
+"f": "2",
+"fin": 23736.0,
+"dd": -46.7,
+"wr": 60.0,
+"n": 10,
+"cd": 0.32,
+"bh": -0.21,
+"p": 0.098,
+"da": "2020-09-14",
+"ok": false
+}
+}
+},
+{
+"ticker": "MON",
+"nome": "Monad",
+"rank_oggi": 197,
+"classe": "breve",
+"spot": null,
+"perp": "MONUSDT",
+"div": 1,
+"okx": "MON-USDT-SWAP",
+"bitget": "MONUSDT",
+"da": null,
+"scheda": {
+"q1": null,
+"q4": null
+}
+},
+{
+"ticker": "JTO",
+"nome": "Jito",
+"rank_oggi": 199,
+"classe": "breve",
+"spot": "JTOUSDT",
+"perp": "JTOUSDT",
+"div": 1,
+"okx": "JTO-USDT-SWAP",
+"bitget": "JTOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 10370.0,
+"dd": -24.3,
+"wr": 20.0,
+"n": 10,
+"cd": 0.07,
+"bh": -0.66,
+"p": null,
+"da": "2024-09-09"
+},
+"q4": null
+}
+},
+{
+"ticker": "A",
+"nome": "EOS",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "AUSDT",
+"perp": "AUSDT",
+"div": 1,
+"okx": "A-USDT-SWAP",
+"bitget": "AUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 12676.0,
+"dd": -51.4,
+"wr": 42.0,
+"n": 24,
+"cd": 0.07,
+"bh": -0.44,
+"p": 0.01,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 4,
+"f": "3",
+"fin": 18668.0,
+"dd": -25.1,
+"wr": 58.0,
+"n": 12,
+"cd": 0.4,
+"bh": -0.44,
+"p": 0.032,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "ARK",
+"nome": "Ark",
+"rank_oggi": null,
+"classe": "breve",
+"spot": "ARKUSDT",
+"perp": "ARKUSDT",
+"div": 1,
+"okx": null,
+"bitget": "ARKUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5132.0,
+"dd": -52.8,
+"wr": 27.0,
+"n": 15,
+"cd": -0.46,
+"bh": -0.49,
+"p": null,
+"da": "2024-06-24"
+},
+"q4": null
+}
+},
+{
+"ticker": "BAT",
+"nome": "Basic Attention Token",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "BATUSDT",
+"perp": "BATUSDT",
+"div": 1,
+"okx": "BAT-USDT-SWAP",
+"bitget": "BATUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 1,
+"f": "1,2,3,4",
+"fin": 5051.0,
+"dd": -65.1,
+"wr": 37.0,
+"n": 27,
+"cd": -0.15,
+"bh": -0.15,
+"p": 0.5757,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 10648.0,
+"dd": -39.6,
+"wr": 58.0,
+"n": 12,
+"cd": 0.02,
+"bh": -0.15,
+"p": 0.2044,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "BNT",
+"nome": "Bancor",
+"rank_oggi": null,
+"classe": "breve",
+"spot": "BNTUSDT",
+"perp": "BNTUSDT",
+"div": 1,
+"okx": null,
+"bitget": "BNTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 6459.0,
+"dd": -60.8,
+"wr": 50.0,
+"n": 18,
+"cd": -0.22,
+"bh": -0.43,
+"p": null,
+"da": "2023-11-27"
+},
+"q4": null
+}
+},
+{
+"ticker": "CHZ",
+"nome": "Chiliz",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "CHZUSDT",
+"perp": "CHZUSDT",
+"div": 1,
+"okx": "CHZ-USDT-SWAP",
+"bitget": "CHZUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9413.0,
+"dd": -58.4,
+"wr": 39.0,
+"n": 23,
+"cd": -0.02,
+"bh": -0.52,
+"p": 0.1274,
+"da": "2021-05-10"
+},
+"q4": {
+"c": 3,
+"f": "3,5",
+"fin": 14819.0,
+"dd": -16.4,
+"wr": 50.0,
+"n": 6,
+"cd": 0.45,
+"bh": -0.52,
+"p": 0.0115,
+"da": "2021-05-10",
+"ok": false
+}
+}
+},
+{
+"ticker": "ENJ",
+"nome": "Enjin Coin",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "ENJUSDT",
+"perp": "ENJUSDT",
+"div": 1,
+"okx": "ENJ-USDT-SWAP",
+"bitget": "ENJUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 13645.0,
+"dd": -50.4,
+"wr": 38.0,
+"n": 24,
+"cd": 0.11,
+"bh": -0.35,
+"p": 0.1479,
+"da": "2021-01-18"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 12392.0,
+"dd": -27.8,
+"wr": 44.0,
+"n": 9,
+"cd": 0.13,
+"bh": -0.35,
+"p": 0.2749,
+"da": "2021-01-18",
+"ok": false
+}
+}
+},
+{
+"ticker": "GLM",
+"nome": "Golem",
+"rank_oggi": null,
+"classe": "breve",
+"spot": "GLMUSDT",
+"perp": "GLMUSDT",
+"div": 1,
+"okx": "GLM-USDT-SWAP",
+"bitget": "GLMUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 8029.0,
+"dd": -33.1,
+"wr": 36.0,
+"n": 14,
+"cd": -0.26,
+"bh": -0.57,
+"p": null,
+"da": "2024-06-10"
+},
+"q4": null
+}
+},
+{
+"ticker": "HOT",
+"nome": "Holo",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "HOTUSDT",
+"perp": "HOTUSDT",
+"div": 1,
+"okx": null,
+"bitget": "HOTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 12371.0,
+"dd": -41.5,
+"wr": 39.0,
+"n": 23,
+"cd": 0.1,
+"bh": -0.41,
+"p": 0.1669,
+"da": "2021-07-19"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 15328.0,
+"dd": -34.1,
+"wr": 46.0,
+"n": 13,
+"cd": 0.24,
+"bh": -0.41,
+"p": 0.0885,
+"da": "2021-07-19",
+"ok": false
+}
+}
+},
+{
+"ticker": "IOST",
+"nome": "IOST",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "IOSTUSDT",
+"perp": "IOSTUSDT",
+"div": 1,
+"okx": "IOST-USDT-SWAP",
+"bitget": "IOSTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5146.0,
+"dd": -65.7,
+"wr": 41.0,
+"n": 29,
+"cd": -0.15,
+"bh": -0.29,
+"p": 0.3198,
+"da": "2020-06-08"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 15080.0,
+"dd": -25.4,
+"wr": 75.0,
+"n": 12,
+"cd": 0.26,
+"bh": -0.29,
+"p": 0.0155,
+"da": "2020-06-08",
+"ok": false
+}
+}
+},
+{
+"ticker": "IOTX",
+"nome": "IoTeX",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "IOTXUSDT",
+"perp": "IOTXUSDT",
+"div": 1,
+"okx": null,
+"bitget": "IOTXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,4",
+"fin": 19323.0,
+"dd": -25.9,
+"wr": 41.0,
+"n": 17,
+"cd": 0.54,
+"bh": -0.58,
+"p": 0.022,
+"da": "2021-11-29"
+},
+"q4": {
+"c": 4,
+"f": "5",
+"fin": 12136.0,
+"dd": -30.0,
+"wr": 71.0,
+"n": 7,
+"cd": 0.13,
+"bh": -0.58,
+"p": 0.1839,
+"da": "2021-11-29",
+"ok": false
+}
+}
+},
+{
+"ticker": "KNC",
+"nome": "Kyber Network",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "KNCUSDT",
+"perp": "KNCUSDT",
+"div": 1,
+"okx": null,
+"bitget": "KNCUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5487.0,
+"dd": -64.7,
+"wr": 29.0,
+"n": 24,
+"cd": -0.15,
+"bh": -0.43,
+"p": 0.4693,
+"da": "2021-03-15"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 8610.0,
+"dd": -23.4,
+"wr": 42.0,
+"n": 12,
+"cd": -0.11,
+"bh": -0.43,
+"p": 0.6642,
+"da": "2021-03-15",
+"ok": false
+}
+}
+},
+{
+"ticker": "LSK",
+"nome": "Lisk",
+"rank_oggi": null,
+"classe": "breve",
+"spot": "LSKUSDT",
+"perp": "LSKUSDT",
+"div": 1,
+"okx": null,
+"bitget": "LSKUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 4,
+"f": "4",
+"fin": 10352.0,
+"dd": -32.9,
+"wr": 60.0,
+"n": 10,
+"cd": 0.04,
+"bh": -0.66,
+"p": null,
+"da": "2024-05-13"
+},
+"q4": null
+}
+},
+{
+"ticker": "MANA",
+"nome": "Decentraland",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "MANAUSDT",
+"perp": "MANAUSDT",
+"div": 1,
+"okx": "MANA-USDT-SWAP",
+"bitget": "MANAUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5831.0,
+"dd": -69.8,
+"wr": 35.0,
+"n": 20,
+"cd": -0.14,
+"bh": -0.34,
+"p": 0.3598,
+"da": "2021-06-28"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9910.0,
+"dd": -42.3,
+"wr": 50.0,
+"n": 10,
+"cd": -0.0,
+"bh": -0.34,
+"p": 0.1259,
+"da": "2021-06-28",
+"ok": false
+}
+}
+},
+{
+"ticker": "NEO",
+"nome": "Neo",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "NEOUSDT",
+"perp": "NEOUSDT",
+"div": 1,
+"okx": "NEO-USDT-SWAP",
+"bitget": "NEOUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 10811.0,
+"dd": -52.8,
+"wr": 48.0,
+"n": 27,
+"cd": 0.02,
+"bh": -0.27,
+"p": 0.1099,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 9631.0,
+"dd": -44.8,
+"wr": 58.0,
+"n": 12,
+"cd": -0.01,
+"bh": -0.27,
+"p": 0.3788,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "ONT",
+"nome": "Ontology",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "ONTUSDT",
+"perp": "ONTUSDT",
+"div": 1,
+"okx": "ONT-USDT-SWAP",
+"bitget": "ONTUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 7638.0,
+"dd": -55.8,
+"wr": 38.0,
+"n": 34,
+"cd": -0.07,
+"bh": -0.35,
+"p": 0.1969,
+"da": "2020-06-01"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 15166.0,
+"dd": -19.2,
+"wr": 64.0,
+"n": 14,
+"cd": 0.35,
+"bh": -0.35,
+"p": 0.0215,
+"da": "2020-06-01",
+"ok": false
+}
+}
+},
+{
+"ticker": "PUNDIX",
+"nome": "Pundi X",
+"rank_oggi": null,
+"classe": "breve",
+"spot": "PUNDIXUSDT",
+"perp": "PUNDIXUSDT",
+"div": 1,
+"okx": null,
+"bitget": "PUNDIXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "3,5",
+"fin": 11657.0,
+"dd": -20.9,
+"wr": 57.0,
+"n": 7,
+"cd": 0.62,
+"bh": -0.85,
+"p": null,
+"da": "2025-08-18"
+},
+"q4": null
+}
+},
+{
+"ticker": "QTUM",
+"nome": "Qtum",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "QTUMUSDT",
+"perp": "QTUMUSDT",
+"div": 1,
+"okx": "QTUM-USDT-SWAP",
+"bitget": "QTUMUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 7303.0,
+"dd": -78.4,
+"wr": 50.0,
+"n": 38,
+"cd": -0.06,
+"bh": -0.16,
+"p": 0.1099,
+"da": "2020-06-08"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 21835.0,
+"dd": -24.8,
+"wr": 69.0,
+"n": 16,
+"cd": 0.52,
+"bh": -0.16,
+"p": 0.0275,
+"da": "2020-06-08",
+"ok": false
+}
+}
+},
+{
+"ticker": "RVN",
+"nome": "Ravencoin",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "RVNUSDT",
+"perp": "RVNUSDT",
+"div": 1,
+"okx": null,
+"bitget": "RVNUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 3,
+"f": "2,3",
+"fin": 12421.0,
+"dd": -53.2,
+"wr": 43.0,
+"n": 23,
+"cd": 0.08,
+"bh": -0.56,
+"p": 0.0765,
+"da": "2021-06-14"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 11822.0,
+"dd": -37.1,
+"wr": 54.0,
+"n": 13,
+"cd": 0.08,
+"bh": -0.56,
+"p": 0.0545,
+"da": "2021-06-14",
+"ok": false
+}
+}
+},
+{
+"ticker": "S",
+"nome": "Fantom",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "SUSDT",
+"perp": "SUSDT",
+"div": 1,
+"okx": "S-USDT-SWAP",
+"bitget": "SUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 17631.0,
+"dd": -63.8,
+"wr": 37.0,
+"n": 19,
+"cd": 0.16,
+"bh": 0.01,
+"p": 0.2009,
+"da": "2021-01-11"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 24350.0,
+"dd": -36.1,
+"wr": 50.0,
+"n": 12,
+"cd": 0.45,
+"bh": 0.01,
+"p": 0.1659,
+"da": "2021-01-11",
+"ok": false
+}
+}
+},
+{
+"ticker": "SNX",
+"nome": "Synthetix Network Token",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "SNXUSDT",
+"perp": "SNXUSDT",
+"div": 1,
+"okx": "SNX-USDT-SWAP",
+"bitget": "SNXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 4962.0,
+"dd": -66.7,
+"wr": 38.0,
+"n": 21,
+"cd": -0.18,
+"bh": -0.58,
+"p": 0.4313,
+"da": "2021-04-12"
+},
+"q4": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5421.0,
+"dd": -51.2,
+"wr": 36.0,
+"n": 11,
+"cd": -0.2,
+"bh": -0.58,
+"p": 0.8736,
+"da": "2021-04-12",
+"ok": false
+}
+}
+},
+{
+"ticker": "STEEM",
+"nome": "Steem",
+"rank_oggi": null,
+"classe": "breve",
+"spot": "STEEMUSDT",
+"perp": "STEEMUSDT",
+"div": 1,
+"okx": null,
+"bitget": "STEEMUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 3808.0,
+"dd": -66.2,
+"wr": 39.0,
+"n": 18,
+"cd": -0.45,
+"bh": -0.53,
+"p": null,
+"da": "2024-02-26"
+},
+"q4": null
+}
+},
+{
+"ticker": "XVG",
+"nome": "Verge",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "XVGUSDT",
+"perp": "XVGUSDT",
+"div": 1,
+"okx": null,
+"bitget": "XVGUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 5532.0,
+"dd": -78.1,
+"wr": 28.0,
+"n": 18,
+"cd": -0.22,
+"bh": -0.28,
+"p": 0.1419,
+"da": "2023-10-23"
+},
+"q4": {
+"c": 1,
+"f": "2,3,4,5",
+"fin": 8155.0,
+"dd": -66.9,
+"wr": 43.0,
+"n": 7,
+"cd": -0.1,
+"bh": -0.28,
+"p": 0.1269,
+"da": "2023-10-23",
+"ok": false
+}
+}
+},
+{
+"ticker": "ZEN",
+"nome": "Horizen",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "ZENUSDT",
+"perp": "ZENUSDT",
+"div": 1,
+"okx": "ZEN-USDT-SWAP",
+"bitget": "ZENUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 3575.0,
+"dd": -73.6,
+"wr": 28.0,
+"n": 25,
+"cd": -0.23,
+"bh": -0.43,
+"p": 0.6232,
+"da": "2021-04-12"
+},
+"q4": {
+"c": 3,
+"f": "2,3",
+"fin": 17588.0,
+"dd": -44.9,
+"wr": 50.0,
+"n": 10,
+"cd": 0.24,
+"bh": -0.43,
+"p": 0.074,
+"da": "2021-04-12",
+"ok": false
+}
+}
+},
+{
+"ticker": "ZIL",
+"nome": "Zilliqa",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "ZILUSDT",
+"perp": "ZILUSDT",
+"div": 1,
+"okx": "ZIL-USDT-SWAP",
+"bitget": "ZILUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 19280.0,
+"dd": -47.0,
+"wr": 55.0,
+"n": 22,
+"cd": 0.24,
+"bh": -0.42,
+"p": 0.065,
+"da": "2020-10-05"
+},
+"q4": {
+"c": 3,
+"f": "3,4",
+"fin": 21615.0,
+"dd": -26.8,
+"wr": 50.0,
+"n": 10,
+"cd": 0.5,
+"bh": -0.42,
+"p": 0.048,
+"da": "2020-10-05",
+"ok": false
+}
+}
+},
+{
+"ticker": "ZRX",
+"nome": "0x",
+"rank_oggi": null,
+"classe": "valutabile",
+"spot": "ZRXUSDT",
+"perp": "ZRXUSDT",
+"div": 1,
+"okx": "ZRX-USDT-SWAP",
+"bitget": "ZRXUSDT",
+"da": null,
+"scheda": {
+"q1": {
+"c": 2,
+"f": "2,3,4",
+"fin": 8514.0,
+"dd": -55.3,
+"wr": 48.0,
+"n": 27,
+"cd": -0.05,
+"bh": -0.24,
+"p": 0.2249,
+"da": "2020-10-12"
+},
+"q4": {
+"c": 5,
+"f": "",
+"fin": 17483.0,
+"dd": -22.0,
+"wr": 62.0,
+"n": 13,
+"cd": 0.43,
+"bh": -0.24,
+"p": 0.0555,
+"da": "2020-10-12",
+"ok": false
+}
+}
+}
+]
+}

@@ -1,0 +1,87 @@
+== Controlli ==
+BTC dal 2020-06-01: finale 225,069 $, DD -21.1%, trade 17; trade identici a w32_asset2/trades_crypto.csv: True
+ETH dal 2020-06-01: finale 53,394 $, DD -27.5%, trade 16; trade identici a w32_asset2/trades_crypto.csv: True
+50/50 A dal 2020-06-01: finale 139,232 $, CAGR/DD 2.44 (w32_asset2 q6: 139,232 $, 2.44; atteso 2,44)
+2/3 A dal 2020-06-01: CAGR/DD 2.62 (già visto 2,62)
+
+== Griglia (finale da 10.000 $, CAGR %, DD %, CAGR/DD, anno peggiore) ==
+-- IS 2020-06-01 → 2022-12-31
+  BTC  50 A:   43,638 $ · CAGR  76.9 · DD  -13.0 · C/DD 5.92 (5.9247) · peggiore 2022 +11.2%
+  BTC  50 B:   41,901 $ · CAGR  74.2 · DD  -12.8 · C/DD 5.79 (5.7929) · peggiore 2022 +7.7%
+  BTC  60 A:   47,068 $ · CAGR  82.2 · DD  -13.1 · C/DD 6.28 (6.2810) · peggiore 2022 +13.2%
+  BTC  60 B:   45,393 $ · CAGR  79.7 · DD  -12.9 · C/DD 6.16 (6.1622) · peggiore 2022 +10.1%
+  BTC 2/3 A:   49,355 $ · CAGR  85.6 · DD  -13.1 · C/DD 6.51 (6.5094) · peggiore 2022 +14.4%
+  BTC 2/3 B:   47,800 $ · CAGR  83.3 · DD  -13.0 · C/DD 6.40 (6.4035) · peggiore 2022 +11.6%
+  BTC  75 A:   52,214 $ · CAGR  89.7 · DD  -13.2 · C/DD 6.79 (6.7854) · peggiore 2022 +15.8%
+  BTC  75 B:   50,897 $ · CAGR  87.8 · DD  -13.1 · C/DD 6.70 (6.7001) · peggiore 2022 +13.6%
+  BTC 100 A:   60,791 $ · CAGR 101.2 · DD  -13.8 · C/DD 7.31 (7.3098) · peggiore 2022 +19.4%
+  BTC 100 B:   60,791 $ · CAGR 101.2 · DD  -13.8 · C/DD 7.31 (7.3098) · peggiore 2022 +19.4%
+-- OOS 2023-01-01 → 2026-11-24
+  BTC  50 A:   25,968 $ · CAGR  27.8 · DD  -24.5 · C/DD 1.13 (1.1336) · peggiore 2025 +8.1%
+  BTC  50 B:   25,737 $ · CAGR  27.5 · DD  -24.5 · C/DD 1.12 (1.1216) · peggiore 2025 +9.4%
+  BTC  60 A:   27,384 $ · CAGR  29.5 · DD  -25.0 · C/DD 1.18 (1.1806) · peggiore 2025 +7.3%
+  BTC  60 B:   27,165 $ · CAGR  29.2 · DD  -25.0 · C/DD 1.17 (1.1699) · peggiore 2025 +8.5%
+  BTC 2/3 A:   28,328 $ · CAGR  30.6 · DD  -25.3 · C/DD 1.21 (1.2094) · peggiore 2025 +6.8%
+  BTC 2/3 B:   28,127 $ · CAGR  30.4 · DD  -25.3 · C/DD 1.20 (1.2000) · peggiore 2025 +7.9%
+  BTC  75 A:   29,507 $ · CAGR  32.0 · DD  -25.8 · C/DD 1.24 (1.2429) · peggiore 2025 +6.3%
+  BTC  75 B:   29,340 $ · CAGR  31.8 · DD  -25.8 · C/DD 1.24 (1.2354) · peggiore 2025 +7.1%
+  BTC 100 A:   33,046 $ · CAGR  35.9 · DD  -27.0 · C/DD 1.33 (1.3284) · peggiore 2025 +4.9%
+  BTC 100 B:   33,046 $ · CAGR  35.9 · DD  -27.0 · C/DD 1.33 (1.3284) · peggiore 2025 +4.9%
+-- intero 2020-06-01 → 2026-11-24
+  BTC  50 A:  139,232 $ · CAGR  50.1 · DD  -20.6 · C/DD 2.44 (2.4392) · peggiore 2025 +6.6%
+  BTC  50 B:  118,151 $ · CAGR  46.4 · DD  -19.9 · C/DD 2.33 (2.3328) · peggiore 2022 +7.7%
+  BTC  60 A:  156,399 $ · CAGR  52.9 · DD  -20.7 · C/DD 2.55 (2.5511) · peggiore 2025 +6.1%
+  BTC  60 B:  135,741 $ · CAGR  49.6 · DD  -20.1 · C/DD 2.47 (2.4676) · peggiore 2025 +8.5%
+  BTC 2/3 A:  167,844 $ · CAGR  54.5 · DD  -20.8 · C/DD 2.62 (2.6205) · peggiore 2025 +5.8%
+  BTC 2/3 B:  148,455 $ · CAGR  51.6 · DD  -20.3 · C/DD 2.55 (2.5483) · peggiore 2025 +7.9%
+  BTC  75 A:  182,150 $ · CAGR  56.5 · DD  -20.9 · C/DD 2.70 (2.7020) · peggiore 2025 +5.5%
+  BTC  75 B:  165,512 $ · CAGR  54.2 · DD  -20.5 · C/DD 2.65 (2.6459) · peggiore 2025 +7.1%
+  BTC 100 A:  225,069 $ · CAGR  61.7 · DD  -21.1 · C/DD 2.92 (2.9193) · peggiore 2025 +4.9%
+  BTC 100 B:  225,069 $ · CAGR  61.7 · DD  -21.1 · C/DD 2.92 (2.9193) · peggiore 2025 +4.9%
+
+== Scelta IS ==
+ammissibili (DD ≥ −30%): 10/10; scelta: BTC 100% modo A (CAGR/DD IS 7.3098)
+ordine IS: 100A 7.310 > 100B 7.310 > 75A 6.785 > 75B 6.700 > 2/3A 6.509 > 2/3B 6.404 > 60A 6.281 > 60B 6.162 > 50A 5.925 > 50B 5.793
+
+== Giudizio OOS 2023-01 → oggi ==
+(1) CAGR/DD scelta 1.328 vs 50/50 A 1.134 → True
+(2) senza il migliore di BTC (2024-02-12 long +42.2%) e di ETH (2024-01-22 long +57.3%): scelta 23,233 $ DD -27.0 C/DD 0.894 vs 50/50 A 17,622 $ DD -24.5 C/DD 0.639 → True
+(3) date di partenza (fino a oggi), CAGR/DD scelta vs 50/50 A:
+    2020-06-01: 2.92 (DD -21.1) vs 2.44 (DD -20.6) → True
+    2020-09-01: 2.95 (DD -21.1) vs 2.40 (DD -20.6) → True
+    2021-01-01: 2.07 (DD -21.1) vs 1.80 (DD -20.2) → True
+    2021-06-01: 1.74 (DD -21.1) vs 1.40 (DD -20.3) → True
+    2022-01-01: 1.68 (DD -21.1) vs 1.32 (DD -20.2) → True
+    2023-01-01: 1.33 (DD -27.0) vs 1.13 (DD -24.5) → True
+    vince in 6/6 → True
+(4) DD OOS scelta -27.0 vs 50/50 A -24.5 (tolleranza 3 punti) → True
+ESITO: PROPORRE il cambio a BTC 100% modo A
+
+== Descrittivo (non preregistrato) · i 4 criteri OOS per ogni peso in modo A ==
+  BTC  60 A: (1) 1.18 True · (2) 0.70 vs 0.64 True · (3) 6/6 · (4) DD -25.0 True · su 60.000 $: 36,000 BTC + 24,000 ETH, DD OOS ≈ -15,000 $
+  BTC 2/3 A: (1) 1.21 True · (2) 0.74 vs 0.64 True · (3) 6/6 · (4) DD -25.3 True · su 60.000 $: 40,000 BTC + 20,000 ETH, DD OOS ≈ -15,180 $
+  BTC  75 A: (1) 1.24 True · (2) 0.78 vs 0.64 True · (3) 6/6 · (4) DD -25.8 True · su 60.000 $: 45,000 BTC + 15,000 ETH, DD OOS ≈ -15,480 $
+  BTC 100 A: (1) 1.33 True · (2) 0.89 vs 0.64 True · (3) 6/6 · (4) DD -27.0 True · su 60.000 $: 60,000 BTC + 0 ETH, DD OOS ≈ -16,200 $
+  BTC  50 A: su 60.000 $: 30,000 BTC + 30,000 ETH, DD OOS ≈ -14,700 $
+
+== Descrittivo · rendimenti annui dei due conti (dal 2020-06, ognuno da 10.000 $) ==
+  BTC: 2020 +133% · 2021 +118% · 2022 +19% · 2023 +46% · 2024 +103% · 2025 +5% · 2026 +19%
+  ETH: 2020 +35% · 2021 +104% · 2022 -4% · 2023 +22% · 2024 +28% · 2025 +14% · 2026 +14%
+  conto BTC 50 A: 2020 +84% · 2021 +113% · 2022 +11% · 2023 +39% · 2024 +83% · 2025 +7% · 2026 +18%
+  conto BTC 2/3 A: 2020 +100% · 2021 +115% · 2022 +14% · 2023 +42% · 2024 +91% · 2025 +6% · 2026 +19%
+  conto BTC 100 A: 2020 +133% · 2021 +118% · 2022 +19% · 2023 +46% · 2024 +103% · 2025 +5% · 2026 +19%
+  DD massimo per anno del conto unico (A), BTC 50 / 2/3 / 100:
+    2020: -7.0 / -6.9 / -6.7
+    2021: -8.8 / -10.7 / -13.8
+    2022: -13.0 / -13.1 / -13.4
+    2023: -17.7 / -17.9 / -18.1
+    2024: -12.1 / -12.0 / -11.9
+    2025: -18.6 / -18.6 / -18.7
+    2026: -18.6 / -18.5 / -18.3
+  DD massimo BTC 50 A: 2025-10-06 → 2026-01-14 -20.6% = BTC -16.7 punti + ETH -3.8 punti (quota BTC al picco 79%)
+  DD massimo BTC 2/3 A: 2025-10-06 → 2026-01-14 -20.8% = BTC -18.7 punti + ETH -2.1 punti (quota BTC al picco 88%)
+  correlazione dei rendimenti settimanali BTC/ETH (conti W3.2, dal 2020-06): 0.33
+
+== Ricampionamento a blocchi (5.000 estrazioni, blocchi di 13 settimane, 156 settimane, seme 7) ==
+  scelta BTC 100 A contro 50/50 A su 3 anni: P(CAGR/DD più alto) 72.6% · P(finale più alto) 82.5% · P(DD più piccolo) 38.5% · differenza CAGR/DD mediana +0.54 (5°–95° -1.48 / +3.06)
+  (riferimento) BTC 2/3 A contro 50/50 A: P(CAGR/DD più alto) 79.5%

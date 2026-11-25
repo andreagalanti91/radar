@@ -1,0 +1,201 @@
+rank_2020,simbolo_2020,nome,ticker_oggi,rank_oggi,escluso,binance_spot,binance_perp,binance_da,binance_fino,nota,stato
+1,BTC,Bitcoin,BTC,1.0,,BTCUSDT,BTCUSDT,2017-08,2026-10,,quotata su Binance
+2,ETH,Ethereum,ETH,2.0,,ETHUSDT,ETHUSDT,2017-08,2026-10,,quotata su Binance
+3,XRP,XRP,XRP,6.0,,XRPUSDT,XRPUSDT,2018-05,2026-10,,quotata su Binance
+4,USDT,Tether,USDT,3.0,stablecoin,,,,,,
+5,BCH,Bitcoin Cash,BCH,22.0,,"BCHABCUSDT,BCHUSDT",BCHUSDT,2018-11,2026-10,,quotata su Binance
+6,LTC,Litecoin,LTC,24.0,,LTCUSDT,LTCUSDT,2017-12,2026-10,,quotata su Binance
+7,EOS,EOS,A,,,"EOSUSDT,AUSDT","EOSUSDT,AUSDT",2018-05,2026-10,,"quotata su Binance, fuori dalla top 250"
+8,BNB,BNB,BNB,4.0,,BNBUSDT,BNBUSDT,2017-11,2026-10,,quotata su Binance
+9,BSV,Bitcoin SV,BSV,124.0,,,BSVUSDT,2023-10,2026-10,,quotata su Binance
+10,XLM,Stellar,XLM,21.0,,XLMUSDT,XLMUSDT,2018-05,2026-10,,quotata su Binance
+11,TRX,TRON,TRX,8.0,,TRXUSDT,TRXUSDT,2018-06,2026-10,,quotata su Binance
+12,XTZ,Tezos,XTZ,138.0,,XTZUSDT,XTZUSDT,2019-09,2026-10,,quotata su Binance
+13,ADA,Cardano,ADA,18.0,,ADAUSDT,ADAUSDT,2018-04,2026-10,,quotata su Binance
+14,LEO,LEO Token,LEO,14.0,,,,,,,mai su Binance (USDT)
+15,ATOM,Cosmos Hub,ATOM,85.0,,ATOMUSDT,ATOMUSDT,2019-04,2026-10,,quotata su Binance
+16,XMR,Monero,XMR,12.0,,XMRUSDT,XMRUSDT,2019-03,2026-10,,quotata su Binance
+17,HT,Huobi Token,HT,,,,,,,,mai su Binance (USDT)
+18,LINK,Chainlink,LINK,15.0,,LINKUSDT,LINKUSDT,2019-01,2026-10,,quotata su Binance
+19,NEO,Neo,NEO,226.0,,NEOUSDT,NEOUSDT,2017-11,2026-10,,quotata su Binance
+20,MIN,MINDOL,MIN,,,,,,,,mai su Binance (USDT)
+21,ETC,Ethereum Classic,ETC,70.0,,ETCUSDT,ETCUSDT,2018-06,2026-10,,quotata su Binance
+22,999,999,999,,,,,,,,mai su Binance (USDT)
+23,USDC,USDC,USDC,5.0,stablecoin,,,,,,
+24,HEDG,HedgeTrade,HEDG,,,,,,,,mai su Binance (USDT)
+25,MIOTA,IOTA,IOTA,182.0,,IOTAUSDT,IOTAUSDT,2018-05,2026-10,,quotata su Binance
+26,MKR,Maker,MKR,,,MKRUSDT,MKRUSDT,2020-07,2026-10,,"quotata su Binance, fuori dalla top 250"
+27,CRO,Cronos,CRO,42.0,,,,,,,mai su Binance (USDT)
+28,DASH,Dash,DASH,103.0,,DASHUSDT,DASHUSDT,2019-03,2026-10,,quotata su Binance
+29,ONT,Ontology,ONT,,,ONTUSDT,ONTUSDT,2018-06,2026-10,,"quotata su Binance, fuori dalla top 250"
+30,VET,VeChain,VET,106.0,,VETUSDT,VETUSDT,2018-07,2026-10,,quotata su Binance
+31,XEM,NEM,XEM,,,XEMUSDT,XEMUSDT,2020-11,2026-10,,"quotata su Binance, fuori dalla top 250"
+32,BAT,Basic Attention Token,BAT,,,BATUSDT,BATUSDT,2019-03,2026-10,,"quotata su Binance, fuori dalla top 250"
+33,INO,INO COIN,INO,,,,,,,,mai su Binance (USDT)
+34,DOGE,Dogecoin,DOGE,13.0,,DOGEUSDT,DOGEUSDT,2019-07,2026-10,,quotata su Binance
+35,ZEC,Zcash,ZEC,11.0,,ZECUSDT,ZECUSDT,2019-03,2026-10,,quotata su Binance
+36,PAX,Paxos Standard,PAX,,stablecoin,,,,,,
+37,FTT,FTX Token,FTT,,,FTTUSDT,FTTUSDT,2019-12,2026-10,,"quotata su Binance, fuori dalla top 250"
+38,SNX,Synthetix Network Token,SNX,,,SNXUSDT,SNXUSDT,2020-07,2026-10,,"quotata su Binance, fuori dalla top 250"
+39,INB,Insight Chain,INB,,,,,,,,mai su Binance (USDT)
+40,DCR,Decred,DCR,156.0,,DCRUSDT,,2020-07,2026-10,,quotata su Binance
+41,QTUM,Qtum,QTUM,,,QTUMUSDT,QTUMUSDT,2018-03,2026-10,,"quotata su Binance, fuori dalla top 250"
+42,TUSD,TrueUSD,TUSD,96.0,stablecoin,,,,,,
+43,THR,ThoreCoin,THR,,,,,,,,mai su Binance (USDT)
+44,THX,ThoreNext,THX,,,,,,,,mai su Binance (USDT)
+45,ZRX,0x,ZRX,,,ZRXUSDT,ZRXUSDT,2019-02,2026-10,,"quotata su Binance, fuori dalla top 250"
+46,RVN,Ravencoin,RVN,,,RVNUSDT,RVNUSDT,2019-09,2026-10,,"quotata su Binance, fuori dalla top 250"
+47,ALGO,Algorand,ALGO,81.0,,ALGOUSDT,ALGOUSDT,2019-06,2026-10,,quotata su Binance
+48,PZM,PRIZM,PZM,,,,,,,,mai su Binance (USDT)
+49,CNX,Cryptonex,CNX,,,,,,,,mai su Binance (USDT)
+50,BDX,Beldex,BDX,93.0,,,,,,,mai su Binance (USDT)
+51,HOT,Holo,HOT,,,HOTUSDT,HOTUSDT,2019-02,2026-10,,"quotata su Binance, fuori dalla top 250"
+52,CENNZ,Centrality,CENNZ,,,,,,,,mai su Binance (USDT)
+53,OKB,OKB,OKB,46.0,,,,,,,mai su Binance (USDT)
+54,REP,Augur,REP,,,REPUSDT,,2020-06,2022-12,,delistata da Binance (2022-12)
+55,WAVES,Waves,WAVES,,,WAVESUSDT,WAVESUSDT,2019-01,2026-10,,"quotata su Binance, fuori dalla top 250"
+56,SEELE,Seele,SEELE,,,,,,,,mai su Binance (USDT)
+57,BTG,Bitcoin Gold,BTG,,,BTGUSDT,,2021-04,2022-10,,delistata da Binance (2022-10)
+58,OMG,OmiseGO,OMG,,,OMGUSDT,OMGUSDT,2019-04,2026-10,,"quotata su Binance, fuori dalla top 250"
+59,LUNA,Terra Luna Classic,LUNC,133.0,,"LUNAUSDT,LUNCUSDT","LUNAUSDT,1000LUNCUSDT",2020-08,2026-10,,quotata su Binance
+60,ZB,ZB Token,ZB,,,,,,,,mai su Binance (USDT)
+61,NANO,Nano,XNO,,,"NANOUSDT,XNOUSDT",,2019-04,2026-10,,"quotata su Binance, fuori dalla top 250"
+62,XIN,Mixin,XIN,,,,,,,,mai su Binance (USDT)
+63,ABBC,ABBC Coin,ABBC,,,,,,,,mai su Binance (USDT)
+64,KCS,KuCoin,KCS,73.0,,,,,,,mai su Binance (USDT)
+65,THETA,Theta Network,THETA,196.0,,THETAUSDT,THETAUSDT,2019-04,2026-10,,quotata su Binance
+66,KBC,Karatgold Coin,KBC,,oro/materie prime,,,,,,
+67,MOF,Molecular Future,MOF,,,,,,,,mai su Binance (USDT)
+68,CCA,Counos Coin,CCA,,,,,,,,mai su Binance (USDT)
+69,FST,1irstcoin,FST,,,,,,,,mai su Binance (USDT)
+70,LSK,Lisk,LSK,,,LSKUSDT,LSKUSDT,2020-02,2026-10,,"quotata su Binance, fuori dalla top 250"
+71,DGB,DigiByte,DGB,,,DGBUSDT,DGBUSDT,2020-07,2026-10,,"quotata su Binance, fuori dalla top 250"
+72,BTM,Bytom,BTM,,,,,,,,mai su Binance (USDT)
+73,SXP,Swipe,SXP,,,SXPUSDT,SXPUSDT,2020-07,2026-05,,delistata da Binance (2026-05)
+74,ENJ,Enjin Coin,ENJ,,,ENJUSDT,ENJUSDT,2019-04,2026-10,,"quotata su Binance, fuori dalla top 250"
+75,BCD,Bitcoin Diamond,BCD,,,,,,,,mai su Binance (USDT)
+76,FAB,FABRK,FAB,,,,,,,,mai su Binance (USDT)
+77,MCO,MCO,MCO,,,MCOUSDT,,2019-11,2020-10,,delistata da Binance (2020-10)
+78,GAP,GAPS,GAP,,,,,,,,mai su Binance (USDT)
+79,EON,Dimension Chain,EON,,,,,,,,mai su Binance (USDT)
+80,KMD,Komodo,KMD,,,KMDUSDT,,2020-08,2025-07,,delistata da Binance (2025-07)
+81,BTT,BitTorrent,BTTC,122.0,,"BTTUSDT,BTTCUSDT","BTTUSDT,1000BTTCUSDT",2019-01,2026-10,,quotata su Binance
+82,ZEN,Horizen,ZEN,,,ZENUSDT,ZENUSDT,2020-07,2026-10,,"quotata su Binance, fuori dalla top 250"
+83,IOST,IOST,IOST,,,IOSTUSDT,IOSTUSDT,2019-03,2026-10,,"quotata su Binance, fuori dalla top 250"
+84,ICX,ICON,ICX,,,ICXUSDT,ICXUSDT,2018-06,2026-10,,"quotata su Binance, fuori dalla top 250"
+85,VSYS,v.systems,VSYS,,,,,,,,mai su Binance (USDT)
+86,XVG,Verge,XVG,,,XVGUSDT,XVGUSDT,2021-06,2026-10,,"quotata su Binance, fuori dalla top 250"
+87,SC,Siacoin,SC,,,SCUSDT,SCUSDT,2020-07,2026-10,,"quotata su Binance, fuori dalla top 250"
+88,BXK,Bitbook Gambling,BXK,,,,,,,,mai su Binance (USDT)
+89,NOAH,Noah Coin,NOAH,,,,,,,,mai su Binance (USDT)
+90,NEXO,NEXO,NEXO,87.0,,NEXOUSDT,,2022-04,2026-10,,quotata su Binance
+91,EKT,EDUCare,EKT,,,,,,,,mai su Binance (USDT)
+92,BCN,Bytecoin,BCN,,,,,,,,mai su Binance (USDT)
+93,MONA,MonaCoin,MONA,,,,,,,,mai su Binance (USDT)
+94,NRG,Energi,NRG,,,,,,,,mai su Binance (USDT)
+95,HC,HyperCash,HC,,,HCUSDT,,2019-09,2020-11,,delistata da Binance (2020-11)
+96,BRZE,Breezecoin,BRZE,,,,,,,,mai su Binance (USDT)
+97,MB,MineBee,MB,,,,,,,,mai su Binance (USDT)
+98,STEEM,Steem,STEEM,,,STEEMUSDT,STEEMUSDT,2022-04,2026-10,,"quotata su Binance, fuori dalla top 250"
+99,ZIL,Zilliqa,ZIL,,,ZILUSDT,ZILUSDT,2019-02,2026-10,,"quotata su Binance, fuori dalla top 250"
+100,DX,DxChain Token,DX,,,,,,,,mai su Binance (USDT)
+101,QC,QCash,QC,,,,,,,,mai su Binance (USDT)
+102,QNT,Quant,QNT,40.0,,QNTUSDT,QNTUSDT,2021-07,2026-10,,quotata su Binance
+103,SLV,Silverway,SLV,,,,,,,,mai su Binance (USDT)
+104,BOTX,botXcoin,BOTX,,,,,,,,mai su Binance (USDT)
+105,BTS,BitShares,BTS,,,BTSUSDT,BTSUSDT,2020-02,2024-05,,delistata da Binance (2024-05)
+106,SAI,Single Collateral DAI ,SAI,,stablecoin,,,,,,
+107,FXC,Flexacoin,FXC,,,,,,,,mai su Binance (USDT)
+108,ARDR,Ardor,ARDR,,,ARDRUSDT,,2020-05,2026-07,,delistata da Binance (2026-07)
+109,AE,Aeternity,AE,,,,,,,,mai su Binance (USDT)
+110,XET,ETERNAL TOKEN,XET,,,,,,,,mai su Binance (USDT)
+111,JUL,Joule,JUL,,,,,,,,mai su Binance (USDT)
+112,MATIC,POL (ex-MATIC),POL,75.0,,"MATICUSDT,POLUSDT","MATICUSDT,POLUSDT",2019-04,2026-10,,quotata su Binance
+113,LA,LATOKEN,LA,,,,,,,"LAUSDT su Binance = Lagrange (dal 2025), non LATOKEN del 2020",mai su Binance (USDT)
+114,EURS,STASIS EURO,EURS,,stablecoin,,,,,,
+115,ETN,Electroneum,ETN,,,,,,,,mai su Binance (USDT)
+116,STRAT,Stratis,STRAX,,,"STRATUSDT,STRAXUSDT",STRAXUSDT,2020-02,2026-10,,"quotata su Binance, fuori dalla top 250"
+117,MANA,Decentraland,MANA,225.0,,MANAUSDT,MANAUSDT,2020-08,2026-10,,quotata su Binance
+118,DGD,DigixDAO,DGD,,,,,,,,mai su Binance (USDT)
+119,TOMO,TomoChain,VIC,,,"TOMOUSDT,VICUSDT","TOMOUSDT,VICUSDT",2019-08,2026-10,,"quotata su Binance, fuori dalla top 250"
+120,BCZERO,Buggyra Coin Zero,BCZERO,,,,,,,,mai su Binance (USDT)
+121,CRPT,Crypterium,CRPT,,,,,,,,mai su Binance (USDT)
+122,SOLVE,SOLVE,SOLVE,,,,,,,,mai su Binance (USDT)
+123,CIX100,Cryptoindex.com 100,CIX100,,rwa/fondo,,,,,,
+124,NEX,Nash Exchange,NEX,,,,,,,,mai su Binance (USDT)
+125,BF,BitForex Token,BF,,,,,,,,mai su Binance (USDT)
+126,BTMX,BitMax Token,BTMX,,,,,,,,mai su Binance (USDT)
+127,KNC,Kyber Network,KNC,,,KNCUSDT,KNCUSDT,2020-06,2026-10,,"quotata su Binance, fuori dalla top 250"
+128,SNT,Status,SNT,,,SNTUSDT,SNTUSDT,2023-05,2026-10,,"quotata su Binance, fuori dalla top 250"
+129,CSC,CasinoCoin,CSC,,,,,,,,mai su Binance (USDT)
+130,MAID,MaidSafeCoin,MAID,,,,,,,,mai su Binance (USDT)
+131,BNK,Bankera,BNK,,,,,,,,mai su Binance (USDT)
+132,RIF,RSK Infrastructure Framework,RIF,,,RIFUSDT,RIFUSDT,2021-01,2026-10,,"quotata su Binance, fuori dalla top 250"
+133,CCC,Clipper Coin,CCC,,,,,,,,mai su Binance (USDT)
+134,ECOREAL,Ecoreal Estate,ECOREAL,,,,,,,,mai su Binance (USDT)
+135,RLC,iExec RLC,RLC,,,RLCUSDT,RLCUSDT,2019-11,2026-10,,"quotata su Binance, fuori dalla top 250"
+136,NPXS,Pundi X,PUNDIX,,,"NPXSUSDT,PUNDIXUSDT",PUNDIXUSDT,2019-08,2026-10,,"quotata su Binance, fuori dalla top 250"
+137,DGTX,Digitex Futures,DGTX,,,,,,,,mai su Binance (USDT)
+138,GRIN,Grin,GRIN,,,,,,,,mai su Binance (USDT)
+139,ENG,Enigma,ENG,,,,,,,,mai su Binance (USDT)
+140,NET,NEXT,NET,,,,,,,"NETUSDT su Binance dal 2026-08 = altra moneta, non NEXT del 2020",mai su Binance (USDT)
+141,ETP,Metaverse ETP,ETP,,,,,,,,mai su Binance (USDT)
+142,VLX,Velas,VLX,,,,,,,,mai su Binance (USDT)
+143,GNT,Golem,GLM,,,GLMUSDT,GLMUSDT,2023-03,2026-10,,"quotata su Binance, fuori dalla top 250"
+144,ADK,Aidos Kuneen,ADK,,,,,,,,mai su Binance (USDT)
+145,USDK,USDK,USDK,,stablecoin,,,,,,
+146,BTC2,Bitcoin 2,BTC2,,,,,,,,mai su Binance (USDT)
+147,BEAM,Beam,BEAM,168.0,,BEAMUSDT,,2019-09,2023-01,,delistata da Binance (2023-01)
+148,FET,Artificial Superintelligence Alliance,FET,135.0,,FETUSDT,FETUSDT,2019-02,2026-10,,quotata su Binance
+149,CHZ,Chiliz,CHZ,244.0,,CHZUSDT,CHZUSDT,2019-09,2026-10,,quotata su Binance
+150,GNY,GNY,GNY,,,,,,,,mai su Binance (USDT)
+151,ELF,aelf,ELF,,,ELFUSDT,,2021-09,2025-04,,delistata da Binance (2025-04)
+152,XZC,Zcoin,FIRO,,,"XZCUSDT,FIROUSDT",,2020-04,2025-04,,delistata da Binance (2025-04)
+153,REN,Ren,REN,,,RENUSDT,RENUSDT,2019-09,2026-10,,"quotata su Binance, fuori dalla top 250"
+154,GXC,GXChain,GXC,,,,,,,,mai su Binance (USDT)
+155,JWL,Jewel,JWL,,,,,,,,mai su Binance (USDT)
+156,DTR,Dynamic Trading Rights,DTR,,,,,,,,mai su Binance (USDT)
+157,HPT,Huobi Pool Token,HPT,,,,,,,,mai su Binance (USDT)
+158,ELA,Elastos,ELA,,,,,,,,mai su Binance (USDT)
+159,PLC,PLATINCOIN,PLC,,,,,,,,mai su Binance (USDT)
+160,RCN,Ripio Credit Network,RCN,,,,,,,,mai su Binance (USDT)
+161,BRD,Bread,BRD,,,,,,,,mai su Binance (USDT)
+162,BZ,Bit-Z Token,BZ,,,,,,,"BZUSDT su Binance dal 2026-04 = altra moneta, non Bit-Z Token del 2020",mai su Binance (USDT)
+163,AGVC,AgaveCoin,AGVC,,,,,,,,mai su Binance (USDT)
+164,HYN,Hyperion,HYN,,,,,,,,mai su Binance (USDT)
+165,WICC,WaykiChain,WICC,,,,,,,,mai su Binance (USDT)
+166,VEST,VestChain,VEST,,,,,,,,mai su Binance (USDT)
+167,VERI,Veritaseum,VERI,,,,,,,,mai su Binance (USDT)
+168,FUN,FunFair,FUN,,,FUNUSDT,FUNUSDT,2019-08,2026-10,,"quotata su Binance, fuori dalla top 250"
+169,AION,Aion,AION,,,AIONUSDT,,2020-02,2023-02,,delistata da Binance (2023-02)
+170,FTM,Fantom,S,,,"FTMUSDT,SUSDT","FTMUSDT,SUSDT",2019-06,2026-10,,"quotata su Binance, fuori dalla top 250"
+171,DCN,Dentacoin,DCN,,,,,,,,mai su Binance (USDT)
+172,QBIT,Qubitica,QBIT,,,,,,,,mai su Binance (USDT)
+173,R,Revain,R,,,,,,,,mai su Binance (USDT)
+174,LRC,Loopring,LRC,,,LRCUSDT,LRCUSDT,2020-06,2026-10,,"quotata su Binance, fuori dalla top 250"
+175,HBAR,Hedera,HBAR,36.0,,HBARUSDT,HBARUSDT,2019-09,2026-10,,quotata su Binance
+176,NAS,Nebulas,NAS,,,,,,,,mai su Binance (USDT)
+177,PPT,Populous,PPT,,,,,,,,mai su Binance (USDT)
+178,RDD,ReddCoin,RDD,,,,,,,,mai su Binance (USDT)
+179,TNT,Tierion,TNT,,,,,,,,mai su Binance (USDT)
+180,MX,MX,MX,194.0,,,,,,,mai su Binance (USDT)
+181,LAMB,Lambda,LAMB,,,,,,,,mai su Binance (USDT)
+182,IOTX,IoTeX,IOTX,,,IOTXUSDT,IOTXUSDT,2019-11,2026-10,,"quotata su Binance, fuori dalla top 250"
+183,DPT,Diamond Platform Token,DPT,,,,,,,,mai su Binance (USDT)
+184,BNT,Bancor,BNT,,,BNTUSDT,BNTUSDT,2020-02,2026-10,,"quotata su Binance, fuori dalla top 250"
+185,DIVI,Divi,DIVI,,,,,,,,mai su Binance (USDT)
+186,LOKI,Loki,OXEN,,,,,,,,mai su Binance (USDT)
+187,BHD,BitcoinHD,BHD,,,,,,,,mai su Binance (USDT)
+188,WIN,WINk,WIN,,,WINUSDT,,2019-08,2026-10,,"quotata su Binance, fuori dalla top 250"
+189,ILC,ILCoin,ILC,,,,,,,,mai su Binance (USDT)
+190,WAN,Wanchain,WAN,,,WANUSDT,,2019-08,2026-04,,delistata da Binance (2026-04)
+191,NULS,NULS,NULS,,,NULSUSDT,NULSUSDT,2018-07,2026-10,,"quotata su Binance, fuori dalla top 250"
+192,XMX,XMax,XMX,,,,,,,,mai su Binance (USDT)
+193,XAC,General Attention Currency,XAC,,,,,,,,mai su Binance (USDT)
+194,NEW,Newton,NEW,,,,,,,,mai su Binance (USDT)
+195,ARK,Ark,ARK,,,ARKUSDT,ARKUSDT,2023-09,2026-10,,"quotata su Binance, fuori dalla top 250"
+196,IGNIS,Ignis,IGNIS,,,,,,,,mai su Binance (USDT)
+197,YOU,YOU COIN,YOU,,,,,,,,mai su Binance (USDT)
+198,DRG,Dragon Coins,DRG,,,,,,,,mai su Binance (USDT)
+199,EDC,EDC Blockchain,EDC,,,,,,,,mai su Binance (USDT)
+200,TRUE,TrueChain,TRUE,,,,,,,,mai su Binance (USDT)

@@ -1,0 +1,65 @@
+asset,rischio,segnale,ingresso,verso,px_in,esposizione,uscita,px_out,motivo,mov_prezzo_pct,pnl_pct,anno
+SOL,0.25,2021-01-17,2021-01-18,long,3.83,0.433,2021-02-01,4.25,distribuzione (funding e flusso perp),11.0,4.7,2021
+SOL,0.25,2021-04-04,2021-04-05,long,23.8,0.804,2021-05-17,46.8,distribuzione (funding e flusso perp),96.7,77.4,2021
+SOL,0.25,2021-08-22,2021-08-23,long,72.82,0.651,2021-09-13,151.31,"trailing 2,5 ATR settimanali",107.8,69.9,2021
+SOL,0.25,2021-10-03,2021-10-04,long,173.16,0.682,2021-10-25,201.95,distribuzione (funding e flusso perp),16.6,11.2,2021
+SOL,0.25,2022-04-03,2022-04-04,long,137.04,0.441,2022-04-11,110.95,chiusura settimanale oltre la EMA 21,-19.0,-8.5,2022
+SOL,0.25,2022-08-21,2022-08-22,short,36.44,0.217,2022-11-14,13.19,distribuzione (funding e flusso perp),63.8,11.0,2022
+SOL,0.25,2022-12-18,2022-12-19,short,12.37,0.145,2023-01-02,10.0,distribuzione (funding e flusso perp),19.2,2.4,2022
+SOL,0.25,2023-02-05,2023-02-06,short,23.44,0.327,2023-02-20,24.85,chiusura settimanale oltre la EMA 21,-6.0,-2.0,2023
+SOL,0.25,2023-02-26,2023-02-27,short,23.23,0.341,2023-04-17,25.37,chiusura settimanale oltre la EMA 21,-9.2,-3.0,2023
+SOL,0.25,2023-04-23,2023-04-24,short,21.45,0.39,2023-07-10,21.34,chiusura settimanale oltre la EMA 21,0.5,0.5,2023
+SOL,0.25,2023-07-16,2023-07-17,long,27.44,0.56,2023-08-21,21.76,chiusura settimanale oltre la EMA 21,-20.7,-11.7,2023
+SOL,0.25,2023-10-01,2023-10-02,long,23.9,0.592,2024-01-01,101.62,distribuzione (funding e flusso perp),325.2,192.1,2023
+SOL,0.25,2024-07-21,2024-07-22,long,184.67,0.666,2024-08-05,138.18,chiusura settimanale oltre la EMA 21,-25.2,-16.9,2024
+SOL,0.25,2024-09-22,2024-09-23,long,144.78,0.516,2024-12-09,236.78,distribuzione (funding e flusso perp),63.5,32.6,2024
+SOL,0.25,2025-01-19,2025-01-20,long,252.65,0.644,2025-02-17,188.07,chiusura settimanale oltre la EMA 21,-25.6,-16.6,2025
+SOL,0.25,2025-05-11,2025-05-12,long,173.37,0.517,2025-06-02,157.52,chiusura settimanale oltre la EMA 21,-9.1,-4.8,2025
+SOL,0.25,2025-07-20,2025-07-21,long,181.62,0.629,2025-08-04,161.82,chiusura settimanale oltre la EMA 21,-10.9,-7.0,2025
+SOL,0.25,2025-08-31,2025-09-01,long,200.82,0.658,2025-10-10,171.89,"trailing 2,5 ATR settimanali",-14.4,-9.6,2025
+SOL,0.25,2025-10-26,2025-10-27,long,200.23,0.594,2025-11-03,187.52,chiusura settimanale oltre la EMA 21,-6.3,-3.9,2025
+SOL,0.25,2025-11-09,2025-11-10,short,164.37,0.485,2026-03-30,81.53,distribuzione (funding e flusso perp),50.4,24.2,2025
+SOL,0.25,2026-04-05,2026-04-06,short,81.81,0.408,2026-08-21,90.49,"trailing 2,5 ATR settimanali",-10.6,-4.3,2026
+SOL,0.25,2026-08-30,2026-08-31,long,101.85,0.792,2026-11-02,94.45,chiusura settimanale oltre la EMA 21,-7.3,-5.9,2026
+SOL,0.25,2026-11-08,2026-11-09,short,86.45,0.686,aperta,69.69,posizione aperta,19.4,13.2,2026
+SOL con cancello BTC (Q4),0.25,2021-08-22,2021-08-23,long,72.82,0.651,2021-09-13,151.31,"trailing 2,5 ATR settimanali",107.8,69.9,2021
+SOL con cancello BTC (Q4),0.25,2021-10-03,2021-10-04,long,173.16,0.682,2021-10-25,201.95,distribuzione (funding e flusso perp),16.6,11.2,2021
+SOL con cancello BTC (Q4),0.25,2022-08-21,2022-08-22,short,36.44,0.217,2022-11-14,13.19,distribuzione (funding e flusso perp),63.8,11.0,2022
+SOL con cancello BTC (Q4),0.25,2022-12-18,2022-12-19,short,12.37,0.145,2023-01-02,10.0,distribuzione (funding e flusso perp),19.2,2.4,2022
+SOL con cancello BTC (Q4),0.25,2023-07-09,2023-07-10,long,21.34,0.487,2023-08-21,21.76,chiusura settimanale oltre la EMA 21,2.0,0.9,2023
+SOL con cancello BTC (Q4),0.25,2023-10-22,2023-10-23,long,29.09,0.703,2024-01-01,101.62,distribuzione (funding e flusso perp),249.3,175.0,2023
+SOL con cancello BTC (Q4),0.25,2024-09-22,2024-09-23,long,144.78,0.516,2024-12-09,236.78,distribuzione (funding e flusso perp),63.5,32.6,2024
+SOL con cancello BTC (Q4),0.25,2025-01-19,2025-01-20,long,252.65,0.644,2025-02-17,188.07,chiusura settimanale oltre la EMA 21,-25.6,-16.6,2025
+SOL con cancello BTC (Q4),0.25,2025-05-11,2025-05-12,long,173.37,0.517,2025-06-02,157.52,chiusura settimanale oltre la EMA 21,-9.1,-4.8,2025
+SOL con cancello BTC (Q4),0.25,2025-07-20,2025-07-21,long,181.62,0.629,2025-08-04,161.82,chiusura settimanale oltre la EMA 21,-10.9,-7.0,2025
+SOL con cancello BTC (Q4),0.25,2025-08-31,2025-09-01,long,200.82,0.658,2025-10-10,171.89,"trailing 2,5 ATR settimanali",-14.4,-9.6,2025
+SOL con cancello BTC (Q4),0.25,2026-02-01,2026-02-02,short,100.68,0.401,2026-03-30,81.53,distribuzione (funding e flusso perp),19.0,7.1,2026
+SOL con cancello BTC (Q4),0.25,2026-04-05,2026-04-06,short,81.81,0.408,2026-08-21,90.49,"trailing 2,5 ATR settimanali",-10.6,-4.3,2026
+SOL con cancello BTC (Q4),0.25,2026-08-30,2026-08-31,long,101.85,0.792,2026-11-02,94.45,chiusura settimanale oltre la EMA 21,-7.3,-5.9,2026
+SOL con cancello BTC (Q4),0.25,2026-11-15,2026-11-16,short,72.7,0.551,aperta,69.69,posizione aperta,4.1,2.2,2026
+TAO,0.25,2024-09-22,2024-09-23,long,470.27,0.409,2024-12-09,712.19,distribuzione (funding e flusso perp),51.4,20.9,2024
+TAO,0.25,2025-02-09,2025-02-10,short,365.03,0.247,2025-04-14,240.24,distribuzione (funding e flusso perp),34.2,8.3,2025
+TAO,0.25,2025-05-11,2025-05-12,long,459.26,0.412,2025-06-16,366.73,chiusura settimanale oltre la EMA 21,-20.1,-8.4,2025
+TAO,0.25,2025-08-03,2025-08-04,short,349.45,0.374,2025-08-11,389.29,chiusura settimanale oltre la EMA 21,-11.4,-4.2,2025
+TAO,0.25,2025-08-17,2025-08-18,short,372.73,0.42,2025-10-13,383.78,chiusura settimanale oltre la EMA 21,-3.0,-1.0,2025
+TAO,0.25,2025-11-02,2025-11-03,long,489.19,0.534,2025-11-17,320.18,chiusura settimanale oltre la EMA 21,-34.5,-18.5,2025
+TAO,0.25,2025-11-23,2025-11-24,short,297.4,0.316,2026-02-09,163.36,distribuzione (funding e flusso perp),45.1,14.0,2025
+TAO,0.25,2026-03-29,2026-03-30,long,315.82,0.453,2026-04-13,259.04,chiusura settimanale oltre la EMA 21,-18.0,-8.2,2026
+TAO,0.25,2026-04-26,2026-04-27,short,250.95,0.394,2026-05-04,289.69,chiusura settimanale oltre la EMA 21,-15.4,-6.1,2026
+TAO,0.25,2026-05-10,2026-05-11,long,320.82,0.513,2026-05-18,262.84,chiusura settimanale oltre la EMA 21,-18.1,-9.4,2026
+TAO,0.25,2026-05-31,2026-06-01,short,255.44,0.424,2026-06-15,271.07,chiusura settimanale oltre la EMA 21,-6.1,-2.6,2026
+TAO,0.25,2026-06-28,2026-06-29,short,205.09,0.334,2026-08-24,237.84,chiusura settimanale oltre la EMA 21,-16.0,-5.1,2026
+TAO,0.25,2026-08-30,2026-08-31,short,227.37,0.506,2026-09-07,266.07,chiusura settimanale oltre la EMA 21,-17.0,-8.6,2026
+TAO,0.25,2026-09-13,2026-09-14,short,231.37,0.502,2026-09-21,261.86,chiusura settimanale oltre la EMA 21,-13.2,-6.6,2026
+TRX con cancello BTC (Q4),0.25,2020-07-12,2020-07-13,long,0.02,0.666,2020-07-27,0.02,distribuzione (funding e flusso perp),-7.5,1.1,2020
+TRX con cancello BTC (Q4),0.25,2020-08-02,2020-08-03,long,0.02,0.697,2020-08-10,0.02,distribuzione (funding e flusso perp),2.1,4.8,2020
+TRX con cancello BTC (Q4),0.25,2021-08-08,2021-08-09,long,0.07,0.367,2021-09-06,0.11,distribuzione (funding e flusso perp),50.1,16.8,2021
+TRX con cancello BTC (Q4),0.25,2021-10-10,2021-10-11,long,0.1,0.485,2021-11-01,0.1,distribuzione (funding e flusso perp),1.4,1.8,2021
+TRX con cancello BTC (Q4),0.25,2022-01-09,2022-01-10,short,0.07,0.384,2022-02-07,0.07,distribuzione (funding e flusso perp),5.4,-0.2,2022
+TRX con cancello BTC (Q4),0.25,2022-08-21,2022-08-22,short,0.07,0.621,2022-09-26,0.06,distribuzione (funding e flusso perp),14.6,4.6,2022
+TRX con cancello BTC (Q4),0.25,2022-10-09,2022-10-10,short,0.06,0.774,2022-11-21,0.05,distribuzione (funding e flusso perp),16.4,14.0,2022
+TRX con cancello BTC (Q4),0.25,2023-03-26,2023-03-27,long,0.06,0.894,2023-06-10,0.07,"trailing 2,5 ATR settimanali",12.4,4.3,2023
+TRX con cancello BTC (Q4),0.25,2023-06-11,2023-06-12,long,0.07,0.968,2024-03-04,0.14,distribuzione (funding e flusso perp),100.7,96.3,2023
+TRX con cancello BTC (Q4),0.25,2024-09-22,2024-09-23,long,0.15,1.0,2024-12-04,0.4,"trailing 2,5 ATR settimanali",164.8,161.0,2024
+TRX con cancello BTC (Q4),0.25,2025-05-11,2025-05-12,long,0.27,0.981,2025-09-06,0.3,"trailing 2,5 ATR settimanali",12.4,13.9,2025
+TRX con cancello BTC (Q4),0.25,2026-08-23,2026-08-24,long,0.34,1.0,2026-10-12,0.33,chiusura settimanale oltre la EMA 21,-3.0,-4.4,2026

@@ -1,0 +1,6 @@
+BTC (cancello) dal 2020-06-01: 17 operazioni; domeniche con cancello long/short/flat: 142/73/163
+altcoin valutabili 78 · passano 1-5 7 · conferma 7 · davvero 1
+mediane Q4: finale 12386, DD -38.8, WR 50, trade 11, CAGR/DD 0.13
+mediane Q1 stesse monete: finale 10381, DD -56.2, WR 40, trade 22, CAGR/DD 0.01
+operazioni Q1 delle altcoin con BTC nello stesso verso alla domenica del segnale: 680/1690 (40%)
+Q4: settimane in posizione con BTC nello stesso verso (mediana per moneta) 86%
