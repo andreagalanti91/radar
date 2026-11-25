@@ -11,7 +11,7 @@ preferite, le selezionate da te. Dimmi anche una cosa, queste dello scanner sono
 ## Decisioni (default accettati)
 - Solo la pagina aggiornata la domenica: nessun messaggio Telegram nuovo.
 - Preferite già segnate: SOL e TAO (stella salvata nel browser; l'utente ne aggiunge altre).
-- Nessun registro "scommesse" sulla carta.
+- Registro "scommesse" sulla carta: SÌ (correzione dell'utente: "Il registro eseguilo. Procedi inserisci dentro radar"); regole in `research/w32_asset2/REGISTRO-SCOMMESSE.md`.
 - "In evidenza": BTC ed ETH (in uso), TRX (osservazione), preferite. Nessuna selezione per rendimento passato (lezione 123);
   unico filtro mostrato: concordanza con BTC (Q4: finale mediano 12.386 contro 10.381 $, DD −39 contro −56%).
 
