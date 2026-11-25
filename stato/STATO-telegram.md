@@ -1,6 +1,6 @@
 # STATO · Messaggi Telegram più chiari · avviato 25/11/2026
 
-Stato: IN CORSO
+Stato: COMPLETATO (25/11/2026) · resta solo l'invio di prova, su conferma dell'utente
 
 ## Prompt originale
 "Rendi più chiaro i segnali del bot telegram. Più visivi, più carini, più semplici. Fammi delle preview di tutti gli stati."
@@ -26,3 +26,6 @@ Nessun messaggio nuovo e nessun cambio al bot senza approvazione; contenuti e lo
 
 ## Prossima azione
 Presentare all'utente; dopo l'ok: commit, push, invio di prova (test-telegram) e verifica sul sito/chat.
+
+## Deploy e verifica (25/11, 16:30 UTC)
+Suite 454 test verde; giro 509 di daily.yml riuscito (commit 4d2cdba); sito senza errori JS; data/state.json: marcatori invariati, nessun evento riproposto (heartbeat del giorno già marcato, nessun messaggio inviato in questo giro). Primo messaggio col nuovo formato: il riepilogo «Oggi» di domani o il primo evento di W3.2.

@@ -1,4 +1,4 @@
-"""Struttura delle sezioni (radar/dashboard_template.html): menu a 7 voci (Opzioni dal 24/11, Scanner dal 25/11) uguale su telefono e desktop, Book e "Come funziona"
+"""Struttura delle sezioni (radar/dashboard_template.html): menu a 6 voci (Scanner dal 25/11; Opzioni nascosta dal 25/11 con OPZIONI_ON) uguale su telefono e desktop, Book e "Come funziona"
 fuori dal menu, vecchi indirizzi reindirizzati, Liquidazioni pagina a sé, card di Oggi con le diciture obbligatorie. Niente rete."""
 import re
 import tempfile
@@ -9,7 +9,7 @@ from radar.dashboard import render
 
 ROOT = Path(__file__).resolve().parents[1]
 T = (ROOT / "radar" / "dashboard_template.html").read_text()
-MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("opzioni", "Opzioni"), ("scanner", "Scanner"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON)
+MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("scanner", "Scanner"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON)
 CORTE = {"Liquidazioni": "Liquid."}   # etichette accorciate nella barra in basso del telefono
 
 
@@ -19,20 +19,20 @@ def _nav(src, pat):
 
 
 class TestMenu(unittest.TestCase):
-    def test_sette_voci_stesso_ordine(self):
+    def test_sei_voci_stesso_ordine(self):
         for pat, short in ((r'<aside class="side">.*?<nav aria-label="Sezioni">(.*?)</nav>', {}), (r'<nav class="tabbar" aria-label="Sezioni">(.*?)</nav>', CORTE)):
             box, links = _nav(T, pat)
             self.assertEqual([(h, t) for h, v, t in links], [(h, short.get(t, t)) for h, t in MENU])
             self.assertTrue(all(h == v for h, v, _ in links))
-            self.assertEqual(box.count("<a "), 7)
-            for w in ("Book", "Come funziona", "Storico", "#book", "#metodo", "Liquid", "#liquidazioni"):
+            self.assertEqual(box.count("<a "), 6)
+            for w in ("Book", "Come funziona", "Storico", "#book", "#metodo", "Liquid", "#liquidazioni", "Opzioni", "#opzioni"):
                 self.assertNotIn(w, box)
         self.assertNotIn("Navigazione", T)
-        self.assertIn("grid-template-columns:repeat(7,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
+        self.assertIn("grid-template-columns:repeat(6,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
 
     def test_ogni_voce_ha_la_sua_pagina_e_icona(self):
         pages = "".join(f.read_text() for f in (ROOT / "radar" / "pages").glob("*.html"))
-        for v, _ in MENU + [("liquidazioni", "")]:
+        for v, _ in MENU + [("liquidazioni", ""), ("opzioni", "")]:
             self.assertIn(f'<div class="view" id="v-{v}"', T + pages)
         for ico in re.findall(r'<use href="#([\w-]+)"/>', T):
             self.assertIn(f'<symbol id="{ico}"', T)
@@ -45,8 +45,17 @@ class TestMenu(unittest.TestCase):
         self.assertIn('liquidazioni: LIQ_ON ? "liquidazioni" : "grafico"', alias)   # #liquidazioni porta a Grafico finché LIQ_ON = false
         self.assertIn('history.replaceState(null, "", "#" + ok)', T)            # l'indirizzo vecchio viene riscritto
         views = re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1)
-        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "opzioni", "scanner", "grafico", "movimenti", "notizie", "metodo"])
-        self.assertIn('.concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : [])', T)
+        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "scanner", "grafico", "movimenti", "notizie", "metodo"])
+        self.assertIn('.concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : [])', T)
+        self.assertIn('opzioni: OPZIONI_ON ? "opzioni" : "oggi"', alias)            # #opzioni porta a Oggi finché OPZIONI_ON = false
+
+    def test_opzioni_nascosta_ma_presente(self):
+        self.assertIn("const OPZIONI_ON = false;", T)
+        self.assertLess(T.index("const OPZIONI_ON = false;"), T.index("(function renderOpzioni()"))   # dichiarata prima dell'uso
+        self.assertIn('const L = $("opLine"); if (!L || !OPZIONI_ON) return;', T)  # niente riga sintetica in Oggi
+        self.assertIn('<div class="view" id="v-opzioni" hidden>', T)               # pagina conservata
+        self.assertNotIn('href="#opzioni" data-v="opzioni"', T.split("<script")[0])   # nessuna voce nel markup
+        self.assertIn("if (OPZIONI_ON && viewEl(\"opzioni\"))", T)
 
     def test_book_spento_ma_presente(self):
         self.assertIn("const BOOK_ON = false;", T)                              # una riga per riaccenderlo
