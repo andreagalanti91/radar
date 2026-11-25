@@ -11,13 +11,18 @@ Dal 22/11/2026 W3.2 gira anche su **ETH** con le stesse regole: con **capitale s
 ## Performance di W3.2
 
 Backtest su dati reali di mercato (archivio Binance), BTC, 10.000 $ a 1x, commissioni, slippage e funding inclusi, decisione solo
-su candele settimanali chiuse. Dati congelati al 15/11/2026; il valore aggiornato ogni ora è sulla dashboard.
+su candele settimanali chiuse, partenza da flat, dati al 24/11/2026 (posizione aperta valutata all'ultima chiusura e contata a
+parte). Numeri ufficiali e convenzione: [`memoria/01-strategia/RAPPORTO-W32.md`](memoria/01-strategia/RAPPORTO-W32.md); il
+valore aggiornato ogni ora è sulla dashboard.
 
 | Strategia | In uso | Rischio allo stop | 10.000 $ dal 2021 → | Max drawdown | Trade | Win rate | 2018–20 (DD) |
 |---|---|---|---|---|---|---|---|
-| **W3.2** | **dal 22/11/2026** | **25%** | **78.474 $ (x7,8)** | **−21,1%** | **13** | **92%** | **25.142 $ (−37,3%)** |
+| **W3.2** | **dal 22/11/2026** | **25%** | **84.820 $ (x8,5)** | **−21,1%** | **13 chiusi + 1 aperto** | **92,3%** | **25.142 $ (−37,3%)** |
 | **W3.2 su ETH** (capitale separato) | **dal 22/11/2026** | **25%** | **34.760 $ (x3,5)** al 10/11 | **−27,5%** | **15** | **60%** | — |
-| Tenere BTC | — | — | 22.594 $ (x2,3) | −76,6% | — | — | — |
+| Tenere BTC | — | — | 20.645 $ (x2,1) | −76,6% | — | — | 21.046 $ (−81,2%) |
+
+Dal 01/01/2018 (serie continua): W3.2 242.755 $, drawdown −37,3%, 22 trade chiusi (77,3% vinti) + 1 aperto; tenere BTC
+43.536 $ (−81,2%). Il win rate conta solo i trade chiusi: la dashboard oggi scrive "14 trade, 92,9%" perché include lo short aperto.
 
 ETH: stesse regole e parametri di BTC, flusso e funding dei perp ETH (archivio Binance + OKX provvisorio), 10.000 $ dal 2021 al
 10/11/2026 (numeri di [`research/w32_multi`](research/w32_multi/README.md), riprodotti dal tool in `tests/test_eth.py`; 37.575 $
@@ -25,10 +30,10 @@ al 15/11). ETH vale meno di BTC per unità di drawdown (CAGR/DD 0,86 contro 2,00
 quello di BTC (10.000 $ ciascuno): scelta dell'utente del 22/11/2026.
 Anni ETH: 2021 +104,3% · 2022 −3,9% · 2023 +21,7% · 2024 +27,9% · 2025 +14,0% · 2026 +7,9% (al 15/11).
 
-| Anno | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 (al 15/11) |
+| Anno | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 (al 24/11) |
 |---|---|---|---|---|---|---|
-| Rendimento W3.2 | +91,9% | +19,4% | +46,1% | +102,7% | +4,9% | +10,2% |
-| Drawdown nell'anno | −13,8% | −13,4% | −18,1% | −11,9% | −18,7% | −18,3% |
+| Rendimento W3.2 | +91,9% | +19,4% | +46,1% | +102,7% | +4,9% | +19,2% |
+| Drawdown nell'anno | −13,8% | −13,4% | −18,3% | −11,9% | −18,7% | −18,3% |
 
 <details><summary>I 13 trade dal 2021</summary>
 
@@ -48,14 +53,14 @@ Anni ETH: 2021 +104,3% · 2022 −3,9% · 2023 +21,7% · 2024 +27,9% · 2025 +14
 | 25/05/2026 | short | 76.988 | 20/08/2026 | 73.287 | trailing | 1,00 | +5,7% |
 | 24/08/2026 | long | 77.812 | 09/11/2026 | 74.777 | EMA 21 | 1,00 | −4,1% |
 
-Short in corso dal 16/11/2026 a 65.286 $ (esposizione circa 0,97).
+Short in corso dal 16/11/2026 a 65.286 $ (esposizione 0,97): +8,1% sul capitale al 24/11/2026, non contato fra i 13.
 </details>
 
 **Risultati dal vivo:** il registro dei trade reali (`/entrato`, `/uscito`) non contiene ancora operazioni registrate; quando ci
 saranno, la dashboard mostra il confronto esecuzione/segnale.
 
 **Come leggere questi numeri.** Sono il miglior risultato fra le versioni testate, non una promessa:
-- 13 trade in 6 anni, e 3 fanno il 59% del rendimento;
+- 13 trade chiusi in 6 anni; senza i 3 migliori 10.000 $ diventano circa 27.900 $ invece di 84.820 $;
 - la domenica è stata il giorno di decisione più fortunato: con gli altri giorni la mediana è circa x6;
 - dal 2021 nessuno stop pieno, che con il 25% costerebbe un quarto della quota; nel 2018–20 il drawdown è stato −37%.
 

@@ -1,0 +1,104 @@
+Data di fine: 2026-11-24 (ultimo giorno chiuso). Frame tool dal 2019-09-01, frame lungo dal 2014-01-01.
+
+                                             0                           1                           2                           3                           4                                5
+periodo                         Dal 01/01/2018       Dal 01/01/2021 (tool)                   2018–2020                   2021–2023                   2024–oggi  Ultimi 12 mesi (dal 2025-11-25)
+fine                                2026-11-24                  2026-11-24                  2020-12-31                  2023-12-31                  2026-11-24                       2026-11-24
+finale                                  242755                       84820                       25142                       33477                       25388                            12264
+rend_tot                           2327.547967                  748.199205                  151.419879                  234.770133                  153.875504                        22.638869
+cagr                                 43.110518                   43.695694                   35.967807                   49.635753                   37.896758                        22.656012
+dd                                  -37.267417                   -21.13103                  -37.267417                  -19.308435                   -21.13103                       -18.291338
+sharpe                                1.296848                     1.33591                     1.10899                    1.467152                    1.201946                         0.807177
+cagr_dd                               1.156788                    2.067845                    0.965127                    2.570677                    1.793417                          1.23862
+anni                                  8.898015                    5.897331                    3.000684                    2.997947                    2.899384                         0.999316
+chiuse                                      22                          13                           8                           6                           6                                3
+aperta              short dal 2026-11-16 +8.1%  short dal 2026-11-16 +8.1%  long dal 2020-12-14 +50.6%  long dal 2023-10-23 +40.7%  short dal 2026-11-16 +8.1%       short dal 2026-11-16 +8.1%
+win_rate                             77.272727                   92.307692                        50.0                       100.0                   83.333333                        66.666667
+vinte                                       17                          12                           4                           6                           5                                2
+profit_factor                         8.287465                   59.166334                    2.552805                         inf                   24.880879                         4.303028
+guadagno_medio                       25.788276                   20.199023                   31.145831                   16.666633                    20.38603                         8.814163
+perdita_media                       -10.579851                   -4.096726                  -12.200632                         NaN                   -4.096726                        -4.096726
+migliore                             71.483827                   52.196708                   51.123336                   52.196708                    42.23807                        11.896686
+peggiore                            -25.065472                   -4.096726                  -25.065472                    1.041223                   -4.096726                        -4.096726
+perdite_di_fila                              2                           1                           2                           0                           1                                1
+durata_media_gg                      77.772727                   98.923077                        50.5                   92.666667                       110.0                       103.666667
+tempo_in_posizione                   52.923077                   60.120706                    38.50365                    57.16895                   63.172805                        87.671233
+wr_long                            75% (12/16)                   89% (8/9)                   50% (3/6)                  100% (4/4)                   75% (3/4)                         0% (0/1)
+wr_short                             83% (5/6)                  100% (4/4)                   50% (1/2)                  100% (2/2)                  100% (2/2)                       100% (2/2)
+bh_finale                                43536                       20645                       21046                       14590                       14122                             6762
+bh_rend                             335.360012                  106.448691                  110.459151                   45.898344                   41.219016                       -32.375483
+bh_cagr                              17.976837                   13.079047                   28.143928                   13.428166                   12.641464                         -32.3936
+bh_dd                               -81.184771                  -76.629254                  -81.184771                  -76.629254                  -52.971766                       -39.532095
+bh_sharpe                             0.582886                    0.499775                    0.718564                    0.518219                    0.487043                        -0.662861
+
+   anno  rend    dd  chiuse_nell_anno  aperte_nell_anno  bh_rend  bh_dd  rend_tool_dal2021  dd_tool_dal2021
+0  2018  -9.7 -30.4                 2                 3    -73.1  -81.2                NaN              NaN
+1  2019  41.5 -19.5                 2                 1     94.3  -49.4                NaN              NaN
+2  2020  96.7 -23.3                 4                 5    302.0  -53.6                NaN              NaN
+3  2021 118.4 -13.8                 4                 3     59.8  -53.1               91.9            -13.8
+4  2022  19.4 -13.4                 1                 2    -64.2  -66.9               19.4            -13.4
+5  2023  46.1 -18.3                 2                 2    155.6  -20.0               46.1            -18.3
+6  2024 102.7 -11.9                 2                 2    121.3  -26.2              102.7            -11.9
+7  2025   4.9 -18.7                 2                 2     -6.3  -32.0                4.9            -18.7
+8  2026  19.2 -18.3                 3                 3    -31.7  -39.5               19.2            -18.3
+
+    verso     segnale     entrata      uscita  prezzo_in  prezzo_out  esposizione mercato  sul_capitale_pct                                 motivo
+0    long  2018-01-07  2018-01-08  2018-01-16   16235.07     9654.27        0.616    spot            -25.07           trailing 2,5 ATR settimanali
+1    long  2018-04-29  2018-04-30  2018-05-14    9426.46     8671.03        0.397    spot             -3.26   chiusura settimanale oltre la EMA 21
+2   short  2018-10-14  2018-10-15  2019-04-02    6333.00     4550.57        0.593    perp             16.65           trailing 2,5 ATR settimanali
+3    long  2019-05-12  2019-05-13  2019-06-27    6975.21    10558.70        1.000    spot             51.12           trailing 2,5 ATR settimanali
+4    long  2020-02-09  2020-02-10  2020-02-17   10161.87     9900.79        0.931    spot             -2.58  distribuzione (funding e flusso perp)
+5   short  2020-03-15  2020-03-16  2020-04-27    5354.97     7700.79        0.400    perp            -17.90   chiusura settimanale oltre la EMA 21
+6    long  2020-05-03  2020-05-04  2020-08-03    8903.04    11060.29        0.667    spot             16.01  distribuzione (funding e flusso perp)
+7    long  2020-10-25  2020-10-26  2020-11-23   13042.67    18395.47        1.000    spot             40.80  distribuzione (funding e flusso perp)
+8    long  2020-12-13  2020-12-14  2021-01-04   19194.16    32967.05        1.000    spot             71.48  distribuzione (funding e flusso perp)
+9    long  2021-01-31  2021-02-01  2021-02-22   33126.06    57354.94        0.716    spot             52.14  distribuzione (funding e flusso perp)
+10   long  2021-08-01  2021-08-02  2021-09-27   39890.12    43117.74        0.543    spot              4.28   chiusura settimanale oltre la EMA 21
+11   long  2021-10-03  2021-10-04  2021-11-08   48248.21    63210.31        0.678    spot             20.88  distribuzione (funding e flusso perp)
+12  short  2022-01-02  2022-01-03  2022-03-28   47238.89    46874.59        0.639    perp              1.04   chiusura settimanale oltre la EMA 21
+13  short  2022-08-14  2022-08-15  2023-01-16   24280.94    20893.86        0.556    perp              8.33   chiusura settimanale oltre la EMA 21
+14   long  2023-01-22  2023-01-23  2023-08-17   22728.73    25966.34        0.945    spot             13.26           trailing 2,5 ATR settimanali
+15   long  2023-10-22  2023-10-23  2024-01-01   30022.45    42241.30        1.000    spot             40.46  distribuzione (funding e flusso perp)
+16   long  2024-02-11  2024-02-12  2024-03-11   48348.30    68886.92        1.000    spot             42.24  distribuzione (funding e flusso perp)
+17   long  2024-09-22  2024-09-23  2025-02-26   63642.34    85256.09        0.912    spot             30.77           trailing 2,5 ATR settimanali
+18   long  2025-04-27  2025-04-28  2025-10-10   93843.04   104715.00        0.993    spot             11.29           trailing 2,5 ATR settimanali
+19  short  2025-11-30  2025-12-01  2026-04-27   90269.65    78736.21        0.894    perp             11.90   chiusura settimanale oltre la EMA 21
+20  short  2026-05-24  2026-05-25  2026-08-20   76987.90    73286.56        1.000    perp              5.73           trailing 2,5 ATR settimanali
+21   long  2026-08-23  2026-08-24  2026-11-09   77811.73    74776.59        1.000    spot             -4.10   chiusura settimanale oltre la EMA 21
+22  short  2026-11-15  2026-11-16      aperta   65285.70    59832.00        0.972    perp              8.09                       posizione aperta
+
+POSIZIONE APERTA (evaluate, 10k): {'status': 'aperto', 'side': 'short', 'signal_date': '2026-11-15', 'entry': '2026-11-16', 'entry_px': 65285.7, 'expo': 0.972, 'stop0': 82163.3, 'trail': 75763.76, 'best': 58951.51, 'price': 59832.0, 'move_pct': 8.35, 'pnl_pct': 8.09, 'ema21': 74273.44713342028, 'atr_w': 6999.274214761536, 'fund7': 1.2701143100857006e-05, 'flow': -1.2003192746937776}
+
+  uscita trail: {'level': 75763.76, 'check': 'ogni ora', 'atr_w': 6999.27, 'best': 58951.51, 'soglia': 47787.51, 'soglia_dist_pct': -20.13, 'soglia_ok': False, 'pct_price': -16.05, 'pct_cap': -15.8, 'usd': -1580.0, 'esito': 'perdita'}
+
+  uscita ema21: {'level': 74273.45, 'check': 'chiusura settimanale', 'soglia': 65285.7, 'soglia_dist_pct': -12.1, 'soglia_ok': False, 'settimane': 11, 'pct_price': -13.77, 'pct_cap': -13.58, 'usd': -1358.0, 'esito': 'perdita'}
+
+  uscita dist: {'check': 'chiusura della domenica', 'fund7': 1.2701143100857006e-05, 'fund_soglia': -0.0003, 'fund_ok': False, 'flow': -1.2003192746937776, 'flow_ok': False, 'attiva': False, 'pct_price': 8.35, 'pct_cap': 7.96, 'usd': 796.0, 'esito': 'profitto'}
+
+TOOL evaluate: final_10k_1x 84820.0 | m1 {'n': 14, 'per_year': 2.38, 'win_rate': 92.9, 'avg_pct': 17.6, 'worst_pct': -4.1, 'best_pct': 52.2, 'total_pct': 748.2, 'max_dd_pct': -21.1, 'mar': 35.41, 'years': {'2021': 91.9, '2022': 19.4, '2023': 46.1, '2024': 102.7, '2025': 4.9, '2026': 19.2}}
+
+                  periodo             variante    finale    dd  cagr  cagr_dd  win_rate  chiuse
+0          Dal 01/01/2018     tutte (prodotto) 242,754.8   NaN   NaN      NaN       NaN     NaN
+1          Dal 01/01/2018    senza la migliore 141,561.3   NaN   NaN      NaN       NaN     NaN
+2          Dal 01/01/2018  senza le 3 migliori  61,568.7   NaN   NaN      NaN       NaN     NaN
+3   Dal 01/01/2021 (tool)     tutte (prodotto)  84,819.9   NaN   NaN      NaN       NaN     NaN
+4   Dal 01/01/2021 (tool)    senza la migliore  55,730.5   NaN   NaN      NaN       NaN     NaN
+5   Dal 01/01/2021 (tool)  senza le 3 migliori  27,895.2   NaN   NaN      NaN       NaN     NaN
+6          Dal 01/01/2018          rischio 10%  50,802.0 -19.2  20.0      1.0      77.3    22.0
+7   Dal 01/01/2021 (tool)          rischio 10%  28,070.0  -9.8  19.1      2.0      92.3    13.0
+8               2018–2020          rischio 10%  16,734.0 -19.2  18.7      1.0      50.0     8.0
+9          Dal 01/01/2018          rischio 25% 242,755.0 -37.3  43.1      1.2      77.3    22.0
+10  Dal 01/01/2021 (tool)          rischio 25%  84,820.0 -21.1  43.7      2.1      92.3    13.0
+11              2018–2020          rischio 25%  25,142.0 -37.3  36.0      1.0      50.0     8.0
+12         Dal 01/01/2018          rischio 30% 269,115.0 -40.4  44.8      1.1      77.3    22.0
+13  Dal 01/01/2021 (tool)          rischio 30% 100,568.0 -21.8  47.9      2.2      92.3    13.0
+14              2018–2020          rischio 30%  23,509.0 -40.4  33.0      0.8      50.0     8.0
+
+CONTROLLI: dal 2021 con frame lungo (riscaldamento indicatori dal 2014): 84789
+  dal 2021 come tratto della serie continua dal 2018: 96554
+  dal 2021, dati fino al 2026-11-15: 78474
+  dal 2018 continua, dati fino al 2026-11-15: 224593
+  dal 2021, dati fino al 2026-11-21: 84360
+  dal 2018 continua, dati fino al 2026-11-21: 241439
+  dal 2021, dati fino al 2026-11-22: 83129
+  dal 2018 continua, dati fino al 2026-11-22: 237915
+  2018–2020 con la posizione chiusa d'ufficio al 31/12/2020 (commissione): 25117
