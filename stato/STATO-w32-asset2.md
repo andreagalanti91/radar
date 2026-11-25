@@ -17,5 +17,10 @@ motore di ricerca settimanale […]. Fai anche una valutazione approfondita su S
    Bitget/OKX) in parallelo. IN CORSO.
 2. PREREG da solo. 3. Backtest Q1–Q7. 4. Revisione critica. 5. Rapporto, lezione 123, progetto Q8, riepilogo.
 
+## Avanzamento
+- Dati azioni (124 titoli) e crypto (361 monete, 79 valutabili) consegnati e committati. FATTO.
+- PREREG `research/w32_asset2/PREREG.md` committato da solo (f40f7a6). FATTO.
+- Backtest Q1–Q8: agente radar-ricerca. IN CORSO.
+
 ## Prossima azione
-Attendere i due agenti dati; poi PREREG.
+Alla consegna: revisione critica (radar-review), poi rapporto, lezione 123, indici, riepilogo all'utente.
