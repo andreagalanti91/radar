@@ -409,6 +409,14 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 125**: indicatore UTXO P/L Count Ratio (CryptoQuant) come supporto a W3.2, testato con il sostituto MVRV CoinMetrics
+(research/utxo_pl, PREREG bdada1a). Il sostituto coincide con 6/10 finestre del grafico (perde i segnali brevi 2023 e metà 2026);
+oggi (24/11/2026) è capitolazione con la soglia del 10% a 4 anni (MVRV 1,13 contro 1,20), non sotto 1,0. Nessuna regola passa i
+criteri: chiudere lo short in capitolazione fa +4.068 $ dal 2021 (+56.663 dal 2018) ma cambia un solo trade, placebo p 0,13 e i
+quattro vicini sono sotto W3.2; non aprire short in capitolazione non cambia nulla dal 2021; chiudere il long in euforia costa
+−15.000 $ dal 2021 perché l'euforia arriva all'inizio dei rally. Lo short del 16/11 sarebbe stato chiuso il 19/11 a 63.131 $
+(movimento +3,3%) contro +8,5% tenendolo al 24/11. Con 1–3 fondi di ciclo per campione un indicatore di ciclo on-chain non è verificabile
+come regola su W3.2: al massimo è contesto da leggere, non un'uscita. Un miglioramento del finale in entrambi i periodi non basta se dal 2021 dipende da un solo episodio e non regge a soglie vicine; i confronti sui trade aperti vanno fatti movimento contro movimento e senza indicazioni sulla posizione.
 **Lezione 124**: peso del capitale fra BTC ed ETH con W3.2 (research/peso_btc_eth, PREREG c7d618a). Dal 06/2020 il CAGR/DD del
 conto unico cresce con la quota di BTC in ogni periodo e in ogni data di partenza (50/50 2,44 · 2/3 2,62 · 100% 2,92; OOS 2023→
 1,13 · 1,21 · 1,33); la regola preregistrata sceglie BTC 100% e passa i 4 criteri (6/6 date, DD OOS −27,0 contro −24,5).

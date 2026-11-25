@@ -1,9 +1,10 @@
 # Indicatore "UTXO Block P/L Count Ratio" (sostituto MVRV) come supporto a W3.2 · BTC · 25/11/2026
 
-**Verdetto: no, questo indicatore non è da usare come supporto a W3.2.** Nessuna delle tre regole (chiudere lo short in
-capitolazione, non aprire short in capitolazione, chiudere il long in euforia) passa i criteri preregistrati (PREREG bdada1a)
-in entrambi i periodi e con entrambe le definizioni: il risultato è "non dimostrabile", con 1–3 trade cambiati per regola.
-La chiusura del long in euforia (H3) è dannosa (−15.000 $ dal 2021). W3.2 resta invariata; nessuna proposta al tool.
+**Verdetto: no come regola su W3.2; al massimo è contesto da leggere.** Nessuna delle tre regole passa i criteri del PREREG
+(bdada1a). Chiudere lo short in capitolazione (H1 b) migliora il finale dal 2018 e dal 2021 e dal 2018 supera i criteri 1–3, ma dal
+2021 il guadagno viene da un solo trade (lo short del 2022), il placebo non lo distingue dal caso (p 0,13), le quattro soglie vicine
+sono tutte sotto W3.2 e con la soglia fissa a 1,0 perde. Chiudere il long in euforia (H3) è dannoso (−15.000 $ dal 2021). W3.2 resta
+invariata; nessuna proposta al tool.
 
 ## Dati e metodo
 La serie CryptoQuant è a pagamento: si usa come sostituto l'**MVRV di CoinMetrics** (community API, `CapMVRVCur`, giornaliero,
@@ -71,19 +72,21 @@ sono riaperture di W3.2 il lunedì dopo, richiuse il giorno dopo dalla stessa re
 
 ## Lo short W3.2 aperto il 16/11/2026 a 65.286 $
 - **Con (b) la regola lo avrebbe chiuso**: capitolazione alla chiusura del 18/11 → uscita all'apertura del **19/11 a 63.131 $**
-  (costi inclusi), movimento +3,3%, +3,1% sulla quota.
+  movimento +3,3% (+3,1% sulla quota, costi inclusi).
 - **Tenendolo (W3.2)**: chiusura 21/11 60.216 $ (+7,8%); con i prezzi Coinbase (fuori dai dati del repo) 24/11 59.741 $ (+8,5%) e
-  oggi 25/11 ~59.100 $ (+9,5%). Stop/trailing a 75.764 $, mai avvicinato. Finora la regola avrebbe lasciato sul tavolo ~5–6 punti.
+  oggi 25/11 ~59.100 $ (+9,5%). Stop/trailing a 75.764 $, mai avvicinato. A oggi, movimento +3,3% con la regola contro +8,5% (24/11) e ~+9,5% (25/11)
+  tenendolo: ~5–6 punti a favore di W3.2, su un trade ancora aperto.
 - La regola come testata non vieta di riaprire: se il segnale short di W3.2 c'era ancora domenica 22/11, W3.2 avrebbe riaperto
   lunedì 23/11 (~61.200 $) e la regola avrebbe richiuso all'apertura del 24/11 (~61.200 $, circa pari). Non simulabile con il
   motore: `data/` si ferma al 21/11.
 - Con (a) nulla: MVRV mai sotto 1,0. Il trade è aperto: il confronto vale solo a oggi.
+- **Nessuna azione: W3.2 resta short, uscita automatica a 75.764 $; la regola non è adottata e questo confronto non indica di chiudere.**
 
 ## Criteri del PREREG (dal 2018 e dal 2021, definizioni a e b)
 | | (1) finale > W3.2, DD ≤ +2 pt | (2) senza il trade più cambiato | (3) placebo p ≤ 0,05 | (4) a e b |
 |---|---|---|---|---|
 | H1 (a) | no (2021: −1.640 $) | no | no (p 0,23 / 0,39) | — |
-| H1 (b) | **sì** (+56.663 / +4.068 $) | no (2021: un solo trade cambiato → torna a 78.474) | no nel 2021 (p 0,001 / **0,127**) | no |
+| H1 (b) | **sì** (+56.663 / +4.068 $) | sì dal 2018 (247.703); no dal 2021 (un solo trade cambiato → torna a 78.474) | no nel 2021 (p 0,001 / **0,127**) | no |
 | H2 (a) | no (2021 identico) | no | no (0,075 / 0,71) | — |
 | H2 (b) | no (2021 identico) | no | no nel 2021 (0,034 / 0,80) | no |
 | H3 (a) | no | no | no (0,90 / 0,71) | — |
@@ -109,8 +112,9 @@ Controllo 2018–20 (fuori dal verdetto): H1(b) passa 1–3 (29.934 $, p 0,002) 
    rieseguito; controllo indipendente con 300 estrazioni e altro seme: mediana 73.072 $, p 0,38.
 4. Le finestre del grafico sono state lette a occhio e fissate in `up_coerenza.py` prima di calcolare le zone.
 5. Il quantile di (b) esclude il giorno stesso (più prudente del minimo richiesto).
-6. Revisione critica da parte di un agente separato prevista dal PREREG: **non ancora eseguita**, da fare prima di riportare
-   all'utente come definitivo.
+6. Revisione critica (agente separato) eseguita il 25/11: nessun errore bloccante; trade (short 2018, 2022, 16/11/2026) e
+   placebo ricalcolati in modo indipendente (H1(b) dal 2021: p 0,11 con altro seme). Il p è calcolato come quota semplice; con
+   (k+1)/(N+1) il p dal 2018 è circa 0,003: il verdetto non cambia.
 
 ## Lezione proposta per RESEARCH.md
 **Lezione 125**: indicatore UTXO P/L Count Ratio (CryptoQuant) come supporto a W3.2, testato con il sostituto MVRV CoinMetrics
@@ -119,5 +123,5 @@ oggi (24/11/2026) è capitolazione con la soglia del 10% a 4 anni (MVRV 1,13 con
 criteri: chiudere lo short in capitolazione fa +4.068 $ dal 2021 (+56.663 dal 2018) ma cambia un solo trade, placebo p 0,13 e i
 quattro vicini sono sotto W3.2; non aprire short in capitolazione non cambia nulla dal 2021; chiudere il long in euforia costa
 −15.000 $ dal 2021 perché l'euforia arriva all'inizio dei rally. Lo short del 16/11 sarebbe stato chiuso il 19/11 a 63.131 $
-(+3,3%) contro +8,5% tenendolo al 24/11. Con 1–3 fondi di ciclo per campione un indicatore di ciclo on-chain non è verificabile
-come regola su W3.2: al massimo è contesto da leggere, non un'uscita.
+(movimento +3,3%) contro +8,5% tenendolo al 24/11. Con 1–3 fondi di ciclo per campione un indicatore di ciclo on-chain non è verificabile
+come regola su W3.2: al massimo è contesto da leggere, non un'uscita. Un miglioramento del finale in entrambi i periodi non basta se dal 2021 dipende da un solo episodio e non regge a soglie vicine; i confronti sui trade aperti vanno fatti movimento contro movimento e senza indicazioni sulla posizione.
