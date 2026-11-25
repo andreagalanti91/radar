@@ -86,6 +86,16 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
         if: steps.gate.outputs.skip != 'true'
+      - name: Dati grezzi dello scanner dalla cache
+        # radar/scanner.py (pagina Scanner): klines e funding di TRX e delle crypto dello scanner in .scanner-cache/, fuori da git
+        # (il giro committa data/ ogni ora: file grandi riscritti ogni settimana gonfierebbero il repository). Si ripristina l'ultima
+        # copia; senza cache si riparte dai file dello studio w32_asset2 già nel repository e si scarica solo il resto
+        if: steps.gate.outputs.skip != 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .scanner-cache
+          key: radar-scanner-${{ github.run_id }}
+          restore-keys: radar-scanner-
       - name: Aggiorna dati, segnale, alert, dashboard
         # prima dei test: un test rotto non deve mai bloccare valutazione W3 e alert
         if: steps.gate.outputs.skip != 'true'
@@ -105,6 +115,15 @@ jobs:
           # opzioni su carta (pagina Opzioni): quota del capitale W3.2 BTC per operazione, frazione, tetto 0.10 (radar/opzioni.py)
           RADAR_OPZIONI_QUOTA: ${{ vars.RADAR_OPZIONI_QUOTA || '0.05' }}
         run: python -m radar.cli daily
+      - name: Salva i dati grezzi dello scanner in cache
+        # chiave = impronta dei file: una nuova voce solo quando il contenuto cambia (TRX una volta al giorno, scanner la domenica);
+        # se la voce esiste già il passo non fa nulla
+        if: steps.gate.outputs.skip != 'true' && hashFiles('.scanner-cache/**') != ''
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: .scanner-cache
+          key: radar-scanner-${{ hashFiles('.scanner-cache/**') }}
       - name: Salva cache dati e stato
         id: push
         if: steps.gate.outputs.skip != 'true'
