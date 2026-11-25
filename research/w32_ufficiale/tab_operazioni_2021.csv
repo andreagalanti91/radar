@@ -1,0 +1,15 @@
+verso,segnale,entrata,uscita,prezzo_in,prezzo_out,esposizione,mercato,sul_capitale_pct,motivo
+long,2021-01-31,2021-02-01,2021-02-22,33126.06,57354.94,0.716,spot,52.2,distribuzione (funding e flusso perp)
+long,2021-08-01,2021-08-02,2021-09-27,39890.12,43117.74,0.543,spot,4.28,chiusura settimanale oltre la EMA 21
+long,2021-10-03,2021-10-04,2021-11-08,48248.21,63210.31,0.679,spot,20.88,distribuzione (funding e flusso perp)
+short,2022-01-02,2022-01-03,2022-03-28,47238.89,46874.59,0.639,perp,1.04,chiusura settimanale oltre la EMA 21
+short,2022-08-14,2022-08-15,2023-01-16,24280.94,20893.86,0.556,perp,8.33,chiusura settimanale oltre la EMA 21
+long,2023-01-22,2023-01-23,2023-08-17,22728.73,25966.34,0.945,spot,13.26,"trailing 2,5 ATR settimanali"
+long,2023-10-22,2023-10-23,2024-01-01,30022.45,42241.3,1.0,spot,40.46,distribuzione (funding e flusso perp)
+long,2024-02-11,2024-02-12,2024-03-11,48348.3,68886.92,1.0,spot,42.24,distribuzione (funding e flusso perp)
+long,2024-09-22,2024-09-23,2025-02-26,63642.34,85256.09,0.912,spot,30.77,"trailing 2,5 ATR settimanali"
+long,2025-04-27,2025-04-28,2025-10-10,93843.04,104715.0,0.993,spot,11.29,"trailing 2,5 ATR settimanali"
+short,2025-11-30,2025-12-01,2026-04-27,90269.65,78736.21,0.894,perp,11.9,chiusura settimanale oltre la EMA 21
+short,2026-05-24,2026-05-25,2026-08-20,76987.9,73286.56,1.0,perp,5.73,"trailing 2,5 ATR settimanali"
+long,2026-08-23,2026-08-24,2026-11-09,77811.73,74776.59,1.0,spot,-4.1,chiusura settimanale oltre la EMA 21
+short,2026-11-15,2026-11-16,aperta,65285.7,59832.0,0.972,perp,8.09,posizione aperta

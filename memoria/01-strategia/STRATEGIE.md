@@ -1,5 +1,8 @@
 # Strategie: versioni e studi a confronto (aggiornato al 22/11/2026)
 
+> Nota (25/11/2026): le cifre di questa tabella sono ai dati del 15/11/2026 (W3.2 dal 2021 = 78.474 $). I numeri ufficiali aggiornati, con la convenzione unica, sono in `RAPPORTO-W32.md` (dal 2021: 84.820 $ al 24/11/2026).
+
+
 Tutti i numeri: BTC, 10.000 $ dal 01/01/2021 al 15/11/2026, 1x, costi inclusi, salvo dove indicato.
 
 ## Versioni della strategia principale (stessi segnali settimanali)
