@@ -73,3 +73,19 @@ riutilizzabile: `universe.py`, `fetch.py`, `run.py`) e `research/multi_asset/REA
 buy & hold, IS/OOS, criteri falliti, operabile sì/no), portafoglio, cosa significa per l'operatività, limiti, deviazioni dal
 PREREG, lezione 123 per `RESEARCH.md`; aggiornare `research/README.md` e `memoria/02-ricerca/INDICE.md`. Riepilogo finale
 all'utente: conclusione in testa, numeri essenziali, proposte in attesa di decisione, se e come estendere alla top 50.
+
+## Estensione decisa dall'utente (25/11/2026, al comando "procedi")
+"Ok procedi in autonomia, estendi alle prime top 200 crypto e top 100 asset azionari. Next step da valutare è sicuramente un
+motore di ricerca settimanale dei migliori asset. Fai anche una valutazione approfondita su SOL e TAO, tradavo con loro e mi
+sono sempre trovato bene, ma probabilmente non reggono con la nuova strategia 3.2, valuta tu."
+
+- **Universo**: top 200 crypto (oggi e al 01/01/2020) e top 100 azioni per capitalizzazione (oggi e al 01/01/2020). Le top 20 e
+  top 10 restano il nucleo delle tabelle; l'universo largo serve a contare quante passano e con Holm sul numero vero di asset.
+- **Autonomia**: tutto A (impostazione Q1–Q6; solo proposta se un asset passa; nessuna pubblicazione sul sito).
+- **Q7 · SOL e TAO, valutazione approfondita** (descrittiva, oltre ai criteri): operazione per operazione, perché perde o
+  vince, con quale rischio sarebbe accettabile, IS/OOS, confronto con il buy & hold e con il modo in cui l'utente le tradava
+  (chiedere i dettagli solo se servono davvero; altrimenti dichiararlo). TAO ha meno di 3 anni di perp: dirlo e trattarlo come
+  descrittivo. Segnale attuale di W3.2 su entrambi.
+- **Q8 · Motore di ricerca settimanale (solo progetto)**: proposta di uno screener domenicale che classifica gli asset in cui
+  le condizioni di W3.2 valgono, con i criteri di qualità emersi dallo studio. Si scrive il progetto e lo si prova all'indietro
+  solo se i risultati lo giustificano; nessuna modifica al tool senza approvazione.
