@@ -239,7 +239,7 @@ class TestIntegrazione(unittest.TestCase):
         t = (root / "radar" / "dashboard_template.html").read_text()
         self.assertIn('id="cxCard"', t)
         self.assertIn("R.context", t)
-        blk = t[t.index("(function renderContext()"):t.index("// Oggi: eventi macro di oggi e domani")]
+        blk = t[t.index("(function renderContext()"):t.index("// Oggi: riassunto coerente con la pagina Notizie")]
         self.assertNotRegex(blk.lower(), r"probabilit|prevision")
         cli = (root / "radar" / "cli.py").read_text()
         self.assertIn('report["context"] = _soft(', cli)
