@@ -366,6 +366,35 @@ dialog.dlg::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px
 .banks .bk .cd{font:600 .78rem var(--mono);color:var(--label2);white-space:nowrap}
 .banks .bk.soon{border-color:color-mix(in srgb,var(--orange) 55%,transparent)} .banks .bk.soon .cd{color:var(--orange)}
 .calPast{margin-top:8px} .calPast summary{cursor:pointer;color:var(--label2);font:600 .82rem var(--font);padding:6px 2px}
+/* Notizie "per noi": eventi prima della chiusura di domenica, notizie per tema con l'etichetta dell'asset, il resto chiuso */
+.nwSrcBox{display:grid;gap:8px} .nwSrcBox:empty{display:none}
+.nwWarn{margin:0;padding:10px 12px;border-radius:12px;font-size:.8rem;line-height:1.45;color:var(--label);background:color-mix(in srgb,var(--orange) 12%,transparent);border:1px solid color-mix(in srgb,var(--orange) 40%,transparent)}
+.nwWarn b{color:var(--orange)}
+.ag{padding:0}
+.ag .agHd{padding:12px 16px;font-size:.8rem;color:var(--label2);border-bottom:1px solid var(--line)} .ag .agHd b{color:var(--label);font-weight:600}
+.agRow{display:grid;grid-template-columns:3.6rem minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 16px;border-top:1px solid var(--line)}
+.ag .agRow:first-child,.ag .agHd+.agRow{border-top:0}
+.agRow .w{font:600 .9rem/1.2 var(--font);font-variant-numeric:tabular-nums} .agRow .w small{display:block;font:500 .68rem var(--font);color:var(--label3);text-transform:capitalize}
+.agRow .t{min-width:0} .agRow .t b{display:block;font:600 .92rem/1.3 var(--font)} .agRow .t small{display:block;font-size:.74rem;color:var(--label3);margin-top:1px}
+.agRow .t p{margin:4px 0 0;font-size:.8rem;line-height:1.45;color:var(--label2)}
+.agRow.past{opacity:.55} .agRow.next{background:color-mix(in srgb,var(--tint) 6%,transparent)}
+.agRow.after .w{color:var(--label2)}
+.ag .agEmpty{padding:12px 16px;font-size:.86rem;color:var(--label2);border-top:1px solid var(--line)} .ag .agEmpty:first-child{border-top:0}
+.ag details{border-top:1px solid var(--line)} .ag details summary{cursor:pointer;padding:10px 16px;color:var(--label2);font:600 .8rem var(--font)}
+.nwGrid{display:grid;gap:14px;min-width:0}
+@media (min-width:1000px){.nwGrid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+.nwGrp{display:grid;gap:6px;min-width:0}
+.nwGrp .gh{margin:0 4px;font:600 .8rem var(--font);color:var(--label2);display:flex;justify-content:space-between;gap:8px} .nwGrp .gh small{font-weight:500;color:var(--label3)}
+.nwList{padding:0}
+.nwList a{display:grid;gap:4px;padding:12px 16px;border-top:1px solid var(--line);color:var(--label);text-decoration:none;min-width:0}
+.nwList a:first-child{border-top:0}
+.nwList a b{font:600 .92rem/1.35 var(--font);letter-spacing:-.01em;overflow-wrap:anywhere}
+.nwList .m{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.72rem;color:var(--label3)}
+.atag{font:600 .66rem/1 var(--font);letter-spacing:.02em;padding:3px 6px;border-radius:6px;background:var(--fill);color:var(--label2)}
+.atag.k{background:var(--tint-bg);color:var(--tint)}
+.nwList details summary{cursor:pointer;padding:10px 16px;border-top:1px solid var(--line);color:var(--label2);font:600 .8rem var(--font)}
+.nwOther>.nwList{margin-top:6px}
+.todayN .ev p{margin:2px 0 0;font-size:.74rem;color:var(--label2);line-height:1.4}
 .wkCush{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;color:var(--label2);flex-wrap:wrap}
 .wkCush b{color:var(--label);font-variant-numeric:tabular-nums}
 #wkPos{display:contents}
@@ -818,7 +847,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 
     <div class="section" id="todaySec" hidden>
       <div class="sh">Oggi nelle notizie <small id="todaySub"></small></div>
-      <button type="button" class="card tapCard mOnly" id="todayCard" aria-haspopup="dialog"></button>
+      <button type="button" class="card tapCard mOnly" id="todayCard" aria-label="Apri la pagina Notizie"></button>
       <div class="todayN mHide" id="todayN"></div>
     </div>
 
@@ -968,25 +997,26 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   </div>
 
   <div class="view" id="v-notizie" hidden>
-    <div class="section" id="calSec">
-      <div class="sh">Calendario economico <small>ora italiana</small></div>
-      <div class="cap2" style="margin:2px 0 8px">Prossimi dati macro · settimana in corso</div>
-      <div class="cal" id="cal"></div>
-      <details class="calPast" id="calPastW" hidden><summary id="calPastS">Già usciti questa settimana</summary><div class="cal" id="calPast"></div></details>
-      <div class="cap2" style="margin:16px 0 8px">Banche centrali · prossime riunioni</div>
-      <div class="banks" id="banks"></div>
-      <p class="foot">Gli eventi ad alto impatto muovono spesso BTC nell'ora successiva: meglio non aprire o spostare posizioni a ridosso dell'uscita.</p>
+    <!-- Notizie "per noi": ciò che può toccare W3.2 su BTC ed ETH (decisione alla chiusura della domenica), TRX in osservazione,
+         SOL e TAO. Eventi da radar/news.agenda (stessa regola in agendaW), notizie classificate in radar/news.classify -->
+    <div class="nwSrcBox" id="nwSrcBox"><p class="foot" id="nwSrc"></p><div id="nwWarn"></div></div>
+    <div class="section" id="agSec">
+      <div class="sh">Prima della decisione di domenica <small id="agSub"></small></div>
+      <div class="card ag" id="agList"></div>
+      <p class="foot">Gli eventi ad alto impatto muovono spesso BTC nell'ora successiva: meglio non aprire o spostare posizioni a ridosso dell'uscita. W3.2 decide solo sulla chiusura della domenica.</p>
+      <details class="calPast" id="calSec"><summary id="calSum">Calendario della settimana e banche centrali</summary>
+        <div class="cap2" style="margin:8px 4px">Dati macro · ora italiana</div>
+        <div class="cal" id="cal"></div>
+        <details class="calPast" id="calPastW" hidden><summary id="calPastS">Già usciti questa settimana</summary><div class="cal" id="calPast"></div></details>
+        <div class="cap2" style="margin:16px 4px 8px">Banche centrali · prossime riunioni</div>
+        <div class="banks" id="banks"></div>
+      </details>
     </div>
-    <div class="section">
-      <div class="sh">Notizie <small id="newsUpd"></small></div>
-      <div class="hscroll"><div class="seg" id="newsSeg" role="group" aria-label="Categoria">
-        <button data-v="impatto" aria-pressed="true">Impatto</button><button data-v="macro">Dati macro</button><button data-v="bitcoin">Bitcoin</button>
-        <button data-v="etf">ETF e istituzionali</button><button data-v="regolamentazione">Regole</button><button data-v="derivati">Derivati e on-chain</button><button data-v="tutte">Tutte</button>
-      </div></div>
-    </div>
-    <div class="section">
-      <div class="news" id="newsList"></div>
-      <p class="foot">Impatto stimato da parole chiave che storicamente muovono il prezzo: è un filtro, non un giudizio.</p>
+    <div class="section" id="nwSec">
+      <div class="sh">Notizie che toccano le posizioni <small id="newsUpd"></small></div>
+      <div class="nwGrid" id="nwGroups"></div>
+      <details class="calPast nwOther" id="nwOther"><summary id="nwOtherS">Altre notizie</summary><div class="card nwList" id="nwOtherL"></div></details>
+      <p class="foot">Scelte con regole a parole chiave (radar/news.py): asset seguiti nel titolo (BTC ed ETH +3, TRX, SOL e TAO +2), tema (macro +4, ETF, regole, exchange +2, mercato +1), parole forti +2; servono almeno 4 punti. Doppioni uniti, pubblicità e altcoin minori fuori. È un filtro, non un giudizio.</p>
     </div>
   </div>
 
@@ -1940,24 +1970,75 @@ function goal(cap, lev) {
 
 simulate();
 
-// ---- notizie
-let NEWS = R.news || [], CAL = R.calendar || [], BANKS = R.banks || [], newsTab = "impatto";
+// ---- notizie "per noi" (radar/news.py): eventi fino alla chiusura di domenica, notizie per tema, il resto chiuso
+let NEWS = R.news || [], CAL = R.calendar || [], BANKS = R.banks || [];
 const ago = d => { const m = Math.round((Date.now() - new Date(d)) / 6e4); return m < 60 ? `${Math.max(m, 1)} min fa` : m < 1440 ? `${Math.round(m / 60)} h fa` : `${Math.round(m / 1440)} g fa`; };
 const esc = t => String(t).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
+// <agenda> stessa regola di radar/news.py agenda() e next_close(): tests/test_news_rilevanza.py la esegue con node
+const bankDate = b => b.at ? new Date(b.at) : new Date(b.date + "T" + b.time + ":00" + (/^\d{4}-(0[4-9]|10)/.test(b.date) ? "+02:00" : "+01:00"));
+const nextClose = now => { const d = new Date(now), wd = (d.getUTCDay() + 6) % 7; return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 7 - wd); };
+const romeDay0 = now => { const p = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Rome", hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }).formatToParts(new Date(now));
+  const g = k => +p.find(x => x.type === k).value; return Math.floor(now / 1000) * 1000 - (g("hour") * 3600 + g("minute") * 60 + g("second")) * 1000; };
+function agendaW(cal, banks, now) {
+  const close = nextClose(now), day0 = romeDay0(now);
+  const ev = (cal || []).map(e => ({ kind: "dato", name: e.name || e.title, country: e.country || "", at: new Date(e.date).getTime(), impact: e.impact || "medio", note: e.note || "", forecast: e.forecast || "", previous: e.previous || "" }))
+    .filter(e => isFinite(e.at))
+    .concat((banks || []).map(b => ({ kind: "banca", name: b.title, country: b.bank || "", at: bankDate(b).getTime(), impact: b.impact || "alto", note: b.note || "", forecast: "", previous: "" })))
+    .sort((a, b) => (a.at - b.at) || ((a.impact !== "alto") - (b.impact !== "alto")));
+  return { close, events: ev.filter(e => e.at >= day0 && e.at < close).map(e => Object.assign(e, { past: e.at < now })),
+           next_after: ev.find(e => e.at >= close && e.impact === "alto") || null };
+}
+// </agenda>
+const romeT = (t, o) => new Date(t).toLocaleString("it-IT", Object.assign({ timeZone: "Europe/Rome" }, o));
+const hmR = t => romeT(t, { hour: "2-digit", minute: "2-digit" });
+const dayR = t => { const k = dKey(t), n = Date.now(); return k === dKey(n) ? "oggi" : k === dKey(n + 864e5) ? "domani" : romeT(t, t - n < 6 * 864e5 ? { weekday: "short", day: "numeric" } : { weekday: "short", day: "numeric", month: "short" }); };
+const isNoi = n => n.group ? n.group === "noi" : n.level !== "basso";   // report precedenti senza "group": vecchio livello d'impatto
+const THEME = [["macro", "Macro e banche centrali"], ["etf", "ETF e flussi"], ["regole", "Regolamentazione"], ["sicurezza", "Exchange e sicurezza"], ["mercato", "Mercato"]];
+const KEY_A = ["BTC", "ETH"];
+const nRow = n => { const a = (n.assets && n.assets.length ? n.assets : ["mercato"]).map(x => `<span class="atag${KEY_A.includes(x) ? " k" : ""}">${esc(x)}</span>`).join("");
+  const also = n.also && n.also.length ? ` · +${n.also.length} ${n.also.length === 1 ? "fonte" : "fonti"}` : "";
+  return `<a href="${esc(n.link)}" target="_blank" rel="noopener"${n.why ? ` title="${esc(n.why.join(" · "))}"` : ""}><span class="m">${a}<span>${esc(n.source)} · ${ago(n.date)}${also}</span></span><b>${esc(n.title)}</b></a>`; };
+// fonti: quando sono state aggiornate e cosa succede se una non risponde (ultimo dato con l'avviso)
+function renderSources() {
+  const F = [["notizie", NEWS], ["calendario", CAL], ["banche centrali", BANKS]].map(([k, L]) => ({ k, at: (L.find(x => x.fetched) || {}).fetched, stale: L.some(x => x.stale), empty: !L.length }));
+  const st = R.news_fonti, feeds = st ? Object.entries(st).filter(([k]) => !["calendario", "banche centrali"].includes(k)) : [];
+  const ok = feeds.filter(([, v]) => v.ok).length;
+  const when = t => t ? romeT(t, dKey(t) === dKey(Date.now()) ? { hour: "2-digit", minute: "2-digit" } : { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : null;
+  const fresh = F.filter(f => f.at && !f.stale);
+  const same = fresh.length && fresh.every(f => when(f.at) === when(fresh[0].at));
+  $("nwSrc").textContent = fresh.length ? "Fonti aggiornate " + (same ? "alle " + when(fresh[0].at) : fresh.map(f => `${f.k} ${when(f.at)}`).join(" · "))
+    + (feeds.length ? ` · ${ok} testate su ${feeds.length} hanno risposto` : "") + "." : NEWS.length ? `Ultima notizia ${ago(NEWS[0].date)}.` : "";
+  const fix = "Riprova più tardi con il pulsante Aggiorna in alto: il giro orario la interroga di nuovo da solo. Se l'avviso resta per più di un giorno la fonte va controllata (radar/news.py).";
+  const W = F.filter(f => f.stale || f.empty);
+  $("nwWarn").innerHTML = W.length ? `<p class="nwWarn">${W.map(f => `<b>${f.k[0].toUpperCase() + f.k.slice(1)}:</b> ${f.stale
+    ? `la fonte non ha risposto all'ultimo aggiornamento, mostro l'ultimo dato salvato${f.at ? " (" + when(f.at) + ")" : ""}.` : "la fonte non ha risposto e non c'è un dato salvato."}`).join("<br>")}<br>${fix}</p>` : "";
+}
+function renderAgenda() {
+  const now = Date.now(), A = agendaW(CAL, BANKS, now), close = A.close;
+  const hi = A.events.filter(e => e.impact === "alto"), lo = A.events.filter(e => e.impact !== "alto" && !e.past);
+  const nextI = hi.findIndex(e => !e.past), days = Math.ceil((close - now) / 864e5);
+  $("agSub").textContent = `chiusura ${new Date(close - 1).toLocaleDateString("it-IT", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" })} · ${days <= 1 ? "oggi" : "fra " + days + " giorni"}`;
+  const row = (e, cls) => { const nums = [e.forecast && "previsto " + fcIT(e.forecast), e.previous && "prima " + fcIT(e.previous)].filter(Boolean).join(" · ");
+    const sub = [e.kind === "banca" ? (e.country === "Fed" ? "USA" : e.country) : e.country, e.past ? "uscito" : nums].filter(Boolean).join(" · ");
+    return `<div class="agRow ${cls || ""}"><span class="w">${hmR(e.at)}<small>${cls === "after" ? romeT(e.at, { day: "numeric", month: "short" }) : dayR(e.at)}</small></span>
+      <span class="t"><b>${esc(e.name)}</b>${sub ? `<small>${esc(sub)}</small>` : ""}${e.note && !e.past ? `<p>Perché conta per noi: ${esc(e.note)}</p>` : ""}</span><span class="imp ${e.impact}">${e.impact}</span></div>`; };
+  const head = `<div class="agHd">Eventi che contano per BTC da oggi alla <b>chiusura settimanale</b> (domenica 24:00 UTC, ${hmR(close)} di lunedì in Italia).</div>`;
+  const body = hi.map((e, k) => row(e, e.past ? "past" : k === nextI ? "next" : "")).join("")
+    || `<div class="agEmpty">${CAL.length || BANKS.length ? "Nessun dato ad alto impatto fino alla chiusura." : "Calendario non disponibile in questo momento."}</div>`;
+  const minor = lo.length ? `<details><summary>Altri ${lo.length} dati a impatto medio</summary>${lo.map(e => row(e)).join("")}</details>` : "";
+  const after = A.next_after ? `<div class="agEmpty" style="padding-bottom:0">Dopo la chiusura, il primo evento ad alto impatto:</div>` + row(A.next_after, "after") : "";
+  $("agList").innerHTML = head + body + minor + after;
+  $("calSum").textContent = `Calendario della settimana e banche centrali (${CAL.length + BANKS.length})`;
+}
 function renderNews() {
-  let list = NEWS;
-  if (newsTab === "impatto") list = NEWS.filter(n => n.level !== "basso").slice().sort((a, b) => (b.impact - a.impact) || (a.date < b.date ? 1 : -1));
-  else if (newsTab !== "tutte") list = NEWS.filter(n => n.tabs.includes(newsTab));
-  // feed corto: titolo, fonte e impatto (niente riassunti); le prime 8 in vista, le altre (fino a 40) in un elenco richiuso
-  const item = n => `<a class="nitem" href="${esc(n.link)}" target="_blank" rel="noopener">
-      <span class="meta"><span>${esc(n.source)}</span><span>${ago(n.date)}</span>${n.level !== "basso" ? `<span class="imp ${n.level}">impatto ${n.level}</span>` : ""}</span>
-      <b>${esc(n.title)}</b></a>`;
-  const L = list.slice(0, 40), more = L.slice(8);
-  $("newsList").innerHTML = L.slice(0, 8).map(item).join("") + (more.length ? `<details class="calPast"><summary>Altre ${more.length} notizie</summary><div class="news">${more.map(item).join("")}</div></details>` : "")
-    || `<div class="card"><p style="margin:0">Nessuna notizia in questa categoria negli ultimi giorni.</p></div>`;
-  renderCal(); renderToday();
-  const newest = NEWS.length ? NEWS[0].date : null;
-  $("newsUpd").textContent = newest ? `ultima ${ago(newest)}` : "";
+  const L = NEWS.filter(isNoi), O = NEWS.filter(n => !isNoi(n)), byRel = (a, b) => ((b.rel ?? b.impact) - (a.rel ?? a.impact)) || (a.date < b.date ? 1 : -1);
+  const grp = THEME.map(([k, lab]) => [lab, L.filter(n => (n.theme || "mercato") === k).sort(byRel)]).filter(([, g]) => g.length);
+  $("nwGroups").innerHTML = grp.map(([lab, g]) => `<div class="nwGrp"><div class="gh">${lab}<small>${g.length}</small></div><div class="card nwList">${g.slice(0, 3).map(nRow).join("")}${g.length > 3
+    ? `<details><summary>Altre ${g.length - 3}</summary>${g.slice(3).map(nRow).join("")}</details>` : ""}</div></div>`).join("")
+    || `<div class="card"><p style="margin:0">${NEWS.length ? "Nessuna notizia che tocchi BTC, ETH o le crypto seguite nelle ultime ore." : "Notizie non disponibili in questo momento."}</p></div>`;
+  $("nwOther").hidden = !O.length; $("nwOtherS").textContent = `Altre notizie (${O.length})`; $("nwOtherL").innerHTML = O.slice(0, 40).map(nRow).join("");
+  $("newsUpd").textContent = L.length ? `${L.length} · l'ultima ${ago(L.reduce((m, n) => n.date > m ? n.date : m, L[0].date))}` : "";
+  renderSources(); renderAgenda(); renderCal(); renderToday();
 }
 // calendario: prima i prossimi eventi (il prossimo evidenziato), quelli già usciti in fondo e chiusi; poi le banche centrali
 const dKey = d => new Date(d).toLocaleDateString("it-IT", { timeZone: "Europe/Rome" });
@@ -1969,11 +2050,10 @@ function calRows(list, nextIdx) {
     const past = d < Date.now(), nums = [e.forecast && `previsto ${fcIT(e.forecast)}`, e.previous && `precedente ${fcIT(e.previous)}`].filter(Boolean).join(" · ");
     return head + `<details class="cev${past ? " past" : ""}${k === nextIdx ? " next" : ""}"><summary>
       <span class="tm">${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}<small>${e.country}</small></span>
-      <span class="ti"><b>${esc(e.title)}</b><small>${[nums || (past ? "" : "senza previsione"), k === nextIdx ? "prossimo" : ""].filter(Boolean).join(" · ")}</small></span>
+      <span class="ti"><b>${esc(e.name || e.title)}</b><small>${[nums || (past ? "" : "senza previsione"), k === nextIdx ? "prossimo" : ""].filter(Boolean).join(" · ")}</small></span>
       <span class="imp ${e.impact}">${e.impact}</span></summary>${e.note ? `<div class="note">${esc(e.note)}</div>` : ""}</details>`;
   }).join("");
 }
-const bankDate = b => new Date(b.date + "T" + b.time + ":00" + (/^\d{4}-(0[4-9]|10)/.test(b.date) ? "+02:00" : "+01:00"));
 function renderCal() {
   const now = Date.now(), up = CAL.filter(e => new Date(e.date) >= now), past = CAL.filter(e => new Date(e.date) < now);
   $("cal").innerHTML = calRows(up, 0) || `<div class="card"><p style="margin:0">${CAL.length ? "Nessun altro dato in uscita questa settimana." : "Calendario non disponibile in questo momento."}</p></div>`;
@@ -2330,40 +2410,27 @@ const lvRow = (o, extra = "", lab = null) => { const t = LVX.LT[o.tipo], p = o.p
     ${warn}<p class="foot">${esc(C.note || "")}</p>
     <p class="foot">${esc(C.source || "")}${C.updated_utc ? " Aggiornato: " + new Date(C.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC." : ""}</p></div>`);
 })();
-// Oggi: eventi macro di oggi e domani, riunione di banca centrale entro 7 giorni, 3 notizie a impatto più alto delle ultime 24 ore
+// Oggi: riassunto coerente con la pagina Notizie: il prossimo evento ad alto impatto prima della chiusura di domenica (o il primo
+// dopo) e le 1–2 notizie più rilevanti delle ultime 24 ore che toccano le posizioni; il resto in #notizie
 function renderToday() {
-  const now = Date.now(), t0 = dKey(now), t1 = dKey(now + 864e5);
-  const ev = CAL.filter(e => [t0, t1].includes(dKey(e.date)) && e.impact === "alto" || dKey(e.date) === t0 && e.impact === "medio");
-  const bk = BANKS.filter(b => bankDate(b) >= now - 3.6e6 && bankDate(b) - now < 7 * 864e5);
-  const nw = NEWS.filter(n => now - new Date(n.date) < 864e5 && n.level !== "basso").slice().sort((a, b) => b.impact - a.impact).slice(0, 3);
-  const nws = nw.length ? nw : NEWS.slice(0, 2);
-  const evH = ev.map(e => { const d = new Date(e.date), past = d < now;
-    return `<div class="ev"><span class="tm">${dKey(e.date) === t0 ? "" : "dom. "}${d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" })}</span><span><b>${esc(e.title)}</b><small>${e.country}${e.forecast ? " · previsto " + esc(fcIT(e.forecast)) : ""}${past ? " · uscito" : ""}</small></span><span class="imp ${e.impact}">${e.impact}</span></div>`; }).join("");
-  const bkH = bk.map(b => { const d = bankDate(b), days = Math.ceil((d - now) / 864e5);
-    return `<div class="ev"><span class="tm">${b.time}</span><span><b>${esc(b.title)}</b><small>${days <= 0 ? "oggi" : days === 1 ? "domani" : "tra " + days + " giorni"} · ${d.toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" })}</small></span><span class="imp alto">alto</span></div>`; }).join("");
-  const nH = nws.map(n => `<a class="n" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><small>${esc(n.source)} · ${ago(n.date)}${n.level !== "basso" ? " · impatto " + n.level : ""}</small></a>`).join("");
-  $("todaySec").hidden = !(evH || bkH || nH);
-  // titolo coerente con quello che c'è sotto: dati già usciti, in arrivo o entrambi; riunioni di banca centrale
-  const evUp = ev.some(e => new Date(e.date) >= now), evPast = ev.some(e => new Date(e.date) < now);
-  const what = [ev.length ? (evPast && !evUp ? "dati di oggi" : "dati") : "", bk.length ? "riunioni" : ""].filter(Boolean).join(" e ");
-  $("todaySub").textContent = !(evH || bkH) ? "nessun dato macro importante oggi"
-    : evPast && !evUp && !bk.length ? "dati di oggi, già usciti" : evPast ? `${what}: usciti e in arrivo` : `${what} in arrivo`;
-  $("todayN").innerHTML = evH + bkH + nH + `<a class="more" href="#notizie">Calendario completo e tutte le notizie →</a>`;
-  // telefono: una scheda sola, il prossimo evento importante e la notizia principale; tocco → pannello con tutto
-  const nx = CAL.filter(e => new Date(e.date) >= now && e.impact === "alto").map(e => ({ d: new Date(e.date), t: e.title }))
-    .concat(BANKS.map(b => ({ d: bankDate(b), t: b.title })).filter(x => x.d >= now)).sort((x, y) => x.d - y.d)[0]
-    || CAL.filter(e => new Date(e.date) >= now && e.impact === "medio").map(e => ({ d: new Date(e.date), t: e.title }))[0];
-  const when = d => { const k = dKey(d), hm = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
-    return (k === t0 ? "oggi" : k === t1 ? "domani" : d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/Rome" })) + " " + hm; };
+  const now = Date.now(), A = agendaW(CAL, BANKS, now);
+  const up = A.events.filter(e => e.impact === "alto" && !e.past), nx = up[0] || A.next_after;
+  const fresh = NEWS.filter(n => isNoi(n) && now - new Date(n.date) < 864e5);
+  const nws = (fresh.length ? fresh : NEWS.filter(isNoi)).slice().sort((a, b) => ((b.rel ?? b.impact) - (a.rel ?? a.impact)) || (a.date < b.date ? 1 : -1)).slice(0, 2);
+  const tag = n => (n.assets && n.assets.length ? n.assets.join(" ") : "mercato");
+  const when = e => `${dayR(e.at)} ${hmR(e.at)}`;
+  const evH = nx ? `<div class="ev"><span class="tm">${when(nx)}</span><span><b>${esc(nx.name)}</b><small>${up[0] ? "prima della chiusura di domenica" : "dopo la chiusura di domenica"}${nx.forecast ? " · previsto " + esc(fcIT(nx.forecast)) : ""}</small></span><span class="imp ${nx.impact}">${nx.impact}</span></div>` : "";
+  const nH = nws.map(n => `<a class="n" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><small>${esc(tag(n))} · ${esc(n.source)} · ${ago(n.date)}</small></a>`).join("");
+  $("todaySec").hidden = !(evH || nH);
+  $("todaySub").textContent = up.length ? `${up.length} ${up.length === 1 ? "evento importante" : "eventi importanti"} prima di domenica` : "nessun evento importante prima di domenica";
+  $("todayN").innerHTML = evH + nH + `<a class="more" href="#notizie">Calendario e notizie per noi →</a>`;
+  // telefono: una scheda sola (prossimo evento e notizia principale); il tocco apre la pagina Notizie
   const top = nws[0];
-  $("todayCard").innerHTML = `<div class="tapHead"><b>Oggi nelle notizie</b><span class="more">Tutto ›</span></div>` +
-    (nx ? `<div class="tdRow"><span class="tm">${when(nx.d)}</span><b>${esc(nx.t)}</b></div>` : "") +
-    (top ? `<div class="tdRow"><span class="tm" style="color:var(--label3)">${ago(top.date).replace(" fa", "")}</span><span><b>${esc(top.title)}</b><small>${esc(top.source)}</small></span></div>` : "");
-  $("todayCard").onclick = () => { const up = CAL.filter(e => new Date(e.date) >= Date.now() && e.impact === "alto").slice(0, 3), x = document.createElement("div");
-    x.className = "cal"; x.innerHTML = up.length ? `<div class="cday" style="margin-top:0">Prossimi dati importanti</div>` + calRows(up, 0) : "";
-    sheetNodes("Oggi nelle notizie", [up.length ? x : null, $("todayN")]); };
+  $("todayCard").innerHTML = `<div class="tapHead"><b>Oggi nelle notizie</b><span class="more">Notizie ›</span></div>` +
+    (nx ? `<div class="tdRow"><span class="tm">${when(nx)}</span><span><b>${esc(nx.name)}</b><small>${up[0] ? "prima della chiusura di domenica" : "dopo la chiusura di domenica"} · impatto ${nx.impact}</small></span></div>` : "") +
+    (top ? `<div class="tdRow"><span class="tm" style="color:var(--label3)">${ago(top.date).replace(" fa", "")}</span><span><b>${esc(top.title)}</b><small>${esc(tag(top))} · ${esc(top.source)}</small></span></div>` : "");
+  $("todayCard").onclick = () => { location.hash = "#notizie"; };
 }
-seg("newsSeg", v => { newsTab = v; renderNews(); });
 renderNews();
 // sulla pagina pubblicata le notizie si ricaricano ogni 10 minuti senza rigenerare la dashboard
 setInterval(() => fetch("news.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(j => { if (j && j.news) { NEWS = j.news; CAL = j.calendar || CAL; BANKS = j.banks || BANKS; renderNews(); } }).catch(() => {}), 6e5);

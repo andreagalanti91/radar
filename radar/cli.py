@@ -323,6 +323,8 @@ def daily() -> None:
     report["news"] = _soft("notizie", fetch_news) or []
     report["calendar"] = _soft("calendario", fetch_calendar) or []
     report["banks"] = _soft("banche centrali", fetch_central_banks) or []   # prossime riunioni Fed (FOMC) e BCE
+    # esito per fonte dell'ultimo giro delle notizie (riga "Fonti" della pagina Notizie)
+    report["news_fonti"] = _soft("stato delle fonti delle notizie", lambda: _im(".news", __package__).status())
     # riquadro "Contesto" (regime di mercato, Fed, CPI, VIX, FOMC): descrizione senza probabilità, nessun effetto su W3.2 (radar/context.py)
     report["context"] = _soft("contesto di mercato e politica economica", lambda: mod("context").build(DATA_DIR, banks=report.get("banks")))
     # chiusura multi-asset (S&P, Nasdaq, oro, argento, dollaro, VIX, Treasury 10 anni): solo contesto (radar/macro.py)

@@ -1,6 +1,6 @@
 # STATO · Sezione Notizie su misura · avviato 25/11/2026
 
-Stato: IN CORSO (in coda: parte quando l'agente dello Scanner consegna, perché toccano lo stesso file della dashboard)
+Stato: IN DEPLOY
 
 ## Prompt originale
 "Nascondi 'opzioni' la riprendiamo successivamente. Realizza meglio la sezione notizie in base a ciò che fa per noi"
@@ -13,3 +13,6 @@ Stato: IN CORSO (in coda: parte quando l'agente dello Scanner consegna, perché 
 
 ## Prossima azione
 Alla consegna dello Scanner: agente (Opus 5.5 medium) per la sezione Notizie; poi suite, render, deploy, verifica.
+
+## Fatto (25/11)
+radar/news.py con punteggio di rilevanza spiegato (asset seguiti, temi, parole forti, doppioni, cache se una fonte non risponde); pagina Notizie: Prima della decisione di domenica, Notizie che toccano le posizioni per tema, Altre notizie chiuse; Oggi con riassunto; report["news_fonti"] in cli.py. Suite 506 test.

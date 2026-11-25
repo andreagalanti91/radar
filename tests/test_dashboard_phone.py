@@ -108,7 +108,7 @@ class TestToolSemplice(unittest.TestCase):
 
     def test_notizie_corte(self):
         self.assertNotIn("n.summary", T)                                     # niente riassunti nel feed
-        self.assertIn("L.slice(0, 8)", T)
+        self.assertIn("g.slice(0, 3)", T)                                   # per tema le prime 3, il resto richiuso
         self.assertIn("Altre ${bkMore.length} riunioni", T)
         self.assertNotIn('id="newsWhy"', T)
         self.assertIn("meglio non aprire o spostare posizioni a ridosso dell'uscita", T)   # avviso di rischio resta
