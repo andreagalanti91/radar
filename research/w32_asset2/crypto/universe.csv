@@ -1,0 +1,362 @@
+simbolo,ticker,nome,rank_oggi,rank_2020,simbolo_2020,categoria,dati_da,dati_a,completa_da,valutabile,classe,bitget_perp,okx_perp
+BTC,BTC,Bitcoin,1,1,BTC,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+ETH,ETH,Ethereum,2,2,ETH,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+USDT,USDT,Tether,3,4,USDT,stablecoin,,,,False,esclusa,,
+BNB,BNB,BNB,4,8,BNB,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+USDC,USDC,USDC,5,23,USDC,stablecoin,,,,False,esclusa,,
+XRP,XRP,XRP,6,3,XRP,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+SOL,SOL,Solana,7,,,crypto,2020-04-10,2026-11-24,2021-01-11,True,valutabile,True,True
+TRX,TRX,TRON,8,11,TRX,crypto,2018-06-11,2026-11-24,2020-06-01,True,valutabile,True,True
+FIGR_HELOC,FIGR_HELOC,Figure Heloc,9,,,rwa/fondo,,,,False,esclusa,,
+HYPE,HYPE,Hyperliquid,10,,,crypto,2025-05-30,2026-11-24,2026-03-02,False,breve,True,True
+ZEC,ZEC,Zcash,11,35,ZEC,crypto,2019-03-21,2026-11-24,2020-06-01,True,valutabile,True,True
+XMR,XMR,Monero,12,16,XMR,crypto,2019-03-15,2026-11-23,2020-06-01,True,valutabile,True,False
+DOGE,DOGE,Dogecoin,13,34,DOGE,crypto,2019-07-05,2026-11-24,2020-10-26,True,valutabile,True,True
+LEO,LEO,LEO Token,14,14,LEO,crypto,2020-01-01,2026-11-24,,False,solo prezzo,False,False
+LINK,LINK,Chainlink,15,18,LINK,crypto,2019-01-16,2026-11-24,2020-06-01,True,valutabile,True,True
+WBT,WBT,WhiteBIT Coin,16,,,crypto,,,,False,senza dati,False,False
+USDS,USDS,USDS,17,,,stablecoin,,,,False,esclusa,,
+ADA,ADA,Cardano,18,13,ADA,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+USDE,USDE,Ethena USDe,19,,,stablecoin,,,,False,esclusa,,
+DAI,DAI,Dai,20,,,stablecoin,,,,False,esclusa,,
+XLM,XLM,Stellar,21,10,XLM,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+BCH,BCH,Bitcoin Cash,22,5,BCH,crypto,2018-11-16,2026-11-24,2020-06-01,True,valutabile,True,True
+NEAR,NEAR,NEAR Protocol,23,,,crypto,2020-10-14,2026-11-24,2021-07-19,True,valutabile,True,True
+LTC,LTC,Litecoin,24,6,LTC,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+CC,CC,Canton,25,,,crypto,2025-10-31,2026-11-24,2026-08-03,False,breve,True,True
+AVAX,AVAX,Avalanche,26,,,crypto,2020-09-22,2026-11-24,2021-06-28,True,valutabile,True,True
+USD1,USD1,USD1,27,,,stablecoin,,,,False,esclusa,,
+XAUT,XAUT,Tether Gold,28,,,"oro/materie prime,rwa/fondo",,,,False,esclusa,,
+RLUSD,RLUSD,Ripple USD,29,,,stablecoin,,,,False,esclusa,,
+UNI,UNI,Uniswap,30,,,crypto,2020-09-17,2026-11-24,2021-06-21,True,valutabile,True,True
+GRAM,TON,Gram (prev. Toncoin),31,,,crypto,2024-03-01,2026-06-23,2024-12-02,False,breve,False,False
+SUI,SUI,Sui,32,,,crypto,2023-05-03,2026-11-23,2024-02-05,False,breve,True,True
+USDG,USDG,Global Dollar,33,,,stablecoin,,,,False,esclusa,,
+USDY,USDY,Ondo US Dollar Yield,34,,,"rwa/fondo,stablecoin",,,,False,esclusa,,
+PYUSD,PYUSD,PayPal USD,35,,,stablecoin,,,,False,esclusa,,
+HBAR,HBAR,Hedera,36,175,HBAR,crypto,2019-09-29,2026-11-24,2021-07-05,True,valutabile,True,True
+USYC,USYC,Circle USYC,37,,,rwa/fondo,,,,False,esclusa,,
+EURSAFO,EURSAFO,Spiko Amundi Overnight Swap Fund (EUR),38,,,rwa/fondo,,,,False,esclusa,,
+TAO,TAO,Bittensor,39,,,crypto,2023-03-30,2026-11-24,2024-07-29,False,breve,True,True
+QNT,QNT,Quant,40,102,QNT,crypto,2021-07-29,2026-11-24,2023-02-06,True,valutabile,True,True
+SHIB,SHIB,Shiba Inu,41,,,crypto,2021-05-10,2026-11-24,2022-02-14,True,valutabile,True,True
+CRO,CRO,Cronos,42,27,CRO,crypto,2020-01-01,2026-11-24,,False,solo prezzo,True,True
+RAIN,RAIN,Rain,43,,,crypto,,,,False,senza dati,False,False
+M,M,MemeCore,44,,,crypto,2025-07-07,2026-11-24,2026-04-13,False,breve,True,False
+USDF,USDF,Falcon USD,45,,,stablecoin,,,,False,esclusa,,
+OKB,OKB,OKB,46,53,OKB,crypto,2018-03-23,2026-11-24,,False,solo prezzo,False,True
+U,U,United Stables,47,,,stablecoin,,,,False,esclusa,,
+PAXG,PAXG,PAX Gold,48,,,"oro/materie prime,rwa/fondo",,,,False,esclusa,,
+BUIDL,BUIDL,BlackRock USD Institutional Digital Liquidity Fund,49,,,rwa/fondo,,,,False,esclusa,,
+USDD,USDD,USDD,50,,,stablecoin,,,,False,esclusa,,
+PEPE,PEPE,Pepe,51,,,crypto,2023-05-05,2026-11-24,2024-02-05,False,breve,True,True
+AAVE,AAVE,Aave,52,,,crypto,2020-10-15,2026-11-24,2021-07-19,True,valutabile,True,True
+BTW,BTW,Bitway,53,,,crypto,2026-06-04,2026-11-24,,False,breve,True,True
+ONDO,ONDO,Ondo,54,,,crypto,2024-01-20,2026-11-24,2024-10-21,False,breve,True,True
+BFUSD,BFUSD,BFUSD,55,,,stablecoin,,,,False,esclusa,,
+HTX,HTX,HTX DAO,56,,,crypto,,,,False,senza dati,False,False
+WLFI,WLFI,World Liberty Financial,57,,,crypto,2025-08-23,2026-11-23,2026-05-25,False,breve,True,True
+ENA,ENA,Ethena,58,,,crypto,2024-04-02,2026-11-24,2025-01-06,False,breve,True,True
+ASTER,ASTER,Aster,59,,,crypto,2025-09-19,2026-11-24,2026-06-22,False,breve,True,True
+VVV,VVV,Venice Token,60,,,crypto,2025-01-29,2026-11-24,2025-11-03,False,breve,True,True
+MNT,MNT,Mantle,61,,,crypto,,,,False,senza dati,False,False
+JST,JST,JUST,62,,,crypto,2020-08-11,2026-11-24,2025-08-11,False,breve,True,False
+DOT,DOT,Polkadot,63,,,crypto,2020-08-18,2026-11-24,2021-05-24,True,valutabile,True,True
+ICP,ICP,Internet Computer,64,,,crypto,2021-05-11,2026-11-24,2022-02-14,True,valutabile,True,True
+MORPHO,MORPHO,Morpho,65,,,crypto,2024-11-27,2026-11-24,2025-09-01,False,breve,True,True
+BGB,BGB,Bitget Token,66,,,crypto,,,,False,senza dati,True,False
+OUSD,OUSD,Open USD,67,,,stablecoin,,,,False,esclusa,,
+SKY,SKY,Sky,68,,,crypto,2025-09-09,2026-11-24,2026-06-15,False,breve,True,True
+USDGO,USDGO,USDGO,69,,,stablecoin,,,,False,esclusa,,
+ETC,ETC,Ethereum Classic,70,21,ETC,crypto,2018-06-12,2026-11-24,2020-06-01,True,valutabile,True,True
+WLD,WLD,Worldcoin,71,,,crypto,2023-07-24,2026-11-24,2024-04-29,False,breve,True,True
+PUMP,PUMP,Pump.fun,72,,,crypto,2025-07-10,2026-11-24,2026-04-13,False,breve,True,True
+KCS,KCS,KuCoin,73,64,KCS,crypto,,,,False,senza dati,False,False
+PIEVERSE,PIEVERSE,Pieverse,74,,,crypto,2025-11-14,2026-11-24,2026-08-17,False,breve,True,True
+POL,POL,POL (ex-MATIC),75,112,MATIC,crypto,2019-04-26,2026-11-24,2021-02-08,True,valutabile,True,True
+PEARL,PEARL,Pearl,76,,,crypto,,,,False,senza dati,False,False
+NIGHT,NIGHT,Midnight,77,,,crypto,2025-12-10,2026-11-24,2026-09-14,False,breve,True,True
+ARB,ARB,Arbitrum,78,,,crypto,2023-03-23,2026-11-24,2023-12-25,False,breve,True,True
+KAS,KAS,Kaspa,79,,,crypto,2023-11-17,2026-11-24,2024-08-19,False,breve,True,False
+JUP,JUP,Jupiter,80,,,crypto,2024-01-31,2026-11-24,2024-11-04,False,breve,True,True
+ALGO,ALGO,Algorand,81,47,ALGO,crypto,2019-06-22,2026-11-24,2020-10-05,True,valutabile,True,True
+GHO,GHO,GHO,82,,,stablecoin,,,,False,esclusa,,
+USTB,USTB,Invesco Short Duration US Government Securities Fund,83,,,rwa/fondo,,,,False,esclusa,,
+RENDER,RENDER,Render,84,,,crypto,2021-11-27,2026-11-24,2023-05-22,True,valutabile,True,True
+ATOM,ATOM,Cosmos Hub,85,15,ATOM,crypto,2019-04-29,2026-11-24,2020-06-01,True,valutabile,True,True
+GT,GT,Gate,86,,,crypto,,,,False,senza dati,False,False
+NEXO,NEXO,NEXO,87,90,NEXO,crypto,2022-04-29,2026-11-24,,False,solo prezzo,False,False
+PI,PI,Pi Network,88,,,crypto,2025-02-20,2026-11-24,,False,solo prezzo,True,True
+JAAA,JAAA,Janus Henderson Anemoy AAA CLO Fund,89,,,rwa/fondo,,,,False,esclusa,,
+INJ,INJ,Injective,90,,,crypto,2020-10-21,2026-11-24,2022-12-05,True,valutabile,True,True
+LIT,LIT,Lighter,91,,,crypto,2025-12-23,2026-11-24,2026-09-28,False,breve,True,True
+USD0,USD0,Usual USD,92,,,stablecoin,,,,False,esclusa,,
+BDX,BDX,Beldex,93,50,BDX,crypto,,,,False,senza dati,False,False
+XDC,XDC,XDC Network,94,,,crypto,,,,False,senza dati,False,False
+EURC,EURC,EURC,95,,,stablecoin,,,,False,esclusa,,
+TUSD,TUSD,TrueUSD,96,42,TUSD,stablecoin,,,,False,esclusa,,
+STX,STX,Stacks,97,,,crypto,2019-10-25,2026-11-24,2023-06-12,True,valutabile,True,True
+CAKE,CAKE,PancakeSwap,98,,,crypto,2021-02-19,2026-11-24,2024-02-19,False,breve,True,False
+EUTBL,EUTBL,Spiko EU T-Bills Money Market Fund,99,,,rwa/fondo,,,,False,esclusa,,
+ETHFI,ETHFI,Ether.fi,100,,,crypto,2024-03-18,2026-11-24,2024-12-23,False,breve,True,True
+FIL,FIL,Filecoin,101,,,crypto,2020-10-15,2026-11-24,2021-07-19,True,valutabile,True,True
+FLR,FLR,Flare,102,,,crypto,2023-01-10,2026-11-24,,False,solo prezzo,False,False
+DASH,DASH,Dash,103,28,DASH,crypto,2019-03-28,2026-11-24,2020-06-01,True,valutabile,True,True
+币安人生,币安人生,币安人生 (BinanceLife),104,,,crypto,2025-10-20,2026-11-24,2026-07-27,False,breve,False,False
+STABLE,STABLE,​​Stable,105,,,crypto,2025-11-06,2026-11-24,2026-08-10,False,breve,True,True
+VET,VET,VeChain,106,30,VET,crypto,2018-07-25,2026-11-23,2020-06-01,True,valutabile,True,False
+ZRO,ZRO,LayerZero,107,,,crypto,2024-06-20,2026-11-23,2025-03-24,False,breve,True,True
+YLDS,YLDS,YLDS,108,,,stablecoin,,,,False,esclusa,,
+SOFID,SOFID,SoFiUSD,109,,,stablecoin,,,,False,esclusa,,
+PYTH,PYTH,Pyth Network,110,,,crypto,2023-11-22,2026-11-24,2024-08-26,False,breve,True,True
+HASH,HASH,Provenance Blockchain,111,,,crypto,,,,False,senza dati,False,False
+FF,FF,Falcon Finance,112,,,crypto,2025-09-29,2026-11-24,2026-07-06,False,breve,True,False
+DRV,DRV,Derive,113,,,crypto,,,,False,senza dati,False,False
+REUSD,REUSD,Re Protocol reUSD,114,,,stablecoin,,,,False,esclusa,,
+KITE,KITE,Kite,115,,,crypto,2025-10-29,2026-11-24,2026-08-03,False,breve,True,True
+RAY,RAY,Raydium,116,,,crypto,2021-08-10,2026-11-24,2022-05-16,True,valutabile,True,True
+APT,APT,Aptos,117,,,crypto,2022-10-19,2026-11-24,2023-07-24,True,valutabile,True,True
+TIA,TIA,Celestia,118,,,crypto,2023-10-31,2026-11-24,2024-08-05,False,breve,True,True
+OUSG,OUSG,Ondo Short-Term U.S. Government Bond Fund,119,,,rwa/fondo,,,,False,esclusa,,
+KAU,KAU,Kinesis Gold,120,,,"oro/materie prime,rwa/fondo",,,,False,esclusa,,
+AERO,AERO,Aero,121,,,crypto,2024-12-04,2026-11-24,2025-09-08,False,breve,True,True
+BTT,BTTC,BitTorrent,122,81,BTT,crypto,2019-02-01,2022-04-11,2021-07-26,False,breve,False,False
+APEPE,APEPE,Ape and Pepe,123,,,crypto,,,,False,senza dati,False,False
+BSV,BSV,Bitcoin SV,124,9,BSV,crypto,2023-10-20,2026-11-24,2024-07-22,False,breve,True,False
+SUN,SUN,Sun Token,125,,,crypto,2021-06-18,2026-11-24,2024-12-09,False,breve,True,False
+CRV,CRV,Curve DAO,126,,,crypto,2020-08-15,2026-11-24,2021-05-17,True,valutabile,True,True
+FDUSD,FDUSD,First Digital USD,127,,,stablecoin,,,,False,esclusa,,
+APXUSD,APXUSD,apxUSD,128,,,stablecoin,,,,False,esclusa,,
+PENGU,PENGU,Pudgy Penguins,129,,,crypto,2024-12-17,2026-11-24,2025-09-22,False,breve,True,True
+SAFO,SAFO,Spiko Amundi Overnight Swap Fund,130,,,rwa/fondo,,,,False,esclusa,,
+UB,UB,Unibase,131,,,crypto,2025-09-12,2026-11-23,2026-06-15,False,breve,True,True
+GRASS,GRASS,Grass,132,,,crypto,2024-11-08,2026-11-24,2025-08-11,False,breve,True,True
+LUNC,LUNC,Terra Luna Classic,133,59,LUNA,crypto,2020-08-21,2026-11-24,2021-05-24,True,valutabile,True,False
+SPX,SPX,SPX6900,134,,,crypto,2024-12-10,2026-11-23,2025-09-15,False,breve,True,True
+FET,FET,Artificial Superintelligence Alliance,135,148,FET,crypto,2019-02-28,2026-11-24,2023-05-08,True,valutabile,True,True
+TRUMP,TRUMP,Official Trump,136,,,crypto,2025-01-18,2026-11-24,2025-10-20,False,breve,True,True
+VIRTUAL,VIRTUAL,Virtuals Protocol,137,,,crypto,2024-12-10,2026-11-24,2025-09-15,False,breve,True,True
+XTZ,XTZ,Tezos,138,12,XTZ,crypto,2019-09-24,2026-11-23,2020-06-29,True,valutabile,True,True
+STRK,STRK,Starknet,139,,,crypto,2024-02-20,2026-11-24,2024-11-25,False,breve,True,True
+OZO,OZO,Ozone Chain,140,,,crypto,,,,False,senza dati,False,False
+PC0000031,PC0000031,Tradable NA Rent Financing Platform SSTN,141,,,rwa/fondo,,,,False,esclusa,,
+GNO,GNO,Gnosis,142,,,crypto,2021-08-30,2026-11-24,,False,solo prezzo,False,False
+XPL,XPL,Plasma,143,,,crypto,2025-08-22,2026-11-24,2026-05-25,False,breve,True,True
+OHM,OHM,Olympus,144,,,crypto,,,,False,senza dati,False,False
+FRAX,FRAX,Legacy Frax Dollar,145,,,stablecoin,,,,False,esclusa,,
+SEI,SEI,Sei,146,,,crypto,2023-08-15,2026-11-24,2024-05-20,False,breve,True,True
+PENDLE,PENDLE,Pendle,147,,,crypto,2023-07-03,2026-11-24,2024-04-08,False,breve,True,True
+MGLO,MGLO,Midas Fasanara Global Open,148,,,rwa/fondo,,,,False,esclusa,,
+USX,USX,USX,149,,,stablecoin,,,,False,esclusa,,
+BP,BP,Backpack,150,,,crypto,,,,False,senza dati,True,False
+USAT,USAT,USAT,151,,,"rwa/fondo,stablecoin",,,,False,esclusa,,
+LDO,LDO,Lido DAO,152,,,crypto,2022-05-09,2026-11-24,2023-02-13,True,valutabile,True,True
+EURCV,EURCV,EUR CoinVertible,153,,,stablecoin,,,,False,esclusa,,
+BONK,BONK,Bonk,154,,,crypto,2023-11-22,2026-11-24,2024-08-26,False,breve,True,True
+BTSE,BTSE,BTSE Token,155,,,crypto,,,,False,senza dati,False,False
+DCR,DCR,Decred,156,40,DCR,crypto,2020-07-30,2026-11-24,,False,solo prezzo,False,False
+KAIA,KAIA,Kaia,157,,,crypto,2024-10-31,2026-11-24,2025-08-04,False,breve,True,False
+NFT,NFT,AINFT,158,,,crypto,2021-11-11,2026-11-24,,False,solo prezzo,False,False
+NVDAB,NVDAB,NVIDIA (bStocks Tokenized Stock),159,,,"rwa/azione tokenizzata,rwa/fondo",,,,False,esclusa,,
+USTBL,USTBL,Spiko US T-Bills Money Market Fund,160,,,rwa/fondo,,,,False,esclusa,,
+SHFL,SHFL,Shuffle,161,,,crypto,,,,False,senza dati,False,False
+GRT,GRT,The Graph,162,,,crypto,2020-12-17,2026-11-24,2021-09-20,True,valutabile,True,True
+COMP,COMP,Compound,163,,,crypto,2020-06-25,2026-11-24,2021-03-29,True,valutabile,True,True
+KOGE,KOGE,KOGE,164,,,crypto,,,,False,senza dati,False,False
+ZBCN,ZBCN,Zebec Network,165,,,crypto,2024-04-16,2026-11-24,,False,solo prezzo,False,False
+CFX,CFX,Conflux,166,,,crypto,2021-03-29,2026-11-24,2023-06-05,True,valutabile,True,True
+RUNE,RUNE,THORChain,167,,,crypto,2020-09-04,2026-11-24,2021-06-07,True,valutabile,True,False
+BEAM,BEAMX,Beam,168,,,crypto,2023-11-14,2026-11-24,2024-08-19,False,breve,False,False
+PC0000033,PC0000033,Tradable APAC Diversified Finance Provider SSTN,169,,,rwa/fondo,,,,False,esclusa,,
+USDAI,USDAI,USDai,170,,,stablecoin,,,,False,esclusa,,
+OP,OP,Optimism,171,,,crypto,2022-06-01,2026-11-24,2023-03-06,True,valutabile,True,True
+FLOKI,FLOKI,FLOKI,172,,,crypto,2023-05-05,2026-11-24,2024-02-05,False,breve,True,True
+JASMY,JASMY,JasmyCoin,173,,,crypto,2021-11-22,2026-11-24,2022-08-29,True,valutabile,True,False
+DGAI,DGAI,DGrid AI,174,,,crypto,2026-09-03,2026-11-24,,False,solo prezzo,True,True
+GUSD,GUSD,GUSD,175,,,stablecoin,,,,False,esclusa,,
+AR,AR,Arweave,176,,,crypto,2021-05-14,2026-11-24,2022-02-14,True,valutabile,True,True
+AUSD,AUSD,AUSD,177,,,stablecoin,,,,False,esclusa,,
+KAG,KAG,Kinesis Silver,178,,,"oro/materie prime,rwa/fondo",,,,False,esclusa,,
+GOMINING,GOMINING,GoMining Token,179,,,crypto,,,,False,senza dati,False,False
+CAP,CAP,Cap,180,,,crypto,2026-06-27,2026-11-24,,False,breve,True,True
+CARDS,CARDS,Collector Crypt,181,,,crypto,2026-06-25,2026-11-24,,False,solo prezzo,False,False
+IOTA,IOTA,IOTA,182,25,MIOTA,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+ENS,ENS,Ethereum Name Service,183,,,crypto,2021-11-10,2026-11-24,2022-08-15,True,valutabile,True,True
+ZAMA,ZAMA,Zama,184,,,crypto,2026-01-09,2026-11-23,2026-10-12,False,breve,True,True
+SENT,SENT,Sentient,185,,,crypto,2025-11-14,2026-11-24,2026-08-17,False,breve,True,True
+AKT,AKT,Akash Network,186,,,crypto,2024-11-18,2026-11-24,2025-08-25,False,breve,True,False
+CRVUSD,CRVUSD,crvUSD,187,,,stablecoin,,,,False,esclusa,,
+KMNO,KMNO,Kamino,188,,,crypto,2024-12-20,2026-11-24,2025-09-22,False,breve,True,True
+GEOD,GEOD,Geodnet,189,,,crypto,,,,False,senza dati,False,False
+PC0000097,PC0000097,Tradable LatAm Fintech SSTN,190,,,rwa/fondo,,,,False,esclusa,,
+CASH,CASH,CASH,191,,,stablecoin,,,,False,esclusa,,
+NVDAX,NVDAX,NVIDIA xStock,192,,,"rwa/azione tokenizzata,rwa/fondo",,,,False,esclusa,,
+APYUSD,APYUSD,apyUSD,193,,,stablecoin,,,,False,esclusa,,
+MX,MX,MX,194,180,MX,crypto,,,,False,senza dati,False,False
+JPYSC,JPYSC,JPYSC,195,,,stablecoin,,,,False,esclusa,,
+THETA,THETA,Theta Network,196,65,THETA,crypto,2019-04-10,2026-11-24,2020-09-14,True,valutabile,True,True
+MON,MON,Monad,197,,,crypto,2025-10-10,2026-11-24,2026-07-13,False,breve,True,True
+BORG,BORG,SwissBorg,198,,,crypto,,,,False,senza dati,False,False
+JTO,JTO,Jito,199,,,crypto,2023-12-07,2026-11-24,2024-09-09,False,breve,True,True
+TWT,TWT,Trust Wallet,200,,,crypto,2021-01-27,2026-11-24,2024-02-19,False,breve,False,False
+EOS,A,EOS,,7,EOS,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+HT,HT,Huobi Token,,17,HT,crypto,,,,False,senza dati,False,False
+NEO,NEO,Neo,,19,NEO,crypto,2018-06-01,2026-11-24,2020-06-01,True,valutabile,True,True
+MIN,MIN,MINDOL,,20,MIN,crypto,,,,False,senza dati,False,False
+999,999,999,,22,999,crypto,,,,False,senza dati,False,False
+HEDG,HEDG,HedgeTrade,,24,HEDG,crypto,,,,False,senza dati,False,False
+MKR,MKR,Maker,,26,MKR,crypto,2020-07-23,2025-09-08,2021-04-26,True,valutabile,False,False
+ONT,ONT,Ontology,,29,ONT,crypto,2018-06-08,2026-11-24,2020-06-01,True,valutabile,True,True
+XEM,XEM,NEM,,31,XEM,crypto,2020-11-24,2024-12-09,2021-08-30,True,valutabile,False,False
+BAT,BAT,Basic Attention Token,,32,BAT,crypto,2019-03-04,2026-11-24,2020-06-01,True,valutabile,True,True
+INO,INO,INO COIN,,33,INO,crypto,,,,False,senza dati,False,False
+PAX,PAX,Paxos Standard,,36,PAX,stablecoin,,,,False,esclusa,,
+FTT,FTT,FTX Token,,37,FTT,crypto,2019-12-20,2022-11-14,2022-08-01,False,breve,False,False
+SNX,SNX,Synthetix Network Token,,38,SNX,crypto,2020-07-09,2026-11-24,2021-04-12,True,valutabile,True,True
+INB,INB,Insight Chain,,39,INB,crypto,,,,False,senza dati,False,False
+QTUM,QTUM,Qtum,,41,QTUM,crypto,2018-06-01,2026-11-24,2020-06-08,True,valutabile,True,True
+THR,THR,ThoreCoin,,43,THR,crypto,,,,False,senza dati,False,False
+THX,THX,ThoreNext,,44,THX,crypto,,,,False,senza dati,False,False
+ZRX,ZRX,0x,,45,ZRX,crypto,2019-02-28,2026-11-24,2020-10-12,True,valutabile,True,True
+RVN,RVN,Ravencoin,,46,RVN,crypto,2019-09-25,2026-11-24,2021-06-14,True,valutabile,True,False
+PZM,PZM,PRIZM,,48,PZM,crypto,,,,False,senza dati,False,False
+CNX,CNX,Cryptonex,,49,CNX,crypto,,,,False,senza dati,False,False
+HOT,HOT,Holo,,51,HOT,crypto,2019-02-18,2026-11-24,2021-07-19,True,valutabile,True,False
+CENNZ,CENNZ,Centrality,,52,CENNZ,crypto,,,,False,senza dati,False,False
+REP,REP,Augur,,54,REP,crypto,2020-06-12,2022-12-22,,False,solo prezzo,False,False
+WAVES,WAVES,Waves,,55,WAVES,crypto,2019-01-18,2024-06-11,2020-11-30,True,valutabile,False,False
+SEELE,SEELE,Seele,,56,SEELE,crypto,,,,False,senza dati,False,False
+BTG,BTG,Bitcoin Gold,,57,BTG,crypto,2021-04-16,2022-10-24,,False,solo prezzo,False,False
+OMG,OMG,OmiseGO,,58,OMG,crypto,2019-04-03,2025-01-31,2020-10-19,True,valutabile,False,False
+ZB,ZB,ZB Token,,60,ZB,crypto,,,,False,senza dati,False,False
+NANO,XNO,Nano,,61,NANO,crypto,2019-04-03,2026-11-24,,False,solo prezzo,False,False
+XIN,XIN,Mixin,,62,XIN,crypto,,,,False,senza dati,False,False
+ABBC,ABBC,ABBC Coin,,63,ABBC,crypto,,,,False,senza dati,False,False
+KBC,KBC,Karatgold Coin,,66,KBC,oro/materie prime,,,,False,esclusa,,
+MOF,MOF,Molecular Future,,67,MOF,crypto,,,,False,senza dati,False,False
+CCA,CCA,Counos Coin,,68,CCA,crypto,,,,False,senza dati,False,False
+FST,FST,1irstcoin,,69,FST,crypto,,,,False,senza dati,False,False
+LSK,LSK,Lisk,,70,LSK,crypto,2020-02-06,2026-11-24,2024-05-13,False,breve,True,False
+DGB,DGB,DigiByte,,71,DGB,crypto,2020-07-20,2024-04-01,2021-08-09,False,breve,False,False
+BTM,BTM,Bytom,,72,BTM,crypto,,,,False,senza dati,False,False
+SXP,SXP,Swipe,,73,SXP,crypto,2020-07-20,2025-12-05,2021-04-26,True,valutabile,False,False
+ENJ,ENJ,Enjin Coin,,74,ENJ,crypto,2019-04-18,2026-11-24,2021-01-18,True,valutabile,True,True
+BCD,BCD,Bitcoin Diamond,,75,BCD,crypto,,,,False,senza dati,False,False
+FAB,FAB,FABRK,,76,FAB,crypto,,,,False,senza dati,False,False
+MCO,MCO,MCO,,77,MCO,crypto,2019-11-19,2020-10-23,,False,solo prezzo,False,False
+GAP,GAP,GAPS,,78,GAP,crypto,,,,False,senza dati,False,False
+EON,EON,Dimension Chain,,79,EON,crypto,,,,False,senza dati,False,False
+KMD,KMD,Komodo,,80,KMD,crypto,2020-08-11,2025-07-04,,False,solo prezzo,False,False
+ZEN,ZEN,Horizen,,82,ZEN,crypto,2020-07-06,2026-11-23,2021-04-12,True,valutabile,True,True
+IOST,IOST,IOST,,83,IOST,crypto,2019-03-22,2026-11-24,2020-06-08,True,valutabile,True,True
+ICX,ICX,ICON,,84,ICX,crypto,2018-06-13,2026-08-26,2021-01-04,True,valutabile,False,False
+VSYS,VSYS,v.systems,,85,VSYS,crypto,,,,False,senza dati,False,False
+XVG,XVG,Verge,,86,XVG,crypto,2021-06-06,2026-11-24,2023-10-23,True,valutabile,True,False
+SC,SC,Siacoin,,87,SC,crypto,2020-07-06,2022-06-17,2021-07-26,False,breve,False,False
+BXK,BXK,Bitbook Gambling,,88,BXK,crypto,,,,False,senza dati,False,False
+NOAH,NOAH,Noah Coin,,89,NOAH,crypto,,,,False,senza dati,False,False
+EKT,EKT,EDUCare,,91,EKT,crypto,,,,False,senza dati,False,False
+BCN,BCN,Bytecoin,,92,BCN,crypto,,,,False,senza dati,False,False
+MONA,MONA,MonaCoin,,93,MONA,crypto,,,,False,senza dati,False,False
+NRG,NRG,Energi,,94,NRG,crypto,,,,False,senza dati,False,False
+HC,HC,HyperCash,,95,HC,crypto,2019-09-25,2020-11-10,,False,solo prezzo,False,False
+BRZE,BRZE,Breezecoin,,96,BRZE,crypto,,,,False,senza dati,False,False
+MB,MB,MineBee,,97,MB,crypto,,,,False,senza dati,False,False
+STEEM,STEEM,Steem,,98,STEEM,crypto,2022-04-22,2026-11-24,2024-02-26,False,breve,True,False
+ZIL,ZIL,Zilliqa,,99,ZIL,crypto,2019-02-19,2026-11-24,2020-10-05,True,valutabile,True,True
+DX,DX,DxChain Token,,100,DX,crypto,,,,False,senza dati,False,False
+QC,QC,QCash,,101,QC,crypto,,,,False,senza dati,False,False
+SLV,SLV,Silverway,,103,SLV,crypto,,,,False,senza dati,False,False
+BOTX,BOTX,botXcoin,,104,BOTX,crypto,,,,False,senza dati,False,False
+BTS,BTS,BitShares,,105,BTS,crypto,2020-02-06,2022-08-18,2021-05-17,False,breve,False,False
+SAI,SAI,Single Collateral DAI ,,106,SAI,stablecoin,,,,False,esclusa,,
+FXC,FXC,Flexacoin,,107,FXC,crypto,,,,False,senza dati,False,False
+ARDR,ARDR,Ardor,,108,ARDR,crypto,2020-05-15,2026-07-10,,False,solo prezzo,False,False
+AE,AE,Aeternity,,109,AE,crypto,,,,False,senza dati,False,False
+XET,XET,ETERNAL TOKEN,,110,XET,crypto,,,,False,senza dati,False,False
+JUL,JUL,Joule,,111,JUL,crypto,,,,False,senza dati,False,False
+LA,LA,LATOKEN,,113,LA,crypto,,,,False,senza dati,True,True
+EURS,EURS,STASIS EURO,,114,EURS,stablecoin,,,,False,esclusa,,
+ETN,ETN,Electroneum,,115,ETN,crypto,,,,False,senza dati,True,False
+STRAT,STRAX,Stratis,,116,STRAT,crypto,2020-02-19,2024-03-15,2024-01-29,False,breve,False,False
+MANA,MANA,Decentraland,,117,MANA,crypto,2020-08-06,2026-11-24,2021-06-28,True,valutabile,True,True
+DGD,DGD,DigixDAO,,118,DGD,crypto,,,,False,senza dati,False,False
+TOMO,VIC,TomoChain,,119,TOMO,crypto,2019-08-24,2026-08-07,2021-01-25,True,valutabile,False,False
+BCZERO,BCZERO,Buggyra Coin Zero,,120,BCZERO,crypto,,,,False,senza dati,False,False
+CRPT,CRPT,Crypterium,,121,CRPT,crypto,,,,False,senza dati,False,False
+SOLVE,SOLVE,SOLVE,,122,SOLVE,crypto,,,,False,senza dati,False,False
+CIX100,CIX100,Cryptoindex.com 100,,123,CIX100,rwa/fondo,,,,False,esclusa,,
+NEX,NEX,Nash Exchange,,124,NEX,crypto,,,,False,senza dati,False,False
+BF,BF,BitForex Token,,125,BF,crypto,,,,False,senza dati,False,False
+BTMX,BTMX,BitMax Token,,126,BTMX,crypto,,,,False,senza dati,False,False
+KNC,KNC,Kyber Network,,127,KNC,crypto,2020-06-12,2026-11-24,2021-03-15,True,valutabile,True,False
+SNT,SNT,Status,,128,SNT,crypto,2023-05-19,2024-05-13,2024-02-19,False,breve,False,False
+CSC,CSC,CasinoCoin,,129,CSC,crypto,,,,False,senza dati,False,False
+MAID,MAID,MaidSafeCoin,,130,MAID,crypto,,,,False,senza dati,False,False
+BNK,BNK,Bankera,,131,BNK,crypto,,,,False,senza dati,False,False
+RIF,RIF,RSK Infrastructure Framework,,132,RIF,crypto,2021-01-07,2026-11-24,2024-02-05,False,breve,False,False
+CCC,CCC,Clipper Coin,,133,CCC,crypto,,,,False,senza dati,False,False
+ECOREAL,ECOREAL,Ecoreal Estate,,134,ECOREAL,crypto,,,,False,senza dati,False,False
+RLC,RLC,iExec RLC,,135,RLC,crypto,2019-11-14,2026-11-24,2020-11-16,True,valutabile,False,False
+NPXS,PUNDIX,Pundi X,,136,NPXS,crypto,2019-08-13,2026-11-24,2025-08-18,False,breve,True,False
+DGTX,DGTX,Digitex Futures,,137,DGTX,crypto,,,,False,senza dati,False,False
+GRIN,GRIN,Grin,,138,GRIN,crypto,,,,False,senza dati,False,False
+ENG,ENG,Enigma,,139,ENG,crypto,,,,False,senza dati,False,False
+NET,NET,NEXT,,140,NET,crypto,,,,False,senza dati,True,True
+ETP,ETP,Metaverse ETP,,141,ETP,crypto,,,,False,senza dati,False,False
+VLX,VLX,Velas,,142,VLX,crypto,,,,False,senza dati,False,False
+GNT,GLM,Golem,,143,GNT,crypto,2023-03-17,2026-11-24,2024-06-10,False,breve,True,True
+ADK,ADK,Aidos Kuneen,,144,ADK,crypto,,,,False,senza dati,False,False
+USDK,USDK,USDK,,145,USDK,stablecoin,,,,False,esclusa,,
+BTC2,BTC2,Bitcoin 2,,146,BTC2,crypto,,,,False,senza dati,False,False
+BEAM,BEAM,Beam,,147,BEAM,crypto,2019-09-21,2023-01-26,,False,solo prezzo,True,False
+CHZ,CHZ,Chiliz,,149,CHZ,crypto,2019-09-06,2026-11-24,2021-05-10,True,valutabile,True,True
+GNY,GNY,GNY,,150,GNY,crypto,,,,False,senza dati,False,False
+ELF,ELF,aelf,,151,ELF,crypto,2021-09-08,2025-04-16,,False,solo prezzo,False,False
+XZC,FIRO,Zcoin,,152,XZC,crypto,2020-04-07,2025-04-16,,False,solo prezzo,False,False
+REN,REN,Ren,,153,REN,crypto,2019-09-25,2024-12-03,2021-02-01,True,valutabile,False,False
+GXC,GXC,GXChain,,154,GXC,crypto,,,,False,senza dati,False,False
+JWL,JWL,Jewel,,155,JWL,crypto,,,,False,senza dati,False,False
+DTR,DTR,Dynamic Trading Rights,,156,DTR,crypto,,,,False,senza dati,False,False
+HPT,HPT,Huobi Pool Token,,157,HPT,crypto,,,,False,senza dati,False,False
+ELA,ELA,Elastos,,158,ELA,crypto,,,,False,senza dati,False,False
+PLC,PLC,PLATINCOIN,,159,PLC,crypto,,,,False,senza dati,False,False
+RCN,RCN,Ripio Credit Network,,160,RCN,crypto,,,,False,senza dati,False,False
+BRD,BRD,Bread,,161,BRD,crypto,,,,False,senza dati,False,False
+BZ,BZ,Bit-Z Token,,162,BZ,crypto,,,,False,senza dati,True,True
+AGVC,AGVC,AgaveCoin,,163,AGVC,crypto,,,,False,senza dati,False,False
+HYN,HYN,Hyperion,,164,HYN,crypto,,,,False,senza dati,False,False
+WICC,WICC,WaykiChain,,165,WICC,crypto,,,,False,senza dati,False,False
+VEST,VEST,VestChain,,166,VEST,crypto,,,,False,senza dati,False,False
+VERI,VERI,Veritaseum,,167,VERI,crypto,,,,False,senza dati,False,False
+FUN,FUN,FunFair,,168,FUN,crypto,2019-08-27,2026-04-15,2025-07-14,False,breve,False,False
+AION,AION,Aion,,169,AION,crypto,2020-02-19,2023-02-27,,False,solo prezzo,False,False
+FTM,S,Fantom,,170,FTM,crypto,2019-06-11,2026-11-24,2021-01-11,True,valutabile,True,True
+DCN,DCN,Dentacoin,,171,DCN,crypto,,,,False,senza dati,False,False
+QBIT,QBIT,Qubitica,,172,QBIT,crypto,,,,False,senza dati,False,False
+R,R,Revain,,173,R,crypto,,,,False,senza dati,False,False
+LRC,LRC,Loopring,,174,LRC,crypto,2020-06-12,2026-03-24,2021-03-15,True,valutabile,False,False
+NAS,NAS,Nebulas,,176,NAS,crypto,,,,False,senza dati,False,False
+PPT,PPT,Populous,,177,PPT,crypto,,,,False,senza dati,False,False
+RDD,RDD,ReddCoin,,178,RDD,crypto,,,,False,senza dati,False,False
+TNT,TNT,Tierion,,179,TNT,crypto,,,,False,senza dati,False,False
+LAMB,LAMB,Lambda,,181,LAMB,crypto,,,,False,senza dati,False,False
+IOTX,IOTX,IoTeX,,182,IOTX,crypto,2019-11-14,2026-11-24,2021-11-29,True,valutabile,True,False
+DPT,DPT,Diamond Platform Token,,183,DPT,crypto,,,,False,senza dati,False,False
+BNT,BNT,Bancor,,184,BNT,crypto,2020-02-06,2026-11-24,2023-11-27,False,breve,True,False
+DIVI,DIVI,Divi,,185,DIVI,crypto,,,,False,senza dati,False,False
+LOKI,OXEN,Loki,,186,LOKI,crypto,,,,False,senza dati,False,False
+BHD,BHD,BitcoinHD,,187,BHD,crypto,,,,False,senza dati,False,False
+WIN,WIN,WINk,,188,WIN,crypto,2019-08-01,2026-11-24,,False,solo prezzo,False,False
+ILC,ILC,ILCoin,,189,ILC,crypto,,,,False,senza dati,False,False
+WAN,WAN,Wanchain,,190,WAN,crypto,2019-08-27,2026-04-23,,False,solo prezzo,False,False
+NULS,NULS,NULS,,191,NULS,crypto,2018-07-23,2025-04-14,2024-12-09,False,breve,False,False
+XMX,XMX,XMax,,192,XMX,crypto,,,,False,senza dati,False,False
+XAC,XAC,General Attention Currency,,193,XAC,crypto,,,,False,senza dati,False,False
+NEW,NEW,Newton,,194,NEW,crypto,,,,False,senza dati,False,False
+ARK,ARK,Ark,,195,ARK,crypto,2023-09-19,2026-11-24,2024-06-24,False,breve,True,False
+IGNIS,IGNIS,Ignis,,196,IGNIS,crypto,,,,False,senza dati,False,False
+YOU,YOU,YOU COIN,,197,YOU,crypto,,,,False,senza dati,False,False
+DRG,DRG,Dragon Coins,,198,DRG,crypto,,,,False,senza dati,False,False
+EDC,EDC,EDC Blockchain,,199,EDC,crypto,,,,False,senza dati,False,False
+TRUE,TRUE,TrueChain,,200,TRUE,crypto,,,,False,senza dati,False,False
