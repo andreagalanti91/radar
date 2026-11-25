@@ -1,0 +1,571 @@
+rank_today,slug,name,cmc_symbol,mcap_today,country
+1,apple,Apple,AAPL,5145409617920.0,USA
+2,nvidia,NVIDIA,NVDA,3751960903680.0,USA
+3,microsoft,Microsoft,MSFT,3684357898240.0,USA
+4,alphabet-google,Alphabet (Google),GOOG,3400274280448.0,USA
+5,amazon,Amazon,AMZN,2728046362624.0,USA
+6,tsmc,TSMC,TSM,1811116457984.0,Taiwan
+7,spacex,SpaceX,SPCX,1708633620480.0,USA
+8,saudi-aramco,Saudi Aramco,2222.SR,1694383352182.0,S. Arabia
+9,tesla,Tesla,TSLA,1520546873344.0,USA
+10,meta-platforms,Meta Platforms (Facebook),META,1507722133504.0,USA
+11,broadcom,Broadcom,AVGO,1437244456960.0,USA
+12,eli-lilly,Eli Lilly,LLY,1253803819008.0,USA
+13,berkshire-hathaway,Berkshire Hathaway ,BRK-B,1226293772288.0,USA
+14,anthropic,Anthropic,ANT,1094794870784.0,USA
+15,walmart,Walmart,WMT,1049713967104.0,USA
+16,jp-morgan-chase,JPMorgan Chase,JPM,842093821952.0,USA
+17,samsung,Samsung,005930.KS,828305505816.0,S. Korea
+18,visa,Visa,V,777628155904.0,USA
+19,micron-technology,Micron Technology,MU,712559034368.0,USA
+20,amd,AMD,AMD,683988942848.0,USA
+21,johnson-and-johnson,Johnson & Johnson,JNJ,665525026816.0,USA
+22,exxon-mobil,Exxon Mobil,XOM,645455347712.0,USA
+23,mastercard,Mastercard,MA,564034273280.0,USA
+24,sk-hynix,SK Hynix,000660.KS,541228387552.0,S. Korea
+25,abbvie,AbbVie,ABBV,530779799552.0,USA
+26,asml,ASML,ASML,514941222912.0,Netherlands
+27,china-construction-bank,China Construction Bank,601939.SS,494512003482.0,China
+28,costco,Costco,COST,483768729600.0,USA
+29,coca-cola,Coca-Cola,KO,419951706112.0,USA
+30,agricultural-bank-of-china,Agricultural Bank of China,601288.SS,418285495274.0,China
+31,chevron,Chevron,CVX,407285170176.0,USA
+32,procter-and-gamble,Procter & Gamble,PG,399748038656.0,USA
+33,tencent,Tencent,TCEHY,394109790000.0,China
+34,roche,Roche,RO.SW,392714226623.0,Switzerland
+35,palantir,Palantir,PLTR,388362797056.0,USA
+36,cisco,Cisco,CSCO,370550702080.0,USA
+37,bank-of-china,Bank of China,601988.SS,362840910639.0,China
+38,cxmt,CXMT,688825.SS,357254420048.0,China
+39,home-depot,Home Depot,HD,352930365440.0,USA
+40,merck,Merck,MRK,349004857344.0,USA
+41,icbc,ICBC,1398.HK,347800348001.0,China
+42,oracle,Oracle,ORCL,341389017088.0,USA
+43,bank-of-america,Bank of America ,BAC,335074164736.0,USA
+44,general-electric,General Electric,GE,328636923904.0,USA
+45,united-health,UnitedHealth,UNH,306332205056.0,USA
+46,novartis,Novartis,NVS,291622387712.0,Switzerland
+47,intel,Intel,INTC,291261972480.0,USA
+48,palo-alto-networks,"Palo Alto Networks
+",PANW,289804779520.0,USA
+49,philip-morris,Philip Morris International,PM,286714691584.0,USA
+50,astrazeneca,AstraZeneca,AZN,284128116736.0,UK
+51,hsbc,HSBC,HSBC,280263000064.0,UK
+52,kweichow-moutai,Kweichow Moutai,600519.SS,276819072169.0,China
+53,nestle,Nestlé,NESN.SW,265372620691.0,Switzerland
+54,morgan-stanley,Morgan Stanley,MS,263826161664.0,USA
+55,raytheon-technologies,RTX,RTX,263586217984.0,USA
+56,shell,Shell,SHEL,263487602688.0,UK
+57,royal-bank-of-canada,Royal Bank Of Canada,RY,261837225984.0,Canada
+58,thermo-fisher-scientific,Thermo Fisher Scientific,TMO,257738244096.0,USA
+59,l-oreal,L'Oréal,OR.PA,257206915402.0,France
+60,applied-materials,Applied Materials,AMAT,256935116800.0,USA
+61,amgen,Amgen,AMGN,256356892672.0,USA
+62,caterpillar,Caterpillar,CAT,247389143040.0,USA
+63,toyota,Toyota,TM,246421815296.0,Japan
+64,lam-research,Lam Research,LRCX,245037383680.0,USA
+65,wells-fargo,Wells Fargo,WFC,243720241152.0,USA
+66,netflix,Netflix,NFLX,241739415552.0,USA
+67,sap,SAP,SAP,240940138496.0,Germany
+68,linde,Linde,LIN,237268271104.0,UK
+69,texas-instruments,Texas Instruments,TXN,236154798080.0,USA
+70,goldman-sachs,Goldman Sachs,GS,232484061184.0,USA
+71,ibm,IBM,IBM,222689361920.0,USA
+72,gilead-sciences,Gilead Sciences,GILD,221139959808.0,USA
+73,mitsubishi-ufj-financial,Mitsubishi UFJ Financial,MUFG,219203846144.0,Japan
+74,petro-china,PetroChina,0857.HK,218757893158.0,China
+75,china-mobile,China Mobile,0941.HK,217409785855.0,China
+76,crowdstrike,CrowdStrike,CRWD,217311592448.0,USA
+77,arista-networks,Arista Networks,ANET,212959100928.0,USA
+78,siemens,Siemens,SIE.DE,212871671996.0,Germany
+79,lvmh,LVMH,MC.PA,211826443775.0,France
+80,alibaba,Alibaba,BABA,211110051840.0,China
+81,walt-disney,Walt Disney,DIS,209250713600.0,USA
+82,american-express,American Express,AXP,206952464384.0,USA
+83,reliance-industries,Reliance Industries,RELIANCE.NS,200072339639.0,India
+84,inditex,Inditex,ITX.MC,198649134277.0,Spain
+85,mcdonald,McDonald,MCD,198113787904.0,USA
+86,verizon,Verizon,VZ,195459252224.0,USA
+87,pepsico,Pepsico,PEP,194435891200.0,USA
+88,ge-vernova,GE Vernova,GEV,190739546112.0,USA
+89,toronto-dominion-bank,Toronto Dominion Bank,TD,188956360704.0,Canada
+90,citigroup,Citigroup,C,188445032448.0,USA
+91,dell,Dell,DELL,187742781440.0,USA
+92,commonwealth-bank,Commonwealth Bank,CBA.AX,186639825837.0,Australia
+93,totalenergies,TotalEnergies,TTE,186636926976.0,France
+94,international-holding-company,International Holding Company,IHC.AE,186398329929.0,UAE
+95,allianz,Allianz SE,ALV.DE,186260737132.0,Germany
+96,abbott-laboratories,Abbott Laboratories,ABT,182529327104.0,USA
+97,amphenol,Amphenol,APH,181416624128.0,USA
+98,welltower,"Welltower
+",WELL,179837124608.0,USA
+99,novo-nordisk,Novo Nordisk,NVO,177615732736.0,Denmark
+100,nextera-energy,Nextera Energy,NEE,177390157824.0,USA
+101,t-mobile-us,T-Mobile US,TMUS,177216307200.0,USA
+102,blackrock,BlackRock,BLK,176973873152.0,USA
+103,bhp-group,BHP Group,BHP,176912203776.0,Australia
+104,qualcomm,QUALCOMM,QCOM,176507207680.0,USA
+105,mediatek,MediaTek,2454.TW,175527292233.0,Taiwan
+106,kla,KLA,KLAC,174140915712.0,USA
+107,arm-holdings,Arm Holdings,ARM,172869189632.0,UK
+108,union-pacific-corporation,Union Pacific Corporation,UNP,172825837568.0,USA
+109,shopify,Shopify,SHOP,170219716608.0,Canada
+110,cm-bank,CM Bank,3968.HK,169863325879.0,China
+111,china-shenhua-energy,China Shenhua Energy,601088.SS,168755659462.0,China
+112,airbus,Airbus,AIR.PA,167150831823.0,Netherlands
+113,fast-retailing,Fast Retailing,9983.T,166051789001.0,Japan
+114,iberdrola,Iberdrola,IBE.MC,165917300510.0,Spain
+115,carvana,Carvana,CVNA,165649350656.0,USA
+116,santander,Santander,SAN,165523652608.0,Spain
+117,deere-company,Deere & Company (John Deere),DE,165485297664.0,USA
+118,pfizer,Pfizer,PFE,162217836544.0,USA
+119,charles-schwab,Charles Schwab,SCHW,162089385984.0,USA
+120,sony,Sony,SONY,161967177728.0,Japan
+121,danaher,Danaher,DHR,161171865600.0,USA
+122,conocophillips,ConocoPhillips,COP,159189598208.0,USA
+123,salesforce,Salesforce,CRM,159052972032.0,USA
+124,tjx-companies,TJX Companies,TJX,158242258944.0,USA
+125,anheuser-busch-inbev,Anheuser-Busch Inbev,BUD,157668147200.0,Belgium
+126,att,AT&T,T,154130513920.0,USA
+127,analog-devices,Analog Devices,ADI,151644766208.0,USA
+128,intuitive-surgical,Intuitive Surgical,ISRG,150602825728.0,USA
+129,ping-an-insurance,Ping An Insurance,601318.SS,149206838382.0,China
+130,china-life-insurance,China Life Insurance,601628.SS,148958143623.0,China
+131,recruit,Recruit,6098.T,148262069577.0,Japan
+132,blackstone-group,Blackstone Group,BX,147322470400.0,USA
+133,prosus,Prosus,PRX.AS,147162425977.0,Netherlands
+134,schneider-electric,Schneider Electric,SU.PA,145333471435.0,France
+135,catl,CATL,300750.SZ,144802164314.0,China
+136,dbs,DBS Group,D05.SI,144186531013.0,Singapore
+137,chubb,Chubb,CB,143421079552.0,Switzerland
+138,hermes-international,Hermès,RMS.PA,143139723390.0,France
+139,vertex-pharmaceuticals,Vertex Pharmaceuticals,VRTX,142974959616.0,USA
+140,bharti-airtel,"Bharti Airtel
+",BHARTIARTL.NS,142699941636.0,India
+141,sumitomo-mitsui-financial-group,Sumitomo Mitsui Financial Group,SMFG,141973012480.0,Japan
+142,hdfc-bank,HDFC Bank,HDB,141784317952.0,India
+143,abb,ABB,ABBN.SW,141196243638.0,Switzerland
+144,unilever,Unilever,UL,140464144384.0,UK
+145,deutsche-telekom,Deutsche Telekom,DTE.DE,140308035224.0,Germany
+146,rolls-royce-holdings,Rolls-Royce Holdings,RR.L,139379954550.0,UK
+147,hitachi,Hitachi,6501.T,138096967155.0,Japan
+148,jio-platforms-limited,Jio Platforms Limited,JPL.NS,137987110061.0,India
+149,accenture,Accenture,ACN,137240133632.0,Ireland
+150,ubs,UBS,UBS,136816058368.0,Switzerland
+151,progressive,Progressive,PGR,136152326144.0,USA
+152,lockheed-martin,Lockheed Martin,LMT,135514251264.0,USA
+153,safran,Safran,SAF.PA,135172559897.0,France
+154,bbva,Banco Bilbao Vizcaya Argentaria,BBVA,132335968256.0,Spain
+155,uber,Uber,UBER,132110802944.0,USA
+156,sp-global,S&P Global,SPGI,131953786880.0,USA
+157,air-liquide,Air Liquide,AI.PA,131319479344.0,France
+158,boeing,Boeing,BA,129636876288.0,USA
+159,lowes-companies,Lowe's Companies,LOW,129625915392.0,USA
+160,icici-bank,ICICI Bank,IBN,128964001792.0,India
+161,interactive-brokers,"Interactive Brokers
+",IBKR,127293972480.0,USA
+162,bristol-myers-squibb,Bristol-Myers Squibb,BMY,126774206464.0,USA
+163,applovin,AppLovin,APP,126270119936.0,USA
+164,cnooc,CNOOC,0883.HK,125383735196.0,China
+165,british-american-tobacco,British American Tobacco,BTI,125030711296.0,UK
+166,sanofi,Sanofi,SNY,124622938112.0,France
+167,mckesson,McKesson,MCK,124472672256.0,USA
+168,altria-group,Altria Group,MO,124458352640.0,USA
+169,pinduoduo,PDD Holdings (Pinduoduo),PDD,124148645888.0,China
+170,unicredit,UniCredit,UCG.MI,124113485445.0,Italy
+171,eaton,Eaton,ETN,124036390912.0,Ireland
+172,prologis,Prologis,PLD,123789541376.0,USA
+173,investor-ab,Investor AB,INVE-B.ST,123660606140.0,Sweden
+174,stryker-corporation,Stryker Corporation,SYK,123374338048.0,USA
+175,spotify,Spotify,SPOT,123261837312.0,Sweden
+176,medtronic,Medtronic,MDT,122963525632.0,Ireland
+177,automatic-data-processing,Automatic Data Processing,ADP,122687283200.0,USA
+178,starbucks,Starbucks,SBUX,121283829760.0,USA
+179,bank-of-communications,Bank of Communications,601328.SS,121264377305.0,China
+180,compagnie-financiere-richemont,Compagnie Financière Richemont,CFR.SW,120990704908.0,Switzerland
+181,rio-tinto,Rio Tinto,RIO,119043342336.0,UK
+182,marvell,Marvell Technology,MRVL,118382206976.0,USA
+183,foxconn-industrial-internet,"Foxconn Industrial Internet
+",601138.SS,118018150071.0,China
+184,china-yangtze-power,"China Yangtze Power
+",600900.SS,117414518672.0,China
+185,southern-copper,Southern Copper,SCCO,116773191680.0,USA
+186,mitsubishi-corporation,Mitsubishi Corporation,8058.T,115877508150.0,Japan
+187,parker-hannifin,"Parker-Hannifin
+",PH,114273951744.0,USA
+188,zurich-insurance-group,Zurich Insurance Group,ZURN.SW,113629943748.0,Switzerland
+189,state-bank-of-india,"State Bank of India
+",SBIN.NS,113487629055.0,India
+190,mizuho-financial-group,"Mizuho Financial Group
+",MFG,113485553664.0,Japan
+191,bank-of-montreal,"Bank of Montreal
+",BMO,111736078336.0,Canada
+192,keyence,Keyence,6861.T,111598957366.0,Japan
+193,tokyo-electron,Tokyo Electron,8035.T,111231047066.0,Japan
+194,seagate,Seagate Technology,STX,110758641664.0,Ireland
+195,cme-group,CME Group,CME,110691057664.0,USA
+196,bp,BP,BP,110160642048.0,UK
+197,southern-company,Southern Company,SO,109568606208.0,USA
+198,capital-one,Capital One,COF,109094060032.0,USA
+199,booking-holdings,Booking Holdings (Booking.com),BKNG,109056352256.0,USA
+200,bnp-paribas,BNP Paribas,BNP.PA,108233290894.0,France
+201,midea,Midea,000333.SZ,107852404936.0,China
+202,siemens-energy,Siemens Energy,ENR.F,107738168641.0,Germany
+203,advantest,"Advantest
+",6857.T,107676187538.0,Japan
+204,postal-savings-bank-of-china,"Postal Savings Bank of China
+",601658.SS,107649534799.0,China
+205,intesa-sanpaolo,Intesa Sanpaolo,ISP.MI,107607134277.0,Italy
+206,marriott-international,Marriott International,MAR,107181056000.0,USA
+207,sinopec,Sinopec,600028.SS,105276622326.0,China
+208,tokio-marine,Tokio Marine,8766.T,105220284875.0,Japan
+209,scotiabank,Scotiabank,BNS,103758987264.0,Canada
+210,newmont,Newmont,NEM,103597170688.0,USA
+211,airbnb,Airbnb,ABNB,103469129728.0,USA
+212,cvs-health,CVS Health,CVS,103240777728.0,USA
+213,enbridge,Enbridge,ENB,103063789568.0,Canada
+214,cloudflare,Cloudflare,NET,102962511872.0,USA
+215,western-digital,Western Digital,WDC,102545866752.0,USA
+216,enel,Enel,ENEL.MI,102266823109.0,Italy
+217,regeneron-pharmaceuticals,Regeneron Pharmaceuticals,REGN,102112346112.0,USA
+218,duke-energy,Duke Energy,DUK,102110601216.0,USA
+219,byd,BYD,002594.SZ,101915149661.0,China
+220,marsh-and-mclennan-companies,Marsh & McLennan Companies,MRSH,101360640000.0,USA
+221,petrobras,Petrobras,PBR,100983218176.0,Brazil
+222,glaxo-smith-kline,GSK plc,GSK,100914864128.0,UK
+223,hca-healthcare,HCA Healthcare,HCA,100638138368.0,USA
+224,axa,AXA,CS.PA,100301701936.0,France
+225,itochu-shoji,Itōchū Shōji,8001.T,97971776347.0,Japan
+226,tata-consultancy-services,Tata Consultancy Services,TCS.NS,97798969118.0,India
+227,intercontinental-exchange,Intercontinental Exchange,ICE,97738752000.0,USA
+228,bny-mellon,BNY Mellon (Bank of New York Mellon),BNY,97718321152.0,USA
+229,fortinet,Fortinet,FTNT,97349042176.0,USA
+230,waste-management,Waste Management,WM,97305239552.0,USA
+231,equinix,Equinix,EQIX,97282752512.0,USA
+232,marathon-petroleum,Marathon Petroleum,MPC,96703774720.0,USA
+233,3m,3M,MMM,96700768256.0,USA
+234,al-rajhi-bank,Al Rajhi Bank,1120.SR,96668444705.0,S. Arabia
+235,softbank,SoftBank Group Corp.,9984.T,96509544935.0,Japan
+236,aia,AIA,1299.HK,96337823787.0,Hong Kong
+237,cibc,CIBC (Canadian Imperial Bank of Commerce),CM,95996018688.0,Canada
+238,snowflake,Snowflake,SNOW,95640551424.0,USA
+239,servicenow,ServiceNow,NOW,95218499584.0,USA
+240,general-dynamics,General Dynamics,GD,94997143552.0,USA
+241,ups,United Parcel Service,UPS,94368350208.0,USA
+242,phillips-66,Phillips 66,PSX,92427640832.0,USA
+243,csx-corporation,CSX Corporation,CSX,92317392896.0,USA
+244,moderna,"Moderna
+",MRNA,92002713600.0,USA
+245,equinor,Equinor,EQNR,91965759488.0,Norway
+246,ocbc-bank,OCBC Bank,O39.SI,91872172191.0,Singapore
+247,zijin-mining,Zijin Mining,601899.SS,91707545402.0,China
+248,canadian-natural-resources,Canadian Natural Resources,CNQ,91133116416.0,Canada
+249,waters-corporation,Waters Corporation,WAT,90832003072.0,USA
+250,valero,Valero Energy,VLO,90545405952.0,USA
+251,us-bancorp,U.S. Bancorp,USB,90485186560.0,USA
+252,adobe,Adobe,ADBE,90325532672.0,USA
+253,comcast,Comcast,CMCSA,90124533760.0,USA
+254,cintas,Cintas,CTAS,89643671552.0,USA
+255,quanta-services,"Quanta Services
+",PWR,88845279232.0,USA
+256,sandisk,Sandisk,SNDK,88731639808.0,USA
+257,trane-technologies,"Trane Technologies
+",TT,88540979200.0,Ireland
+258,brookfield-corporation,Brookfield Corporation,BN,87879884800.0,Canada
+259,essilor-luxottica,EssilorLuxottica,EL.PA,87819484796.0,France
+260,corning,Corning,GLW,87750934528.0,USA
+261,motorola-solutions,"Motorola Solutions
+",MSI,87640219648.0,USA
+262,foxconn,Foxconn (Hon Hai Precision Industry),2317.TW,87629965798.0,Taiwan
+263,simon-property,Simon Property Group,SPG,86998507520.0,USA
+264,caixabank,CaixaBank,CABK.MC,86897665264.0,Spain
+265,pnc-financial-services,PNC Financial Services,PNC,86743605248.0,USA
+266,xiaomi,Xiaomi,XIACF,86178029568.0,China
+267,ecolab,Ecolab,ECL,86142877696.0,USA
+268,emerson,Emerson,EMR,86119227392.0,USA
+269,constellation-energy,Constellation Energy,CEG,86087827456.0,USA
+270,cambricon-technologies,Cambricon Technologies,688256.SS,85723638950.0,China
+271,kohlberg-kravis-roberts,KKR & Co.,KKR,85465407488.0,USA
+272,ing,"ING
+",ING,85403516928.0,Netherlands
+273,nippon-telegraph-and-telephone,"NTT (Nippon Telegraph & Telephone)
+
+",9432.T,85174744305.0,Japan
+274,sherwin-williams,Sherwin-Williams,SHW,85174288384.0,USA
+275,royal-caribbean,Royal Caribbean Group,RCL,85127970816.0,USA
+276,mondelez,Mondelez International,MDLZ,84823826432.0,USA
+277,american-tower,American Tower,AMT,84789886976.0,USA
+278,elevance-health,Elevance Health,ELV,84514586624.0,USA
+279,dior,Dior,CDI.PA,84462619719.0,France
+280,howmet-aerospace,"Howmet Aerospace
+",HWM,83842736128.0,USA
+281,moodys,Moody's,MCO,83694649344.0,USA
+282,national-grid,National Grid,NGG,82733801472.0,UK
+283,delta-electronics,Delta Electronics,2308.TW,82627035427.0,Taiwan
+284,monster-beverage,Monster Beverage,MNST,82548277248.0,USA
+285,williams-companies,"Williams Companies
+",WMB,82513362944.0,USA
+286,johnson-controls,"Johnson Controls
+",JCI,82251366400.0,Ireland
+287,mitsui-bussan,"Mitsui Bussan
+",8031.T,82162682851.0,Japan
+288,the-travelers-companies,The Travelers Companies,TRV,82156847104.0,USA
+289,taqa,TAQA,TAQA.AE,81434161761.0,UAE
+290,cadence-design-systems,Cadence Design Systems,CDNS,81380818944.0,USA
+291,brookfield-asset-management,Brookfield Asset Management,BAM,81172209664.0,Canada
+292,hilton-hotels,Hilton Worldwide,HLT,81062789120.0,USA
+293,munich-re,Munich RE (Münchener Rück),MUV2.DE,80756864337.0,Germany
+294,canadian-pacific-railway,CPKC (Canadian Pacific Kansas City),CP,80712073216.0,Canada
+295,illinois-tool-works,Illinois Tool Works ,ITW,80641753088.0,USA
+296,westpac-banking,Westpac Banking,WBC.AX,79991410183.0,Australia
+297,target,Target,TGT,79708454912.0,USA
+298,citic-bank,CITIC Bank,601998.SS,79705543610.0,China
+299,synopsys,Synopsys,SNPS,79494709248.0,USA
+300,agnico-eagle-mines,Agnico Eagle Mines,AEM,79097806848.0,Canada
+301,colgate-palmolive,Colgate-Palmolive,CL,78887911424.0,USA
+302,northrop-grumman,Northrop Grumman,NOC,78254809088.0,USA
+303,enterprise-products,Enterprise Products,EPD,77637779456.0,USA
+304,warner-bros-discovery,Warner Bros. Discovery,WBD,77595885568.0,USA
+305,chugai-pharmaceutical,Chugai Pharmaceutical,4519.T,77514911376.0,Japan
+306,bajaj-finance,Bajaj Finance,BAJFINANCE.NS,77258553275.0,India
+307,republic-services,"Republic Services
+",RSG,76814884864.0,USA
+308,sberbank,Sberbank,SBER.ME,76813346152.0,Russia
+309,o-reilly-automotive,O'Reilly Automotive,ORLY,76539510784.0,USA
+310,anz-bank,ANZ Bank,ANZ.AX,76404893253.0,Australia
+311,grupo-mexico,"Grupo México
+",GMBXF,76295004160.0,Mexico
+312,atlas-copco,"Atlas Copco
+",ATCO-B.ST,76038844638.0,Sweden
+313,eog-resources,EOG Resources,EOG,76004597760.0,USA
+314,canadian-national-railway,Canadian National Railway,CNI,75250352128.0,Canada
+315,national-australia-bank,National Australia Bank,NAB.AX,74465076134.0,Australia
+316,eni,ENI,E,74178510848.0,Italy
+317,itau-unibanco,"Itaú Unibanco
+",ITUB,74068008960.0,Brazil
+318,intuit,Intuit,INTU,73771073536.0,USA
+319,arthur-gallagher,"Arthur J. Gallagher & Co.
+",AJG,73544957952.0,USA
+320,mercadolibre,MercadoLibre,MELI,73526075392.0,Argentina
+321,america-movil,America Movil,AMX,73523011584.0,Mexico
+322,suncor-energy,"Suncor Energy
+",SU,73482641408.0,Canada
+323,aon,Aon,AON,72740208640.0,UK
+324,adnoc-gas,ADNOC Gas,ADNOCGAS.AE,72722430827.0,UAE
+325,ross-stores,Ross Stores,ROST,72554266624.0,USA
+326,cigna,The Cigna Group,CI,72463204352.0,USA
+327,takeda-pharmaceutical,Takeda Pharmaceutical,TAK,72204697600.0,Japan
+328,fedex,FedEx,FDX,72201322496.0,USA
+329,zhongji-innolight,Zhongji Innolight,300308.SZ,71832899158.0,China
+330,softbank-corp,SoftBank Corp.,9434.T,71588145888.0,Japan
+331,norfolk-southern,Norfolk Southern,NSC,71482015744.0,USA
+332,vingroup-company,Vingroup Company,VIC.VN,71394406113.0,Vietnam
+333,honeywell,Honeywell,HON,71348543488.0,USA
+334,wuxi-apptec,"WuXi AppTec
+",2359.HK,71233791574.0,China
+335,generali,Generali,G.MI,71111434081.0,Italy
+336,merck-kgaa,Merck KGaA,MRK.DE,70980749191.0,Germany
+337,bae-systems,"BAE Systems
+",BA.L,70896288960.0,UK
+338,apollo-global-management,"Apollo Global Management
+",APO,70757441536.0,USA
+339,barclays,Barclays,BCS,70587916288.0,UK
+340,lloyds-banking-group,"Lloyds Banking Group
+",LYG,70360227840.0,UK
+341,doordash,DoorDash,DASH,69812887552.0,USA
+342,ferrari,Ferrari,RACE,69692825600.0,Italy
+343,manulife-financial,Manulife Financial,MFC,69481431040.0,Canada
+344,general-motors,General Motors,GM,69440987136.0,USA
+345,schlumberger,SLB (Schlumberger),SLB,69358632960.0,USA
+346,american-electric-power,American Electric Power,AEP,69318205440.0,USA
+347,kinder-morgan,Kinder Morgan,KMI,69237391360.0,USA
+348,kioxia-holdings-corporation,KIOXIA Holdings Corporation,285A.T,69200021374.0,Japan
+349,air-products-and-chemicals,Air Products and Chemicals,APD,68718727168.0,USA
+350,relx,RELX,RELX,68537389056.0,UK
+351,freeport-mcmoran,Freeport-McMoRan,FCX,68489498624.0,USA
+352,engie,ENGIE,ENGI.PA,68420225004.0,France
+353,deutsche-post,DHL Group (Deutsche Post),DHL.DE,68382410259.0,Germany
+354,glencore,Glencore,GLCNF,68075491328.0,Switzerland
+355,nongfu-spring,"Nongfu Spring
+",9633.HK,67599675231.0,China
+356,japan-post-bank,"Japan Post Bank
+",7182.T,67463931474.0,Japan
+357,vinci,Vinci,DG.PA,67242824393.0,France
+358,vertiv-holdings,"Vertiv Holdings
+",VRT,66931204096.0,USA
+359,allstate,Allstate,ALL,66907873280.0,USA
+360,cencora,Cencora,COR,66728443904.0,USA
+361,kimberly-clark,Kimberly-Clark,KMB,66706505728.0,USA
+362,nintendo,"Nintendo
+",7974.T,65898913409.0,Japan
+363,first-abu-dhabi-bank,First Abu Dhabi Bank,FAB.AE,65814027825.0,UAE
+364,csl,CSL,CSL.AX,65668377077.0,Australia
+365,ww-grainger,"W. W. Grainger
+",GWW,65447116800.0,USA
+366,kddi,KDDI,9433.T,65200392850.0,Japan
+367,industrial-bank,"Industrial Bank
+",601166.SS,65075440223.0,China
+368,ase-group,"ASE Group
+",ASX,64748138496.0,Taiwan
+369,cardinal-health,Cardinal Health,CAH,64637366272.0,USA
+370,tc-energy,"TC Energy
+",TRP,64631218176.0,Canada
+371,energy-transfer-partners,"Energy Transfer LP
+",ET,64338632704.0,USA
+372,netease,NetEase,NTES,64303796224.0,China
+373,boston-scientific,Boston Scientific,BSX,63979749376.0,USA
+374,united-rentals,"United Rentals
+",URI,63754276864.0,USA
+375,digital-realty,Digital Realty,DLR,63646695424.0,USA
+376,delta-electronics-thailand,Delta Electronics (Thailand),DELTA.BK,63047205739.0,Thailand
+377,japan-tobacco,Japan Tobacco,2914.T,62759944896.0,Japan
+378,shin-etsu-chemical,Shin-Etsu Chemical,4063.T,62623170396.0,Japan
+379,volvo,Volvo Group,VOLV-A.ST,62473950515.0,Sweden
+380,sk-square,SK Square,402340.KS,62352123211.0,S. Korea
+381,metlife,MetLife,MET,62347743232.0,USA
+382,crh,"Cement Roadstone Holding
+",CRH,62305513472.0,Ireland
+383,infineon,Infineon,IFX.DE,62222885657.0,Germany
+384,aflac,Aflac,AFL,62211678208.0,USA
+385,london-stock-exchange,London Stock Exchange,LSEG.L,62184722395.0,UK
+386,argenx,"Argenx
+",ARGX,62027673600.0,Netherlands
+387,public-storage,Public Storage,PSA,62017081344.0,USA
+388,larsen-and-toubro,"Larsen & Toubro
+
+",LT.NS,61672596042.0,India
+389,deutsche-boerse,Deutsche Börse,DB1.DE,61669849494.0,Germany
+390,transdigm,TransDigm Group,TDG,61649391616.0,USA
+391,boc-hong-kong,Bank of China (Hong Kong),2388.HK,61500308543.0,Hong Kong
+392,deutsche-bank,Deutsche Bank,DB,61278003200.0,Germany
+393,edwards-lifesciences,Edwards Lifesciences,EW,61019000832.0,USA
+394,targa-resources,"Targa Resources
+",TRGP,60755263488.0,USA
+395,natwest-group,NatWest Group,NWG,60636344320.0,UK
+396,cheniere-energy,"Cheniere Energy
+",LNG,60446404608.0,USA
+397,nxp-semiconductors,NXP Semiconductors,NXPI,60341485568.0,Netherlands
+398,nordea-bank,Nordea Bank,NDA-FI.HE,60212951323.0,Finland
+399,fastenal,Fastenal,FAST,59969449984.0,USA
+400,becton-dickinson,Becton Dickinson,BDX,59925098496.0,USA
+401,compass-group,Compass Group,CPG.L,59902296064.0,UK
+402,te-connectivity,"TE Connectivity
+",TEL,59836137472.0,Switzerland
+403,datadog,Datadog,DDOG,59709218816.0,USA
+404,emirates-nbd-bank,Emirates NBD Bank PJSC,EMIRATESNBD.AE,59609369781.0,UAE
+405,ucb,UCB,UCB.VI,59396959311.0,Belgium
+406,dominion-energy,Dominion Energy,D,59186003968.0,USA
+407,robinhood,Robinhood,HOOD,59117252608.0,USA
+408,nasdaq,Nasdaq,NDAQ,59059134464.0,USA
+409,great-west-lifeco,"Great-West Lifeco
+",GWO.TO,58922458874.0,Canada
+410,loblaw-companies,Loblaw Companies,L.TO,58411643827.0,Canada
+411,wesfarmers,"Wesfarmers
+",WES.AX,58316746837.0,Australia
+412,citic-securities,"CITIC Securities
+",600030.SS,58178721473.0,China
+413,the-saudi-national-bank,The Saudi National Bank,1180.SR,58147810168.0,S. Arabia
+414,monolithic-power-systems,Monolithic Power Systems,MPWR,58041724928.0,USA
+415,mitsubishi-electric,Mitsubishi Electric,6503.T,57509051280.0,Japan
+416,maaden,Ma'aden,1211.SR,57420019107.0,S. Arabia
+417,nu-holdings,Nu Holdings,NU,57385013248.0,Brazil
+418,truist-financial,Truist Financial Corporation,TFC,56904232960.0,USA
+419,cummins,"Cummins
+",CMI,56831709184.0,USA
+420,realty-income,Realty Income,O,56791576576.0,USA
+421,mplx,MPLX,MPLX,56678862848.0,USA
+422,emirates-telecom-etisalat-group,Emirates Telecom (Etisalat Group),EAND.AE,56592359228.0,UAE
+423,macquarie,Macquarie Group Limited,MQG.AX,56405973592.0,Australia
+424,idexx-laboratories,IDEXX Laboratories,IDXX,56102125568.0,USA
+425,hong-kong-exchanges-and-clearing,Hong Kong Exchanges & Clearing,0388.HK,55949905715.0,Hong Kong
+426,bayer,Bayer,BAYN.DE,55923594353.0,Germany
+427,diageo,Diageo,DEO,55895846912.0,UK
+428,nucor,"Nucor
+",NUE,55788404736.0,USA
+429,delta-air-lines,Delta Air Lines,DAL,55593594880.0,USA
+430,mitsubishi-heavy-industries,Mitsubishi Heavy Industries,7011.T,55475891196.0,Japan
+431,paccar,Paccar,PCAR,55462072320.0,USA
+432,standard-chartered,Standard Chartered,STAN.L,55139743873.0,UK
+433,lonza,Lonza,LONN.SW,55003480031.0,Switzerland
+434,kotak-mahindra-bank,"Kotak Mahindra Bank
+",KOTAKBANK.NS,54782855538.0,India
+435,imperial-oil,"Imperial Oil
+",IMO,54725050368.0,Canada
+436,barrick-gold,Barrick Gold,B,54689497088.0,Canada
+437,fubon-financial,Fubon Financial,2881.TW,54595312932.0,Taiwan
+438,garmin,Garmin,GRMN,54343925760.0,Switzerland
+439,alimentation-couche-tard,"Alimentation Couche-Tard
+",ATD.TO,54300584557.0,Canada
+440,nan-ya-plastics,"Nan Ya Plastics
+",1303.TW,54161830019.0,Taiwan
+441,naura-technology-group,NAURA Technology Group,002371.SZ,54103045952.0,China
+442,luxshare-precision,"Luxshare Precision
+",002475.SZ,54027342338.0,China
+443,autozone,AutoZone,AZO,54007619584.0,USA
+444,nbc-bank,"National Bank of Canada
+",NA.TO,53975540247.0,Canada
+445,swiss-re,Swiss Re,SREN.SW,53814097258.0,Switzerland
+446,lg-energy-solution,LG Energy Solution,373220.KS,53792098820.0,S. Korea
+447,saudi-telecom-company,Saudi Telecom Company,7010.SR,53777203607.0,S. Arabia
+448,hindustan-unilever,"Hindustan Unilever
+",HINDUNILVR.NS,53474464996.0,India
+449,oneok,Oneok,OKE,53455892480.0,USA
+450,autodesk,Autodesk,ADSK,53441298432.0,USA
+451,occidental-petroleum,Occidental Petroleum,OXY,53374382080.0,USA
+452,shanghai-pudong-development-bank,"Shanghai Pudong Development Bank
+",600000.SS,53357748870.0,China
+453,hewlett-packard-enterprise,Hewlett Packard Enterprise,HPE,53350809600.0,USA
+454,singtel,Singtel,Z74.SI,53325436690.0,Singapore
+455,e-on,E.ON,EOAN.DE,53136208580.0,Germany
+456,nike,Nike,NKE,53099790336.0,USA
+457,siemens-healthineers,Siemens Healthineers,SHL.DE,53009533665.0,Germany
+458,wheaton-precious-metals,Wheaton Precious Metals,WPM,52958433280.0,Canada
+459,hyundai,Hyundai,005380.KS,52841329489.0,S. Korea
+460,murata-seisakusho,Murata Manufacturing (Murata Seisakusho),6981.T,52563860623.0,Japan
+461,medline,Medline,MDLN,52258885632.0,USA
+462,ametek,Ametek,AME,52165259264.0,USA
+463,xcel-energy,Xcel Energy,XEL,51873083392.0,USA
+464,corteva,"Corteva
+",CTVA,51807772672.0,USA
+465,agilent-technologies,Agilent Technologies,A,51746369536.0,USA
+466,thales,Thales,HO.PA,51645120323.0,France
+467,sempra-energy,Sempra,SRE,51518464000.0,USA
+468,coca-cola-european-partners,"Coca-Cola European Partners
+",CCEP,51441082368.0,UK
+469,heineken,Heineken,HEIA.AS,51233970101.0,Netherlands
+470,galderma-group,Galderma Group,GALD.SW,51110286713.0,Switzerland
+471,keurig-dr-pepper,Keurig Dr Pepper,KDP,51108614144.0,USA
+472,credit-agricole,Crédit Agricole,ACA.PA,50846857333.0,France
+473,china-telecom,China Telecom,0728.HK,50660249434.0,China
+474,entergy,Entergy,ETR,50625781760.0,USA
+475,infosys,Infosys,INFY,50589200384.0,India
+476,vivmark-residential,Vivmark Residential,VMRK,50082975744.0,USA
+477,ebay,eBay,EBAY,49945026560.0,USA
+478,lukoil,Lukoil,LKOH.ME,49760214805.0,Russia
+479,hoya,Hoya,7741.T,49669829814.0,Japan
+480,societe-generale,"Société Générale
+",GLE.PA,49544461964.0,France
+481,swire-pacific,Swire Pacific,0019.HK,49425636685.0,Hong Kong
+482,samsung-biologics,"Samsung Biologics
+",207940.KS,49268610715.0,S. Korea
+483,smic,SMIC,0981.HK,49216638170.0,China
+484,diamondback-energy,"Diamondback Energy
+",FANG,49161457664.0,USA
+485,honeywell-aerospace,Honeywell Aerospace,HONA,49067020288.0,USA
+486,ferguson,Ferguson Enterprises,FERG,48845926400.0,UK
+487,sun-pharmaceutical,"Sun Pharmaceutical
+",SUNPHARMA.NS,48798757890.0,India
+488,ms-ad-insurance,MS&AD Insurance,8725.T,48749448254.0,Japan
+489,rwe,RWE,RWE.DE,48597628247.0,Germany
+490,cenovus-energy,"Cenovus Energy
+",CVE,48544677888.0,Canada
+491,danone,Danone,BN.PA,48543186663.0,France
+492,lafargeholcim,Holcim Group,HOLN.SW,48467066406.0,Switzerland
+493,humana,Humana,HUM,48367980544.0,USA
+494,meituan-dianping,Meituan,3690.HK,48339968818.0,China
+495,dsv,DSV,DSV.VI,48184479758.0,Denmark
+496,picc-property-and-casualty-company-limited,PICC Property and Casualty Company Limited,2328.HK,48064613274.0,China
+497,l3harris-technologies,L3Harris Technologies,LHX,48054681600.0,USA
+498,peoples-insurance-company-picc,The People's Insurance Company (PICC),601319.SS,47941085703.0,China
+499,exelon-corporation,Exelon Corporation,EXC,47843274752.0,USA
+500,adani-ports-and-sez,Adani Ports & SEZ,ADANIPORTS.NS,47822136773.0,India
