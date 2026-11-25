@@ -336,7 +336,7 @@ footer{color:var(--label3);font-size:.76rem;max-width:72ch;margin:0 4px;line-hei
 dialog.dlg{width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 40px);padding:0;border:1px solid var(--line);border-radius:22px;background:var(--bg);color:var(--label);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
 dialog.dlg::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .dlgHead{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;background:var(--chrome);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
-.dlgHead b{font:650 1.05rem var(--font)} .dlgHead button{border:0;background:var(--fill);color:var(--label);border-radius:999px;padding:7px 12px;font:600 .82rem var(--font);cursor:pointer}
+.dlgHead b{font:650 1.05rem var(--font)} .dlgHead button{min-height:40px;min-width:40px;border:0;background:var(--fill);color:var(--label);border-radius:999px;padding:7px 14px;font:600 .82rem var(--font);cursor:pointer}
 .dlgBody{padding:14px 16px 20px;display:grid;gap:14px}
 .dlgBody h3{margin:4px 0 0;font:600 .95rem var(--font)}
 .dlgBody .prose p{margin:.3em 0}
@@ -555,28 +555,72 @@ body.noscroll{overflow:hidden}
 .qxC.loss .qxR .v b{color:var(--red)} .qxC.gain .qxR .v b{color:var(--green)}
 .posLine{flex-wrap:wrap} .posLine .plX{flex-basis:100%;font-size:.8rem;line-height:1.4;color:var(--label2);white-space:normal}
 .posLine .plX .neg,.posLine .plX .pos{font-weight:600}
-/* Posizioni · "Ciclo on-chain" (report.onchain, radar/onchain.py): MVRV di CoinMetrics con le zone dello studio research/utxo_pl; solo contesto */
-.oc{display:grid;gap:8px;min-width:0;padding-top:14px;border-top:1px solid var(--line)}
+/* Posizioni · "Ciclo on-chain" (report.onchain, radar/onchain.py): MVRV di CoinMetrics con le zone dello studio research/utxo_pl; solo contesto.
+   Scheda chiusa (.ocTap): stato, termometro a tre fasce, una riga; al tocco il pannello (openSheet) con le sezioni (.ocSec) */
+.oc{min-width:0;padding-top:14px;border-top:1px solid var(--line)}
 .ocCard .oc{padding-top:0;border-top:0}
-.ocHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.ocHead b{font:600 .8rem var(--font);color:var(--label2)} .ocHead span{font:500 .72rem var(--font);color:var(--label3)}
+.ocTap{display:grid;gap:8px;width:100%;min-width:0;min-height:44px;margin:0;padding:0;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer;border-radius:12px}
+.ocTap:focus-visible{outline:2px solid var(--tint);outline-offset:4px}
+.ocHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ocHead b{font:600 .8rem var(--font);color:var(--label2)} .ocHead .more{margin-left:auto;color:var(--tint);font:600 .82rem var(--font);white-space:nowrap}
 .ocBig{font:700 1.35rem/1.15 var(--font);letter-spacing:-.02em;color:var(--label)} .ocBig small{font:500 .86rem var(--font);color:var(--label2);letter-spacing:0;margin-left:6px}
 .ocBig.cap{color:var(--teal)} .ocBig.eup{color:var(--orange)}
-.ocSub{font-size:.8rem;line-height:1.4;color:var(--label2);font-variant-numeric:tabular-nums} .ocSub b{color:var(--label);font-weight:600}
-.ocChart{position:relative;height:132px;min-width:0;overflow:hidden} .ocCard .ocChart{height:104px}
+.ocLine{margin:0;font-size:.84rem;line-height:1.4;color:var(--label2)}
+/* termometro: tre fasce (25/50/25 della larghezza; dentro ogni fascia la posizione segue il percentile a 4 anni) */
+.ocTh{display:block;position:relative;padding:16px 0 18px;min-width:0;max-width:560px}
+.ocTh .bar{display:grid;grid-template-columns:1fr 2fr 1fr;gap:3px;height:10px}
+.ocTh .bar i{border-radius:5px;background:color-mix(in srgb,var(--label3) 22%,transparent)} .ocTh .bar i.c{background:color-mix(in srgb,var(--teal) 45%,transparent)} .ocTh .bar i.e{background:color-mix(in srgb,var(--orange) 40%,transparent)}
+.ocTh .dot{position:absolute;top:11px;width:20px;height:20px;margin-left:-10px;border-radius:50%;border:3px solid var(--card);background:var(--label);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.inSheet .ocTh .dot,.dlg .ocTh .dot{border-color:var(--bg)}
+.ocTh .dot.cap{background:var(--teal)} .ocTh .dot.eup{background:var(--orange)}
+.ocTh .thr{position:absolute;top:0;transform:translateX(-50%);font:500 .68rem var(--font);color:var(--label3);font-variant-numeric:tabular-nums}
+.ocTh .zn{position:absolute;bottom:0;font:500 .68rem var(--font);color:var(--label3);white-space:nowrap}
+.ocTh .zn.on{font-weight:700} .ocTh .zn.on.cap{color:var(--teal)} .ocTh .zn.on.eup{color:var(--orange)} .ocTh .zn.on.norm{color:var(--label)}
+/* pannello */
+.ocP{display:grid;gap:18px;min-width:0}
+.ocSec{display:grid;gap:10px;min-width:0} .ocSec+.ocSec{padding-top:16px;border-top:1px solid var(--line)}
+.ocSec h3{margin:0;font:600 .95rem var(--font)}
+.ocT3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ocT3>div{display:grid;gap:2px;min-width:0;padding:10px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.ocT3 span{font:500 .7rem var(--font);color:var(--label3)} .ocT3 b{font:650 1.25rem/1.15 var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ocT3 b.cap{color:var(--teal)} .ocT3 b.eup{color:var(--orange)} .ocT3 small{font-size:.7rem;color:var(--label2)}
+.ocPc{position:relative;padding:0 0 16px}
+.ocPc .k{display:flex;justify-content:space-between;font:500 .72rem var(--font);color:var(--label3);margin-bottom:6px}
+.ocPc .rail{position:relative;height:8px;border-radius:4px;background:color-mix(in srgb,var(--label3) 22%,transparent);overflow:hidden}
+.ocPc .rail i{position:absolute;top:0;bottom:0} .ocPc .rail i.c{left:0;width:10%;background:color-mix(in srgb,var(--teal) 45%,transparent)} .ocPc .rail i.e{right:0;width:10%;background:color-mix(in srgb,var(--orange) 40%,transparent)}
+.ocPc .mk{position:absolute;top:18px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--label)} .ocPc .mk.cap{background:var(--teal)} .ocPc .mk.eup{background:var(--orange)}
+.ocPc .t{position:absolute;bottom:0;transform:translateX(-50%);font:500 .66rem var(--font);color:var(--label3)}
+.ocChips{display:flex;flex-wrap:wrap;gap:6px}
+.ocChips .chip.c{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 40%,transparent);background:color-mix(in srgb,var(--teal) 10%,transparent)}
+.ocChips .chip.e{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 40%,transparent);background:color-mix(in srgb,var(--orange) 10%,transparent)}
+.ocChart{position:relative;height:132px;min-width:0;overflow:hidden} .ocP .ocChart{height:210px}
 .ocChart svg{display:block;width:100%;height:100%;overflow:visible}
 .ocChart .bc{fill:var(--teal);opacity:.22} .ocChart .be{fill:var(--orange);opacity:.16}
 .ocChart .lc{stroke:var(--teal);stroke-width:1;fill:none;opacity:.8} .ocChart .le{stroke:var(--orange);stroke-width:1;fill:none;opacity:.8}
 .ocChart .l1{stroke:var(--label3);stroke-width:1;stroke-dasharray:3 3;fill:none}
 .ocChart .mv{stroke:var(--label);stroke-width:1.6;fill:none;stroke-linejoin:round}
-.ocChart .ax{fill:var(--label3);font:500 10px var(--font)} .ocChart .td{stroke:var(--card);stroke-width:2}
+.ocChart .ax{fill:var(--label3);font:500 10px var(--font)} .ocChart .td{stroke:var(--bg);stroke-width:2}
 .ocChart .td.cap{fill:var(--teal)} .ocChart .td.eup{fill:var(--orange)} .ocChart .td.norm{fill:var(--label)}
 .ocChart .tl{font:600 11px var(--font);fill:var(--label)} .ocChart .tl.cap{fill:var(--teal)} .ocChart .tl.eup{fill:var(--orange)}
 .ocLeg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.72rem;color:var(--label3)} .ocLeg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .ocLeg i.c{background:color-mix(in srgb,var(--teal) 35%,transparent)} .ocLeg i.e{background:color-mix(in srgb,var(--orange) 35%,transparent)} .ocLeg i.u{height:0;border-top:1px dashed var(--label3);border-radius:0}
-.ocTxt{margin:2px 0 0;font-size:.86rem;line-height:1.45;color:var(--label)}
-.ocStat{font-size:.8rem;line-height:1.45;color:var(--label2);font-variant-numeric:tabular-nums} .ocStat b{color:var(--label);font-weight:600}
-.ocNote{margin:0;font-size:.7rem;line-height:1.4;color:var(--label3)}
+.ocLeg i.b30{background:color-mix(in srgb,var(--label2) 45%,transparent)} .ocLeg i.b90{background:var(--label2)}
+/* risultati per episodio: barre divergenti dallo zero (30 g chiara, 90 g piena), mediana evidenziata */
+.ocSeg{justify-self:start} .ocSeg button{min-height:40px;padding:7px 16px}
+.ocEp{display:grid;gap:2px;min-width:0}
+.ocEp .r{display:grid;grid-template-columns:4.3rem minmax(0,1fr) 4.4rem;gap:10px;align-items:center;padding:7px 8px;border-radius:10px}
+.ocEp .r.md{background:var(--fill);margin-top:4px}
+.ocEp .d{font:600 .8rem var(--font);font-variant-numeric:tabular-nums;color:var(--label)} .ocEp .d small{display:block;font:500 .66rem var(--font);color:var(--label3)}
+.ocEp .bars{position:relative;display:grid;gap:4px;min-width:0}
+.ocEp .bars::before{content:"";position:absolute;top:-4px;bottom:-4px;left:var(--z);width:1px;background:var(--line2)}
+.ocEp .b{position:relative;height:7px} .ocEp .b i{position:absolute;top:0;bottom:0;border-radius:3px;min-width:2px}
+.ocEp .b i.up{background:var(--green)} .ocEp .b i.dn{background:var(--red)} .ocEp .b.s i{opacity:.45} .ocEp .b.l{height:9px}
+.ocEp .v{display:grid;gap:1px;text-align:right;font:500 .72rem var(--font);font-variant-numeric:tabular-nums;color:var(--label2);white-space:nowrap}
+.ocEp .v b{font:600 .8rem var(--font)} .ocEp .v .pos{color:var(--green)} .ocEp .v .neg{color:var(--red)}
+.ocEp .r.na .bars{font-size:.72rem;color:var(--label3)}
+.ocUp{font-size:.76rem;color:var(--label2);font-variant-numeric:tabular-nums} .ocUp b{color:var(--label)}
+.ocTxt{margin:0;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:.88rem;line-height:1.45;color:var(--label)}
+.ocNote{margin:0;font-size:.72rem;line-height:1.45;color:var(--label3)}
 /* Oggi · riga di stato delle posizioni: porta a Posizioni */
 .posLine{display:flex;align-items:center;gap:6px 12px;padding:13px 16px;color:var(--label);text-decoration:none;font-size:.92rem;font-variant-numeric:tabular-nums}
 .posLine .plK{font:500 .76rem var(--font);color:var(--label3)}
@@ -1119,7 +1163,8 @@ window.closeSheet = () => { const d = $("sheet"); if (d.close) d.close(); else d
 window.isMobile = () => matchMedia("(max-width:700px)").matches;
 document.addEventListener("DOMContentLoaded", () => {});
 setTimeout(() => { const d = $("sheet"); if (!d) return; $("sheetX").onclick = closeSheet;
-  document.body.appendChild(d);   // il pannello è dichiarato dentro Oggi: lo porto nel body perché funzioni anche dalle altre viste (Oggi nascosta) d.addEventListener("click", e => { if (e.target === d) closeSheet(); });
+  document.body.appendChild(d);   // il pannello è dichiarato dentro Oggi: lo porto nel body perché funzioni anche dalle altre viste (Oggi nascosta)
+  d.addEventListener("click", e => { if (e.target === d) closeSheet(); });   // tocco fuori (sul fondo) chiude
   d.addEventListener("close", () => { const f = d._onClose; d._onClose = null; if (f) try { f(); } catch (_) {} }); }, 0);
 // telefono: sposta blocchi già disegnati nella pagina dentro il pannello e li rimette al loro posto alla chiusura
 // (restano vivi: si aggiornano col prezzo live come in pagina). .inSheet li rende visibili anche se .mHide.
@@ -1492,33 +1537,75 @@ function qxLine(U, px) {
 })();
 
 // ---- Posizioni · "Ciclo on-chain" (report.onchain, radar/onchain.py): MVRV di CoinMetrics, zone dello studio research/utxo_pl
-// (10% più basso/alto dei 4 anni precedenti). Grafico a linea di 2 anni con le fasce: a 400 px mostra insieme dove siamo, da quando
-// e quanto in fondo alla fascia (un termometro mostrerebbe solo la posizione di oggi). Con la posizione aperta sta nella card di
-// BTC sotto "Quando esce"; da flat è una card compatta in fondo alla pagina. Solo contesto: non cambia W3.2.
+// (10% più basso/alto dei 4 anni precedenti). Scheda chiusa: stato con colore, termometro a tre fasce col punto di oggi e una riga
+// sul verso della posizione; tutta toccabile, apre il pannello (openSheet: dal basso su telefono, modale su desktop) con
+// Dove siamo · Ultimi 2 anni · Dopo i fondi/le euforie passate · Cosa significa per la posizione · Fonte.
+// Con la posizione aperta sta nella card di BTC sotto "Quando esce"; da flat è una card in fondo alla pagina. Solo contesto: non cambia W3.2.
 (function renderOnchain() {
   const O = R.onchain; if (!O || !O.series || !O.series.v || !O.series.v.length) return;
   const W = R.weekly, open = W && (W.status === "aperto" || W.status === "uscita"), box = open && $("ocBox");
   const el = box || $("ocCard"); if (!el) return;
   const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
-  const n2 = x => nfIT(x, 2), Z = O.zone, S = O.stats && O.stats[Z];
+  const dmy = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const my = d => new Date(d).toLocaleDateString("it-IT", { month: "2-digit", year: "numeric" });
+  const n2 = x => nfIT(x, 2), Z = O.zone, ZN = { cap: "capitolazione", norm: "normale", eup: "euforia" };
+  const days = Math.round((new Date(O.date) - new Date(O.since)) / 864e5) + 1;
+  const BREVE = { cap: { short: "Vicino ai minimi di ciclo: rischio di rimbalzo più alto", long: "Vicino ai minimi di ciclo, ma il fondo può durare mesi", "": "Storicamente vicino ai minimi di ciclo" },
+    eup: { long: "Spesso a inizio rally: nei test uscire prima è costato", short: "Vicino ai massimi di ciclo, ma l'euforia può durare mesi", "": "Storicamente vicino ai massimi di ciclo" } };
+  const breve = O.breve || (BREVE[Z] ? BREVE[Z][O.side || ""] : "Nessuna indicazione dal ciclo");
+  // termometro: fasce 25/50/25; dentro ogni fascia il punto segue il percentile (0–10, 10–90, 90–100), ristretto alla fascia della zona
+  const pc = Math.max(0, Math.min(100, +O.pctile || 0));
+  let x = pc <= 10 ? pc * 2.5 : pc >= 90 ? 75 + (pc - 90) * 2.5 : 25 + (pc - 10) * 50 / 80;
+  x = Z === "cap" ? Math.min(x, 22) : Z === "eup" ? Math.max(x, 78) : Math.max(28, Math.min(72, x));
+  x = Math.max(4, Math.min(96, x));
+  const thermo = `<span class="ocTh" role="img" aria-label="Termometro del ciclo: oggi in zona ${ZN[Z]}, MVRV ${n2(O.mvrv)}; capitolazione sotto ${n2(O.lo)}, euforia sopra ${n2(O.hi)}">
+      <span class="thr" style="left:25%">${n2(O.lo)}</span><span class="thr" style="left:75%">${n2(O.hi)}</span>
+      <span class="bar"><i class="c"></i><i></i><i class="e"></i></span><span class="dot ${Z}" style="left:${x.toFixed(1)}%"></span>
+      <span class="zn ${Z === "cap" ? "on cap" : ""}" style="left:0">capitolazione</span><span class="zn ${Z === "norm" ? "on norm" : ""}" style="left:50%;transform:translateX(-50%)">normale</span><span class="zn ${Z === "eup" ? "on eup" : ""}" style="right:0">euforia</span></span>`;
   const big = Z === "norm" ? "Normale" : `${O.zone_name}<small>dal ${dm(O.since)}</small>`;
-  const sub = `MVRV <b>${n2(O.mvrv)}</b> · capitolazione sotto <b>${n2(O.lo)}</b> · euforia sopra <b>${n2(O.hi)}</b> · percentile a 4 anni <b>${nfIT(O.pctile, 0)}%</b>` +
-    (O.below_1 ? " · sotto 1,0" : O.above_3 ? " · sopra 3,0" : "");
-  const statRow = (k, h, lead) => { const s = O.stats && O.stats[k], x = s && s["d" + h]; if (!x || !x.n) return "";
-    const inC = s.n_entries - x.n, name = k === "cap" ? "capitolazione" : "euforia";
-    return lead ? `Dopo i <b>${x.n}</b> ingressi in ${name} dal 2016${inC > 0 ? ` (${inC} in corso, escluso)` : ""}, BTC a ${h} giorni: mediana <b>${pct(x.median)}</b>, da ${pct(x.min)} a ${pct(x.max)} (${x.up} su ${x.n} in rialzo)`
-      : `a ${h} giorni: mediana ${pct(x.median)}, da ${pct(x.min)} a ${pct(x.max)}`; };
-  const stat = S ? `<div class="ocStat">${statRow(Z, 90, true)}${box ? ` · ${statRow(Z, 30, false)}` : ""}.</div>` : "";
-  const src = O.source_note ? `<span>${escS(O.source_note)}</span>` : `<span>dato del ${dm(O.date)}</span>`;
-  const body = `<div class="ocHead"><b>Ciclo on-chain · MVRV di BTC</b>${src}</div>
-    <div class="ocBig ${Z}">${big}</div><div class="ocSub">${sub}</div>
-    <div class="ocChart" id="ocChart" role="img" aria-label="MVRV degli ultimi 2 anni: oggi ${n2(O.mvrv)}, zona ${O.zone_name.toLowerCase()}, soglie ${n2(O.lo)} e ${n2(O.hi)}"></div>
-    <div class="ocLeg"><span><i class="c"></i>capitolazione</span><span><i class="e"></i>euforia</span><span><i class="u"></i>MVRV 1,0</span></div>
-    <p class="ocTxt">${escS(O.frase)}</p>${stat}<p class="ocNote">${escS(O.note)}</p>`;
-  el.innerHTML = box ? body : `<div class="oc">${body}</div>`;
+  el.innerHTML = `<button type="button" class="ocTap" id="ocOpen" aria-haspopup="dialog">
+      ${box ? `<span class="ocHead"><b>Ciclo on-chain</b><span class="more">Dettagli ›</span></span><span class="ocBig ${Z}">${big}</span>`
+        : `<span class="ocHead"><span class="ocBig ${Z}">${big}</span><span class="more">Dettagli ›</span></span>`}${thermo}<span class="ocLine">${escS(breve)}</span></button>`;
   el.hidden = false; if (!box) $("ocSec").hidden = false;
-  const C = $("ocChart"), Sr = O.series, n = Sr.v.length;
-  const draw = () => {
+
+  // ---- pannello
+  const sec = (t, h) => `<section class="ocSec"><h3>${t}</h3>${h}</section>`;
+  const where = `<div class="ocT3"><div><span>MVRV oggi</span><b class="${Z}">${n2(O.mvrv)}</b><small>${O.below_1 ? "sotto 1,0" : O.above_3 ? "sopra 3,0" : "zona " + ZN[Z]}</small></div>
+      <div><span>In zona dal</span><b>${dm(O.since)}</b><small>${days} ${days === 1 ? "giorno" : "giorni"}</small></div>
+      <div><span>Percentile 4 anni</span><b>${nfIT(pc, 0)}%</b><small>giorni sotto oggi</small></div></div>
+    <div class="ocPc" role="img" aria-label="Percentile a 4 anni: ${nfIT(pc, 0)} per cento">
+      <div class="k"><span>più basso</span><span>più alto</span></div>
+      <div class="rail"><i class="c"></i><i class="e"></i></div><span class="mk ${Z}" style="left:${Math.max(1, Math.min(99, pc))}%"></span>
+      <span class="t" style="left:10%">10%</span><span class="t" style="left:90%">90%</span></div>
+    <div class="ocChips"><span class="chip c">capitolazione &lt; ${n2(O.lo)}</span><span class="chip e">euforia &gt; ${n2(O.hi)}</span><span class="chip">riferimenti 1,0 · 3,0</span></div>`;
+  const chart = `<div class="ocChart" id="ocChartP" role="img" aria-label="MVRV degli ultimi 2 anni: oggi ${n2(O.mvrv)}, zona ${ZN[Z]}, soglie ${n2(O.lo)} e ${n2(O.hi)}"></div>
+    <div class="ocLeg"><span><i class="c"></i>capitolazione</span><span><i class="e"></i>euforia</span><span><i class="u"></i>MVRV 1,0</span></div>`;
+  const ref = new Date(O.date);
+  const epHtml = k => {
+    const s = O.stats && O.stats[k]; if (!s || !s.episodes || !s.episodes.length) return `<p class="ocNote">Nessun episodio dal 2016.</p>`;
+    const eps = s.episodes, vals = eps.flatMap(e => [e.d30, e.d90]).filter(v => v != null).concat([0]);
+    const lo = Math.min(...vals), hi = Math.max(...vals), sp = (hi - lo) || 1, P = v => (v - lo) / sp * 100, z = P(0);
+    const bar = (v, c) => v == null ? `<div class="b ${c}"></div>` : `<div class="b ${c}"><i class="${v >= 0 ? "up" : "dn"}" style="left:${Math.min(z, P(v)).toFixed(1)}%;width:${Math.abs(P(v) - z).toFixed(1)}%"></i></div>`;
+    const val = (v, d = 0) => v == null ? "–" : `<span class="${v >= 0 ? "pos" : "neg"}">${pct(v, d)}</span>`;
+    const row = (d, sub, a, b, cls) => `<div class="r ${cls || ""}"><span class="d">${d}${sub ? `<small>${sub}</small>` : ""}</span>
+        <div class="bars" style="--z:${z.toFixed(1)}%">${bar(a, "s")}${bar(b, "l")}</div><span class="v"><span>${val(a, cls ? 1 : 0)}</span><b>${val(b, cls ? 1 : 0)}</b></span></div>`;
+    const rows = eps.map(e => { const ago = (ref - new Date(e.date)) / 864e5;
+      if (e.d30 == null && e.d90 == null) return `<div class="r na"><span class="d">${my(e.date)}<small>in corso</small></span><div class="bars">meno di 30 giorni di dati</div><span class="v">–</span></div>`;
+      return row(my(e.date), e.d90 == null && ago < 90 ? "in corso" : "", e.d30, e.d90); }).join("");
+    const m30 = s.d30 && s.d30.n ? s.d30.median : null, m90 = s.d90 && s.d90.n ? s.d90.median : null;
+    const up = s.d90 && s.d90.n ? `<div class="ocUp">A 90 giorni BTC più alto in <b>${s.d90.up} su ${s.d90.n}</b> episodi</div>` : "";
+    return `<div class="ocLeg"><span><i class="b30"></i>dopo 30 giorni</span><span><i class="b90"></i>dopo 90 giorni</span></div>
+      <div class="ocEp" role="img" aria-label="Variazione di BTC dopo ogni ingresso in ${ZN[k]}: mediana a 30 giorni ${m30 == null ? "n.d." : pct(m30, 1)}, a 90 giorni ${m90 == null ? "n.d." : pct(m90, 1)}">${rows}${row("Mediana", "", m30, m90, "md")}</div>${up}`;
+  };
+  const k0 = Z === "eup" ? "eup" : "cap";
+  const after = `<div class="seg ocSeg" role="group" aria-label="Zona"><button type="button" data-k="cap" aria-pressed="${k0 === "cap"}">Capitolazione</button><button type="button" data-k="eup" aria-pressed="${k0 === "eup"}">Euforia</button></div>
+    <div id="ocEpBox">${epHtml(k0)}</div>`;
+  const src = `<p class="ocNote">${escS(O.note)} Dato del ${dmy(O.date)}.${O.source_note ? " " + escS(O.source_note) + "." : ""}</p>`;
+  const panel = `<div class="ocP">${sec("Dove siamo", where)}${sec("Ultimi 2 anni", chart)}${sec("Cosa è successo dopo", after)}` +
+    `${sec("Cosa significa per la posizione", `<p class="ocTxt">${escS(O.frase)}</p>`)}${sec("Fonte", src)}</div>`;
+
+  const Sr = O.series, n = Sr.v.length;
+  const draw = C => {
     const w = Math.round(C.clientWidth), h = Math.round(C.clientHeight); if (w < 40 || h < 40) return;
     const top = 6, bot = h - 16, lft = 2, rgt = w - 44;
     const all = Sr.v.concat(Sr.lo, Sr.hi, [1]).filter(x => x != null), lo = Math.min(...all) * 0.9, hi = Math.max(...all) * 1.03;
@@ -1536,8 +1623,14 @@ function qxLine(U, px) {
       <circle class="td ${Z}" cx="${xl}" cy="${yl}" r="4.5"/><text class="tl ${Z}" x="${+xl + 7}" y="${ly}">${n2(O.mvrv)}</text>
       <text class="ax" x="${+xl + 7}" y="${ly + 11}">oggi</text></svg>`;
   };
-  draw();
-  if (window.ResizeObserver) new ResizeObserver(draw).observe(C); else window.addEventListener("resize", draw);
+  $("ocOpen").onclick = () => {
+    const B = openSheet("Ciclo on-chain di BTC", panel), C = B.querySelector("#ocChartP");
+    B.querySelectorAll(".ocSeg button").forEach(bt => bt.onclick = () => {
+      B.querySelectorAll(".ocSeg button").forEach(o => o.setAttribute("aria-pressed", o === bt));
+      B.querySelector("#ocEpBox").innerHTML = epHtml(bt.dataset.k); });
+    requestAnimationFrame(() => draw(C));
+    if (window.ResizeObserver) new ResizeObserver(() => C.isConnected && draw(C)).observe(C);
+  };
 })();
 // ---- Oggi: riga di stato delle posizioni ("BTC short +6,8% · ETH short +16,7%"), stessi numeri in evidenza nelle card di Posizioni; porta a Posizioni
 (function renderPosLine() {

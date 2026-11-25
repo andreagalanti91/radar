@@ -1,0 +1,137 @@
+Dati: v1 su data/spot.csv + funding.csv (+ btc_giornaliero.csv prima del 01/09/2019); W3.2 radar.weekly.simulate dal 2018. Fino al 2026-11-21.
+
+== Tutto 2018→oggi ==
+  W3.2 (Radar)       241,439 $ | CAGR   43.1% | DD  -37.3% | MAR  1.16 | Sharpe 1.30 | op 23 | vinte  78% | peggiore  -25.1%
+  v1                 184,406 $ | CAGR   38.8% | DD  -49.4% | MAR  0.79 | Sharpe 0.95 | op 30 | vinte  47% | peggiore  -20.6%
+  50/50 W3.2+v1      212,922 $ | CAGR   41.1% | DD  -44.7% | MAR  0.92 | Sharpe 1.13
+  B&H BTC             45,004 $ | CAGR   18.4% | DD  -81.2% | MAR  0.23 | Sharpe 0.59
+  W3.2 (utente)      212,098 $ | CAGR   41.0% | DD  -37.3% | MAR  1.10 | Sharpe 1.26 | op 23 | vinte  78% | peggiore  -25.1%
+  50/50 W3.2ut+v1    198,252 $ | CAGR   39.9% | DD  -44.7% | MAR  0.89 | Sharpe 1.10
+
+== 2018–2021 (soglie v1 scelte qui) ==
+  W3.2 (Radar)        54,910 $ | CAGR   53.1% | DD  -37.3% | MAR  1.43 | Sharpe 1.50 | op 12 | vinte  67% | peggiore  -25.1%
+  v1                  84,489 $ | CAGR   70.6% | DD  -49.4% | MAR  1.43 | Sharpe 1.27 | op 11 | vinte  55% | peggiore  -20.6%
+  50/50 W3.2+v1       69,700 $ | CAGR   62.5% | DD  -44.7% | MAR  1.40 | Sharpe 1.38
+  B&H BTC             34,542 $ | CAGR   36.4% | DD  -81.2% | MAR  0.45 | Sharpe 0.80
+  W3.2 (utente)       48,237 $ | CAGR   48.2% | DD  -37.3% | MAR  1.29 | Sharpe 1.41 | op 12 | vinte  67% | peggiore  -25.1%
+  50/50 W3.2ut+v1     66,363 $ | CAGR   60.6% | DD  -44.7% | MAR  1.35 | Sharpe 1.35
+
+== 2022–2026 (mai visto dalla v1) ==
+  W3.2 (Radar)        43,970 $ | CAGR   35.4% | DD  -21.1% | MAR  1.68 | Sharpe 1.13 | op 11 | vinte  91% | peggiore   -4.1%
+  v1                  21,826 $ | CAGR   17.3% | DD  -34.3% | MAR  0.50 | Sharpe 0.61 | op 19 | vinte  42% | peggiore  -19.2%
+  50/50 W3.2+v1       32,898 $ | CAGR   27.6% | DD  -20.7% | MAR  1.33 | Sharpe 0.94
+  B&H BTC             12,618 $ | CAGR    4.9% | DD  -66.9% | MAR  0.07 | Sharpe 0.35
+  W3.2 (utente)       43,970 $ | CAGR   35.4% | DD  -21.1% | MAR  1.68 | Sharpe 1.13 | op 11 | vinte  91% | peggiore   -4.1%
+  50/50 W3.2ut+v1     32,898 $ | CAGR   27.6% | DD  -20.7% | MAR  1.33 | Sharpe 0.94
+
+== Dal 2021 ==
+  W3.2 (Radar)        94,693 $ | CAGR   46.5% | DD  -21.1% | MAR  2.20 | Sharpe 1.39 | op 14 | vinte  93% | peggiore   -4.1%
+  v1                  46,181 $ | CAGR   29.7% | DD  -34.3% | MAR  0.86 | Sharpe 0.83 | op 21 | vinte  48% | peggiore  -19.2%
+  50/50 W3.2+v1       70,437 $ | CAGR   39.3% | DD  -20.7% | MAR  1.90 | Sharpe 1.17
+  B&H BTC             20,529 $ | CAGR   13.0% | DD  -76.6% | MAR  0.17 | Sharpe 0.50
+  W3.2 (utente)       84,360 $ | CAGR   43.7% | DD  -21.1% | MAR  2.07 | Sharpe 1.33 | op 14 | vinte  93% | peggiore   -4.1%
+  50/50 W3.2ut+v1     65,271 $ | CAGR   37.5% | DD  -20.7% | MAR  1.81 | Sharpe 1.12
+
+== Ultimi 12 mesi ==
+  W3.2 (Radar)        12,197 $ | CAGR   22.0% | DD  -18.3% | MAR  1.20 | Sharpe 0.79 | op  4 | vinte  75% | peggiore   -4.1%
+  v1                   7,570 $ | CAGR  -24.3% | DD  -31.7% | MAR -0.77 | Sharpe -0.67 | op  4 | vinte  25% | peggiore   -9.2%
+  50/50 W3.2+v1        9,884 $ | CAGR   -1.2% | DD  -20.0% | MAR -0.06 | Sharpe 0.11
+  B&H BTC              7,073 $ | CAGR  -29.3% | DD  -39.5% | MAR -0.74 | Sharpe -0.56
+  W3.2 (utente)       12,197 $ | CAGR   22.0% | DD  -18.3% | MAR  1.20 | Sharpe 0.79 | op  4 | vinte  75% | peggiore   -4.1%
+  50/50 W3.2ut+v1      9,884 $ | CAGR   -1.2% | DD  -20.0% | MAR -0.06 | Sharpe 0.11
+
+== 2018–2020 ==
+  W3.2 (Radar)        25,142 $ | CAGR   36.0% | DD  -37.3% | MAR  0.97 | Sharpe 1.11 | op  9 | vinte  56% | peggiore  -25.1%
+  v1                  39,376 $ | CAGR   58.0% | DD  -49.4% | MAR  1.17 | Sharpe 1.15 | op  9 | vinte  44% | peggiore  -20.6%
+  50/50 W3.2+v1       32,259 $ | CAGR   47.8% | DD  -44.7% | MAR  1.07 | Sharpe 1.18
+  B&H BTC             21,617 $ | CAGR   29.3% | DD  -81.2% | MAR  0.36 | Sharpe 0.73
+  W3.2 (utente)       25,142 $ | CAGR   36.0% | DD  -37.3% | MAR  0.97 | Sharpe 1.11 | op  9 | vinte  56% | peggiore  -25.1%
+  50/50 W3.2ut+v1     32,259 $ | CAGR   47.8% | DD  -44.7% | MAR  1.07 | Sharpe 1.18
+
+== 2021–2023 ==
+  W3.2 (Radar)        37,578 $ | CAGR   55.6% | DD  -19.3% | MAR  2.88 | Sharpe 1.57 | op  7 | vinte 100% | peggiore    1.0%
+  v1                  30,498 $ | CAGR   45.1% | DD  -32.0% | MAR  1.41 | Sharpe 1.03 | op  9 | vinte  67% | peggiore  -19.2%
+  50/50 W3.2+v1       34,038 $ | CAGR   50.5% | DD  -19.9% | MAR  2.54 | Sharpe 1.34
+  B&H BTC             14,416 $ | CAGR   13.0% | DD  -76.6% | MAR  0.17 | Sharpe 0.51
+  W3.2 (utente)       33,477 $ | CAGR   49.7% | DD  -19.3% | MAR  2.57 | Sharpe 1.47 | op  7 | vinte 100% | peggiore    1.0%
+  50/50 W3.2ut+v1     31,988 $ | CAGR   47.4% | DD  -20.2% | MAR  2.35 | Sharpe 1.27
+
+== 2024–oggi ==
+  W3.2 (Radar)        25,250 $ | CAGR   37.8% | DD  -21.1% | MAR  1.79 | Sharpe 1.20 | op  7 | vinte  86% | peggiore   -4.1%
+  v1                  14,492 $ | CAGR   13.7% | DD  -34.3% | MAR  0.40 | Sharpe 0.54 | op 12 | vinte  33% | peggiore   -9.2%
+  50/50 W3.2+v1       19,871 $ | CAGR   26.8% | DD  -20.7% | MAR  1.30 | Sharpe 0.92
+  B&H BTC             13,630 $ | CAGR   11.3% | DD  -53.0% | MAR  0.21 | Sharpe 0.46
+  W3.2 (utente)       25,250 $ | CAGR   37.8% | DD  -21.1% | MAR  1.79 | Sharpe 1.20 | op  7 | vinte  86% | peggiore   -4.1%
+  50/50 W3.2ut+v1     19,871 $ | CAGR   26.8% | DD  -20.7% | MAR  1.30 | Sharpe 0.92
+
+== Anno per anno (rendimento) ==
+  2018: W3.2   -9.7% | v1   +3.1% | 50/50 (dal 2018)   -3.4% | B&H  -72.3% | W3.2 utente   -9.7%
+  2019: W3.2  +41.5% | v1  +61.5% | 50/50 (dal 2018)  +52.0% | B&H  +94.3% | W3.2 utente  +41.5%
+  2020: W3.2  +96.7% | v1 +136.5% | 50/50 (dal 2018) +119.0% | B&H +302.0% | W3.2 utente  +96.7%
+  2021: W3.2 +118.4% | v1 +114.6% | 50/50 (dal 2018) +116.1% | B&H  +59.8% | W3.2 utente  +91.9%
+  2022: W3.2  +19.4% | v1   +2.9% | 50/50 (dal 2018)   +9.5% | B&H  -64.2% | W3.2 utente  +19.4%
+  2023: W3.2  +46.1% | v1  +40.0% | 50/50 (dal 2018)  +42.7% | B&H +155.6% | W3.2 utente  +46.1%
+  2024: W3.2 +102.7% | v1  +65.4% | 50/50 (dal 2018)  +82.1% | B&H +121.3% | W3.2 utente +102.7%
+  2025: W3.2   +4.9% | v1  +16.4% | 50/50 (dal 2018)  +10.7% | B&H   -6.3% | W3.2 utente   +4.9%
+  2026: W3.2  +18.5% | v1  -21.3% | 50/50 (dal 2018)   -2.6% | B&H  -31.3% | W3.2 utente  +18.5%
+  v1 meglio di W3.2 negli anni: [2018, 2019, 2020, 2025]
+
+== Senza le 3 operazioni migliori (prodotto dei risultati sul capitale) ==
+  Tutto      W3.2         con tutte x 24.13 | senza le 3 migliori x 6.12 | senza la migliore x14.07 | migliori [71.5 52.1 51.1]
+  Tutto      v1           con tutte x 18.52 | senza le 3 migliori x 1.05 | senza la migliore x 4.05 | migliori [357.3  99.1  94.4]
+  Tutto      W3.2 utente  con tutte x 20.87 | senza le 3 migliori x 6.03 | senza la migliore x13.71 | migliori [52.2 51.1 50.4]
+  2022–2026  W3.2         con tutte x  4.40 | senza le 3 migliori x 1.68 | senza la migliore x 3.09 | migliori [42.2 40.5 30.8]
+  2022–2026  v1           con tutte x  2.22 | senza le 3 migliori x 0.62 | senza la migliore x 1.14 | migliori [94.4 43.7 27.6]
+  2022–2026  W3.2 utente  con tutte x  4.33 | senza le 3 migliori x 1.66 | senza la migliore x 3.04 | migliori [42.2 40.5 30.8]
+  Dal 2021   W3.2         con tutte x  8.43 | senza le 3 migliori x 2.77 | senza la migliore x 5.54 | migliori [52.1 42.2 40.5]
+  Dal 2021   v1           con tutte x  2.68 | senza le 3 migliori x 0.75 | senza la migliore x 1.38 | migliori [94.4 43.7 27.6]
+  Dal 2021   W3.2 utente  con tutte x  8.31 | senza le 3 migliori x 2.73 | senza la migliore x 5.46 | migliori [52.2 42.2 40.5]
+
+== Correlazione dei rendimenti giornalieri W3.2–v1 ==
+  Tutto 2018→oggi                    0.65  (W3.2–BTC 0.26, v1–BTC 0.36)
+  2018–2021 (soglie v1 scelte qui)   0.68  (W3.2–BTC 0.31, v1–BTC 0.46)
+  2022–2026 (mai visto dalla v1)     0.64  (W3.2–BTC 0.20, v1–BTC 0.18)
+  Dal 2021                           0.63  (W3.2–BTC 0.27, v1–BTC 0.37)
+  Ultimi 12 mesi                     0.72  (W3.2–BTC -0.51, v1–BTC -0.42)
+  mensile, tutto: 0.73
+
+== Quando sono d'accordo (giorni 2018→oggi; rendimento composto nei giorni dello stato e annualizzato) ==
+ [Tutto]
+  Entrambe long              929 g (28.6%) | BTC +1775.8% | W3.2 +1152.1% | v1 +1751.8% | annuo BTC   +216% W3.2   +170% v1   +215%
+  Entrambe short             223 g ( 6.9%) | BTC   -10.3% | W3.2    -0.8% | v1   -10.3% | annuo BTC    -16% W3.2     -1% v1    -16%
+  Entrambe fuori             920 g (28.3%) | BTC   -71.0% | W3.2    +0.0% | v1    -1.4% | annuo BTC    -39% W3.2     +0% v1     -1%
+  Solo W3.2 in posizione     584 g (18.0%) | BTC   +11.5% | W3.2   +98.2% | v1    -1.6% | annuo BTC     +7% W3.2    +53% v1     -1%
+  Solo v1 in posizione       588 g (18.1%) | BTC   -22.1% | W3.2    +0.0% | v1    +7.8% | annuo BTC    -14% W3.2     +0% v1     +5%
+  Versi opposti                3 g ( 0.1%) | BTC    +6.3% | W3.2    -2.0% | v1    +6.2%
+ [2022–2026]
+  Entrambe long              607 g (34.0%) | BTC  +178.8% | W3.2  +124.9% | v1  +176.3% | annuo BTC    +85% W3.2    +63% v1    +84%
+  Entrambe short             131 g ( 7.3%) | BTC   +30.3% | W3.2   -14.1% | v1   -30.2% | annuo BTC   +109% W3.2    -35% v1    -63%
+  Entrambe fuori             338 g (18.9%) | BTC    -6.9% | W3.2    +0.0% | v1    -0.6% | annuo BTC     -7% W3.2     +0% v1     -1%
+  Solo W3.2 in posizione     449 g (25.1%) | BTC   -33.0% | W3.2  +132.2% | v1    -1.3% | annuo BTC    -28% W3.2    +98% v1     -1%
+  Solo v1 in posizione       258 g (14.4%) | BTC   -45.9% | W3.2    +0.0% | v1    +8.5% | annuo BTC    -58% W3.2     +0% v1    +12%
+  Versi opposti                3 g ( 0.2%) | BTC    +6.3% | W3.2    -2.0% | v1    +6.2%
+
+== v1 con soglie vicine (solo descrittivo, NON per sceglierle). Voti a passi di 1/17 = 0,059 ==
+  125 combinazioni: tutto mediana 124,717 (min 27,290, max 213,876), DD mediano -58.7% | 2022–26 mediana 20,655 (min 11,669, max 27,157), DD mediano -36.2% | sopra W3.2: tutto 0/125, 2022–26 0/125, dal 2021 0/125
+  una soglia alla volta (13): tutto mediana 165,849 (min 58,619, max 213,876), DD mediano -49.4% | 2022–26 mediana 21,826 (min 14,153, max 25,070), DD mediano -34.3% | sopra W3.2: tutto 0/13, 2022–26 0/13, dal 2021 0/13
+    long +0.40 short -0.90 uscita +0.25: tutto   130,111 (DD -54.9%) | 2022–26   25,070 (DD -31.5%)
+    long +0.45 short -0.90 uscita +0.25: tutto   165,849 (DD -49.4%) | 2022–26   22,714 (DD -34.3%)
+    long +0.50 short -0.80 uscita +0.25: tutto    58,619 (DD -67.9%) | 2022–26   14,153 (DD -41.7%)
+    long +0.50 short -0.85 uscita +0.25: tutto    64,439 (DD -67.9%) | 2022–26   17,691 (DD -40.4%)
+    long +0.50 short -0.90 uscita +0.15: tutto   148,082 (DD -45.9%) | 2022–26   19,272 (DD -38.8%)
+    long +0.50 short -0.90 uscita +0.20: tutto   173,178 (DD -45.9%) | 2022–26   21,402 (DD -38.8%)
+    long +0.50 short -0.90 uscita +0.25: tutto   184,406 (DD -49.4%) | 2022–26   21,826 (DD -34.3%)
+    long +0.50 short -0.90 uscita +0.30: tutto   213,876 (DD -48.1%) | 2022–26   23,872 (DD -34.4%)
+    long +0.50 short -0.90 uscita +0.35: tutto   213,876 (DD -48.1%) | 2022–26   23,872 (DD -34.4%)
+    long +0.50 short -0.95 uscita +0.25: tutto   184,406 (DD -49.4%) | 2022–26   21,826 (DD -34.3%)
+    long +0.50 short -1.00 uscita +0.25: tutto   184,406 (DD -49.4%) | 2022–26   21,826 (DD -34.3%)
+    long +0.55 short -0.90 uscita +0.25: tutto   123,035 (DD -59.7%) | 2022–26   20,655 (DD -33.0%)
+    long +0.60 short -0.90 uscita +0.25: tutto   127,543 (DD -59.7%) | 2022–26   21,412 (DD -33.0%)
+
+== v1 eseguita con ritardo (1 e 2 giorni) ==
+  +1 g: tutto   125,838 $ | CAGR   33.0% | DD  -48.6% | MAR  0.68 | Sharpe 0.86 | 2022–26 16,381
+  +2 g: tutto    75,579 $ | CAGR   25.6% | DD  -55.5% | MAR  0.46 | Sharpe 0.73 | 2022–26 12,914
+
+== Placebo: posizione della v1 spostata in blocco nel tempo (stessi trade, stessi tempi in posizione, date casuali) ==
+  tutto: v1 184,406 | placebo mediana 8,786, 95° pct 65,565 | p = 0.021
+  2022–26: v1 21,826 | placebo mediana 8,351, 95° pct 30,691 | p = 0.110

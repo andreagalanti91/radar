@@ -409,6 +409,18 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
++0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
+con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai
+visto, fa 21,8k $ (DD −34%, 42% in guadagno) contro 44,0k $ (DD −21%) di W3.2. Senza le 3 operazioni migliori vale ×1,05 dal
+2018 (W3.2 ×6,1). Placebo nel 2022–26 p 0,11; 0 combinazioni su 125 di soglie vicine sopra W3.2; con un giorno di ritardo −32%. Il
+50/50 a capitali separati abbassa il CAGR senza ridurre il DD (correlazione 0,65). Nei giorni in cui è in posizione solo lei, la v1
+rende +5% annuo, W3.2 da sola +53%. W3.2 dal 2018 con `weekly.simulate` continuo fa 241.439 $; i 209.002 $ dell'utente vengono
+dalla chiusura d'ufficio del long al 31/12/2020 (−12%) e da un giorno di dati in più, non da flusso, date o costi. Un voto di
+indicatori di prezzo non aggiunge informazione al flusso perp (conferma delle lezioni 86, 117 e 119). Al massimo un confronto
+informativo "non in uso", mai una strategia o un affiancamento. Nei confronti di lungo periodo W3.2 va simulata continua: cucire
+due periodi chiudendo le posizioni sposta il risultato in modo rilevante. Quando si uniscono frame, va controllato che il flusso
+non resti vuoto (un'unione al 01/09/2019 cancellava le operazioni del 2020).
 **Lezione 125**: indicatore UTXO P/L Count Ratio (CryptoQuant) come supporto a W3.2, testato con il sostituto MVRV CoinMetrics
 (research/utxo_pl, PREREG bdada1a). Il sostituto coincide con 6/10 finestre del grafico (perde i segnali brevi 2023 e metà 2026);
 oggi (24/11/2026) è capitolazione con la soglia del 10% a 4 anni (MVRV 1,13 contro 1,20), non sotto 1,0. Nessuna regola passa i
