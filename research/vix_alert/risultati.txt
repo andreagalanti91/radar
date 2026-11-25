@@ -1,0 +1,15 @@
+
+== S&P 500 dal 1990
+VIX >30 (buy): 43 eventi · 30g med +2.5% su 64% · 90g med +5.5% su 69% · 180g med +8.2% su 69%
+VIX <15 (sell): 87 eventi · 30g med +1.0% su 63% · 90g med +2.5% su 69% · 180g med +6.2% su 76%
+riferimento (tutti i giorni): 30g med +1.2% su 64% · 90g med +3.1% su 69% · 180g med +5.6% su 74%
+
+== S&P 500 dal 2018
+VIX >30 (buy): 16 eventi · 30g med +4.7% su 73% · 90g med +6.2% su 73% · 180g med +12.0% su 73%
+VIX <15 (sell): 29 eventi · 30g med +1.0% su 69% · 90g med +2.4% su 61% · 180g med +4.2% su 70%
+riferimento (tutti i giorni): 30g med +1.7% su 67% · 90g med +4.2% su 73% · 180g med +7.7% su 71%
+
+== BTC dal 2018
+VIX >30 (buy): 16 eventi · 30g med +4.0% su 62% · 90g med +4.3% su 54% · 180g med +27.1% su 62%
+VIX <15 (sell): 29 eventi · 30g med +0.4% su 52% · 90g med -3.4% su 45% · 180g med +13.2% su 63%
+riferimento (tutti i giorni): 30g med +1.5% su 54% · 90g med +6.2% su 55% · 180g med +17.1% su 59%
