@@ -53,8 +53,17 @@ class TestTestiW31(unittest.TestCase):
         # testo calcolato dallo storico del report (trade, vincenti, 10.000 $, drawdown): non può più restare indietro
         m = re.search(r'\$\("wkLim"\)\.innerHTML = `([^`]*)`', T)
         self.assertIsNotNone(m)
-        for k in ("M.n", "M.win_rate", "H.final_10k_1x", "M.max_dd_pct"):
+        # operazioni chiuse contate a parte dalla posizione aperta (rapporto ufficiale W3.2, 25/11/2026)
+        for k in ("C.n", "C.wins", "C.open", "H.final_10k_1x", "M.max_dd_pct"):
             self.assertIn(k, m.group(1))
+
+    def test_chiuse_separate_dalla_aperta(self):
+        """history.m1 conta l'aperta come chiusa: la pagina usa chiuseW (H.trades senza reason "open") e CAGR/DD."""
+        self.assertIn('const chiuseW = H =>', T)
+        self.assertIn('t.reason !== "open"', T)
+        self.assertIn('["Win rate (chiuse)", nfS(C.wr) + "%"]', T)
+        self.assertIn('["Rend. annuo / DD", nfS(cagrDD(H, M, R.date))]', T)
+        self.assertNotIn('["Rend./DD", nfS(M.mar)]', T)
 
 
 class TestSoloW32(unittest.TestCase):

@@ -1177,6 +1177,12 @@ window.sheetNodes = (title, nodes) => {
 // numeri all'italiana: punto per le migliaia (anche sotto 10.000, che toLocaleString lascia senza), virgola decimale, meno tipografico
 const nfIT = window.nfIT = (x, d = 0) => { if (x == null || !isFinite(x)) return "–"; const [i, f] = Math.abs(x).toFixed(d).split(".");
   return (x < 0 && /[1-9]/.test(i + (f || "")) ? "−" : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (f ? "," + f : ""); };
+// operazioni CHIUSE contate a parte dalla posizione aperta (rapporto ufficiale W3.2): history.m1 la conta come chiusa
+const chiuseW = H => { const T = (H && H.trades) || [], c = T.filter(t => t.reason !== "open"), w = c.filter(t => t.pnl_pct > 0).length,
+  o = T.length > c.length;
+  return { n: c.length, wins: w, wr: c.length ? Math.round(w / c.length * 1000) / 10 : null, open: o, lab: `${c.length} chiuse${o ? " + 1 aperta" : ""}` }; };
+const cagrDD = (H, M, end) => { const y = (new Date(end) - new Date(H.start)) / 3.15576e10, f = H.final_10k_1x / 10000;
+  return y > 0 && M.max_dd_pct < 0 ? Math.round(((Math.pow(f, 1 / y) - 1) * 100 / Math.abs(M.max_dd_pct)) * 100) / 100 : null; };
 const nfS = x => x == null || x === "" || !isFinite(+x) ? "–" : nfIT(+x, (String(x).split(".")[1] || "").length);   // decimali come arrivano dal server
 const usd = x => x == null ? "–" : (Math.round(x) < 0 ? "−" : "") + "$" + nfIT(Math.abs(Math.round(x)));
 const pct = (x, d = 1) => { if (x == null || !isFinite(x)) return "–"; const s = nfIT(x, d); return (x > 0 && /[1-9]/.test(s) ? "+" : "") + s + "%"; };
@@ -1441,13 +1447,14 @@ function qxLine(U, px) {
   // supporti, resistenze e liquidazioni: sezione Grafico (tabella completa sotto il grafico, mappa unica report.livelli)
   const H = W.history, M = H.m1;
   // "Limiti" in Come funziona: numeri dello storico del report (W3.2), così il testo non resta indietro quando cambia la strategia
-  if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 25% allo stop: ${M.n} trade, ${Math.round(M.n * M.win_rate / 100)} in guadagno, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto.`;
+  const C = chiuseW(H);
+  if ($("wkLim") && M && M.n) $("wkLim").innerHTML = `Dal 2021, con il rischio al 25% allo stop: ${C.n} operazioni chiuse, ${C.wins} in guadagno${C.open ? ", più 1 aperta" : ""}, 10.000 $ → circa ${usd(Math.round(H.final_10k_1x / 100) * 100)}, drawdown giornaliero ${pct(M.max_dd_pct, 1)}. Pochi trade: ogni trade pesa molto.`;
   $("wkStatSec").hidden = false;
-  $("wkStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${M.n} trade`;
+  $("wkStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${C.lab}`;
   const Y = Object.keys(M.years);
   $("wkYears").innerHTML = `<tr><th>Anno</th><th>Rendimento</th></tr>` + Y.map(y => `<tr><td>${y}</td><td class="${M.years[y] >= 0 ? "pos" : "neg"}">${pct(M.years[y], 1)}</td></tr>`).join("");
   const S = [["$10.000 diventano", usd(H.final_10k_1x)], ["Rendimento", pct(M.total_pct, 1)], ["Max DD giornaliero", pct(M.max_dd_pct, 1)], ["Peggior trade", pct(M.worst_pct, 1)],
-    ["Medio per trade", pct(M.avg_pct, 1)], ["Win rate", nfS(M.win_rate) + "%"], ["Rend./DD", nfS(M.mar)]];
+    ["Medio per trade", pct(M.avg_pct, 1)], ["Win rate (chiuse)", nfS(C.wr) + "%"], ["Rend. annuo / DD", nfS(cagrDD(H, M, R.date))]];
   $("wkSum").innerHTML = `<tr><th></th><th>W3.2</th></tr>` + S.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
   $("wkTr").innerHTML = `<tr><th>Ingresso</th><th>Lato</th><th>Mercato</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Movimento</th><th>Sul capitale</th></tr>` +
     H.trades.slice().reverse().map(t => `<tr><td>${fmtD(t.entry)}</td><td class="${t.side === "long" ? "pos" : "neg"}">${side(t.side)}</td><td>${mkt(t.market, t.expo)}</td><td>${usd(t.entry_px)}</td>` +
@@ -1459,7 +1466,7 @@ function qxLine(U, px) {
     const X2 = M, fin = H.final_10k_1x;
     $("wkSumM").innerHTML = `<div class="top"><div class="kpi ${X2.total_pct >= 0 ? "pos" : "neg"}">${pc1(X2.total_pct)}<small>rendimento ${artD("dal", fmtD(H.start))}: $10.000 diventano ${usd(fin)}</small></div>
 </div>
-      <div class="facts"><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div><div><span>Vinti</span><b>${nfS(X2.win_rate)}%</b></div></div>
+      <div class="facts"><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${C.n}${C.open ? "<small> + 1 aperta</small>" : ""}</b></div><div><span>Vinti</span><b>${nfS(C.wr)}%<small> delle chiuse</small></b></div></div>
       <button type="button" class="wkMore" id="wkSimOpen"><span>Simulatore<small>capitale, data di partenza, obiettivo</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>
       <button type="button" class="wkMore" id="wkSumMore"><span>Dettagli<small>tutte le metriche, anno per anno, equity</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
     $("wkSimOpen").onclick = () => { sheetNodes("Simulatore W3.2", [$("simPanel")]); [80, 400].forEach(ms => setTimeout(() => simChart && simChart.timeScale().fitContent(), ms)); };
@@ -1518,11 +1525,11 @@ function qxLine(U, px) {
   $("ethCard").innerHTML = h; $("ethCard").hidden = false;
   $("ethMore").onclick = () => window.wkDlgOpen && window.wkDlgOpen(E, "ETH", false);
   // --- Storico
-  const H = E.history, M = H.m1;
+  const H = E.history, M = H.m1, CE = chiuseW(H);
   $("ethStatSec").hidden = false;
-  $("ethStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${M.n} trade`;
+  $("ethStatSub").textContent = `${artD("dal", fmtD(H.start))} · ${CE.lab}`;
   $("ethSumM").innerHTML = `<div class="top"><div class="kpi ${M.total_pct >= 0 ? "pos" : "neg"}">${pc1(M.total_pct)}<small>rendimento ${artD("dal", fmtD(H.start))}: $10.000 diventano ${usd(H.final_10k_1x)}</small></div></div>
-    <div class="facts"><div><span>Max drawdown</span><b>${pc1(M.max_dd_pct)}</b></div><div><span>Trade</span><b>${M.n}</b></div><div><span>Vinti</span><b>${nfS(M.win_rate)}%</b></div></div>
+    <div class="facts"><div><span>Max drawdown</span><b>${pc1(M.max_dd_pct)}</b></div><div><span>Trade</span><b>${CE.n}${CE.open ? "<small> + 1 aperta</small>" : ""}</b></div><div><span>Vinti</span><b>${nfS(CE.wr)}%<small> delle chiuse</small></b></div></div>
     <p class="foot" style="margin:0">W3.2 su ETH con le regole e i parametri di BTC, flusso e funding dei perp ETH. Capitale separato da BTC: ${usd(E.capital)} (RADAR_ETH_CAPITAL).</p>`;
   const wks = t => Math.max(1, Math.round((new Date(t.exit || E.date) - new Date(t.entry)) / 6.048e8));
   $("ethTrMN").textContent = `${H.trades.length} · risultato sul capitale ETH`;
