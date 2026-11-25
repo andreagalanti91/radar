@@ -1,6 +1,6 @@
 # STATO · Avviso VIX nel bot · avviato 25/11/2026
 
-Stato: IN CORSO (in coda dopo l'agente dello Scanner: tocca radar/cli.py)
+Stato: COMPLETATO (25/11/2026)
 
 ## Prompt originale
 "Implementa nel bot: VIX > 30 alert Buy; VIX < 15 alert Sell. Ogni quanto conviene fare un check per dare alert?"
@@ -17,3 +17,6 @@ Stato: IN CORSO (in coda dopo l'agente dello Scanner: tocca radar/cli.py)
 ## Prossima azione
 Agente (Opus 5.5 medium): radar/vix.py, aggancio in cli.py, testo Telegram nel nuovo formato, stato in data/state.json, test;
 poi suite, deploy, verifica.
+
+## Deploy e verifica (25/11, 17:08 UTC)
+Agganciato in cli.py dopo le soglie ETH; giro 510 riuscito; state["vix"] creato: zona alta, VIX 33,66 (Yahoo), messaggio iniziale inviato e confermato (marcatore scritto solo a invio riuscito); prossimo controllo nella fascia delle 20 UTC; Buy riarmato solo dopo un ritorno sotto 25. FATTO.

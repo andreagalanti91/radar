@@ -1,6 +1,6 @@
 # STATO · Scanner top 200 e nuova pagina · avviato 25/11/2026
 
-Stato: FASI 1–2 FATTE (agente), in attesa di revisione, deploy e verifica
+Stato: COMPLETATO (25/11/2026)
 
 ## Prompt originale
 "Radar strumento super utile, grazie! Ti chiedo di impostare una ricerca settimanale su ingressi di top 200 crypto. Imposta
@@ -27,3 +27,6 @@ preferite, le selezionate da te. Dimmi anche una cosa, queste dello scanner sono
 
 ## Prossima azione
 Revisione del coordinatore, commit, deploy e verifica sul sito.
+
+## Deploy e verifica (25/11, 17:08 UTC)
+Suite 488 test; giri 510–511 riusciti; sito: menu a 6 voci senza Opzioni, Scanner con 144 monete (5 long, 50 short, 52 flat, 37 dati insufficienti), registro scommesse presente e vuoto, 0 errori JS, nessun overflow a 400/1280. FATTO.
