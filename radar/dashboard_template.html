@@ -260,12 +260,12 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(7,1fr);width:min(560px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(560px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
 .tabbar a[aria-current="page"]{color:var(--tint);background:var(--tint-bg);font-weight:600}
-@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.62rem;letter-spacing:-.02em;border-radius:18px}.tabbar svg{width:21px;height:21px}}   /* 7 voci (Scanner dal 25/11): etichette intere anche a 360 px */
+@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.62rem;letter-spacing:-.02em;border-radius:18px}.tabbar svg{width:21px;height:21px}}   /* 6 voci (Opzioni nascosta dal 25/11, OPZIONI_ON): etichette intere anche a 360 px */
 @media (max-width:380px){.tabbar{padding:4px;width:calc(100% - 12px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.58rem;letter-spacing:-.03em}}
 
 /* grafici */
@@ -690,32 +690,69 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
 .opLine .opTag{padding:4px 8px;font-size:.66rem}
 .opLine .plV small{color:var(--label3);font-size:.76rem}
 @media (max-width:700px){#opSec>.sh small{display:none}}
-/* Scanner (pagina a sé, radar/scanner.py): TRX sulla carta con il cancello di BTC e stato settimanale di W3.2 sulle altcoin. Solo informativa */
-#scBody,#trxBody{display:grid;min-width:0}
-.scWarn{font-weight:500}
+/* Scanner (pagina a sé, radar/scanner.py e radar/scommesse.py): top 200 crypto con W3.2, in evidenza, ingressi della settimana,
+   scommesse sulla carta, tabella con stella delle preferite e riga espandibile. Solo informativa. Telefono prima di tutto (360–400 px) */
+#scBody,#trxBody,#scEvid,#scIng,#scBet{display:grid;min-width:0}
+.scTrx{padding:6px 16px} .scTrx>summary{min-height:40px} .scTrx[open]{padding-bottom:16px}
+.scInfo{display:flex;gap:8px;align-items:center;margin:0 2px;padding:10px 14px;border-radius:var(--r-tile);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);background:color-mix(in srgb,var(--orange) 9%,var(--card));font-size:.86rem;line-height:1.4;color:var(--label)}
+.scInfo svg{flex:0 0 18px;width:18px;height:18px;color:var(--orange)} .scInfo b{color:var(--orange)}
+.scLeg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px;margin:0;padding:14px 16px}
+.scLeg div{display:flex;gap:8px;align-items:baseline;font-size:.8rem;line-height:1.4;color:var(--label2);min-width:0}
+.scLeg dt{flex:0 0 auto;margin:0} .scLeg dd{margin:0;min-width:0}
+@media (max-width:640px){.scLeg{grid-template-columns:minmax(0,1fr);padding:12px 14px}}
 .scTag{display:inline-flex;align-items:center;justify-content:center;font:700 .68rem/1 var(--font);letter-spacing:.04em;padding:5px 9px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);white-space:nowrap;text-transform:uppercase}
-.scTag.long{--c:var(--green)} .scTag.short{--c:var(--red)} .scTag.flat,.scTag.nd{--c:var(--label2)} .scTag.nuovo{--c:var(--tint)} .scTag.uscita{--c:var(--orange)} .scTag.carta{--c:var(--orange);text-transform:none;letter-spacing:0;font-weight:600}
+.scTag.long{--c:var(--green)} .scTag.short{--c:var(--red)} .scTag.flat,.scTag.nd{--c:var(--label2)} .scTag.nuovo{--c:var(--tint)} .scTag.uscita{--c:var(--orange)}
+.scTag.carta,.scTag.uso,.scTag.oss,.scTag.pref{text-transform:none;letter-spacing:0;font-weight:600}
+.scTag.carta,.scTag.oss{--c:var(--orange)} .scTag.uso{--c:var(--tint)} .scTag.pref{--c:var(--label2)}
 .scHead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px} .scHead b{font:600 1rem/1.3 var(--font);letter-spacing:-.01em}
-.scTiles{margin-top:14px;grid-template-columns:repeat(var(--n,4),minmax(0,1fr))}
+.scH{font:600 .74rem var(--font);letter-spacing:.04em;text-transform:uppercase;color:var(--label3);margin:6px 4px 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;align-items:baseline}
+.scH small{font:500 .74rem var(--font);text-transform:none;letter-spacing:0;color:var(--label3)}
+/* righe compatte (In evidenza, Ingressi): una card, una riga per moneta */
+.scList{padding:6px 8px;display:grid}
+.scRow{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:4px 8px;padding:8px 6px;border-top:1px solid var(--line);min-height:52px}
+.scRow:first-child{border-top:0}
+.scRow .nm{min-width:0;display:grid;gap:2px} .scRow .nm b{font:600 .95rem/1.2 var(--font);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.scRow .nm small,.scRow .rt small{font-size:.74rem;color:var(--label2);line-height:1.3}
+.scRow .rt{display:grid;justify-items:end;gap:3px;text-align:right}
+.scRow.noStar{grid-template-columns:minmax(0,1fr) auto;padding-left:10px}
+.scDet{grid-column:1/-1;margin:2px 0 4px}
+.scDet>summary{min-height:40px}
+.star{width:40px;height:40px;display:inline-grid;place-items:center;border:0;border-radius:999px;background:transparent;color:var(--label3);font-size:1.2rem;line-height:1;cursor:pointer;padding:0}
+.star[aria-pressed="true"]{color:#e0a100} .star:hover{background:var(--raise)} .star:focus-visible{outline:2px solid var(--tint);outline-offset:1px}
+.btcY{color:var(--green);font-weight:600} .btcN{color:var(--label2)}
+.scTiles{margin-top:12px;grid-template-columns:repeat(var(--n,4),minmax(0,1fr))}
 @media (max-width:560px){.scTiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .scTiles>div{background:var(--card2);box-shadow:none} .scTiles small{overflow-wrap:anywhere}
-.scCond{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.scCond span{font-size:.76rem;padding:4px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:var(--label2);white-space:nowrap}
+.scCond{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.scCond span{font-size:.76rem;padding:4px 9px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--label2);white-space:nowrap}
 .scCond span.ok{color:var(--green)} .scCond span.no{color:var(--red)}
-.scNew{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.scNew span{font:600 .78rem var(--font);padding:5px 10px;border-radius:999px;background:var(--tint-bg);color:var(--tint)}
-.scNew span.x{background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange)}
-.scTools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 4px}
-.scTools input{flex:1 1 140px;min-width:0;font:500 .84rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
-.scTools .seg button{padding:6px 11px;font-size:.76rem}
-table.grid.scT{font-size:.8rem;width:auto;min-width:100%} table.grid.scT td{padding:8px 9px} table.grid.scT th{padding:6px 9px;cursor:pointer;-webkit-user-select:none;user-select:none}
-table.grid.scT th[aria-sort]{color:var(--tint)}
-table.grid.scT td:first-child,table.grid.scT th:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
-table.grid.scT td:first-child{background:color-mix(in srgb,var(--label) 4%,var(--card))}
-table.grid.scT tr.nuovo td{background:var(--tint-bg)} table.grid.scT tr.nuovo td:first-child{background:color-mix(in srgb,var(--tint) 16%,var(--card))}
-table.grid.scT td small{display:block;color:var(--label3);font-size:.68rem;margin-top:1px;white-space:normal;max-width:130px;margin-left:auto}
-table.grid.scT td:first-child small{margin-left:0;max-width:none;white-space:nowrap}
-table.grid.scT .tk{font-weight:600}
+.scTools{display:grid;gap:8px;margin:2px 0 0}
+.scPills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:2px 2px 4px;margin:0 -2px}
+.scPills::-webkit-scrollbar{display:none}
+.scPills button{flex:0 0 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--label2);font:600 .8rem var(--font);cursor:pointer;white-space:nowrap}
+.scPills button[aria-pressed="true"]{background:var(--tint-bg);color:var(--tint);border-color:color-mix(in srgb,var(--tint) 40%,transparent)}
+.scPills button small{font-weight:500;color:var(--label3);margin-left:4px}
+.scTools input{width:100%;min-height:40px;box-sizing:border-box;font:500 .9rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+/* tabella completa: 5 colonne sul telefono, 7 da 640 px; dettagli tecnici nella riga espandibile */
+table.scT{width:100%;border-collapse:collapse;font-size:.84rem;font-variant-numeric:tabular-nums;table-layout:auto}
+table.scT th{font:500 .72rem var(--font);color:var(--label3);text-align:left;padding:6px 6px;white-space:nowrap}
+table.scT td{padding:6px;border-top:1px solid var(--line);vertical-align:middle;text-align:left}
+table.scT th.r,table.scT td.r{text-align:right}
+table.scT td.st{width:40px;padding:2px 0}
+table.scT tr.main{cursor:pointer} table.scT tr.main:hover td{background:color-mix(in srgb,var(--label) 3%,transparent)}
+table.scT tr.nuovo td{background:var(--tint-bg)}
+table.scT .tk{font-weight:600;display:flex;align-items:center;gap:4px} table.scT .tk::after{content:"›";color:var(--label3);font-weight:400;transition:transform .2s}
+table.scT tr[aria-expanded="true"] .tk::after{transform:rotate(90deg)}
+table.scT td small{display:block;color:var(--label3);font-size:.7rem;margin-top:1px;line-height:1.25}
+table.scT tr.det td{background:var(--card2);border-top:0;padding:10px 12px 14px;white-space:normal}
+table.scT .dl{display:grid;gap:6px;font-size:.8rem;line-height:1.45;color:var(--label2)}
+table.scT .dl b{color:var(--label);font-weight:600}
+table.scT .scWide{display:none} table.scT .scNarrow{display:block}
+@media (min-width:640px){table.scT th.w,table.scT td.w{display:table-cell} table.scT .scWide{display:inline} table.scT .scNarrow{display:none}}
+@media (max-width:639px){table.scT th.w,table.scT td.w{display:none} table.scT{font-size:.8rem} table.scT td,table.scT th{padding:6px 4px}
+  table.scT .scTag.nuovo,table.scT .scTag.uscita{display:none} table.scT td.st{width:36px} table.scT .star{width:36px;height:40px}}
+#v-scanner .opMore summary{min-height:40px}
+.scMore{color:var(--tint);font:600 .86rem var(--font);background:none;border:0;min-height:40px;cursor:pointer;padding:0 4px;justify-self:start}
 @media (max-width:700px){#scSec>.sh small{display:none}}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
@@ -746,7 +783,6 @@ table.grid.scT .tk{font-weight:600}
   <nav aria-label="Sezioni">
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
-    <a href="#opzioni" data-v="opzioni"><svg><use href="#i-opz"/></svg>Opzioni</a>
     <a href="#scanner" data-v="scanner"><svg><use href="#i-scan"/></svg>Scanner</a>
     <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
     <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
@@ -825,12 +861,23 @@ table.grid.scT .tk{font-weight:600}
     </div>
   </div>
 
-<!-- ============ SCANNER (solo informativa): TRX sulla carta con il cancello di BTC e stato settimanale di W3.2 sulle altcoin (report.trx_carta, report.scanner, radar/scanner.py) ============ -->
+<!-- ============ SCANNER (solo informativa): top 200 crypto con W3.2 · in evidenza (BTC, ETH, TRX sulla carta, preferite) · ingressi della settimana · scommesse sulla carta · tabella (report.scanner, report.trx_carta, report.scommesse; radar/scanner.py, radar/scommesse.py) ============ -->
   <div class="view" id="v-scanner" hidden>
     <div class="section" id="scSec">
-      <div class="sh">Scanner · W3.2 fuori da BTC ed ETH <small id="scSub"></small></div>
-      <div class="opPaper scWarn" id="scWarn"><svg><use href="#i-warn"/></svg><span><b>Pagina informativa.</b> Lo studio del 25/11/2026 (lezione 123) mostra che scegliere gli asset con un buon passato non funziona: non è un segnale per mettere capitale.</span></div>
+      <div class="sh">Scanner · top 200 crypto <small id="scSub"></small></div>
+      <p class="scInfo" id="scWarn"><svg><use href="#i-warn"/></svg><span><b>Solo informativa:</b> mostra dove sarebbe W3.2 su ogni moneta, non è un segnale per mettere capitale.</span></p>
+      <dl class="card scLeg" id="scLeg">
+        <div><dt><span class="scTag long">long</span></dt><dd>W3.2 sarebbe al rialzo: guadagna se il prezzo sale.</dd></div>
+        <div><dt><span class="scTag short">short</span></dt><dd>W3.2 sarebbe al ribasso: guadagna se il prezzo scende.</dd></div>
+        <div><dt><span class="scTag flat">flat</span></dt><dd>Nessuna posizione: si aspetta.</dd></div>
+        <div><dt><span class="btcY">BTC ✓</span></dt><dd>Nel verso di BTC: stessa direzione di W3.2 su BTC. Nello studio solo questi ingressi hanno fatto meglio.</dd></div>
+        <div><dt><b>Sett.</b></dt><dd>Settimane in posizione: chiusure della domenica (UTC) dall'ingresso.</dd></div>
+        <div><dt><b>Uscita</b></dt><dd>Quanto manca, in %, all'uscita automatica (trailing stop).</dd></div>
+      </dl>
+      <div id="scEvid"></div>
       <div id="trxBody"></div>
+      <div id="scIng"></div>
+      <div id="scBet"></div>
       <div id="scBody"></div>
     </div>
   </div>
@@ -981,7 +1028,6 @@ table.grid.scT .tk{font-weight:600}
 <nav class="tabbar" aria-label="Sezioni">
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
-  <a href="#opzioni" data-v="opzioni"><svg><use href="#i-opz"/></svg>Opzioni</a>
   <a href="#scanner" data-v="scanner"><svg><use href="#i-scan"/></svg>Scanner</a>
   <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
   <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
@@ -1403,6 +1449,9 @@ function qxLine(U, px) {
 
 // ---- Opzioni (pagina a sé) e riga sintetica in Oggi: report.opzioni (radar/opzioni.py). Solo BTC, sulla carta: nessun ordine.
 // Etichette: COMPRA (giorno del segnale), TIENI, VENDI (W3.2 esce), FUORI (opzione già chiusa o mai registrata: non si rinnova), ATTESA.
+// OPZIONI_ON = false (25/11/2026, decisione dell'utente: "la riprendiamo successivamente"): niente voce di menu, niente riga in Oggi,
+// #opzioni porta a Oggi. Codice, calcolo (radar/opzioni.py) e registro restano: true riattiva voce (prima di Scanner), pagina e riga.
+const OPZIONI_ON = false;
 (function renderOpzioni() {
   const O = R.opzioni; if (!O || !O.azione) { const b = $("opBody"); if (b) b.innerHTML = `<div class="card"><p class="opNote" style="margin:0">Dati delle opzioni non disponibili in questo aggiornamento.</p></div>`; return; }
   const e = escS, TAG = { compra: "COMPRA", tieni: "TIENI", vendi: "VENDI", fuori: "FUORI", attesa: "ATTESA" };
@@ -1466,7 +1515,7 @@ function qxLine(U, px) {
   $("opBody").innerHTML = h;
   $("opSub").textContent = `solo BTC · sulla carta · ${String(O.aggiornato || "").slice(0, 10)}`;
   // Oggi: riga sintetica sotto la riga delle posizioni W3.2
-  const L = $("opLine"); if (!L) return;
+  const L = $("opLine"); if (!L || !OPZIONI_ON) return;
   const K = P || (Q && { tipo: Q.contratto.tipo, strike: Q.contratto.strike, scadenza: Q.contratto.scadenza });
   L.innerHTML = `<span class="plK">Opzioni</span><span class="plV"><span>${tag(O.azione)} <small>su carta</small></span>` +
     (K ? `<span><b>${kName(K)}</b> ${dIt(K.scadenza).slice(0, 5)}</span>` : "") +
@@ -1475,108 +1524,182 @@ function qxLine(U, px) {
   L.hidden = false;
 })();
 
-// ---- Scanner (pagina a sé): report.trx_carta (TRX sulla carta, registro dal 25/11/2026) e report.scanner (stato settimanale di W3.2
-// sulle crypto dello studio w32_asset2), radar/scanner.py. Solo informativa: nessun ordine, nessun avviso, nessun effetto su W3.2.
+// ---- Scanner (pagina a sé): report.scanner (W3.2 con i parametri di BTC sulle prime 200 crypto, settimanale), report.trx_carta
+// (TRX sulla carta, dal 25/11/2026) e report.scommesse (registro sulla carta dal 29/11/2026); radar/scanner.py, radar/scommesse.py.
+// Solo informativa: nessun ordine, nessun avviso. Ordine: in evidenza (BTC, ETH in uso; TRX in osservazione; preferite con la ★),
+// ingressi della settimana con la spia "nel verso di BTC", scommesse sulla carta, tabella con filtri a pillole e riga espandibile.
+// Nessuna selezione per rendimento passato (lezione 123): la scheda di qualità dello studio è solo nel dettaglio della riga.
+const SC_PREF_KEY = "radar.scanner.preferite", SC_PREF_DEF = ["SOL", "TAO"];   // preferite di default: SOL e TAO (decisione dell'utente)
+const scPref = (() => {   // localStorage in try/catch: senza storage le stelle funzionano finché la pagina resta aperta
+  let s = null; try { const v = localStorage.getItem(SC_PREF_KEY); s = v ? JSON.parse(v) : null; } catch (_) { s = null; }
+  const set = new Set(Array.isArray(s) ? s : SC_PREF_DEF);
+  return { has: t => set.has(t), all: () => [...set], toggle(t) { set.has(t) ? set.delete(t) : set.add(t); try { localStorage.setItem(SC_PREF_KEY, JSON.stringify([...set])); } catch (_) {} } };
+})();
 (function renderScanner() {
-  const e = escS, T = R.trx_carta, S = R.scanner;
+  const e = escS, T = R.trx_carta, S = R.scanner, B = R.scommesse;
   const dIt = d => d ? new Date(String(d).slice(0, 10) + "T00:00:00Z").toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }) : "–";
-  const p5 = x => x == null ? "–" : nfIT(x, x >= 100 ? 2 : x >= 1 ? 4 : 5);
+  const dSh = d => dIt(d).slice(0, 5);
+  const p5 = x => x == null ? "–" : nfIT(x, x >= 100 ? 2 : x >= 1 ? 4 : x >= 0.01 ? 5 : 8);
+  const u2 = x => x == null ? "–" : (x < 0 ? "−" : x > 0 ? "+" : "") + "$" + nfIT(Math.abs(x), 2);
   const tag = (k, t) => `<span class="scTag ${k}">${e(t || k)}</span>`;
   const tile = (k, v, s, c) => `<div><span>${k}</span><b class="${c || ""}">${v}</b>${s ? `<small>${s}</small>` : ""}</div>`;
   const cls = x => x == null ? "" : x >= 0 ? "pos" : "neg";
-  const sg$ = x => x == null ? "–" : (x > 0 ? "+" : "") + usd(x);
+  const star = t => `<button type="button" class="star" data-star="${e(t)}" aria-pressed="${scPref.has(t)}" aria-label="${scPref.has(t) ? "Togli" : "Aggiungi"} ${e(t)} dalle preferite" title="Preferita">${scPref.has(t) ? "★" : "☆"}</button>`;
+  const RW = (S && S.righe) || [], byT = Object.fromEntries(RW.map(r => [r.t, r]));
+  const btcTxt = r => r.btc === "stesso" ? `<span class="btcY">BTC ✓</span>` : r.btc === "opposto" ? `<span class="btcN">contro BTC</span>` : r.btc === "BTC flat" ? `<span class="btcN">BTC flat</span>` : `<span class="btcN">–</span>`;
+  const statoTag = r => r.lato == null ? tag("nd", "dati insufficienti") : tag(r.lato, r.lato) + (r.evento === "ingresso" ? " " + tag("nuovo", "nuovo") : r.evento === "uscita" ? " " + tag("uscita", "uscita") : "");
+  const daQuando = r => r.lato == null ? "" : r.evento === "ingresso" ? `ingresso lun. ${dSh(r.sig ? new Date(Date.parse(r.sig + "T00:00:00Z") + 864e5).toISOString() : null)}` :
+    r.evento === "uscita" ? `uscita${r.motivo ? " · " + e(r.motivo) : ""}` : r.ing ? `dal ${dSh(r.ing)} · ${nfIT(r.sett, 0)} sett.` : "";
+  const uscita = r => r.du == null ? "–" : nfIT(r.du, 1) + "%";
+  const btcCell = r => r.btc === "stesso" ? `<span class="btcY">✓<span class="scWide"> stesso verso</span></span>` : r.btc === "opposto" ? `<span class="btcN">✗<span class="scWide"> contro BTC</span></span>` :
+    r.btc === "BTC flat" ? `<span class="btcN">flat</span>` : `<span class="btcN">–</span>`;
+  const oper = r => [r.bg ? "Bitget" : "", r.ok ? "OKX" : ""].filter(Boolean).join(" · ") || "non operabile";
   const condChips = c => !c ? "" : `<div class="scCond">` +
-    `<span class="${c.px_sma > 0 ? "ok" : "no"}">prezzo ${c.px_sma > 0 ? "sopra" : "sotto"} la SMA 40w</span>` +
+    `<span class="${c.px_sma > 0 ? "ok" : "no"}">prezzo ${c.px_sma > 0 ? "sopra" : "sotto"} la SMA 40 settimane${c.dsma == null ? "" : ` (${pct(c.dsma, 1)})`}</span>` +
     `<span class="${c.ema20 > 0 ? "ok" : "no"}">EMA 20 in ${c.ema20 > 0 ? "salita" : "discesa"}</span>` +
-    `<span class="${c.flow == null ? "" : c.flow > 0 ? "ok" : "no"}">flusso perp ${c.flow == null ? "n.d." : nfIT(c.flow, 2)}</span>` +
+    `<span class="${c.ema21 > 0 ? "ok" : "no"}">chiusura ${c.ema21 > 0 ? "sopra" : "sotto"} la EMA 21</span>` +
+    `<span class="${c.flow == null ? "" : c.flow > 0 ? "ok" : "no"}">flusso perp ${c.flow == null ? "n.d." : nfIT(c.flow, 2) + "σ"}</span>` +
     `<span class="${c.macd ? "ok" : "no"}">MACD ${c.macd ? "sopra segnale e zero" : "non ripartito"}${c.f1 ? "" : " · filtro attivo"}</span>` +
     `<span>regime ${e(c.regime)}</span></div>`;
-  // ---- Blocco 1 · TRX sulla carta
-  let h = "";
-  if (!T || !T.stato) {
-    h = `<div class="card"><div class="scHead"><b>TRX sulla carta · W3.2 con il cancello di BTC</b>${tag("carta", "sulla carta: nessun capitale, nessun ordine")}</div>` +
-      `<p class="opNote">Registro di TRX non disponibile in questo aggiornamento${T && T.dati && T.dati.nota ? ": " + e(T.dati.nota) : "."}</p></div>`;
-  } else {
-    const st = T.stato, c = st.cond || {}, pe = st.pending;
-    const lato = pe && pe.tipo === "enter" ? pe.verso : st.lato;
-    const statoTxt = pe && pe.tipo === "enter" ? `segnale ${e(pe.verso)} del ${dIt(pe.segnale)}: ingresso all'apertura di lunedì` :
-      pe && pe.tipo === "exit" ? `uscita decisa il ${dIt(pe.segnale)} (${e(pe.motivo || "")}): all'apertura di lunedì` :
-      st.lato !== "flat" ? `dal ${dIt(st.ingresso)} a ${p5(st.prezzo_in)} · trailing ${p5(st.trailing)}` : e(st.perche || "");
-    h = `<div class="card"><div class="scHead">${tag(lato || "flat", (lato || "flat").toUpperCase())}<b>TRX sulla carta · W3.2 con il cancello di BTC</b>${tag("carta", T.nota)}</div>` +
-      `<p class="opNote" style="margin-top:8px">${statoTxt}</p>` +
-      `<div class="tiles scTiles" style="--n:4">` +
-      tile("TRX", p5(st.prezzo), `chiusura del ${dIt(st.data)}`) +
-      tile("Cancello · W3.2 su BTC", e(st.btc), `domenica ${dIt(st.domenica)}`) +
-      tile("Capitale sulla carta", usd(T.capitale_ora), `da ${usd(T.capitale)} il ${dIt(T.inizio)} · ${sg$(T.risultato_usd)} (${pct(T.risultato_pct, 1)})`, cls(T.risultato_usd)) +
-      tile("Operazioni chiuse", nfIT(T.chiuse, 0), T.chiuse < 3 ? "meno di 3: il registro non basta per giudicare" : "") + `</div>` +
-      condChips(c);
-    const OP = T.operazioni || [];
-    h += `<div class="opH">Registro dal ${dIt(T.inizio)}</div>` + (OP.length ? `<div class="scroll"><table class="grid opT"><tr><th>Verso</th><th>Segnale</th><th>Ingresso</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Risultato</th><th>Su 10.000 $</th></tr>` +
-      OP.slice().reverse().map(r => `<tr><td>${e(r.verso)}</td><td>${dIt(r.segnale)}</td><td>${dIt(r.ingresso)}</td><td>${p5(r.prezzo_in)}</td><td>${r.uscita ? dIt(r.uscita) : "aperta"}</td><td>${r.uscita ? p5(r.prezzo_out) : p5(r.ultimo) + "<small>ultimo</small>"}</td>` +
-        `<td>${e(r.motivo || "")}${r.nota ? `<small>${e(r.nota)}</small>` : ""}</td><td class="${cls(r.pnl_pct)}">${pct(r.pnl_pct, 2)}</td><td class="${cls(r.esito_usd)}">${sg$(r.esito_usd)}</td></tr>`).join("") + `</table></div>`
-      : `<p class="opNote" style="margin-top:0">Registro vuoto: la prima riga nasce al primo ingresso di TRX con W3.2 su BTC nello stesso verso. Ci si aspettano 1–3 operazioni in 12 mesi.</p>`);
-    const F = T.rif || {}, V = T.valutazioni || [];
-    h += `<p class="opNote">Prezzi con slittamento 0,1% (long in spot, short in perp con esposizione al rischio 25% allo stop); risultato sul capitale di carta, commissioni e funding inclusi.</p>` +
-      `<p class="opNote"><b>Riferimento storico</b> (${e(F.nota || "backtest")}): dal ${dIt(F.dal).slice(3)} ${usd(F.fin)} da $10.000, DD ${pct(F.dd, 1)}, ${F.n} trade, WR ${F.wr}%; senza i due migliori ${usd(F.senza_due_migliori)}.</p>` +
-      `<p class="opNote"><b>Valutazioni</b>: ${V.map(v => `${v.cosa} il ${dIt(v.data)} (fra ${nfIT(v.giorni, 0)} giorni)`).join(" · ")}. Operazioni, risultato, DD, confronto con BTC ed ETH nello stesso periodo; la decisione spetta all'utente.</p>` +
-      `<details class="opMore" style="margin-top:8px"><summary>Regole fissate il 25/11/2026</summary><ol class="opRules">${(T.regole || []).map(r => `<li>${e(r)}</li>`).join("")}</ol></details>` +
-      ((T.dati || {}).ritardo ? `<p class="opNote"><b class="neg">${e(T.dati.nota || "dati non aggiornati")}</b></p>` : `<p class="opNote">Dati fino al ${dIt(T.dati_fino)} · aggiornato ${e(String(T.aggiornato || "").replace("T", " ").replace("+00:00", ""))} UTC.</p>`) + `</div>`;
+  const scheda = r => { const q = (r.q || {}).q1, q4 = (r.q || {}).q4;
+    if (!q) return `<div>Scheda dello studio: ${r.cl === "nuova" ? "moneta entrata nella top 200 dopo lo studio, nessuna scheda" : "non disponibile"}.</div>`;
+    return `<div><b>Scheda dello studio</b> (W3.2 da sola dal ${dIt(q.da)}, solo descrittiva): criteri ${q.c}/5${q.f ? ` (manca ${e(q.f)})` : ""} · DD ${pct(q.dd, 1)} · WR ${q.wr == null ? "–" : nfIT(q.wr, 0) + "%"} · ${q.n} trade · p placebo ${q.p == null ? "–" : nfIT(q.p, 4)}` +
+      (q4 ? ` · con il cancello di BTC ${q4.c}/5${q4.ok ? " (passa davvero)" : ""}` : "") + (r.cl === "breve" ? " · storia breve: solo descrittivo" : "") + `.</div>`; };
+  const dettaglio = r => `<div class="dl">` + (r.lato == null ? `<div><b>Dati insufficienti:</b> ${e(r.nd || "")}.</div>` :
+    `<div><b>${e(r.n || r.t)}</b> · ${r.lato === "flat" ? "nessuna posizione" : `${e(r.lato)} dal ${dIt(r.ing || r.sig)}${r.px_in ? ` a ${p5(r.px_in)}` : ""}`} · ultimo ${p5(r.ult)}` +
+    (r.trail ? ` · trailing ${p5(r.trail)}` : "") + (r.mv != null ? ` · <span class="${cls(r.mv)}">${pct(r.mv, 1)}</span> dall'ingresso` : "") + `</div>` + condChips(r.cond)) +
+    scheda(r) + `<div>Operabile: ${oper(r)} · dati ${r.fo === "okx" ? `OKX (candele, volumi taker, funding${r.fq ? ` dal ${dIt(r.fq)}: prima le uscite per distribuzione non sono valutabili` : ""})` : r.lato == null ? "–" : "Binance (archivio pubblico)"}${r.rk ? ` · #${r.rk} per capitalizzazione` : ""}.</div></div>`;
+
+  // ---- In evidenza: BTC ed ETH (in uso), TRX (osservazione sulla carta), preferite
+  const EV = $("scEvid");
+  const evRow = (r, badge, extra) => `<div class="scRow">${star(r.t)}<div class="nm"><b>${e(r.t)} ${badge}</b><small>${daQuando(r) || (r.lato == null ? e(r.nd || "") : "")}</small></div>` +
+    `<div class="rt">${statoTag(r)}<small>${r.lato == null ? "" : r.lato === "flat" ? "nessuna posizione" : `${r.t === "BTC" ? "riferimento" : btcTxt(r)} · uscita ${uscita(r)}`}</small></div>${extra || ""}</div>`;
+  const drawEv = () => {
+  let ev = "";
+  ["BTC", "ETH"].forEach(t => { if (byT[t]) ev += evRow(byT[t], tag("uso", "in uso, con capitale")); });
+  const trxRow = (() => { const st = T && T.stato; if (!st && !byT.TRX) return "";
+    const pe = st && st.pending, lato = st ? (pe && pe.tipo === "enter" ? pe.verso : st.lato) : null;
+    const txt = !st ? "registro non disponibile" : pe && pe.tipo === "enter" ? `segnale ${e(pe.verso)} del ${dSh(pe.segnale)}: ingresso lunedì` :
+      st.lato !== "flat" ? `dal ${dSh(st.ingresso)} a ${p5(st.prezzo_in)}` : `in attesa · ${e(st.perche || "")}`;
+    return `<div class="scRow">${star("TRX")}<div class="nm"><b>TRX ${tag("oss", "osservazione sulla carta")}</b><small>${txt}</small></div>` +
+      `<div class="rt">${tag(lato || "flat", lato || "flat")}<small>${T ? `capitale ${usd(T.capitale_ora)}` : ""}</small></div>` +
+      `</div>`; })();
+  ev += trxRow;
+  const prefs = scPref.all().filter(t => !["BTC", "ETH", "TRX"].includes(t) && byT[t]).sort((a, b) => (byT[a].rk || 999) - (byT[b].rk || 999));
+  prefs.forEach(t => ev += evRow(byT[t], tag("pref", "preferita")));
+  EV.innerHTML = `<div class="scH">In evidenza<small>★ = preferita, salvata in questo browser</small></div><div class="card scList">${ev ||
+    `<p class="opNote">Dati dello scanner non disponibili.</p>`}${!prefs.length ? `<p class="opNote" style="margin:6px 6px 4px">Nessuna preferita: tocca ☆ su una riga della tabella per tenerla qui.</p>` : ""}</div>`;
+  };
+  drawEv();
+
+  // ---- dettaglio TRX sulla carta (blocco esistente), chiuso sotto "In evidenza"
+  const TB = $("trxBody");
+  if (TB && (T || byT.TRX)) {
+    let h = "";
+    if (!T || !T.stato) h = `<p class="opNote">Registro di TRX non disponibile in questo aggiornamento${T && T.dati && T.dati.nota ? ": " + e(T.dati.nota) : "."}</p>`;
+    else {
+      const st = T.stato, OP = T.operazioni || [], F = T.rif || {}, V = T.valutazioni || [];
+      h = `<p class="opNote" style="margin-top:4px">${tag("carta", T.nota)} W3.2 su TRX entra solo se W3.2 su BTC è nello stesso verso (cancello). ${st.lato === "flat" && st.perche ? e(st.perche.charAt(0).toUpperCase() + st.perche.slice(1)) + "." : ""}</p>` +
+        `<div class="tiles scTiles" style="--n:4">` + tile("TRX", p5(st.prezzo), `chiusura del ${dIt(st.data)}`) + tile("Cancello · W3.2 su BTC", e(st.btc), `domenica ${dIt(st.domenica)}`) +
+        tile("Capitale sulla carta", usd(T.capitale_ora), `da ${usd(T.capitale)} il ${dIt(T.inizio)} · ${u2(T.risultato_usd)}`, cls(T.risultato_usd)) +
+        tile("Operazioni chiuse", nfIT(T.chiuse, 0), T.chiuse < 3 ? "meno di 3: il registro non basta per giudicare" : "") + `</div>` + condChips(st.cond) +
+        (OP.length ? `<div class="scroll" style="margin-top:10px"><table class="grid opT"><tr><th>Verso</th><th>Ingresso</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Su 10.000 $</th></tr>` +
+          OP.slice().reverse().map(r => `<tr><td>${e(r.verso)}</td><td>${dIt(r.ingresso)}</td><td>${p5(r.prezzo_in)}</td><td>${r.uscita ? dIt(r.uscita) : "aperta"}</td><td>${r.uscita ? p5(r.prezzo_out) : p5(r.ultimo)}</td><td>${e(r.motivo || "")}${r.nota ? `<small>${e(r.nota)}</small>` : ""}</td><td class="${cls(r.esito_usd)}">${u2(r.esito_usd)}</td></tr>`).join("") + `</table></div>`
+          : `<p class="opNote">Registro vuoto dal ${dIt(T.inizio)}: la prima riga nasce al primo ingresso di TRX con W3.2 su BTC nello stesso verso (1–3 operazioni attese in 12 mesi).</p>`) +
+        `<p class="opNote"><b>Riferimento storico</b> (${e(F.nota || "backtest")}): dal ${dIt(F.dal).slice(3)} ${usd(F.fin)} da $10.000, DD ${pct(F.dd, 1)}, ${F.n} trade, WR ${F.wr}%; senza i due migliori ${usd(F.senza_due_migliori)}. ` +
+        `Valutazioni: ${V.map(v => `${v.cosa} il ${dIt(v.data)}`).join(" · ")}.</p>` +
+        `<details class="opMore"><summary>Regole fissate il 25/11/2026</summary><ol class="opRules">${(T.regole || []).map(r => `<li>${e(r)}</li>`).join("")}</ol></details>` +
+        ((T.dati || {}).ritardo ? `<p class="opNote"><b class="neg">${e(T.dati.nota || "dati non aggiornati")}</b></p>` : `<p class="opNote">Dati fino al ${dIt(T.dati_fino)}.</p>`);
+    }
+    TB.innerHTML = `<details class="card opMore scTrx"><summary>Dettaglio TRX sulla carta · W3.2 con il cancello di BTC</summary>${h}</details>`;
   }
-  $("trxBody").innerHTML = h;
-  // ---- Blocco 2 · Scanner settimanale
-  const B = $("scBody");
-  if (!S || !S.righe || !S.righe.length) {
-    B.innerHTML = `<div class="card" style="margin-top:12px"><p class="opNote" style="margin:0">Scanner non disponibile in questo aggiornamento${S && S.dati && S.dati.nota ? ": " + e(S.dati.nota) : "."}</p></div>`;
-    return;
+
+  // ---- Ingressi della settimana
+  const IN = $("scIng");
+  const drawIng = () => { if (!S || !RW.length) return;
+    const ing = RW.filter(r => r.evento === "ingresso").sort((a, b) => (b.btc === "stesso") - (a.btc === "stesso") || (a.rk || 999) - (b.rk || 999));
+    const usc = RW.filter(r => r.evento === "uscita");
+    IN.innerHTML = `<div class="scH">Ingressi della settimana<small>chiusura del ${dIt(S.settimana)}</small></div><div class="card scList">` +
+      (ing.length ? ing.map(r => `<div class="scRow">${star(r.t)}<div class="nm"><b>${e(r.t)} ${statoTag(r)}</b><small>${e(r.n || "")} · ${p5(r.ult)} $ · ingresso lunedì all'apertura</small></div>` +
+        `<div class="rt">${r.btc === "stesso" ? `<span class="btcY">BTC ✓ sì</span>` : `<span class="btcN">BTC ✗ no</span>`}<small>${oper(r)}</small></div></div>`).join("")
+        : `<p class="opNote" style="margin:6px">Nessun ingresso nuovo questa settimana.</p>`) +
+      `<p class="opNote" style="margin:8px 6px 4px">Nello studio solo gli ingressi nel verso di BTC hanno fatto meglio: finale mediano 12.386 $ contro 10.381 $ su 10.000, DD mediano −39% contro −56%.</p>` +
+      (usc.length ? `<p class="opNote" style="margin:0 6px 6px">Uscite della settimana: ${usc.map(r => `<b>${e(r.t)}</b>${r.motivo ? ` (${e(r.motivo)})` : ""}`).join(", ")}.</p>` : "") + `</div>`;
+  };
+  drawIng();
+
+  // ---- Scommesse sulla carta (registro dal 29/11/2026)
+  const BE = $("scBet");
+  if (B) {
+    const F = B.filtro || {}, N = B.senza_filtro || {}, OP = B.operazioni || [], RS = B.rif_studio || {};
+    const vuoto = !F.n;
+    let h = `<div class="scH">Scommesse sulla carta<small>100 $ per ingresso nel verso di BTC</small></div><div class="card">` +
+      `<div class="scHead">${tag("carta", B.nota)}</div>`;
+    if (vuoto) h += `<p class="opNote" style="margin-top:10px"><b>Registro vuoto.</b> Parte con gli ingressi della settimana che chiude domenica ${dIt(B.inizio)}: ogni ingresso nuovo nel verso di BTC, su monete operabili (esclusi BTC, ETH e TRX), vale 100 $ sulla carta dall'apertura del lunedì.</p>`;
+    else {
+      h += `<div class="tiles scTiles" style="--n:4">` + tile("Investito sulla carta", usd(F.investito), `${F.n} operazioni da 100 $`) +
+        tile("Risultato", u2(F.risultato_usd), F.risultato_pct == null ? "" : pct(F.risultato_pct, 1) + " sull'investito", cls(F.risultato_usd)) +
+        tile("Aperte · chiuse", `${nfIT(F.aperte, 0)} · ${nfIT(F.chiuse, 0)}`, F.attesa ? `${F.attesa} in attesa del lunedì` : "") +
+        tile("In guadagno", F.in_guadagno_pct == null ? "–" : nfIT(F.in_guadagno_pct, 0) + "%", F.peggiore ? `perdita massima ${u2(F.peggiore.usd)} (${e(F.peggiore.t)})` : "delle chiuse") + `</div>` +
+        (F.chiuse < (B.min_chiuse || 20) ? `<p class="opNote">Meno di ${B.min_chiuse || 20} operazioni chiuse: il registro non basta ancora per giudicare.</p>` : "") +
+        `<details class="opMore" style="margin-top:6px"><summary>Operazioni (${OP.length})</summary><div class="scroll"><table class="grid opT"><tr><th>Moneta</th><th>Verso</th><th>Ingresso</th><th>Prezzo</th><th>Uscita</th><th>Prezzo</th><th>Motivo</th><th>Risultato</th></tr>` +
+        OP.slice().reverse().map(o => `<tr><td>${e(o.t)}</td><td>${e(o.v)}</td><td>${dIt(o.ing)}</td><td>${p5(o.px_in)}</td><td>${o.usc ? dIt(o.usc) : o.stato === "attesa" ? "in attesa" : "aperta"}</td><td>${o.usc ? p5(o.px_out) : p5(o.ult)}</td>` +
+          `<td>${e(o.motivo || "")}${o.nota ? `<small>${e(o.nota)}</small>` : ""}${o.nota_funding ? `<small>${e(o.nota_funding)}</small>` : ""}</td><td class="${cls(o.pnl_usd)}">${o.pnl_usd == null ? "–" : `${u2(o.pnl_usd)} (${pct(o.pnl_pct, 1)})`}</td></tr>`).join("") + `</table></div></details>`;
+    }
+    h += `<p class="opNote">Riferimento senza filtro di BTC (stessa regola su tutti gli ingressi nuovi, solo confronto): ${N.n ? `${N.n} operazioni, ${u2(N.risultato_usd)}${N.risultato_pct == null ? "" : ` (${pct(N.risultato_pct, 1)})`}` : "nessuna operazione"}. ` +
+      `Studio w32_asset2 (${e(RS.nota || "")}): nel verso di BTC finale mediano 12.386 $, DD −39%; senza filtro 10.381 $, −56%.</p>` +
+      `<details class="opMore"><summary>Regole fissate il 25/11/2026</summary><ol class="opRules">${(B.regole || []).map(r => `<li>${e(r)}</li>`).join("")}</ol></details>` +
+      ((B.dati || {}).ritardo ? `<p class="opNote"><b class="neg">${e(B.dati.nota || "dati non aggiornati")}</b></p>` : "") + `</div>`;
+    BE.innerHTML = h;
   }
-  const C = S.conteggi || {}, D = S.dati || {}, RW = S.righe;
-  const byT = Object.fromEntries(RW.map(r => [r.t, r]));
-  let g = `<div class="card" style="margin-top:12px"><div class="scHead"><b>Scanner settimanale · W3.2 con i parametri di BTC</b>${tag("nd", "chiusura del " + dIt(S.settimana))}</div>` +
-    `<div class="tiles scTiles" style="--n:4">` + tile("Long", nfIT(C.long, 0), `su ${S.n} monete`, "pos") + tile("Short", nfIT(C.short, 0), "", "neg") +
-    tile("Flat", nfIT(C.flat, 0), C.nd ? `${C.nd} non calcolabili` : "") + tile("W3.2 su BTC", e(S.btc || "–"), "riferimento per la concordanza") + `</div>`;
-  const chip = (t, x) => `<span class="${x || ""}">${e(t)} ${byT[t] && byT[t].lato ? (x ? "↦ flat" : byT[t].lato) : ""}</span>`;
-  g += `<div class="opH">Ingressi nuovi della settimana</div>` + ((S.nuovi || []).length ? `<div class="scNew">${S.nuovi.map(t => chip(t)).join("")}</div>` : `<p class="opNote" style="margin-top:0">Nessun ingresso nuovo.</p>`) +
-    ((S.uscite || []).length ? `<div class="opH">Uscite della settimana</div><div class="scNew">${S.uscite.map(t => chip(t, "x")).join("")}</div>` : "");
-  g += `<div class="scTools"><div class="hscroll"><div class="seg" id="scSeg" role="group" aria-label="Filtro">` +
-    [["tutte", "Tutte"], ["long", "Long"], ["short", "Short"], ["flat", "Flat"], ["nuovi", "Nuovi"]].map(([k, l], i) => `<button type="button" data-f="${k}" aria-pressed="${i === 0}">${l}</button>`).join("") +
-    `</div></div><input id="scQ" type="search" placeholder="Cerca moneta" aria-label="Cerca moneta" autocomplete="off"></div>`;
-  const COLS = [["t", "Moneta"], ["lato", "Stato"], ["sett", "Sett."], ["dsma", "Prezzo/SMA 40w"], ["ema20", "EMA 20"], ["flow", "Flusso perp"], ["macd", "MACD"], ["trail", "Trailing"], ["btc", "vs BTC"], ["qc", "Criteri 1–5"], ["dd", "DD"], ["wr", "WR"], ["p", "p placebo"], ["q4", "Con cancello"]];
-  g += `<div class="scroll"><table class="grid scT" id="scT"></table></div>` +
-    `<p class="opNote">Stato alla chiusura della domenica (UTC) con le decisioni di quel giorno applicate: un segnale della domenica conta già come posizione (ingresso all'apertura di lunedì). ` +
-    `Criteri dello studio (W3.2 da sola dal suo inizio): 1 CAGR/DD sopra il buy &amp; hold · 2 DD ≥ −35% · 3 WR ≥ 60% · 4 IS e OOS positivi · 5 ≥ 8 trade; p = placebo (2.000 prove). "Con cancello" = criteri passati entrando solo con BTC nello stesso verso (Q4); solo TRX li passa davvero. Brevi = meno di 3 anni di storia: solo descrittivo.</p>` +
-    `<p class="opNote">Dati: Binance (spot e perp USDT-M con taker buy, funding), OKX o Bitget per il funding del mese in corso · finestra ${nfIT(S.finestra_giorni, 0)} giorni · calcolato ${e(String(S.calcolato || "").replace("T", " ").replace("+00:00", ""))} UTC` +
-    (D.richieste != null ? ` · ${nfIT(D.richieste, 0)} richieste, ${nfIT(D.secondi, 0)} s` : "") + `.` +
-    (D.ritardo || S.provvisorio ? ` <b class="neg">${e(D.nota || "risultato provvisorio")}</b>` : "") + ((D.errori || []).length ? ` Dati non aggiornati per: ${e(D.errori.join(", "))}.` : "") + `</p></div>`;
-  B.innerHTML = g;
-  const val = (r, k) => { const c = r.cond || {}, q = (r.q || {}).q1, q4 = (r.q || {}).q4;
-    return { t: r.t, lato: r.lato || "~", sett: r.sett, dsma: c.dsma, ema20: c.ema20, flow: c.flow, macd: c.macd == null ? null : +c.macd, trail: r.trail, btc: r.btc || "",
-      qc: q ? q.c : null, dd: q ? q.dd : null, wr: q ? q.wr : null, p: q ? q.p : null, q4: q4 ? q4.c : null }[k]; };
-  const st = { f: "tutte", q: "", k: "rk", dir: 1 };
-  const row = r => { const c = r.cond || {}, q = (r.q || {}).q1, q4 = (r.q || {}).q4, nuovo = r.evento === "ingresso";
-    const stato = r.lato == null ? tag("nd", "n.d.") + `<small>${e(r.nd || "")}</small>` : tag(r.lato, r.lato) + (nuovo ? ` ${tag("nuovo", "nuovo")}` : r.evento === "uscita" ? ` ${tag("uscita", "uscita")}` : "") +
-      (r.evento === "uscita" && r.motivo ? `<small>${e(r.motivo)}</small>` : r.ing ? `<small>dal ${dIt(r.ing).slice(0, 5)}</small>` : "");
-    return `<tr class="${nuovo ? "nuovo" : ""}"><td><span class="tk">${e(r.t)}</span><small>${r.rk ? "#" + r.rk + " · " : ""}${e(r.cl === "breve" ? "breve" : "")}${r.bg ? " Bitget" : ""}${r.ok ? " OKX" : ""}</small></td>` +
-      `<td>${stato}</td><td>${r.lato && r.lato !== "flat" ? nfIT(r.sett, 0) : "–"}</td>` +
-      `<td class="${cls(c.dsma)}">${c.dsma == null ? "–" : pct(c.dsma, 1)}</td><td class="${c.ema20 == null ? "" : c.ema20 > 0 ? "pos" : "neg"}">${c.ema20 == null ? "–" : c.ema20 > 0 ? "salita" : "discesa"}</td>` +
-      `<td class="${cls(c.flow)}">${c.flow == null ? "–" : nfIT(c.flow, 2)}</td><td>${c.macd == null ? "–" : c.macd ? "ok" : "no"}${c.f1 === false ? "<small>filtro attivo</small>" : ""}</td>` +
-      `<td>${r.trail == null ? "–" : p5(r.trail)}${r.mv != null ? `<small class="${cls(r.mv)}">${pct(r.mv, 1)}</small>` : ""}</td><td>${e(r.btc || "–")}</td>` +
-      `<td>${q ? `${q.c}/5` + (q.f ? `<small>manca ${e(q.f)}</small>` : "") : "–"}</td><td>${q ? pct(q.dd, 1) : "–"}</td><td>${q && q.wr != null ? nfIT(q.wr, 0) + "%" : "–"}</td>` +
-      `<td>${q && q.p != null ? nfIT(q.p, 4) : "–"}</td><td>${q4 ? `${q4.c}/5${q4.ok ? " ✓" : ""}` : "–"}</td></tr>`; };
+
+  // ---- tabella completa
+  const TBD = $("scBody");
+  if (!S || !RW.length) {
+    TBD.innerHTML = `<div class="card"><p class="opNote" style="margin:0">Scanner non disponibile in questo aggiornamento${S && S.dati && S.dati.nota ? ": " + e(S.dati.nota) : "."}</p></div>`;
+    $("scSub").textContent = "informativa"; return;
+  }
+  const C = S.conteggi || {}, D = S.dati || {}, U = S.universo || {};
+  const FIL = [["tutte", "Tutte"], ["long", "Long"], ["short", "Short"], ["nuovi", "Nuovi"], ["btc", "Nel verso di BTC"], ["pref", "Preferite"]];
+  const pass = (r, f) => f === "tutte" || (f === "nuovi" ? r.evento === "ingresso" : f === "btc" ? r.btc === "stesso" : f === "pref" ? scPref.has(r.t) : r.lato === f);
+  TBD.innerHTML = `<div class="scH">Tutte le monete<small>${nfIT(S.n, 0)} · ${nfIT(C.long, 0)} long · ${nfIT(C.short, 0)} short · ${nfIT(C.flat, 0)} flat${C.nd ? ` · ${nfIT(C.nd, 0)} dati insufficienti` : ""}</small></div>` +
+    `<div class="card" style="padding:12px 10px">` +
+    `<div class="scTools"><div class="scPills" id="scPills" role="group" aria-label="Filtro">${FIL.map(([k, l], i) => `<button type="button" data-f="${k}" aria-pressed="${i === 0}">${l}<small data-n="${k}"></small></button>`).join("")}</div>` +
+    `<input id="scQ" type="search" placeholder="Cerca moneta (es. SOL, Solana)" aria-label="Cerca moneta" autocomplete="off"></div>` +
+    `<table class="scT" id="scT"><thead><tr><th class="st"><span class="sr" style="position:absolute;left:-9999px">Preferita</span></th><th>Moneta</th><th>Stato</th><th class="w">Da quando</th><th>BTC</th><th class="r">Uscita</th><th class="w">Operabile</th></tr></thead><tbody></tbody></table>` +
+    `<button type="button" class="scMore" id="scMore" hidden></button>` +
+    `<p class="opNote">Tocca una riga per i dettagli (condizioni di W3.2 e scheda dello studio). Ordine: preferite, ingressi nuovi, poi capitalizzazione. Stato alla chiusura della domenica (UTC) con le decisioni di quel giorno: un ingresso nuovo parte all'apertura di lunedì.</p>` +
+    `<p class="opNote">Universo: prime 200 di CoinGecko${U.aggiornato ? ` del ${dIt(U.aggiornato)}` : ""} senza stablecoin, wrapped e staked, oro e argento, RWA e fondi (${Object.values(U.esclusi || {}).reduce((a, x) => a + x.length, 0) || "–"} escluse). ` +
+    `Dati: Binance (archivio pubblico) e, dove manca, OKX (candele, volumi taker, funding)${U.fonti ? ` · ${U.fonti.binance} Binance, ${U.fonti.okx} OKX, ${U.fonti.senza} senza perp` : ""} · finestra ${nfIT(S.finestra_giorni, 0)} giorni · calcolato ${e(String(S.calcolato || "").replace("T", " ").replace("+00:00", ""))} UTC` +
+    (D.richieste != null ? ` · ${nfIT(D.richieste + (U.richieste || 0), 0)} richieste, ${nfIT((D.secondi || 0) + (U.secondi || 0), 0)} s` : "") + `.` +
+    (D.ritardo || S.provvisorio ? ` <b class="neg">${e(D.nota || "risultato provvisorio")}</b>` : "") + ((U.avvisi || []).length ? ` ${e(U.avvisi.join(" "))}` : "") +
+    ((D.errori || []).length ? ` Dati non aggiornati per: ${e(D.errori.join(", "))}.` : "") + `</p></div>`;
+  const st = { f: "tutte", q: "", all: false, open: new Set() };
+  const LIM = 60;
+  const ord = rs => rs.slice().sort((a, b) => (scPref.has(b.t) - scPref.has(a.t)) || ((b.evento === "ingresso") - (a.evento === "ingresso")) || ((a.rk || 999) - (b.rk || 999)) || a.t.localeCompare(b.t));
+  const row = r => { const op = st.open.has(r.t);
+    return `<tr class="main${r.evento === "ingresso" ? " nuovo" : ""}" data-t="${e(r.t)}" aria-expanded="${op}" tabindex="0">` +
+      `<td class="st">${star(r.t)}</td><td><span class="tk">${e(r.t)}</span><small>${r.rk ? "#" + r.rk : ""}<span class="scNarrow">${r.bg || r.ok ? "" : " · non operabile"}</span></small></td>` +
+      `<td>${statoTag(r)}<small class="scNarrow">${daQuando(r)}</small></td><td class="w">${daQuando(r) || "–"}</td><td>${r.t === "BTC" ? "–" : btcCell(r)}</td>` +
+      `<td class="r">${uscita(r)}</td><td class="w">${oper(r)}</td></tr>` + (op ? `<tr class="det"><td colspan="7">${dettaglio(r)}</td></tr>` : ""); };
   const draw = () => {
-    let rs = RW.filter(r => st.f === "tutte" ? true : st.f === "nuovi" ? r.evento === "ingresso" : r.lato === st.f)
-      .filter(r => !st.q || (r.t + " " + (r.n || "")).toLowerCase().includes(st.q));
-    if (st.k !== "rk") rs = rs.slice().sort((a, b) => { const x = val(a, st.k), y = val(b, st.k);
-      if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
-      return (typeof x === "string" ? x.localeCompare(y) : x - y) * st.dir; });
-    $("scT").innerHTML = `<tr>${COLS.map(([k, l]) => `<th data-k="${k}"${st.k === k ? ` aria-sort="${st.dir > 0 ? "ascending" : "descending"}"` : ""}>${l}${st.k === k ? (st.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr>` +
-      (rs.length ? rs.map(row).join("") : `<tr><td colspan="${COLS.length}">Nessuna moneta con questo filtro.</td></tr>`);
+    const rs = ord(RW.filter(r => pass(r, st.f)).filter(r => !st.q || (r.t + " " + (r.n || "")).toLowerCase().includes(st.q)));
+    const vis = st.all || st.q ? rs : rs.slice(0, LIM);
+    $("scT").querySelector("tbody").innerHTML = vis.length ? vis.map(row).join("") : `<tr><td colspan="7" class="opNote">Nessuna moneta con questo filtro.</td></tr>`;
+    const m = $("scMore"); m.hidden = vis.length >= rs.length; m.textContent = `Mostra tutte (${rs.length})`;
+    FIL.forEach(([k]) => { const n = $("scPills").querySelector(`[data-n="${k}"]`); if (n) n.textContent = RW.filter(r => pass(r, k)).length; });
   };
   draw();
-  $("scSeg").addEventListener("click", ev => { const b = ev.target.closest("button"); if (!b) return; st.f = b.dataset.f;
-    $("scSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(); });
+  $("scPills").addEventListener("click", ev => { const b = ev.target.closest("button"); if (!b) return; st.f = b.dataset.f;
+    $("scPills").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(); });
   $("scQ").addEventListener("input", ev => { st.q = ev.target.value.trim().toLowerCase(); draw(); });
-  $("scT").addEventListener("click", ev => { const th = ev.target.closest("th"); if (!th) return; const k = th.dataset.k;
-    if (st.k === k) { st.dir = -st.dir; if (st.dir > 0) st.k = "rk"; } else { st.k = k; st.dir = 1; } draw(); });
+  $("scMore").addEventListener("click", () => { st.all = true; draw(); });
+  const toggleRow = tr => { const t = tr.dataset.t; st.open.has(t) ? st.open.delete(t) : st.open.add(t); draw(); };
+  $("scT").addEventListener("click", ev => { if (ev.target.closest(".star")) return; const tr = ev.target.closest("tr.main"); if (tr) toggleRow(tr); });
+  $("scT").addEventListener("keydown", ev => { if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches("tr.main")) { ev.preventDefault(); toggleRow(ev.target); } });
+  // stella: in qualunque punto della pagina; ridisegna tabella e "In evidenza"
+  $("v-scanner").addEventListener("click", ev => { const b = ev.target.closest(".star"); if (!b) return; ev.stopPropagation(); scPref.toggle(b.dataset.star);
+    drawEv(); drawIng(); draw(); });
   $("scSub").textContent = `informativa · settimana chiusa il ${dIt(S.settimana)}`;
 })();
 
@@ -2275,17 +2398,19 @@ function startLive() {
 }
 startLive();
 
-// ---- sezioni: Oggi · Posizioni · Opzioni · Scanner · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
+// ---- sezioni: Oggi · Posizioni · Scanner · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
 const BOOK_ON = false;   // true = riattiva la sezione Book (voce di menu e #book); false = nessuna voce, #book porta a Oggi e la pagina non apre connessioni
 // true = riattiva la pagina Liquidazioni (radar/pages/liquidazioni.html: voce di menu dopo Grafico e #liquidazioni); false = nessuna voce,
 // #liquidazioni porta a Grafico, la pagina resta nel codice ma non si inizializza e non apre connessioni. Le liquidazioni mostrate sono
 // quelle della mappa unica (report.livelli) in Oggi e in Grafico; la pagina, se riaccesa, le ricalcola nel browser con dati live.
 const LIQ_ON = false;
-const VIEWS = ["oggi", "posizioni", "opzioni", "scanner", "grafico", "movimenti", "notizie", "metodo"].concat(LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
-const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
+const VIEWS = ["oggi", "posizioni", "scanner", "grafico", "movimenti", "notizie", "metodo"].concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
+const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi", opzioni: OPZIONI_ON ? "opzioni" : "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
 const PAGE_OF = Object.assign({}, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
 const viewEl = v => $("v-" + v) || (v === "book" ? $("book") : null);   // la pagina Book può usare id "book" o "v-book"
-(function () {   // Liquidazioni o Book riaccesi: la voce torna nel menu (Liquidazioni prima di Movimenti, Book prima di Notizie)
+(function () {   // Opzioni, Liquidazioni o Book riaccesi: la voce torna nel menu (Opzioni prima di Scanner, Liquidazioni prima di Movimenti, Book prima di Notizie)
+  if (OPZIONI_ON && viewEl("opzioni")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#opzioni"; a.dataset.v = "opzioni";
+    a.innerHTML = `<svg><use href="#i-opz"/></svg>Opzioni`; n.insertBefore(a, n.querySelector('[data-v="scanner"]')); });
   if (LIQ_ON && viewEl("liquidazioni")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#liquidazioni"; a.dataset.v = "liquidazioni";
     a.innerHTML = `<svg><use href="#i-liq"/></svg>${n.classList.contains("tabbar") ? "Liquid." : "Liquidazioni"}`; n.insertBefore(a, n.querySelector('[data-v="movimenti"]')); });
   if (BOOK_ON && viewEl("book")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#book"; a.dataset.v = "book";

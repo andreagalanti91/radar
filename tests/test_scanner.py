@@ -346,14 +346,45 @@ class TestUniversoEPagina(unittest.TestCase):
         from radar.dashboard import render
         T = (ROOT / "radar" / "dashboard_template.html").read_text()
         v = T[T.index('<div class="view" id="v-scanner"'):T.index("<!-- ============ GRAFICO")]
-        self.assertIn(SC.AVVISO.split(". ", 1)[1], v.replace("<b>", "").replace("</b>", ""))   # avviso fisso nel markup
+        self.assertIn(SC.AVVISO.split(": ", 1)[1], v)                                         # avviso fisso nel markup, una riga
+        self.assertIn("non è un segnale per mettere capitale", v)
         self.assertIn('id="trxBody"', v)
         self.assertLess(v.index('id="trxBody"'), v.index('id="scBody"'))                    # TRX in alto
-        self.assertIn("T.nota", T)                                                           # nota fissa di TRX in testa al blocco
+        self.assertIn("T.nota", T)                                                           # nota fissa di TRX nel dettaglio
         with tempfile.TemporaryDirectory() as t:
             html = render({"date": "2026-11-25", "price": 1.0, "scanner": {"settimana": "2026-11-22", "righe": []},
                            "trx_carta": SC.build_trx(SC._reg_vuoto(), datetime(2026, 11, 25, tzinfo=UTC))}, Path(t) / "i.html", standalone=False).read_text()
         self.assertIn('"nota": "sulla carta: nessun capitale, nessun ordine"', html)
+
+    def test_struttura_pagina(self):
+        T = (ROOT / "radar" / "dashboard_template.html").read_text()
+        v = T[T.index('<div class="view" id="v-scanner"'):T.index("<!-- ============ GRAFICO")]
+        ordine = ['id="scWarn"', 'id="scLeg"', 'id="scEvid"', 'id="trxBody"', 'id="scIng"', 'id="scBet"', 'id="scBody"']
+        pos = [v.index(x) for x in ordine]
+        self.assertEqual(pos, sorted(pos))                                                    # avviso, legenda, evidenza, TRX, ingressi, scommesse, tabella
+        for w in ("long</span></dt>", "short</span></dt>", "flat</span></dt>", "Nel verso di BTC", "Settimane in posizione", "uscita automatica"):
+            self.assertIn(w, v)                                                               # legenda in parole semplici
+        js = T[T.index("// ---- Scanner (pagina a sé)"):T.index("// ---- pre-analisi della prossima chiusura")]
+        for w in ('"In evidenza', "Ingressi della settimana", "Scommesse sulla carta", "Tutte le monete", "Dettaglio TRX sulla carta",
+                  '"in uso, con capitale"', '"osservazione sulla carta"', "12.386 $ contro 10.381 $", "−39% contro −56%"):
+            self.assertIn(w, js)
+        for k, l in (("tutte", "Tutte"), ("long", "Long"), ("short", "Short"), ("nuovi", "Nuovi"), ("btc", "Nel verso di BTC"), ("pref", "Preferite")):
+            self.assertIn(f'["{k}", "{l}"]', js)                                              # filtri a pillole
+        for col in ("<th>Moneta</th>", "<th>Stato</th>", '<th class="w">Da quando</th>', "<th>BTC</th>", '<th class="r">Uscita</th>', '<th class="w">Operabile</th>'):
+            self.assertIn(col, js)
+        self.assertNotIn("CAGR/DD", js)                                                       # niente classifica per rendimento passato (lezione 123)
+        self.assertIn('tr class="det"', js)                                                   # dettagli tecnici nella riga espandibile
+        self.assertIn("Registro vuoto.", js)
+        self.assertIn("Parte con gli ingressi della settimana che chiude domenica", js)
+
+    def test_preferite_di_default(self):
+        T = (ROOT / "radar" / "dashboard_template.html").read_text()
+        self.assertIn('SC_PREF_DEF = ["SOL", "TAO"]', T)
+        js = T[T.index("const SC_PREF_KEY"):T.index("(function renderScanner()")]
+        self.assertIn("try { const v = localStorage.getItem(SC_PREF_KEY)", js)               # senza storage la pagina funziona
+        self.assertIn("try { localStorage.setItem(SC_PREF_KEY", js)
+        self.assertIn("catch (_)", js)
+        self.assertIn("Array.isArray(s) ? s : SC_PREF_DEF", js)
 
     def test_giro_orario_in_cli(self):
         src = (ROOT / "radar" / "cli.py").read_text()
@@ -369,6 +400,178 @@ class TestUniversoEPagina(unittest.TestCase):
         src = (ROOT / "radar" / "scanner.py").read_text()
         for w in ("telegram", "send(", "place_order", "api_key"):
             self.assertNotIn(w, src)
+
+
+# ------------------------------------------------------------------ universo top 200 settimanale
+def cg_top(n=205):
+    """Classifica finta: BTC, una stablecoin nota, una wrapped nuova (categorie), una moneta nuova con perp OKX, una senza perp,
+    una solo prezzo; il resto riempitivo."""
+    base = [("bitcoin", "btc", "Bitcoin", 70000), ("tether", "usdt", "Tether", 1.0), ("wrapped-foo", "wfoo", "Wrapped Foo", 3.0),
+            ("okxcoin", "okc", "OkCoin", 2.0), ("nonecoin", "nnc", "None Coin", 5.0), ("solana", "sol", "Solana", 140),
+            ("frozcoin", "froz", "Frozen", 1.2)]
+    out = [{"id": i, "symbol": s, "name": nm, "current_price": px, "market_cap_rank": k + 1, "market_cap": 1e9 / (k + 1)}
+           for k, (i, s, nm, px) in enumerate(base)]
+    out += [{"id": f"riemp{k}", "symbol": f"rp{k}", "name": f"Riemp {k}", "current_price": 1.5, "market_cap_rank": len(base) + k + 1,
+             "market_cap": 1e6} for k in range(n - len(base))]
+    return out
+
+
+class RetiUniverso:
+    """Risponde alle liste dell'universo: CoinGecko, Bitget, OKX, Binance spot, listing S3 e file giornalieri dell'archivio."""
+
+    def __init__(self, cg_ok=True):
+        self.cg_ok, self.calls = cg_ok, []
+
+    def __call__(self, url, params=None):
+        self.calls.append(url)
+        if url.startswith("https://api.coingecko.com/"):
+            if not self.cg_ok:
+                raise ConnectionError("429")
+            if url == SC.CG_MARKETS:
+                return json.dumps(cg_top()).encode()
+            cid = url.rsplit("/", 1)[-1]
+            cats = {"wrapped-foo": ["Wrapped-Tokens", "Ethereum Ecosystem"]}.get(cid, ["Layer 1 (L1)"])
+            return json.dumps({"id": cid, "categories": cats}).encode()
+        if url == SC.BITGET_CONTRACTS:
+            return json.dumps({"data": [{"symbol": "BTCUSDT", "baseCoin": "BTC", "quoteCoin": "USDT", "symbolType": "perpetual", "symbolStatus": "normal"},
+                                        {"symbol": "SOLUSDT", "baseCoin": "SOL", "quoteCoin": "USDT", "symbolType": "perpetual", "symbolStatus": "normal"}]}).encode()
+        if url == SC.OKX_INSTR:
+            if params["instType"] == "SWAP":
+                return json.dumps({"data": [{"instId": "BTC-USDT-SWAP", "state": "live"}, {"instId": "OKC-USDT-SWAP", "state": "live"}]}).encode()
+            return json.dumps({"data": [{"instId": "OKC-USDT", "state": "live"}]}).encode()
+        if url == SC.BN_TICKER:
+            return json.dumps([{"symbol": "BTCUSDT"}, {"symbol": "SOLUSDT"}]).encode()
+        if url == SC.S3_LIST:
+            pre = params["prefix"]
+            return ("<ListBucketResult><Prefix>" + pre + "</Prefix><IsTruncated>false</IsTruncated>" +
+                    "".join(f"<CommonPrefixes><Prefix>{pre}{s}/</Prefix></CommonPrefixes>" for s in ("BTCUSDT", "SOLUSDT", "DEADUSDT", "FROZUSDT")) +
+                    "</ListBucketResult>").encode()
+        if "/daily/klines/" in url:
+            if "/BTCUSDT/" in url or "/SOLUSDT/" in url or "/FROZUSDT/" in url:
+                vol = "0" if "/FROZUSDT/" in url else "1000"
+                return zip_csv(f"1795449600000,1,1,1,1,{vol},0,0,0,0,0,0")
+            return None
+        raise AssertionError(f"url inatteso {url}")
+
+
+class TestUniversoSettimanale(unittest.TestCase):
+    def test_regole_uguali_allo_studio(self):
+        import ast
+        src = (ROOT / "research" / "w32_asset2" / "crypto" / "universe.py").read_text()
+        val = {t.id: ast.literal_eval(n.value) for n in ast.parse(src).body if isinstance(n, ast.Assign)
+               for t in n.targets if isinstance(t, ast.Name) and t.id in ("EXCL_CAT", "NOT_EXCL", "EXCL_MANUAL", "TICK", "TICK_ID", "CUT_FROM")}
+        for k, v in val.items():
+            self.assertEqual(getattr(SC, k), v, k)
+        self.assertEqual(set(SC.CAT_NOMI.values()), set(SC.EXCL_CAT))       # ogni categoria esclusa ha il suo nome CoinGecko
+
+    def test_esclusioni_fonti_e_operabilita(self):
+        net = RetiUniverso()
+        prev = SC.universo_precedente(Path("/inesistente"))
+        u = SC.build_universo_top200(SC.Rete(net, pausa=0), date(2026, 11, 30), prev)
+        m = {x["ticker"]: x for x in u["monete"]}
+        ex = {x["t"]: x["motivo"] for x in u["esclusi"]}
+        self.assertEqual(ex.get("USDT"), "stablecoin")                         # nota dallo studio, nessuna richiesta
+        self.assertEqual(ex.get("WFOO"), "wrapped")                            # nuova: categorie della moneta
+        self.assertNotIn(SC.CG_COIN + "tether", net.calls)
+        self.assertNotIn(SC.CG_COIN + "bitcoin", net.calls)
+        self.assertEqual(len(u["monete"]) + len(u["esclusi"]), SC.TOP_N)       # solo le prime 200
+        self.assertEqual((m["BTC"]["fonte"], m["BTC"]["perp"], m["BTC"]["classe"]), ("binance", "BTCUSDT", "valutabile"))
+        self.assertEqual(m["BTC"]["scheda"]["q1"]["fin"], 225069.0)            # scheda dello studio conservata
+        self.assertEqual((m["OKC"]["fonte"], m["OKC"]["perp"], m["OKC"]["spot_okx"]), ("okx", "OKC-USDT-SWAP", "OKC-USDT"))
+        self.assertEqual(m["OKC"]["okx"], "OKC-USDT-SWAP")
+        self.assertIsNone(m["NNC"]["fonte"])
+        self.assertIsNone(m["FROZ"]["fonte"])                                   # perp nell'archivio ma a volume zero: delistato
+        self.assertIn("flusso perp non calcolabile", m["NNC"]["nd"])
+        self.assertEqual(m["SOL"]["bitget"], "SOLUSDT")
+        self.assertIsNone(m["SOL"]["okx"])                                     # non nella lista OKX finta
+        self.assertEqual(u["avvisi"], [])
+
+    def test_senza_coingecko_resta_la_lista_precedente(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            vecchia = {"aggiornato": "2026-11-23", "monete": [{"ticker": "AAA", "perp": "AAAUSDT", "fonte": "binance"}], "esclusi": []}
+            (d / SC.UNIV_CACHE).write_text(json.dumps(vecchia))
+            net = RetiUniverso(cg_ok=False)
+            u = SC.aggiorna_universo(SC.Rete(net, pausa=0), datetime(2026, 11, 30, 1, tzinfo=UTC), d)
+            self.assertEqual([x["ticker"] for x in u["monete"]], ["AAA"])
+            self.assertIn("lista precedente", " ".join(u["meta"]["avvisi"]))
+            self.assertEqual(json.loads((d / SC.UNIV_CACHE).read_text()), vecchia)   # cache intatta
+            # senza cache: lista statica dello studio
+            u0 = SC.aggiorna_universo(SC.Rete(RetiUniverso(cg_ok=False), pausa=0), datetime(2026, 11, 30, 1, tzinfo=UTC), d / "vuota")
+            self.assertGreater(len(u0["monete"]), 100)
+            # stessa settimana con lista già aggiornata: nessuna richiesta
+            (d / SC.UNIV_CACHE).write_text(json.dumps(dict(vecchia, aggiornato="2026-11-30")))
+            net2 = RetiUniverso()
+            SC.aggiorna_universo(SC.Rete(net2, pausa=0), datetime(2026, 12, 1, 1, tzinfo=UTC), d)
+            self.assertEqual(net2.calls, [])
+
+
+class FakeOKX:
+    """Candele, volumi taker e funding OKX da tabelle {instId: df} (stesse forme dell'API: righe dalla più recente)."""
+
+    def __init__(self, px, oggi):
+        self.px, self.oggi, self.calls = px, pd.Timestamp(oggi), []
+
+    def __call__(self, url, params=None):
+        self.calls.append(url)
+        inst = params["instId"]
+        df = self.px[inst.replace("-SWAP", "")]
+        cur = params.get("after") or params.get("end")
+        x = df[df.index < (pd.Timestamp(int(cur), unit="ms") if cur else self.oggi + pd.Timedelta(days=1))].iloc[::-1].iloc[:100]
+        ms = x.index.as_unit("ms").astype("int64")
+        if url == SC.OKX_CANDLES:
+            rows = [[str(m), str(r.open), str(r.high), str(r.low), str(r.close), str(r.volume / 10), str(r.volume), "0",
+                     "0" if d >= self.oggi else "1"] for m, r, d in zip(ms, x.itertuples(), x.index)]
+        elif url == SC.OKX_TAKER:
+            rows = [[str(m), str(r.volume - r.tbv), str(r.tbv)] for m, r in zip(ms, x.itertuples())]
+        elif url == SC.OKX_FUND:
+            x = x.iloc[:90]
+            rows = [{"fundingTime": str(m), "realizedRate": "0.0001", "fundingRate": "0.0001"} for m in x.index.as_unit("ms").astype("int64")]
+        else:
+            raise AssertionError(url)
+        return json.dumps({"code": "0", "data": rows}).encode()
+
+
+class TestFonteOKX(unittest.TestCase):
+    def test_moneta_okx_calcolabile(self):
+        up = serie(end="2026-11-30", drift=1.0, seed=5, p0=3.0)            # comprende il giorno in corso (non chiuso)
+        net = FakeOKX({"OKC-USDT": up}, "2026-11-30")
+        c = {"ticker": "OKC", "fonte": "okx", "perp": "OKC-USDT-SWAP", "spot": None, "spot_okx": "OKC-USDT", "div": 1}
+        with tempfile.TemporaryDirectory() as d:
+            s = SC.aggiorna_moneta(SC.Rete(net, pausa=0), c, Path(d), date(2026, 11, 30), date(2026, 11, 30) - pd.Timedelta(days=SC.WINDOW_DAYS).to_pytimedelta(), SEED)
+            self.assertIsNone(s["errore"])
+            self.assertEqual(s["perp"].index[-1], pd.Timestamp("2026-11-29"))                  # solo giorni chiusi
+            self.assertAlmostEqual(float(s["perp"]["tbv"].iloc[-1]), float(up["tbv"].loc["2026-11-29"]))
+            self.assertEqual(len(s["funding"]), 89)                                             # ~3 mesi di funding OKX
+            self.assertTrue((Path(d) / "OKC_okx_perp.csv.gz").exists())                         # cache separata per la fonte OKX
+            st = SC.stato_moneta(SC.feats(s["spot"], s["perp"], s["funding"]), date(2026, 11, 29))
+            self.assertEqual(st["lato"], "long")
+            self.assertGreater(st["cond"]["flow"], 0)
+            self.assertGreater(st["du"], 0)                                                     # distanza dall'uscita automatica
+
+    def test_taker_breve_dati_insufficienti(self):
+        # taker buy di soli 100 giorni (l'API OKX senza pagine): z-score a 180 giorni con almeno 90 valori -> flusso mai calcolabile
+        sp = serie(drift=1.0, seed=2)
+        pp = sp.copy()
+        pp.loc[pp.index < pp.index[-100], ["volume", "tbv"]] = np.nan
+        f = SC.feats(sp, pp, pd.DataFrame({"funding": 0.0001}, index=sp.index))
+        self.assertTrue(f["pf14z"].isna().all())
+        r = SC.stato_moneta(f, date(2026, 11, 22))
+        self.assertIsNone(r["lato"])
+        self.assertIn("flusso perp non calcolabile", r["nd"])
+
+    def test_monete_senza_perp_marcate(self):
+        net, _, _ = rete_finta(end="2026-11-29")
+        u = universo_finto() + [{"ticker": "NNC", "nome": "None", "classe": "nuova", "perp": None, "fonte": None, "okx": None, "bitget": None,
+                                 "nd": "nessun perp su Binance, OKX o Bitget: flusso perp non calcolabile"}]
+        with tempfile.TemporaryDirectory() as d:
+            out = SC.calcola_scanner(u, SC.Rete(net, pausa=0), datetime(2026, 11, 30, 0, 30, tzinfo=UTC), Path(d), None)
+        r = {x["t"]: x for x in out["righe"]}["NNC"]
+        self.assertIsNone(r["lato"])
+        self.assertIn("flusso perp non calcolabile", r["nd"])
+        self.assertEqual(out["conteggi"]["nd"], 1)
+        self.assertEqual(out["btc_cancello"], "long")
+        self.assertEqual({x["t"]: x.get("g") for x in out["righe"]}["UPX"], "long")             # cancello di BTC al segnale
 
 
 if __name__ == "__main__":

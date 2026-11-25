@@ -250,6 +250,8 @@ def daily() -> None:
     provlog_out = _soft("registro provvisori/definitivi", lambda: _im(".provlog", __package__).update(f, d, wcur, _ddir))
     guard_out = _soft("soglie d'allarme", lambda: _im(".guard", __package__).update(wcur, st, journal.load()))
     guard_eth = _soft("soglie d'allarme ETH", lambda: _im(".guard", __package__).update(ecur, st, None, asset="ETH")) if ecur else None
+    # avviso VIX (condizione di mercato, non W3.2): controllo ogni 4 ore, avviso solo all'attraversamento di 30/15 con riarmo
+    _soft("avviso VIX", lambda: _im(".vix", __package__).update(st, now))
     # controlli di coerenza orari (buchi nei dati, storico riscritto, decisione cambiata con i definitivi): solo avviso
     coh = _soft("controlli di coerenza", lambda: _im(".coherence", __package__).update(d, wcur, provlog_out, st))
     problems += [x.split(" (")[0] for x in (coh or {}).get("problems", [])]
@@ -335,7 +337,10 @@ def daily() -> None:
     report["trx_carta"] = _soft("TRX sulla carta", lambda: mod("scanner").trx_giro(f, DATA_DIR))
     report["scanner"] = (_soft("scanner settimanale", lambda: mod("scanner").giro(f, DATA_DIR))
                          or _soft("scanner (ultimo salvato)", lambda: mod("scanner").ultimo(DATA_DIR)))
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner"):
+    # registro "scommesse" sulla carta (radar/scommesse.py, research/w32_asset2/REGISTRO-SCOMMESSE.md): ingressi nuovi dello
+    # scanner nel verso di BTC dal 29/11/2026, 100 $ fissi; aperte rivalutate una volta al giorno. Nessun ordine né avviso
+    report["scommesse"] = _soft("scommesse sulla carta", lambda: mod("scommesse").giro(report.get("scanner"), DATA_DIR))
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse"):
         if report.get(k) is None:
             report.pop(k, None)
     # v2: solo stato e storico per la dashboard (messaggi Telegram di v2 eliminati il 25/11/2026; spenti dal 12/11/2026)
