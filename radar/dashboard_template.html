@@ -555,6 +555,28 @@ body.noscroll{overflow:hidden}
 .qxC.loss .qxR .v b{color:var(--red)} .qxC.gain .qxR .v b{color:var(--green)}
 .posLine{flex-wrap:wrap} .posLine .plX{flex-basis:100%;font-size:.8rem;line-height:1.4;color:var(--label2);white-space:normal}
 .posLine .plX .neg,.posLine .plX .pos{font-weight:600}
+/* Posizioni · "Ciclo on-chain" (report.onchain, radar/onchain.py): MVRV di CoinMetrics con le zone dello studio research/utxo_pl; solo contesto */
+.oc{display:grid;gap:8px;min-width:0;padding-top:14px;border-top:1px solid var(--line)}
+.ocCard .oc{padding-top:0;border-top:0}
+.ocHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ocHead b{font:600 .8rem var(--font);color:var(--label2)} .ocHead span{font:500 .72rem var(--font);color:var(--label3)}
+.ocBig{font:700 1.35rem/1.15 var(--font);letter-spacing:-.02em;color:var(--label)} .ocBig small{font:500 .86rem var(--font);color:var(--label2);letter-spacing:0;margin-left:6px}
+.ocBig.cap{color:var(--teal)} .ocBig.eup{color:var(--orange)}
+.ocSub{font-size:.8rem;line-height:1.4;color:var(--label2);font-variant-numeric:tabular-nums} .ocSub b{color:var(--label);font-weight:600}
+.ocChart{position:relative;height:132px;min-width:0;overflow:hidden} .ocCard .ocChart{height:104px}
+.ocChart svg{display:block;width:100%;height:100%;overflow:visible}
+.ocChart .bc{fill:var(--teal);opacity:.22} .ocChart .be{fill:var(--orange);opacity:.16}
+.ocChart .lc{stroke:var(--teal);stroke-width:1;fill:none;opacity:.8} .ocChart .le{stroke:var(--orange);stroke-width:1;fill:none;opacity:.8}
+.ocChart .l1{stroke:var(--label3);stroke-width:1;stroke-dasharray:3 3;fill:none}
+.ocChart .mv{stroke:var(--label);stroke-width:1.6;fill:none;stroke-linejoin:round}
+.ocChart .ax{fill:var(--label3);font:500 10px var(--font)} .ocChart .td{stroke:var(--card);stroke-width:2}
+.ocChart .td.cap{fill:var(--teal)} .ocChart .td.eup{fill:var(--orange)} .ocChart .td.norm{fill:var(--label)}
+.ocChart .tl{font:600 11px var(--font);fill:var(--label)} .ocChart .tl.cap{fill:var(--teal)} .ocChart .tl.eup{fill:var(--orange)}
+.ocLeg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.72rem;color:var(--label3)} .ocLeg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.ocLeg i.c{background:color-mix(in srgb,var(--teal) 35%,transparent)} .ocLeg i.e{background:color-mix(in srgb,var(--orange) 35%,transparent)} .ocLeg i.u{height:0;border-top:1px dashed var(--label3);border-radius:0}
+.ocTxt{margin:2px 0 0;font-size:.86rem;line-height:1.45;color:var(--label)}
+.ocStat{font-size:.8rem;line-height:1.45;color:var(--label2);font-variant-numeric:tabular-nums} .ocStat b{color:var(--label);font-weight:600}
+.ocNote{margin:0;font-size:.7rem;line-height:1.4;color:var(--label3)}
 /* Oggi · riga di stato delle posizioni: porta a Posizioni */
 .posLine{display:flex;align-items:center;gap:6px 12px;padding:13px 16px;color:var(--label);text-decoration:none;font-size:.92rem;font-variant-numeric:tabular-nums}
 .posLine .plK{font:500 .76rem var(--font);color:var(--label3)}
@@ -878,6 +900,10 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
           <a class="more" href="#metodo" id="wkRules" style="color:var(--tint);font-weight:600;text-decoration:none">Regole complete della strategia →</a>
         </div>
       </dialog>
+    </div>
+    <div class="section" id="ocSec" hidden>
+      <div class="sh">Ciclo on-chain <small>solo contesto</small></div>
+      <div class="card ocCard" id="ocCard"></div>
     </div>
   </div>
 
@@ -1276,7 +1302,7 @@ function qxLine(U, px) {
   if (open) {
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(W.market, W.expo)}</span>
         <span class="cap">${artD("dal", fmtD(W.entry))} · ${weeksIn} settimane</span></div>
-      <div id="wkPos">${posHtml(REF)}</div>`;
+      <div id="wkPos">${posHtml(REF)}</div><div class="oc" id="ocBox" hidden></div>`;
     window.onRef(r => { $("wkPos").innerHTML = posHtml(r); });
   } else if (W.status === "segnale") {
     const p = W.plan;
@@ -1465,6 +1491,54 @@ function qxLine(U, px) {
       r("Sul capitale ETH", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + `</div>`); });
 })();
 
+// ---- Posizioni · "Ciclo on-chain" (report.onchain, radar/onchain.py): MVRV di CoinMetrics, zone dello studio research/utxo_pl
+// (10% più basso/alto dei 4 anni precedenti). Grafico a linea di 2 anni con le fasce: a 400 px mostra insieme dove siamo, da quando
+// e quanto in fondo alla fascia (un termometro mostrerebbe solo la posizione di oggi). Con la posizione aperta sta nella card di
+// BTC sotto "Quando esce"; da flat è una card compatta in fondo alla pagina. Solo contesto: non cambia W3.2.
+(function renderOnchain() {
+  const O = R.onchain; if (!O || !O.series || !O.series.v || !O.series.v.length) return;
+  const W = R.weekly, open = W && (W.status === "aperto" || W.status === "uscita"), box = open && $("ocBox");
+  const el = box || $("ocCard"); if (!el) return;
+  const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
+  const n2 = x => nfIT(x, 2), Z = O.zone, S = O.stats && O.stats[Z];
+  const big = Z === "norm" ? "Normale" : `${O.zone_name}<small>dal ${dm(O.since)}</small>`;
+  const sub = `MVRV <b>${n2(O.mvrv)}</b> · capitolazione sotto <b>${n2(O.lo)}</b> · euforia sopra <b>${n2(O.hi)}</b> · percentile a 4 anni <b>${nfIT(O.pctile, 0)}%</b>` +
+    (O.below_1 ? " · sotto 1,0" : O.above_3 ? " · sopra 3,0" : "");
+  const statRow = (k, h, lead) => { const s = O.stats && O.stats[k], x = s && s["d" + h]; if (!x || !x.n) return "";
+    const inC = s.n_entries - x.n, name = k === "cap" ? "capitolazione" : "euforia";
+    return lead ? `Dopo i <b>${x.n}</b> ingressi in ${name} dal 2016${inC > 0 ? ` (${inC} in corso, escluso)` : ""}, BTC a ${h} giorni: mediana <b>${pct(x.median)}</b>, da ${pct(x.min)} a ${pct(x.max)} (${x.up} su ${x.n} in rialzo)`
+      : `a ${h} giorni: mediana ${pct(x.median)}, da ${pct(x.min)} a ${pct(x.max)}`; };
+  const stat = S ? `<div class="ocStat">${statRow(Z, 90, true)}${box ? ` · ${statRow(Z, 30, false)}` : ""}.</div>` : "";
+  const src = O.source_note ? `<span>${escS(O.source_note)}</span>` : `<span>dato del ${dm(O.date)}</span>`;
+  const body = `<div class="ocHead"><b>Ciclo on-chain · MVRV di BTC</b>${src}</div>
+    <div class="ocBig ${Z}">${big}</div><div class="ocSub">${sub}</div>
+    <div class="ocChart" id="ocChart" role="img" aria-label="MVRV degli ultimi 2 anni: oggi ${n2(O.mvrv)}, zona ${O.zone_name.toLowerCase()}, soglie ${n2(O.lo)} e ${n2(O.hi)}"></div>
+    <div class="ocLeg"><span><i class="c"></i>capitolazione</span><span><i class="e"></i>euforia</span><span><i class="u"></i>MVRV 1,0</span></div>
+    <p class="ocTxt">${escS(O.frase)}</p>${stat}<p class="ocNote">${escS(O.note)}</p>`;
+  el.innerHTML = box ? body : `<div class="oc">${body}</div>`;
+  el.hidden = false; if (!box) $("ocSec").hidden = false;
+  const C = $("ocChart"), Sr = O.series, n = Sr.v.length;
+  const draw = () => {
+    const w = Math.round(C.clientWidth), h = Math.round(C.clientHeight); if (w < 40 || h < 40) return;
+    const top = 6, bot = h - 16, lft = 2, rgt = w - 44;
+    const all = Sr.v.concat(Sr.lo, Sr.hi, [1]).filter(x => x != null), lo = Math.min(...all) * 0.9, hi = Math.max(...all) * 1.03;
+    const X = i => (lft + (rgt - lft) * i / (n - 1)).toFixed(1), Y = v => (bot - (bot - top) * (v - lo) / (hi - lo)).toFixed(1);
+    const line = a => a.map((v, i) => `${i ? "L" : "M"}${X(i)},${Y(v)}`).join("");
+    const capA = `${line(Sr.lo)}L${X(n - 1)},${bot}L${X(0)},${bot}Z`, eupA = `${line(Sr.hi)}L${X(n - 1)},${top}L${X(0)},${top}Z`;
+    const ticks = []; let pm = null;
+    Sr.d.forEach((d, i) => { const t = new Date(d), m = t.getMonth(); if (m !== pm && (m === 0 || m === 6) && i > 15 && i < n - 25)
+      ticks.push(`<text class="ax" x="${X(i)}" y="${h - 3}" text-anchor="middle">${t.toLocaleDateString("it-IT", { month: "short" })} ${String(t.getFullYear()).slice(2)}</text>`); pm = m; });
+    const y1 = Y(1), xl = X(n - 1), yl = Y(Sr.v[n - 1]), ly = Math.min(bot - 2, Math.max(top + 10, +yl + 4));
+    C.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+      <path class="be" d="${eupA}"/><path class="bc" d="${capA}"/><path class="le" d="${line(Sr.hi)}"/><path class="lc" d="${line(Sr.lo)}"/>
+      <line class="l1" x1="${lft}" x2="${rgt}" y1="${y1}" y2="${y1}"/><text class="ax" x="${lft + 2}" y="${+y1 - 3}">1,0</text>
+      <path class="mv" d="${line(Sr.v)}"/>${ticks.join("")}
+      <circle class="td ${Z}" cx="${xl}" cy="${yl}" r="4.5"/><text class="tl ${Z}" x="${+xl + 7}" y="${ly}">${n2(O.mvrv)}</text>
+      <text class="ax" x="${+xl + 7}" y="${ly + 11}">oggi</text></svg>`;
+  };
+  draw();
+  if (window.ResizeObserver) new ResizeObserver(draw).observe(C); else window.addEventListener("resize", draw);
+})();
 // ---- Oggi: riga di stato delle posizioni ("BTC short +6,8% · ETH short +16,7%"), stessi numeri in evidenza nelle card di Posizioni; porta a Posizioni
 (function renderPosLine() {
   const W = R.weekly, E = R.weekly_eth; if (!W && !E) return;

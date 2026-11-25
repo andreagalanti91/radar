@@ -1,6 +1,6 @@
 # STATO · Sezione Notizie su misura · avviato 25/11/2026
 
-Stato: IN DEPLOY
+Stato: COMPLETATO (25/11/2026)
 
 ## Prompt originale
 "Nascondi 'opzioni' la riprendiamo successivamente. Realizza meglio la sezione notizie in base a ciò che fa per noi"
@@ -16,3 +16,6 @@ Alla consegna dello Scanner: agente (Opus 5.5 medium) per la sezione Notizie; po
 
 ## Fatto (25/11)
 radar/news.py con punteggio di rilevanza spiegato (asset seguiti, temi, parole forti, doppioni, cache se una fonte non risponde); pagina Notizie: Prima della decisione di domenica, Notizie che toccano le posizioni per tema, Altre notizie chiuse; Oggi con riassunto; report["news_fonti"] in cli.py. Suite 506 test.
+
+## Deploy e verifica (25/11, 17:24 UTC)
+Sito: sezioni "Prima della decisione di domenica" e "Notizie che toccano le posizioni" presenti, news_fonti nel report (fonti ok), 0 errori JS, nessun overflow a 400/1280. FATTO.
