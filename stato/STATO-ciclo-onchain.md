@@ -1,6 +1,6 @@
 # STATO · Scheda "Ciclo on-chain" nella posizione aperta · avviato 25/11/2026
 
-Stato: IN CORSO
+Stato: COMPLETATO (25/11/2026)
 
 ## Prompt originale
 "Interessante l'indicatore quindi. Aggiungi sul tool durante la posizione aperta un informazione riguardante questo
@@ -20,3 +20,6 @@ indicatore. Non so come basta dia valore aggiunto ad una decisione. Anche in for
 
 ## Prossima azione
 Revisione dell'utente, poi commit, deploy e verifica sul sito (non fatti dall'agente).
+
+## Deploy e verifica (25/11, 20:05 UTC)
+Suite 518 test; giro riuscito (commit 75d471f); sito: scheda in Posizioni dopo «Quando esce», capitolazione dal 18/11 (MVRV 1,126; soglie 1,20/2,33; percentile 5%), 0 errori JS, nessun overflow a 400/1280. Nessun ripiego segnalato; in questo giro non è servito scaricare (dato del 24/11 già fresco): la risposta di CoinMetrics dal runner USA si vede al primo giro di domani (controllo programmato lunedì 30/11 insieme allo Scanner).
