@@ -1,0 +1,236 @@
+(c) BTC: copia 2,5/0,25 vs radar.weekly: trade 16/16 identici=True, finale 225068.81 vs 225068.81
+(c) ETH: copia 2,5/0,25 vs radar.weekly: trade 15/15 identici=True, finale 53394.20 vs 53394.20
+(c) SOL: copia 2,5/0,25 vs radar.weekly: trade 22/22 identici=True, finale 84297.76 vs 84297.76
+c 0 XRP
+c 1 SOL
+c 2 BNB
+c 3 ETH
+c 4 ZEC
+c 5 DOGE
+c 6 TRX
+c 7 XMR
+c 8 LINK
+c 9 ADA
+c 10 XLM
+c 11 BCH
+c 12 LTC
+c 13 NEAR
+c 14 UNI
+c 15 AVAX
+c 16 QNT
+c 17 HBAR
+c 18 SHIB
+c 19 AAVE
+c 20 DOT
+c 21 ICP
+c 22 ETC
+c 23 POL
+c 24 RENDER
+c 25 ALGO
+c 26 ATOM
+c 27 INJ
+c 28 STX
+c 29 FIL
+c 30 DASH
+c 31 RAY
+c 32 VET
+c 33 APT
+c 34 CRV
+c 35 LUNC
+c 36 FET
+c 37 XTZ
+c 38 LDO
+c 39 GRT
+c 40 CFX
+c 41 COMP
+c 42 RUNE
+c 43 OP
+c 44 JASMY
+c 45 AR
+c 46 IOTA
+c 47 ENS
+c 48 THETA
+c 49 A
+c 50 NEO
+c 51 MKR
+c 52 XEM
+c 53 ONT
+c 54 BAT
+c 55 SNX
+c 56 QTUM
+c 57 ZRX
+c 58 RVN
+c 59 WAVES
+c 60 OMG
+c 61 HOT
+c 62 SXP
+c 63 ENJ
+c 64 ZEN
+c 65 IOST
+c 66 ICX
+c 67 XVG
+c 68 ZIL
+c 69 MANA
+c 70 VIC
+c 71 KNC
+c 72 RLC
+c 73 REN
+c 74 CHZ
+c 75 S
+c 76 LRC
+c 77 IOTX
+a 0 NVDA
+a 1 AAPL
+a 2 MSFT
+a 3 GOOGL
+a 4 AMZN
+a 5 2330.TW
+a 6 2222.SR
+a 7 TSLA
+a 8 META
+a 9 AVGO
+a 10 BRK-B
+a 11 LLY
+a 12 WMT
+a 13 JPM
+a 14 005930.KS
+a 15 V
+a 16 MU
+a 17 AMD
+a 18 XOM
+a 19 JNJ
+a 20 MA
+a 21 000660.KS
+a 22 ASML.AS
+a 23 ABBV
+a 24 601939.SS
+a 25 COST
+a 26 601288.SS
+a 27 KO
+a 28 CVX
+a 29 PG
+a 30 0700.HK
+a 31 RO.SW
+a 32 PLTR
+a 33 CSCO
+a 34 601988.SS
+a 35 MRK
+a 36 1398.HK
+a 37 HD
+a 38 ORCL
+a 39 BAC
+a 40 GE
+a 41 UNH
+a 42 NOVN.SW
+a 43 INTC
+a 44 PANW
+a 45 PM
+a 46 AZN.L
+a 47 HSBA.L
+a 48 600519.SS
+a 49 NESN.SW
+a 50 MS
+a 51 RTX
+a 52 SHEL.L
+a 53 RY.TO
+a 54 TMO
+a 55 OR.PA
+a 56 AMAT
+a 57 AMGN
+a 58 CAT
+a 59 LRCX
+a 60 7203.T
+a 61 WFC
+a 62 NFLX
+a 63 SAP.DE
+a 64 LIN
+a 65 TXN
+a 66 GS
+a 67 IBM
+a 68 GILD
+a 69 8306.T
+a 70 0857.HK
+a 71 CRWD
+a 72 0941.HK
+a 73 ANET
+a 74 SIE.DE
+a 75 MC.PA
+a 76 BABA
+a 77 AXP
+a 78 DIS
+a 79 RELIANCE.NS
+a 80 MCD
+a 81 ITX.MC
+a 82 PEP
+a 83 VZ
+a 84 GEV
+a 85 C
+a 86 TD.TO
+a 87 DELL
+a 88 CBA.AX
+a 89 ALV.DE
+a 90 TTE.PA
+a 91 ABT
+a 92 APH
+a 93 WELL
+a 94 NOVO-B.CO
+a 95 NEE
+a 96 UNP
+a 97 BHP.AX
+a 98 3968.HK
+a 99 AIR.PA
+a 100 PFE
+a 101 DHR
+a 102 CRM
+a 103 T
+a 104 ABI.BR
+a 105 601318.SS
+a 106 601628.SS
+a 107 PRX.AS
+a 108 ULVR.L
+a 109 ACN
+a 110 LMT
+a 111 BMY
+a 112 BA
+a 113 MDT
+a 114 SAN.PA
+a 115 SBUX
+a 116 BP.L
+a 117 GSK.L
+a 118 TCS.NS
+a 119 1299.HK
+a 120 ADBE
+a 121 CMCSA
+a 122 NKE
+a 123 HON
+(c) BTC: copia 2,5/0,25 vs radar.weekly: trade 16/16 identici=True, finale 225068.81 vs 225068.81
+(c) ETH: copia 2,5/0,25 vs radar.weekly: trade 15/15 identici=True, finale 53394.20 vs 53394.20
+(c) SOL: copia 2,5/0,25 vs radar.weekly: trade 22/22 identici=True, finale 84297.76 vs 84297.76
+
+[altcoin] griglia (mediane di classe; IS su 66 asset, OOS su 78):
+  k    r  n_is  is_cd_med  is_dd_med  oos_cd_med  oos_dd_med  oos_15
+2.0 0.10    66       0.44     -18.75       -0.07      -30.70       2
+2.0 0.15    66       0.45     -26.80       -0.10      -42.70       2
+2.0 0.25    66       0.42     -40.90       -0.15      -61.05       2
+2.5 0.10    66       0.41     -15.40       -0.07      -25.20       3
+2.5 0.15    66       0.39     -21.90       -0.09      -35.35       3
+2.5 0.25    66       0.35     -33.55       -0.15      -51.65       3
+3.0 0.10    66       0.48     -13.45       -0.06      -21.95       2
+3.0 0.15    66       0.48     -19.00       -0.07      -31.10       2
+3.0 0.25    66       0.48     -28.30       -0.11      -46.10       2
+[altcoin] SCELTA IS: trailing 3.0 ATRw, rischio 0.25 (mediana IS CAGR/DD 0.48, DD -28.3) · OOS: mediana CAGR/DD -0.11 contro -0.15 dei parametri di BTC; passano 1–5 in OOS 2 contro 3 → NON migliora · passano davvero in OOS 0: [] · passano 1–5 OOS: ['ETH', 'STX']
+[altcoin] a posteriori (NON utilizzabile): cella OOS migliore 3.0/0.1, mediana CAGR/DD -0.06
+
+[azioni] griglia (mediane di classe; IS su 123 asset, OOS su 124):
+  k    r  n_is  is_cd_med  is_dd_med  oos_cd_med  oos_dd_med  oos_15
+2.0 0.10   123      -0.14      -31.2        0.04      -31.10       2
+2.0 0.15   123      -0.18      -38.6        0.04      -35.75       2
+2.0 0.25   123      -0.20      -41.2        0.03      -37.35       2
+2.5 0.10   123      -0.11      -28.4        0.04      -28.65       1
+2.5 0.15   123      -0.14      -36.7        0.01      -35.50       1
+2.5 0.25   123      -0.18      -42.2        0.00      -38.05       1
+3.0 0.10   123      -0.11      -24.7        0.06      -25.65       2
+3.0 0.15   123      -0.15      -32.9        0.03      -33.10       2
+3.0 0.25   123      -0.21      -40.8        0.00      -37.85       2
+[azioni] SCELTA IS: trailing 2.5 ATRw, rischio 0.1 (mediana IS CAGR/DD -0.11, DD -28.4) · OOS: mediana CAGR/DD 0.04 contro 0.01 dei parametri di BTC; passano 1–5 in OOS 1 contro 1 → NON migliora · passano davvero in OOS 0: [] · passano 1–5 OOS: ['SAP.DE']
+[azioni] a posteriori (NON utilizzabile): cella OOS migliore 3.0/0.1, mediana CAGR/DD 0.06

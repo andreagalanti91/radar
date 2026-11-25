@@ -1,0 +1,7 @@
+(a) BTC 2021-01-01 -> 2026-11-10, dati nuovi: 78474 $ (riferimento 78474) -> OK ; trade 13
+    BTC 2021-01-01 -> 2026-11-24: 84820 $
+(b) ETH 2021-01-01 -> 2026-11-10, dati nuovi: 34758 $ (riferimento 34760) -> DIVERSO ; trade 15
+   giorni con taker buy diverso fra w32_top100 e dati nuovi: 0 []
+    ETH 2021-01-01 -> 2026-11-24: 39572 $
+(d) ma_lib.s1_sim riproduce azioni/counts.csv: 864/864 righe identiche (titolo × variante, linee primarie e USA) []
+(b) spiegazione: con il funding di novembre 2026 tolto (w32_top100 lo aveva fino al 31/10) ETH = 34760 $: la differenza di 2 $ è il funding 01–10/11 dello short ETH aperto il 09/11 (dati più recenti, OKX). Prezzi e taker buy identici.

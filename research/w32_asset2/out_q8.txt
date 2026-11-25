@@ -1,0 +1,11 @@
+2022: idonee 44, scelte 0: nessuna | screener +0.0% (DD 0.0) · BTC + ETH +7.7% (DD -12.8) · tutte le idonee +7.4% (DD -4.1) · solo BTC +19.4% (DD -13.4)
+2023: idonee 65, scelte 6: BTC (+30%), LINK (-6%), ADA (+23%), BCH (-38%), LTC (-40%), SNX (-40%) | screener -11.9% (DD -30.4) · BTC + ETH +22.2% (DD -24.5) · tutte le idonee +3.2% (DD -14.3) · solo BTC +30.4% (DD -27.0)
+2024: idonee 78, scelte 8: BTC (+103%), SOL (+10%), ETH (+28%), RUNE (-9%), IOTA (-10%), ZRX (-46%), WAVES (-23%), REN (-38%) | screener +2.0% (DD -21.9) · BTC + ETH +65.7% (DD -14.4) · tutte le idonee +1.9% (DD -20.5) · solo BTC +103.1% (DD -11.9)
+2025: idonee 84, scelte 3: BTC (-3%), SOL (-28%), ETH (-1%) | screener -10.9% (DD -18.4) · BTC + ETH -2.2% (DD -18.6) · tutte le idonee -1.4% (DD -8.3) · solo BTC -3.3% (DD -21.6)
+2026: idonee 100, scelte 2: BTC (-0%), ETH (+14%) | screener +6.7% (DD -19.3) · BTC + ETH +6.7% (DD -19.3) · tutte le idonee +0.6% (DD -10.3) · solo BTC -0.2% (DD -18.3)
+
+Conto composto 2022-01-01 → 2026-11-24 (ripartenza da flat ogni 1° gennaio):
+  screener              8535 $, CAGR  -3.2%, DD -30.4%, CAGR/DD -0.10
+  BTC + ETH            22762 $, CAGR  18.3%, DD -25.7%, CAGR/DD 0.71
+  tutte le idonee      11198 $, CAGR   2.3%, DD -20.5%, CAGR/DD 0.11
+  solo BTC             30519 $, CAGR  25.6%, DD -28.0%, CAGR/DD 0.92
