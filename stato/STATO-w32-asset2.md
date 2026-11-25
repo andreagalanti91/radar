@@ -1,6 +1,6 @@
 # STATO · W3.2 su altri asset, ciclo 2 · avviato 25/11/2026
 
-Stato: IN CORSO
+Stato: COMPLETATO (25/11/2026) · in attesa dell'utente per le proposte
 
 ## Prompt
 Completo, con l'estensione dell'utente, in `stato/PROMPT-w32-asset-ciclo2.md` (vale come prompt originale).
@@ -20,7 +20,10 @@ motore di ricerca settimanale […]. Fai anche una valutazione approfondita su S
 ## Avanzamento
 - Dati azioni (124 titoli) e crypto (361 monete, 79 valutabili) consegnati e committati. FATTO.
 - PREREG `research/w32_asset2/PREREG.md` committato da solo (f40f7a6). FATTO.
-- Backtest Q1–Q8: agente radar-ricerca. IN CORSO.
+- Backtest Q1–Q8 fatti; revisione critica fatta (nessun errore bloccante); README corretto; lezione 123; indici. FATTO.
 
-## Prossima azione
-Alla consegna: revisione critica (radar-review), poi rapporto, lezione 123, indici, riepilogo all'utente.
+## Proposte in attesa dell'utente (nulla attivato)
+1. TRX con il cancello di BTC: osservazione sulla carta 6–12 mesi; eventuale quota ridotta (~1/6) solo dopo, con decisione.
+2. Studio preregistrato a parte sul peso BTC/ETH (2/3–1/3 contro 50/50: CAGR/DD 2,62 contro 2,44 dal 06/2020).
+3. Screener settimanale: non giustificato come selezione; al più pagina informativa.
+4. SOL e TAO: chiedere all'utente come le tradava, se vuole verificarlo.

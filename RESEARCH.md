@@ -409,6 +409,16 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 123**: W3.2 su 79 crypto valutabili (top 200 di oggi e del 2020, dal 06/2020) e 124 azioni (top 100 di oggi e del 2019,
+dal 2020): con i parametri di BTC nessuna altcoin passa criteri, conferma e placebo con Holm (ETH e STX passano 1–5 ma non Holm su 79);
+top 200 del 2020 0 su 54; azioni 0 su 124 anche con il flusso Chaikin 20 sedute. Il cancello "solo nel verso di W3.2 su BTC" porta
+il DD mediano delle altcoin da −56% a −39% e fa passare solo TRX (87,2k $, DD −22,5%, WR 83%, 12 trade, p 0,0005; due trade fanno
+quasi tutto: senza i due migliori 17,0k $); BTC + ETH + TRX: CAGR/DD 2,13 contro 1,80 dal 2021, ma dal 06/2020 il semplice
+ripeso BTC 2/3 – ETH 1/3 fa meglio (2,62). Il placebo e Holm non proteggono dalla concentrazione su 1–2 movimenti: nei prossimi
+studi servono sempre "senza i due migliori" e il confronto con il ripeso dei capitali già in uso, e 20.000 prove di placebo
+quando Holm è su più di 20 asset. Trailing e rischio per classe non migliorano in OOS. Uno screener
+annuale "chi ha passato i criteri" perde contro BTC + ETH (8,5k contro 22,8k dal 2022). SOL (DD −40%, WR 48%, −10% dal 2024) e TAO
+(−35%) non vanno operati con W3.2. research/w32_asset2/README.md (PREREG f40f7a6).
 **Lezione 122**: opzioni su BTC (ciclo notturno 24–25/11, research/opzioni_studio, PREREG e9cc4fe + due addendum, superficie di
 volatilità Deribit 2018–26 da scambi veri). Comprare opzioni non crea un vantaggio proprio: la regola in uso sulla carta (segnale
 di W3.2, call/put al venerdì più vicino a 30 giorni fra 20 e 50, alla pari, 5% del conto, vendita all'uscita di W3.2) vale

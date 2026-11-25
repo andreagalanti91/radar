@@ -1,4 +1,4 @@
-# w32_asset2 · W3.2 su altri asset, ciclo 2 · BOZZA · NON SI TRASFERISCE (un solo candidato: TRX con il cancello di BTC)
+# w32_asset2 · W3.2 su altri asset, ciclo 2 · NON SI TRASFERISCE (TRX con il cancello di BTC: da approfondire, non da promuovere)
 
 PREREG `PREREG.md`, commit **f40f7a6** (da solo, prima di ogni rendimento). Dati congelati in `crypto/` e `azioni/` (`DATI.md`).
 Motore: `radar.weekly.simulate` invariato (crypto) e `ma_lib.s1_sim` (azioni). Risultati dal 01/06/2020 (inizio della versione
@@ -6,16 +6,21 @@ completa) al 24/11/2026; 10.000 $ per asset, 1x, costi e funding inclusi.
 
 **Verdetto (soglie del PREREG)**
 - **Q1 · crypto valutabili, parametri di BTC: NON SI TRASFERISCE.** 0 altcoin su 78 passano davvero. Passano 1–5 e conferma solo
-  ETH e STX (con BTC), ma nessuna supera Holm su 79 asset (ETH p = 0,0045, Holm 0,34). Conferma la lezione 111 anche dal 2020.
+  ETH e STX (con BTC), ma nessuna supera Holm su 79 asset: con 2.000 prove il p minimo è 0,0005 e Holm su 79 chiede p ≤ 0,00063,
+  cioè il solo pavimento; neanche BTC passerebbe (Holm 0,12). È un effetto della regola più severa, non una prova contro ETH: ETH
+  resta in uso per la lezione 111 e questo studio non lo mette in discussione. Conferma la lezione 111 anche dal 2020.
 - **Q2 · top 200 del 2020 (senza bias di sopravvivenza): NON SI TRASFERISCE.** 0 su 54 altcoin; passa 1–5 solo ETH. Conto
   equipesato W3.2: 19.161 $ (valutabili 2020) contro 22.736 $ (valutabili di oggi): il bias vale circa 3.600 $ su 10.000.
 - **Q3 · azioni con `cmf20`: AZIONI CHIUSE PER W3.2.** 0 titoli su 124 passano 1–5, sia solo prezzo sia con `cmf20` (mediana
   CAGR/DD −0,06 contro 0,30 del buy & hold; WR mediano 31%). `cmf20` non cambia nulla (differenza mediana +0,01).
 - **Q4 · BTC come cancello: SOLO CASI ISOLATI.** 1 altcoin su 78 passa davvero: **TRX** (87.198 $, DD −22,5%, 12 trade, WR 83%,
-  p = 0,0005, Holm 0,039; perp su Bitget e OKX). Il cancello riduce il DD mediano (−39% contro −56%) ma non crea un vantaggio diffuso.
+  placebo 0 su 20.000 anche vincolato al cancello, p < 0,00005, Holm su 78 ≤ 0,004, Bonferroni su tutto il ciclo ≤ 0,03; perp su
+  Bitget e OKX). Due trade (06/2023–03/2024 +96%, 09–12/2024 +161%) fanno l'80% del guadagno: senza i due migliori 17.017 $;
+  perdita massima per trade −4,4%. Revisione critica: **da approfondire, non da promuovere**. Il cancello riduce il DD mediano (−39% contro −56%) ma non crea un vantaggio diffuso.
 - **Q5 · parametri per classe: NON MIGLIORA** né per le altcoin (scelta IS 3,0 ATRw / 25%; in OOS passano 1–5 in 2 contro 3) né per
   le azioni (scelta IS 2,5 / 10%; 1 contro 1). Nessun asset passa davvero in OOS.
-- **Q6 · portafoglio: MIGLIORA, ma con un solo candidato e da confermare.** BTC + ETH + TRX(Q4): CAGR/DD 2,49 contro 2,44 dal
+- **Q6 · portafoglio: MIGLIORA dal 2021 e dal 2023, ma dal 06/2020 lo stesso effetto si ottiene ripesando BTC 2/3 – ETH 1/3
+  (CAGR/DD 2,62 contro 2,49 con TRX): il contributo di TRX viene dal 2023–24.** BTC + ETH + TRX(Q4): CAGR/DD 2,49 contro 2,44 dal
   06/2020 (DD −18,9 contro −20,6) e 2,13 contro 1,80 dal 2021 (DD −18,2 contro −20,2). Aggiunge 1,9 operazioni l'anno, 84% delle
   settimane nello stesso verso di BTC.
 - **Q7 · SOL e TAO: NON OPERARLE CON W3.2.** SOL rende (80.661 $) ma con DD −39,8% e WR 48%, e dal 2024 perde (−10% in tre anni);
@@ -430,11 +435,14 @@ decidere con l'utente, nessuna modifica al tool senza approvazione.
 
 ## Cosa significa per l'operatività
 - **Nessun asset si aggiunge automaticamente.** BTC ed ETH restano come sono.
-- **Proposta all'utente (da decidere, nulla attivato)**: TRX con il cancello di BTC (entra solo nello stesso verso di W3.2 su BTC),
-  perp su Bitget e OKX. Se approvata: capitale separato e piccolo (per esempio 10.000 $, un terzo della quota di ETH), rischio 25%
-  come BTC/ETH (DD storico −22,5%) oppure 10–15% per i primi mesi (DD −14/−17%), almeno 3–6 mesi su carta. Motivi di prudenza: è un
-  solo asset su 78 tentativi; due trade (06/2023–03/2024 +96%, 09–12/2024 +161%) fanno quasi tutto il guadagno; 1,9 operazioni
-  l'anno; TRX è una moneta molto centralizzata. Prima serve la revisione critica (`radar-review`) prevista dal PREREG.
+- **TRX con il cancello di BTC: da approfondire, non da promuovere** (revisione critica). Statisticamente solido (placebo 0 su
+  20.000, anche vincolato al cancello; trade ricalcolati a mano: coincidono; nessuno sguardo al futuro), ma l'80% del guadagno
+  viene da 2 trade (senza i due migliori 17.017 $, ≈ 8,6% l'anno) e dal 06/2020 ripesare BTC/ETH fa meglio. Non è un BTC a leva:
+  TRX che segue solo il cancello a 1x fa DD −49%; i segnali propri di TRX dimezzano il DD (correlazione giornaliera con BTC 0,11).
+  Proposta: **osservazione sulla carta per 6–12 mesi** con le regole fissate ora; solo dopo, e solo con una decisione esplicita
+  dell'utente, una quota ridotta (circa 1/6 del capitale crypto), senza cambiare BTC ed ETH.
+- **Peso BTC/ETH**: dal 06/2020 BTC 2/3 – ETH 1/3 ha CAGR/DD 2,62 contro 2,44 del 50/50 attuale. Non è stato preregistrato come
+  domanda: è un'indicazione da studiare a parte, non una regola.
 - **SOL e TAO: no** con W3.2 (sezione Q7). **Azioni: no** (Q3). **Screener: no** per ora (Q8); al più una pagina informativa.
 
 ## Limiti
@@ -450,6 +458,21 @@ decidere con l'utente, nessuna modifica al tool senza approvazione.
 - **Placebo a 2.000 prove**: il p minimo è 0,0005; con Holm su 79 asset la soglia del primo è 0,00063, quindi passa solo chi ha il
   p minimo. Con questa regola nemmeno BTC passerebbe (p 0,0015, Holm 0,12): la severità dichiarata nel PREREG pesa molto.
 - La versione completa non parte prima del 01/06/2020 (archivio perp dal 01/2020).
+- **TRX**: uscita del 04/12/2024 in un crollo intraday (minimo 0,322): con esecuzione a 0,33 il finale sarebbe 72.414 $. Liquidità:
+  perp TRX su OKX ampio (spread 1 tick, ≈ 7,4 M$ in 24 ore); su Bitget ≈ 0,5 M$ in 24 ore; i long si eseguono in spot.
+- **Prezzi sotto 1 $ nelle tabelle dei trade**: `entry_px`/`exit_px` di `simulate` sono arrotondati a 0,01, quindi per TRX la
+  colonna `move` è falsa (trade 01/2022: +5,4% invece di −0,3%). I P&L sono corretti; non usare `move` né i prezzi di TRX da quei campi.
+
+## Revisione critica (agente separato, sola lettura)
+Nessun errore bloccante. Quattro trade di TRX con il cancello ricalcolati a mano (i due migliori, uno short, un perdente): P&L
+identici; cancello letto alla domenica, senza sguardo al futuro. Placebo rifatto con 20.000 prove, libero e vincolato ai giorni in
+cui BTC è nello stesso verso: 0 prove sopra il reale in entrambi. TRX per periodo: IS 2020–22 14.988 $ (DD −6,7%, CAGR/DD 2,53),
+OOS 2023→ 58.178 $ (DD −22,5%, 2,54); altre date di partenza tutte sopra 69.000 $; trailing 2,0/2,25/2,75/3,0: 39.032 / 98.024 /
+76.336 / 70.503 $; rischio 15/20/30%: 50.067 / 70.430 / 96.285 $. Portafoglio (CAGR/DD) dal 06/2020 · 2021 · 2023: BTC+ETH 50/50
+2,44 · 1,80 · 1,13; con TRX a un terzo 2,49 · 2,13 · 2,24; BTC 2/3 – ETH 1/3 2,62 · 1,90 · 1,21; BTC 50 / ETH 33 / TRX 17 2,60 ·
+2,04 · 1,70. SOL e TAO: segnali attuali corretti (SOL short dal 09/11, trailing 101,51; TAO flat). Q8: nessuno sguardo al futuro
+nelle scelte; l'universo con le sopravvissute gonfia lo screener, quindi "non giustificato" vale a maggior ragione. Secondo ciclo
+sconsigliato (nessun errore del motore; un'ipotesi in più aumenterebbe solo la molteplicità): non eseguito.
 
 ## Deviazioni dal PREREG (dichiarate)
 1. IS/OOS: per gli asset con IS o OOS < 6 mesi (inizio dopo il 30/06/2022 o serie finita prima del 30/06/2023) si usano le due metà
@@ -475,11 +498,15 @@ decidere con l'utente, nessuna modifica al tool senza approvazione.
 dal 2020): con i parametri di BTC nessuna altcoin passa criteri, conferma e placebo con Holm (ETH e STX passano 1–5 ma non Holm su 79);
 top 200 del 2020 0 su 54; azioni 0 su 124 anche con il flusso Chaikin 20 sedute. Il cancello "solo nel verso di W3.2 su BTC" porta
 il DD mediano delle altcoin da −56% a −39% e fa passare solo TRX (87,2k $, DD −22,5%, WR 83%, 12 trade, p 0,0005; due trade fanno
-quasi tutto); BTC + ETH + TRX: CAGR/DD 2,13 contro 1,80 dal 2021. Trailing e rischio per classe non migliorano in OOS. Uno screener
+quasi tutto: senza i due migliori 17,0k $); BTC + ETH + TRX: CAGR/DD 2,13 contro 1,80 dal 2021, ma dal 06/2020 il semplice
+ripeso BTC 2/3 – ETH 1/3 fa meglio (2,62). Il placebo e Holm non proteggono dalla concentrazione su 1–2 movimenti: nei prossimi
+studi servono sempre "senza i due migliori" e il confronto con il ripeso dei capitali già in uso, e 20.000 prove di placebo
+quando Holm è su più di 20 asset. Trailing e rischio per classe non migliorano in OOS. Uno screener
 annuale "chi ha passato i criteri" perde contro BTC + ETH (8,5k contro 22,8k dal 2022). SOL (DD −40%, WR 48%, −10% dal 2024) e TAO
 (−35%) non vanno operati con W3.2. research/w32_asset2/README.md (PREREG f40f7a6).
 
 ## File
+Nota: questo README è stato corretto a mano dopo la revisione critica; `build_readme.py` lo riscriverebbe dalla bozza.
 `lib.py` (motore comune), `checks.py` → `out_checks.txt`; `run_crypto.py` → `risultati_crypto.csv`, `trades_crypto.csv`,
 `eq_crypto.csv.gz`; `run_azioni.py` → `risultati_azioni.csv`, `trades_azioni.csv`, `eq_azioni.csv.gz`; `q4.py` → `risultati_q4.csv`,
 `out_q4.txt`; `q5.py` (+ `weekly_q5.py`) → `q5_griglia.csv`, `risultati_q5.csv`, `out_q5.txt`; `q6.py` → `risultati_q6.csv`,
