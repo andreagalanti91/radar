@@ -409,6 +409,15 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 124**: peso del capitale fra BTC ed ETH con W3.2 (research/peso_btc_eth, PREREG c7d618a). Dal 06/2020 il CAGR/DD del
+conto unico cresce con la quota di BTC in ogni periodo e in ogni data di partenza (50/50 2,44 · 2/3 2,62 · 100% 2,92; OOS 2023→
+1,13 · 1,21 · 1,33); la regola preregistrata sceglie BTC 100% e passa i 4 criteri (6/6 date, DD OOS −27,0 contro −24,5).
+Ricampionamento: 73% (limite superiore: eredita il bias). Il vantaggio non viene da un DD più piccolo (ETH pesa 3,8 punti
+su 20,6 nel DD massimo; più BTC peggiora un po' il DD) ma dal rendimento più alto di BTC (2020, 2022–24; ETH vince solo nel 2025),
+in parte gonfiato dal fatto che W3 è stata sviluppata su BTC. Ribilanciare ogni gennaio peggiora sempre. Una griglia di pesi che
+cresce in modo monotono sceglie per forza l'estremo: nei prossimi studi va dichiarato prima un limite di concentrazione. Con un asset
+servito a sviluppare la strategia il gate non basta: va confrontato con la soglia di pareggio (qui il vantaggio si azzera con −10
+punti l'anno su BTC, su un distacco di ~18). Revisione: 100/0 non promosso; 50/50 resta; 2/3–1/3 solo come preferenza dell'utente.
 **Lezione 123**: W3.2 su 79 crypto valutabili (top 200 di oggi e del 2020, dal 06/2020) e 124 azioni (top 100 di oggi e del 2019,
 dal 2020): con i parametri di BTC nessuna altcoin passa criteri, conferma e placebo con Holm (ETH e STX passano 1–5 ma non Holm su 79);
 top 200 del 2020 0 su 54; azioni 0 su 124 anche con il flusso Chaikin 20 sedute. Il cancello "solo nel verso di W3.2 su BTC" porta

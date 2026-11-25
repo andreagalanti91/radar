@@ -1,12 +1,12 @@
 # Peso del capitale fra BTC ed ETH con W3.2 · 25/11/2026
 
-**Verdetto: la regola preregistrata sceglie BTC 100% (tutto il capitale crypto su BTC, ETH a zero) e la scelta passa tutti e
-quattro i criteri in OOS: per il PREREG il cambio va proposto all'utente.** Però non è una scoperta nuova: è lo stesso fatto visto
-sei volte, cioè W3.2 su BTC ha reso più di W3.2 su ETH in quasi ogni anno. Le regole di W3 sono state costruite su BTC: per BTC il
-2023–26 non è un vero fuori campione, per ETH sì, e questo favorisce BTC. Inoltre più BTC non riduce il DD, lo aumenta un po'. Il
-ricampionamento dà alla scelta il 73% di probabilità di battere il 50/50 su 3 anni: c'è comunque un 27% di probabilità di fare
-peggio. Proposta: BTC 100% come esito formale; 2/3–1/3 (40.000 + 20.000 $) come compromesso, non preregistrato, che conserva
-metà della diversificazione. Finché l'utente non decide resta il 50/50. Nessuna modifica al tool né ai capitali (PREREG c7d618a).
+**Verdetto: il 50/50 resta. La regola preregistrata sceglie BTC 100% e passa i quattro criteri in OOS, ma la revisione critica
+non la promuove: il vantaggio è più piccolo del bias di sviluppo plausibile.** W3 è stata costruita e tarata su BTC: per BTC il
+2023–26 non è un vero fuori campione, per ETH quasi sì. In OOS il distacco di rendimento fra BTC ed ETH è di circa 18 punti l'anno;
+basta che W3.2 su BTC renda circa 10 punti l'anno in meno del passato perché il 50/50 torni alla pari, e oltre quella soglia il
+100/0 è la scelta peggiore, con un DD più profondo (−34% contro −26% con −20 punti l'anno). Più BTC non riduce il DD in nessun
+periodo. **2/3–1/3 (40.000 + 20.000 $)** è difendibile come preferenza dell'utente, non come risultato dimostrato (non
+preregistrato, stessa fonte distorta: in OOS +0,08 di CAGR/DD). **100/0 sconsigliato.** Nessuna modifica al tool né ai capitali.
 
 ## Cosa è stato provato
 - Trade di W3.2 da `radar.weekly.simulate` invariato (R 0,25, trailing 2,5 ATRw) su BTC ed ETH, dati di
@@ -62,7 +62,7 @@ casi, nel finale nell'82,5%, ma ha un DD più piccolo solo nel 38,5%; differenza
   peggiora di poco (−20,6 → −21,1 dal 2020; −24,5 → −27,0 dal 2023). La correlazione settimanale dei due conti è solo 0,33.
 - **2/3–1/3 sembra meglio perché BTC rende di più.** Conto BTC / conto ETH per anno: 2020 (da giugno) +133% / +35% · 2021 +118% /
   +104% · 2022 +19% / −4% · 2023 +46% / +22% · 2024 +103% / +28% · 2025 +5% / +14% · 2026 +19% / +14%. ETH vince solo nel 2025.
-  Il distacco viene soprattutto dal 2020, dal 2023 e dal 2024.
+  Il distacco viene soprattutto dal 2020 e dal 2022–24 (2022: +19% contro −4%).
 - **La griglia non poteva scegliere una via di mezzo.** Il C/DD cresce con il peso di BTC in ogni periodo e in ogni data: la
   regola "C/DD massimo" sceglie per forza l'estremo. I 6 confronti si sovrappongono quasi tutti: valgono come una sola prova.
 - **Il vantaggio di BTC è in parte costruito.** W2, MACD, F1, il trailing e il rischio 25% sono stati scelti guardando BTC
@@ -84,8 +84,11 @@ o alla chiusura di una posizione, non a metà trade. Decide l'utente.
 ## Limiti
 - Un solo campione di 6,5 anni con due asset; le 6 date di partenza e l'OOS si sovrappongono.
 - Bias di sviluppo a favore di BTC (vedi sopra); il già visto 2/3 (2,62 / 1,90 / 1,21) era noto prima del PREREG.
-- BTC 100% elimina la diversificazione: un periodo in cui W3.2 fallisce su BTC non avrebbe nessun cuscinetto. Nel campione non è
-  mai successo, quindi i numeri non lo misurano.
+- BTC 100% elimina la diversificazione. Scenari della revisione: togliendo a BTC 20 punti l'anno, in OOS il 100/0 ha CAGR/DD 0,33
+  e DD −34,2% contro 0,56 e −26,3% del 50/50 (2/3: 0,49); con −30 punti il CAGR del 100/0 scende a +0,7% contro +10,2%. Se BTC
+  rendesse come ETH (curva di ETH sfasata di 6–12 mesi), in OOS 0,64 contro 0,84–0,94 del 50/50.
+- Il ricampionamento riusa i rendimenti storici di BTC, che contengono il bias: il 72,6% è un limite superiore, non una probabilità.
+- Criterio 2: togliere il trade migliore di ETH (+57%) penalizza di più il 50/50 (piccolo favore meccanico al 100/0).
 - Il criterio 4 passa con 0,5 punti di margine.
 
 ## Deviazioni dal PREREG (dichiarate)
@@ -98,12 +101,20 @@ o alla chiusura di una posizione, non a metà trade. Decide l'utente.
    ribilanciato ogni 52 settimane, seme 7; "batte" = C/DD più alto.
 6. Aggiunti come descrittivi, non preregistrati: i 4 criteri per gli altri pesi, i rendimenti annui, la scomposizione del DD.
 
+## Revisione critica (agente separato, sola lettura)
+Nessun errore bloccante: numeri controllati contro `risultati.csv`, nessuno sguardo al futuro. Giudizio: esito formale 100/0 **non
+promuovere** (vantaggio OOS +0,2 di CAGR/DD, minore del bias plausibile; DD peggiore in ogni periodo e data; 6 date che valgono come
+una); 2/3–1/3 **da approfondire**, scelta dell'utente. Il 2025, l'anno più recente, va nella direzione opposta (ETH +14% contro
+BTC +5%). Proposte per il futuro: stimare il "rendimento atteso su un asset nuovo" dalla dispersione della lezione 110; confrontare
+semestre per semestre il distacco reale BTC−ETH dal 11/2026 e rivedere il peso solo dopo almeno 2 anni di dati veri.
+
 ## Lezione 124 proposta per RESEARCH.md
 **Lezione 124**: peso del capitale fra BTC ed ETH con W3.2 (research/peso_btc_eth, PREREG c7d618a). Dal 06/2020 il CAGR/DD del
 conto unico cresce con la quota di BTC in ogni periodo e in ogni data di partenza (50/50 2,44 · 2/3 2,62 · 100% 2,92; OOS 2023→
 1,13 · 1,21 · 1,33); la regola preregistrata sceglie BTC 100% e passa i 4 criteri (6/6 date, DD OOS −27,0 contro −24,5).
-Ricampionamento: 73% di probabilità di battere il 50/50 su 3 anni. Il vantaggio non viene da un DD più piccolo (ETH pesa 3,8 punti
+Ricampionamento: 73% (limite superiore: eredita il bias). Il vantaggio non viene da un DD più piccolo (ETH pesa 3,8 punti
 su 20,6 nel DD massimo; più BTC peggiora un po' il DD) ma dal rendimento più alto di BTC (2020, 2022–24; ETH vince solo nel 2025),
 in parte gonfiato dal fatto che W3 è stata sviluppata su BTC. Ribilanciare ogni gennaio peggiora sempre. Una griglia di pesi che
-cresce in modo monotono sceglie per forza l'estremo: nei prossimi studi va dichiarato prima un limite di concentrazione. Proposto
-all'utente: 100/0 come esito formale, 2/3–1/3 come compromesso; senza la sua decisione resta il 50/50.
+cresce in modo monotono sceglie per forza l'estremo: nei prossimi studi va dichiarato prima un limite di concentrazione. Con un asset
+servito a sviluppare la strategia il gate non basta: va confrontato con la soglia di pareggio (qui il vantaggio si azzera con −10
+punti l'anno su BTC, su un distacco di ~18). Revisione: 100/0 non promosso; 50/50 resta; 2/3–1/3 solo come preferenza dell'utente.

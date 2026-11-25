@@ -14,5 +14,9 @@ Stato: IN CORSO
 - Peso BTC/ETH: `research/peso_btc_eth/PREREG.md`; l'esito è solo una proposta (capitali invariati).
 - Agenti Opus 5.5 medium: uno per il tool (radar/, tests/, data/, dashboard), uno per lo studio (research/peso_btc_eth/).
 
+## Avanzamento
+- Studio peso BTC/ETH: fatto, revisionato, lezione 124. Esito: 50/50 resta; 2/3–1/3 solo come preferenza dell'utente. FATTO.
+- Pagina Scanner + TRX sulla carta: agente in corso.
+
 ## Prossima azione
 Attendere i due agenti; poi suite, render, deploy, verifica sul sito; revisione dello studio sul peso; riepilogo.
