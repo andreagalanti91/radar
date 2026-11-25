@@ -143,6 +143,10 @@ class TestFonteERipiego(unittest.TestCase):
         self.assertEqual(len(r["series"]["d"]), len(r["series"]["lo"]))
         self.assertTrue(0 <= r["pctile"] <= 100)
         self.assertEqual(r["frase"], O.frase("long", r["zone"]))
+        self.assertEqual(r["breve"], O.breve("long", r["zone"]))
+        for k in ("cap", "eup"):   # risultati per episodio per il grafico a barre del pannello
+            for ep in r["stats"][k]["episodes"]:
+                self.assertEqual(set(ep), {"date", "d30", "d90"})
         self.assertLess(len(json.dumps(r)), 60000)
 
 
@@ -167,6 +171,16 @@ class TestFrase(unittest.TestCase):
             self.assertIn("normale", O.frase(side, "norm"))
         self.assertLess(len(O.frase("short", "norm")), len(sc))
 
+    def test_riga_corta_per_la_scheda_chiusa(self):
+        rows = {(z, sd): O.breve(sd, z) for z in ("cap", "eup") for sd in ("long", "short", None)}
+        self.assertEqual(len(set(rows.values())), 6)
+        self.assertIn("rimbalzo", rows[("cap", "short")])
+        for t in rows.values():
+            self.assertLessEqual(len(t), 60)
+            self.assertNotIn("W3.2", t)
+        for sd in ("long", "short", None):
+            self.assertEqual(O.breve(sd, "norm"), "Nessuna indicazione dal ciclo")
+
     def test_verso_della_posizione(self):
         self.assertEqual(O.side_of({"status": "aperto", "side": "short"}), "short")
         self.assertEqual(O.side_of({"status": "uscita", "side": "long"}), "long")
@@ -183,6 +197,77 @@ class TestScheda(unittest.TestCase):
         self.assertIn(":root[data-theme=\"dark\"]", T)
         i = T.index('id="v-posizioni"')
         self.assertLess(i, T.index('id="ocSec"'), T.index('id="v-opzioni"'))
+
+    def test_scheda_chiusa_e_pannello(self):
+        js = T[T.index("function renderOnchain"):T.index("function renderPosLine")]
+        for x in ('class="ocTap" id="ocOpen" aria-haspopup="dialog"', 'class="ocTh" role="img"', "Dettagli ›", "O.breve",
+                  'openSheet("Ciclo on-chain di BTC"', 'class="seg ocSeg"', "ocChartP", "Mediana"):
+            self.assertIn(x, js)
+        for t in ("Dove siamo", "Ultimi 2 anni", "Cosa è successo dopo", "Cosa significa per la posizione", "Fonte"):
+            self.assertIn(f'sec("{t}"', js)
+        # tocco fuori dal pannello: il listener non deve stare dentro un commento
+        line = next(l for l in T.splitlines() if 'd.addEventListener("click", e => { if (e.target === d) closeSheet(); })' in l)
+        self.assertFalse(line.lstrip().startswith("//"))
+        self.assertLess(line.find("d.addEventListener"), line.find("//") if "//" in line else 10 ** 6)
+        self.assertIn("min-height:40px", T[T.index(".dlgHead button{"):T.index(".dlgHead button{") + 80])
+
+    def test_apre_e_chiude_nel_browser(self):
+        """Pagina minima con i pezzi veri del template (stile, pannello generico, helper, renderOnchain): scheda chiusa →
+        pannello con 5 sezioni → chiusura con Esc, tocco fuori e pulsante."""
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError:
+            self.skipTest("playwright non installato")
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        r = O.build(Path(tmp.name), side="short", http=fake_http(serie()), today=pd.Timestamp("2026-11-25"), study=None,
+                    old_prices=None)
+        cut = lambda a, b: T[T.index(a):T.index(b)]  # noqa: E731
+        style = cut("<style>", "</style>") + "</style>"
+        sheet = next(l for l in T.splitlines() if '<dialog class="dlg" id="sheet"' in l)
+        js = "\n".join([
+            "const $ = id => document.getElementById(id);",
+            cut("// Pannello generico: openSheet", "// telefono: sposta blocchi"),
+            cut("const nfIT = window.nfIT", "const nfS = "), cut("const pct = ", "const css = "),
+            next(l for l in T.splitlines() if l.startswith("const escS = ")),
+            "const R = " + json.dumps({"onchain": r, "weekly": {"status": "flat"}}) + ";",
+            cut("(function renderOnchain()", "// ---- Oggi: riga di stato delle posizioni")])
+        page = Path(tmp.name) / "oc.html"
+        page.write_text(f'<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
+                        f'{style}</head><body><div class="section" id="ocSec" hidden><div class="card ocCard" id="ocCard"></div></div>'
+                        f'{sheet}<script>{js}</script></body></html>')
+        try:
+            p = sync_playwright().start()
+            b = p.chromium.launch()
+        except Exception as e:  # noqa: BLE001
+            self.skipTest(f"chromium non disponibile: {e}")
+        self.addCleanup(p.stop)
+        self.addCleanup(b.close)
+        pg = b.new_page(viewport={"width": 400, "height": 800})
+        errs = []
+        pg.on("pageerror", lambda e: errs.append(str(e)))
+        pg.goto(page.as_uri())
+        pg.wait_for_selector("#ocOpen", state="visible", timeout=5000)
+        pg.wait_for_timeout(50)   # aggancio dei listener del pannello (setTimeout 0)
+        self.assertGreaterEqual(pg.query_selector("#ocOpen").bounding_box()["height"], 40)
+        self.assertEqual(pg.evaluate("document.querySelectorAll('#ocOpen .ocTh .dot').length"), 1)
+        opened = lambda: pg.evaluate("document.getElementById('sheet').open")  # noqa: E731
+        pg.click("#ocOpen")
+        self.assertTrue(opened())
+        self.assertEqual(pg.evaluate("document.querySelectorAll('#sheetB .ocSec').length"), 5)
+        self.assertEqual(pg.evaluate("document.querySelectorAll('#ocEpBox .r.md').length"), 1)
+        pg.click(".ocSeg button[data-k=eup]")
+        self.assertEqual(pg.evaluate("document.querySelector('.ocSeg button[data-k=eup]').getAttribute('aria-pressed')"), "true")
+        self.assertLessEqual(pg.evaluate("document.documentElement.scrollWidth"), 400)
+        pg.keyboard.press("Escape")
+        self.assertFalse(opened())
+        pg.click("#ocOpen")
+        pg.mouse.click(5, 5)   # tocco fuori
+        self.assertFalse(opened())
+        pg.click("#ocOpen")
+        pg.click("#sheetX")
+        self.assertFalse(opened())
+        self.assertEqual(errs, [])
 
     def test_pagina_con_i_dati(self):
         tmp = tempfile.TemporaryDirectory()

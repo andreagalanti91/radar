@@ -195,6 +195,23 @@ def frase(side: str | None, zone: str) -> str:
     return "Ciclo in zona normale: nessuna indicazione dall'indicatore; la posizione la gestisce W3.2."
 
 
+BREVE = {  # UNA riga corta per la scheda chiusa (la frase completa resta nel pannello): stesso contenuto di frase(), solo contesto
+    ("cap", "short"): "Vicino ai minimi di ciclo: rischio di rimbalzo più alto",
+    ("cap", "long"): "Vicino ai minimi di ciclo, ma il fondo può durare mesi",
+    ("cap", None): "Storicamente vicino ai minimi di ciclo",
+    ("eup", "long"): "Spesso a inizio rally: nei test uscire prima è costato",
+    ("eup", "short"): "Vicino ai massimi di ciclo, ma l'euforia può durare mesi",
+    ("eup", None): "Storicamente vicino ai massimi di ciclo",
+}
+
+
+def breve(side: str | None, zone: str) -> str:
+    """Versione corta di frase() per la scheda chiusa."""
+    if zone not in ("cap", "eup"):
+        return "Nessuna indicazione dal ciclo"
+    return BREVE[(zone, side if side in ("long", "short") else None)]
+
+
 def build(data_dir: Path, side: str | None = None, http=None, today: pd.Timestamp | None = None,
           study: Path = STUDY, old_prices: Path = OLD_PRICES) -> dict:
     """report["onchain"]: stato attuale, soglie, serie di 2 anni per il grafico, statistiche e frase per la posizione."""
@@ -217,7 +234,7 @@ def build(data_dir: Path, side: str | None = None, http=None, today: pd.Timestam
         "lo": round(float(last["lo"]), 4), "hi": round(float(last["hi"]), 4), "fixed": [1.0, 3.0],
         "below_1": cur < 1.0, "above_3": cur > 3.0,
         "pctile": round(float((prev < cur).mean()) * 100, 1),
-        "side": side, "frase": frase(side, zone), "stats": st,
+        "side": side, "frase": frase(side, zone), "breve": breve(side, zone), "stats": st,
         "series": {"d": [x.strftime("%Y-%m-%d") for x in ch.index], "v": [round(float(x), 4) for x in ch["mvrv"]],
                    "lo": [round(float(x), 4) for x in ch["lo"]], "hi": [round(float(x), 4) for x in ch["hi"]]},
         "source_note": note, "note": NOTE,
