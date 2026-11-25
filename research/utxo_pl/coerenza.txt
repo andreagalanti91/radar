@@ -1,0 +1,51 @@
+
+== cap_a (giorni dal 2015: 603) ==
+  finestra inizio 2016      2016-01-01 → 2016-06-30: giorni in zona    0 no
+  finestra 12/2018–03/2019  2018-11-15 → 2019-04-15: giorni in zona  134 SI
+  finestra 03/2020          2020-03-01 → 2020-04-30: giorni in zona    6 SI
+  finestra fine 2022        2022-09-01 → 2023-01-31: giorni in zona  129 SI
+  finestra 09/2023          2023-08-15 → 2023-10-15: giorni in zona    0 no
+  finestra metà 2026        2026-06-01 → 2026-07-31: giorni in zona    0 no
+  finestra 11/2026          2026-11-01 → 2026-11-24: giorni in zona    0 no
+  coincidono 3/7
+  episodi (gap > 30 g): 2015-01-01→2015-10-22 (284 g); 2018-11-19→2019-04-01 (134 g); 2020-03-12→2020-03-18 (6 g); 2022-06-13→2023-01-12 (179 g)
+
+== cap_b (giorni dal 2015: 309) ==
+  finestra inizio 2016      2016-01-01 → 2016-06-30: giorni in zona    0 no
+  finestra 12/2018–03/2019  2018-11-15 → 2019-04-15: giorni in zona   60 SI
+  finestra 03/2020          2020-03-01 → 2020-04-30: giorni in zona   13 SI
+  finestra fine 2022        2022-09-01 → 2023-01-31: giorni in zona   88 SI
+  finestra 09/2023          2023-08-15 → 2023-10-15: giorni in zona    0 no
+  finestra metà 2026        2026-06-01 → 2026-07-31: giorni in zona    0 no
+  finestra 11/2026          2026-11-01 → 2026-11-24: giorni in zona    8 SI
+  coincidono 4/7
+  episodi (gap > 30 g): 2015-01-03→2015-06-10 (108 g); 2015-08-18→2015-08-25 (3 g); 2018-11-24→2019-02-16 (60 g); 2020-03-12→2020-03-29 (13 g); 2022-06-13→2022-07-13 (27 g); 2022-08-28→2023-01-10 (90 g); 2026-11-14→2026-11-24 (8 g)
+
+== eup_a (giorni dal 2015: 200) ==
+  finestra 2017             2017-02-01 → 2017-12-31: giorni in zona   97 SI
+  finestra inizio 2021      2020-12-15 → 2021-04-15: giorni in zona   98 SI
+  finestra fine 2024        2024-11-01 → 2024-12-31: giorni in zona    0 no
+  coincidono 2/3
+  episodi (gap > 30 g): 2017-05-19→2017-06-23 (30 g); 2017-08-12→2017-09-01 (10 g); 2017-10-13→2018-01-07 (60 g); 2020-12-26→2021-04-17 (100 g)
+
+== eup_b (giorni dal 2015: 289) ==
+  finestra 2017             2017-02-01 → 2017-12-31: giorni in zona  179 SI
+  finestra inizio 2021      2020-12-15 → 2021-04-15: giorni in zona   99 SI
+  finestra fine 2024        2024-11-01 → 2024-12-31: giorni in zona    0 no
+  coincidono 2/3
+  episodi (gap > 30 g): 2017-04-30→2017-09-07 (108 g); 2017-10-12→2018-01-07 (77 g); 2020-12-19→2021-04-17 (101 g); 2024-03-11→2024-03-11 (1 g); 2025-05-22→2025-05-22 (1 g); 2025-07-14→2025-07-14 (1 g)
+
+== stato attuale (ultimi 10 giorni) ==
+             mvrv   lo_b   hi_b  cap_a  cap_b  eup_a  eup_b
+date                                                       
+2026-11-15  1.214  1.197  2.334  False  False  False  False
+2026-11-16  1.212  1.199  2.334  False  False  False  False
+2026-11-17  1.212  1.200  2.334  False  False  False  False
+2026-11-18  1.176  1.202  2.334  False   True  False  False
+2026-11-19  1.159  1.202  2.334  False   True  False  False
+2026-11-20  1.105  1.202  2.334  False   True  False  False
+2026-11-21  1.130  1.202  2.334  False   True  False  False
+2026-11-22  1.148  1.202  2.334  False   True  False  False
+2026-11-23  1.152  1.202  2.334  False   True  False  False
+2026-11-24  1.126  1.202  2.334  False   True  False  False
+MVRV 2026: minimo 1.103 il 2026-06-30, oggi 1.126
