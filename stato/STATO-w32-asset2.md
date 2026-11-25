@@ -13,7 +13,7 @@ motore di ricerca settimanale […]. Fai anche una valutazione approfondita su S
 - Autonomia: tutto A. Agenti Opus 5.5 medium. Cartella `research/w32_asset2/`. W3.2 e il tool non si toccano.
 
 ## Fasi
-1. Dati e conteggi: agente crypto (top 200 oggi e 2020, SOL/TAO) e agente azioni (top 100 oggi e 2020, operabilità
+1. Dati e conteggi: azioni FATTO (124 titoli, perp su azioni Bitget/OKX solo dal 2026: si usa il titolo in borsa); crypto (top 200 oggi e 2020, SOL/TAO) IN CORSO; (operabilità
    Bitget/OKX) in parallelo. IN CORSO.
 2. PREREG da solo. 3. Backtest Q1–Q7. 4. Revisione critica. 5. Rapporto, lezione 123, progetto Q8, riepilogo.
 
