@@ -48,7 +48,7 @@
     "status": "aperto",
     "signal_date": "2026-11-15",
     "trail": 75763.76,
-    "date": "2026-11-23"
+    "date": "2026-11-24"
   },
   "weekly_intraday_keys": [],
   "commod": {
@@ -3070,13 +3070,13 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-24T23:02:49",
+  "last_run": "2026-11-25T00:02:59",
   "heartbeat": "2026-11-24",
   "daily_brief": "2026-11-24",
   "tg_offset": 77505152,
   "guard": {
     "last": {
-      "dd_pct": -3.16,
+      "dd_pct": -1.19,
       "stops_in_a_row": 0,
       "alarm": false
     }
@@ -3188,7 +3188,7 @@
     "status": "aperto",
     "signal_date": "2026-11-08",
     "trail": 2310.6,
-    "date": "2026-11-23"
+    "date": "2026-11-24"
   },
   "weekly_eth_since": "2026-11-21",
   "guard_eth": {
