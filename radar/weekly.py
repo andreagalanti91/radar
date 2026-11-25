@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
+from . import telegram as tg
+
 START = "2021-01-01"
 LIVE_START = "2026-10-31"
 SMA, EMA_T, EMA_X, ATR_N = 40, 20, 21, 14
@@ -375,11 +377,11 @@ def evaluate(f: pd.DataFrame, capital: float | None = None, asset: str = "BTC") 
 
 TRAIL_STEP = 0.005     # nuovo avviso del trailing quando sale (long) / scende (short) di almeno lo 0,5% del prezzo
 RECENT_DAYS = 7        # ingressi/uscite più vecchi di così (giri saltati a lungo, primo avvio) si registrano senza messaggio
-W3_TEXT = "Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo storico −21% · " \
-          "al massimo il 25% del capitale a rischio allo stop iniziale."
+W3_TEXT = "Operazioni rare (13 dal 2021, circa 2 l'anno) e lunghe · calo massimo storico −21% · al massimo il 25% " \
+          "del capitale a rischio allo stop iniziale."
 W3_TEXTS = {"BTC": W3_TEXT,
-            "ETH": "Operazioni rare (15 trade dal 2021, circa 2–3 l'anno) · DD massimo storico −27,5% · win rate 60% · "
-                   "al massimo il 25% della quota ETH a rischio allo stop iniziale."}
+            "ETH": "Operazioni rare (15 dal 2021, circa 2–3 l'anno) · calo massimo storico −27,5% · 60% dei trade in "
+                   "profitto · al massimo il 25% della quota ETH a rischio allo stop iniziale."}
 
 
 def _usd(x: float) -> str:
@@ -582,111 +584,221 @@ def send_events(cur: dict, prev: dict | None, send, lost: bool | None = None) ->
     return sent, st
 
 
-def _exits_text(side: str) -> str:
+# ---------------------------------------------------------------- testi Telegram (formato in radar/telegram.py)
+
+def _reason_txt(r: str | None, side: str | None) -> str:
+    return tg._reason(r, side)
+
+
+def _exit_rules(side: str, trail_dist: float | None = None, ema21: float | None = None) -> str:
     L = side == "long"
-    return (f"Uscita alla prima: trailing 2,5 ATR settimanali dalla miglior chiusura giornaliera (a cricchetto, non scende mai); "
-            f"chiusura settimanale {'sotto' if L else 'sopra'} la EMA 21; distribuzione (funding medio 7g "
-            + ("&gt; 0,09%/giorno con flusso perp negativo)." if L else "&lt; −0,03%/giorno con flusso perp positivo)."))
+    return ("<b>Come si esce</b> (alla prima delle tre): "
+            + (f"uscita automatica a {tg.usd(trail_dist)} dalla miglior chiusura giornaliera, si sposta solo a tuo favore "
+               "e ti avviso a ogni passo; " if trail_dist else "uscita automatica (si sposta solo a tuo favore); ")
+            + f"chiusura settimanale {'sotto' if L else 'sopra'} la media a 21 settimane"
+            + (f" ({tg.usd(ema21)})" if ema21 else "") + "; "
+            + "distribuzione (funding medio 7 giorni "
+            + ("&gt; 0,09%/giorno con flusso dei futures negativo)." if L else "&lt; −0,03%/giorno con flusso dei futures positivo)."))
 
 
-def _mkt(_w: dict, market: str, expo: float) -> str:
-    return f"SPOT, esposizione {expo:.2f}x (niente leva, niente funding)" if market == "spot" else \
-        f"PERP, esposizione {expo:.2f}x del capitale (tetto di rischio 25% allo stop), margine isolato"
+def _mkt(market: str, expo: float) -> str:
+    base = (f"spot, esposizione {tg.num(expo)}x, niente leva né funding" if market == "spot"
+            else f"perp, margine isolato, esposizione {tg.num(expo)}x del capitale")
+    return f"<b>Mercato</b>: {base}."
 
 
 def _qty(x: dict) -> str:
     """Quantità dell'asset (chiave "qty"; "btc" nei report salvati prima di ETH)."""
     q = x.get("qty", x.get("btc"))
-    return "n.d." if q is None else f"{q:.4f}"
+    return "n.d." if q is None else tg.num(q, 4)
+
+
+def _amount(x: dict, a: str) -> str:
+    return f"Importo: {tg.usd(x['notional'])} = {_qty(x)} {a} su {tg.usd(x['capital'])}"
+
+
+def exit_at(w: dict | None, x: float) -> tuple[float, float] | None:
+    """Esito (% sul capitale, dollari) se si esce al prezzo x: stessa formula di exits_block (w["uscite"]["calc"])."""
+    u = (w or {}).get("uscite") or {}
+    c, ep = u.get("calc"), u.get("entry_px")
+    if not c or not ep:
+        return None
+    xs = x * (1 - c["slip"] * c["sg"])
+    r = c["pnl_pct"] / 100 + c["sg"] * c["expo"] * (xs - c["px0"]) / ep - c["expo"] * xs / ep * c["fee"]
+    return round(r * 100, 2), round(c["capital"] * r, 0)
+
+
+def _if_hit(w: dict, label: str = "Se scatta", icon: bool = True) -> str | None:
+    """Esito se scatta ora l'uscita automatica (w["uscite"]["trail"], lo stesso dato della dashboard)."""
+    t = ((w.get("uscite") or {}).get("trail")) or {}
+    if t.get("usd") is None or t.get("pct_cap") is None:
+        return None
+    ic = ("🎯 " if t["usd"] > 0 else "🛑 ") if icon else ""
+    return f"{ic}{label}: {tg.money(t['pct_cap'], t['usd'])}"
+
+
+def _state_plain(w: dict | None) -> str:
+    if not w:
+        return "non calcolato"
+    s = w.get("status")
+    if s == "aperto":
+        return f"{w['side']} aperto, uscita automatica {tg.usd(w['trail'])}"
+    if s == "uscita":
+        return f"{w['side']}, chiusura lunedì all'apertura"
+    if s == "segnale":
+        return f"segnale {w['side']}, entrata lunedì all'apertura"
+    return "nessuna posizione"
 
 
 def format_event(ev: dict) -> str:
     t, w = ev["type"], ev["w"]
     a = asset_of(w)
     side = ev.get("side") or w.get("side") or ev.get("trade", {}).get("side", "")
-    icon = "🟢 LONG" if side == "long" else "🔴 SHORT"
-    if t == "w_signal":
-        if w["status"] == "segnale":
-            p = w["plan"]
-            return "\n".join([
-                f"<b>RADAR SIGNAL {a} · SEGNALE SETTIMANALE · {icon}</b> (W3.2)",
-                f"Chiusura settimanale del {w['signal_date']}: {_usd(w['price'])} · regime {w['regime']} · flusso perp {w['flow']:+.2f}σ",
-                f"<b>Ingresso</b> a mercato all'apertura di lunedì (~{_usd(p['entry_est'])}): ti confermo il prezzo eseguito",
-                f"<b>Mercato</b>: {_mkt(w, p['market'], p['expo'])}",
-                f"<b>Su {_usd(p['capital'])}</b>: posizione {_usd(p['notional'])} = {_qty(p)} {a}",
-                f"<b>Stop iniziale</b> {_usd(p['stop'])} (2,5 ATR settimanali, −{p['stop_pct']:.1f}%) · perdita allo stop ~{_usd(p['loss_usd'])}",
-                f"<b>Trailing</b>: {_usd(p['trail_dist'])} (2,5 ATRw) dalla miglior chiusura giornaliera: ti avviso quando "
-                f"sale di almeno lo 0,5% del prezzo",
-                f"<b>EMA 21 settimanale</b> {_usd(p['ema21'])}",
-                _exits_text(w["side"]),
-                W3_TEXTS.get(a, W3_TEXT)])
-        return (f"<b>RADAR SIGNAL {a} · SEGNALE SETTIMANALE · {icon}</b> (W3.2, già in posizione)\n"
-                f"Segnale del {w['signal_date']} · ingresso {w['entry']} a {_usd(w['entry_px'])} · mercato: {_mkt(w, w['market'], w['expo'])}\n"
-                f"Stop/trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}\n" + _exits_text(w["side"]))
+    S, ic, L = tg.side_up(side), tg.ICON.get(side, "⚪"), side == "long"
+    H, M, foot = tg.head, tg.msg, tg.foot()
+    usd, dm, gdm, pc = tg.usd, tg.dm, tg.gdm, tg.pc
+
+    if t == "w_signal" and w["status"] == "segnale":
+        p = w["plan"]
+        return M(
+            H(ic, a, f"Nuovo {S}: entra lunedì all'apertura"),
+            f"Entrata: ~<b>{usd(p['entry_est'])}</b> a mercato, {gdm(pd.Timestamp(w['signal_date']) + pd.Timedelta(days=1))}",
+            _amount(p, a),
+            f"🛑 Uscita in perdita: {usd(p['stop'])} (circa −{usd(p['loss_usd'])})",
+            "🎯 Profitto: l'uscita segue il prezzo",
+            "Lunedì ti confermo il prezzo eseguito.",
+            tg.details(f"<b>Stop iniziale</b> {usd(p['stop'])} = {'−' if L else '+'}{tg.num(p['stop_pct'], 1)}% dal prezzo; "
+                       f"perdita stimata allo stop ~{usd(p['loss_usd'])} (costi inclusi).",
+                       f"<b>Perché</b>: chiusura settimanale del {dm(w['signal_date'])} a {usd(w['price'])}, tendenza "
+                       f"{'rialzista' if L else 'ribassista'}, flusso dei futures {tg.sig(w['flow'])}.",
+                       _mkt(p["market"], p["expo"]),
+                       _exit_rules(side, p.get("trail_dist"), p.get("ema21")),
+                       "Uscita automatica = 2,5 volte la volatilità media settimanale (ATR) dalla miglior chiusura.",
+                       W3_TEXTS.get(a, W3_TEXT)),
+            foot)
+
+    if t == "w_signal":   # posizione aperta mai annunciata (giri saltati durante il segnale)
+        return M(
+            H(ic, a, f"{S} già aperto dal {dm(w['entry'])} (segnale in ritardo)"),
+            f"Entrata {gdm(w['entry'])} a <b>{usd(w['entry_px'])}</b> · ora {usd(w['price'])}",
+            f"Risultato: {tg.money_cap(w['capital'], w['pnl_pct'])}",
+            f"🛑 Uscita automatica: <b>{usd(w['trail'])}</b>",
+            f"Media a 21 settimane: {usd(w['ema21'])}",
+            tg.details(f"Segnale del {dm(w['signal_date'])}: i giri precedenti non l'avevano comunicato. "
+                       "Se entri ora, entri a un prezzo diverso.", _mkt(w["market"], w["expo"]), _exit_rules(side)),
+            foot)
+
     if t == "w_entry":
         x = ev["trade"]
-        lines = [f"<b>RADAR SIGNAL {a} · INGRESSO SETTIMANALE ESEGUITO · {icon}</b> (W3.2)",
-                 f"Segnale del {x['signal']} · ingresso {x['entry']} all'apertura a <b>{_usd(x['entry_px'])}</b> · "
-                 f"mercato: {_mkt(w, x['market'], x['expo'])}"]
         if w.get("status") in ("aperto", "uscita") and w.get("signal_date") == x["signal"]:
-            lines.append(f"Su {_usd(w['capital'])}: {_usd(w['notional'])} = {_qty(w)} {a} · stop iniziale {_usd(w['stop0'])} · "
-                         f"stop/trailing attuale {_usd(w['trail'])} · prezzo ora {_usd(w['price'])}")
-        elif x.get("reason") != "open":
-            lines.append(f"Posizione già chiusa: uscita {x['exit']} a {_usd(x['exit_px'])} ({REASONS.get(x['reason'], x['reason'])})")
-        return "\n".join(lines)
+            return M(
+                H(ic, a, f"{S} aperto a {usd(x['entry_px'])}"),
+                f"Entrata {gdm(x['entry'])} all'apertura (segnale del {dm(x['signal'])})",
+                _amount(w, a),
+                f"Prezzo ora: {usd(w['price'])} · {tg.money_cap(w['capital'], w['pnl_pct'])}",
+                f"🛑 Uscita automatica: <b>{usd(w['trail'])}</b>",
+                tg.details(f"Stop iniziale {usd(w['stop0'])}. {_mkt(x['market'], x['expo'])}"),
+                foot)
+        if x.get("reason") == "open" or x.get("exit_px") is None:
+            return M(H(ic, a, f"{S} aperto a {usd(x['entry_px'])}"),
+                     f"Entrata {gdm(x['entry'])} all'apertura (segnale del {dm(x['signal'])})",
+                     tg.details(_mkt(x["market"], x["expo"])), foot)
+        win = (x.get("pnl_pct") or 0) > 0
+        return M(
+            H("🎯" if win else "🛑", a, f"{S} aperto e già chiuso: {pc(x['pnl_pct'])}"),
+            f"Entrata {gdm(x['entry'])} a {usd(x['entry_px'])} (segnale del {dm(x['signal'])})",
+            f"Uscita {gdm(x['exit'])} a {usd(x['exit_px'])} · {tg.esc(_reason_txt(x['reason'], side))}",
+            foot)
+
     if t == "w_info":
-        return "\n".join([
-            f"<b>RADAR SIGNAL {a} · Posizione settimanale in corso · {icon}</b> (W3.2)",
-            "Da oggi il tool segue anche il segnale settimanale W3.2. Questa posizione è aperta dal "
-            f"{w['entry']} a {_usd(w['entry_px'])}, non è un segnale nuovo. Mercato: {_mkt(w, w['market'], w['expo'])}.",
-            f"Andamento {w['move_pct']:+.2f}% sul prezzo · stop/trailing attuale {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}",
-            f"Su {_usd(w['capital'])}: {_usd(w['notional'])} = {_qty(w)} {a} (se decidi di seguirla ora, entri a un prezzo diverso).",
-            _exits_text(w["side"])])
+        return M(
+            H(ic, a, f"{S} in corso dal {dm(w['entry'])}: non è un segnale nuovo"),
+            f"Da oggi il radar segue anche {a}.",
+            f"Entrata {gdm(w['entry'])} a <b>{usd(w['entry_px'])}</b> · ora {usd(w['price'])}",
+            f"Risultato: {tg.money_cap(w['capital'], w['pnl_pct'])} · {pc(w['move_pct'])} sul prezzo",
+            _amount(w, a),
+            f"🛑 Uscita automatica: <b>{usd(w['trail'])}</b>",
+            f"Media a 21 settimane: {usd(w['ema21'])}",
+            tg.details("Se decidi di seguirla ora, entri a un prezzo diverso.", _mkt(w["market"], w["expo"]), _exit_rules(side)),
+            foot)
+
     if t == "w_trail":
-        return (f"<b>RADAR SIGNAL {a} · Settimanale: trailing aggiornato</b> ({w['side']}, W3.2)\n"
-                f"Nuovo stop {_usd(w['trail'])} (era {_usd(ev['old'])}) · prezzo {_usd(w['price'])} · "
-                f"andamento {w['move_pct']:+.2f}% sul prezzo")
+        return M(
+            H("🔔", a, f"Uscita automatica {'alzata' if L else 'abbassata'} a {usd(w['trail'])}"),
+            f"Era {usd(ev['old'])} · si sposta solo a tuo favore",
+            f"{S} da {usd(w['entry_px'])} · ora {usd(w['price'])} · {tg.money_cap(w['capital'], w['pnl_pct'])}",
+            _if_hit(w),
+            foot)
+
     if t == "w_dist":
-        return (f"<b>RADAR SIGNAL {a} · Settimanale: allerta distribuzione (anteprima)</b> ({w['side']}, W3.2)\n"
-                f"Anteprima a metà settimana, non è una decisione: se la settimana chiudesse oggi, funding medio 7g "
-                f"{w['fund7'] * 100:+.4f}%/giorno e flusso perp {w['flow']:+.2f}σ darebbero l'uscita per distribuzione "
-                f"all'apertura di lunedì. Decide solo la chiusura di domenica (UTC). Trailing {_usd(w['trail'])}.")
+        return M(
+            H("⏳", a, f"Possibile uscita {tg.art(side, 'da')}: decide domenica"),
+            "Se la settimana chiudesse oggi si uscirebbe lunedì per distribuzione.",
+            f"Funding medio 7g {pc(w['fund7'] * 100, 4)}/giorno · flusso futures {tg.sig(w['flow'])}",
+            f"<b>Nessuna azione ora</b>: decide la chiusura di {gdm(next_decision(w['date']))} (UTC).",
+            f"🛑 Uscita automatica: {usd(w['trail'])}",
+            tg.details("Distribuzione = funding e flusso dei futures contrari alla posizione: "
+                       + ("funding medio 7g sopra 0,09%/giorno con flusso negativo." if L
+                          else "funding medio 7g sotto −0,03%/giorno con flusso positivo.")),
+            foot)
+
     if t == "w_restore":
         x = ev.get("last")
-        lines = [f"<b>RADAR SIGNAL {a} · Stato degli avvisi ripristinato</b> (W3.2)",
-                 "Lo stato salvato degli avvisi mancava o non era leggibile: ricostruito dalla simulazione W3.2.",
-                 f"Ultima situazione W3.2 = {_state_word(w)} (dati fino al {w['date']})."]
+        pos = None
         if w.get("status") in ("aperto", "uscita"):
-            lines.append(f"Posizione dal {w['entry']} a {_usd(w['entry_px'])} · andamento {w['move_pct']:+.2f}% sul prezzo · "
-                         f"stop/trailing {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}")
-        if x:
-            lines.append(f"Ultima operazione chiusa: {x['side']} dal {x['entry']} a {_usd(x['entry_px'])}, uscita {x['exit']} a "
-                         f"{_usd(x['exit_px'])} ({REASONS.get(x['reason'], x['reason'])}, {x['pnl_pct']:+.2f}% sul capitale dedicato)")
-        lines.append(f"Ingressi e uscite degli ultimi {RECENT_DAYS} giorni seguono in messaggi separati.")
-        return "\n".join(lines)
+            pos = (f"{tg.ICON.get(w['side'], '⚪')} {tg.side_up(w['side'])} dal {dm(w['entry'])} a {usd(w['entry_px'])} · "
+                   f"{tg.money_cap(w['capital'], w['pnl_pct'])}")
+        return M(
+            H("⚠️", a, "Avvisi ripristinati: nessuna azione"),
+            "Lo stato degli avvisi mancava: ricostruito dalla simulazione.",
+            pos or f"Situazione: {_state_plain(w)}",
+            f"🛑 Uscita automatica: {usd(w['trail'])} · media 21 sett. {usd(w['ema21'])}" if pos else None,
+            tg.details((f"Ultima chiusa: {x['side']} dal {dm(x['entry'])} a {usd(x['entry_px'])}, uscita {dm(x['exit'])} a "
+                        f"{usd(x['exit_px'])} ({tg.esc(_reason_txt(x['reason'], x['side']))}), {pc(x['pnl_pct'])} sul capitale."
+                        if x else None),
+                       f"Dati fino al {dm(w['date'])}. Ingressi e uscite degli ultimi {RECENT_DAYS} giorni seguono in "
+                       "messaggi separati."),
+            foot)
+
     if t == "w_exit_next":
-        return (f"<b>RADAR SIGNAL {a} · USCITA SETTIMANALE ANNUNCIATA</b> ({w['side']}, W3.2) · all'apertura di lunedì\n"
-                f"Motivo: {REASONS[w['reason']]} (chiusura del {w['exit_date']})\n"
-                f"Ingresso {w['entry']} a {_usd(w['entry_px'])} · ora {_usd(w['price'])} · risultato stimato "
-                f"{w['move_pct']:+.2f}% sul prezzo ({w['pnl_pct']:+.2f}% sul capitale dedicato). "
-                f"Ti confermo prezzo eseguito e risultato dopo l'apertura.")
+        est = w["pnl_pct"]
+        return M(
+            H("🎯" if est > 0 else "🛑", a, f"Chiudi {tg.art(side)} lunedì all'apertura"),
+            f"Motivo: {tg.esc(_reason_txt(w['reason'], side))} ({gdm(w['exit_date'])})",
+            f"Entrata {dm(w['entry'])} a {usd(w['entry_px'])} · ora {usd(w['price'])}",
+            f"Risultato stimato: {tg.money_cap(w['capital'], est)}",
+            "Lunedì ti confermo prezzo eseguito e risultato.",
+            foot)
+
     if t == "w_exit":
         x = ev["trade"]
-        return (f"<b>RADAR SIGNAL {a} · USCITA SETTIMANALE ESEGUITA</b> ({x['side']}, W3.2) {'✅' if x['pnl_pct'] > 0 else '❌'}\n"
-                f"Motivo: {REASONS.get(x['reason'], x['reason'])} · uscita {x['exit']} a <b>{_usd(x['exit_px'])}</b>\n"
-                f"Ingresso {x['entry']} a {_usd(x['entry_px'])} · risultato {x['move_pct']:+.2f}% sul prezzo "
-                f"(<b>{x['pnl_pct']:+.2f}%</b> sul capitale dedicato)")
+        win = x["pnl_pct"] > 0
+        cap = w.get("capital") or 0
+        return M(
+            H("🎯" if win else "🛑", a, f"{S} chiuso in {'profitto' if win else 'perdita'}: {pc(x['pnl_pct'])}"),
+            f"Uscita {gdm(x['exit'])} a <b>{usd(x['exit_px'])}</b> · {tg.esc(_reason_txt(x['reason'], side))}",
+            f"Entrata {gdm(x['entry'])} a {usd(x['entry_px'])} · {pc(x['move_pct'])} sul prezzo",
+            f"Risultato: {tg.money_cap(cap, x['pnl_pct'])} del capitale" if cap
+            else f"Risultato: <b>{pc(x['pnl_pct'])}</b> del capitale",
+            "Ora nessuna posizione: si attende il prossimo segnale." if w.get("status") == "nessuno" else None,
+            foot)
+
     if t == "w_retract":
         if ev["kind"] == "signal":
-            return (f"<b>RADAR SIGNAL {a} · SEGNALE SETTIMANALE RITIRATO</b> ({side}, W3.2, segnale del {ev['key']})\n"
-                    f"Dopo l'aggiornamento dei dati il segnale non è più valido: {ev['why']}.\n"
-                    "Nessun ingresso: se sei già entrato, valuta di chiudere. Stato attuale: "
-                    + ("nessuna posizione." if w["status"] == "nessuno" else f"{w['status']}."))
-        return (f"<b>RADAR SIGNAL {a} · USCITA SETTIMANALE RITIRATA</b> ({side}, W3.2, segnale del {ev['key']})\n"
-                f"Dopo l'aggiornamento dei dati l'uscita annunciata non è più valida: {ev['why']}."
-                + (f"\nStop/trailing {_usd(w['trail'])} · EMA 21 settimanale {_usd(w['ema21'])}" if w.get("trail") else ""))
-    return str(ev)
-
+            return M(
+                H("⚪", a, f"Segnale {S} annullato: non entrare"),
+                f"Il segnale del {dm(ev['key'])} non è più valido dopo l'aggiornamento dei dati:",
+                f"<i>{tg.esc(ev['why'])}</i>",
+                "<b>Se sei già entrato, valuta di chiudere.</b>",
+                f"Stato attuale: {_state_plain(w)}.",
+                foot)
+        return M(
+            H(ic, a, f"Uscita annullata: tieni {tg.art(side)}"),
+            "L'uscita annunciata per lunedì non è più valida:",
+            f"<i>{tg.esc(ev['why'])}</i>",
+            f"🛑 Uscita automatica: {usd(w['trail'])} · media 21 sett. {usd(w['ema21'])}" if w.get("trail") else None,
+            foot)
+    return tg.esc(str(ev))
 
 def next_decision(today: str | pd.Timestamp) -> str:
     """Prossima decisione W3: chiusura UTC della domenica (oggi se è domenica)."""
@@ -694,27 +806,27 @@ def next_decision(today: str | pd.Timestamp) -> str:
     return str((d + pd.Timedelta(days=(6 - d.dayofweek) % 7)).date())
 
 
-def _state_word(cur: dict | None) -> str:
-    if not cur:
-        return "non calcolato"
-    s = cur.get("status")
-    if s == "aperto":
-        return f"{cur['side']} aperto, stop {_usd(cur['trail'])}"
-    if s == "uscita":
-        return f"{cur['side']}, uscita lunedì all'apertura"
-    if s == "segnale":
-        return f"segnale {cur['side']}, ingresso lunedì all'apertura"
-    return f"nessuna posizione (regime {cur.get('regime')})"
+def _state_short(a: str, c: dict | None) -> str:
+    """'🔴 BTC short' / '⚪ BTC fuori' / 'BTC non calcolato' per la riga di stato del messaggio di salute."""
+    if not c:
+        return f"{a} non calcolato"
+    if c.get("status") in ("segnale", "aperto", "uscita"):
+        return f"{tg.ICON.get(c.get('side'), '⚪')} {a} {c.get('side')}"
+    return f"⚪ {a} fuori"
 
 
 def format_heartbeat(cur: dict | None, data_until: str, last_run: str, problems: list[str], today: str,
-                     others: dict | None = None) -> str:
-    """Messaggio quotidiano di salute (uno al giorno): dati, ultimo giro, stato W3 (BTC e gli altri asset), prossima decisione."""
-    head = "Radar · tutto ok" if not problems else "Radar · attenzione: " + "; ".join(problems)
-    extra = "".join(f", {a} {_state_word(c)}" for a, c in (others or {}).items())
-    return (f"{head}: dati fino al {data_until}, ultimo giro {last_run}, W3.2 {_state_word(cur)}{extra}, "
-            f"prossima decisione {next_decision(today)} (chiusura UTC)")
-
+                     others: dict | None = None, note: str | None = None) -> str:
+    """Messaggio di salute: «✅ tutto ok» (solo se il riepilogo "Oggi" è spento) o l'elenco dei problemi tecnici del giro, con
+    gli avvisi sulle fonti (`note`); poi dati, ultimo giro, stato di W3.2 per asset e prossima decisione."""
+    state = " · ".join([_state_short("BTC", cur)] + [_state_short(a, c) for a, c in (others or {}).items()])
+    state += f" · prossima decisione {tg.gdm(next_decision(today))}"
+    tail = f"Dati fino al {tg.dm(data_until)} · ultimo giro {tg.esc(last_run)}"
+    if not problems:
+        return tg.msg(tg.head("✅", None, "Radar attivo · tutto ok"), tail, state)
+    n = len(problems)
+    return tg.msg(tg.head("⚠️", None, f"Radar · {n} problem{'a' if n == 1 else 'i'} tecnic{'o' if n == 1 else 'i'}"),
+                  *[f"• {tg.esc(p)}" for p in problems], note, tail, state)
 
 # ---------------------------------------------------------------- controllo orario dello stop / trailing
 
@@ -766,15 +878,19 @@ def check_intraday(cur: dict, already: list[str], h: pd.DataFrame | None = None,
             (list(already) + [key])[-30:])
 
 
-def format_intraday(events: list[dict]) -> str:
+def format_intraday(events: list[dict], w: dict | None = None) -> str:
+    """Stop toccato nell'ora. `w` = stato W3.2 dell'asset (facoltativo): esito in dollari al livello toccato."""
     e = events[0]
     a = e.get("asset") or "BTC"
+    why = None
     if e.get("which") == "comunicato":
-        lvl = f"stop comunicato {_usd(e['level'])} (livello del modello {_usd(e['model'])})"
+        why = f"Livello = ultimo comunicato (quello del modello è {tg.usd(e['model'])})."
     elif e.get("told") is not None and e.get("which") == "modello":
-        lvl = f"stop del modello {_usd(e['level'])} (ultimo comunicato {_usd(e['told'])})"
-    else:
-        lvl = f"stop {_usd(e['level'])}"
-    return (f"<b>RADAR SIGNAL {a} · Settimanale: stop toccato (tempo reale)</b> ({e['side']}, W3.2)\n"
-            f"🛑 toccato lo {lvl} · prezzo ora {_usd(e['last'])} · {e['time']}\n"
-            "Lo stop scatta al tocco: chiudi la posizione. L'uscita ufficiale si registra alla chiusura giornaliera.")
+        why = f"Livello = quello del modello (l'ultimo comunicato era {tg.usd(e['told'])})."
+    res = exit_at(w, e["level"]) if w and asset_of(w) == a and w.get("side") == e["side"] else None
+    return tg.msg(
+        tg.head("🛑", a, f"Stop toccato: chiudi {tg.art(e['side'])}"),
+        f"Livello <b>{tg.usd(e['level'])}</b> · prezzo ora {tg.usd(e['last'])} ({e['time']})",
+        f"Risultato a questo livello: {tg.money(*res)}" if res else None,
+        tg.details("Lo stop scatta al tocco. L'uscita ufficiale si registra alla chiusura giornaliera.", why),
+        tg.foot())

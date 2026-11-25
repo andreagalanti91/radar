@@ -18,7 +18,6 @@ from .data import ASSET_NEEDED, CRITICAL, STALE_HOURS, cache_name, is_critical, 
 from .features import build_features  # noqa: E402
 from .live import BACKTEST_START, diff_events, evaluate, save_state  # noqa: E402
 from .news import fetch_calendar, fetch_central_banks, fetch_news  # noqa: E402
-from . import intraday  # noqa: E402
 from . import paper  # noqa: E402
 from . import lab  # noqa: E402
 from . import weekly  # noqa: E402
@@ -68,7 +67,7 @@ def weekly_alerts(cur: dict, st: dict, send=None, h=None) -> list[dict]:
     keys = st.get(ik, [])
     hev, new_keys = weekly.check_intraday(cur, keys, h, told=weekly.told_level(st[k], cur))
     if hev:
-        if send(weekly.format_intraday(hev)):
+        if send(weekly.format_intraday(hev, cur)):
             st[ik] = new_keys
         else:
             print(f"[radar] allerta stop W3 {a} non confermata da Telegram: si riprova al prossimo giro")
@@ -78,7 +77,7 @@ def weekly_alerts(cur: dict, st: dict, send=None, h=None) -> list[dict]:
 def asset_round(asset: str, d: dict, st: dict, now: pd.Timestamp, errors: dict, send=None, fetch=None) -> dict | None:
     """W3.2 di un asset diverso da BTC (oggi ETH), dopo il giro di BTC e isolato da esso: dati (stesse fonti di BTC, cache in
     data/), feature, valutazione e avvisi. Ritorna {"cur", "d", "stale"} o None se i dati mancano (errori in `errors` con il
-    prefisso dell'asset: li segnala source_alerts). Un errore qui non ferma mai il giro di BTC."""
+    prefisso dell'asset: li segnala il messaggio di salute, cli.heartbeat). Un errore qui non ferma mai il giro di BTC."""
     fetch = fetch or update_asset
     da = fetch(asset, errors)
     if da is None:
@@ -95,37 +94,66 @@ def asset_round(asset: str, d: dict, st: dict, now: pd.Timestamp, errors: dict, 
     return {"cur": cur, "d": da, "stale": stale}
 
 
-def source_alerts(errors: dict, stale: dict, st: dict, now: pd.Timestamp, data_until: str | None, send=None) -> None:
-    """Avvisi sulle fonti (al massimo uno al giorno per tipo, marcati solo se inviati): fonte W3 non scaricata
-    (si valuta sull'ultima cache) e dati fermi da oltre 36 ore."""
-    send = send or telegram.send
-    today = str(now.date())
-    crit = {k: v for k, v in errors.items() if is_critical(k)}
-    note = f"W3.2 valutato sui dati fino al {data_until}: decisioni possibili in ritardo." if data_until else ""
-    if crit and st.get("source_alert") != today:
-        if send("<b>RADAR SIGNAL BTC · Fonte non disponibile</b>\n"
-                + "\n".join(f"fonte {k} non disponibile ({v})" for k, v in crit.items()) + f"\n{note}"):
-            st["source_alert"] = today
-    if stale and st.get("stale_alert") != today:
-        if send(f"<b>RADAR SIGNAL BTC · Dati vecchi</b>\nFonti ferme da oltre {STALE_HOURS} ore: "
-                + ", ".join(f"{k} (ultimo giorno {v})" for k, v in stale.items()) + f".\n{note}"):
-            st["stale_alert"] = today
+def _src(k: str) -> str:
+    """Nome di una fonte per l'utente: "eth_funding" -> "ETH funding"."""
+    return "ETH " + k[4:] if k.startswith("eth_") else k
+
+
+def source_lines(errors: dict, stale: dict) -> list[str]:
+    """Problemi delle fonti per il messaggio di salute: fonti non scaricate (si usa l'ultima cache) e dati fermi."""
+    return ([f"fonte {_src(k)} non disponibile ({str(v)[:60]})" for k, v in (errors or {}).items()]
+            + [f"dati {_src(k)} vecchi (ultimo giorno {telegram.dm(v)})" for k, v in (stale or {}).items()])
+
+
+def brief_enabled() -> bool:
+    return os.environ.get("RADAR_DAILY_BRIEF", "1") == "1"
 
 
 def heartbeat_due(st: dict, now: pd.Timestamp) -> bool:
-    """Un messaggio di salute al giorno (UTC), al primo giro dopo le 07:00 UTC."""
+    """Un controllo di salute al giorno (UTC), al primo giro dopo le 07:00 UTC."""
     return os.environ.get("RADAR_HEARTBEAT", "1") == "1" and now.hour >= 7 and st.get("heartbeat") != str(now.date())
 
 
 def heartbeat(cur: dict | None, st: dict, now: pd.Timestamp, data_until: str, problems: list[str], send=None,
-              others: dict | None = None) -> bool:
+              others: dict | None = None, errors: dict | None = None, stale: dict | None = None) -> bool:
+    """Messaggio di salute. Tutto ok: nessun messaggio (la riga «✅ Sistema ok» è nel riepilogo "Oggi"; il messaggio «tutto ok»
+    parte solo con il riepilogo spento, RADAR_DAILY_BRIEF=0). Con problemi: al primo giro dopo le 07:00 UTC (marker
+    st["heartbeat"]) e, come gli avvisi sulle fonti di prima, al primo giro del giorno con una fonte di W3.2 non scaricata
+    (st["source_alert"]) o con dati fermi da oltre STALE_HOURS ore (st["stale_alert"]): gli avvisi sulle fonti stanno solo qui.
+    Ogni marker si scrive solo se Telegram conferma."""
     send = send or telegram.send
-    if not heartbeat_due(st, now):
+    today = str(now.date())
+    errors, stale = errors or {}, stale or {}
+    crit = {k: v for k, v in errors.items() if is_critical(k)}
+    due = heartbeat_due(st, now)
+    src_due = bool(crit and st.get("source_alert") != today) or bool(stale and st.get("stale_alert") != today)
+    allp = source_lines(errors, stale) + list(problems or [])
+    if not allp:
+        if not due:
+            return False
+        if brief_enabled():   # tutto ok: già detto dal riepilogo "Oggi"
+            st["heartbeat"] = today
+            return False
+    elif not (due or src_due):
         return False
-    if send(weekly.format_heartbeat(cur, data_until, now.strftime("%d/%m %H:%M UTC"), problems, str(now.date()), others)):
-        st["heartbeat"] = str(now.date())
-        return True
-    return False
+    note = (f"Segnali calcolati sui dati fino al {telegram.dm(data_until)}: decisioni possibili in ritardo."
+            if (crit or stale) and data_until else None)
+    if not send(weekly.format_heartbeat(cur, data_until, now.strftime("%d/%m %H:%M UTC"), allp, today, others, note)):
+        return False
+    if due:
+        st["heartbeat"] = today
+    if crit:
+        st["source_alert"] = today
+    if stale:
+        st["stale_alert"] = today
+    return True
+
+
+def health(data_until: str | None, problems: list[str], now: pd.Timestamp, errors: dict | None = None,
+           stale: dict | None = None) -> str:
+    """Riga di salute del riepilogo "Oggi"."""
+    return telegram.health_line(data_until, source_lines(errors or {}, stale or {}) + list(problems or []),
+                                weekly.next_decision(str(now.date())))
 
 
 BRIEF_WAIT_H = 6   # se alle 06:00 UTC i dati non arrivano ancora a ieri, il riepilogo parte comunque (con la data dei dati)
@@ -134,20 +162,21 @@ BRIEF_WAIT_H = 6   # se alle 06:00 UTC i dati non arrivano ancora a ieri, il rie
 def brief_due(st: dict, now: pd.Timestamp, data_until: str | None) -> bool:
     """Riepilogo giornaliero "Oggi": una volta al giorno (UTC), al primo giro dopo le 00:00 che ha i dati fino a ieri (candela
     giornaliera chiusa), oppure dalle BRIEF_WAIT_H UTC anche senza. Dipende dallo stato (st["daily_brief"]) e non dal cron:
-    il cron delle 00:30 di daily.yml non partiva mai. Indipendente da RADAR_V2_ALERTS; RADAR_DAILY_BRIEF=0 lo spegne."""
-    if os.environ.get("RADAR_DAILY_BRIEF", "1") != "1" or st.get("daily_brief") == str(now.date()):
+    il cron delle 00:30 di daily.yml non partiva mai. RADAR_DAILY_BRIEF=0 lo spegne."""
+    if not brief_enabled() or st.get("daily_brief") == str(now.date()):
         return False
     yesterday = str((now - pd.Timedelta(days=1)).date())
     return bool(data_until and data_until >= yesterday) or now.hour >= BRIEF_WAIT_H
 
 
-def daily_brief(report: dict, st: dict, now: pd.Timestamp, data_until: str | None, send=None) -> bool:
-    """Invia il riepilogo "Oggi" (W3 + contesto della pre-analisi, telegram.today_brief) se dovuto; il marker del giorno si
-    scrive solo se Telegram conferma (si riprova al giro dopo)."""
+def daily_brief(report: dict, st: dict, now: pd.Timestamp, data_until: str | None, send=None,
+                health: str | None = None) -> bool:
+    """Invia il riepilogo "Oggi" (W3 + contesto della pre-analisi, telegram.today_brief, con la riga di salute `health`) se
+    dovuto; il marker del giorno si scrive solo se Telegram conferma (si riprova al giro dopo)."""
     send = send or telegram.send
     if not brief_due(st, now, data_until):
         return False
-    if send(telegram.today_brief(report, str(now.date()))):
+    if send(telegram.today_brief(report, str(now.date()), health)):
         st["daily_brief"] = str(now.date())
         return True
     print("[radar] riepilogo giornaliero non confermato da Telegram: si riprova al prossimo giro")
@@ -179,13 +208,13 @@ def daily() -> None:
     try:
         d = update_all(errors=errors)
     except Exception as e:  # noqa: BLE001   fonte W3 senza dati né cache: niente da valutare
-        telegram.send(f"<b>RADAR SIGNAL BTC · Fonte non disponibile</b>\n{type(e).__name__}: dati W3.2 assenti, giro interrotto.")
+        telegram.send(telegram.format_run_stopped(type(e).__name__))
         raise
     f = build_features(d)
     now = _now()
     stale = stale_sources(d, now)
     data_until = min(str(d[k].index.max().date()) for k in CRITICAL)
-    problems = [f"fonte {k} non disponibile" for k in errors] + [f"dati {k} vecchi" for k in stale]
+    problems: list[str] = []   # problemi del giro diversi dalle fonti (le fonti: errors e stale, cli.source_lines)
     # ---- W3 per primo: valutazione e alert prima di tutto il resto (fonti accessorie, v2, dashboard)
     st = _load_state()
     wcur = None
@@ -195,7 +224,7 @@ def daily() -> None:
         print(f"[radar] settimanale W3 non calcolato: {e!r}")
         problems.append("W3.2 non calcolato")
         if st.get("w3_error_alert") != str(now.date()) and telegram.send(
-                f"<b>RADAR SIGNAL BTC · W3.2 non calcolato</b>\n{type(e).__name__}: {str(e)[:200]}"):
+                telegram.format_w3_error(f"{type(e).__name__}: {str(e)[:200]}")):
             st["w3_error_alert"] = str(now.date())
     if wcur:
         try:
@@ -213,24 +242,23 @@ def daily() -> None:
     ecur = (eth or {}).get("cur")
     if eth:
         stale.update(eth["stale"])
-        problems += [f"dati {k} vecchi" for k in eth["stale"]]
     elif "W3.2 ETH non calcolato" not in problems:
         problems.append("W3.2 ETH non calcolato")
-    problems += [f"fonte {k} non disponibile" for k in errors if k.startswith("eth_")]
     # registro "provvisori vs definitivi" della decisione domenicale e soglie d'allarme: solo registro e avviso, W3 non cambia
     from importlib import import_module as _im   # import isolato: un modulo rotto non ferma il giro
     from .data import DATA_DIR as _ddir
     provlog_out = _soft("registro provvisori/definitivi", lambda: _im(".provlog", __package__).update(f, d, wcur, _ddir))
     guard_out = _soft("soglie d'allarme", lambda: _im(".guard", __package__).update(wcur, st, journal.load()))
     guard_eth = _soft("soglie d'allarme ETH", lambda: _im(".guard", __package__).update(ecur, st, None, asset="ETH")) if ecur else None
-    _soft("avvisi sulle fonti", source_alerts, errors, stale, st, now, data_until)
     # controlli di coerenza orari (buchi nei dati, storico riscritto, decisione cambiata con i definitivi): solo avviso
     coh = _soft("controlli di coerenza", lambda: _im(".coherence", __package__).update(d, wcur, provlog_out, st))
     problems += [x.split(" (")[0] for x in (coh or {}).get("problems", [])]
     if eth:
         coh_eth = _soft("controlli di coerenza ETH", lambda: _im(".coherence", __package__).update(eth["d"], ecur, None, st, asset="ETH"))
         problems += ["ETH " + x.split(" (")[0] for x in (coh_eth or {}).get("problems", [])]
-    _soft("heartbeat", heartbeat, wcur, st, now, data_until, problems, others={"ETH": ecur})
+    # salute: messaggio separato solo con problemi (fonti incluse); tutto ok = riga in fondo al riepilogo "Oggi"
+    _soft("heartbeat", heartbeat, wcur, st, now, data_until, problems, others={"ETH": ecur}, errors=errors, stale=stale)
+    hl = _soft("riga di salute", health, data_until, problems, now, errors, stale)
     _save_state(st)
     # ---- v2, moduli accessori e dashboard: ognuno isolato
     _soft("liquidazioni", collect_liquidations)
@@ -248,7 +276,7 @@ def daily() -> None:
                 return build(_dd, weekly=wcur)
             _soft("riepilogo giornaliero", daily_brief, {"weekly": wcur, "weekly_eth": ecur, "preview": _soft("pre-analisi W3", _pv, f),
                                                          "macro": _soft("chiusura multi-asset", _mb)},
-                  st, _now(), data_until)
+                  st, _now(), data_until, health=hl)
         st["last_run"] = _now().isoformat(timespec="seconds")
         _save_state(st)
         return
@@ -310,22 +338,12 @@ def daily() -> None:
     for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner"):
         if report.get(k) is None:
             report.pop(k, None)
-    # solo W3 (W2 + MACD robusta, dal 12/11/2026) (decisione dell'utente): alert di v2 spenti, RADAR_V2_ALERTS=1 per riaccenderli
-    v2_on = os.environ.get("RADAR_V2_ALERTS", "0") == "1"
+    # v2: solo stato e storico per la dashboard (messaggi Telegram di v2 eliminati il 25/11/2026; spenti dal 12/11/2026)
     events = diff_events(report)
-    for ev in events if v2_on else []:
-        telegram.send(telegram.format_event(ev, report))
     save_state(report)
-    # controllo orario degli ordini (limit DCA, stop, target) sulle candele orarie di oggi
     st = _load_state()
-    # riepilogo giornaliero "Oggi" (W3 + contesto): indipendente dagli alert di v2, interruttore RADAR_DAILY_BRIEF
-    _soft("riepilogo giornaliero", daily_brief, report, st, _now(), data_until)
-    try:
-        ev, keys = intraday.check(report, st.get("intraday_keys", []))
-        if not (ev and v2_on) or telegram.send(intraday.format_events(ev)):
-            st["intraday_keys"] = keys
-    except Exception as e:  # noqa: BLE001
-        print(f"[radar] controllo orario v2 non eseguito: {e!r}")
+    # riepilogo giornaliero "Oggi" (W3 + contesto + riga di salute), interruttore RADAR_DAILY_BRIEF
+    _soft("riepilogo giornaliero", daily_brief, report, st, _now(), data_until, health=hl)
     # fine del giro pesante: lo legge il controllo del workflow (daily.yml) per saltare un secondo giro entro 25 minuti
     st["last_run"] = _now().isoformat(timespec="seconds")
     _save_state(st)
@@ -355,7 +373,7 @@ def main() -> None:
         r = unittest.TextTestRunner(verbosity=1).run(unittest.defaultTestLoader.discover("tests"))
         sys.exit(0 if r.wasSuccessful() else 1)
     elif cmd == "test-telegram":
-        ok = telegram.send("<b>RADAR BTC</b> · test connessione riuscito ✅")
+        ok = telegram.send(telegram.format_test())
         sys.exit(0 if ok else 1)
     else:
         print(__doc__)

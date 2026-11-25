@@ -41,7 +41,8 @@ class TestGuard(unittest.TestCase):
         guard.update(w, st, send=lambda m: msgs.append(m) or True)
         guard.update(w, st, send=lambda m: msgs.append(m) or True)
         self.assertEqual(len(msgs), 1)
-        self.assertIn("revisione consigliata e rischio dimezzato (decisione dell'utente)", msgs[0])
+        self.assertTrue(msgs[0].startswith("⚠️ <b>BTC · Soglia d'allarme: rivedi la strategia</b>"))
+        self.assertIn("Consigliato: revisione e rischio dimezzato (decidi tu).", msgs[0])
         self.assertTrue(st["guard"]["last"]["alarm"])
         self.assertIsNone(guard.update(None, st, send=lambda m: True))
 

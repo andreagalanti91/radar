@@ -89,15 +89,15 @@ class TestAvvisi(unittest.TestCase):
             self.assertTrue(ev)
             for e in ev:
                 txt = weekly.format_event(e)
-                self.assertIn("RADAR SIGNAL ETH", txt)
+                self.assertTrue(txt.split("\n")[0].split("<b>")[1].startswith("ETH · "))
                 self.assertNotIn("BTC", txt)
         txt = weekly.format_event({"type": "w_trail", "w": eth_cur("aperto"), "old": 2400.0})
-        self.assertIn("RADAR SIGNAL ETH · Settimanale: trailing aggiornato", txt)
+        self.assertTrue(txt.startswith("🔔 <b>ETH · Uscita automatica abbassata a $2.311</b>"))
         x = dict(trade(exit_="2026-11-16", exit_px=1900.0, reason="trail", pnl=8.0), side="short")
         txt = weekly.format_event({"type": "w_exit", "trade": x, "w": eth_cur("nessuno")})
-        self.assertIn("RADAR SIGNAL ETH · USCITA SETTIMANALE ESEGUITA", txt)
+        self.assertTrue(txt.startswith("🎯 <b>ETH · SHORT chiuso in profitto: +8,00%</b>"))
         # BTC invariato
-        self.assertIn("RADAR SIGNAL BTC · SEGNALE", weekly.format_event({"type": "w_signal", "w": cur("segnale")}))
+        self.assertTrue(weekly.format_event({"type": "w_signal", "w": cur("segnale")}).startswith("🟢 <b>BTC · Nuovo LONG"))
 
     def test_stop_in_tempo_reale(self):
         c = eth_cur("aperto")
@@ -105,7 +105,7 @@ class TestAvvisi(unittest.TestCase):
         ev, keys = weekly.check_intraday(c, [], h)
         self.assertEqual(len(ev), 1)
         self.assertTrue(keys[0].startswith("W:ETH:"))
-        self.assertIn("RADAR SIGNAL ETH · Settimanale: stop toccato", weekly.format_intraday(ev))
+        self.assertTrue(weekly.format_intraday(ev).startswith("🛑 <b>ETH · Stop toccato: chiudi lo SHORT</b>"))
 
     def test_stato_separato_e_primo_avvio(self):
         st = {"weekly": {"notified": ["x"]}}
@@ -115,20 +115,19 @@ class TestAvvisi(unittest.TestCase):
         self.assertIn("weekly_eth", st)
         self.assertEqual(st["weekly_eth_since"], "2026-11-22")
         self.assertEqual(len(s.texts), 1)
-        self.assertIn("Posizione settimanale in corso", s.texts[0])         # primo avvio: "in corso", non stato perso
-        self.assertIn("RADAR SIGNAL ETH", s.texts[0])
+        self.assertIn("ETH · SHORT in corso dal 24/08: non è un segnale nuovo", s.texts[0])   # primo avvio, non stato perso
         s2 = Sender()
         cli.weekly_alerts(eth_cur("aperto", date="2026-11-23"), st, s2, h=pd.DataFrame())
         self.assertEqual(s2.texts, [])                                      # niente doppioni
 
     def test_riepilogo_oggi_e_guard(self):
         txt = telegram.today_brief({"weekly": cur("aperto"), "weekly_eth": eth_cur("aperto")}, "2026-11-22")
-        self.assertIn("<b>ETH · W3.2</b>: SHORT", txt)
-        self.assertIn("su $10.000", txt)
-        self.assertIn("RADAR SIGNAL ETH · Soglia", guard.format_alarm({"why": ["x"], "since": "2026-11-22"}, "ETH"))
-        self.assertIn("RADAR SIGNAL ETH · Controllo", coherence.format_alert(["x"], "ETH"))
+        self.assertIn("🔴 <b>ETH short</b> · <b>+16,70%</b> (+$1.670)", txt)    # sul capitale ETH ($10.000)
+        self.assertIn("uscita $2.311", txt)
+        self.assertIn("ETH · Soglia d'allarme", guard.format_alarm({"why": ["x"], "since": "2026-11-22"}, "ETH"))
+        self.assertIn("ETH · Dati da verificare", coherence.format_alert(["x"], "ETH"))
         hb = weekly.format_heartbeat(cur("aperto"), "2026-11-21", "22/11", [], "2026-11-22", {"ETH": eth_cur("aperto")})
-        self.assertIn("ETH short aperto", hb)
+        self.assertIn("🟢 BTC long · 🔴 ETH short", hb)
 
 
 class TestIsolamento(unittest.TestCase):
@@ -139,8 +138,8 @@ class TestIsolamento(unittest.TestCase):
         from radar.data import is_critical
         self.assertTrue(is_critical("eth_perp"))
         s, st = Sender(), {}
-        cli.source_alerts(errors, {}, st, pd.Timestamp("2026-11-22 08:00"), "2026-11-21", send=s)
-        self.assertIn("eth_perp", s.texts[0])
+        cli.heartbeat(None, st, pd.Timestamp("2026-11-22 08:00"), "2026-11-21", [], send=s, errors=errors)
+        self.assertIn("fonte ETH perp non disponibile", s.texts[0])        # avviso sulla fonte dentro la salute
 
     def test_update_asset_senza_rete(self):
         from radar import data

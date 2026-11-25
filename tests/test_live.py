@@ -1,4 +1,4 @@
-"""Segnali reali v2 (radar/live.py): stato su dati storici tagliati, eventi, numeri storici, messaggi Telegram."""
+"""Segnali reali v2 (radar/live.py): stato su dati storici tagliati, eventi, numeri storici (nessun messaggio Telegram)."""
 import os
 import unittest
 
@@ -76,41 +76,24 @@ class TestLiveV2(unittest.TestCase):
         r = paper.simulate(f, h4, "2022-03-01", risk_fn=paper.v2_risk(f, h4, 0.0467), slip=0.002)
         self.assertAlmostEqual(r["stats"]["ret"], 140.0, delta=3.0)
 
-    def test_telegram(self):
-        from radar import telegram
+    def test_eventi_v2_senza_messaggi(self):
+        """Eventi di v2 (stato per la dashboard): calcolati come prima; i messaggi Telegram di v2 (spenti dal 12/11/2026) e il
+        controllo orario dei livelli v2 sono stati eliminati il 25/11/2026."""
+        from radar import intraday, telegram
         prev, n = {}, 0
         for r in self.reports:
-            for ev in self.live.diff_events(r, prev):
-                txt = telegram.format_event(ev, r)
-                self.assertIn("RADAR SIGNAL BTC", txt)
-                n += 1
-            self.assertIn("RADAR SIGNAL BTC", telegram.daily_brief(r))
+            n += len(self.live.diff_events(r, prev))
             v = r["v2"]
             prev = dict(prev, last_signal_date=v.get("signal_date") or prev.get("last_signal_date"),
                         v2={k: v.get(k) for k in ("status", "signal_date", "side", "fills")})
         self.assertEqual(n, 4)
-        self.assertIn("in attesa di conferma 4h", telegram.format_event({"type": "signal", "v2": self.reports[1]["v2"]}))
-        txt = telegram.format_event({"type": "entry", "v2": self.reports[2]["v2"]})
-        self.assertIn("Leva", txt)
-        self.assertIn("Stop", txt)
         ev = self.live.diff_events(self.reports[0], {"v2": dict(status="conferma", signal_date="2026-08-10", side="long")})
         self.assertEqual([e["type"] for e in ev], ["expired"])   # nessuna conferma entro 72h
-        self.assertIn("scaduto", telegram.format_event(ev[0]))
-
-    def test_intraday(self):
-        from radar import intraday
-        r = self.reports[3]
-        v = r["v2"]
-        idx = pd.date_range(v["entry_time"], periods=3, freq="h", tz="UTC")
-        h = pd.DataFrame({"open": v["entry"], "high": v["tp"] + 10, "low": v["entry"], "close": v["tp"]}, index=idx)
-        ev, keys = intraday.check(r, [], h)
-        self.assertEqual([e["kind"] for e in ev], ["tp"])
-        self.assertEqual(intraday.check(r, keys, h)[0], [])   # niente doppioni
-        self.assertIn("take profit", intraday.format_events(ev))
-        c = self.reports[1]
-        h2 = pd.DataFrame({"open": 1.0, "high": c["v2"]["trigger"] + 1, "low": 1.0, "close": 1.0}, index=idx)
-        ev, _ = intraday.check(c, [], h2)
-        self.assertEqual([e["kind"] for e in ev], ["confirm"])
+        for name in ("format_event", "daily_brief", "_plan_lines", "_status_line", "_weekly_line"):
+            self.assertFalse(hasattr(telegram, name), name)
+        for name in ("check", "format_events"):
+            self.assertFalse(hasattr(intraday, name), name)
+        self.assertTrue(callable(intraday.hourly_since))          # resta: candele orarie per lo stop di W3.2
 
 
 if __name__ == "__main__":

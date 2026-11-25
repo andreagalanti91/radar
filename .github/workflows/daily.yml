@@ -109,7 +109,6 @@ jobs:
           RADAR_ETH_CAPITAL: ${{ vars.RADAR_ETH_CAPITAL || '30000' }}
           RADAR_WEEKLY_SHARE: ${{ vars.RADAR_WEEKLY_SHARE || '1.0' }}
           RADAR_DAILY_SHARE: ${{ vars.RADAR_DAILY_SHARE || '0' }}
-          RADAR_V2_ALERTS: ${{ vars.RADAR_V2_ALERTS || '0' }}
           # sezione Wallet (scout balene, avvisi e comandi) in pausa dal 22/11/2026: RADAR_WALLETS=1 la riaccende
           RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}
           # opzioni su carta (pagina Opzioni): quota del capitale W3.2 BTC per operazione, frazione, tetto 0.10 (radar/opzioni.py)
@@ -158,9 +157,12 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          esc() { printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'; }
+          text=$(printf '⚠️ <b>Radar · salvataggio dei dati non riuscito</b>\n5 tentativi falliti: stato in cache, ripristinato al prossimo giro.\n<a href="%s">Dettagli del giro</a>' "$(esc "$RUN_URL")")
           code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=Radar · salvataggio dei dati non riuscito dopo 5 tentativi: stato in cache, ripristinato al prossimo giro. ${RUN_URL}") || true
+            --data-urlencode "parse_mode=HTML" \
+            --data-urlencode "text=${text}") || true
           echo "avviso push fallito: HTTP ${code}"
       - name: Test del motore di backtest
         # i test girano e riportano l'esito, ma non bloccano alert, salvataggio e dashboard (avviso Telegram se falliscono)
@@ -176,9 +178,12 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          esc() { printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'; }
+          text=$(printf '⚠️ <b>Radar · test falliti</b>\nGli avvisi sono partiti comunque.\n<a href="%s">Dettagli del giro</a>' "$(esc "$RUN_URL")")
           code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=Radar · test falliti (gli alert sono partiti comunque): ${RUN_URL}") || true
+            --data-urlencode "parse_mode=HTML" \
+            --data-urlencode "text=${text}") || true
           echo "avviso test falliti: HTTP ${code}"
       - uses: actions/configure-pages@v5
         if: steps.gate.outputs.skip != 'true'
@@ -206,7 +211,10 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          esc() { printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'; }
+          text=$(printf '⚠️ <b>Radar · giro non completato (%s)</b>\n<a href="%s">Dettagli del giro</a>' "$(esc "$JOB")" "$(esc "$RUN_URL")")
           code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=Radar · workflow fallito: ${JOB} ${RUN_URL}") || true
+            --data-urlencode "parse_mode=HTML" \
+            --data-urlencode "text=${text}") || true
           echo "avviso workflow fallito: HTTP ${code}"

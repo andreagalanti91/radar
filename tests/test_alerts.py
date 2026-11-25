@@ -82,7 +82,7 @@ class TestMarkOnlyIfSent(unittest.TestCase):
         s = Sender()
         cli.weekly_alerts(c, st, s, h=h)
         self.assertEqual(len(st["weekly_intraday_keys"]), 1)
-        self.assertIn("stop toccato", s.texts[-1])
+        self.assertIn("Stop toccato: chiudi il LONG", s.texts[-1])
 
     def test_telegram_send_restituisce_message_id(self):
         from radar import telegram
@@ -112,8 +112,8 @@ class TestAnnouncedVsExecuted(unittest.TestCase):
         sent, st = weekly.send_events(cur("nessuno", date="2026-11-09", trades=[closed]), st, s)
         self.assertEqual([e["type"] for e in sent], ["w_exit"])   # conferma con prezzo reale e risultato
         self.assertIn("$74.777", s.texts[-1])
-        self.assertIn("-4.10%", s.texts[-1])
-        self.assertIn("ESEGUITA", s.texts[-1])
+        self.assertIn("−4,10%", s.texts[-1])
+        self.assertIn("LONG chiuso in perdita", s.texts[-1])
         self.assertIsNone(st["pending_exit"])
         self.assertEqual(weekly.send_events(cur("nessuno", date="2026-11-10", trades=[closed]), st, s)[0], [])
 
@@ -138,7 +138,7 @@ class TestAnnouncedVsExecuted(unittest.TestCase):
         self.assertEqual([e["type"] for e in sent], ["w_signal"])
         sent, st = weekly.send_events(cur("aperto", date="2026-08-24", trades=[trade()]), st, s)
         self.assertEqual([e["type"] for e in sent], ["w_entry"])
-        self.assertIn("INGRESSO SETTIMANALE ESEGUITO", s.texts[-1])
+        self.assertIn("LONG aperto a $77.812", s.texts[-1])
         self.assertIn("$77.812", s.texts[-1])
         self.assertIsNone(st["pending_signal"])
         self.assertEqual(weekly.send_events(cur("aperto", date="2026-08-25", trades=[trade()]), st, s)[0], [])
@@ -163,10 +163,11 @@ class TestTrail(unittest.TestCase):
         self.assertEqual(weekly.check_intraday(c, [], h)[0], [])               # modello 70.000: non toccato
         ev, keys = weekly.check_intraday(c, [], h, told=71000.0)              # comunicato 71.000 (più alto): toccato
         self.assertEqual(ev[0]["level"], 71000.0)
-        self.assertIn("stop comunicato $71.000", weekly.format_intraday(ev))
+        self.assertIn("Livello = ultimo comunicato (quello del modello è $70.000)", weekly.format_intraday(ev))
+        self.assertIn("Livello <b>$71.000</b>", weekly.format_intraday(ev))
         ev, _ = weekly.check_intraday(c, [], h.assign(low=69000.0), told=69500.0)   # modello più alto del comunicato
         self.assertEqual(ev[0]["level"], 70000.0)
-        self.assertIn("stop del modello $70.000", weekly.format_intraday(ev))
+        self.assertIn("Livello = quello del modello (l'ultimo comunicato era $69.500)", weekly.format_intraday(ev))
         self.assertIsNone(weekly.told_level({"trail_notified": 1.0, "trail_sig": "altro"}, c))
         self.assertEqual(weekly.told_level(self.base(), c), 70000.0)
 
@@ -177,7 +178,7 @@ class TestRetract(unittest.TestCase):
         _, st = weekly.send_events(cur("segnale", date="2026-08-23"), {}, s)
         sent, st = weekly.send_events(cur("nessuno", date="2026-08-23", regime="neutro", flow=-0.2), st, s)
         self.assertEqual([e["type"] for e in sent], ["w_retract"])
-        self.assertIn("SEGNALE SETTIMANALE RITIRATO", s.texts[-1])
+        self.assertIn("Segnale LONG annullato: non entrare", s.texts[-1])
         self.assertIn("flusso perp ora -0.20σ", s.texts[-1])
         self.assertIsNone(st["pending_signal"])
         self.assertNotIn(SIG, st["notified"])
@@ -197,25 +198,36 @@ class TestRetract(unittest.TestCase):
         _, st = weekly.send_events(cur("uscita", date="2026-11-08", trades=[trade()]), st, s)
         sent, st = weekly.send_events(cur("aperto", date="2026-11-08", trades=[trade()]), st, s)
         self.assertEqual([e["type"] for e in sent], ["w_retract"])
-        self.assertIn("USCITA SETTIMANALE RITIRATA", s.texts[-1])
+        self.assertIn("Uscita annullata: tieni il LONG", s.texts[-1])
         self.assertNotIn(SIG, st["exit_announced"])
 
 
 class TestHeartbeatAndStale(unittest.TestCase):
     def test_heartbeat_una_volta_dopo_le_7(self):
+        """Tutto ok: nessun messaggio separato (la riga «✅ Sistema ok» è nel riepilogo); con problemi un messaggio al giorno dopo
+        le 07:00 UTC, marcato solo se Telegram conferma; con il riepilogo spento il «tutto ok» parte come prima."""
         from radar import cli
         s, st = Sender(), {}
         early, t1, t2 = pd.Timestamp("2026-11-11 06:07"), pd.Timestamp("2026-11-11 07:07"), pd.Timestamp("2026-11-11 08:07")
-        with mock.patch.dict("os.environ", {"RADAR_HEARTBEAT": "1"}):
-            self.assertFalse(cli.heartbeat(cur("nessuno", regime="neutro"), st, early, "2026-11-10", [], s))
-            self.assertFalse(cli.heartbeat(cur("nessuno"), st, t1, "2026-11-10", [], Sender(fail=True)))
+        pr = ["W3.2 ETH non calcolato"]
+        with mock.patch.dict("os.environ", {"RADAR_HEARTBEAT": "1", "RADAR_DAILY_BRIEF": "1"}):
+            self.assertFalse(cli.heartbeat(cur("nessuno", regime="neutro"), st, early, "2026-11-10", pr, s))
+            self.assertFalse(cli.heartbeat(cur("nessuno"), st, t1, "2026-11-10", pr, Sender(fail=True)))
             self.assertNotIn("heartbeat", st)                                    # invio fallito: si riprova
-            self.assertTrue(cli.heartbeat(cur("nessuno", regime="neutro"), st, t1, "2026-11-10", [], s))
-            self.assertFalse(cli.heartbeat(cur("nessuno"), st, t2, "2026-11-10", [], s))   # già inviato oggi
+            self.assertTrue(cli.heartbeat(cur("nessuno", regime="neutro"), st, t1, "2026-11-10", pr, s))
+            self.assertFalse(cli.heartbeat(cur("nessuno"), st, t2, "2026-11-10", pr, s))   # già inviato oggi
+            ok_st = {}
+            self.assertFalse(cli.heartbeat(cur("nessuno"), ok_st, t1, "2026-11-10", [], s))   # tutto ok: nessun messaggio
+            self.assertEqual(ok_st["heartbeat"], "2026-11-11")
         self.assertEqual(len(s.texts), 1)
-        self.assertIn("Radar · tutto ok: dati fino al 2026-11-10, ultimo giro 11/11 07:07 UTC", s.texts[0])
-        self.assertIn("prossima decisione 2026-11-15", s.texts[0])
-        self.assertIn("attenzione", weekly.format_heartbeat(None, "2026-11-08", "x", ["dati spot vecchi"], "2026-11-11"))
+        self.assertTrue(s.texts[0].startswith("⚠️ <b>Radar · 1 problema tecnico</b>"))
+        self.assertIn("• W3.2 ETH non calcolato", s.texts[0])
+        self.assertIn("Dati fino al 10/11 · ultimo giro 11/11 07:07 UTC", s.texts[0])
+        self.assertIn("prossima decisione dom 15/11", s.texts[0])
+        with mock.patch.dict("os.environ", {"RADAR_HEARTBEAT": "1", "RADAR_DAILY_BRIEF": "0"}):
+            s2, st2 = Sender(), {}
+            self.assertTrue(cli.heartbeat(cur("nessuno"), st2, t1, "2026-11-10", [], s2))
+            self.assertTrue(s2.texts[0].startswith("✅ <b>Radar attivo · tutto ok</b>"))
         self.assertEqual(weekly.next_decision("2026-11-15"), "2026-11-15")      # domenica: decisione stasera
 
     def test_dati_vecchi_36_ore(self):
@@ -227,15 +239,23 @@ class TestHeartbeatAndStale(unittest.TestCase):
         self.assertEqual(set(stale_sources(d, pd.Timestamp("2026-11-11 13:00"))), {"spot", "perp", "funding", "metrics"})
 
     def test_avvisi_fonti_una_volta_al_giorno(self):
+        """Fonti non scaricate e dati fermi: dentro il messaggio di salute (anche prima delle 07:00), una volta al giorno."""
         from radar import cli
-        s, st, now = Sender(), {}, pd.Timestamp("2026-11-11 10:00")
-        cli.source_alerts({"perp": "HTTPError", "fng": "Timeout"}, {"spot": "2026-11-08"}, st, now, "2026-11-08", s)
-        self.assertEqual(len(s.texts), 2)
-        self.assertIn("fonte perp non disponibile", s.texts[0])
-        self.assertNotIn("fng", s.texts[0])                                     # fonte non W3: nessun avviso
-        self.assertIn("W3.2 valutato sui dati fino al 2026-11-08", s.texts[1])
-        cli.source_alerts({"perp": "HTTPError"}, {"spot": "2026-11-08"}, st, now, "2026-11-08", s)
-        self.assertEqual(len(s.texts), 2)
+        s, st, now = Sender(), {}, pd.Timestamp("2026-11-11 03:00")
+        errors, stale = {"perp": "HTTPError", "fng": "Timeout"}, {"spot": "2026-11-08"}
+        self.assertTrue(cli.heartbeat(None, st, now, "2026-11-08", [], s, errors=errors, stale=stale))
+        self.assertEqual(len(s.texts), 1)
+        self.assertIn("• fonte perp non disponibile (HTTPError)", s.texts[0])
+        self.assertIn("• dati spot vecchi (ultimo giorno 08/11)", s.texts[0])
+        self.assertIn("Segnali calcolati sui dati fino al 08/11: decisioni possibili in ritardo.", s.texts[0])
+        self.assertEqual((st["source_alert"], st["stale_alert"]), ("2026-11-11", "2026-11-11"))
+        self.assertNotIn("heartbeat", st)                                       # prima delle 07: resta il controllo delle 07
+        self.assertFalse(cli.heartbeat(None, st, now + pd.Timedelta(hours=1), "2026-11-08", [], s, errors={"perp": "x"},
+                                       stale=stale))
+        self.assertEqual(len(s.texts), 1)                                       # stesso giorno: niente doppioni
+        s3 = Sender()                                                           # fonte non di W3.2: nessun avviso prima delle 07
+        self.assertFalse(cli.heartbeat(None, {}, now, "2026-11-08", [], s3, errors={"fng": "Timeout"}))
+        self.assertEqual(s3.texts, [])
 
 
 class TestUpdateAllIsolation(unittest.TestCase):
@@ -319,8 +339,8 @@ class TestCorrezioniF3(unittest.TestCase):
         sent, st = weekly.send_events(c, None, s)
         self.assertEqual(sent, [])
         self.assertNotIn("Da oggi il tool segue", s.texts[0])
-        self.assertIn("Stato degli avvisi ripristinato", s.texts[0])
-        self.assertIn("long aperto, stop $70.000", s.texts[0])
+        self.assertIn("Avvisi ripristinati: nessuna azione", s.texts[0])
+        self.assertIn("🛑 Uscita automatica: $70.000", s.texts[0])
         s = Sender()
         sent, st = weekly.send_events(c, st, s)                             # invio fallito: l'avviso si ripropone
         self.assertEqual([e["type"] for e in sent], ["w_restore"])
@@ -349,8 +369,9 @@ class TestCorrezioniF3(unittest.TestCase):
 
     def test_b11_distribuzione_anteprima(self):
         txt = weekly.format_event({"type": "w_dist", "w": cur("aperto", fund7=0.001, flow=-0.3)})
-        self.assertIn("anteprima", txt.lower())
-        self.assertIn("se la settimana chiudesse oggi", txt)
+        self.assertIn("Possibile uscita dal LONG: decide domenica", txt)
+        self.assertIn("Nessuna azione ora", txt)
+        self.assertIn("Se la settimana chiudesse oggi", txt)
 
 
 class TestWorkflow(unittest.TestCase):
@@ -369,8 +390,8 @@ class TestWorkflow(unittest.TestCase):
 class TestTesti(unittest.TestCase):
     def test_numeri_w3(self):
         txt = weekly.format_event({"type": "w_signal", "w": cur("segnale")})
-        self.assertIn("(W3.2)", txt)
-        self.assertIn("13 trade dal 2021", txt)
+        self.assertNotIn("W3.2", txt.split("\n")[0])                 # riga 1 senza nome della strategia
+        self.assertIn("13 dal 2021", txt)
         self.assertIn("−21%", txt)
         self.assertIn("25% del capitale a rischio", txt)   # W3.2
         src = Path(weekly.__file__).read_text()

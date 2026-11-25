@@ -17,7 +17,6 @@ import pandas as pd
 from .data import CRITICAL
 
 GAP_DAYS = 60
-TEXT = "Controllo di coerenza: verificare prima della prossima decisione. Nessuna azione automatica."
 
 
 def gaps(d: dict, names=CRITICAL, days: int = GAP_DAYS) -> dict[str, list[str]]:
@@ -67,7 +66,9 @@ def prov_changes(prov: dict | None) -> list[dict]:
 
 
 def format_alert(lines: list[str], asset: str = "BTC") -> str:
-    return f"<b>RADAR SIGNAL {asset} · Controllo di coerenza</b>\n" + "\n".join(lines) + "\n" + TEXT
+    from . import telegram as tg
+    return tg.msg(tg.head("⚠️", asset, "Dati da verificare prima della prossima decisione"),
+                  *[f"• {tg.esc(x)}" for x in lines], "Nessuna azione automatica.")
 
 
 def update(d: dict, wcur: dict | None, prov: dict | None, st: dict, send=None, asset: str = "BTC") -> dict:
