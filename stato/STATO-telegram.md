@@ -1,6 +1,6 @@
 # STATO · Messaggi Telegram più chiari · avviato 25/11/2026
 
-Stato: IN ATTESA DELL'UTENTE
+Stato: IN CORSO
 
 ## Prompt originale
 "Rendi più chiaro i segnali del bot telegram. Più visivi, più carini, più semplici. Fammi delle preview di tutti gli stati."
@@ -15,5 +15,8 @@ Nessun messaggio nuovo e nessun cambio al bot senza approvazione; contenuti e lo
 ## Avanzamento
 - Inventario e anteprime: 27 tipi di messaggio + 1 alternativa, in `stato/telegram-preview/` (index.html, PROPOSTA.md, 28 PNG; tutti_*.png solo locali). FATTO.
 
+## Decisione dell'utente (25/11)
+"Procedi come proposto": tutte e 8 le scelte come raccomandato (1 sì, 2 sì, 3 sì, 4 etichetta: valore, 5 ogni messaggio di trading, 6 sì, 7 solo nella salute, 8 sì).
+
 ## Prossima azione
-Attendere le scelte dell'utente (8 punti in PROPOSTA.md); poi implementazione, test, deploy, verifica.
+Agente: implementazione, test, render; poi suite, deploy, verifica.
