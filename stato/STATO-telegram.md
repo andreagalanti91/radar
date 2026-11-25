@@ -18,5 +18,11 @@ Nessun messaggio nuovo e nessun cambio al bot senza approvazione; contenuti e lo
 ## Decisione dell'utente (25/11)
 "Procedi come proposto": tutte e 8 le scelte come raccomandato (1 sì, 2 sì, 3 sì, 4 etichetta: valore, 5 ogni messaggio di trading, 6 sì, 7 solo nella salute, 8 sì).
 
+- Implementazione (25/11): radar/telegram.py (formato comune, riepilogo «Oggi» con riga di salute, testi tecnici), radar/weekly.py
+  (eventi W3.2, stop orario con esito in $, salute), radar/cli.py (salute separata solo con problemi, avvisi fonti dentro la salute,
+  v2 eliminata), guard, coherence, intraday (solo candele orarie), daily.yml/liqsnap.yml (parse_mode=HTML, RADAR_V2_ALERTS tolta),
+  README. Test: tests/test_telegram_formato.py (12) + 10 file aggiornati; suite 454 test verde. Anteprime rigenerate dal codice vero
+  (index.html, 28 PNG): 01–13, 16, 19, 20, 23–28 identici alla proposta. FATTO, non committato.
+
 ## Prossima azione
-Agente: implementazione, test, render; poi suite, deploy, verifica.
+Presentare all'utente; dopo l'ok: commit, push, invio di prova (test-telegram) e verifica sul sito/chat.

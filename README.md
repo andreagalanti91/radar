@@ -91,9 +91,10 @@ Capitale BTC = `RADAR_CAPITAL` × `RADAR_WEEKLY_SHARE`; capitale ETH = `RADAR_ET
 uno stop pieno costa al massimo ~8.750 $ su BTC e ~3.750 $ su ETH). Dati ETH: `data/eth_spot.csv`, `eth_perp.csv`, `eth_funding.csv`,
 `eth_metrics.csv`, dalle stesse fonti di BTC (spot data-api.binance.vision, perp e funding archivio data.binance.vision, giorni
 non ancora archiviati da OKX con `source = okx`); Binance fapi resta bloccato dagli USA. Report: `report["weekly"]` = BTC
-(invariato), `report["weekly_eth"]` = ETH. Avvisi Telegram separati con l'asset nel titolo ("RADAR SIGNAL ETH · …": segnale,
-ingresso, trailing, uscita, stop in tempo reale, soglie d'allarme, coerenza), stato in `state.json` sotto `weekly_eth`; una riga
-ETH nel riepilogo "Oggi" e nel messaggio di salute. Se i dati ETH mancano il giro di BTC prosegue e arriva l'avviso sulla fonte.
+(invariato), `report["weekly_eth"]` = ETH. Avvisi Telegram separati con l'asset nella prima riga ("🔴 ETH · …": segnale,
+ingresso, uscita automatica, uscita, stop in tempo reale, soglie d'allarme, coerenza), stato in `state.json` sotto `weekly_eth`; righe
+ETH nel riepilogo "Oggi" e nel messaggio di salute. Se i dati ETH mancano il giro di BTC prosegue e il problema della fonte arriva
+nel messaggio di salute.
 
 Cosa fare con gli avvisi:
 1. **Segnale settimanale**: entra lunedì all'apertura con l'importo indicato e metti lo stop iniziale.
@@ -180,8 +181,12 @@ La pagina *Metodo* (regole complete e limiti) si apre dalla card della posizione
 | Lunedì 08:41 | attività pianificata di Claude, testo in [`deploy/RESOCONTO-SETTIMANALE.md`](deploy/RESOCONTO-SETTIMANALE.md) | resoconto della settimana chiusa |
 
 Avvisi della strategia: segnale settimanale con piano in dollari, trailing aggiornato, allerta distribuzione, uscita, trailing
-toccato in tempo reale. Avvisi di salute: dati fermi, buchi nei dati di W3.2, storico riscritto, decisione cambiata con i dati
+toccato in tempo reale. Avvisi di salute: buchi nei dati di W3.2, storico riscritto, decisione cambiata con i dati
 definitivi ([`radar/coherence.py`](radar/coherence.py)), equity −15% dal massimo o 2 stop consecutivi ([`radar/guard.py`](radar/guard.py)).
+Formato dei messaggi (dal 25/11/2026, [`radar/telegram.py`](radar/telegram.py)): riga 1 = cosa fare con un'icona di stato, numeri
+come righe "etichetta: valore", dettagli in una citazione espandibile, link alla dashboard. Il riepilogo "Oggi" porta in fondo la
+riga «✅ Sistema ok»: il messaggio di salute separato parte solo se ci sono problemi (fonti non scaricate e dati fermi da oltre
+36 ore compresi, al massimo una volta al giorno per tipo e dopo le 07:00 UTC).
 
 **Comandi del bot** ([`radar/journal.py`](radar/journal.py)), accettati solo dalla chat `TELEGRAM_CHAT_ID`, risposta entro un'ora:
 
@@ -254,7 +259,6 @@ Prima di pubblicare: test che riproduce il problema, suite verde, render a 400 e
 | `RADAR_WEEKLY_SHARE` | variabile | 1.0 | quota del capitale dedicata a W3.2 |
 | `RADAR_ETH_SHARE` | variabile | 0.30 | quota del capitale W3.2 su ETH (0 = ETH escluso dai piani in dollari); BTC = 1 − quota |
 | `RADAR_WALLETS` | variabile | 0 | `1` riaccende la sezione Wallet e la sentinella |
-| `RADAR_V2_ALERTS` | variabile | 0 | `1` riaccende gli avvisi della vecchia strategia giornaliera v2 |
 
 GitHub Pages: *Settings → Pages → Source: GitHub Actions*. Il sito si pubblica dal branch predefinito.
 

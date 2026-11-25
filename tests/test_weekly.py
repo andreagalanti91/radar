@@ -89,7 +89,7 @@ class TestWeekly(unittest.TestCase):
         wk = self.wk
         ev, st = wk.diff_events(self.cur, None)
         self.assertEqual([e["type"] for e in ev], ["w_info"])   # il long del 24/08 non è un segnale nuovo
-        self.assertIn("Posizione settimanale in corso", wk.format_event(ev[0]))
+        self.assertIn("LONG in corso dal 24/08: non è un segnale nuovo", wk.format_event(ev[0]))
         ev2, st2 = wk.diff_events(self.cur, st)
         self.assertEqual(ev2, [])
         self.assertEqual(st2["notified"], ["2026-08-23"])
@@ -103,11 +103,12 @@ class TestWeekly(unittest.TestCase):
                 ev, prev = wk.diff_events(c, prev)
                 seen += [(str(d.date()), e["type"]) for e in ev]
                 for e in ev:
-                    self.assertIn("RADAR SIGNAL BTC", wk.format_event(e))
+                    self.assertTrue(wk.format_event(e).split("\n")[0].split("<b>")[1].startswith("BTC · "))
             if str(d.date()) == "2026-08-24":
                 self.assertEqual(c["status"], "segnale")
                 self.assertEqual(c["plan"]["market"], "spot")
-                self.assertIn("SEGNALE SETTIMANALE · 🟢 LONG", wk.format_event({"type": "w_signal", "w": c}))
+                self.assertTrue(wk.format_event({"type": "w_signal", "w": c}).startswith(
+                    "🟢 <b>BTC · Nuovo LONG: entra lunedì all'apertura</b>"))
         types = [t for _, t in seen]
         self.assertEqual(types[0], "w_info")                     # primo avvio con lo short aperto
         self.assertIn(("2026-08-21", "w_exit"), seen)            # short chiuso dal trailing il 20/08
@@ -121,7 +122,10 @@ class TestWeekly(unittest.TestCase):
         h = pd.DataFrame({"open": [c["price"]], "high": [c["price"]], "low": [c["trail"] - 10], "close": [c["trail"] + 5]})
         ev, keys = wk.check_intraday(c, [], h)
         self.assertEqual(len(ev), 1)
-        self.assertIn("stop toccato", wk.format_intraday(ev))
+        txt = wk.format_intraday(ev, c)
+        self.assertIn("Stop toccato: chiudi il LONG", txt)
+        self.assertEqual(wk.exit_at(c, c["trail"]), (c["uscite"]["trail"]["pct_cap"], c["uscite"]["trail"]["usd"]))
+        self.assertIn("Risultato a questo livello", txt)                # esito in $ allo stop (stesso calcolo della dashboard)
         self.assertEqual(wk.check_intraday(c, keys, h)[0], [])   # una sola allerta per livello
         ok = h.assign(low=c["trail"] + 100)
         self.assertEqual(wk.check_intraday(c, [], ok)[0], [])
@@ -145,15 +149,14 @@ class TestWeekly(unittest.TestCase):
         ev, st = wk.diff_events(c, None)
         self.assertEqual([e["type"] for e in ev], ["w_restore", "w_exit"])
         txt = wk.format_event(ev[0])
-        self.assertIn("Stato degli avvisi ripristinato", txt)
-        self.assertIn("Ultima situazione W3.2 = nessuna posizione", txt)
-        self.assertIn("2026-11-09", txt)
+        self.assertIn("Avvisi ripristinati: nessuna azione", txt)
+        self.assertIn("Situazione: nessuna posizione", txt)
+        self.assertIn("uscita 09/11 a $74.777", txt)
         self.assertEqual(wk.diff_events(c, st)[0], [])
 
     def test_dashboard(self):
         from radar import live, paper
         from radar.dashboard import render
-        from radar.telegram import daily_brief
         cut = pd.Timestamp("2026-10-30")
         H = paper.candles_4h()
         report = live.evaluate(self.F[self.F.index < cut], h4=H[H.index < cut], frozen={})
@@ -161,7 +164,7 @@ class TestWeekly(unittest.TestCase):
         html = render(report, Path(tempfile.mkdtemp()) / "index.html", standalone=False).read_text()
         for k in ('id="wkSec"', 'id="wkStatSec"', "renderWeekly", '"weekly"'):
             self.assertIn(k, html)
-        self.assertIn("Settimanale W3", daily_brief(report))
+        self.assertFalse(hasattr(__import__("radar.telegram").telegram, "daily_brief"))   # riepilogo v2 eliminato
 
 
 @unittest.skipUnless(all((DATA_DIR / f"{n}.csv").exists() for n in FILES), "dati mancanti")

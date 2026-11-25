@@ -80,7 +80,10 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo "segreti Telegram assenti"; exit 0; }
+          esc() { printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'; }
+          text=$(printf '⚠️ <b>Radar · giro non completato (liqsnap %s)</b>\n<a href="%s">Dettagli del giro</a>' "$(esc "$JOB")" "$(esc "$RUN_URL")")
           code=$(curl -s -o /dev/null -w "%{http_code}" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=Radar · workflow fallito: liqsnap ${JOB} ${RUN_URL}") || true
+            --data-urlencode "parse_mode=HTML" \
+            --data-urlencode "text=${text}") || true
           echo "avviso workflow fallito: HTTP ${code}"

@@ -1,150 +1,126 @@
-"""Invio alert su Telegram (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID). Messaggi della strategia v2."""
+"""Telegram di RadarSignal: formato comune dei messaggi (HTML ammesso da Telegram), riepilogo giornaliero "Oggi" e invio
+(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID).
+
+Formato (approvato il 25/11/2026, stato/telegram-preview/PROPOSTA.md): riga 1 = cosa fare, in grassetto con un'icona di stato
+(è l'anteprima della notifica); 3–6 righe "etichetta: valore"; dettagli in un <blockquote expandable>; link alla dashboard in
+fondo ai messaggi di trading. Tag usati: b, i, code, a, blockquote expandable. I valori testuali dinamici passano da esc().
+"""
 from __future__ import annotations
 
+import html
 import os
 
 import pandas as pd
 import requests
 
+DASH = "https://andreagalanti91.github.io/radar/"
+ICON = {"long": "🟢", "short": "🔴"}
+GG = ("lun", "mar", "mer", "gio", "ven", "sab", "dom")
 
-def _usd(x: float) -> str:
+
+# ---------------------------------------------------------------- formato comune
+
+def esc(x) -> str:
+    """Testo dinamico dentro un messaggio HTML di Telegram: escape di <, > e &."""
+    return html.escape(str(x), quote=False)
+
+
+def usd(x: float) -> str:
     return f"${x:,.0f}".replace(",", ".")
 
 
-def _when(ts: str) -> str:
-    """'2026-11-02 08:00:00' -> '02/11 08:00 UTC'."""
-    t = pd.Timestamp(ts)
-    return t.strftime("%d/%m %H:%M UTC")
+_usd = usd
 
 
-def _side(side: str) -> str:
-    return "🟢 LONG" if side == "long" else "🔴 SHORT"
+def susd(x: float) -> str:
+    """Dollari con segno vero: +$2.250 / −$4.745."""
+    return ("+" if x >= 0 else "−") + usd(abs(x))
 
 
-def _plan_lines(v: dict) -> list[str]:
-    """Piano completo di un ingresso v2: livelli, size in dollari, leva, stop, TP, tempo."""
-    p, L = v["plan"], v["side"] == "long"
-    return [
-        f"<b>Ingresso 40%</b> a mercato ~{_usd(p['entry'])}: {_usd(p['t1_usd'])} di posizione = {p['t1_btc']:.4f} BTC",
-        f"<b>Limit 60%</b> a {_usd(p['limit'])} (−0,5 ATR, "
-        + (f"valido fino al {_when(v['limit_expiry'])}" if v.get("limit_expiry") else "già eseguito")
-        + f"): {_usd(p['t2_usd'])} = {p['t2_btc']:.4f} BTC",
-        f"<b>Stop</b> {_usd(p['stop'])} (1 ATR dall'ingresso) per entrambe le parti",
-        f"<b>Take profit</b> unico +1R dal medio: {_usd(p.get('tp', p['tp_first']))} con il solo 40%, "
-        f"{_usd(p['tp_full'])} se si riempie anche il limit",
-        f"<b>Uscita a tempo</b> entro il {_when(v['time_exit'])} (14 giorni)",
-        "",
-        f"<b>Su {_usd(p['capital'])}</b>: rischio {p['risk']:.2f}% = perdita allo stop ~{_usd(p['loss_usd'])} a DCA completa · "
-        f"guadagno al TP ~{_usd(p['gain_usd'])}",
-        f"<b>Leva</b> {p['lev']:.2f}x (posizione totale {_usd(p['notional'])}, margine isolato) · "
-        f"delta taker {v.get('dt', 0):+.3f} ({'spot+perp' if v.get('perp') else 'solo spot'})"
-        + (" · long sotto la SMA 40 settimane: size × 0,6" if L and v.get("below_sma40w") else ""),
-    ]
-
-
-def format_event(ev: dict, report: dict | None = None) -> str:
-    t = ev["type"]
-    if t == "signal":
-        v = ev["v2"]
-        L = v["side"] == "long"
-        lines = [f"<b>RADAR SIGNAL BTC · NUOVO SEGNALE {_side(v['side'])}</b> · in attesa di conferma 4h",
-                 f"Setup: <b>{v['setup']}</b> · {v.get('setup_label', '')}",
-                 f"Perché: {v.get('why', '')}"]
-        if v["status"] == "conferma":
-            p = v["plan"]
-            lines += ["",
-                      f"<b>Ingresso solo se una candela 4h chiude {'sopra' if L else 'sotto'} {_usd(v['trigger'])}</b> "
-                      f"(soglia attuale: {'massimo' if L else 'minimo'} delle 2 candele 4h precedenti, si aggiorna a ogni barra) "
-                      f"entro il {_when(v['deadline'])}. Altrimenti il segnale scade.",
-                      "",
-                      "Piano indicativo se la conferma arriva alla soglia:",
-                      f"  40% ~{_usd(p['entry'])} · 60% limit {_usd(p['limit'])} · stop {_usd(p['stop'])} · TP {_usd(p['tp_full'])}",
-                      f"  rischio {p['risk_lo']:.1f}–{p['risk_hi']:.1f}% del capitale (dipende dal delta taker della barra di conferma), "
-                      f"leva {p['lev_lo']:.1f}–{p['lev_hi']:.1f}x",
-                      "Riceverai il piano completo in dollari alla conferma."]
-        return "\n".join(lines)
-    if t == "entry":
-        v = ev["v2"]
-        if "plan" not in v:   # ingresso e uscita tra due controlli: solo il riepilogo
-            return (f"<b>RADAR SIGNAL BTC · INGRESSO CONFERMATO {_side(v['side'])}</b>\n"
-                    f"Ingresso {_usd(v['entry'])} alle {_when(v['entry_time'])} · stop {_usd(v['stop'])} · TP {_usd(v['tp'])}")
-        when = "ora, all'apertura 4h delle " + _when(v["entry_time"]) if v["status"] == "ingresso" else _when(v["entry_time"])
-        return "\n".join([f"<b>RADAR SIGNAL BTC · INGRESSO CONFERMATO {_side(v['side'])}</b> (futures)",
-                          f"Segnale {v['signal_date']} · setup {v['setup']} · candela 4h chiusa "
-                          f"{'sopra' if v['side'] == 'long' else 'sotto'} la soglia · ingresso {when}", ""]
-                         + _plan_lines(v))
-    if t == "dca_fill":
-        v = ev["v2"]
-        p = v["plan"]
-        return (f"<b>RADAR SIGNAL BTC · Limit DCA eseguito</b> ({v['side']})\n"
-                f"60% a {_usd(p['limit'])} · prezzo medio {_usd(v['avg'])} · stop {_usd(v['stop'])} · "
-                f"nuovo TP {_usd(v['tp'])} (+1R dal medio)")
-    if t in ("tp", "stop", "time"):
-        tr = ev["trade"]
-        head = {"tp": "Take profit raggiunto ✅", "stop": "Stop loss ❌", "time": "Uscita a tempo (14 giorni)"}[t]
-        if t == "time":
-            head += " ✅" if tr["pnl_pct"] > 0 else " ❌"
-        return (f"<b>RADAR SIGNAL BTC · {head}</b> ({tr['side']}, segnale {tr['signal_date']})\n"
-                f"Uscita {_usd(tr['exit_px'])} · medio {_usd(tr['avg'])} · DCA {tr['fills']}/2 · leva {tr['N']:.2f}x\n"
-                f"Risultato {tr['pnl_pct']:+.2f}% sul capitale ({tr['pnl_pct_invested']:+.2f}% sul prezzo)")
-    if t == "expired":
-        v = ev["v2"]
-        return (f"<b>RADAR SIGNAL BTC · Segnale scaduto</b> ({v['side']}, {v['signal_date']})\n"
-                f"Nessuna chiusura 4h oltre la soglia entro 72 ore: nessun ingresso.")
-    return str(ev)
-
-
-def _status_line(v: dict) -> str:
-    if v["status"] == "conferma":
-        return (f"Segnale {v['side']} del {v['signal_date']} in attesa di conferma: chiusura 4h "
-                f"{'sopra' if v['side'] == 'long' else 'sotto'} {_usd(v['trigger'])} entro il {_when(v['deadline'])}")
-    if v["status"] == "ingresso":
-        return f"Ingresso {v['side']} confermato: a mercato ~{_usd(v['plan']['entry'])}, stop {_usd(v['plan']['stop'])}"
-    if v["status"] == "aperto":
-        p = v["plan"]
-        return (f"Trade {v['side']} aperto dal {_when(v['entry_time'])} · ingresso {_usd(v['entry'])} · DCA {v['fills']}/2 · "
-                f"stop {_usd(v['stop'])} · TP {_usd(v['tp'])} · leva {p['lev']:.2f}x · {v['pnl_pct_invested']:+.2f}% sul prezzo"
-                + ("" if v["filled"][1] else f" · limit {_usd(p['limit'])} attivo"))
-    return "Nessun segnale v2 attivo"
-
-
-def _weekly_line(w: dict) -> str:
-    if w["status"] in ("aperto", "uscita"):
-        return (f"{w['side']} dal {w['entry']} a {_usd(w['entry_px'])} ({w['market']}) · {w['move_pct']:+.2f}% · "
-                f"trailing {_usd(w['trail'])}" + (" · uscita all'apertura di lunedì" if w["status"] == "uscita" else ""))
-    if w["status"] == "segnale":
-        return f"segnale {w['side']} alla chiusura del {w['signal_date']}, ingresso all'apertura di lunedì"
-    return f"nessuna posizione · regime settimanale {w['regime']}"
-
-
-def daily_brief(report: dict) -> str:
-    c = {k: (0.0 if v is None else v) for k, v in report["components"].items()}
-    active = [x["setup"] for x in report.get("checklist", []) if x["active"]]
-    T = report["stats"]["periods"]["Totale"]
-    return (f"<b>RADAR SIGNAL BTC · {report['date']}</b>\nPrezzo {_usd(report['price'])} · score flusso {report['score']:+.2f} "
-            f"(soglia ±{report['threshold']}) · regime {report['regime']}\n"
-            f"Setup attivi: {', '.join(active) if active else 'nessuno'}\n"
-            f"<b>v2</b>: {_status_line(report['v2'])}\n"
-            + (f"<b>Settimanale W3.2</b>: {_weekly_line(report['weekly'])}\n" if report.get("weekly") else "")
-            + (f"Regione 7g · acquisto {_usd(report['zone']['buy'][0])}–{_usd(report['zone']['buy'][1])} "
-               f"(toccata {report['zone']['stats']['buy_zone_touch_%']:.0f}% delle volte) · vendita "
-               f"{_usd(report['zone']['sell'][0])}–{_usd(report['zone']['sell'][1])}\n" if report.get("zone") else "")
-            + f"CVD perp z {c['perp_flow_z']:+.2f} · L/S retail z {c['retail_ls_z']:+.2f} · "
-            f"funding {c['funding7_annual_pct']:.1f}%/anno · F&amp;G {c['fng']:.0f}\n"
-            f"Storico v2 dal 2022-03: {T['trades']} trade · WR {T['win_rate']}% · {T['total_return_%']:+.1f}% · "
-            f"DD giornaliero {T['max_dd_%']}% (rischio base {report['params']['risk'] * 100:.2f}%)")
-
-
-def _pc(x: float, d: int = 1) -> str:
+def pc(x: float, d: int = 2) -> str:
     return f"{x:+.{d}f}%".replace(".", ",").replace("-", "−")
 
 
-def _dm(day: str | None) -> str:
+def _pc(x: float, d: int = 1) -> str:
+    return pc(x, d)
+
+
+def num(x: float, d: int = 2) -> str:
+    return f"{x:.{d}f}".replace(".", ",")
+
+
+def sig(x: float) -> str:
+    return f"{x:+.2f}σ".replace(".", ",").replace("-", "−")
+
+
+def dm(day) -> str:
+    """'2026-11-16' -> '16/11'."""
     try:
         return pd.Timestamp(day).strftime("%d/%m")
     except Exception:  # noqa: BLE001
         return "—"
 
+
+_dm = dm
+
+
+def gdm(day) -> str:
+    """'2026-11-16' -> 'lun 16/11'."""
+    try:
+        t = pd.Timestamp(day)
+        return f"{GG[t.dayofweek]} {t.strftime('%d/%m')}"
+    except Exception:  # noqa: BLE001
+        return "—"
+
+
+def head(icon: str, asset: str | None, text: str) -> str:
+    """Riga 1: '<icona> <b>ASSET · azione</b>'."""
+    return f"{icon} <b>{asset + ' · ' if asset else ''}{text}</b>"
+
+
+def details(*lines: str | None) -> str:
+    """Dettagli secondari in una citazione espandibile (Telegram la mostra chiusa su ~3 righe)."""
+    body = "\n".join(x for x in lines if x)
+    return f"<blockquote expandable>{body}</blockquote>" if body else ""
+
+
+def foot() -> str:
+    return f'<a href="{DASH}">Apri la dashboard</a>'
+
+
+def msg(*parts: str | None) -> str:
+    return "\n".join(p for p in parts if p)
+
+
+def money(pct: float, usd_: float) -> str:
+    """'<b>+7,50%</b> (+$2.250)': % sul capitale dell'asset e dollari."""
+    return f"<b>{pc(pct)}</b> ({susd(usd_)})"
+
+
+def money_cap(cap: float, pct: float) -> str:
+    return money(pct, (cap or 0) * pct / 100)
+
+
+def side_up(side: str | None) -> str:
+    return (side or "").upper()
+
+
+def art(side: str | None, prep: str = "") -> str:
+    """Articolo davanti a LONG/SHORT: 'il LONG', 'lo SHORT', 'dal LONG', 'dallo SHORT'."""
+    a = ("dallo" if side == "short" else "dal") if prep == "da" else ("lo" if side == "short" else "il")
+    return f"{a} {side_up(side)}"
+
+
+def health_line(data_until: str | None, problems: list[str] | None, next_dec: str | None) -> str:
+    """Riga di salute in fondo al riepilogo "Oggi" (il messaggio di salute separato parte solo con problemi)."""
+    if problems:
+        n = len(problems)
+        return f"⚠️ {n} problem{'a' if n == 1 else 'i'} tecnic{'o' if n == 1 else 'i'}: " + esc("; ".join(problems))
+    return ("✅ Sistema ok" + (f" · dati fino al {dm(data_until)}" if data_until else "")
+            + (f" · decisione {gdm(next_dec)}" if next_dec else ""))
+
+
+# ---------------------------------------------------------------- riepilogo giornaliero "Oggi"
 
 def _signal_band(sc: list[dict], side: str) -> str | None:
     """Fasce di chiusura settimanale che darebbero il segnale `side` (scenari della pre-analisi), in parole."""
@@ -158,33 +134,139 @@ def _signal_band(sc: list[dict], side: str) -> str | None:
     return " o ".join(out) if out else None
 
 
-def _w3_lines(pv: dict, wk: dict | None) -> list[str]:
-    """Due righe su W3: posizione e PnL; stop/trailing e soglia d'uscita (in posizione) o soglia del segnale (flat)."""
+def _levels_line(pv: dict) -> str | None:
+    """R1 e S1 della mappa unica dei livelli (un prezzo se lo = hi, altrimenti la fascia)."""
+    out = []
+    for z in (pv.get("today") or {}).get("sr") or []:
+        if z.get("name") in ("R1", "S1") and z.get("lo") is not None and z.get("hi") is not None:
+            out.append(f"{z['name']} {usd(z['lo'])}" if z["lo"] == z["hi"] else f"{z['name']} {usd(z['lo'])}–{usd(z['hi'])}")
+    return ("Livelli: " + " · ".join(out)) if out else None
+
+
+def _btc_lines(pv: dict, wk: dict) -> tuple[list[str], str | None]:
+    """Righe di BTC (posizione dalla pre-analisi, altrimenti dallo stato di W3.2) e stato per l'azione del giorno."""
     pb = pv.get("position_block")
-    sun = _dm(pv.get("week_close_utc"))
-    if pb:
-        side = pb["side"].upper()
-        if pb.get("entry_px") is None:
-            l1 = f"<b>W3.2</b>: {side} in apertura il {_dm(pb['entry_date'])} (ingresso all'apertura del lunedì)"
-        else:
-            l1 = (f"<b>W3.2</b>: {side} dal {_dm(pb['entry_date'])} a {_usd(pb['entry_px'])} · {_pc(pb['pnl_pct'], 2)} "
-                  f"({'+' if pb['pnl_usd'] >= 0 else '−'}{_usd(abs(pb['pnl_usd']))} su {_usd(pb['capital_usd'])})")
-        l2 = (f"Stop/trailing {_usd(pb['stop'])} ({_pc(pb['stop_dist_pct'])}) · uscita se la settimana chiude "
-              f"{'sotto' if pb['side'] == 'long' else 'sopra'} {_usd(pb['exit_ema21_threshold'])} (dom {sun})")
+    sun = pv.get("week_close_utc")
+    st = wk.get("status")
+    if pb and pb.get("entry_px") is not None:
+        side = pb["side"]
+        pnl = pb.get("pnl_usd")
+        if pnl is None:
+            pnl = (pb.get("capital_usd") or 0) * (pb.get("pnl_pct") or 0) / 100
+        px = pb.get("price") or pv.get("price") or wk.get("price")
+        out = [f"{ICON.get(side, '⚪')} <b>BTC {side}</b> · {money(pb['pnl_pct'], pnl)}",
+               f"da {usd(pb['entry_px'])} ({dm(pb['entry_date'])})" + (f" · ora {usd(px)}" if px else "")]
+        l3 = f"uscita {usd(pb['stop'])}"
+        if pb.get("exit_ema21_threshold") is not None:
+            l3 += f" · o domenica {'sotto' if side == 'long' else 'sopra'} {usd(pb['exit_ema21_threshold'])}"
         if "ATTIVA" in (pb.get("dist_rule") or ""):
-            l2 += " · distribuzione attiva"
-        return [l1, l2]
-    if wk and wk.get("status") == "uscita":
-        return [f"<b>W3.2</b>: uscita {wk.get('side', '')} all'apertura di lunedì ({wk.get('reason', '')})",
-                "Da lunedì nessuna posizione: si attende il prossimo segnale"]
-    sc = pv.get("scenarios") or []
-    sh, lg = _signal_band(sc, "short"), _signal_band(sc, "long")
-    if sh or lg:
-        l2 = "Segnale alla chiusura di dom " + sun + ": " + " · ".join(
-            x for x in ((f"short se chiude {sh}" if sh else None), (f"long se chiude {lg}" if lg else None)) if x)
-    else:
-        l2 = f"Nessuna chiusura di dom {sun} dà un segnale con il flusso attuale"
-    return ["<b>W3.2</b>: nessuna posizione", l2]
+            l3 += " · distribuzione attiva"
+        return out + [l3], "aperto"
+    if pb:   # segnale di domenica: ingresso all'apertura di lunedì, prezzo non ancora noto
+        side = pb["side"]
+        return [f"{ICON.get(side, '⚪')} <b>BTC</b>: nuovo {side}, entrata lunedì all'apertura",
+                f"uscita in perdita {usd(pb['stop'])}"], "segnale"
+    if st == "uscita":
+        side = wk["side"]
+        out = [f"{ICON.get(side, '⚪')} <b>BTC {side}</b> · {money_cap(wk.get('capital') or 0, wk['pnl_pct'])}",
+               f"da {usd(wk['entry_px'])} ({dm(wk['entry'])}) · ora {usd(wk['price'])}",
+               f"<b>Chiusura lunedì all'apertura</b> ({esc(_reason(wk.get('reason'), side))})"]
+        return out, "uscita"
+    if st == "aperto":
+        side = wk["side"]
+        return [f"{ICON.get(side, '⚪')} <b>BTC {side}</b> · {money_cap(wk.get('capital') or 0, wk['pnl_pct'])}",
+                f"da {usd(wk['entry_px'])} ({dm(wk['entry'])}) · ora {usd(wk['price'])}",
+                f"uscita {usd(wk['trail'])}"], "aperto"
+    if st == "segnale":
+        return [f"{ICON.get(wk['side'], '⚪')} <b>BTC</b>: nuovo {wk['side']}, entrata lunedì all'apertura"], "segnale"
+    if not pv and not st:
+        return ["⚪ <b>BTC</b>: segnale non calcolato in questo giro"], None
+    px = pv.get("price") or wk.get("price")
+    out = ["⚪ <b>BTC</b>: nessuna posizione" + (f" · {usd(px)}" if px else "")]
+    if pv:
+        sc = pv.get("scenarios") or []
+        sh, lg = _signal_band(sc, "short"), _signal_band(sc, "long")
+        if sh or lg:
+            out.append(f"Dom {dm(sun)}: " + " · ".join(
+                x for x in ((f"short se chiude {sh}" if sh else None), (f"long se chiude {lg}" if lg else None)) if x))
+        else:
+            out.append(f"Dom {dm(sun)}: nessuna chiusura dà un segnale con il flusso attuale")
+    return out, "nessuno"
+
+
+def _reason(r: str | None, side: str | None) -> str:
+    if r == "ema":
+        return f"settimana chiusa {'sotto' if side == 'long' else 'sopra'} la media a 21 settimane"
+    return {"trail": "uscita automatica", "stop": "stop iniziale",
+            "dist": "distribuzione (funding e flusso dei futures)"}.get(r, r or "")
+
+
+def _asset_lines(w: dict) -> tuple[list[str], str | None]:
+    """Righe di un asset di W3.2 diverso da BTC (oggi ETH), dal suo stato e sul suo capitale."""
+    a = w.get("asset") or "ETH"
+    st = w.get("status")
+    if st in ("aperto", "uscita"):
+        side = w["side"]
+        out = [f"{ICON.get(side, '⚪')} <b>{a} {side}</b> · {money_cap(w.get('capital') or 0, w.get('pnl_pct') or 0)}",
+               f"da {usd(w['entry_px'])} ({dm(w['entry'])}) · ora {usd(w['price'])}"]
+        out.append("<b>Chiusura lunedì all'apertura</b>" if st == "uscita" else f"uscita {usd(w['trail'])}")
+        return out, st
+    if st == "segnale":
+        return [f"{ICON.get(w['side'], '⚪')} <b>{a}</b>: nuovo {w['side']}, entrata lunedì all'apertura"], st
+    return [f"⚪ <b>{a}</b>: nessuna posizione" + (f" · {usd(w['price'])}" if w.get("price") else "")], "nessuno"
+
+
+def _todo(states: list[tuple[str, str | None, str | None]]) -> str:
+    """Azione del giorno per la riga 1 del riepilogo: [(asset, stato, lato)]."""
+    acts = [f"entra {sd} su {a} lunedì" if st == "segnale" else f"chiudi {a} lunedì"
+            for a, st, sd in states if st in ("segnale", "uscita")]
+    if acts:
+        return "; ".join(acts)
+    if any(st == "aperto" for _, st, _ in states):
+        return "nessuna azione"
+    return "fuori dal mercato, nessuna azione" if states and all(st == "nessuno" for _, st, _ in states) else "nessuna azione"
+
+
+def today_brief(report: dict, day: str | None = None, health: str | None = None) -> str:
+    """Riepilogo giornaliero "Oggi": riga 1 con l'azione del giorno, 2–3 righe per asset di W3.2 (BTC, poi ETH), contesto della
+    pre-analisi e mercati (radar/macro.py) nei dettagli, riga di salute (`health`, telegram.health_line) e link. Mai eccezioni."""
+    report = report or {}
+    pv, wk = report.get("preview") or {}, report.get("weekly") or {}
+    eth = report.get("weekly_eth")
+    states: list = []
+    try:
+        lines, st = _btc_lines(pv, wk)
+        side = (pv.get("position_block") or {}).get("side") or wk.get("side")
+        states.append(("BTC", st, side))
+    except Exception as e:  # noqa: BLE001
+        print(f"[telegram] riepilogo incompleto: {e!r}")
+        lines = ["Dati del riepilogo incompleti in questo giro."]
+    if eth:
+        try:   # altri asset di W3.2 (report["weekly_eth"]): subito dopo BTC
+            el, est = _asset_lines(eth)
+            lines += el
+            states.append((eth.get("asset") or "ETH", est, eth.get("side")))
+        except Exception as e:  # noqa: BLE001
+            print(f"[telegram] righe ETH non composte: {e!r}")
+    ctx: list[str] = []
+    try:
+        ctx = [esc(x) for x in _ctx_lines(pv.get("today"))]
+    except Exception as e:  # noqa: BLE001
+        print(f"[telegram] contesto non composto: {e!r}")
+    try:   # chiusura multi-asset (radar/macro.py): una riga "Mercati: …" e al massimo 2 flag da rivedere
+        from .macro import telegram_lines
+        mk = [esc(x) for x in telegram_lines(report.get("macro"))]
+    except Exception as e:  # noqa: BLE001
+        print(f"[telegram] riga mercati non composta: {e!r}")
+        mk = []
+    try:
+        lv = _levels_line(pv)
+    except Exception:  # noqa: BLE001
+        lv = None
+    data_day = wk.get("date") or report.get("date")
+    note = (f"Prezzi alla chiusura del {dm(data_day)}. " if data_day else "") + "Contesto, non segnale: decide W3.2."
+    top = head("📋", None, f"Oggi {dm(day)} · {_todo(states)}" if day else f"Oggi · {_todo(states)}")
+    return msg(top, *lines, details(*ctx, *mk, lv, note), health, foot())
 
 
 def _ctx_lines(td: dict | None) -> list[str]:
@@ -209,61 +291,21 @@ def _ctx_lines(td: dict | None) -> list[str]:
     return out[:3]
 
 
-def _asset_line(w: dict) -> str:
-    """Una riga per un asset di W3.2 diverso da BTC (oggi ETH): stato, P&L sul suo capitale, stop/trailing."""
-    a = w.get("asset") or "ETH"
-    if w.get("status") in ("aperto", "uscita"):
-        cap = w.get("capital") or 0
-        pnl = cap * (w.get("pnl_pct") or 0) / 100
-        return (f"<b>{a} · W3.2</b>: {w['side'].upper()} dal {_dm(w['entry'])} a {_usd(w['entry_px'])} · {_pc(w['pnl_pct'], 2)} "
-                f"({'+' if pnl >= 0 else '−'}{_usd(abs(pnl))} su {_usd(cap)}) · stop {_usd(w['trail'])}"
-                + (" · uscita lunedì all'apertura" if w["status"] == "uscita" else ""))
-    if w.get("status") == "segnale":
-        return f"<b>{a} · W3.2</b>: segnale {w['side']} alla chiusura del {_dm(w['signal_date'])}, ingresso lunedì all'apertura"
-    return f"<b>{a} · W3.2</b>: nessuna posizione (regime {w.get('regime')})"
+# ---------------------------------------------------------------- avvisi tecnici del giro (radar/cli.py)
+
+def format_run_stopped(err: str) -> str:
+    """Nessuna fonte di W3.2 con dati né cache: il giro si ferma."""
+    return msg(head("⚠️", None, "Problema tecnico: giro interrotto"),
+               f"Dati di W3.2 assenti ({esc(err)}): nessun segnale calcolato in questo giro.")
 
 
-def today_brief(report: dict, day: str | None = None) -> str:
-    """Riepilogo giornaliero "Oggi" (al massimo 8 righe, 11 con i mercati): prezzo, W3, 2–3 righe di contesto, riga
-    "Mercati" e fino a 2 flag (report["macro"], radar/macro.py), nota. Mai eccezioni."""
-    report = report or {}
-    pv, wk = report.get("preview") or {}, report.get("weekly")
-    head = "<b>RADAR SIGNAL BTC · Oggi</b>" + (f" · {_dm(day)}" if day else "")
-    try:
-        price = pv.get("price") or (wk or {}).get("price") or report.get("price")
-        data_day = (wk or {}).get("date") or report.get("date")
-        l_px = (f"Prezzo {_usd(price)}" if price else "Prezzo n.d.") + (f" (chiusura {_dm(data_day)})" if data_day else "")
-        sr = (pv.get("today") or {}).get("sr") or []
-        r1 = next((z for z in sr if z["name"] == "R1"), None)
-        s1 = next((z for z in sr if z["name"] == "S1"), None)
-        for z, tag in ((r1, "R1"), (s1, "S1")):
-            if z and z.get("lo") is not None and z.get("hi") is not None:   # mappa unica dei livelli: un prezzo (lo = hi)
-                l_px += f" · {tag} {_usd(z['lo'])}" if z["lo"] == z["hi"] else f" · {tag} {_usd(z['lo'])}–{_usd(z['hi'])}"
-        if pv:
-            w3 = _w3_lines(pv, wk)
-        elif wk:
-            try:
-                w3 = [f"<b>W3.2</b>: {_weekly_line(wk)}"]
-            except Exception:  # noqa: BLE001
-                w3 = [f"<b>W3.2</b>: {wk.get('status', 'stato non disponibile')} {wk.get('side', '')}".rstrip()]
-        else:
-            w3 = ["<b>W3.2</b>: non calcolato in questo giro"]
-        try:   # altri asset di W3.2 (report["weekly_eth"]): una riga ciascuno, subito dopo BTC
-            eth = [_asset_line(report["weekly_eth"])] if report.get("weekly_eth") else []
-        except Exception as e:  # noqa: BLE001
-            print(f"[telegram] riga ETH non composta: {e!r}")
-            eth = []
-        lines = [head, l_px] + w3 + eth + _ctx_lines(pv.get("today"))
-    except Exception as e:  # noqa: BLE001
-        print(f"[telegram] riepilogo incompleto: {e!r}")
-        lines = [head, "Dati del riepilogo incompleti in questo giro."]
-    try:   # chiusura multi-asset (radar/macro.py): una riga "Mercati: …" e al massimo 2 flag da rivedere
-        from .macro import telegram_lines
-        mk = telegram_lines(report.get("macro"))
-    except Exception as e:  # noqa: BLE001
-        print(f"[telegram] riga mercati non composta: {e!r}")
-        mk = []
-    return "\n".join(lines[:7 + bool(report.get("weekly_eth"))] + mk + ["Contesto, non segnale: decide W3.2."])
+def format_w3_error(err: str, asset: str = "BTC") -> str:
+    return msg(head("⚠️", asset, "Segnale non calcolato in questo giro"), f"<code>{esc(err)}</code>",
+               "Il prossimo giro riprova; posizione e livelli comunicati restano validi.")
+
+
+def format_test() -> str:
+    return head("✅", None, "Radar · connessione riuscita")
 
 
 def send(text: str):

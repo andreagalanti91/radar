@@ -1,6 +1,8 @@
 # Messaggi Telegram più chiari · proposta (solo anteprima)
 
-Stato: **da approvare**. Nessun file di `radar/`, `tests/` o dei workflow è stato toccato; nessun messaggio inviato.
+Stato: **approvata il 25/11/2026 («Procedi come proposto», 8 scelte come raccomandato) e implementata** (non ancora pubblicata).
+`index.html` e i PNG mostrano ora a destra il testo generato dal codice vero («Nuovo (codice)»); differenze rispetto ai testi qui
+sotto: `&` reso `&amp;` nelle righe Mercati (stessa resa), avvisi sulle fonti (21, 22) dentro il messaggio di salute (scelta 7).
 
 - Anteprime: `stato/telegram-preview/index.html` (attuale a sinistra, proposta a destra, tema scuro/chiaro, anteprima notifica).
 - Immagini: `tutti_scuro.png`, `tutti_chiaro.png` (citazioni chiuse come in Telegram) e `NN_<stato>.png` (tema scuro, citazioni aperte).

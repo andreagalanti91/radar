@@ -36,7 +36,8 @@ def _messages() -> list[str]:
     out.append(telegram.today_brief({"preview": dict(PV, position_block=None), "weekly": None}, "2026-11-18"))
     out.append(telegram.today_brief({"weekly": cur("nessuno", regime="neutro")}, "2026-11-18"))
     sent: list[str] = []
-    cli.source_alerts({"spot": "timeout"}, {"perp": "2026-11-19"}, {}, NOW, "2026-11-19", send=lambda t: sent.append(t) or 1)
+    cli.heartbeat(w_open, {}, NOW, "2026-11-19", [], send=lambda t: sent.append(t) or 1, errors={"spot": "timeout"},
+                  stale={"perp": "2026-11-19"})
     return out + sent
 
 
@@ -44,11 +45,13 @@ class TestTestiW32(unittest.TestCase):
     def test_messaggi_solo_w32(self):
         for t in _messages():
             self.assertIsNone(BAD.search(t), t)
-        joined = "\n".join(_messages())
-        self.assertIn("(W3.2)", joined)
-        self.assertIn("<b>W3.2</b>", joined)
-        self.assertIn("decide W3.2.", joined)
-        self.assertIn("W3.2 valutato sui dati", joined)
+        msgs = _messages()
+        joined = "\n".join(msgs)
+        self.assertIn("decide W3.2.", joined)                     # il nome della strategia resta nei dettagli
+        self.assertIn("Dati di W3.2", telegram.format_run_stopped("ConnectionError"))
+        for t in msgs:                                             # riga 1 senza «RADAR SIGNAL» né «W3.2» (scelta 1 del 25/11)
+            self.assertNotIn("RADAR SIGNAL", t.split("\n")[0])
+            self.assertNotIn("W3.2", t.split("\n")[0])
 
     def test_preanalisi_solo_w32(self):
         p = preview.build(_synth(), REPORT)

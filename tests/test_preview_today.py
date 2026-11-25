@@ -170,17 +170,26 @@ PV = {"price": 64947.35, "week_close_utc": "2026-11-22",
                            "p30": 36.5, "ci30": [22.2, 53.2], "mean7": 1.22}, "note": "Contesto, non segnale: decide W3.2."}}
 
 
+def _visible(t: str) -> list[str]:
+    """Righe del messaggio fuori dalla citazione espandibile (quelle che Telegram mostra sempre)."""
+    import re
+    return re.sub(r"<blockquote expandable>.*?</blockquote>", "", t, flags=re.S).splitlines()
+
+
 class TestBrief(unittest.TestCase):
     def test_testo_in_posizione(self):
         t = telegram.today_brief({"preview": PV, "weekly": {"date": "2026-11-17"}}, "2026-11-18")
         lines = t.splitlines()
-        self.assertLessEqual(len(lines), 8)
-        self.assertTrue(lines[0].startswith("<b>RADAR SIGNAL BTC · Oggi</b>"))
-        self.assertIn("SHORT dal 16/11", t)
-        self.assertIn("$81.695", t)
-        self.assertIn("sopra $75.574", t)
-        self.assertEqual(lines[-1], "Contesto, non segnale: decide W3.2.")
-        self.assertNotIn("<b>W3.2</b>: nessuna", t)
+        self.assertLessEqual(len(_visible(t)), 6)                          # righe in vista (fuori dalla citazione)
+        self.assertEqual(lines[0], "📋 <b>Oggi 18/11 · nessuna azione</b>")
+        self.assertEqual(lines[1], "🔴 <b>BTC short</b> · <b>+0,46%</b> (+$232)")
+        self.assertEqual(lines[2], "da $65.286 (16/11) · ora $64.947")
+        self.assertEqual(lines[3], "uscita $81.695 · o domenica sopra $75.574")
+        self.assertIn("Prezzi alla chiusura del 17/11. Contesto, non segnale: decide W3.2.</blockquote>", t)
+        self.assertTrue(lines[-1].startswith('<a href="https://andreagalanti91.github.io/radar/">'))
+        h = telegram.today_brief({"preview": PV, "weekly": {"date": "2026-11-17"}}, "2026-11-18",
+                                 telegram.health_line("2026-11-17", [], "2026-11-22"))
+        self.assertEqual(h.splitlines()[-2], "✅ Sistema ok · dati fino al 17/11 · decisione dom 22/11")
 
     def test_testo_flat_soglia_segnale(self):
         pv = dict(PV, position_block=None, scenarios=[{"lo": None, "hi": 60000.0, "outcome": "short"},
@@ -193,13 +202,13 @@ class TestBrief(unittest.TestCase):
         for rep in ({}, None, {"weekly": {"status": "aperto"}}, {"preview": {"today": None}},
                     {"preview": {"position_block": {"side": "short"}}}):
             t = telegram.today_brief(rep)
-            self.assertIn("RADAR SIGNAL BTC · Oggi", t)
-            self.assertLessEqual(len(t.splitlines()), 8)
+            self.assertTrue(t.startswith("📋 <b>Oggi"), t)
+            self.assertLessEqual(len(_visible(t)), 6)
 
     def test_una_volta_al_giorno_indipendente_da_v2(self):
         T = pd.Timestamp
         sent, st = [], {}
-        with mock.patch.dict(os.environ, {"RADAR_DAILY_BRIEF": "1", "RADAR_V2_ALERTS": "0"}):
+        with mock.patch.dict(os.environ, {"RADAR_DAILY_BRIEF": "1"}):
             self.assertFalse(cli.daily_brief({"preview": PV}, st, T("2026-11-18 00:20"), "2026-11-17", send=lambda m: False))
             self.assertNotIn("daily_brief", st)                                   # Telegram non conferma: si riprova
             self.assertTrue(cli.daily_brief({"preview": PV}, st, T("2026-11-18 01:20"), "2026-11-17",
@@ -208,13 +217,13 @@ class TestBrief(unittest.TestCase):
             self.assertFalse(cli.daily_brief({"preview": PV}, st, T("2026-11-18 02:20"), "2026-11-17",
                                              send=lambda m: sent.append(m) or 1))
             self.assertEqual(len(sent), 1)
-            self.assertIn("RADAR SIGNAL BTC · Oggi", sent[0])
+            self.assertTrue(sent[0].startswith("📋 <b>Oggi 18/11"))
             self.assertTrue(cli.brief_due(st, T("2026-11-19 00:05"), "2026-11-18"))
         with mock.patch.dict(os.environ, {"RADAR_DAILY_BRIEF": "0"}):
             self.assertFalse(cli.brief_due({}, T("2026-11-19 00:05"), "2026-11-18"))
         src = inspect.getsource(cli.daily)
         call = src.index('_soft("riepilogo giornaliero", daily_brief, report')
-        self.assertNotIn("if v2_on", src[src.rfind("\n", 0, call - 1) - 80: call])   # non più legato agli alert di v2
+        self.assertNotIn("v2_on", src)                                       # messaggi di v2 eliminati
 
 
 if __name__ == "__main__":

@@ -62,9 +62,10 @@ html.open .msg blockquote.exp::after { content:"⌃"; }
 </style></head>
 <body><div class="wrap">
 <header>
-  <h1>Messaggi Telegram · prima e dopo</h1>
-  <p>28 tipi di messaggio inviati oggi da @CryptoRadarGalaBot. A sinistra il testo generato dal codice di oggi, a destra la proposta.
-  Numeri veri dai dati in cache (fino al 21/11/2026), salvo dove indicato «d'esempio».</p>
+  <h1>Messaggi Telegram · prima e dopo (codice)</h1>
+  <p>28 tipi di messaggio di @CryptoRadarGalaBot. A sinistra il testo del codice precedente, a destra il testo generato dal
+  codice nuovo (radar/telegram.py, radar/weekly.py, radar/cli.py, guard, coherence, workflow), che implementa la proposta approvata il 25/11/2026.
+  Numeri veri dai dati in cache (fino al 21/11/2026), salvo dove indicato «d'esempio». Nessun messaggio inviato.</p>
   <p class="legend">Icone: 🟢 long · 🔴 short · ⚪ fuori · 🎯 profitto · 🛑 perdita o stop · 🔔 uscita automatica spostata · ⏳ in sospeso · ⚠️ problema tecnico · 📋 riepilogo · ✅ tutto ok.
   La riga grigia sopra ogni chat è l'anteprima della notifica (prima riga, troncata).
   Le citazioni con ⌄ sono «espandibili»: Telegram le mostra chiuse su 3 righe e le apre con un tocco.</p>
@@ -72,7 +73,7 @@ html.open .msg blockquote.exp::after { content:"⌃"; }
     <button onclick="setTheme('dark')">Tema scuro</button><button onclick="setTheme('light')">Tema chiaro</button>
     <label><input type="checkbox" id="openq" onchange="document.documentElement.classList.toggle('open', this.checked)"> Apri le citazioni</label>
   </div>
-  <nav class="toc"><a href="#s01"><span>01</span>Nuovo segnale settimanale (entrata lunedì)</a><a href="#s02"><span>02</span>Segnale arrivato a posizione già aperta</a><a href="#s03"><span>03</span>Ingresso eseguito (prezzo reale)</a><a href="#s04"><span>04</span>Posizione in corso al primo avvio (non è un segnale nuovo)</a><a href="#s05"><span>05</span>Uscita automatica (trailing) aggiornata</a><a href="#s06"><span>06</span>Anteprima: possibile uscita per distribuzione</a><a href="#s07"><span>07</span>Uscita decisa: chiudi lunedì all&#x27;apertura</a><a href="#s08"><span>08</span>Uscita eseguita in perdita</a><a href="#s09"><span>09</span>Uscita eseguita in profitto</a><a href="#s10"><span>10</span>Stop toccato in tempo reale</a><a href="#s11"><span>11</span>Segnale ritirato (dati rivisti)</a><a href="#s12"><span>12</span>Uscita ritirata (dati rivisti)</a><a href="#s13"><span>13</span>Stato degli avvisi ripristinato</a><a href="#s14"><span>14</span>Riepilogo giornaliero «Oggi» (in posizione)</a><a href="#s15"><span>15</span>Riepilogo giornaliero «Oggi» (nessuna posizione)</a><a href="#s16"><span>16</span>Messaggio di salute quotidiano (tutto ok)</a><a href="#s17"><span>17</span>Messaggio di salute con problemi</a><a href="#s18"><span>18</span>Alternativa: riepilogo e salute in un solo messaggio</a><a href="#s19"><span>19</span>Soglia d&#x27;allarme W3.2 (drawdown o stop consecutivi)</a><a href="#s20"><span>20</span>Controllo di coerenza dei dati</a><a href="#s21"><span>21</span>Fonte dati non disponibile</a><a href="#s22"><span>22</span>Dati fermi da oltre 36 ore</a><a href="#s23"><span>23</span>Giro interrotto: nessun dato W3.2</a><a href="#s24"><span>24</span>W3.2 non calcolato</a><a href="#s25"><span>25</span>Workflow: salvataggio (push) fallito</a><a href="#s26"><span>26</span>Workflow: test falliti</a><a href="#s27"><span>27</span>Workflow: giro fallito</a><a href="#s28"><span>28</span>Test di connessione</a></nav>
+  <nav class="toc"><a href="#s01"><span>01</span>Nuovo segnale settimanale (entrata lunedì)</a><a href="#s02"><span>02</span>Segnale arrivato a posizione già aperta</a><a href="#s03"><span>03</span>Ingresso eseguito (prezzo reale)</a><a href="#s04"><span>04</span>Posizione in corso al primo avvio (non è un segnale nuovo)</a><a href="#s05"><span>05</span>Uscita automatica (trailing) aggiornata</a><a href="#s06"><span>06</span>Anteprima: possibile uscita per distribuzione</a><a href="#s07"><span>07</span>Uscita decisa: chiudi lunedì all&#x27;apertura</a><a href="#s08"><span>08</span>Uscita eseguita in perdita</a><a href="#s09"><span>09</span>Uscita eseguita in profitto</a><a href="#s10"><span>10</span>Stop toccato in tempo reale</a><a href="#s11"><span>11</span>Segnale ritirato (dati rivisti)</a><a href="#s12"><span>12</span>Uscita ritirata (dati rivisti)</a><a href="#s13"><span>13</span>Stato degli avvisi ripristinato</a><a href="#s14"><span>14</span>Riepilogo giornaliero «Oggi» (in posizione)</a><a href="#s15"><span>15</span>Riepilogo giornaliero «Oggi» (nessuna posizione)</a><a href="#s16"><span>16</span>Messaggio di salute quotidiano (tutto ok)</a><a href="#s17"><span>17</span>Messaggio di salute con problemi</a><a href="#s18"><span>18</span>Riepilogo e salute in un solo messaggio (formato in uso)</a><a href="#s19"><span>19</span>Soglia d&#x27;allarme W3.2 (drawdown o stop consecutivi)</a><a href="#s20"><span>20</span>Controllo di coerenza dei dati</a><a href="#s21"><span>21</span>Fonte dati non disponibile (dentro il messaggio di salute)</a><a href="#s22"><span>22</span>Dati fermi da oltre 36 ore (dentro il messaggio di salute)</a><a href="#s23"><span>23</span>Giro interrotto: nessun dato W3.2</a><a href="#s24"><span>24</span>W3.2 non calcolato</a><a href="#s25"><span>25</span>Workflow: salvataggio (push) fallito</a><a href="#s26"><span>26</span>Workflow: test falliti</a><a href="#s27"><span>27</span>Workflow: giro fallito</a><a href="#s28"><span>28</span>Test di connessione</a></nav>
 </header>
 
 <section class="state" id="s01">
@@ -81,7 +82,7 @@ html.open .msg blockquote.exp::after { content:"⌃"; }
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_signal (status segnale)</code> · Dati veri: segnale short BTC del 15/11/2026.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · SEGNALE SETTIMANALE · 🔴 SHORT (W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · 🔴 SHORT</b> (W3.2)
@@ -97,7 +98,7 @@ Operazioni rare (13 trade dal 2021, circa 2 l'anno) e lunghe · DD massimo stori
   <div class="meta">10 righe · 961 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🔴 BTC · Nuovo SHORT: entra lunedì all&#x27;apertura</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🔴 <b>BTC · Nuovo SHORT: entra lunedì all'apertura</b>
@@ -120,7 +121,7 @@ Operazioni rare (13 dal 2021, circa 2 l'anno) e lunghe · calo massimo storico �
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_signal (status aperto)</code> · Stato BTC al 21/11.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · SEGNALE SETTIMANALE · 🔴 SHORT (W3.2, già in posizione)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE · 🔴 SHORT</b> (W3.2, già in posizione)
@@ -130,7 +131,7 @@ Uscita alla prima: trailing 2,5 ATR settimanali dalla miglior chiusura giornalie
   <div class="meta">4 righe · 513 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🔴 BTC · SHORT già aperto dal 16/11 (segnale in ritardo)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🔴 <b>BTC · SHORT già aperto dal 16/11 (segnale in ritardo)</b>
@@ -149,7 +150,7 @@ Media a 21 settimane: $75.574<blockquote class="exp">Segnale del 15/11: i giri p
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_entry</code> · Dati veri: ingresso short BTC del 16/11 a $65.286.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · INGRESSO SETTIMANALE ESEGUITO · 🔴 SHORT (W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · INGRESSO SETTIMANALE ESEGUITO · 🔴 SHORT</b> (W3.2)
@@ -158,7 +159,7 @@ Su $30.000: $29.160 = 0.4467 BTC · stop iniziale $82.163 · stop/trailing attua
   <div class="meta">3 righe · 341 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🔴 BTC · SHORT aperto a $65.286</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🔴 <b>BTC · SHORT aperto a $65.286</b>
@@ -175,7 +176,7 @@ Prezzo ora: $64.883 · <b>+0,56%</b> (+$168)
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_info</code> · ETH short dal 09/11 a $2.125 (stato al 21/11).</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL ETH · Posizione settimanale in corso · 🔴 SHORT (W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL ETH · Posizione settimanale in corso · 🔴 SHORT</b> (W3.2)
@@ -186,7 +187,7 @@ Uscita alla prima: trailing 2,5 ATR settimanali dalla miglior chiusura giornalie
   <div class="meta">5 righe · 701 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🔴 ETH · SHORT in corso dal 09/11: non è un segnale nuovo</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🔴 <b>ETH · SHORT in corso dal 09/11: non è un segnale nuovo</b>
@@ -207,7 +208,7 @@ Media a 21 settimane: $2.258<blockquote class="exp">Se decidi di seguirla ora, e
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_trail</code> · Dati veri: 19/11 → 20/11, da $78.799 a $75.764.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Settimanale: trailing aggiornato (short, W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Settimanale: trailing aggiornato</b> (short, W3.2)
@@ -215,7 +216,7 @@ Nuovo stop $75.764 (era $78.799) · prezzo $58.952 · andamento +9.70% sul prezz
   <div class="meta">2 righe · 145 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🔔 BTC · Uscita automatica abbassata a $75.764</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🔔 <b>BTC · Uscita automatica abbassata a $75.764</b>
@@ -232,7 +233,7 @@ SHORT da $65.286 · ora $58.952 · <b>+9,39%</b> (+$2.817)
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_dist</code> · Funding e flusso d&#x27;esempio (oggi la regola non è attiva).</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Settimanale: allerta distribuzione (anteprima) (short, W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Settimanale: allerta distribuzione (anteprima)</b> (short, W3.2)
@@ -240,7 +241,7 @@ Anteprima a metà settimana, non è una decisione: se la settimana chiudesse ogg
   <div class="meta">2 righe · 336 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⏳ BTC · Possibile uscita dallo SHORT: decide domenica</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⏳ <b>BTC · Possibile uscita dallo SHORT: decide domenica</b>
@@ -257,7 +258,7 @@ Funding medio 7g −0,0410%/giorno · flusso futures +0,38σ
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_exit_next</code> · Dati veri: long BTC, chiusura dell&#x27;08/11 sotto la EMA 21.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · USCITA SETTIMANALE ANNUNCIATA (long, W3.2) · all&#x27;apertura di lunedì</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · USCITA SETTIMANALE ANNUNCIATA</b> (long, W3.2) · all'apertura di lunedì
@@ -266,7 +267,7 @@ Ingresso 2026-08-24 a $77.812 · ora $74.851 · risultato stimato -3.80% sul pre
   <div class="meta">3 righe · 328 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🛑 BTC · Chiudi il LONG lunedì all&#x27;apertura</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🛑 <b>BTC · Chiudi il LONG lunedì all'apertura</b>
@@ -284,7 +285,7 @@ Lunedì ti confermo prezzo eseguito e risultato.
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_exit</code> · Dati veri: long BTC 24/08 → 09/11, −4,10%.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA (long, W3.2) ❌</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA</b> (long, W3.2) ❌
@@ -293,7 +294,7 @@ Ingresso 2026-08-24 a $77.812 · risultato -3.90% sul prezzo (<b>-4.10%</b> sul 
   <div class="meta">3 righe · 227 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🛑 BTC · LONG chiuso in perdita: −4,10%</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🛑 <b>BTC · LONG chiuso in perdita: −4,10%</b>
@@ -311,7 +312,7 @@ Ora nessuna posizione: si attende il prossimo segnale.
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_exit</code> · Dati veri: short BTC 25/05 → 20/08 per uscita automatica, +5,73%.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA (short, W3.2) ✅</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · USCITA SETTIMANALE ESEGUITA</b> (short, W3.2) ✅
@@ -320,7 +321,7 @@ Ingresso 2026-05-25 a $76.988 · risultato +4.81% sul prezzo (<b>+5.73%</b> sul 
   <div class="meta">3 righe · 220 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🎯 BTC · SHORT chiuso in profitto: +5,73%</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🎯 <b>BTC · SHORT chiuso in profitto: +5,73%</b>
@@ -338,7 +339,7 @@ Ora nessuna posizione: si attende il prossimo segnale.
   <p class="fn"><b>Funzione</b>: <code>weekly.format_intraday (da cli.weekly_alerts)</code> · Livello vero ($75.764), prezzo e ora d&#x27;esempio.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Settimanale: stop toccato (tempo reale) (short, W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Settimanale: stop toccato (tempo reale)</b> (short, W3.2)
@@ -347,7 +348,7 @@ Lo stop scatta al tocco: chiudi la posizione. L'uscita ufficiale si registra all
   <div class="meta">3 righe · 235 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🛑 BTC · Stop toccato: chiudi lo SHORT</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🛑 <b>BTC · Stop toccato: chiudi lo SHORT</b>
@@ -362,7 +363,7 @@ Risultato a questo livello: <b>−15,82%</b> (−$4.745)<blockquote class="exp">
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_retract (signal)</code> · Motivo d&#x27;esempio generato dalla funzione vera.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · SEGNALE SETTIMANALE RITIRATO (short, W3.2, segnale del 2026-11-15)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · SEGNALE SETTIMANALE RITIRATO</b> (short, W3.2, segnale del 2026-11-15)
@@ -371,7 +372,7 @@ Nessun ingresso: se sei già entrato, valuta di chiudere. Stato attuale: nessuna
   <div class="meta">3 righe · 290 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚪ BTC · Segnale SHORT annullato: non entrare</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚪ <b>BTC · Segnale SHORT annullato: non entrare</b>
@@ -389,7 +390,7 @@ Stato attuale: nessuna posizione.
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_retract (exit)</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · USCITA SETTIMANALE RITIRATA (short, W3.2, segnale del 2026-11-15)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · USCITA SETTIMANALE RITIRATA</b> (short, W3.2, segnale del 2026-11-15)
@@ -398,7 +399,7 @@ Stop/trailing $75.764 · EMA 21 settimanale $75.574</div><span class="time">07:1
   <div class="meta">3 righe · 281 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">🔴 BTC · Uscita annullata: tieni lo SHORT</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">🔴 <b>BTC · Uscita annullata: tieni lo SHORT</b>
@@ -415,7 +416,7 @@ L'uscita annunciata per lunedì non è più valida:
   <p class="fn"><b>Funzione</b>: <code>weekly.format_event · w_restore</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Stato degli avvisi ripristinato (W3.2)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Stato degli avvisi ripristinato</b> (W3.2)
@@ -427,7 +428,7 @@ Ingressi e uscite degli ultimi 7 giorni seguono in messaggi separati.</div><span
   <div class="meta">6 righe · 573 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ BTC · Avvisi ripristinati: nessuna azione</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>BTC · Avvisi ripristinati: nessuna azione</b>
@@ -441,10 +442,10 @@ Dati fino al 21/11. Ingressi e uscite degli ultimi 7 giorni seguono in messaggi 
 <section class="state" id="s14">
   <h2><span class="num">14</span>Riepilogo giornaliero «Oggi» (in posizione)</h2>
   <p class="when"><b>Quando parte</b>: Una volta al giorno, al primo giro dopo la chiusura giornaliera (entro le 06:00 UTC)</p>
-  <p class="fn"><b>Funzione</b>: <code>telegram.today_brief (da cli.daily_brief)</code> · Dati veri al 21/11 (BTC ed ETH short), mercati al 24/11.</p>
+  <p class="fn"><b>Funzione</b>: <code>telegram.today_brief (da cli.daily_brief)</code> · Dati veri al 21/11 (BTC ed ETH short), mercati al 24/11. Senza la riga di salute, come nella proposta n. 14 (dal vivo la riga c&#x27;è: n. 18).</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Oggi · 25/11</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Oggi</b> · 25/11
@@ -461,7 +462,7 @@ Contesto, non segnale: decide W3.2.</div><span class="time">07:12</span></div></
   <div class="meta">11 righe · 749 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">📋 Oggi 25/11 · nessuna azione</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">📋 <b>Oggi 25/11 · nessuna azione</b>
@@ -473,8 +474,8 @@ da $2.125 (09/11) · ora $1.686
 uscita $2.311<blockquote class="exp">Flussi: perp −1,41σ (in vendita) · spot −0,90σ (in vendita)
 Derivati: funding −0,04%/anno · OI 7g −6,7% · liquidazioni 24h long 0,0 M$ / short 0,0 M$
 Storico simile (pf14z basso · sf14z basso, 70 casi): 50% di rialzo a 7 g, 45% a 30 g · non significativo
-Mercati: S&P 7.201 (−0,5%) · Nasdaq 23.734 (−1,5%) · oro 3.542 (−2,1%) · dollaro 123,6 (+0,1%) · VIX 26,4 (−0,3)
-Da rivedere: S&P 500 sotto la media a 200 giorni
+Mercati: S&amp;P 7.201 (−0,5%) · Nasdaq 23.734 (−1,5%) · oro 3.542 (−2,1%) · dollaro 123,6 (+0,1%) · VIX 26,4 (−0,3)
+Da rivedere: S&amp;P 500 sotto la media a 200 giorni
 Prezzi alla chiusura del 21/11. Contesto, non segnale: decide W3.2.</blockquote><a href="https://andreagalanti91.github.io/radar/">Apri la dashboard</a></div><span class="time">07:12</span></div></div>
   <div class="meta">14 righe · 715 caratteri</div>
 </div></div>
@@ -482,10 +483,10 @@ Prezzi alla chiusura del 21/11. Contesto, non segnale: decide W3.2.</blockquote>
 <section class="state" id="s15">
   <h2><span class="num">15</span>Riepilogo giornaliero «Oggi» (nessuna posizione)</h2>
   <p class="when"><b>Quando parte</b>: Come sopra, quando W3.2 è flat: indica le chiusure di domenica che darebbero un segnale</p>
-  <p class="fn"><b>Funzione</b>: <code>telegram.today_brief</code> · Dati veri di BTC al 14/11 (flat), senza la riga ETH.</p>
+  <p class="fn"><b>Funzione</b>: <code>telegram.today_brief</code> · Dati veri di BTC al 14/11 (flat), senza la riga ETH e senza la riga di salute.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Oggi · 14/11</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Oggi</b> · 14/11
@@ -501,7 +502,7 @@ Contesto, non segnale: decide W3.2.</div><span class="time">07:12</span></div></
   <div class="meta">10 righe · 606 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">📋 Oggi 14/11 · fuori dal mercato, nessuna azione</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">📋 <b>Oggi 14/11 · fuori dal mercato, nessuna azione</b>
@@ -509,26 +510,26 @@ Contesto, non segnale: decide W3.2.</div><span class="time">07:12</span></div></
 Dom 15/11: short se chiude sotto $72.334<blockquote class="exp">Flussi: perp −1,28σ (in vendita) · spot +0,39σ (quasi neutro)
 Derivati: funding 5,9%/anno · OI 7g +2,2% · liquidazioni 24h long 0,0 M$ / short 0,0 M$
 Storico simile (pf14z basso · sf14z medio, 50 casi): 52% di rialzo a 7 g, 36% a 30 g · non significativo
-Mercati: S&P 7.201 (−0,5%) · Nasdaq 23.734 (−1,5%) · oro 3.542 (−2,1%) · dollaro 123,6 (+0,1%) · VIX 26,4 (−0,3)
-Da rivedere: S&P 500 sotto la media a 200 giorni
+Mercati: S&amp;P 7.201 (−0,5%) · Nasdaq 23.734 (−1,5%) · oro 3.542 (−2,1%) · dollaro 123,6 (+0,1%) · VIX 26,4 (−0,3)
+Da rivedere: S&amp;P 500 sotto la media a 200 giorni
 Prezzi alla chiusura del 14/11. Contesto, non segnale: decide W3.2.</blockquote><a href="https://andreagalanti91.github.io/radar/">Apri la dashboard</a></div><span class="time">07:12</span></div></div>
   <div class="meta">10 righe · 627 caratteri</div>
 </div></div>
 </section>
 <section class="state" id="s16">
   <h2><span class="num">16</span>Messaggio di salute quotidiano (tutto ok)</h2>
-  <p class="when"><b>Quando parte</b>: Una volta al giorno, al primo giro dopo le 07:00 UTC</p>
-  <p class="fn"><b>Funzione</b>: <code>weekly.format_heartbeat (da cli.heartbeat)</code></p>
+  <p class="when"><b>Quando parte</b>: Solo con il riepilogo «Oggi» spento (RADAR_DAILY_BRIEF=0), al primo giro dopo le 07:00 UTC</p>
+  <p class="fn"><b>Funzione</b>: <code>weekly.format_heartbeat (da cli.heartbeat)</code> · Con il riepilogo acceso il «tutto ok» è la riga in fondo al riepilogo (n. 18).</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">Radar · tutto ok: dati fino al 2026-11-21, ultimo giro 25/11 07:10 UTC, W3.2 short aperto, stop $75.764, ETH short aperto, stop $2.311, prossima decisione 2026-11-29 (chiusura UTC)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">Radar · tutto ok: dati fino al 2026-11-21, ultimo giro 25/11 07:10 UTC, W3.2 short aperto, stop $75.764, ETH short aperto, stop $2.311, prossima decisione 2026-11-29 (chiusura UTC)</div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 180 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">✅ Radar attivo · tutto ok</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">✅ <b>Radar attivo · tutto ok</b>
@@ -539,42 +540,44 @@ Dati fino al 21/11 · ultimo giro 25/11 07:10 UTC
 </section>
 <section class="state" id="s17">
   <h2><span class="num">17</span>Messaggio di salute con problemi</h2>
-  <p class="when"><b>Quando parte</b>: Come sopra, se il giro ha avuto problemi</p>
-  <p class="fn"><b>Funzione</b>: <code>weekly.format_heartbeat</code> · Problemi d&#x27;esempio.</p>
+  <p class="when"><b>Quando parte</b>: Al primo giro dopo le 07:00 UTC se il giro ha problemi; prima, se una fonte di W3.2 non si scarica o i dati sono fermi</p>
+  <p class="fn"><b>Funzione</b>: <code>weekly.format_heartbeat (da cli.heartbeat)</code> · Problemi d&#x27;esempio (fonte, dati fermi, ETH).</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">Radar · attenzione: fonte metrics non disponibile; dati funding vecchi: dati fino al 2026-11-21, ultimo giro 25/11 07:10 UTC, W3.2 short aperto, stop $75.764, ETH short aperto, stop $2.311, prossima decisione 2026-11-29 (chiusura UTC)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">Radar · attenzione: fonte metrics non disponibile; dati funding vecchi: dati fino al 2026-11-21, ultimo giro 25/11 07:10 UTC, W3.2 short aperto, stop $75.764, ETH short aperto, stop $2.311, prossima decisione 2026-11-29 (chiusura UTC)</div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 234 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
-    <div class="nb">⚠️ Radar · 2 problemi tecnici</div></div></div>
-  <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · 2 problemi tecnici</b>
-• fonte metrics non disponibile
-• dati funding vecchi
+    <div class="nb">⚠️ Radar · 3 problemi tecnici</div></div></div>
+  <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · 3 problemi tecnici</b>
+• fonte metrics non disponibile (HTTPError: 503 Server Error)
+• dati funding vecchi (ultimo giorno 19/11)
+• W3.2 ETH non calcolato
+Segnali calcolati sui dati fino al 21/11: decisioni possibili in ritardo.
 Dati fino al 21/11 · ultimo giro 25/11 07:10 UTC
 🔴 BTC short · 🔴 ETH short · prossima decisione dom 29/11</div><span class="time">07:12</span></div></div>
-  <div class="meta">5 righe · 189 caratteri</div>
+  <div class="meta">7 righe · 340 caratteri</div>
 </div></div>
 </section>
 <section class="state" id="s18">
-  <h2><span class="num">18</span>Alternativa: riepilogo e salute in un solo messaggio</h2>
-  <p class="when"><b>Quando parte</b>: Proposta: il riepilogo «Oggi» porta la riga di salute; il messaggio di salute separato parte solo se ci sono problemi</p>
-  <p class="fn"><b>Funzione</b>: <code>telegram.today_brief + weekly.format_heartbeat</code> · A sinistra il messaggio di salute di oggi (si aggiunge al riepilogo n. 14): oggi sono due notifiche al giorno.</p>
+  <h2><span class="num">18</span>Riepilogo e salute in un solo messaggio (formato in uso)</h2>
+  <p class="when"><b>Quando parte</b>: Il riepilogo «Oggi» porta la riga di salute; il messaggio di salute separato parte solo se ci sono problemi</p>
+  <p class="fn"><b>Funzione</b>: <code>telegram.today_brief + cli.health (da cli.daily_brief)</code> · È il riepilogo che parte ogni giorno.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">Radar · tutto ok: dati fino al 2026-11-21, ultimo giro 25/11 07:10 UTC, W3.2 short aperto, stop $75.764, ETH short aperto, stop $2.311, prossima decisione 2026-11-29 (chiusura UTC)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">Radar · tutto ok: dati fino al 2026-11-21, ultimo giro 25/11 07:10 UTC, W3.2 short aperto, stop $75.764, ETH short aperto, stop $2.311, prossima decisione 2026-11-29 (chiusura UTC)</div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 180 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">📋 Oggi 25/11 · nessuna azione</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">📋 <b>Oggi 25/11 · nessuna azione</b>
@@ -586,8 +589,8 @@ da $2.125 (09/11) · ora $1.686
 uscita $2.311<blockquote class="exp">Flussi: perp −1,41σ (in vendita) · spot −0,90σ (in vendita)
 Derivati: funding −0,04%/anno · OI 7g −6,7% · liquidazioni 24h long 0,0 M$ / short 0,0 M$
 Storico simile (pf14z basso · sf14z basso, 70 casi): 50% di rialzo a 7 g, 45% a 30 g · non significativo
-Mercati: S&P 7.201 (−0,5%) · Nasdaq 23.734 (−1,5%) · oro 3.542 (−2,1%) · dollaro 123,6 (+0,1%) · VIX 26,4 (−0,3)
-Da rivedere: S&P 500 sotto la media a 200 giorni
+Mercati: S&amp;P 7.201 (−0,5%) · Nasdaq 23.734 (−1,5%) · oro 3.542 (−2,1%) · dollaro 123,6 (+0,1%) · VIX 26,4 (−0,3)
+Da rivedere: S&amp;P 500 sotto la media a 200 giorni
 Prezzi alla chiusura del 21/11. Contesto, non segnale: decide W3.2.</blockquote>✅ Sistema ok · dati fino al 21/11 · decisione dom 29/11
 <a href="https://andreagalanti91.github.io/radar/">Apri la dashboard</a></div><span class="time">07:12</span></div></div>
   <div class="meta">15 righe · 771 caratteri</div>
@@ -599,7 +602,7 @@ Prezzi alla chiusura del 21/11. Contesto, non segnale: decide W3.2.</blockquote>
   <p class="fn"><b>Funzione</b>: <code>guard.format_alarm</code> · Valori d&#x27;esempio (oggi nessun allarme).</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Soglia d&#x27;allarme W3.2</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Soglia d'allarme W3.2</b>
@@ -610,7 +613,7 @@ Soglia d'allarme: revisione consigliata e rischio dimezzato (decisione dell'uten
   <div class="meta">5 righe · 313 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ BTC · Soglia d&#x27;allarme: rivedi la strategia</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>BTC · Soglia d'allarme: rivedi la strategia</b>
@@ -626,7 +629,7 @@ Consigliato: revisione e rischio dimezzato (decidi tu).<blockquote class="exp">S
   <p class="fn"><b>Funzione</b>: <code>coherence.format_alert</code> · Righe d&#x27;esempio nel formato vero.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Controllo di coerenza</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Controllo di coerenza</b>
@@ -636,7 +639,7 @@ Controllo di coerenza: verificare prima della prossima decisione. Nessuna azione
   <div class="meta">4 righe · 287 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ BTC · Dati da verificare prima della prossima decisione</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>BTC · Dati da verificare prima della prossima decisione</b>
@@ -647,12 +650,12 @@ Nessuna azione automatica.</div><span class="time">07:12</span></div></div>
 </div></div>
 </section>
 <section class="state" id="s21">
-  <h2><span class="num">21</span>Fonte dati non disponibile</h2>
-  <p class="when"><b>Quando parte</b>: Al massimo una volta al giorno, se una fonte di W3.2 non si scarica (si usa l&#x27;ultima cache)</p>
-  <p class="fn"><b>Funzione</b>: <code>cli.source_alerts</code> · Errori d&#x27;esempio; uno è di ETH.</p>
+  <h2><span class="num">21</span>Fonte dati non disponibile (dentro il messaggio di salute)</h2>
+  <p class="when"><b>Quando parte</b>: Al massimo una volta al giorno, se una fonte di W3.2 non si scarica (si usa l&#x27;ultima cache): messaggio di salute con il problema</p>
+  <p class="fn"><b>Funzione</b>: <code>cli.heartbeat (prima cli.source_alerts)</code> · Errori d&#x27;esempio; uno è di ETH. Giro delle 03:10 UTC.</p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Fonte non disponibile</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Fonte non disponibile</b>
@@ -662,23 +665,25 @@ W3.2 valutato sui dati fino al 2026-11-21: decisioni possibili in ritardo.</div>
   <div class="meta">4 righe · 202 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
-    <div class="nb">⚠️ Problema tecnico: fonte dati non disponibile</div></div></div>
-  <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Problema tecnico: fonte dati non disponibile</b>
-• perp: HTTPError 503
-• ETH funding: Timeout
-Segnali calcolati sui dati fino al 21/11: decisioni possibili in ritardo.</div><span class="time">07:12</span></div></div>
-  <div class="meta">4 righe · 166 caratteri</div>
+    <div class="nb">⚠️ Radar · 2 problemi tecnici</div></div></div>
+  <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · 2 problemi tecnici</b>
+• fonte perp non disponibile (HTTPError 503)
+• fonte ETH funding non disponibile (Timeout)
+Segnali calcolati sui dati fino al 21/11: decisioni possibili in ritardo.
+Dati fino al 21/11 · ultimo giro 25/11 03:10 UTC
+🔴 BTC short · 🔴 ETH short · prossima decisione dom 29/11</div><span class="time">07:12</span></div></div>
+  <div class="meta">6 righe · 300 caratteri</div>
 </div></div>
 </section>
 <section class="state" id="s22">
-  <h2><span class="num">22</span>Dati fermi da oltre 36 ore</h2>
+  <h2><span class="num">22</span>Dati fermi da oltre 36 ore (dentro il messaggio di salute)</h2>
   <p class="when"><b>Quando parte</b>: Al massimo una volta al giorno</p>
-  <p class="fn"><b>Funzione</b>: <code>cli.source_alerts</code></p>
+  <p class="fn"><b>Funzione</b>: <code>cli.heartbeat (prima cli.source_alerts)</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Dati vecchi</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Dati vecchi</b>
@@ -687,23 +692,25 @@ W3.2 valutato sui dati fino al 2026-11-21: decisioni possibili in ritardo.</div>
   <div class="meta">3 righe · 207 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
-    <div class="nb">⚠️ Problema tecnico: dati fermi da oltre 36 ore</div></div></div>
-  <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Problema tecnico: dati fermi da oltre 36 ore</b>
-• funding: ultimo giorno 19/11
-• ETH spot: ultimo giorno 19/11
-Segnali calcolati sui dati fino al 21/11: decisioni possibili in ritardo.</div><span class="time">07:12</span></div></div>
-  <div class="meta">4 righe · 184 caratteri</div>
+    <div class="nb">⚠️ Radar · 2 problemi tecnici</div></div></div>
+  <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · 2 problemi tecnici</b>
+• dati funding vecchi (ultimo giorno 19/11)
+• dati ETH spot vecchi (ultimo giorno 19/11)
+Segnali calcolati sui dati fino al 21/11: decisioni possibili in ritardo.
+Dati fino al 21/11 · ultimo giro 25/11 03:10 UTC
+🔴 BTC short · 🔴 ETH short · prossima decisione dom 29/11</div><span class="time">07:12</span></div></div>
+  <div class="meta">6 righe · 298 caratteri</div>
 </div></div>
 </section>
 <section class="state" id="s23">
   <h2><span class="num">23</span>Giro interrotto: nessun dato W3.2</h2>
   <p class="when"><b>Quando parte</b>: Se nessuna fonte di W3.2 ha dati né cache (giro fermato)</p>
-  <p class="fn"><b>Funzione</b>: <code>cli.daily (testo in linea)</code></p>
+  <p class="fn"><b>Funzione</b>: <code>cli.daily → telegram.format_run_stopped</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · Fonte non disponibile</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · Fonte non disponibile</b>
@@ -711,7 +718,7 @@ ConnectionError: dati W3.2 assenti, giro interrotto.</div><span class="time">07:
   <div class="meta">2 righe · 93 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ Problema tecnico: giro interrotto</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Problema tecnico: giro interrotto</b>
@@ -722,10 +729,10 @@ Dati di W3.2 assenti (ConnectionError): nessun segnale calcolato in questo giro.
 <section class="state" id="s24">
   <h2><span class="num">24</span>W3.2 non calcolato</h2>
   <p class="when"><b>Quando parte</b>: Una volta al giorno, se la valutazione di W3.2 va in errore</p>
-  <p class="fn"><b>Funzione</b>: <code>cli.daily (testo in linea)</code></p>
+  <p class="fn"><b>Funzione</b>: <code>cli.daily → telegram.format_w3_error</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR SIGNAL BTC · W3.2 non calcolato</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR SIGNAL BTC · W3.2 non calcolato</b>
@@ -733,7 +740,7 @@ KeyError: 'close'</div><span class="time">07:12</span></div></div>
   <div class="meta">2 righe · 55 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ BTC · Segnale non calcolato in questo giro</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>BTC · Segnale non calcolato in questo giro</b>
@@ -745,17 +752,17 @@ Il prossimo giro riprova; posizione e livelli comunicati restano validi.</div><s
 <section class="state" id="s25">
   <h2><span class="num">25</span>Workflow: salvataggio (push) fallito</h2>
   <p class="when"><b>Quando parte</b>: daily.yml, se il push dei dati fallisce 5 volte</p>
-  <p class="fn"><b>Funzione</b>: <code>.github/workflows/daily.yml · «Avviso push fallito» (curl, testo semplice)</code></p>
+  <p class="fn"><b>Funzione</b>: <code>.github/workflows/daily.yml · «Avviso push fallito» (curl, parse_mode=HTML)</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">Radar · salvataggio dei dati non riuscito dopo 5 tentativi: stato in cache, ripristinato al prossimo giro. https://github.com/andreagalanti91/radar/actions/runs/123456789</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">Radar · salvataggio dei dati non riuscito dopo 5 tentativi: stato in cache, ripristinato al prossimo giro. <a href="https://github.com/andreagalanti91/radar/actions/runs/123456789">https://github.com/andreagalanti91/radar/actions/runs/123456789</a></div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 170 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ Radar · salvataggio dei dati non riuscito</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · salvataggio dei dati non riuscito</b>
@@ -770,14 +777,14 @@ Il prossimo giro riprova; posizione e livelli comunicati restano validi.</div><s
   <p class="fn"><b>Funzione</b>: <code>.github/workflows/daily.yml · «Avviso test falliti»</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">Radar · test falliti (gli alert sono partiti comunque): https://github.com/andreagalanti91/radar/actions/runs/123456789</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">Radar · test falliti (gli alert sono partiti comunque): <a href="https://github.com/andreagalanti91/radar/actions/runs/123456789">https://github.com/andreagalanti91/radar/actions/runs/123456789</a></div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 119 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ Radar · test falliti</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · test falliti</b>
@@ -792,14 +799,14 @@ Gli avvisi sono partiti comunque.
   <p class="fn"><b>Funzione</b>: <code>daily.yml / liqsnap.yml · «Avviso workflow fallito»</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">Radar · workflow fallito: radar https://github.com/andreagalanti91/radar/actions/runs/123456789</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">Radar · workflow fallito: radar <a href="https://github.com/andreagalanti91/radar/actions/runs/123456789">https://github.com/andreagalanti91/radar/actions/runs/123456789</a></div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 95 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">⚠️ Radar · giro non completato (radar)</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">⚠️ <b>Radar · giro non completato (radar)</b>
@@ -813,14 +820,14 @@ Gli avvisi sono partiti comunque.
   <p class="fn"><b>Funzione</b>: <code>cli.main · test-telegram</code></p>
   <div class="pair">
 <div class="col">
-  <div class="collabel now">Oggi</div>
+  <div class="collabel now">Prima (codice del 25/11)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">RADAR BTC · test connessione riuscito ✅</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg"><b>RADAR BTC</b> · test connessione riuscito ✅</div><span class="time">07:12</span></div></div>
   <div class="meta">1 righe · 39 caratteri</div>
 </div>
 <div class="col">
-  <div class="collabel new">Proposta</div>
+  <div class="collabel new">Nuovo (codice)</div>
   <div class="notif"><div class="ic">R</div><div class="nt"><div class="nh"><b>CryptoRadarGalaBot</b><span>ora</span></div>
     <div class="nb">✅ Radar · connessione riuscita</div></div></div>
   <div class="chat"><div class="bubble"><div class="msg">✅ <b>Radar · connessione riuscita</b></div><span class="time">07:12</span></div></div>

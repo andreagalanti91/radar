@@ -16,7 +16,6 @@ from . import weekly
 DD_ALARM = -15.0          # % dal massimo dell'equity dal vivo
 STOPS_ALARM = 2           # stop consecutivi in perdita
 STOP_REASONS = ("stop", "trail")
-TEXT = "Soglia d'allarme: revisione consigliata e rischio dimezzato (decisione dell'utente). Nessuna azione automatica."
 
 
 def live_start(journal: dict | None) -> str:
@@ -72,8 +71,13 @@ def events(g: dict) -> list[str]:
 
 
 def format_alarm(g: dict, asset: str = "BTC") -> str:
-    return (f"<b>RADAR SIGNAL {asset} · Soglia d'allarme W3.2</b>\n" + "\n".join(g["why"])
-            + f"\nStorico dal vivo dal {g['since']}.\n" + TEXT)
+    from . import telegram as tg
+    return tg.msg(tg.head("⚠️", asset, "Soglia d'allarme: rivedi la strategia"),
+                  *[f"• {tg.esc(x)}" for x in g["why"]],
+                  "Consigliato: revisione e rischio dimezzato (decidi tu).",
+                  tg.details(f"Storico dal vivo dal {tg.dm(g['since'])}. Nessuna azione automatica: segnali e posizione "
+                             "non cambiano."),
+                  tg.foot())
 
 
 def update(wcur: dict | None, st: dict, journal: dict | None = None, send=None, asset: str = "BTC") -> dict | None:
