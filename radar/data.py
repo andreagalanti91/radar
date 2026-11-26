@@ -6,8 +6,9 @@ gli altri un prefisso (data/eth_spot.csv, data/eth_perp.csv, data/eth_funding.cs
 Fonti:
 - Spot klines (con taker buy volume -> CVD spot): data-api.binance.vision
 - Perp klines USDT-M (taker buy volume -> CVD perp): data.binance.vision (archivio)
-  con fallback OKX per gli ultimi giorni non ancora archiviati
-- Funding rate: archivio Binance mensile + OKX per il mese corrente
+  con fallback OKX per gli ultimi giorni non ancora archiviati (volume riscalato sul rapporto Binance/OKX di 28 giorni)
+- Funding rate: archivio Binance mensile; dopo l'ultimo mese archiviato funding Binance ricostruito dall'indice di premio
+  (archivio giornaliero, formula pubblica; source "premio") e OKX solo per i pagamenti senza file di premio (source "okx")
 - Metrics (open interest, long/short ratio, taker ratio, 5m -> giornaliero): archivio Binance
 - Fear & Greed index: alternative.me
 """
@@ -177,6 +178,23 @@ def _okx_perp_daily(asset: str = "BTC") -> pd.DataFrame:
     return out[["open", "high", "low", "close", "volume", "quote_volume"]].sort_index()
 
 
+RATIO_DAYS, RATIO_MIN = 28, 10
+
+
+def okx_volume_ratio(binance: pd.DataFrame, okx: pd.DataFrame, days: int = RATIO_DAYS) -> float | None:
+    """Mediana di volume Binance / volume OKX sugli ultimi `days` giorni presenti in entrambe le fonti (solo righe Binance).
+    None con meno di RATIO_MIN giorni in comune o rapporto non valido: in quel caso il volume OKX resta com'è."""
+    b = binance
+    if "source" in b:
+        b = b[b["source"].fillna("binance") == "binance"]
+    j = pd.concat([b["volume"].rename("b"), okx["volume"].rename("o")], axis=1, sort=True).dropna()
+    j = j[(j["b"] > 0) & (j["o"] > 0)].tail(days)
+    if len(j) < RATIO_MIN:
+        return None
+    r = float((j["b"] / j["o"]).median())
+    return r if 0 < r < 100 else None
+
+
 def fetch_perp(asset: str = "BTC") -> pd.DataFrame:
     sym, name = ASSETS[asset]["symbol"], cache_name("perp", asset)
     last = _cache_last(name)
@@ -206,9 +224,18 @@ def fetch_perp(asset: str = "BTC") -> pd.DataFrame:
     have = set(out.index.date)
     missing = [d for d in _days(today - timedelta(days=60), today - timedelta(days=1)) if d not in have]
     if missing:
-        okx = _okx_perp_daily(asset)
-        okx = okx[okx.index.isin(pd.to_datetime(missing))]
+        okx_all = _okx_perp_daily(asset)
+        ratio = okx_volume_ratio(out, okx_all)
+        okx = okx_all[okx_all.index.isin(pd.to_datetime(missing))].copy()
         if len(okx):
+            # volume OKX ≈ 0,5–0,6× Binance: senza correzione i giorni provvisori pesano meno nel flusso a 14 giorni
+            # (research/dati_provvisori). Riscalato con la mediana Binance/OKX dei 28 giorni precedenti con entrambe le fonti.
+            if ratio is not None:
+                okx[["volume", "quote_volume"]] *= ratio
+                print(f"[dati] perp {asset}: {len(okx)} giorni OKX provvisori, volume ×{ratio:.3f} (mediana Binance/OKX 28 giorni)")
+            else:
+                print(f"[dati] perp {asset}: {len(okx)} giorni OKX provvisori, volume NON riscalato (meno di "
+                      f"{RATIO_MIN} giorni in comune con l'archivio)")
             okx["taker_buy_volume"] = float("nan")
             okx["source"] = "okx"
             # salvati su disco: il backtest e gli agenti leggono il CSV. Al prossimo giro l'archivio
@@ -237,15 +264,92 @@ def fetch_funding(asset: str = "BTC") -> pd.DataFrame:
                 frames.append(df.groupby("date")["rate"].sum().to_frame("funding").assign(source="binance"))
     out = _merge_cache(name, pd.concat(frames)) if frames else pd.read_csv(DATA_DIR / f"{name}.csv", index_col=0, parse_dates=True)
     out = _funding_sources(out, this_month, name)
-    # mese corrente da OKX (stesso ordine di grandezza del funding Binance)
-    r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": ASSETS[asset]["okx"], "limit": 100})
-    okx = pd.DataFrame(r.json()["data"])
-    if len(okx):
-        okx["date"] = pd.to_datetime(pd.to_numeric(okx["fundingTime"]), unit="ms").dt.normalize()
-        okx = okx.groupby("date")["realizedRate"].apply(lambda s: pd.to_numeric(s).sum()).to_frame("funding")
-        okx = okx[(okx.index > out.index.max()) & (okx.index.date < today)]
-        if len(okx):
-            out = _merge_cache(name, okx.assign(source="okx"))
+    # giorni dopo l'ultimo mese archiviato: funding Binance ricostruito dall'indice di premio (archivio giornaliero, formula
+    # pubblica) e, per i pagamenti il cui file di premio non c'è ancora, il tasso OKX dello stesso pagamento.
+    # Errore sul funding medio 7g alla decisione della domenica: p95 ~0,9e-5 contro ~5,7e-5 di OKX da solo
+    # (research/dati_provvisori). Le righe provvisorie si ricalcolano a ogni giro finché arriva l'archivio mensile.
+    arch = out[out["source"] == "binance"].index.max() if len(out) else None
+    first = (arch + pd.Timedelta(days=1)).date() if arch is not None and not pd.isna(arch) else this_month
+    days = list(_days(first, today - timedelta(days=1)))
+    if not days:
+        return out
+    okx8 = pd.Series(dtype=float)
+    try:
+        r = _get("https://www.okx.com/api/v5/public/funding-rate-history", {"instId": ASSETS[asset]["okx"], "limit": 100})
+        o = pd.DataFrame(r.json()["data"]) if r is not None else pd.DataFrame()
+        if len(o):
+            okx8 = pd.Series(pd.to_numeric(o["realizedRate"]).values,
+                             index=pd.to_datetime(pd.to_numeric(o["fundingTime"]), unit="ms")).sort_index()
+    except (requests.RequestException, ValueError, KeyError) as e:
+        print(f"[dati] funding {asset}: OKX non disponibile ({type(e).__name__})")
+    prem_days = [first - timedelta(days=1)] + days          # il pagamento delle 00:00 usa i premi del giorno prima
+    with ThreadPoolExecutor(8) as ex:
+        prem = [p for p in ex.map(lambda d: _premium_day(sym, d), prem_days) if p is not None]
+    prem8 = premium_funding_8h(pd.concat(prem).sort_index()) if prem else pd.Series(dtype=float)
+    prov = provisional_funding(prem8, okx8, days)
+    if not len(prov):
+        print(f"[dati] funding {asset}: nessun giorno provvisorio calcolabile (premio e OKX assenti): resta la cache")
+        return out
+    n_p = int((prov["source"] == "premio").sum())
+    print(f"[dati] funding {asset}: {len(prov)} giorni provvisori ({n_p} dal premio Binance, {len(prov) - n_p} con pagamenti OKX)"
+          + (f"; mancano {len(days) - len(prov)} giorni" if len(prov) < len(days) else ""))
+    return _merge_cache(name, prov)      # stessi giorni: vince il ricalcolo; i giorni non ricalcolabili restano come in cache
+
+
+# indice di premio → funding Binance USDT-M (formula pubblica): F = P + clamp(I − P, ±0,05%), I = 0,01% ogni 8 ore,
+# P = media dei premi del periodo pesata 1, 2, …, n; tetto ±0,3% (mai raggiunto da BTC/ETH).
+PREM_I, PREM_CLAMP, PREM_CAP, PREM_MIN = 0.0001, 0.0005, 0.003, 0.9
+
+
+def _premium_day(sym: str, d: date) -> pd.Series | None:
+    """Indice di premio a 1 minuto di un giorno (archivio giornaliero data.binance.vision, pubblicato verso le 08:30 UTC del
+    giorno dopo). None se il file non c'è ancora o non si scarica: il pagamento userà OKX."""
+    try:
+        df = _zip_csv(f"{ARCHIVE}/daily/premiumIndexKlines/{sym}/1m/{sym}-1m-{d:%Y-%m-%d}.zip", "open_time")
+    except (requests.RequestException, zipfile.BadZipFile):
+        return None
+    if df is None or not len(df):
+        return None
+    ot = pd.to_numeric(df.iloc[:, 0], errors="coerce")
+    ok = ot.notna()
+    ot = ot[ok].astype("int64")
+    ot = ot.where(ot < 10**14, ot // 1000)
+    return pd.Series(pd.to_numeric(df.iloc[:, 4][ok]).values, index=pd.to_datetime(ot.values, unit="ms"))
+
+
+def premium_funding_8h(prem: pd.Series) -> pd.Series:
+    """Tasso Binance per ogni pagamento (indice = ora del pagamento 00/08/16 UTC) dai premi a 1 minuto. Il minuto [t, t+1m)
+    appartiene al pagamento successivo. Periodi con meno del 90% dei 480 minuti: esclusi (mai stimati)."""
+    if not len(prem):
+        return pd.Series(dtype=float)
+    prem = prem[~prem.index.duplicated()].sort_index()
+    df = pd.DataFrame({"p": prem.values, "pay": (prem.index + pd.Timedelta(minutes=1)).ceil("8h")})
+    df["k"] = df.groupby("pay").cumcount() + 1
+    g = df.assign(pw=df["p"] * df["k"]).groupby("pay")
+    pavg = g["pw"].sum() / g["k"].sum()
+    rate = (pavg + (PREM_I - pavg).clip(-PREM_CLAMP, PREM_CLAMP)).clip(-PREM_CAP, PREM_CAP)
+    return rate[g.size() >= PREM_MIN * 480]
+
+
+def provisional_funding(prem8: pd.Series, okx8: pd.Series, days) -> pd.DataFrame:
+    """Funding giornaliero provvisorio (somma dei 3 pagamenti del giorno): ogni pagamento dal premio Binance se c'è, altrimenti
+    il tasso OKX dello stesso pagamento. source = "premio" se tutti e 3 dal premio, "okx" se almeno uno da OKX; un giorno con
+    un pagamento assente in entrambe le fonti NON si scrive (niente dati inventati)."""
+    rows = {}
+    for d in days:
+        d = pd.Timestamp(d)
+        vals, src = [], "premio"
+        for h in (0, 8, 16):
+            p = d + pd.Timedelta(hours=h)
+            if p in prem8.index and not pd.isna(prem8[p]):
+                vals.append(float(prem8[p]))
+            elif p in okx8.index and not pd.isna(okx8[p]):
+                vals.append(float(okx8[p]))
+                src = "okx"
+        if len(vals) == 3:
+            rows[d] = (sum(vals), src)
+    out = pd.DataFrame([v for v in rows.values()], index=pd.DatetimeIndex(list(rows), name="date"),
+                       columns=["funding", "source"])
     return out
 
 
