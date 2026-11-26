@@ -113,6 +113,9 @@ class TestStruttura(unittest.TestCase):
             self.assertIn(w, T)
         # le diciture arrivano dal report e restano in pagina, testuali
         self.assertIn('<p class="cxNote">${esc(C.note)}</p>', T)
+        # con report.mercato la scheda diventa "Mercato power" (tests/test_mercato.py) e il Contesto passa nel suo pannello
+        self.assertIn("if (!rows.length || MP) return;", T)
+        self.assertIn('${ctxC ? sec("Contesto di mercato e politica economica", ctxPanel(ctxC)) : ""}', T)
         from radar import cone, context
         self.assertTrue(context.NOTE.startswith("Contesto, non segnale"))
         self.assertIn("Probabilità calcolate dalla volatilità attuale, non dalla direzione", Path(cone.__file__).read_text())

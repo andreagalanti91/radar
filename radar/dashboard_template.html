@@ -788,6 +788,27 @@ body.noscroll{overflow:hidden}
 .cxT b{display:block;font:600 .98rem/1.3 var(--font);letter-spacing:-.015em;font-variant-numeric:tabular-nums}
 .cxT small{display:block;font-size:.76rem;line-height:1.4;color:var(--label2);margin-top:2px;font-variant-numeric:tabular-nums}
 @media (max-width:700px){.cxTiles{grid-template-columns:minmax(0,1fr);gap:8px}.cxT{padding:10px 12px;align-items:center}}
+/* Oggi · "Mercato power" (report.mercato, radar/mercato.py): prende il posto della scheda Contesto quando c'è. In testa il conteggio
+   a favore / neutri / contro la posizione BTC aperta, poi una riga per semaforo (pallino, nome, valore breve). Nessun punteggio unico.
+   Il tocco apre il pannello con regole, motivo di oggi, ETH se diverso e i contenuti del Contesto (report.context). */
+.mpCount{margin:8px 0 0;font:600 .92rem/1.35 var(--font);color:var(--label);font-variant-numeric:tabular-nums}
+.mpCount .favore{color:var(--green)} .mpCount .contro{color:var(--red)} .mpCount .neutro{color:var(--label2)}
+.mpRows{margin-top:10px;border-top:1px solid var(--line)}
+.mpR{display:grid;grid-template-columns:auto minmax(0,auto) minmax(0,1fr);gap:4px 10px;align-items:center;padding:9px 0;min-height:44px;box-sizing:border-box}
+.mpR+.mpR{border-top:1px solid var(--line)}
+.mpR .n{font:500 .9rem/1.3 var(--font);color:var(--label);min-width:0}
+.mpR .v{font:500 .86rem/1.35 var(--font);color:var(--label2);text-align:right;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
+.mpDot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--label3)}
+.mpDot.favore{background:var(--green)} .mpDot.contro{background:var(--red)}
+.mpDot.neutro{background:var(--label3)}
+.mpW3{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;font:600 .66rem/1.3 var(--font);color:var(--tint);background:var(--tint-bg);white-space:nowrap;vertical-align:1px}
+.mpSr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:560px){.mpR{grid-template-columns:auto minmax(0,1fr);padding:8px 0}.mpR .v{grid-column:2;text-align:left;font-size:.82rem}}
+/* pannello: una riga per semaforo con stato, motivo di oggi e regola */
+.mpP .row{align-items:flex-start;padding:12px 16px}
+.mpP .row .mpDot{margin-top:6px}
+.mpP .row .v{white-space:nowrap;padding-top:1px;font-weight:600} .mpP .row .v.favore{color:var(--green)} .mpP .row .v.contro{color:var(--red)}
+.mpP .row .k small.rule{color:var(--label3)}
 .tdRow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;margin-top:10px}
 .tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
 .tdRow b{font:600 .9rem/1.35 var(--font);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -2946,10 +2967,18 @@ function renderChart() {   // avviata da route() quando grafico.json è arrivato
 }
 // Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità.
 // Tre tessere (Mercato / Fed / Dati): la prima parte del testo del server in evidenza, il resto sotto; colore di stato sobrio
+// Con report.mercato presente la scheda diventa "Mercato power" (sotto): il Contesto passa nel suo pannello, nessuna informazione tolta.
+const ctxC = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;
+const ctxPanel = C => { const det = (C.details || []).filter(o => o && o.label), rows = (C.rows || []).filter(o => o && o.label && o.text);
+  const L = det.length ? det.map(o => [o.label, o.text, o.value == null ? "–" : o.value]) : rows.map(o => [o.label, "", o.text]);
+  return `<div class="list" style="box-shadow:none">${L.map(([l, x, v]) => `<div class="row"><span class="k">${esc(l)}${x ? `<small>${esc(x)}</small>` : ""}</span><span class="v strong">${esc(v)}</span></div>`).join("")}</div>
+    ${C.warn ? `<p class="cxWarn">${esc(C.warn)}</p>` : ""}<p class="foot">${esc(C.note || "")}</p>
+    <p class="foot">${esc(C.source || "")}${C.updated_utc ? " Aggiornato: " + new Date(C.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC." : ""}</p>`; };
+const MP = R.mercato && R.mercato.assets && (R.mercato.assets.BTC || R.mercato.assets.ETH) ? R.mercato : null;
 (function renderContext() {
-  const C = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;
+  const C = ctxC;
   const rows = C ? C.rows.filter(o => o && o.label && o.text) : [];
-  if (!rows.length) return;
+  if (!rows.length || MP) return;
   const note = C.note ? `<p class="cxNote">${esc(C.note)}</p>` : "", warn = C.warn ? `<p class="cxWarn">${esc(C.warn)}</p>` : "";
   const ICO = { Mercato: "i-sim", Fed: "i-fed", Dati: "i-stat" }, cap = t => t.charAt(0).toUpperCase() + t.slice(1);
   // testo del server "a, b · c · d" → titolo "a" e resto "b · c · d" (una parentesi in coda al titolo scende nel resto): nessuna parola persa
@@ -2964,11 +2993,55 @@ function renderChart() {   // avviata da route() quando grafico.json è arrivato
     <div class="cxTiles">${rows.map(o => { const [h, x] = split(o.text);
       return `<div class="cxT" style="--c:var(${tone(o.label, h)})"><span class="ico"><svg><use href="#${ICO[o.label] || "i-met"}"/></svg></span><div><span class="l">${esc(o.label)}</span><b>${esc(h)}</b>${x ? `<small>${esc(x)}</small>` : ""}</div></div>`; }).join("")}</div>${warn}${note}`;
   $("cxSec").hidden = false;
-  const det = (C.details || []).filter(o => o && o.label);
-  $("cxCard").onclick = () => openSheet("Contesto di mercato e politica economica", `<div style="display:grid;gap:12px;min-width:0">
-    <div class="list" style="box-shadow:none">${det.map(o => `<div class="row"><span class="k">${esc(o.label)}${o.text ? `<small>${esc(o.text)}</small>` : ""}</span><span class="v strong">${esc(o.value == null ? "–" : o.value)}</span></div>`).join("")}</div>
-    ${warn}<p class="foot">${esc(C.note || "")}</p>
-    <p class="foot">${esc(C.source || "")}${C.updated_utc ? " Aggiornato: " + new Date(C.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC." : ""}</p></div>`);
+  $("cxCard").onclick = () => openSheet("Contesto di mercato e politica economica", `<div style="display:grid;gap:12px;min-width:0">${ctxPanel(C)}</div>`);
+})();
+// Mercato power (report.mercato, radar/mercato.py): sei semafori a favore / neutri / contro la posizione BTC aperta; nessun punteggio unico.
+// Scheda: conteggio in testa e una riga per semaforo; il tocco apre il pannello con regola e motivo di oggi per ognuno, i semafori di ETH
+// se diversi e i contenuti del Contesto. Solo contesto: decide W3.2 (l'unico semaforo che W3.2 usa è il flusso e funding dei perp).
+(function renderMercato() {
+  if (!MP) return;
+  const A = MP.assets.BTC || MP.assets.ETH, side = A.lato, E = MP.assets.BTC && MP.assets.ETH;
+  const items = (A.items || []).filter(i => i && i.nome), c = A.conteggio || {};
+  if (!items.length) return;
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "", dmS = s => String(s).slice(8, 10) + "/" + String(s).slice(5, 7);
+  const verso = s => s === "short" ? "lo short" : s === "long" ? "il long" : "";
+  const ST = { favore: "a favore", neutro: "neutro", contro: "contro" }, COL = { favore: "verde", neutro: "grigio", contro: "rosso" };
+  // valore breve leggibile, costruito dai campi del server (valore, etichetta) e dai dati già in pagina
+  const VAL = {
+    onchain: i => R.onchain && R.onchain.zone && R.onchain.zone !== "norm" && R.onchain.since ? `${cap(i.etichetta)} dal ${dmS(R.onchain.since)}` : `${cap(i.etichetta)} · ${i.valore}`,
+    dollaro: i => `${i.valore} · ${i.etichetta}`,
+    opex: i => `Scadenza ${String(i.etichetta || "").split(" · ")[0]} · max pain ${R.opex && R.opex.max_pain ? nfIT(R.opex.max_pain) + " $" : String(i.valore).replace("max pain ", "")}`,
+    vix: i => `VIX ${i.valore} ${String(i.etichetta || "").replace(/\s*\(.*\)$/, "")}`,
+    fed: i => `${i.valore} · ${String(i.etichetta || "").replace(/^tra (\d+) g$/, (m, n) => `tra ${n} ${n === "1" ? "giorno" : "giorni"}`)}`,
+    flusso: i => `Flusso ${i.valore} ${i.etichetta}`,
+  };
+  const val = i => { try { return (VAL[i.key] || (x => [x.valore, x.etichetta].filter(Boolean).join(" · ")))(i); } catch (_) { return i.valore || ""; } };
+  const w3 = i => i.w3 ? `<span class="mpW3">usato da W3.2</span>` : "";
+  const count = (x, s) => s ? `<span class="favore">${x.favore || 0} a favore</span> · <span class="neutro">${x.neutro || 0} ${x.neutro === 1 ? "neutro" : "neutri"}</span> · <span class="contro">${x.contro || 0} contro</span> ${verso(s)}`
+    : "nessuna posizione aperta";
+  $("cxCard").innerHTML = `<div class="tapHead"><b>Mercato power <small>· contesto, decide W3.2</small></b><span class="more">Dettagli ›</span></div>
+    <p class="mpCount">${count(c, side)}${MP.assets.BTC ? "" : " (ETH)"}</p>
+    <div class="mpRows">${items.map(i => `<div class="mpR"><i class="mpDot ${esc(i.stato)}" aria-hidden="true"></i><span class="n">${esc(i.nome)}${w3(i)}<span class="mpSr"> ${ST[i.stato] || ""}</span></span><span class="v">${esc(val(i))}</span></div>`).join("")}</div>`;
+  $("cxCard").setAttribute("aria-label", `Mercato power: ${side ? `${c.favore || 0} a favore, ${c.neutro || 0} neutri, ${c.contro || 0} contro ${verso(side)}` : "nessuna posizione aperta"}. Apri i dettagli`);
+  $("cxSec").hidden = false;
+  // ---- pannello
+  const row = (i, s) => `<div class="row"><i class="mpDot ${esc(i.stato)}" aria-hidden="true"></i><span class="k">${esc(i.nome)}${w3(i)}
+      <small>Oggi ${COL[i.stato] || "grigio"}: ${i.key === "flusso" && i.perche ? "" : esc(val(i)) + (i.perche ? ". " : "")}${i.perche ? esc(cap(i.perche)) : ""}${s ? "" : " (nessuna posizione aperta)"}</small>
+      <small class="rule">Regola: ${esc(i.regola || "")}</small></span><span class="v ${esc(i.stato)}">${ST[i.stato] || "–"}</span></div>`;
+  const sec = (h, x) => `<section class="ocSec"><h3>${h}</h3>${x}</section>`;
+  let eth = "";
+  if (E) { const B = MP.assets.BTC, Ex = MP.assets.ETH, bs = {}; (B.items || []).forEach(i => { bs[i.key] = i.stato; });
+    const diff = (Ex.items || []).filter(i => bs[i.key] !== i.stato);
+    eth = sec(`ETH${Ex.lato ? " " + Ex.lato : ""}`, diff.length || Ex.lato !== B.lato
+      ? `<p class="foot" style="margin:0">${count(Ex.conteggio || {}, Ex.lato)}${diff.length ? ". Diversi da BTC:" : ". Stessi semafori di BTC."}</p>${diff.length ? `<div class="list" style="box-shadow:none">${diff.map(i => row(i, Ex.lato)).join("")}</div>` : ""}`
+      : `<p class="foot" style="margin:0">Stessi semafori di BTC: ${count(Ex.conteggio || {}, Ex.lato)}.</p>`); }
+  const body = `<div class="ocP mpP">
+    ${sec(`BTC${side ? " " + side : ""} · ${side ? count(c, side) : "nessuna posizione aperta"}`, `<div class="list" style="box-shadow:none">${items.map(i => row(i, side)).join("")}</div>
+      <p class="foot" style="margin:0">Verde: il dato aiuta la posizione aperta. Grigio: neutro. Rosso: le va contro. Nessun punteggio unico: si contano solo i semafori.</p>`)}
+    ${eth}
+    ${ctxC ? sec("Contesto di mercato e politica economica", ctxPanel(ctxC)) : ""}
+    ${sec("Come si usa", `<p class="foot" style="margin:0">${esc(MP.nota || "Contesto: decide W3.2.")}</p>`)}</div>`;
+  $("cxCard").onclick = () => openSheet("Mercato power · perché ogni semaforo", body);
 })();
 // Oggi: riassunto coerente con la pagina Notizie: il prossimo evento ad alto impatto prima della chiusura di domenica (o il primo
 // dopo) e le 1–2 notizie più rilevanti delle ultime 24 ore che toccano le posizioni; il resto in #notizie
