@@ -1,6 +1,6 @@
 # STATO · Rapporto ufficiale W3.2 · avviato 25/11/2026
 
-Stato: COMPLETATO (25/11/2026) · in attesa dell'utente per 2 correzioni di visualizzazione nel tool
+Stato: COMPLETATO (25/11/2026) · correzioni del tool applicate (13 chiuse + 1 aperta, rendimento annuo/DD 2,07), suite 522 test, deploy fatto
 
 ## Prompt originale
 "Il rapporto dice 22 operazioni poi sul tool nei movimenti vedo 14. Ti chiedo di assestarmi i dati. Voglio un rapporto

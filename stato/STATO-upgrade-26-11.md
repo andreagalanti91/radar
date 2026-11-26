@@ -1,0 +1,20 @@
+# STATO · Piano di miglioria del 26/11 · avviato 26/11/2026
+
+Stato: IN CORSO
+
+## Prompt originale
+"Procedi con tutto, apprendi e migliora" — sul piano `stato/PIANO-UPGRADE-26-11.md`.
+
+## Decisioni
+- A1 (dati provvisori OKX del flusso e del funding): tocca i dati con cui W3.2 decide → studio, misura dell'impatto e patch
+  PROPOSTA, NON applicata: va presentata all'utente prima (CLAUDE.md).
+- A2 diario operazioni vere: il bot ha già /trade, confronto e slittamento (radar/journal.py) → verifica per W3.2 + vista
+  "Reale contro modello" in Movimenti.
+- A3 prova Telegram: il riepilogo «Oggi» del 26/11 col nuovo formato è già partito (marker daily_brief): niente invio extra.
+- A4 promemoria del lunedì: non modificabile da qui (conversazione originale) → resta all'utente.
+- B1 allarme "fuori dal backtest": approvato con "tutto" (nuovo avviso Telegram).
+- B2/B3: promemoria programmati (revisione semestrale, studi da rifare).
+- C1 pagina più leggera, C2 legenda del Grafico: dopo B (stesso file della dashboard). C3 (vista v1) e C4 (opzioni): no.
+
+## Prossima azione
+Agenti in parallelo: A1 (research/dati_provvisori/) e A2+B1 (journal, nuovo modulo allarme, Movimenti); poi C1+C2.

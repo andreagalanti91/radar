@@ -250,6 +250,9 @@ def daily() -> None:
     provlog_out = _soft("registro provvisori/definitivi", lambda: _im(".provlog", __package__).update(f, d, wcur, _ddir))
     guard_out = _soft("soglie d'allarme", lambda: _im(".guard", __package__).update(wcur, st, journal.load()))
     guard_eth = _soft("soglie d'allarme ETH", lambda: _im(".guard", __package__).update(ecur, st, None, asset="ETH")) if ecur else None
+    # allarme "fuori dal backtest" (radar/limiti.py): calo, perdite di fila o singola operazione oltre i limiti storici, sul
+    # conto del modello e sulle operazioni vere del diario; un avviso per evento, marcatore st["limiti"] solo a invio riuscito
+    limiti_out = _soft("limiti del backtest", lambda: _im(".limiti", __package__).update({"BTC": wcur, "ETH": ecur}, st, journal.load()))
     # avviso VIX (condizione di mercato, non W3.2): controllo ogni 4 ore, avviso solo all'attraversamento di 30/15 con riarmo
     _soft("avviso VIX", lambda: _im(".vix", __package__).update(st, now))
     # controlli di coerenza orari (buchi nei dati, storico riscritto, decisione cambiata con i definitivi): solo avviso
@@ -286,7 +289,7 @@ def daily() -> None:
         report["weekly"] = wcur          # BTC: chiave storica, invariata per compatibilità
     if ecur:
         report["weekly_eth"] = ecur      # ETH: stessa struttura (asset = "ETH")
-    for k, v in (("provlog", provlog_out), ("guard", guard_out), ("guard_eth", guard_eth)):
+    for k, v in (("provlog", provlog_out), ("guard", guard_out), ("guard_eth", guard_eth), ("limiti", limiti_out)):
         if v is not None:
             report[k] = v
     from importlib import import_module
