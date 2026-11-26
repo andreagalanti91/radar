@@ -624,9 +624,14 @@ body.noscroll{overflow:hidden}
 /* Posizioni · "Dollaro" (report.dollaro, radar/dollaro.py): DXY giornaliero, trend, RSI e divergenza come research/dxy_divergenza.
    Solo contesto (W3.2 non cambia). Stessi componenti della scheda on-chain (.ocTap, .ocSec, .ocT3, .ocChart, .ocLeg, .ocTxt) */
 .ocBig.forte{color:var(--violet)} .ocBig.indeb{color:var(--orange)} .ocBig.debole{color:var(--teal)}
-.ocBig.indeb small{display:block;margin:3px 0 0}
-.dxVal{display:flex;flex-wrap:wrap;gap:2px 12px;font:500 .8rem var(--font);color:var(--label2);font-variant-numeric:tabular-nums} .dxVal b{color:var(--label);font-weight:650}
-.dxVal .pos{color:var(--green)} .dxVal .neg{color:var(--red)}
+/* termometro del dollaro (.ocTh): fascia sinistra "calo confermato" (teal, come Debole), destra "rialzo confermato" (viola, come Forte),
+   tacca della EMA20 nella fascia centrale, punto di oggi col colore dello stato */
+.dxTh .bar i.e{background:color-mix(in srgb,var(--violet) 38%,transparent)}
+.dxTh .tick{position:absolute;top:13px;width:2px;height:16px;margin-left:-1px;border-radius:1px;background:var(--label2)}
+.dxTh .thr.ema{color:var(--label2);font-weight:600}
+.dxTh .dot.forte{background:var(--violet)} .dxTh .dot.indeb{background:var(--orange)} .dxTh .dot.debole{background:var(--teal)}
+.dxTh .zn.on.dn{color:var(--teal)} .dxTh .zn.on.up{color:var(--violet)}
+.dxLv .r b.dvB{color:var(--orange)} .dxLv .r b.dvU{color:var(--teal)}
 .ocT3 b.forte{color:var(--violet)} .ocT3 b.indeb{color:var(--orange)} .ocT3 b.debole{color:var(--teal)}
 .ocChart .dc{stroke:var(--label);stroke-width:1.6;fill:none;stroke-linejoin:round}
 .ocChart .d20{stroke:var(--tint);stroke-width:1.2;fill:none} .ocChart .d50{stroke:var(--violet);stroke-width:1.2;fill:none;stroke-dasharray:5 3}
@@ -1772,9 +1777,9 @@ function qxLine(U, px) {
   };
 })();
 // ---- Posizioni · "Dollaro" (report.dollaro, radar/dollaro.py): DXY giornaliero (Yahoo; ripiego FRED DTWEXBGS), trend con EMA20/50,
-// RSI(14) e divergenza con la definizione di research/dxy_divergenza/check.py. Scheda chiusa: stato in grande, valore e una riga sul
-// verso della posizione; al tocco il pannello (openSheet) con Dove siamo · Ultimi 6 mesi · Livelli di conferma · Dopo le divergenze
-// (studio) · Dollaro e BTC · Cosa significa per la posizione · Fonte. Con la posizione aperta sta nella card di BTC sotto il Ciclo
+// RSI(14) e divergenza con la definizione di research/dxy_divergenza/check.py. Scheda chiusa come il Ciclo on-chain: stato in grande,
+// termometro con le soglie di conferma, la EMA20 e il punto di oggi, una riga corta; le cifre stanno nel pannello (openSheet): Dove siamo ·
+// Ultimi 6 mesi · Divergenza · Livelli di conferma · Dopo le divergenze passate (studio) · Dollaro e BTC · Cosa significa · Fonte. Con la posizione aperta sta nella card di BTC sotto il Ciclo
 // on-chain; da flat è una card in fondo alla pagina. Solo contesto: non cambia W3.2, nessun avviso.
 (function renderDollaro() {
   const D = R.dollaro; if (!D || !D.series || !D.series.c || !D.series.c.length) return;
@@ -1782,37 +1787,55 @@ function qxLine(U, px) {
   const el = box || $("dxCard"); if (!el) return;
   const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
   const dmy = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
-  const n2 = x => nfIT(x, 2), S = D.state, sg = x => x == null ? "–" : `<span class="${x >= 0 ? "pos" : "neg"}">${pct(x, 2)}</span>`;
-  const NM = { forte: "Dollaro forte", indeb: "Dollaro in indebolimento", debole: "Dollaro debole" };
-  const big = S === "indeb" ? `${NM.indeb}<small>divergenza, da confermare</small>` : NM[S] || escS(D.state_name);
+  const n2 = x => nfIT(x, 2), S = D.state;
+  const NM = { forte: "Forte", indeb: "In indebolimento", debole: "Debole" };
+  const big = S === "indeb" ? `${NM.indeb}<small>da confermare</small>` : NM[S] || escS(D.state_name);
   const lbl = D.src === "fred" ? "Indice Fed" : "DXY";
+  // termometro come il Ciclo on-chain: fasce 25/50/25 con le soglie di conferma sopra (calo: chiusura sotto EMA20 e minimo dei 30 giorni,
+  // cioè sotto il più basso dei due; rialzo: sopra il più alto fra EMA20 e massimo). Nella fascia centrale la scala è lineare fra le due
+  // soglie (dentro c'è la tacca della EMA20); le fasce esterne valgono metà di quella distanza; punto ristretto alla fascia giusta
+  const xd = Math.min(D.ema20, D.lo30), xu = Math.max(D.ema20, D.hi30), spn = (xu - xd) || 1;
+  const P = v => v < xd ? 25 - (xd - v) / (spn / 2) * 25 : v > xu ? 75 + (v - xu) / (spn / 2) * 25 : 25 + (v - xd) / spn * 50;
+  let x = P(D.close); x = D.break_dn ? Math.min(x, 22) : D.break_up ? Math.max(x, 78) : Math.max(27, Math.min(73, x)); x = Math.max(4, Math.min(96, x));
+  const zk = D.break_dn ? "dn" : D.break_up ? "up" : "mid", xe = Math.max(25, Math.min(75, P(D.ema20)));
+  const thermo = `<span class="ocTh dxTh" role="img" aria-label="Posizione del dollaro: ${lbl} ${n2(D.close)} del ${dm(D.date)}, EMA20 ${n2(D.ema20)}; calo confermato sotto ${n2(xd)}, rialzo confermato sopra ${n2(xu)}">
+      <span class="thr" style="left:25%">${n2(xd)}</span><span class="thr" style="left:75%">${n2(xu)}</span>
+      ${Math.abs(xe - 25) >= 14 && Math.abs(xe - 75) >= 14 ? `<span class="thr ema" style="left:${xe.toFixed(1)}%">EMA20</span>` : ""}
+      <span class="bar"><i class="c"></i><i></i><i class="e"></i></span><span class="tick" style="left:${xe.toFixed(1)}%"></span><span class="dot ${S}" style="left:${x.toFixed(1)}%"></span>
+      <span class="zn ${zk === "dn" ? "on dn" : ""}" style="left:0">calo confermato</span><span class="zn ${zk === "mid" ? "on norm" : ""}" style="left:50%;transform:translateX(-50%)">neutro</span><span class="zn ${zk === "up" ? "on up" : ""}" style="right:0">rialzo confermato</span></span>`;
+  // una riga corta: la frase senza il soggetto già detto dallo stato ("Dollaro forte: vento a favore dello short" → "Vento a favore dello short")
+  const fr = String(D.frase || "").replace(" sul dollaro", ""), cut = fr.indexOf(": "), cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const riga = cut > 0 && (/^Dollaro /.test(fr) || (S === "indeb" && /^Divergenza ribassista/.test(fr))) ? cap(fr.slice(cut + 2)) : fr;
   el.innerHTML = `<button type="button" class="ocTap" id="dxOpen" aria-haspopup="dialog">
       ${box ? `<span class="ocHead"><b>Dollaro · solo contesto</b><span class="more">Dettagli ›</span></span><span class="ocBig ${S}">${big}</span>`
-        : `<span class="ocHead"><span class="ocBig ${S}">${big}</span><span class="more">Dettagli ›</span></span>`}
-      <span class="dxVal"><span>${lbl} <b>${n2(D.close)}</b></span><span>20 giorni <b>${sg(D.ch20)}</b></span><span>RSI <b>${nfIT(D.rsi, 0)}</b></span><span>${dm(D.date)}</span></span>
-      <span class="ocLine">${escS(D.frase)}</span></button>`;
+        : `<span class="ocHead"><span class="ocBig ${S}">${big}</span><span class="more">Dettagli ›</span></span>`}${thermo}<span class="ocLine">${escS(riga)}</span></button>`;
   el.hidden = false; if (!box) $("dxSec").hidden = false;
 
   // ---- pannello
   const sec = (t, h) => `<section class="ocSec"><h3>${t}</h3>${h}</section>`;
   const B = D.bear, U = D.bull;
-  const dvTxt = (v, k) => !v ? "" : v.active ? `da confermare (dal ${dm(v.date)})` : v.confirmed ? `confermata il ${dm(v.confirmed)}` : `scaduta senza conferma (${dm(v.date)})`;
+  const dvTxt = v => !v ? "" : v.active ? "da confermare" : v.confirmed ? `confermata il ${dm(v.confirmed)}` : "scaduta senza conferma";
   const where = `<div class="ocT3"><div><span>${lbl} ${dm(D.date)}</span><b class="${S}">${n2(D.close)}</b><small>chiusura</small></div>
       <div><span>20 giorni</span><b>${pct(D.ch20, 1)}</b><small>variazione</small></div>
       <div><span>RSI 14</span><b>${nfIT(D.rsi, 0)}</b><small>${D.rsi >= 70 ? "ipercomprato" : D.rsi <= 30 ? "ipervenduto" : "neutro"}</small></div></div>
     <div class="ocChips"><span class="chip">${D.above20 ? "sopra" : "sotto"} EMA20 ${n2(D.ema20)}</span><span class="chip">${D.above50 ? "sopra" : "sotto"} EMA50 ${n2(D.ema50)}</span>
-      <span class="chip">EMA20 ${D.slope20 >= 0 ? "in salita" : "in discesa"} ${pct(D.slope20, 2)} in 5 sedute</span>
-      ${B && (B.active || B.confirmed) ? `<span class="chip e">divergenza ribassista ${dvTxt(B)}</span>` : ""}${U && U.active ? `<span class="chip c">divergenza rialzista ${dvTxt(U)}</span>` : ""}</div>`;
+      <span class="chip">EMA20 ${D.slope20 >= 0 ? "in salita" : "in discesa"} ${pct(D.slope20, 2)} in 5 sedute</span></div>`;
   const chart = `<div class="ocChart" id="dxChartP" role="img" aria-label="${lbl} degli ultimi 6 mesi con EMA20 e EMA50: oggi ${n2(D.close)}, minimo a 30 giorni ${n2(D.lo30)}, massimo ${n2(D.hi30)}"></div>
     <div class="ocChart dxR" id="dxChartR" role="img" aria-label="RSI 14 degli ultimi 6 mesi: oggi ${nfIT(D.rsi, 0)}${B && B.active ? `, divergenza ribassista dal ${dm(B.date)}` : ""}"></div>
     <div class="ocLeg"><span><i class="l20"></i>EMA20</span><span><i class="l50"></i>EMA50</span><span><i class="llo"></i>minimo 30 g</span><span><i class="lhi"></i>massimo 30 g</span><span><i class="ldv"></i>divergenza</span></div>`;
-  const lv = (k, v, s) => `<div class="r"><span>${k}<small>${s}</small></span><b>${v}</b></div>`;
+  const lv = (k, v, s, c) => `<div class="r"><span>${k}<small>${s}</small></span><b${c ? ` class="${c}"` : ""}>${v}</b></div>`;
+  const plus = (d, k) => { const t = new Date(d); t.setDate(t.getDate() + k); return dm(t); };
+  const dvRow = (v, up) => !v ? "" : lv(`${up ? "Rialzista" : "Ribassista"} del ${dm(v.date)}`, dvTxt(v),
+    `${up ? "nuovo minimo" : "nuovo massimo"} ${n2(v.close)} con RSI ${nfIT(v.rsi, 1)} contro ${nfIT(v.ref_rsi, 1)} del ${dm(v.ref_date)}` +
+    (v.active ? ` · ${v.days} ${v.days === 1 ? "giorno" : "giorni"}, conferma ${up ? "sopra" : "sotto"} ${n2(up ? xu : xd)} entro il ${plus(v.date, 30)}` : ""),
+    v.active ? (up ? "dvU" : "dvB") : "");
+  const diverg = (B || U) ? `<div class="dxLv">${dvRow(B, false)}${dvRow(U, true)}</div>
+    <p class="ocNote">Divergenza ribassista: il dollaro fa un nuovo massimo ma l'RSI resta sotto il suo massimo precedente (rialzista: il contrario). Resta da confermare per 30 giorni.</p>`
+    : `<p class="ocNote">Nessuna divergenza nei dati.</p>`;
   const levels = `<div class="dxLv">${lv("EMA20", n2(D.ema20), "chiusura sotto: primo segno di debolezza")}
       ${lv("Minimo dei 30 giorni", n2(D.lo30), "chiusura sotto EMA20 e minimo: calo confermato")}
       ${lv("Massimo dei 30 giorni", n2(D.hi30), "chiusura sopra EMA20 e massimo: rialzo confermato")}
-      ${lv("EMA50", n2(D.ema50), "sopra: dollaro forte")}
-      ${B ? lv(`Divergenza ribassista del ${dm(B.date)}`, dvTxt(B).split(" (")[0], `massimo ${n2(B.close)} con RSI ${nfIT(B.rsi, 1)} contro ${nfIT(B.ref_rsi, 1)} del ${dm(B.ref_date)}`) : ""}
-      ${U ? lv(`Divergenza rialzista del ${dm(U.date)}`, dvTxt(U).split(" (")[0], `minimo ${n2(U.close)} con RSI ${nfIT(U.rsi, 1)} contro ${nfIT(U.ref_rsi, 1)} del ${dm(U.ref_date)}`) : ""}</div>`;
+      ${lv("EMA50", n2(D.ema50), "sopra: dollaro forte")}</div>`;
   const St = D.study || {}, rows = St.rows || [];
   const cell = a => `<span class="c"><b class="${a[0] >= 0 ? "pos" : "neg"}">${pct(a[0], 1)}</b><small>giù ${a[1]}%</small><small>qualsiasi ${pct(a[2], 1)}</small></span>`;
   const table = `<p class="ocNote">Dopo ogni divergenza ribassista (stessa definizione): mediana della variazione, quota dei casi in calo e un giorno qualsiasi per confronto.</p>
@@ -1825,9 +1848,9 @@ function qxLine(U, px) {
       <div><span>52 settimane</span><b>${cr(St.corr_now)}</b><small>${St.corr_now == null ? "non calcolata" : "ad oggi"}</small></div></div>
     <p class="ocNote">Correlazione debole e inversa: quando il dollaro sale BTC tende un poco a scendere, ma il dollaro spiega poco dei movimenti di BTC.</p>`;
   const src = `<p class="ocNote">${escS(D.src_name)}, chiusura del ${dmy(D.date)}.${D.src === "fred" ? " Indice ampio della Fed: altra scala del DXY, circa una settimana di ritardo." : ""}${D.source_note ? " " + escS(D.source_note) + "." : ""} Divergenza: nuovo massimo di 60 sedute con RSI almeno 2 punti sotto il massimo RSI delle 60 precedenti (sopra 65), una ogni 30 giorni; resta da confermare per 30 giorni.</p>`;
-  const panel = `<div class="ocP">${sec("Dove siamo", where)}${sec("Ultimi 6 mesi", chart)}${sec("Livelli di conferma", levels)}` +
-    `${sec("Dopo le divergenze (studio)", table)}${sec("Dollaro e BTC", corr)}` +
-    `${sec("Cosa significa per la posizione", `<p class="ocTxt">${escS(D.frase)}.</p><p class="ocNote">Solo ${escS(D.note)}.</p>`)}${sec("Fonte", src)}</div>`;
+  const panel = `<div class="ocP">${sec("Dove siamo", where)}${sec("Ultimi 6 mesi", chart)}${sec("Divergenza", diverg)}${sec("Livelli di conferma", levels)}` +
+    `${sec("Dopo le divergenze passate (studio)", table)}${sec("Dollaro e BTC", corr)}` +
+    `${sec("Cosa significa per la posizione", `<p class="ocTxt">${escS(D.frase)}.</p>`)}${sec("Fonte", src + `<p class="ocNote">Solo ${escS(D.note)}.</p>`)}</div>`;
 
   const Sr = D.series, n = Sr.c.length, ref = new Date(D.date);
   const k30 = Sr.d.findIndex(d => (ref - new Date(d)) / 864e5 <= 30);

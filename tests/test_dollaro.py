@@ -293,9 +293,13 @@ class TestScheda(unittest.TestCase):
         js = T[T.index("function renderDollaro"):T.index("function renderPosLine")]
         for x in ('class="ocTap" id="dxOpen" aria-haspopup="dialog"', "Dettagli ›", "dxChartP", "dxChartR", "D.frase", "D.note"):
             self.assertIn(x, js)
-        for t in ("Dove siamo", "Ultimi 6 mesi", "Livelli di conferma", "Dopo le divergenze (studio)", "Dollaro e BTC",
-                  "Cosa significa per la posizione", "Fonte"):
+        for t in ("Dove siamo", "Ultimi 6 mesi", "Divergenza", "Livelli di conferma", "Dopo le divergenze passate (studio)",
+                  "Dollaro e BTC", "Cosa significa per la posizione", "Fonte"):
             self.assertIn(f'sec("{t}"', js)
+        # scheda chiusa come il Ciclo on-chain: termometro (fasce, soglie, tacca EMA20, punto), niente cifre fuori dal pannello
+        for x in ('class="ocTh dxTh"', 'class="tick"', 'class="dot ${S}"', "calo confermato", "rialzo confermato", "${thermo}"):
+            self.assertIn(x, js)
+        self.assertNotIn("dxVal", T)
 
     def test_dati_nella_pagina(self):
         tmp = tempfile.TemporaryDirectory()
@@ -344,10 +348,20 @@ class TestScheda(unittest.TestCase):
             pg.wait_for_selector("#dxOpen", state="visible", timeout=5000)
             pg.wait_for_timeout(50)
             self.assertGreaterEqual(pg.query_selector("#dxOpen").bounding_box()["height"], 44)
+            q = lambda s: pg.evaluate(f"document.querySelectorAll('#dxOpen {s}').length")  # noqa: E731
+            self.assertEqual((q(".dxTh .bar i"), q(".dxTh .thr:not(.ema)"), q(".dxTh .tick"), q(".dxTh .dot"), q(".dxTh .zn")), (3, 2, 1, 1, 3))
+            self.assertEqual(q(".dxTh .zn.on"), 1)                                   # una sola fascia evidenziata
+            txt = pg.evaluate("document.getElementById('dxOpen').innerText")
+            self.assertNotIn("RSI", txt)                                              # cifre e data solo nel pannello
+            self.assertNotIn("20 giorni", txt)
+            box, dot = pg.query_selector("#dxOpen .dxTh").bounding_box(), pg.query_selector("#dxOpen .dxTh .dot").bounding_box()
+            self.assertTrue(box["x"] <= dot["x"] and dot["x"] + dot["width"] <= box["x"] + box["width"] + 1)
             pg.click("#dxOpen")
             self.assertTrue(pg.evaluate("document.getElementById('sheet').open"))
             pg.wait_for_timeout(100)
-            self.assertEqual(pg.evaluate("document.querySelectorAll('#sheetB .ocSec').length"), 7)
+            self.assertEqual(pg.evaluate("[...document.querySelectorAll('#sheetB .ocSec h3')].map(h => h.textContent)"),
+                             ["Dove siamo", "Ultimi 6 mesi", "Divergenza", "Livelli di conferma", "Dopo le divergenze passate (studio)",
+                              "Dollaro e BTC", "Cosa significa per la posizione", "Fonte"])
             self.assertEqual(pg.evaluate("document.querySelectorAll('#dxChartP svg path.dc').length"), 1)
             self.assertEqual(pg.evaluate("document.querySelectorAll('#dxChartR svg path.rsi').length"), 1)
             self.assertEqual(pg.evaluate("document.querySelectorAll('#sheetB .dxTb .c').length"), 9)
