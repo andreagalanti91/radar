@@ -1,0 +1,5 @@
+Dollaro dal 2006: 50 eventi | 10g mediana +0.3% (giù 37%) · qualsiasi -0.0% (giù 51%) | 30g mediana +0.3% (giù 39%) · qualsiasi -0.0% (giù 50%) | 60g mediana +0.2% (giù 44%) · qualsiasi +0.1% (giù 49%)
+Dollaro dal 2019-09: 16 eventi | 10g mediana +0.0% (giù 47%) · qualsiasi +0.0% (giù 50%) | 30g mediana +0.5% (giù 27%) · qualsiasi -0.1% (giù 53%) | 60g mediana +0.1% (giù 43%) · qualsiasi +0.1% (giù 48%)
+BTC dal 2019-09: 16 eventi | 10g mediana -2.5% (giù 60%) · qualsiasi +0.7% (giù 48%) | 30g mediana -4.1% (giù 53%) · qualsiasi +1.5% (giù 45%) | 60g mediana +5.7% (giù 36%) · qualsiasi +4.4% (giù 44%)
+Correlazione settimanale dollaro-BTC dal 2019-09: -0.22; ultime 52 settimane: -0.27
+Oggi: dollaro (FRED DTWEXBGS) 123.60 (2026-11-20), RSI 72.8; ultimi eventi: ['2024-06-07', '2024-11-12', '2024-12-17', '2025-11-21', '2026-10-14', '2026-11-16']

@@ -335,6 +335,9 @@ def daily() -> None:
     # scheda "Ciclo on-chain" nella posizione di BTC (radar/onchain.py): MVRV di CoinMetrics una volta al giorno (data/mvrv.csv),
     # zone dello studio research/utxo_pl; solo contesto (lezione 125), nessun avviso e nessun effetto su W3.2; rete giù = ultimo dato
     report["onchain"] = _soft("ciclo on-chain (MVRV)", lambda: mod("onchain").build(DATA_DIR, side=mod("onchain").side_of(wcur)))
+    # scheda "Dollaro" nella posizione di BTC (radar/dollaro.py): DXY giornaliero da Yahoo una volta al giorno (data/dollaro.csv),
+    # ripiego FRED DTWEXBGS e ultimo file; divergenza come research/dxy_divergenza. Solo contesto: nessun avviso, W3.2 non cambia
+    report["dollaro"] = _soft("dollaro (DXY)", lambda: mod("dollaro").build(DATA_DIR, side=mod("dollaro").side_of(wcur)))
     # opzioni su BTC "sulla carta" con i segnali di W3.2 (radar/opzioni.py, pagina Opzioni): catena OKX, registro
     # data/opzioni_carta.json, archivio data/opzioni/. Legge solo W3.2, non invia ordini; OKX giù = ultimo dato, giro intatto
     report["opzioni"] = _soft("opzioni su carta", lambda: mod("opzioni").giro(wcur, DATA_DIR)) if wcur else None
@@ -348,7 +351,7 @@ def daily() -> None:
     # registro "scommesse" sulla carta (radar/scommesse.py, research/w32_asset2/REGISTRO-SCOMMESSE.md): ingressi nuovi dello
     # scanner nel verso di BTC dal 29/11/2026, 100 $ fissi; aperte rivalutate una volta al giorno. Nessun ordine né avviso
     report["scommesse"] = _soft("scommesse sulla carta", lambda: mod("scommesse").giro(report.get("scanner"), DATA_DIR))
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse", "onchain"):
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse", "onchain", "dollaro"):
         if report.get(k) is None:
             report.pop(k, None)
     # v2: solo stato e storico per la dashboard (messaggi Telegram di v2 eliminati il 25/11/2026; spenti dal 12/11/2026)

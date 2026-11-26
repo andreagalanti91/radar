@@ -45,3 +45,5 @@ Log:
   lunedì → va applicato dalla conversazione principale (prossimo avvio 23/11 08:41 con il testo vecchio); (3) deploy e verifica
   online delle correzioni del 22/11 → autorizzazione dell'utente; (4) liqstream su VM europea e verifica della vista Book dal
   browser dell'utente → serve l'utente.
+
+- 26/11 A3 CRITICI chiusi: funding provvisorio ricostruito dall'indice di premio Binance e volume OKX riscalato (research/dati_provvisori/, approvato dall'utente, deploy verificato). Misura: 0 decisioni di W3.2 cambiate dai provvisori dal vivo.
