@@ -354,7 +354,10 @@ class TestUniversoEPagina(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             html = render({"date": "2026-11-25", "price": 1.0, "scanner": {"settimana": "2026-11-22", "righe": []},
                            "trx_carta": SC.build_trx(SC._reg_vuoto(), datetime(2026, 11, 25, tzinfo=UTC))}, Path(t) / "i.html", standalone=False).read_text()
-        self.assertIn('"nota": "sulla carta: nessun capitale, nessun ordine"', html)
+            sc = json.loads((Path(t) / "scanner.json").read_text())   # dati dello Scanner in un file a parte (pagina leggera, 26/11/2026)
+        self.assertEqual(sc["trx_carta"]["nota"], "sulla carta: nessun capitale, nessun ordine")
+        self.assertNotIn('"trx_carta"', html)
+        self.assertIn('"scanner": "scanner.json?v=', html)
 
     def test_struttura_pagina(self):
         T = (ROOT / "radar" / "dashboard_template.html").read_text()
@@ -380,7 +383,7 @@ class TestUniversoEPagina(unittest.TestCase):
     def test_preferite_di_default(self):
         T = (ROOT / "radar" / "dashboard_template.html").read_text()
         self.assertIn('SC_PREF_DEF = ["SOL", "TAO"]', T)
-        js = T[T.index("const SC_PREF_KEY"):T.index("(function renderScanner()")]
+        js = T[T.index("const SC_PREF_KEY"):T.index("function renderScanner()")]
         self.assertIn("try { const v = localStorage.getItem(SC_PREF_KEY)", js)               # senza storage la pagina funziona
         self.assertIn("try { localStorage.setItem(SC_PREF_KEY", js)
         self.assertIn("catch (_)", js)

@@ -707,6 +707,17 @@ body.noscroll{overflow:hidden}
 .gxMsg .spin{width:18px;height:18px;border-radius:50%;border:2px solid var(--line2);border-top-color:var(--tint);animation:gxs .8s linear infinite;display:block}
 @keyframes gxs{to{transform:rotate(360deg)}}
 .gxLeg{margin-top:8px}
+/* C2 · telefono: la legenda del Grafico è un pulsante che apre il pannello (sheetNodes); da 701 px resta visibile sotto il grafico */
+.gxLegBtn{margin-top:8px;display:inline-flex;align-items:center;gap:6px;font:600 .8rem var(--font);color:var(--tint);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;cursor:pointer}
+.gxLegBtn i{display:flex;gap:2px} .gxLegBtn i b{width:9px;height:3px;border-radius:2px}
+.gxLeg.inSheet{margin-top:0;display:grid;gap:10px;font-size:.84rem;color:var(--label)} .gxLeg.inSheet i{width:18px}
+/* pagine secondarie in attesa del loro file JSON (lazyView): caricamento, oppure messaggio con Riprova */
+.lzBox{display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px;padding:16px;font-size:.86rem;color:var(--label2);margin-bottom:12px}
+.lzBox .spin{width:18px;height:18px;flex:none;border-radius:50%;border:2px solid var(--line2);border-top-color:var(--tint);animation:gxs .8s linear infinite}
+.lzBox.err{color:var(--label)} .lzBox.err span{flex:1 1 220px;min-width:0}
+.lzBox button{font:600 .8rem var(--font);color:var(--tint);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:7px 14px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.lzBox .spin{animation:none}}
+#simPanel.lzWait>:not(.lzBox){display:none!important}
 .gxT .lvL[role="button"],.gxT .lvZ[role="button"]{cursor:pointer} .gxT .lvL[role="button"]:hover{background:var(--fill)}
 .gxT .lvL.on,.gxT .lvZ.on{background:var(--tint-bg);box-shadow:inset 3px 0 0 var(--tint)}
 .gxScroll{margin-top:4px} .gxTbl{min-width:300px}
@@ -970,6 +981,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   <div class="view" id="v-scanner" hidden>
     <div class="section" id="scSec">
       <div class="sh">Scanner · top 200 crypto <small id="scSub"></small></div>
+      <div class="card lzBox" id="lzScan" role="status" hidden></div>
       <p class="scInfo" id="scWarn"><svg><use href="#i-warn"/></svg><span><b>Solo informativa:</b> mostra dove sarebbe W3.2 su ogni moneta, non è un segnale per mettere capitale.</span></p>
       <dl class="card scLeg" id="scLeg">
         <div><dt><span class="scTag long">long</span></dt><dd>W3.2 sarebbe al rialzo: guadagna se il prezzo sale.</dd></div>
@@ -989,6 +1001,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 
 <!-- ============ GRAFICO (solo BTC): candele e volumi 4h/1D/1W/1M, livelli della mappa unica (report.livelli) con interruttori, tabella completa ============ -->
   <div class="view" id="v-grafico" hidden>
+    <div class="card lzBox" id="lzGraf" role="status" hidden></div>
     <div class="section" id="grSec" hidden>
       <div class="card wkChartCard gx" id="gxCard">
         <div class="wkTop gxTop"><span class="gxTitle"><b>BTC</b><span class="cap" id="gxSub"></span></span>
@@ -998,7 +1011,8 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
         <div class="gxData" id="gxData" aria-live="off"></div>
         <div class="gxWrap"><div id="gxChart" class="chart" role="img" aria-label="Candele di BTC con volumi e livelli"></div><div class="gxBands" id="gxBands" aria-hidden="true"></div>
           <div class="gxMsg" id="gxMsg" hidden></div></div>
-        <div class="lvLeg gxLeg" id="gxLeg"></div>
+        <div class="lvLeg gxLeg mHide" id="gxLeg"></div>
+        <button type="button" class="gxLegBtn mOnly" id="gxLegBtn" aria-haspopup="dialog"><i aria-hidden="true"><b style="background:var(--red)"></b><b style="background:var(--green)"></b><b style="background:var(--violet)"></b></i>Legenda</button>
         <p class="cxNote" id="gxNote1"></p>
       </div>
       <div class="card gxT" id="gxTblCard" style="margin-top:12px">
@@ -1033,6 +1047,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
     </div>
     <div id="stoHold" hidden>
       <div id="simPanel" style="display:grid;gap:14px;min-width:0">
+        <div class="card lzBox" id="lzSim" role="status" style="margin:0" hidden></div>
     <div class="section">
             <div class="list">
         <label class="row"><span class="k">Capitale iniziale</span><input id="simCap" type="number" inputmode="decimal" min="100" step="1000" value="10000" enterkeyhint="done"></label>
@@ -1069,7 +1084,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
       </div>
       <div id="detPanel" style="display:grid;gap:12px;min-width:0">
         <div class="card" id="wkYearsM"><div class="tapHead" style="margin-bottom:8px"><b>Anno per anno</b></div><div class="yBars" id="wkYearsMB"></div></div>
-        <div class="card"><div class="tapHead" style="margin-bottom:8px"><b>Equity da 10.000 $</b></div><div id="detEq" class="chart" style="height:220px"></div></div>
+        <div class="card"><div class="tapHead" style="margin-bottom:8px"><b>Equity da 10.000 $</b></div><div class="lzBox" id="lzDet" role="status" style="padding:8px 0" hidden></div><div id="detEq" class="chart" style="height:220px"></div></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkSum"></table></div></div>
         <div class="card" style="padding:4px 6px"><div class="scroll"><table class="grid" id="wkYears"></table></div></div>
         <p class="foot" id="wkStatFoot" style="margin:0">Simulazione giornaliera sulle candele settimanali chiuse: long in spot e short in perp con tetto di rischio 25% allo stop iniziale (0,1%/lato spot, 0,05%/lato perp e funding reale), slippage 0,1%. La posizione aperta conta come chiusa all'ultima chiusura.</p>
@@ -1094,6 +1109,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
         <div class="banks" id="banks"></div>
       </details>
     </div>
+    <div class="card lzBox" id="lzNews" role="status" hidden></div>
     <div class="section" id="nwSec">
       <div class="sh">Notizie che toccano le posizioni <small id="newsUpd"></small></div>
       <div class="nwGrid" id="nwGroups"></div>
@@ -1150,6 +1166,34 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 <script>
 const R = /*__DATA__*/null;
 const $ = id => document.getElementById(id);
+// ---- dati delle pagine secondarie (radar/dashboard.py split): file JSON accanto a index.html, scaricati alla prima apertura della
+// pagina e uniti in R con la stessa forma del report. Oggi non ne dipende. R._lazy = { pagina: "file.json?v=impronta" }; chiave assente
+// = dati già nella pagina (report senza quella parte o pagina generata prima del 26/11/2026).
+const LZ = {};
+const lzMerge = (a, b) => { Object.keys(b).forEach(k => { const x = b[k], y = a[k], obj = o => o && typeof o === "object" && !Array.isArray(o);
+  if (obj(x) && obj(y)) lzMerge(y, x); else a[k] = x; }); return a; };
+window.lazyPending = k => !!(R._lazy && R._lazy[k]);
+window.lazyData = k => {
+  if (!lazyPending(k)) return Promise.resolve(false);
+  if (!LZ[k]) { const ac = window.AbortController ? new AbortController() : null, t = setTimeout(() => ac && ac.abort(), 30000);
+    LZ[k] = fetch(R._lazy[k], { signal: ac ? ac.signal : undefined }).then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(j => { clearTimeout(t); lzMerge(R, j); delete R._lazy[k]; return true; })
+      .catch(e => { clearTimeout(t); delete LZ[k]; throw e; }); }
+  return LZ[k];
+};
+// riquadro di stato di una pagina in attesa del suo file: "Caricamento …"; se il file non arriva, messaggio e Riprova.
+// ready() parte una volta sola, quando i dati sono in R (subito se sono già nella pagina)
+window.lazyView = (k, boxIds, what, ready, onErr) => {
+  const B = [].concat(boxIds).map(id => $(id)).filter(Boolean);
+  const done = () => { B.forEach(b => { b.hidden = true; b.innerHTML = ""; }); if (!ready._ok) { ready._ok = true; try { ready(); } catch (e) { console.error(e); } } };
+  if (!lazyPending(k)) { done(); return; }
+  B.forEach(b => { b.hidden = false; b.classList.remove("err"); b.innerHTML = `<span class="spin" aria-hidden="true"></span><span>Caricamento ${what}…</span>`; });
+  lazyData(k).then(done).catch(() => {
+    B.forEach(b => { b.classList.add("err");
+      b.innerHTML = `<span><b>I dati ${what} non sono arrivati.</b> Connessione lenta o assente: il resto del sito funziona.</span><button type="button">Riprova</button>`;
+      b.querySelector("button").onclick = () => lazyView(k, boxIds, what, ready, onErr); });
+    if (onErr) try { onErr(); } catch (e) { console.error(e); } });
+};
 // Pulsante in alto a destra: svuota le cache del browser (Cache Storage e service worker, se presenti) e ricarica la pagina
 // pubblicata senza cache, cioè con gli ultimi dati dell'aggiornamento orario. Le parti live si riaprono da sole.
 window.toggleTheme = () => {   // chiaro ↔ scuro: salvato su questo dispositivo; ricarico perché i grafici leggono i colori alla creazione
@@ -1481,8 +1525,8 @@ function qxLine(U, px) {
       <div class="facts"><div><span>Max drawdown</span><b>${pc1(X2.max_dd_pct)}</b></div><div><span>Trade</span><b>${C.n}${C.open ? "<small> + 1 aperta</small>" : ""}</b></div><div><span>Vinti</span><b>${nfS(C.wr)}%<small> delle chiuse</small></b></div></div>
       <button type="button" class="wkMore" id="wkSimOpen"><span>Simulatore<small>capitale, data di partenza, obiettivo</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>
       <button type="button" class="wkMore" id="wkSumMore"><span>Dettagli<small>tutte le metriche, anno per anno, equity</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
-    $("wkSimOpen").onclick = () => { sheetNodes("Simulatore W3.2", [$("simPanel")]); [80, 400].forEach(ms => setTimeout(() => simChart && simChart.timeScale().fitContent(), ms)); };
-    $("wkSumMore").onclick = () => { sheetNodes(artD("Dettagli W3.2 dal", fmtD(H.start)), [$("detPanel")]); setTimeout(drawDetEq, 30); setTimeout(() => detChart && detChart.timeScale().fitContent(), 400); };
+    $("wkSimOpen").onclick = () => { sheetNodes("Simulatore W3.2", [$("simPanel")]); window.movData && movData(); [80, 400].forEach(ms => setTimeout(() => simChart && simChart.timeScale().fitContent(), ms)); };
+    $("wkSumMore").onclick = () => { sheetNodes(artD("Dettagli W3.2 dal", fmtD(H.start)), [$("detPanel")]); window.movData && movData(); setTimeout(drawDetEq, 30); setTimeout(() => detChart && detChart.timeScale().fitContent(), 400); };
     const Yv = Y.map(y => M.years[y]), lo = Math.min(0, ...Yv), hi = Math.max(0, ...Yv), sp = (hi - lo) || 1;
     $("wkYearsMB").innerHTML = Y.map((y, i) => { const v = Yv[i], col = v >= 0 ? "var(--green)" : "var(--red)";
       return `<div class="yBar"><span>${y}</span><span class="tr"><i style="left:${((Math.min(v, 0) - lo) / sp * 100).toFixed(1)}%;width:${Math.max(1, Math.abs(v) / sp * 100).toFixed(1)}%;background:${col}"></i></span><b class="${v >= 0 ? "pos" : "neg"}">${pc1(v)}</b></div>`; }).join("");
@@ -1795,7 +1839,7 @@ const scPref = (() => {   // localStorage in try/catch: senza storage le stelle 
   const set = new Set(Array.isArray(s) ? s : SC_PREF_DEF);
   return { has: t => set.has(t), all: () => [...set], toggle(t) { set.has(t) ? set.delete(t) : set.add(t); try { localStorage.setItem(SC_PREF_KEY, JSON.stringify([...set])); } catch (_) {} } };
 })();
-(function renderScanner() {
+function renderScanner() {   // avviata da route() quando scanner.json è arrivato (lazyView)
   const e = escS, T = R.trx_carta, S = R.scanner, B = R.scommesse;
   const dIt = d => d ? new Date(String(d).slice(0, 10) + "T00:00:00Z").toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }) : "–";
   const dSh = d => dIt(d).slice(0, 5);
@@ -1961,7 +2005,7 @@ const scPref = (() => {   // localStorage in try/catch: senza storage le stelle 
   $("v-scanner").addEventListener("click", ev => { const b = ev.target.closest(".star"); if (!b) return; ev.stopPropagation(); scPref.toggle(b.dataset.star);
     drawEv(); drawIng(); draw(); });
   $("scSub").textContent = `informativa · settimana chiusa il ${dIt(S.settimana)}`;
-})();
+}
 
 // ---- pre-analisi della prossima chiusura settimanale (report.preview, radar/preview.py): stima con i dati di oggi,
 // scala dei prezzi di chiusura con le fasce degli scenari, condizioni, piano se scatta il segnale; dettagli in un pannello
@@ -2117,7 +2161,7 @@ const chartOpts = extra => Object.assign({ autoSize: true, layout: { background:
   crosshair: { mode: 0, vertLine: { color: css("--label3") }, horzLine: { color: css("--label3") } },
   localization: { locale: "it-IT", priceFormatter: v => nfIT(v, Math.abs(v) < 100 ? 2 : 0) } }, extra || {});   // assi in formato italiano
 // ---- simulatore: trade di W3.2 dal 2021 (storico settimanale, esposizione della strategia così com'è)
-const firstDate = R.series && R.series.date ? R.series.date[0] : R.date, WH = R.weekly && R.weekly.history;
+const firstDate = R.series_start || (R.series && R.series.date ? R.series.date[0] : R.date), WH = R.weekly && R.weekly.history;
 const WHY_X = { trail: "trailing", stop: "stop iniziale", ema: "EMA 21", dist: "distribuzione", open: "aperto" };
 const simFirst = () => WH ? WH.start : firstDate;
 $("simStart").min = simFirst(); $("simStart").max = R.date; $("simStart").value = simFirst();
@@ -2128,6 +2172,7 @@ function simList() {
   return WH ? WH.trades.map(t => ({ d0: t.entry, d1: t.exit || R.date, pnl: t.pnl_pct, tag: t.market === "spot" ? "spot" : "perp", side: t.side, exit: WHY_X[t.reason] || t.reason })) : [];
 }
 function simulate() {
+  if (lazyPending("movimenti")) return;   // equity giornaliera non ancora arrivata (movimenti.json): niente numeri di riserva diversi
   const W = WH, cap = Math.max(100, +$("simCap").value || 10000), start = $("simStart").value || simFirst();
   const lev = sim.lev, tr = simList().filter(t => t.d0 >= start);
   let eq = cap, peak = cap, dd = 0, wins = 0;
@@ -2198,7 +2243,12 @@ function goal(cap, lev) {
 }
 ["simCap", "simStart", "goalCap", "goalDate"].forEach(id => $(id).addEventListener("input", simulate));
 
-simulate();
+// Movimenti: simulatore e grafico dell'equity nei Dettagli leggono l'equity giornaliera da movimenti.json (scaricato aprendo Movimenti)
+const movWait = on => { $("simPanel").classList.toggle("lzWait", on); $("detEq").hidden = on; };
+window.movData = () => { if (lazyPending("movimenti")) movWait(true);
+  lazyView("movimenti", ["lzSim", "lzDet"], "dello storico giornaliero", () => { movWait(false); simulate();
+    if ($("detPanel").classList.contains("inSheet")) { drawDetEq(); setTimeout(() => detChart && detChart.timeScale().fitContent(), 60); } }); };
+if (lazyPending("movimenti")) movWait(true); else simulate();
 
 // ---- notizie "per noi" (radar/news.py): eventi fino alla chiusura di domenica, notizie per tema, il resto chiuso
 let NEWS = R.news || [], CAL = R.calendar || [], BANKS = R.banks || [];
@@ -2394,7 +2444,7 @@ const lvRow = (o, extra = "", lab = null) => { const t = LVX.LT[o.tipo], p = o.p
 // interruttori (salvati su questo dispositivo), zone come fasce, marcatori dei trade W3.2 su 1D/1W, tabella completa sotto.
 // 1D dal giornaliero del report (report.livelli.serie), 1W e 1M aggregati qui; 4h dal browser: Binance (api, poi data-api), riserva
 // Coinbase (candele orarie aggregate a 4 ore). Nessun ricalcolo dei livelli: distanze e tocco sul prezzo live con LVX.
-(function renderChart() {
+function renderChart() {   // avviata da route() quando grafico.json è arrivato (lazyView)
   const L = LVX.L, S = L && L.serie;
   if (!S || !Array.isArray(S.c) || S.c.length < 60 || !S.t0) return;
   $("grSec").hidden = false;
@@ -2602,6 +2652,8 @@ const lvRow = (o, extra = "", lab = null) => { const t = LVX.LT[o.tipo], p = o.p
     ["pointerup", "wheel", "touchend", "dblclick"].forEach(t => $("gxChart").addEventListener(t, () => setTimeout(reL, 30), { passive: true }));
     go(tf);
   };
+  // telefono: legenda in un pannello (pulsante "Legenda"); il pannello mostra lo stesso blocco, aggiornato dagli interruttori
+  $("gxLegBtn").onclick = () => sheetNodes("Legenda del grafico", [$("gxLeg")]);
   $("gxSw").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const k = b.dataset.k; st.sw[k] = !st.sw[k]; b.setAttribute("aria-pressed", !!st.sw[k]); save();
     if (cs) { drawLevels(); legend(); } });
   $("gxTf").addEventListener("click", e => { const b = e.target.closest("button"); if (b && cs) go(b.dataset.v); });
@@ -2613,7 +2665,7 @@ const lvRow = (o, extra = "", lab = null) => { const t = LVX.LT[o.tipo], p = o.p
   document.addEventListener("keydown", e => { if (e.key === "Escape" && $("gxCard").classList.contains("full")) full.click(); });
   table();
   window.onRef(() => { table(); if (cs) { nowPx(); reL(); legend(); } });
-})();
+}
 // Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità.
 // Tre tessere (Mercato / Fed / Dati): la prima parte del testo del server in evidenza, il resto sotto; colore di stato sobrio
 (function renderContext() {
@@ -2662,8 +2714,15 @@ function renderToday() {
   $("todayCard").onclick = () => { location.hash = "#notizie"; };
 }
 renderNews();
+// pagina Notizie: nella pagina ci sono solo le notizie "per noi" (le usa Oggi) e il calendario; l'elenco completo (altre notizie, fonti)
+// arriva da news.json alla prima apertura. Finché manca, fonti e notizie restano nascoste; se non arriva, le notizie per noi restano visibili
+const nwShow = (src, list) => { $("nwSrcBox").hidden = !src; $("nwSec").hidden = !list; };
+if (lazyPending("notizie")) nwShow(false, false);
+const nwFull = () => { NEWS = R.news || NEWS; CAL = R.calendar || CAL; BANKS = R.banks || BANKS; nwShow(true, true); renderNews(); };
+window.newsData = () => lazyView("notizie", "lzNews", "delle notizie", nwFull, () => nwShow(false, true));
 // sulla pagina pubblicata le notizie si ricaricano ogni 10 minuti senza rigenerare la dashboard
-setInterval(() => fetch("news.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(j => { if (j && j.news) { NEWS = j.news; CAL = j.calendar || CAL; BANKS = j.banks || BANKS; renderNews(); } }).catch(() => {}), 6e5);
+setInterval(() => fetch("news.json", { cache: "no-store" }).then(r => r.ok ? r.json() : null).then(j => { if (j && j.news) { NEWS = j.news; CAL = j.calendar || CAL; BANKS = j.banks || BANKS;
+  if (lazyPending("notizie")) { delete R._lazy.notizie; $("lzNews").hidden = true; nwShow(true, true); } renderNews(); } }).catch(() => {}), 6e5);
 
 // ---- prezzo live (Binance in tempo reale, Coinbase come riserva). Se la rete è bloccata resta la chiusura.
 let lastPx = REF.px;
@@ -2719,13 +2778,19 @@ function route() {
   const v0 = (location.hash || "#oggi").slice(1), v = ALIAS[v0] || v0, ok = VIEWS.includes(v) && viewEl(v) ? v : "oggi";
   if (v0 !== ok && location.hash) history.replaceState(null, "", "#" + ok);   // vecchio indirizzo o pagina assente → la sezione giusta
   document.querySelectorAll(".view").forEach(el => el.hidden = el !== viewEl(ok));
-  if (ok === "grafico" && window.grInit) try { window.grInit(); } catch (e) { console.error(e); }
+  // pagine con i dati in un file a parte (radar/dashboard.py split): caricamento alla prima apertura, Oggi non aspetta niente
+  if (ok === "grafico") lazyView("grafico", "lzGraf", "del grafico", grReady);
+  if (ok === "grafico" && window.grInit && !lazyPending("grafico")) try { window.grInit(); } catch (e) { console.error(e); }
+  if (ok === "scanner") lazyView("scanner", "lzScan", "dello Scanner", renderScanner);
+  if (ok === "movimenti") movData();
+  if (ok === "notizie") newsData();
   // pagine in file separati (radar/pages/*.html): si registrano in window.PAGES e si inizializzano alla prima visita
   const pk = PAGE_OF[ok], PG = pk && (window.PAGES || {})[pk]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
   Object.entries(window.PAGES || {}).forEach(([k, P]) => { if (k !== pk && P._done && P.hide) try { P.hide(); } catch (_) {} });
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
   setTimeout(() => { simChart && simChart.timeScale().fitContent(); detChart && detChart.timeScale().fitContent(); }, 60);
 }
+function grReady() { renderChart(); if (!$("v-grafico").hidden && window.grInit) try { window.grInit(); } catch (e) { console.error(e); } }
 window.addEventListener("hashchange", () => { const sh = $("sheet"); if (sh && sh.open) closeSheet(); route(); window.scrollTo({ top: 0 }); });
 route();
 </script>
