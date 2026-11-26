@@ -107,9 +107,11 @@ class TestTemplate(unittest.TestCase):
         self.assertIn("Quando esce", T)
         self.assertIn("In perdita se…", T)
         self.assertIn("In profitto se…", T)
-        self.assertIn("${qxHtml(W.uscite, px)}", T)                       # card BTC (prezzo live)
-        self.assertIn("${qxHtml(E.uscite, E.price)}", T)                  # card ETH
-        self.assertIn("qxLine(W.uscite, r.px)", T)                        # frase in Oggi
+        # variante B: "Quando esce" completo nel pannello "Dettagli ›" della tessera di ogni posizione in Oggi (BTC sul prezzo live,
+        # ETH sull'ultima chiusura: pxA) con la frase riassuntiva in testa, e nel pannello "perché è aperta" (wkQxD)
+        self.assertIn("${qxHtml(W.uscite, px2)}", T)
+        self.assertIn("const pxA = (W, live) => live ? REF.px : W.price;", T)
+        self.assertIn("${qxLine(W.uscite, px2)", T)
         self.assertIn('id="wkQxD"', T)                                    # anche nel pannello
 
     def test_pannello_short_senza_regole_long(self):

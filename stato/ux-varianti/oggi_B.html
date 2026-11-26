@@ -1,0 +1,155 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Oggi · variante B · Cruscotto a tessere</title><meta name="color-scheme" content="dark"><style>:root{--bg:#0c0d10;--card:#15171c;--card2:#1a1d23;--line:#252931;--line2:#333843;--trk:#252931;--t1:#f1f3f7;--t2:#a3aab6;--t3:#717884;--acc:#7088ff;--green:#3fd185;--red:#ff6b5f;--r:14px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--t1);font:400 15px/1.5 "Inter",-apple-system,system-ui,sans-serif;letter-spacing:-.006em;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01";font-variant-numeric:tabular-nums}
+.pos{color:var(--green)} .neg{color:var(--red)} .mut{color:var(--t3)}
+a{color:inherit}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--t1)}
+.logo svg{width:28px;height:28px;flex:none}
+.logo b{font:700 1.02rem/1 "Inter";letter-spacing:-.035em} .logo b span{color:var(--acc);font-weight:600}
+/* barra di prezzo */
+.pbar{position:relative;height:76px;margin:0 2px}.pbar.tall{height:90px}
+.pbar .trk{position:absolute;left:0;right:0;top:35px;height:6px;border-radius:3px;background:var(--trk)}
+.pbar i{position:absolute;top:35px;height:6px}
+.pbar .zg{background:color-mix(in srgb,var(--green) 45%,transparent);border-radius:3px 0 0 3px}
+.pbar .zl{background:color-mix(in srgb,var(--red) 50%,transparent);border-radius:0 3px 3px 0}
+.pbar .run{background:color-mix(in srgb,var(--green) 85%,transparent)}
+.pbar .tk{position:absolute;top:29px;width:2px;height:18px;margin-left:-1px;border-radius:1px;background:var(--t2)}
+.pbar .tk.tg{background:var(--green)} .pbar .tk.tl{background:var(--red)} .pbar .tk.t2{height:12px;top:32px;opacity:.8}
+.pbar .dot{position:absolute;top:30px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--t1);box-shadow:0 0 0 3px var(--card)}
+.pbar .lb{position:absolute;white-space:nowrap;font:500 12px/1 "Inter";color:var(--t2)}
+.pbar .lb.ac{transform:translateX(-50%)} .pbar .lb.al{transform:translateX(-4px)} .pbar .lb.ar{transform:translateX(calc(-100% + 4px))}
+.pbar .lb.up.r0{top:12px} .pbar .lb.up.r1{top:-4px}
+.pbar .lb.dn.r0{top:54px} .pbar .lb.dn.r1{top:68px}
+.pbar .lb.lp{color:var(--t1);font-weight:600} .pbar .lb.ll{color:var(--red);font-weight:600} .pbar .lb.lg{color:var(--green);font-weight:600}
+/* dettagli dietro › */
+details>summary{list-style:none;cursor:pointer;min-height:40px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--t2);font-weight:500;font-size:13px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"›";font-size:20px;line-height:1;color:var(--t3);transition:transform .15s}
+details[open]>summary::after{transform:rotate(90deg)}
+.xd{display:grid;gap:10px;font-size:13px}
+.xdc h4{margin:0 0 4px;font:600 12px/1.3 "Inter";color:var(--t3)}
+.xdc.neg h4{color:var(--red)} .xdc.pos h4{color:var(--green)}
+.xdc p{margin:0;display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px solid var(--line);color:var(--t2)}
+.xdc p b{color:var(--t1);font-weight:600;white-space:nowrap}
+.xdn{margin:0;color:var(--t3);font-size:12px}
+/* cono */
+.cone{position:relative}
+.cone .plot{position:absolute;left:0;top:0;bottom:0;right:var(--gut)}
+.cone svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.cone .f80{fill:color-mix(in srgb,var(--acc) 16%,transparent)} .cone .f50{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
+.cone .lv{stroke:var(--line2);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+.cone .lv.st{stroke:color-mix(in srgb,var(--red) 70%,transparent)}
+.cone .now{stroke:var(--t1);stroke-width:3;vector-effect:non-scaling-stroke}
+.cone .ax{position:absolute;font:500 11px/1 "Inter";color:var(--t3)}
+.cone .a0{left:0;top:auto!important;bottom:-16px} .cone .a1{right:0;bottom:-16px}
+.cone .labs{position:absolute;right:0;top:0;bottom:0;width:calc(var(--gut) - 8px)}
+.cone .cl{position:absolute;left:0;right:0;transform:translateY(-50%);display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:5px;font-size:12px;line-height:1.1}
+.cone .cl em{font-style:normal;color:var(--t1);font-weight:600} .cone .cl small{color:var(--t3);font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cone .cl b{color:var(--t1);font-weight:700}
+.cone .cl.st small{color:var(--red)}
+
+.wrap{max-width:1240px;margin:0 auto;padding:12px 10px 40px}
+@media(min-width:900px){.wrap{padding:20px 24px 40px}}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:2px 4px 10px}
+header .when{font:500 11.5px/1.25 "Inter";color:var(--t3);text-align:right} header .when b{color:var(--t1);font-weight:600}
+.dash{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:900px){.dash{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.t{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;min-width:0}
+.s2{grid-column:span 2} .full{grid-column:1/-1}
+@media(min-width:900px){.d2{grid-column:span 2}.d3{grid-column:span 3}.d6{grid-column:1/-1}.d1{grid-column:span 1}}
+.k{font:500 11.5px/1.2 "Inter";color:var(--t3);display:flex;justify-content:space-between;gap:6px;align-items:center}
+.k b{color:var(--t2);font-weight:600}
+.v{font:650 22px/1.1 "Inter";letter-spacing:-.03em;margin-top:6px}
+.v.xl{font-size:30px}
+.sm{font-size:12px;color:var(--t2);margin-top:3px}
+.hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.hd .a{font:650 16px/1 "Inter"} .hd .a i{font:600 10.5px/1 "Inter";font-style:normal;color:var(--red);background:color-mix(in srgb,var(--red) 13%,transparent);padding:3px 6px;border-radius:6px;margin-left:6px;vertical-align:2px}
+.hd .p{font:650 20px/1 "Inter";letter-spacing:-.02em;color:var(--green)} .hd .p small{font-size:12px;font-weight:600;margin-left:6px}
+.meta{font-size:11.5px;color:var(--t3);margin:3px 0 4px}
+.pbar{margin-top:2px}
+.ln{font-size:12px;color:var(--t2);margin:2px 0 0}
+.t details{border-top:1px solid var(--line);margin-top:8px}
+.t details>summary{min-height:40px;font-size:12px}
+.t details>p,.t details ul{margin:0 0 6px;font-size:12px;color:var(--t2)} .t details ul{padding-left:16px}
+.sec{grid-column:1/-1;font:600 12px/1 "Inter";color:var(--t3);padding:12px 4px 2px;display:flex;justify-content:space-between}
+.sec span{font-weight:500}
+/* power */
+.pw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;grid-column:1/-1}
+@media(min-width:900px){.pw{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.pt{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 8px 10px;display:grid;justify-items:center;text-align:center;gap:4px;min-width:0;min-height:128px;align-content:start}
+.pt.w3{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+.lamp{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:700 16px/1 "Inter";color:#0c0d10}
+.lamp.favore{background:var(--green);box-shadow:0 0 18px -2px color-mix(in srgb,var(--green) 60%,transparent)}
+.lamp.contro{background:var(--red);box-shadow:0 0 18px -2px color-mix(in srgb,var(--red) 60%,transparent)}
+.lamp.neutro{background:#3a3f4a;color:#c4cad4}
+.pt .nm{font:600 11.5px/1.2 "Inter";color:var(--t2)}
+.pt .vv{font:650 14px/1.15 "Inter";letter-spacing:-.01em}
+.pt .tg{font-size:10.5px;color:var(--t3);line-height:1.2}
+.pt .w3b{font:700 9.5px/1.2 "Inter";color:var(--acc);letter-spacing:.02em}
+.sumt{display:flex;align-items:center;gap:10px}
+.bigdots{display:flex;gap:4px;margin-top:8px} .bigdots i{flex:1;height:10px;border-radius:5px}
+.bigdots i.favore{background:var(--green)} .bigdots i.contro{background:var(--red)} .bigdots i.neutro{background:#3a3f4a}
+.cnt{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;font:600 13px/1 "Inter"} .cnt span{color:var(--t3);font-weight:500;margin-right:6px}
+.stack{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr));min-width:0}
+@media(min-width:900px){.stack{grid-template-columns:minmax(0,1fr)}}
+.hb{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:10px;padding-top:4px}
+.hb div{flex:1;display:grid;justify-items:center;gap:3px;font-size:10.5px;color:var(--t3);min-width:0}
+.hb i{display:block;width:100%;max-width:44px;border-radius:5px 5px 2px 2px;background:color-mix(in srgb,var(--green) 70%,transparent)}
+.hb i.open{background:transparent;border:1px dashed var(--green)}
+.hb b{font-size:11px;color:var(--t1);font-weight:600}
+/* pre */
+.pre3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:8px}
+.pre3>div{background:var(--card2);border-radius:10px;padding:10px 8px;min-width:0}
+.pre3 .v{font-size:18px;margin-top:4px}
+.pre3 .sm{font-size:11px}
+.strip{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:8px;font-size:12px;color:var(--t2)} .strip b{color:var(--t1)}
+/* contesto */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips span{font-size:12px;padding:6px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:var(--t2)} .chips span b{color:var(--t1);font-weight:600}
+.nw a{display:flex;gap:8px;align-items:baseline;padding:9px 0;border-top:1px solid var(--line);text-decoration:none;min-height:40px;font-size:12.5px;line-height:1.35}
+.nw a:first-child{border-top:0}
+.nw a em{font-style:normal;flex:none;font:600 10px/1.6 "Inter";color:var(--t3);width:34px}
+.nw a em.alto{color:var(--t1)}
+.cone{margin-top:6px}
+.foot{grid-column:1/-1;font-size:11.5px;color:var(--t3);padding:6px 4px}
+</style></head><body><div class="wrap">
+<header><a class="logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2f4cf0"/><path transform="translate(8.96 8.96) scale(.72)" fill="#fff" d="M58.85 16.5A31 31 0 1 1 47.5 5.15L44 11.22A24 24 0 1 0 52.78 20ZM48.45 22.5A19 19 0 1 1 41.5 15.55L38.25 21.17A12.5 12.5 0 1 0 42.83 25.75ZM32 26a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg><b>radar<span>signal</span></b></a><div class="when"><b>Oggi</b> · chiusura 25/11<br>agg. 26/11 17:48 UTC</div></header>
+<div class="dash">
+<div class="stack s2 d2"><div class="t"><div class="k">totale aperto</div><div class="v xl pos">+7.140 $</div><div class="sm">+11,9% su 60k</div></div>
+<div class="t"><div class="k">mercato power<b>vs short</b></div><div class="bigdots"><i class="favore"></i><i class="neutro"></i><i class="neutro"></i><i class="neutro"></i><i class="contro"></i><i class="contro"></i></div>
+<div class="cnt"><b class="pos">1</b><span>pro</span><b>3</b><span>neutri</span><b class="neg">2</b><span>contro</span></div></div></div>
+<div class="t s2 d2"><div class="hd"><span class="a">BTC<i>SHORT</i></span><span class="p">+2.169 $<small>+7,2%</small></span></div>
+<div class="meta">dal 16/11 · 10 g · 97% del capitale</div>
+<div class="pbar tall" role="img" aria-label="BTC short: prezzo 60.458, ingresso 65.286, uscita in perdita da 74.273 (−4.051 $), trailing in utile sotto ~47.800"><div class="trk"></div><i class="zg" style="left:0;width:3.9%"></i><i class="zl" style="left:90.2%;right:0"></i><i class="run" style="left:45.2%;width:15.7%"></i><b class="tk tg" style="left:3.9%"></b><b class="tk te" style="left:60.9%"></b><b class="tk tl" style="left:90.2%"></b><b class="tk tl t2" style="left:95.1%"></b><b class="dot" style="left:45.2%"></b><span class="lb up lp ac r0" style="left:45.2%">prezzo 60.458</span><span class="lb up ll ar r1" style="left:90.2%">74.273 · −4.051 $</span><span class="lb dn lg al r0" style="left:3.9%">~47.800 utile bloccato</span><span class="lb dn le ac r1" style="left:60.9%">ingresso 65.286</span></div><p class="ln">Distribuzione a fine settimana: <b class="pos">+2.128 $</b></p>
+<details><summary>Tutte le uscite</summary><div class="xd"><div class="xdc neg"><h4>In perdita se…</h4><p><span>chiusura settimanale sopra 74.273 (EMA 21)</span><b>−4.051 $</b></p><p><span>trailing a 75.764 (controllo ogni ora)</span><b>−4.718 $</b></p></div><div class="xdc pos"><h4>In profitto se…</h4><p><span>distribuzione alla chiusura di domenica (oggi non attiva)</span><b>+2.128 $</b></p><p><span>chiusura sotto ~47.800: il trailing passa sotto l'ingresso</span><b>da 0 $</b></p><p><span>EMA 21 sotto l'ingresso: ~12 sett. a prezzo fermo</span><b>da 0 $</b></p></div><p class="xdn">Esposizione 97% (29.160 $ su 30.000 $) · 0,4467 BTC · miglior chiusura 58.952 · importi con costi e funding</p></div></details></div><div class="t s2 d2"><div class="hd"><span class="a">ETH<i>SHORT</i></span><span class="p">+4.971 $<small>+16,6%</small></span></div>
+<div class="meta">dal 09/11 · 17 g · 81% del capitale</div>
+<div class="pbar" role="img" aria-label="ETH short: prezzo 1.693, ingresso 2.125, uscita in perdita da 2.209 (−993 $), trailing in utile sotto ~1.430"><div class="trk"></div><i class="zg" style="left:0;width:3.7%"></i><i class="zl" style="left:84.7%;right:0"></i><i class="run" style="left:31.0%;width:45.0%"></i><b class="tk tg" style="left:3.7%"></b><b class="tk te" style="left:76.0%"></b><b class="tk tl" style="left:84.7%"></b><b class="tk tl t2" style="left:95.2%"></b><b class="dot" style="left:31.0%"></b><span class="lb up lp ac r0" style="left:31.0%">prezzo 1.693</span><span class="lb up ll ar r0" style="left:84.7%">2.209 · −993 $</span><span class="lb dn lg al r0" style="left:3.7%">~1.430 utile bloccato</span><span class="lb dn le ac r0" style="left:76.0%">ingresso 2.125</span></div><p class="ln">Distribuzione a fine settimana: <b class="pos">+4.942 $</b></p>
+<details><summary>Tutte le uscite</summary><div class="xd"><div class="xdc neg"><h4>In perdita se…</h4><p><span>chiusura settimanale sopra 2.209 (EMA 21)</span><b>−993 $</b></p><p><span>trailing a 2.311 (controllo ogni ora)</span><b>−2.160 $</b></p></div><div class="xdc pos"><h4>In profitto se…</h4><p><span>distribuzione alla chiusura di domenica (oggi non attiva)</span><b>+4.942 $</b></p><p><span>chiusura sotto ~1.430: il trailing passa sotto l'ingresso</span><b>da 0 $</b></p><p><span>EMA 21 sotto l'ingresso: ~2 sett. a prezzo fermo</span><b>da 0 $</b></p></div><p class="xdn">Esposizione 81% (24.390 $ su 30.000 $) · 11,4759 ETH · miglior chiusura 1.623 · importi con costi e funding</p></div></details></div>
+
+<div class="t s2 d3"><div class="k">BTC fra 30 giorni<b>probabilità di tocco</b></div><div class="v" style="font-size:16px">8 volte su 10 fra 52.100 e 74.800 al 25/12</div><div class="cone" style="height:176px;--gut:132px" role="img" aria-label="Fra 30 giorni: 8 volte su 10 fra 52.095 e 74.770"><div class="plot"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon class="f80" points="0.0,58.45 5.0,48.23 10.0,43.85 15.0,40.43 20.0,37.51 25.0,34.90 30.0,32.52 35.0,30.31 40.0,28.24 45.0,26.27 50.0,24.39 55.0,22.60 60.0,20.87 65.0,19.20 70.0,17.58 75.0,16.01 80.0,14.48 85.0,12.99 90.0,11.54 95.0,10.11 100.0,8.72 100.0,87.51 95.0,86.82 90.0,86.12 85.0,85.39 80.0,84.64 75.0,83.86 70.0,83.05 65.0,82.21 60.0,81.33 55.0,80.41 50.0,79.44 45.0,78.42 40.0,77.33 35.0,76.16 30.0,74.90 25.0,73.52 20.0,71.98 15.0,70.22 10.0,68.11 5.0,65.33 0.0,58.45"/><polygon class="f50" points="0.0,58.45 5.0,52.77 10.0,50.37 15.0,48.51 20.0,46.93 25.0,45.53 30.0,44.26 35.0,43.08 40.0,41.98 45.0,40.94 50.0,39.95 55.0,39.01 60.0,38.10 65.0,37.23 70.0,36.39 75.0,35.57 80.0,34.78 85.0,34.01 90.0,33.26 95.0,32.53 100.0,31.82 100.0,70.60 95.0,70.30 90.0,70.00 85.0,69.68 80.0,69.35 75.0,69.02 70.0,68.67 65.0,68.30 60.0,67.93 55.0,67.53 50.0,67.12 45.0,66.68 40.0,66.22 35.0,65.73 30.0,65.20 25.0,64.62 20.0,63.97 15.0,63.24 10.0,62.37 5.0,61.23 0.0,58.45"/><line class="lv st" x1="0" x2="100" y1="5.27" y2="5.27"/><line class="lv" x1="0" x2="100" y1="25.29" y2="25.29"/><line class="lv" x1="0" x2="100" y1="35.03" y2="35.03"/><line class="lv" x1="0" x2="100" y1="72.51" y2="72.51"/><line class="lv" x1="0" x2="100" y1="94.79" y2="94.79"/><line class="now" x1="0" x2="6" y1="58.45" y2="58.45"/></svg><span class="ax a0" style="top:58.4%">oggi</span><span class="ax a1">25/12</span></div><div class="labs"><span class="cl st" style="top:9px"><em></em><small>stop BTC</small><b>15%</b></span><span class="cl" style="top:45px"><em>70.000</em><small>tondo</small><b>32%</b></span><span class="cl" style="top:64px"><em>67.197</em><small>resist.</small><b>47%</b></span><span class="cl" style="top:128px"><em>56.410</em><small>supporto</small><b>53%</b></span><span class="cl" style="top:167px"><em>50.000</em><small>tondo</small><b>16%</b></span></div></div><div style="height:16px"></div>
+<details><summary>Come si legge</summary><p>Fascia 80%: 52.095–74.770 · fascia 50%: 56.960–68.122. Probabilità di toccare ogni livello entro il 25/12, dalla volatilità attuale (13,6% a 30 g), non dalla direzione. Affidabilità storica: la fascia 80% ha contenuto il prezzo nel 78% dei casi (2018–26).</p></details></div>
+
+<div class="t s2 d3"><div class="k">pre-analisi · chiusura dom 29/11<b>decide lun 30/11</b></div>
+<div class="pre3"><div><div class="k">Chiusura sopra EMA 21</div><div class="v">+22,9%</div><div class="sm">ETH +30,5%</div></div><div><div class="k">Distribuzione</div><div class="v">no</div><div class="sm">ETH no</div></div><div><div class="k">Trailing toccato</div><div class="v">+25,3%</div><div class="sm">ETH +36,5%</div></div></div>
+<div class="k" style="margin-top:12px">short BTC simili dal 2022 · movimento a favore</div>
+<div class="hb"><div><b>+0,8%</b><i class="" style="height:3px"></i>gen 22</div><div><b>+13,9%</b><i class="" style="height:36px"></i>ago 22</div><div><b>+12,8%</b><i class="" style="height:33px"></i>dic 25</div><div><b>+4,8%</b><i class="" style="height:12px"></i>mag 26</div><div><b>+7,4%</b><i class="open" style="height:19px"></i>ora</div></div>
+<div class="strip"><span>Con i dati di oggi: <b>restano aperte</b></span><span>short simili <b>4/4</b> in utile</span></div>
+<details><summary>Dettagli</summary><p>Valori BTC in grande, ETH sotto. Margine = quanto deve salire il prezzo per far scattare l'uscita. Distribuzione: flusso e funding (tessera W3.2 sotto). Short BTC simili dal 2022: mediana +8,8%, contro massimo mediano −2,9%. Decide solo la chiusura di domenica (UTC).</p></details></div>
+
+<div class="sec">Mercato power<span>contesto · decide W3.2</span></div>
+<div class="pw"><div class="pt"><span class="lamp contro" aria-label="contro">−</span>
+<span class="nm">Ciclo on-chain</span><span class="vv">MVRV 1,14</span><span class="tg">capitolazione</span></div><div class="pt"><span class="lamp neutro" aria-label="neutro">=</span>
+<span class="nm">Dollaro</span><span class="vv">DXY 103,67</span><span class="tg">divergenza da confermare</span></div><div class="pt"><span class="lamp contro" aria-label="contro">−</span>
+<span class="nm">OPEX</span><span class="vv">max pain 70k</span><span class="tg">ven 27/11 · tra 14 h</span></div><div class="pt"><span class="lamp neutro" aria-label="neutro">=</span>
+<span class="nm">VIX</span><span class="vv">26,4</span><span class="tg">normale (15–30)</span></div><div class="pt"><span class="lamp neutro" aria-label="neutro">=</span>
+<span class="nm">Fed e calendario</span><span class="vv">FOMC 09/12</span><span class="tg">tra 13 g</span></div><div class="pt w3"><span class="lamp favore" aria-label="favore">+</span>
+<span class="nm">Flusso e funding perp</span><span class="vv">−1,01σ</span><span class="tg">in vendita</span><span class="w3b">USATO DA W3.2</span></div></div>
+<div class="t full"><details style="border:0;margin:0"><summary>Perché ogni semaforo</summary><ul><li><b>Ciclo on-chain</b>: Vicino ai minimi di ciclo: rischio di rimbalzo più alto</li><li><b>Dollaro</b>: Ancora forte; si indebolisce solo sotto 101,51</li><li><b>OPEX</b>: Max pain sopra il prezzo: possibile spinta in su fino a venerdì</li><li><b>VIX</b>: Tensione in aumento (+8,8% in 20 g) ma sotto la soglia di paura</li><li><b>Fed e calendario</b>: Tasso in rialzo e inflazione in salita: evento atteso, nessuna direzione</li><li><b>Flusso e funding perp</b>: Venditori sui perp e funding positivo: nessuna uscita per distribuzione</li></ul></details></div>
+
+<div class="t s2 d3"><div class="k">contesto<b>regime: rischio spento</b></div><div class="chips"><span>Trend <b>ribasso · −16,1% dalla media 200 g</b></span><span>Volatilità <b>alta · 2,49% al giorno</b></span><span>Azioni <b>S&amp;P 500 −6,8% in 20 g, sotto la media 200 g</b></span><span>Liquidità Fed <b>in aumento (+0,8% in 13 sett.)</b></span></div></div>
+<div class="t s2 d3"><div class="k">notizie</div><div class="nw"><a href="https://cointelegraph.com/markets/bitcoin-falls-57k-us-tariff-pce-data-nasdaq-drops?utm_source=rss_feed&amp;utm_medium=rss&amp;utm_campaign=rss_partner_inbound"><em class="alto">ALTO</em><span>Bitcoin falls toward $57K amid US tariff fears, hot PCE data as Nasdaq drops 4% <span class="mut">· Cointelegraph</span></span></a><a href="https://www.coindesk.com/markets/2026/11/25/ether-defi-fall-twice-as-hard-as-bitcoin-as-equities-selloff-resumes"><em class="alto">ALTO</em><span>Ether, DeFi fall twice as hard as bitcoin as equities selloff resumes <span class="mut">· CoinDesk</span></span></a><a href="https://cryptoslate.com/bitcoins-recovery-above-60000-faces-a-threat-from-japan-while-wall-street-sleeps/"><em class="medio">MEDIO</em><span>Bitcoin’s recovery above $60,000 faces a threat from Japan while Wall Street sleeps <span class="mut">· CryptoSlate</span></span></a></div>
+<details><summary>Altre 5</summary><div class="nw"><a href="https://cryptoslate.com/bitcoins-recovery-hinges-on-a-us-economic-slowdown-without-a-recession/"><em>26/11</em><span>Bitcoin’s recovery hinges on a US economic slowdown without a recession</span></a><a href="https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help"><em>26/11</em><span>Bitcoin ETFs are bleeding cash and the Fed is unlikely to help</span></a><a href="https://www.coindesk.com/policy/2026/11/26/strategic-bitcoin-reserve-bill-to-lock-up-u-s-government-held-bitcoin-for-20-years-goes-to-full-house"><em>26/11</em><span>Bill to lock up U.S. government bitcoin for 20 years advances to full House</span></a><a href="https://www.investing.com/news/cryptocurrency-news/bitcoin-extends-losses-below-59000-as-etf-outflows-weigh-5049793"><em>25/11</em><span>Bitcoin recovers after hit from ETF outflows, AI rout, and hot U.S. economic data</span></a><a href="https://www.theblock.co/news/ecosystems/2026-11-25-bitcoin-miners-hit-hashrate-hijacking-attack-exploiting-unencrypted-connections-446723"><em>25/11</em><span>Bitcoin miners hit by hashrate hijacking attack exploiting unencrypted connections</span></a></div></details></div>
+<p class="foot">Dati del report pubblicato · chiusura 25/11/2026 · aggiornato 26/11 17:48 UTC. Anteprima statica, variante B.</p>
+</div></div></body></html>

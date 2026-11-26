@@ -144,7 +144,7 @@ class Testi(unittest.TestCase):
         tpl = (ROOT / "radar/dashboard_template.html").read_text()
         blk = tpl[tpl.index("(function renderCone()"):tpl.index("// Contesto (report.context")]
         self.assertNotRegex(blk.lower(), r"andrà|arriverà|salirà a|scenderà a")
-        self.assertIn('id="cnCard"', tpl)
+        self.assertIn('id="ogCone"', tpl)   # variante B: tessera "BTC fra 30 giorni" in Oggi
 
     def test_non_tocca_w32(self):
         src = (ROOT / "radar/weekly.py").read_text()

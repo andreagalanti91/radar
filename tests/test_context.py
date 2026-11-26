@@ -237,9 +237,9 @@ class TestIntegrazione(unittest.TestCase):
     def test_dashboard_e_giro(self):
         root = Path(__file__).resolve().parents[1]
         t = (root / "radar" / "dashboard_template.html").read_text()
-        self.assertIn('id="cxCard"', t)
+        self.assertIn('id="ogCtx"', t)   # variante B: tessera "contesto" in Oggi
         self.assertIn("R.context", t)
-        blk = t[t.index("(function renderContext()"):t.index("// Oggi: riassunto coerente con la pagina Notizie")]
+        blk = t[t.index("(function renderContext()"):t.index("function renderToday()")]
         self.assertNotRegex(blk.lower(), r"probabilit|prevision")
         cli = (root / "radar" / "cli.py").read_text()
         self.assertIn('report["context"] = _soft(', cli)
