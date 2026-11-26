@@ -654,6 +654,30 @@ body.noscroll{overflow:hidden}
 .dxTb>.c{text-align:right} .dxTb>.c b{display:block;font:650 .86rem var(--font)} .dxTb>.c small{display:block;font-size:.64rem;color:var(--label3);white-space:nowrap}
 .dxTb .pos{color:var(--green)} .dxTb .neg{color:var(--red)}
 .dxTb>.sep{grid-column:1/-1;height:1px;padding:0;background:var(--line)}
+/* Posizioni · "OPEX" (report.opex, radar/opex.py): scadenze delle opzioni su BTC (Deribit; ripiego OKX). Solo contesto (W3.2 non cambia).
+   Stessi componenti delle schede on-chain e Dollaro. Termometro (.oxTh): prezzo di oggi (punto) fra il muro put (sotto) e il muro
+   call (sopra), tacca del massimo dolore; call in verde, put in rosso come nei grafici delle opzioni */
+.ocBig small .qt{color:var(--orange);font-weight:600}
+.oxTh{display:block;position:relative;height:58px;min-width:0;max-width:560px}
+.oxTh .rail{position:absolute;left:0;right:0;top:24px;height:10px;border-radius:5px;background:color-mix(in srgb,var(--label3) 22%,transparent)}
+.oxTh .band{position:absolute;top:24px;height:10px;border-radius:5px;background:color-mix(in srgb,var(--tint) 16%,transparent)}
+.oxTh .wl{position:absolute;top:21px;width:3px;height:16px;margin-left:-1.5px;border-radius:2px}
+.oxTh .wl.c{background:var(--green)} .oxTh .wl.p{background:var(--red)}
+.oxTh .mp{position:absolute;top:18px;width:0;height:22px;margin-left:-1px;border-left:2px dashed var(--violet)}
+.oxTh .dot{position:absolute;top:19px;width:20px;height:20px;margin-left:-10px;border-radius:50%;border:3px solid var(--card);background:var(--label);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.inSheet .oxTh .dot,.dlg .oxTh .dot{border-color:var(--bg)}
+.oxTh .lb{position:absolute;font:500 .68rem var(--font);color:var(--label3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.oxTh .lb.t{top:0} .oxTh .lb.b{bottom:0} .oxTh .lb b{font-weight:650}
+.oxTh .lb.c b{color:var(--green)} .oxTh .lb.p b{color:var(--red)} .oxTh .lb.m b{color:var(--violet)} .oxTh .lb.n b{color:var(--label)}
+.ocChart .oxC{fill:var(--green);opacity:.75} .ocChart .oxP{fill:var(--red);opacity:.75}
+.ocChart .oxNow{stroke:var(--label);stroke-width:1.4} .ocChart .oxMp{stroke:var(--violet);stroke-width:1.6;stroke-dasharray:4 3}
+.ocChart .ax0{stroke:var(--line2);stroke-width:1}
+.ocLeg i.oc{background:var(--green);opacity:.75} .ocLeg i.op{background:var(--red);opacity:.75}
+.ocLeg i.on{height:0;border-top:2px solid var(--label);border-radius:0} .ocLeg i.om{height:0;border-top:2px dashed var(--violet);border-radius:0}
+.oxCal{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr));gap:2px 0;min-width:0;font-variant-numeric:tabular-nums}
+.oxCal>span{padding:7px 6px;min-width:0;font-size:.8rem;text-align:right;white-space:nowrap} .oxCal>.h{font:600 .7rem var(--font);color:var(--label3)}
+.oxCal>.k{text-align:left;font:600 .8rem var(--font)} .oxCal>.k small{display:block;font:500 .66rem var(--font);color:var(--label3)}
+.oxCal>.k small.q{color:var(--orange);font-weight:600} .oxCal>.on{background:var(--fill)}
 /* Oggi · riga di stato delle posizioni: porta a Posizioni */
 .posLine{display:flex;align-items:center;gap:6px 12px;padding:13px 16px;color:var(--label);text-decoration:none;font-size:.92rem;font-variant-numeric:tabular-nums}
 .posLine .plK{font:500 .76rem var(--font);color:var(--label3)}
@@ -1002,6 +1026,10 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
     <div class="section" id="dxSec" hidden>
       <div class="sh">Dollaro <small>solo contesto</small></div>
       <div class="card ocCard" id="dxCard"></div>
+    </div>
+    <div class="section" id="oxSec" hidden>
+      <div class="sh">OPEX <small>solo contesto</small></div>
+      <div class="card ocCard" id="oxCard"></div>
     </div>
   </div>
 
@@ -1446,7 +1474,7 @@ function qxLine(U, px) {
   if (open) {
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(W.market, W.expo)}</span>
         <span class="cap">${artD("dal", fmtD(W.entry))} · ${weeksIn} settimane</span></div>
-      <div id="wkPos">${posHtml(REF)}</div><div class="oc" id="ocBox" hidden></div><div class="oc" id="dxBox" hidden></div>`;
+      <div id="wkPos">${posHtml(REF)}</div><div class="oc" id="ocBox" hidden></div><div class="oc" id="dxBox" hidden></div><div class="oc" id="oxBox" hidden></div>`;
     window.onRef(r => { $("wkPos").innerHTML = posHtml(r); });
   } else if (W.status === "segnale") {
     const p = W.plan;
@@ -1895,6 +1923,98 @@ function qxLine(U, px) {
     const P = openSheet(`Dollaro (${lbl}) · solo contesto`, panel), C = P.querySelector("#dxChartP"), CR = P.querySelector("#dxChartR");
     requestAnimationFrame(() => { draw(C); drawR(CR); });
     if (window.ResizeObserver) new ResizeObserver(() => { if (C.isConnected) { draw(C); drawR(CR); } }).observe(C);
+  };
+})();
+// ---- Posizioni · "OPEX" (report.opex, radar/opex.py): scadenze delle opzioni su BTC da Deribit (ripiego OKX, poi ultimo file).
+// Scheda chiusa come Ciclo on-chain e Dollaro: stato in grande (scadenza principale e tempo che manca), termometro con il prezzo di oggi
+// fra il muro put e il muro call e la tacca del massimo dolore, una riga per la posizione. Pannello (openSheet): Dove siamo · Open
+// interest per strike · Prossime scadenze · Scadenze passate (studio) · Cosa significa per la posizione · Fonte. Con la posizione
+// aperta sta nella card di BTC sotto il Dollaro; da flat è una card in fondo alla pagina. Solo contesto: non cambia W3.2, nessun avviso.
+(function renderOpex() {
+  const X0 = R.opex; if (!X0 || !X0.exp || X0.max_pain == null) return;
+  const W = R.weekly, open = W && (W.status === "aperto" || W.status === "uscita"), box = open && $("oxBox");
+  const el = box || $("oxCard"); if (!el) return;
+  const O = X0, px = O.price, mp = O.max_pain, cw = O.call_wall, pw = O.put_wall;
+  const WD = ["dom", "lun", "mar", "mer", "gio", "ven", "sab"];
+  const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", timeZone: "UTC" });
+  const wdm = d => `${WD[new Date(d).getUTCDay()]} ${dm(d)}`;
+  const n0 = x => nfIT(x, 0), bn = x => x == null ? "–" : x >= 1e9 ? `${nfIT(x / 1e9, 1)} mld $` : x >= 1e6 ? `${nfIT(x / 1e6, 0)} mln $` : `${n0(x)} $`;
+  const KN = { trimestrale: "trimestrale", mensile: "mensile", settimanale: "settimanale", giornaliera: "giornaliera" };
+  // "Scadenza venerdì 27/11 · tra 14 h": la data in grande, il tempo che manca e il tipo accanto in piccolo (a 400 px resta su una riga)
+  const st = String(O.status || ""), cut = st.indexOf(" · ");
+  const big = `${escS(cut > 0 ? st.slice(0, cut) : st)}<small>${cut > 0 ? escS(st.slice(cut + 3)) : ""}${O.quarterly ? ` · <span class="qt">trimestrale</span>` : ""}</small>`;
+  // termometro: scala lineare fra il più basso e il più alto di muro put, massimo dolore, prezzo e muro call (margine 8%)
+  const vs = [pw, cw, mp, px].filter(v => v != null), lo0 = Math.min(...vs), hi0 = Math.max(...vs), pad = (hi0 - lo0) * 0.08 || px * 0.02;
+  const P = v => Math.max(3, Math.min(97, (v - lo0 + pad) / (hi0 - lo0 + 2 * pad) * 100));
+  const lab = (x, cls, row, h) => `<span class="lb ${row} ${cls}" style="left:${x.toFixed(1)}%;transform:translateX(-${x.toFixed(1)}%)">${h}</span>`;
+  const xn = P(px), xm = P(mp), xp = pw != null ? P(pw) : null, xc = cw != null ? P(cw) : null;
+  const bottom = Math.abs(xn - xm) < 34 ? lab((xn + xm) / 2, "n", "b", `oggi <b>${n0(px)}</b> · dolore <b style="color:var(--violet)">${n0(mp)}</b>`)
+    : lab(xn, "n", "b", `oggi <b>${n0(px)}</b>`) + lab(xm, "m", "b", `massimo dolore <b>${n0(mp)}</b>`);
+  const top = (xp != null && xc != null && Math.abs(xc - xp) < 34) ? lab((xp + xc) / 2, "", "t", `muri put <b style="color:var(--red)">${n0(pw)}</b> · call <b style="color:var(--green)">${n0(cw)}</b>`)
+    : (xp != null ? lab(xp, "p", "t", `muro put <b>${n0(pw)}</b>`) : "") + (xc != null ? lab(xc, "c", "t", `muro call <b>${n0(cw)}</b>`) : "");
+  const thermo = `<span class="oxTh" role="img" aria-label="Prezzo ${n0(px)} dollari; massimo dolore ${n0(mp)}; muro put ${pw == null ? "assente" : n0(pw)}; muro call ${cw == null ? "assente" : n0(cw)}">
+      <span class="rail"></span>${xp != null && xc != null ? `<span class="band" style="left:${xp.toFixed(1)}%;width:${(xc - xp).toFixed(1)}%"></span>` : ""}
+      ${xp != null ? `<span class="wl p" style="left:${xp.toFixed(1)}%"></span>` : ""}${xc != null ? `<span class="wl c" style="left:${xc.toFixed(1)}%"></span>` : ""}
+      <span class="mp" style="left:${xm.toFixed(1)}%"></span><span class="dot" style="left:${xn.toFixed(1)}%"></span>${top}${bottom}</span>`;
+  // una riga corta: la frase senza il "solo contesto" finale (già nel titolo)
+  const riga = String(O.frase || "").replace(/ — solo contesto$/, "");
+  el.innerHTML = `<button type="button" class="ocTap" id="oxOpen" aria-haspopup="dialog">
+      ${box ? `<span class="ocHead"><b>OPEX · solo contesto</b><span class="more">Dettagli ›</span></span><span class="ocBig">${big}</span>`
+        : `<span class="ocHead"><span class="ocBig">${big}</span><span class="more">Dettagli ›</span></span>`}${thermo}<span class="ocLine">${escS(riga)}</span></button>`;
+  el.hidden = false; if (!box) $("oxSec").hidden = false;
+
+  // ---- pannello
+  const sec = (t, h) => `<section class="ocSec"><h3>${t}</h3>${h}</section>`;
+  const hrs = O.hours, left = hrs == null ? "–" : hrs < 24 ? `${Math.max(1, Math.round(hrs))} ore` : `${nfIT(hrs / 24, 1)} giorni`;
+  const where = `<div class="ocT3"><div><span>In scadenza ${dm(O.exp)}</span><b>${bn(O.notional)}</b><small>nozionale${O.share != null ? ` · ${nfIT(O.share, 0)}% dell'OI` : ""}</small></div>
+      <div><span>Put/call (OI)</span><b>${O.put_call == null ? "–" : nfIT(O.put_call, 2)}</b><small>${O.put_call == null ? "" : O.put_call > 1 ? "più put che call" : "più call che put"}</small></div>
+      <div><span>Massimo dolore</span><b style="color:var(--violet)">${n0(mp)}</b><small>${pct(O.dist_pct, 1)} dal prezzo</small></div></div>
+    <div class="ocT3"><div><span>Muro put</span><b style="color:var(--red)">${pw == null ? "–" : n0(pw)}</b><small>più OI put sotto il prezzo</small></div>
+      <div><span>Muro call</span><b style="color:var(--green)">${cw == null ? "–" : n0(cw)}</b><small>più OI call sopra il prezzo</small></div>
+      <div><span>Alla scadenza</span><b>${left}</b><small>${wdm(O.exp)} 08:00 UTC</small></div></div>
+    <div class="ocChips"><span class="chip">prezzo ${n0(px)} $</span><span class="chip">OI call ${n0(O.oi_call)} BTC</span><span class="chip">OI put ${n0(O.oi_put)} BTC</span>
+      ${O.weekly ? `<span class="chip">settimanale ${wdm(O.weekly.exp)}: ${bn(O.weekly.notional)}, dolore ${n0(O.weekly.max_pain)}</span>` : ""}</div>
+    <p class="ocNote">Massimo dolore: il prezzo di regolamento al quale le opzioni in scadenza valgono meno per chi le ha comprate. Muri: gli strike con più open interest.</p>`;
+  const chart = `<div class="ocChart" id="oxChartP" role="img" aria-label="Open interest per strike della scadenza del ${dm(O.exp)}: call sopra, put sotto; prezzo ${n0(px)}, massimo dolore ${n0(mp)}"></div>
+    <div class="ocLeg"><span><i class="oc"></i>call (sopra)</span><span><i class="op"></i>put (sotto)</span><span><i class="on"></i>prezzo</span><span><i class="om"></i>massimo dolore</span></div>
+    <p class="ocNote">Strike entro ±20% dal prezzo, open interest in BTC.</p>`;
+  const cal = (O.calendar || []), calH = cal.length ? `<div class="oxCal" role="table" aria-label="Prossime scadenze"><span class="h" style="text-align:left">scadenza</span><span class="h">nozionale</span><span class="h">put/call</span><span class="h">dolore</span>
+      ${cal.map(c => { const on = c.exp === O.exp ? " on" : "";
+        return `<span class="k${on}">${wdm(c.exp)}<small class="${c.kind === "trimestrale" ? "q" : ""}">${KN[c.kind] || c.kind}</small></span><span class="${on}">${bn(c.notional)}</span><span class="${on}">${c.put_call == null ? "–" : nfIT(c.put_call, 2)}</span><span class="${on}">${c.max_pain == null ? "–" : n0(c.max_pain)}</span>`; }).join("")}</div>`
+    : `<p class="ocNote">Calendario non disponibile.</p>`;
+  const S = O.study || {}, rows = S.rows || [];
+  const cell = (v, sg) => `<span class="c"><b class="${sg ? (v >= 0 ? "pos" : "neg") : ""}">${sg ? pct(v, 1) : nfIT(v, 1) + "%"}</b></span>`;
+  const study = `<p class="ocNote">BTC dal ${escS(S.since || "2019")}: mediane attorno alle scadenze mensili Deribit (ultimo venerdì, 08:00 UTC), contro gli altri venerdì.</p>
+    <div class="dxTb" role="table" aria-label="Studio: BTC attorno alle scadenze mensili e trimestrali contro gli altri venerdì"><span class="h">misura</span><span class="h">mensili<br>${S.n_m || ""}</span><span class="h">trimestr.<br>${S.n_q || ""}</span><span class="h">altri ven.<br>${S.n_o || ""}</span>
+      ${rows.map((r, i) => `${i ? `<span class="sep"></span>` : ""}<span class="k">${escS(r.k)}</span>${cell(r.m, r.signed)}${cell(r.q, r.signed)}${cell(r.o, r.signed)}`).join("")}
+      <span class="sep"></span><span class="k">7 g dopo in rialzo</span><span class="c"><b>${S.up_m}%</b></span><span class="c"><b>${S.up_q}%</b></span><span class="c"><b>${S.up_o}%</b></span></div>
+    <p class="ocNote">Ampiezza: nessuna differenza dimostrabile. Dopo la scadenza una leggera tendenza al rialzo, ma è una misura su trenta e viene soprattutto dal 2020–21: nessun vantaggio dimostrabile. Il massimo dolore del passato non è ricostruibile (manca l'open interest storico): gli snapshot salvati da oggi serviranno a verificare la "calamita" fra almeno un anno.</p>`;
+  const src = `<p class="ocNote">${escS(O.src_name || O.src)}, dato del ${new Date(O.ts).toLocaleString("it-IT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", timeZone: "UTC" })} UTC (una volta al giorno, ogni 4 ore nelle ultime 48 ore).${O.source_note ? " " + escS(O.source_note) + "." : ""}</p><p class="ocNote">Solo ${escS(O.note)}.</p>`;
+  const panel = `<div class="ocP">${sec("Dove siamo", where)}${sec("Open interest per strike", chart)}${sec("Prossime scadenze", calH)}` +
+    `${sec("Scadenze passate (studio)", study)}${sec("Cosa significa per la posizione", `<p class="ocTxt">${escS(riga)}.</p>`)}${sec("Fonte", src)}</div>`;
+
+  const B = O.bars || [];
+  const draw = C => {
+    const w = Math.round(C.clientWidth), h = Math.round(C.clientHeight); if (w < 40 || h < 40 || !B.length) return;
+    const top = 14, bot = h - 16, lft = 2, rgt = w - 4, mid = (top + bot) / 2, n = B.length, bw = (rgt - lft) / n;
+    const mx = Math.max(...B.map(b => Math.max(b[1], b[2]))) || 1, Hh = (mid - top) - 2;
+    const cx = i => lft + bw * (i + 0.5);
+    const Xv = v => { if (v <= B[0][0]) return cx(0); if (v >= B[n - 1][0]) return cx(n - 1);
+      for (let i = 0; i < n - 1; i++) if (v <= B[i + 1][0]) return cx(i) + bw * (v - B[i][0]) / (B[i + 1][0] - B[i][0]); return cx(n - 1); };
+    const g = Math.max(1, Math.min(3, bw * 0.18)), bwi = Math.max(1, bw - 2 * g);
+    const bars = B.map((b, i) => { const x = (cx(i) - bwi / 2).toFixed(1), hc = b[1] / mx * Hh, hp = b[2] / mx * Hh;
+      return `<rect class="oxC" x="${x}" y="${(mid - 1 - hc).toFixed(1)}" width="${bwi.toFixed(1)}" height="${hc.toFixed(1)}"/><rect class="oxP" x="${x}" y="${(mid + 1).toFixed(1)}" width="${bwi.toFixed(1)}" height="${hp.toFixed(1)}"/>`; }).join("");
+    const step = Math.max(1, Math.ceil(40 / bw)), tk = B.map((b, i) => i % step ? "" : `<text class="ax" x="${cx(i).toFixed(1)}" y="${h - 3}" text-anchor="middle">${nfIT(b[0] / 1000, b[0] % 1000 ? 1 : 0)}k</text>`).join("");
+    const xn = Xv(px).toFixed(1), xm = Xv(mp).toFixed(1);
+    C.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${bars}
+      <line class="ax0" x1="${lft}" x2="${rgt}" y1="${mid}" y2="${mid}"/>
+      <line class="oxMp" x1="${xm}" x2="${xm}" y1="${top - 4}" y2="${bot}"/><line class="oxNow" x1="${xn}" x2="${xn}" y1="${top - 4}" y2="${bot}"/>
+      <text class="ax" x="${lft + 2}" y="${top - 4}">call · max ${n0(mx)} BTC</text><text class="ax" x="${lft + 2}" y="${bot - 2}">put</text>${tk}</svg>`;
+  };
+  $("oxOpen").onclick = () => {
+    const Pn = openSheet(`OPEX · scadenze delle opzioni su BTC · solo contesto`, panel), C = Pn.querySelector("#oxChartP");
+    requestAnimationFrame(() => draw(C));
+    if (window.ResizeObserver) new ResizeObserver(() => C.isConnected && draw(C)).observe(C);
   };
 })();
 // ---- Oggi: riga di stato delle posizioni ("BTC short +6,8% · ETH short +16,7%"), stessi numeri in evidenza nelle card di Posizioni; porta a Posizioni
