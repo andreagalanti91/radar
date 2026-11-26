@@ -342,6 +342,10 @@ def daily() -> None:
     # data/opex/ultimo.json) una volta al giorno e ogni 4 ore nelle ultime 48 ore; snapshot in data/opex/snap.jsonl per verificare
     # in futuro la "calamita" del massimo dolore. Solo contesto (studio research/opex): nessun avviso, W3.2 non cambia
     report["opex"] = _soft("scadenze delle opzioni (OPEX)", lambda: mod("opex").build(DATA_DIR, side=mod("opex").side_of(wcur)))
+    # "Mercato power" in Oggi e Posizioni (radar/mercato.py): sei semafori di contesto (on-chain, dollaro, OPEX, VIX, Fed, flusso e
+    # funding perp) a favore/neutro/contro la posizione aperta di BTC ed ETH, registro data/mercato_power.csv. Nessun punteggio unico,
+    # nessun avviso: non entra in W3.2 (decide W3.2)
+    report["mercato"] = _soft("mercato power", lambda: mod("mercato").build(report, DATA_DIR))
     # opzioni su BTC "sulla carta" con i segnali di W3.2 (radar/opzioni.py, pagina Opzioni): catena OKX, registro
     # data/opzioni_carta.json, archivio data/opzioni/. Legge solo W3.2, non invia ordini; OKX giù = ultimo dato, giro intatto
     report["opzioni"] = _soft("opzioni su carta", lambda: mod("opzioni").giro(wcur, DATA_DIR)) if wcur else None
@@ -355,7 +359,7 @@ def daily() -> None:
     # registro "scommesse" sulla carta (radar/scommesse.py, research/w32_asset2/REGISTRO-SCOMMESSE.md): ingressi nuovi dello
     # scanner nel verso di BTC dal 29/11/2026, 100 $ fissi; aperte rivalutate una volta al giorno. Nessun ordine né avviso
     report["scommesse"] = _soft("scommesse sulla carta", lambda: mod("scommesse").giro(report.get("scanner"), DATA_DIR))
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse", "opex", "onchain", "dollaro"):
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse", "mercato", "opex", "onchain", "dollaro"):
         if report.get(k) is None:
             report.pop(k, None)
     # v2: solo stato e storico per la dashboard (messaggi Telegram di v2 eliminati il 25/11/2026; spenti dal 12/11/2026)

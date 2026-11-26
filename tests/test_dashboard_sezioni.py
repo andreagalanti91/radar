@@ -83,20 +83,21 @@ class TestStruttura(unittest.TestCase):
         return T[i:j if j > 0 else None]
 
     def test_oggi(self):
+        # variante B (26/11/2026): posizioni in sintesi · livelli e probabilità a 30 giorni · pre-analisi (spostata qui da Posizioni) ·
+        # Mercato power · contesto · notizie, in quest'ordine
         o = self._view("oggi")
-        for i in ('id="posLine" href="#posizioni"', 'id="cnCard"', 'id="cxCard"', 'id="todaySec"'):
-            self.assertIn(i, o)
-        for i in ('id="wkHero"', 'id="pvCard"', 'id="wkChart"', 'id="lvCard"'):
+        ordine = ['id="ogTop"', 'id="ogPos"', 'id="ogCone"', 'id="ogPre"', 'id="ogPw"', 'id="ogCtx"', 'id="ogNews"']
+        pos = [o.index(i) for i in ordine]
+        self.assertEqual(pos, sorted(pos))
+        for i in ('id="wkHero"', 'id="pvCard"', 'id="wkChart"', 'id="lvCard"', 'id="posLine"'):
             self.assertNotIn(i, o)
-        self.assertLess(o.index('id="posLine"'), o.index('id="cnCard"'))
-        self.assertLess(o.index('id="cnCard"'), o.index('id="cxCard"'))
-        self.assertLess(o.index('id="cxCard"'), o.index('id="todaySec"'))
 
     def test_posizioni_grafico_movimenti(self):
         p, g, m = self._view("posizioni"), self._view("grafico"), self._view("movimenti")
-        for i in ('id="wkHero"', 'id="ethCard"', 'id="pvCard"', 'id="wkDlg"'):
+        for i in ('id="wkHero"', 'id="ethCard"', 'id="posSeg"', 'id="posPw"', 'id="wkDlg"'):
             self.assertIn(i, p)
-        for i in ('id="gxCard"', 'id="gxTf"', 'id="gxSw"', 'id="gxChart"', 'id="gxTbl"'):
+        self.assertNotIn('id="pvCard"', p)                                      # la pre-analisi è in Oggi (variante B)
+        for i in ('id="gxCard"', 'id="gxTf"', 'id="gxChart"', 'id="gxTbl"'):    # interruttori dentro le tessere dei gruppi (gxTbl)
             self.assertIn(i, g)
         self.assertLess(g.index('id="gxChart"'), g.index('id="gxTbl"'))                 # tabella completa sotto il grafico
         for i in ('id="wkMacd"', 'id="lvCard"', 'id="srCard"', 'id="lqCard"', "#liquidazioni"):
@@ -108,6 +109,7 @@ class TestStruttura(unittest.TestCase):
 
     def test_card_di_oggi(self):
         # un dato grande, fascia con prezzo e livelli sulla stessa scala, probabilità ordinate per prezzo, tre tessere di contesto
+        # (variante B: la scheda completa dei livelli e le tre tessere del contesto sono nei pannelli "Dettagli ›")
         for w in ('class="cnBig"', 'class="cnScale"', 'class="b80"', 'class="b50"', 'class="cnDiv"', ".sort((a, b) => b.price - a.price)",
                   'class="cxTiles"', 'class="cxT"', "Dettagli ›", "Apri nel Grafico ›"):
             self.assertIn(w, T)
