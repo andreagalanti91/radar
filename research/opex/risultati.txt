@@ -1,0 +1,77 @@
+Scadenze mensili Deribit su BTC · 2019-09-13 → 2026-11-13 (giornaliero, data/spot.csv)
+
+## Tutte le mensili: 86 scadenze contro 289 altri venerdì
+misura                                scadenze  altri ven.  p (mediane)
+rendimento 7 g prima (mediana)          -0.53%      +0.94%        0.088
+|rendimento| 7 g prima                  +3.65%      +4.29%        0.392
+range 7 g prima                        +10.24%     +10.67%        0.631
+rendimento del venerdì                  -0.42%      +0.18%        0.055
+|rendimento| del venerdì                +1.44%      +1.49%        0.735
+range del venerdì                       +4.20%      +4.10%        0.787
+rendimento 7 g dopo (mediana)           +1.72%      -0.11%        0.024
+|rendimento| 7 g dopo                   +2.96%      +3.98%        0.115
+range 7 g dopo                         +10.59%     +11.10%        0.707
+rendimento del sabato                   +0.20%      +0.05%        0.182
+
+## Solo trimestrali: 29 scadenze contro 289 altri venerdì
+misura                                scadenze  altri ven.  p (mediane)
+rendimento 7 g prima (mediana)          -0.94%      +0.94%        0.163
+|rendimento| 7 g prima                  +3.54%      +4.29%        0.554
+range 7 g prima                        +10.26%     +10.67%        0.739
+rendimento del venerdì                  -0.37%      +0.18%        0.264
+|rendimento| del venerdì                +0.94%      +1.49%        0.190
+range del venerdì                       +4.15%      +4.10%        0.915
+rendimento 7 g dopo (mediana)           +0.87%      -0.11%        0.402
+|rendimento| 7 g dopo                   +3.81%      +3.98%        0.895
+range 7 g dopo                          +9.34%     +11.10%        0.204
+rendimento del sabato                   +0.23%      +0.05%        0.240
+
+## Mensili non trimestrali: 57 scadenze contro 289 altri venerdì
+misura                                scadenze  altri ven.  p (mediane)
+rendimento 7 g prima (mediana)          -0.49%      +0.94%        0.143
+|rendimento| 7 g prima                  +3.69%      +4.29%        0.489
+range 7 g prima                        +10.23%     +10.67%        0.711
+rendimento del venerdì                  -0.46%      +0.18%        0.112
+|rendimento| del venerdì                +1.52%      +1.49%        0.902
+range del venerdì                       +4.28%      +4.10%        0.689
+rendimento 7 g dopo (mediana)           +2.01%      -0.11%        0.033
+|rendimento| 7 g dopo                   +2.74%      +3.98%        0.114
+range 7 g dopo                         +11.50%     +11.10%        0.790
+rendimento del sabato                   +0.18%      +0.05%        0.308
+
+## Direzione
+mensili        n= 86  7 g dopo su   62%  (media +1.39%)  7 g prima su   49%  venerdì su   42%
+trimestrali    n= 29  7 g dopo su   62%  (media +1.84%)  7 g prima su   48%  venerdì su   45%
+altri venerdì  n=289  7 g dopo su   48%  (media +0.64%)  7 g prima su   56%  venerdì su   52%
+
+## Inversione dopo la scadenza (il movimento dei 7 giorni prima si gira nei 7 dopo?)
+mensili        segno opposto   43%  correlazione prima/dopo +0.07
+altri venerdì  segno opposto   52%  correlazione prima/dopo +0.02
+
+## 24 ore attorno alle 08:00 UTC · 2022-02-04 → 2026-11-20 (orario, data/spot_1h.csv)
+
+## Mensili (orario): 57 scadenze contro 194 altri venerdì
+misura                                scadenze  altri ven.  p (mediane)
+|rendimento| 24 h prima                 +1.70%      +1.51%        0.560
+range 24 h prima                        +3.26%      +3.74%        0.130
+|rendimento| 24 h dopo                  +0.85%      +1.26%        0.098
+range 24 h dopo                         +3.14%      +3.75%        0.116
+rendimento 24 h dopo (mediana)          -0.18%      +0.03%        0.352
+
+## Trimestrali (orario): 19 scadenze contro 194 altri venerdì
+misura                                scadenze  altri ven.  p (mediane)
+|rendimento| 24 h prima                 +1.92%      +1.51%        0.407
+range 24 h prima                        +3.30%      +3.74%        0.396
+|rendimento| 24 h dopo                  +0.77%      +1.26%        0.232
+range 24 h dopo                         +3.02%      +3.75%        0.291
+rendimento 24 h dopo (mediana)          +0.03%      +0.03%        0.999
+
+## Per anno · mensili: mediana 7 g dopo e % su
+2019  n= 4  +0.37%  su  50%
+2020  n=12  +4.99%  su  75%
+2021  n=12  +2.58%  su  67%
+2022  n=12  +1.31%  su  58%
+2023  n=12  +1.11%  su  58%
+2024  n=12  +0.47%  su  50%
+2025  n=12  +0.58%  su  58%
+2026  n=10  +0.93%  su  70%
