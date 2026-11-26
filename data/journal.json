@@ -7,7 +7,16 @@
    "side": "short",
    "entry": 65285.7,
    "entry_time": "2026-11-16",
-   "limit": null
+   "limit": null,
+   "market": "perp"
+  },
+  "w2_eth": {
+   "signal_date": "2026-11-08",
+   "side": "short",
+   "entry": 2125.33,
+   "entry_time": "2026-11-09",
+   "limit": null,
+   "market": "perp"
   }
  }
 }
