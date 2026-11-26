@@ -111,10 +111,8 @@ class TestToolSemplice(unittest.TestCase):
         # dal 24/11 "Livelli vicini", S/R e liquidazioni vicine confluiscono nella tabella completa sotto il grafico (motore unico)
         for gone in ('id="lvCard"', 'id="srCard"', 'id="lqCard"'):
             self.assertNotIn(gone, T)
-        # variante B: sei tessere-interruttore (una per gruppo) con il loro elenco al posto della tabella e delle pillole scorrevoli;
-        # su telefono una colonna, gli interruttori vanno a capo (flex-wrap): mai scorrimento orizzontale della pagina
-        self.assertIn('<div class="gxG" id="gxTbl"></div>', T)
-        self.assertIn(".swB{display:flex;flex-wrap:wrap", T)
+        self.assertIn('<div class="scroll gxScroll"><div class="gxTbl" id="gxTbl"></div></div>', T)   # tabella scorrevole nel suo contenitore
+        self.assertIn(".gxSw{display:flex;gap:6px;overflow-x:auto", T)                                  # interruttori scorrevoli, mai la pagina
         self.assertIn(".sheetOnly:not(.inSheet){display:none!important}", T)
 
     def test_notizie_corte(self):

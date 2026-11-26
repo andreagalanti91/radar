@@ -152,8 +152,8 @@ class CaricamentoPigro(unittest.TestCase):
         self.assertIn('if (lazyPending("movimenti")) return;', sim)
 
     def test_oggi_senza_file_secondari(self):
-        """Oggi (tessere delle posizioni e del Mercato power, livelli a 30 giorni, contesto, notizie del giorno) legge solo dati incorporati."""
-        blocchi = [T[T.index("(function renderPosizioni()"):T.index("// ---- Opzioni (pagina a sé)")],   # variante B: posizioni e Mercato power al posto della riga
+        """Oggi (riga posizioni, forbice dei livelli, contesto, notizie del giorno) legge solo dati incorporati."""
+        blocchi = [T[T.index("(function renderPosLine()"):T.index("// ---- Opzioni (pagina a sé)")],
                    T[T.index("(function renderCone()"):T.index("// ---- Grafico (solo BTC)")],
                    T[T.index("(function renderContext()"):T.index("renderNews();\n")]]
         for b in blocchi:
@@ -169,12 +169,10 @@ class CaricamentoPigro(unittest.TestCase):
 
 class LegendaGrafico(unittest.TestCase):
     def test_pulsante_su_telefono(self):
-        # variante B (26/11/2026): le tessere dei gruppi fanno da legenda (interruttore con il tratto della linea); la legenda completa,
-        # le note e le fonti sono nel pannello "Dettagli ›" del grafico, uguale su telefono e desktop
         g = T[T.index("<!-- ============ GRAFICO"):T.index("<!-- ============ MOVIMENTI")]
-        self.assertIn('class="lvLeg gxLeg" id="gxLeg"', g)
-        self.assertIn('data-det="gxLeg"', g)
-        self.assertIn('DET.gxLeg = () => sheetNodes("Legenda, note e fonti del grafico", [$("gxLeg"), $("gxNote1"), $("gxNotes")]);', T)
+        self.assertIn('class="lvLeg gxLeg mHide" id="gxLeg"', g)                       # da 701 px in su resta visibile
+        self.assertRegex(g, r'<button type="button" class="gxLegBtn mOnly" id="gxLegBtn"[^>]*>.*Legenda</button>')
+        self.assertIn('$("gxLegBtn").onclick = () => sheetNodes("Legenda del grafico", [$("gxLeg")]);', T)
         self.assertIn(".gxLeg.inSheet", T)
 
 

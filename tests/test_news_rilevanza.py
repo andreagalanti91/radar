@@ -194,12 +194,12 @@ class Degrado(unittest.TestCase):
 
 class Pagina(unittest.TestCase):
     def test_struttura(self):
-        # variante B: "altre notizie" è una tessera con le prime 3, le altre nel suo pannello (prima un <details> chiuso)
-        for s in ("Prima della decisione di domenica", "Notizie che toccano le posizioni", 'k: "altre notizie"', "O.slice(0, 40)", "Perché conta per noi"):
+        for s in ("Prima della decisione di domenica", "Notizie che toccano le posizioni", 'id="nwOther"', "Perché conta per noi"):
             self.assertIn(s, T)
+        self.assertNotIn('<details class="calPast nwOther" id="nwOther" open', T)   # "Altre notizie" chiuse di default
         self.assertNotIn('id="newsSeg"', T)
-        # Oggi: tessera con le 3 più rilevanti; nel pannello il prossimo evento e il link alla sezione Notizie
-        self.assertIn('det: "news"', T)
+        # Oggi: riassunto con link alla sezione Notizie, nessun pannello
+        self.assertIn('location.hash = "#notizie"', T)
         self.assertIn('href="#notizie">Calendario e notizie per noi', T)
 
 

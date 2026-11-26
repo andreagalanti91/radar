@@ -199,7 +199,7 @@ class TestScheda(unittest.TestCase):
         self.assertLess(i, T.index('id="ocSec"'), T.index('id="v-opzioni"'))
 
     def test_scheda_chiusa_e_pannello(self):
-        js = T[T.index("function renderOnchain"):T.index("// ---- Oggi e Posizioni · posizioni aperte")]   # variante B: la riga di Oggi è diventata la tessera delle posizioni
+        js = T[T.index("function renderOnchain"):T.index("function renderPosLine")]
         for x in ('class="ocTap" id="ocOpen" aria-haspopup="dialog"', 'class="ocTh" role="img"', "Dettagli ›", "O.breve",
                   'openSheet("Ciclo on-chain di BTC"', 'class="seg ocSeg"', "ocChartP", "Mediana"):
             self.assertIn(x, js)
@@ -231,7 +231,7 @@ class TestScheda(unittest.TestCase):
             cut("const nfIT = window.nfIT", "const nfS = "), cut("const pct = ", "const css = "),
             next(l for l in T.splitlines() if l.startswith("const escS = ")),
             "const R = " + json.dumps({"onchain": r, "weekly": {"status": "flat"}}) + ";",
-            cut("(function renderOnchain()", "// ---- Oggi e Posizioni · posizioni aperte")])
+            cut("(function renderOnchain()", "// ---- Oggi: riga di stato delle posizioni")])
         page = Path(tmp.name) / "oc.html"
         page.write_text(f'<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
                         f'{style}</head><body><div class="section" id="ocSec" hidden><div class="card ocCard" id="ocCard"></div></div>'
