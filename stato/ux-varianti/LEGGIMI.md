@@ -51,3 +51,65 @@ pre-analisi, cono e contesto. Nelle varianti ognuno compare **una sola volta**:
   Le regole vanno decise prima di rifare il tool.
 - Il totale +7.140 $ (A, B, C) è la somma di BTC (+2.169 $) ed ETH (+4.971 $) su 30.000 $ ciascuno: oggi il tool non lo mostra.
 - Colori: verde/rosso solo per profitto/perdita e per i semafori a favore/contro (che lo sono rispetto alla posizione); neutri in grigio.
+
+## Variante B · tutte le pagine (`B/`)
+
+Anteprima della variante scelta estesa a tutto il tool: `B/{oggi,posizioni,scanner,grafico,movimenti,notizie}.html`, solo tema
+scuro, stessi dati del report pubblicato (riga `const R =` + `scanner.json`, `grafico.json`, `movimenti.json`, `news.json`).
+Ogni pagina ha la barra inferiore (telefono) e la barra laterale (desktop ≥ 900 px) con le sei voci reali del tool.
+Screenshot: `X_400_top.png` (prima schermata), `X_400.png` (pagina intera, dpr 2; la barra inferiore è riportata in fondo),
+`X_1280.png`; `oggi_dettaglio_400.png` (foglio "Dettagli ›" di BTC aperto dal basso) e `oggi_dettaglio_1280.png` (pannello a destra,
+Ciclo on-chain). Controllo automatico su tutte: nessuno scorrimento orizzontale a 400 px, nessun elemento fuori pagina, nessun errore JS.
+Generatore: scratchpad `ux/gen/b2/` (base.py, p_*.py, build.py, shot.py).
+
+### Regole comuni (linguaggio B)
+- **Tessera = una cosa sola**, con **"Dettagli ›" in fondo a destra**, sempre nella stessa posizione (nelle tessere strette dei
+  semafori è centrato). Apre un foglio: dal basso sul telefono, pannello a destra su desktop (anteprima: `<details>` + 3 righe di JS
+  per "Chiudi"/Esc). Tutto ciò che non serve al primo sguardo sta lì, nulla è stato tolto.
+- Etichette **minimo 12 px** (prima 10,5–12): intestazioni tessera 13, testi secondari 12,5–13, valori 15–30. Numeri tabulari.
+- **Verde/rosso solo per profitto/perdita** (e per i semafori, che lo sono rispetto alla posizione). Il lato long/short è una
+  pillola neutra con freccia (↓ short, ↑ long): prima il badge SHORT era rosso. Candele del grafico in grigio (piene = giù, vuote = su).
+  Un solo accento (indaco) per link, interruttori, liquidazioni e "nel verso di BTC". Raggio 14 px ovunque.
+- **Niente valori ripetuti nella stessa pagina** (fra pagine diverse sì: Oggi riassume, le altre approfondiscono).
+
+### Oggi (cosa è cambiato rispetto a `oggi_B.html`)
+- "Dettagli ›" su tutte le 14 tessere; la riga a tutta larghezza "Perché ogni semaforo" non c'è più: il perché di ciascuno è nel
+  suo foglio (con la scala MVRV / DXY / OPEX), l'elenco completo nel foglio della tessera "mercato power".
+- Etichette più grandi; conteggio dei semafori su tre colonne (numero sopra, parola sotto) perché "2 contro" andava a capo.
+- Telefono: titolo della pagina nella barra in alto (logo + "Oggi" + orario), così la prima schermata mostra totale, semafori e
+  tutta la tessera BTC. Foglio della tessera "totale": limiti storici BTC/ETH (dato che il tool ha in Movimenti).
+- Desktop 1280: 1.172 px di altezza (prima 1.194), con la barra laterale del tool che prima mancava. Non sta in 900 px.
+
+### Valori ripetuti eliminati, pagina per pagina
+| Pagina | Oggi nel tool si ripete | In B resta solo |
+|---|---|---|
+| Posizioni | P&L e % (titolo, riga "sul capitale", pre-analisi); ingresso (riga, barra, "Quando esce"); trailing ed EMA 21 (barra, "Quando esce", pre-analisi, scenari); flusso e funding (Distribuzione e pre-analisi); prezzo (barra "Ora", OPEX "oggi") | P&L nel titolo; ingresso nella riga sotto; uscite in **$** solo sulla barra; livelli e margini % solo nei semafori delle uscite; flusso e funding solo nel semaforo "Distribuzione" (per questo nel Mercato power della pagina non c'è la tessera flusso: 5 semafori) |
+| Scanner | BTC, ETH, SOL, TAO, TRX e i 5 ingressi nuovi sia nelle tessere sia nella tabella; numeri dello studio (12.386 $ contro 10.381 $) sotto gli ingressi e nelle scommesse; "ingresso lunedì all'apertura" su ogni riga | tabella "altre monete" (134) senza quelle già in evidenza o nuove; studio solo nella tessera scommesse; data d'ingresso una volta nel titolo della sezione |
+| Grafico | ogni livello sia nella tabella "Tutti i livelli" sia nella legenda/interruttori; prezzo live nel titolo della tabella | ogni livello compare una volta, nella tessera del suo gruppo (interruttore + elenco); niente tabella separata |
+| Movimenti | "14 chiuse + 1 aperta" nel sottotitolo della sezione e di nuovo nella tessera "Trade"; numero di trade anche nel titolo della lista | conteggio una volta nella mini-tessera "operazioni"; sottotitolo e lista senza conteggio |
+| Notizie | orario delle fonti (riga in testa e orario della pagina); conteggi per tema e "Altre N" | orario solo nella testata; conteggio una volta per tema in alto a destra; il resto nel foglio |
+
+### Le altre pagine in breve
+- **Posizioni**: selettore BTC/ETH sul telefono (affiancate su desktop). In cima la **barra delle uscite in dollari**: a sinistra
+  le uscite in perdita (trailing −4.718 $, EMA 21 −4.051 $), "ingresso" a 0, il punto "oggi". Sotto, **5 semafori delle uscite**:
+  chiusura sopra EMA 21, trailing (verdi: oltre il 10% di margine), distribuzione (grigio, non attiva), utile bloccato da ~47.800,
+  EMA 21 sotto l'ingresso (grigi: non ancora). Pre-analisi solo per BTC (come nel tool). **Mercato power della posizione** al posto
+  delle schede on-chain/dollaro/OPEX impilate: on-chain, dollaro, OPEX, VIX, Fed; il contenuto delle vecchie schede è nei fogli.
+  "Perché è aperta e quando si chiude" è il foglio della tessera in cima.
+- **Scanner**: avviso "solo informativa", conteggi (barra impilata: short in indaco perché è il verso di BTC), uscite della
+  settimana, In evidenza (BTC, ETH, TRX sulla carta, SOL e TAO preferite), ingressi della settimana, scommesse sulla carta, tabella
+  con filtri e ricerca.
+- **Grafico**: candele giornaliere vere (120 giorni) con i livelli accesi di default nel tool (resistenze, supporti, medie,
+  liquidazioni, trailing, zone; Fibonacci e livello storico spenti), etichette a destra senza sovrapposizioni; 6 tessere-interruttore.
+- **Movimenti**: reale contro modello (limiti BTC ed ETH come barre di consumo, registro vuoto), storico BTC/ETH con curva
+  (solo BTC: `movimenti.json` non ha l'equity di ETH), anno per anno, 13 chiuse + 1 aperta, simulatore nel foglio.
+- **Notizie**: prima della decisione di domenica (nessun dato ad alto impatto, poi FOMC 9/12), 5 temi con le 3 più rilevanti,
+  altre notizie, il filtro in fondo (sul telefono).
+
+### Decisioni aperte per l'utente
+1. **Regole dei semafori** (Mercato power e uscite): sono una proposta dell'anteprima, non esistono nel codice.
+2. **Scommesse sulla carta e TRX sulla carta** sono nel tool oggi e restano nell'anteprima; la regola "ciò che è solo testato non va
+   nel tool" suggerirebbe di toglierle o spostarle: da decidere.
+3. Candele grigie e lato long/short neutro (regola verde/rosso solo per profitto/perdita): confermare o tornare ai colori classici.
+4. Tabella dello Scanner senza le monete già mostrate sopra (filtro "Altre" predefinito) o con tutte come oggi.
+5. Desktop "in una schermata": Oggi è alto 1.172 px a 1280; per stare in 900 px servirebbe togliere contesto e notizie da Oggi.
