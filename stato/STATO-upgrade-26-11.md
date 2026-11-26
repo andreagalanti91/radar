@@ -18,3 +18,8 @@ Stato: IN CORSO
 
 ## Prossima azione
 Agenti in parallelo: A1 (research/dati_provvisori/) e A2+B1 (journal, nuovo modulo allarme, Movimenti); poi C1+C2.
+
+## A1 (26/11)
+Studio fatto: research/dati_provvisori/ (0 decisioni cambiate dai provvisori; rischio reale = funding OKX). Patch F1+P1 proposta, NON applicata: in attesa dell'ok dell'utente.
+## A2+B1 (26/11)
+Diario W3.2 BTC/ETH, Reale contro modello, allarme Fuori dal backtest (radar/limiti.py): suite 541, deploy fatto. Da confermare: limiti propri per ETH.
