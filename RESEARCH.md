@@ -409,6 +409,11 @@ W3.1 27.190 $ (DD −9,8%); DCA lun/mer/ven 24.039, DCA 3 settimane 18.092, met�
 24.401, trailing 2,0/3,0 25.271; TP 1/3 a +3R mai toccato; stop 2,25/2,75/3,0 ATR 28.242 (DD −15,7%) / 24.183 / 22.879; senza
 distribuzione 20.694 (DD −12,8%), conferma 2 domeniche 23.889, soglie ×0,8/×1,2 28.083 / 26.018 (1–2 trade, senza potenza);
 sette giorni 23.644. Holm: nessuna. Book e liquidazioni (research/book_liq, 15 giorni): nessun supporto misurabile, rifare 20/12 e 03/2027.
+**Lezione 127**: "Dorito" (@CryptoJelleNL) = Leledc Exhaustion Bar, versione InSilico 40/10. Ricostruito dal sorgente pubblico: riproduce 8/8 i
+triangoli del post sul 3D, con barre che ripartono ogni 1 gennaio. Su BTC dal 2018 non funziona:
+- **Da solo:** sotto il buy & hold in ogni periodo (S1 3D dal 2021: 5,2k contro 20,8k); gli short a 1x si azzerano.
+- **Dentro W3.2:** come uscita peggiora (W1 68,8k e DD −28% contro 78,5k e −21%); come filtro anche (W3 52,8k).
+- **Placebo:** p 0,44–1,00.
 **Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
 +0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
 con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai
