@@ -1,0 +1,7 @@
+scarto,valore,decisioni_cambiate,trade_diversi,rend_def,rend_prov,dd_def,dd_prov,date
+F0 min,-6.35540868836334e-05,0,0,741.5,741.5,-21.1,-21.1,
+F0 max,5.217497215564287e-05,2,2,741.5,717.8,-21.1,-21.1,2021-10-24:nessuna→uscita dist 2021-10-31:nessuna→uscita dist
+F0 2×min,-0.0001271081737672668,1,2,741.5,684.9,-21.1,-21.1,2023-12-31:uscita dist→nessuna
+F0 2×max,0.00010434994431128574,3,4,741.5,809.4,-21.1,-21.1,2021-09-05:nessuna→uscita dist 2021-10-24:nessuna→uscita dist 2021-10-31:nessuna→uscita dist
+F1 min,-1.1062158065291863e-05,0,0,741.5,741.5,-21.1,-21.1,
+F1 max,5.353500473367814e-06,2,2,741.5,717.8,-21.1,-21.1,2021-10-24:nessuna→uscita dist 2021-10-31:nessuna→uscita dist

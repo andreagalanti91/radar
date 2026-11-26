@@ -1,0 +1,95 @@
+Dati definitivi: 2019-09-01 → 2026-11-25 · funding definitivo archivio fino a 2026-10-31, poi ricostruito dal premio fino a 2026-11-26
+W3.2 definitivo: {'n': 14, 'per_year': 2.37, 'win_rate': 92.9, 'avg_pct': 17.53, 'worst_pct': -4.1, 'best_pct': 52.2, 'total_pct': 741.5, 'max_dd_pct': -21.1, 'mar': 35.09, 'years': {'2021': 91.9, '2022': 19.4, '2023': 46.1, '2024': 102.7, '2025': 4.9, '2026': 18.2}}
+Volume OKX / Binance per anno (mediana): {2020: 0.145, 2021: 0.11, 2022: 0.239, 2023: 0.342, 2024: 0.447, 2025: 0.485, 2026: 0.547}
+Taker share metrics (non pesata) − share vera (pesata) giornaliera: n 1692 · mediana 0.00679 · p95 0.0228 · max 0.0469 · media -0.0011
+[controllo] pf14z ricostruito = build_features: scarto massimo 0.00e+00
+
+FLUSSO (domeniche dal 2022-05-15; k = giorni finali gio/ven/sab ancora OKX al lunedì):
+ k                  variante   n  err_mediana  err_p95  err_max    bias  segno_diverso  vuoti  decisioni_cambiate  trade_diversi  rend_def  rend_prov  dd_def  dd_prov
+ 1                P0_attuale 237       0.0202   0.0836   0.2035  0.0029              1      0                   0              0     741.5      741.5   -21.1    -21.1
+ 1         P1_volume_scalato 237       0.0178   0.0703   0.2058 -0.0006              2      0                   0              0     741.5      741.5   -21.1    -21.1
+ 1 P2_scalato_taker_corretto 237       0.0184   0.0709   0.1979  0.0028              2      0                   0              0     741.5      741.5   -21.1    -21.1
+ 1        P3_solo_definitivi 237       0.0528   0.1864   0.3295  0.0005              6      0                   1              2     741.5      818.5   -21.1    -21.1
+ 2                P0_attuale 237       0.0758   0.3123   0.6679  0.0058              9      0                   1              2     741.5      818.5   -21.1    -21.1
+ 2         P1_volume_scalato 237       0.0699   0.3360   0.5088 -0.0112             10      0                   0              0     741.5      741.5   -21.1    -21.1
+ 2 P2_scalato_taker_corretto 237       0.0726   0.3345   0.6253  0.0057             10      0                   0              0     741.5      741.5   -21.1    -21.1
+ 2        P3_solo_definitivi 237          NaN      NaN      NaN     NaN              0    237                  12              9     741.5       93.9   -21.1    -13.8
+ 3                P0_attuale 237       0.1764   0.6224   1.5356  0.0212             16      0                   1              2     741.5      818.5   -21.1    -21.1
+ 3         P1_volume_scalato 237       0.1450   0.5370   1.1001 -0.0128             19      0                   1              2     741.5      818.5   -21.1    -21.1
+ 3 P2_scalato_taker_corretto 237       0.1628   0.5909   1.0102  0.0247             17      0                   2              4     741.5      811.0   -21.1    -21.1
+ 3        P3_solo_definitivi 237          NaN      NaN      NaN     NaN              0    237                  12              9     741.5       93.9   -21.1    -13.8
+
+FUNDING giornaliero OKX − definitivo: n 93 · mediana 4.43e-05 · p95 0.000126 · max 0.00022 · media -9.34e-06
+FUNDING giornaliero ricostruito − archivio (fino al 31/10): n 68 · mediana 3.03e-06 · p95 1.31e-05 · max 1.43e-05
+
+FUNDING 7g alle domeniche (dal 30/08/2026, finestra OKX disponibile):
+      date  okx_days  fund7_def  F0_attuale  F1_premio_binance  F1b_premio_attesa  F2_okx_piu_scarto      bias
+2026-09-06         6   0.000175    0.000140           0.000180           0.000177           0.000216  0.000088
+2026-09-13         7   0.000160    0.000164           0.000164           0.000161           0.000231  0.000066
+2026-09-20         7   0.000213    0.000206           0.000215           0.000214           0.000236  0.000030
+2026-09-27         7   0.000092    0.000107           0.000081           0.000089           0.000119  0.000012
+2026-10-04         4   0.000115    0.000104           0.000113           0.000114           0.000105  0.000001
+2026-10-11         7   0.000025    0.000077           0.000021           0.000023           0.000076 -0.000001
+2026-10-18         7   0.000112    0.000139           0.000111           0.000115           0.000130 -0.000009
+2026-10-25         7   0.000174    0.000184           0.000177           0.000175           0.000160 -0.000024
+2026-11-01         1   0.000241    0.000236           0.000236           0.000241           0.000234 -0.000015
+2026-11-08         7   0.000232    0.000215           0.000224           0.000232           0.000199 -0.000017
+2026-11-15         7   0.000186    0.000137           0.000185           0.000186           0.000135 -0.000002
+2026-11-22         7   0.000069    0.000006           0.000071           0.000069           0.000007  0.000001
+         variante  n  err_mediana  err_p95  err_max          bias  decisioni_cambiate  trade_diversi
+       F0_attuale 12     0.000016 0.000057 0.000064 -6.593857e-06                   0              0
+F1_premio_binance 12     0.000003 0.000009 0.000011 -1.387460e-06                   0              0
+F1b_premio_attesa 12     0.000001 0.000003 0.000003  1.588619e-07                   0              0
+F2_okx_piu_scarto 12     0.000030 0.000066 0.000071  4.438377e-06                   0              0
+
+Funding sullo storico 2021–2026 con scarto costante a ogni domenica (simulazione completa):
+  scarto    valore  decisioni_cambiate  trade_diversi  rend_def  rend_prov  dd_def  dd_prov                                                                                         date
+  F0 min -0.000064                   0              0     741.5      741.5   -21.1    -21.1                                                                                             
+  F0 max  0.000052                   2              2     741.5      717.8   -21.1    -21.1                                2021-10-24:nessuna→uscita dist 2021-10-31:nessuna→uscita dist
+F0 2×min -0.000127                   1              2     741.5      684.9   -21.1    -21.1                                                               2023-12-31:uscita dist→nessuna
+F0 2×max  0.000104                   3              4     741.5      809.4   -21.1    -21.1 2021-09-05:nessuna→uscita dist 2021-10-24:nessuna→uscita dist 2021-10-31:nessuna→uscita dist
+  F1 min -0.000011                   0              0     741.5      741.5   -21.1    -21.1                                                                                             
+  F1 max  0.000005                   2              2     741.5      717.8   -21.1    -21.1                                2021-10-24:nessuna→uscita dist 2021-10-31:nessuna→uscita dist
+
+Sensibilità funding sullo storico (308 domeniche dal 2021): errore OKX osservato da -6.36e-05 a +5.22e-05; domeniche con il flusso contrario alla posizione (dove il funding decide): 116; distanza dalla soglia (negativa = sotto, nessuna uscita) mediana -5.44e-04, massima +2.49e-03
+Decisioni che cambierebbero spostando fund7 dell'errore osservato (o del doppio): 
+      date  side     shift  fund7_def      flow decision_def decision_shift
+2021-09-05     1  0.000127   0.000847 -0.235002      nessuna    uscita dist
+2021-10-24     1  0.000052   0.000896 -1.595275      nessuna    uscita dist
+2021-10-24     1  0.000127   0.000896 -1.595275      nessuna    uscita dist
+2021-10-31     1  0.000052   0.000895 -2.272008      nessuna    uscita dist
+2021-10-31     1  0.000127   0.000895 -2.272008      nessuna    uscita dist
+2023-12-31     1 -0.000127   0.001023 -0.674663  uscita dist        nessuna
+
+DECISIONI CAMBIATE (tutte le varianti):
+                          scenario       date  side   decision_def  decision_prov  flow_def  flow_prov  fund7_def  fund7_prov
+       flow k=1 P3_solo_definitivi 2022-05-15     0        nessuna ingresso short  0.062676  -0.002521   0.000073    0.000073
+               flow k=2 P0_attuale 2022-05-15     0        nessuna ingresso short  0.062676  -0.011565   0.000073    0.000073
+       flow k=2 P3_solo_definitivi 2022-08-14     0 ingresso short        nessuna -0.289096        NaN   0.000141    0.000141
+       flow k=2 P3_solo_definitivi 2023-01-22     0  ingresso long        nessuna  1.950501        NaN   0.000300    0.000300
+       flow k=2 P3_solo_definitivi 2023-10-22     0  ingresso long        nessuna  1.123726        NaN   0.000009    0.000009
+       flow k=2 P3_solo_definitivi 2023-12-31     1    uscita dist        nessuna -0.674663        NaN   0.001023    0.001023
+       flow k=2 P3_solo_definitivi 2024-02-11     0  ingresso long        nessuna  1.020197        NaN   0.000254    0.000254
+       flow k=2 P3_solo_definitivi 2024-03-10     1    uscita dist        nessuna -0.021385        NaN   0.001425    0.001425
+       flow k=2 P3_solo_definitivi 2024-09-22     0  ingresso long        nessuna  1.634592        NaN   0.000148    0.000148
+       flow k=2 P3_solo_definitivi 2025-04-27     0  ingresso long        nessuna  3.383132        NaN   0.000004    0.000004
+       flow k=2 P3_solo_definitivi 2025-11-30     0 ingresso short        nessuna -1.037630        NaN   0.000049    0.000049
+       flow k=2 P3_solo_definitivi 2026-05-24     0 ingresso short        nessuna -0.500495        NaN   0.000136    0.000136
+       flow k=2 P3_solo_definitivi 2026-08-23     0  ingresso long        nessuna  2.301781        NaN   0.000228    0.000228
+       flow k=2 P3_solo_definitivi 2026-11-15     0 ingresso short        nessuna -0.925714        NaN   0.000186    0.000186
+               flow k=3 P0_attuale 2022-05-15     0        nessuna ingresso short  0.062676  -0.145876   0.000073    0.000073
+        flow k=3 P1_volume_scalato 2022-05-15     0        nessuna ingresso short  0.062676  -0.009777   0.000073    0.000073
+flow k=3 P2_scalato_taker_corretto 2022-05-15     0        nessuna ingresso short  0.062676  -0.005576   0.000073    0.000073
+flow k=3 P2_scalato_taker_corretto 2024-03-10     1    uscita dist        nessuna -0.021385   0.019172   0.001425    0.001425
+       flow k=3 P3_solo_definitivi 2022-08-14     0 ingresso short        nessuna -0.289096        NaN   0.000141    0.000141
+       flow k=3 P3_solo_definitivi 2023-01-22     0  ingresso long        nessuna  1.950501        NaN   0.000300    0.000300
+       flow k=3 P3_solo_definitivi 2023-10-22     0  ingresso long        nessuna  1.123726        NaN   0.000009    0.000009
+       flow k=3 P3_solo_definitivi 2023-12-31     1    uscita dist        nessuna -0.674663        NaN   0.001023    0.001023
+       flow k=3 P3_solo_definitivi 2024-02-11     0  ingresso long        nessuna  1.020197        NaN   0.000254    0.000254
+       flow k=3 P3_solo_definitivi 2024-03-10     1    uscita dist        nessuna -0.021385        NaN   0.001425    0.001425
+       flow k=3 P3_solo_definitivi 2024-09-22     0  ingresso long        nessuna  1.634592        NaN   0.000148    0.000148
+       flow k=3 P3_solo_definitivi 2025-04-27     0  ingresso long        nessuna  3.383132        NaN   0.000004    0.000004
+       flow k=3 P3_solo_definitivi 2025-11-30     0 ingresso short        nessuna -1.037630        NaN   0.000049    0.000049
+       flow k=3 P3_solo_definitivi 2026-05-24     0 ingresso short        nessuna -0.500495        NaN   0.000136    0.000136
+       flow k=3 P3_solo_definitivi 2026-08-23     0  ingresso long        nessuna  2.301781        NaN   0.000228    0.000228
+       flow k=3 P3_solo_definitivi 2026-11-15     0 ingresso short        nessuna -0.925714        NaN   0.000186    0.000186
