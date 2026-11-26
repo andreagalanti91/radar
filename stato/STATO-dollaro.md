@@ -1,6 +1,6 @@
 # STATO · Controllo "Dollaro" accanto alla posizione · avviato 26/11/2026
 
-Stato: IN CORSO
+Stato: COMPLETATO (26/11/2026) · scheda chiusa con termometro e pannello a sezioni verificati sul sito (400/1280, 0 errori JS)
 
 ## Prompt originale
 "Ok inseriscilo nella strategia come ulteriore controllo per decidere delle posizioni" (dopo l'analisi della divergenza RSI
