@@ -621,6 +621,34 @@ body.noscroll{overflow:hidden}
 .ocUp{font-size:.76rem;color:var(--label2);font-variant-numeric:tabular-nums} .ocUp b{color:var(--label)}
 .ocTxt{margin:0;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:.88rem;line-height:1.45;color:var(--label)}
 .ocNote{margin:0;font-size:.72rem;line-height:1.45;color:var(--label3)}
+/* Posizioni · "Dollaro" (report.dollaro, radar/dollaro.py): DXY giornaliero, trend, RSI e divergenza come research/dxy_divergenza.
+   Solo contesto (W3.2 non cambia). Stessi componenti della scheda on-chain (.ocTap, .ocSec, .ocT3, .ocChart, .ocLeg, .ocTxt) */
+.ocBig.forte{color:var(--violet)} .ocBig.indeb{color:var(--orange)} .ocBig.debole{color:var(--teal)}
+.ocBig.indeb small{display:block;margin:3px 0 0}
+.dxVal{display:flex;flex-wrap:wrap;gap:2px 12px;font:500 .8rem var(--font);color:var(--label2);font-variant-numeric:tabular-nums} .dxVal b{color:var(--label);font-weight:650}
+.dxVal .pos{color:var(--green)} .dxVal .neg{color:var(--red)}
+.ocT3 b.forte{color:var(--violet)} .ocT3 b.indeb{color:var(--orange)} .ocT3 b.debole{color:var(--teal)}
+.ocChart .dc{stroke:var(--label);stroke-width:1.6;fill:none;stroke-linejoin:round}
+.ocChart .d20{stroke:var(--tint);stroke-width:1.2;fill:none} .ocChart .d50{stroke:var(--violet);stroke-width:1.2;fill:none;stroke-dasharray:5 3}
+.ocChart .dlo{stroke:var(--teal);stroke-width:1;stroke-dasharray:3 3} .ocChart .dhi{stroke:var(--orange);stroke-width:1;stroke-dasharray:3 3}
+.ocChart .dvb{stroke:var(--orange);stroke-width:2.2;fill:none;stroke-linecap:round} .ocChart .dvu{stroke:var(--teal);stroke-width:2.2;fill:none;stroke-linecap:round}
+.ocChart .dvp.b{fill:var(--orange)} .ocChart .dvp.u{fill:var(--teal)}
+.ocChart .rsi{stroke:var(--label2);stroke-width:1.4;fill:none} .ocChart .rb{fill:color-mix(in srgb,var(--label3) 12%,transparent)}
+.ocP .ocChart.dxR{height:110px}
+.ocLeg i.l20{height:0;border-top:2px solid var(--tint);border-radius:0} .ocLeg i.l50{height:0;border-top:2px dashed var(--violet);border-radius:0}
+.ocLeg i.llo{height:0;border-top:1px dashed var(--teal);border-radius:0} .ocLeg i.lhi{height:0;border-top:1px dashed var(--orange);border-radius:0}
+.ocLeg i.ldv{height:0;border-top:2px solid var(--orange);border-radius:0}
+.dxLv{display:grid;gap:2px;min-width:0}
+.dxLv .r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 10px;border-radius:10px}
+.dxLv .r:nth-child(odd){background:var(--fill)}
+.dxLv .r span{font-size:.82rem;color:var(--label2);min-width:0} .dxLv .r b{font:650 .9rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dxLv .r small{display:block;font-size:.7rem;color:var(--label3)}
+.dxTb{display:grid;grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr));gap:2px 6px;min-width:0;font-variant-numeric:tabular-nums}
+.dxTb>span{padding:7px 4px;min-width:0;font-size:.8rem} .dxTb>.h{font:600 .7rem var(--font);color:var(--label3);text-align:right} .dxTb>.h:first-child{text-align:left}
+.dxTb>.k{font:600 .78rem var(--font);color:var(--label)} .dxTb>.k small{display:block;font:500 .66rem var(--font);color:var(--label3)}
+.dxTb>.c{text-align:right} .dxTb>.c b{display:block;font:650 .86rem var(--font)} .dxTb>.c small{display:block;font-size:.64rem;color:var(--label3);white-space:nowrap}
+.dxTb .pos{color:var(--green)} .dxTb .neg{color:var(--red)}
+.dxTb>.sep{grid-column:1/-1;height:1px;padding:0;background:var(--line)}
 /* Oggi · riga di stato delle posizioni: porta a Posizioni */
 .posLine{display:flex;align-items:center;gap:6px 12px;padding:13px 16px;color:var(--label);text-decoration:none;font-size:.92rem;font-variant-numeric:tabular-nums}
 .posLine .plK{font:500 .76rem var(--font);color:var(--label3)}
@@ -965,6 +993,10 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
     <div class="section" id="ocSec" hidden>
       <div class="sh">Ciclo on-chain <small>solo contesto</small></div>
       <div class="card ocCard" id="ocCard"></div>
+    </div>
+    <div class="section" id="dxSec" hidden>
+      <div class="sh">Dollaro <small>solo contesto</small></div>
+      <div class="card ocCard" id="dxCard"></div>
     </div>
   </div>
 
@@ -1409,7 +1441,7 @@ function qxLine(U, px) {
   if (open) {
     hero = `<div class="wkTop"><span class="wkBadge ${W.side}"><i></i>${W.side === "long" ? "Long" : "Short"} ${W.status === "uscita" ? "· uscita lunedì" : "aperto"} · ${mkt(W.market, W.expo)}</span>
         <span class="cap">${artD("dal", fmtD(W.entry))} · ${weeksIn} settimane</span></div>
-      <div id="wkPos">${posHtml(REF)}</div><div class="oc" id="ocBox" hidden></div>`;
+      <div id="wkPos">${posHtml(REF)}</div><div class="oc" id="ocBox" hidden></div><div class="oc" id="dxBox" hidden></div>`;
     window.onRef(r => { $("wkPos").innerHTML = posHtml(r); });
   } else if (W.status === "segnale") {
     const p = W.plan;
@@ -1737,6 +1769,109 @@ function qxLine(U, px) {
       B.querySelector("#ocEpBox").innerHTML = epHtml(bt.dataset.k); });
     requestAnimationFrame(() => draw(C));
     if (window.ResizeObserver) new ResizeObserver(() => C.isConnected && draw(C)).observe(C);
+  };
+})();
+// ---- Posizioni · "Dollaro" (report.dollaro, radar/dollaro.py): DXY giornaliero (Yahoo; ripiego FRED DTWEXBGS), trend con EMA20/50,
+// RSI(14) e divergenza con la definizione di research/dxy_divergenza/check.py. Scheda chiusa: stato in grande, valore e una riga sul
+// verso della posizione; al tocco il pannello (openSheet) con Dove siamo · Ultimi 6 mesi · Livelli di conferma · Dopo le divergenze
+// (studio) · Dollaro e BTC · Cosa significa per la posizione · Fonte. Con la posizione aperta sta nella card di BTC sotto il Ciclo
+// on-chain; da flat è una card in fondo alla pagina. Solo contesto: non cambia W3.2, nessun avviso.
+(function renderDollaro() {
+  const D = R.dollaro; if (!D || !D.series || !D.series.c || !D.series.c.length) return;
+  const W = R.weekly, open = W && (W.status === "aperto" || W.status === "uscita"), box = open && $("dxBox");
+  const el = box || $("dxCard"); if (!el) return;
+  const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
+  const dmy = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const n2 = x => nfIT(x, 2), S = D.state, sg = x => x == null ? "–" : `<span class="${x >= 0 ? "pos" : "neg"}">${pct(x, 2)}</span>`;
+  const NM = { forte: "Dollaro forte", indeb: "Dollaro in indebolimento", debole: "Dollaro debole" };
+  const big = S === "indeb" ? `${NM.indeb}<small>divergenza, da confermare</small>` : NM[S] || escS(D.state_name);
+  const lbl = D.src === "fred" ? "Indice Fed" : "DXY";
+  el.innerHTML = `<button type="button" class="ocTap" id="dxOpen" aria-haspopup="dialog">
+      ${box ? `<span class="ocHead"><b>Dollaro · solo contesto</b><span class="more">Dettagli ›</span></span><span class="ocBig ${S}">${big}</span>`
+        : `<span class="ocHead"><span class="ocBig ${S}">${big}</span><span class="more">Dettagli ›</span></span>`}
+      <span class="dxVal"><span>${lbl} <b>${n2(D.close)}</b></span><span>20 giorni <b>${sg(D.ch20)}</b></span><span>RSI <b>${nfIT(D.rsi, 0)}</b></span><span>${dm(D.date)}</span></span>
+      <span class="ocLine">${escS(D.frase)}</span></button>`;
+  el.hidden = false; if (!box) $("dxSec").hidden = false;
+
+  // ---- pannello
+  const sec = (t, h) => `<section class="ocSec"><h3>${t}</h3>${h}</section>`;
+  const B = D.bear, U = D.bull;
+  const dvTxt = (v, k) => !v ? "" : v.active ? `da confermare (dal ${dm(v.date)})` : v.confirmed ? `confermata il ${dm(v.confirmed)}` : `scaduta senza conferma (${dm(v.date)})`;
+  const where = `<div class="ocT3"><div><span>${lbl} ${dm(D.date)}</span><b class="${S}">${n2(D.close)}</b><small>chiusura</small></div>
+      <div><span>20 giorni</span><b>${pct(D.ch20, 1)}</b><small>variazione</small></div>
+      <div><span>RSI 14</span><b>${nfIT(D.rsi, 0)}</b><small>${D.rsi >= 70 ? "ipercomprato" : D.rsi <= 30 ? "ipervenduto" : "neutro"}</small></div></div>
+    <div class="ocChips"><span class="chip">${D.above20 ? "sopra" : "sotto"} EMA20 ${n2(D.ema20)}</span><span class="chip">${D.above50 ? "sopra" : "sotto"} EMA50 ${n2(D.ema50)}</span>
+      <span class="chip">EMA20 ${D.slope20 >= 0 ? "in salita" : "in discesa"} ${pct(D.slope20, 2)} in 5 sedute</span>
+      ${B && (B.active || B.confirmed) ? `<span class="chip e">divergenza ribassista ${dvTxt(B)}</span>` : ""}${U && U.active ? `<span class="chip c">divergenza rialzista ${dvTxt(U)}</span>` : ""}</div>`;
+  const chart = `<div class="ocChart" id="dxChartP" role="img" aria-label="${lbl} degli ultimi 6 mesi con EMA20 e EMA50: oggi ${n2(D.close)}, minimo a 30 giorni ${n2(D.lo30)}, massimo ${n2(D.hi30)}"></div>
+    <div class="ocChart dxR" id="dxChartR" role="img" aria-label="RSI 14 degli ultimi 6 mesi: oggi ${nfIT(D.rsi, 0)}${B && B.active ? `, divergenza ribassista dal ${dm(B.date)}` : ""}"></div>
+    <div class="ocLeg"><span><i class="l20"></i>EMA20</span><span><i class="l50"></i>EMA50</span><span><i class="llo"></i>minimo 30 g</span><span><i class="lhi"></i>massimo 30 g</span><span><i class="ldv"></i>divergenza</span></div>`;
+  const lv = (k, v, s) => `<div class="r"><span>${k}<small>${s}</small></span><b>${v}</b></div>`;
+  const levels = `<div class="dxLv">${lv("EMA20", n2(D.ema20), "chiusura sotto: primo segno di debolezza")}
+      ${lv("Minimo dei 30 giorni", n2(D.lo30), "chiusura sotto EMA20 e minimo: calo confermato")}
+      ${lv("Massimo dei 30 giorni", n2(D.hi30), "chiusura sopra EMA20 e massimo: rialzo confermato")}
+      ${lv("EMA50", n2(D.ema50), "sopra: dollaro forte")}
+      ${B ? lv(`Divergenza ribassista del ${dm(B.date)}`, dvTxt(B).split(" (")[0], `massimo ${n2(B.close)} con RSI ${nfIT(B.rsi, 1)} contro ${nfIT(B.ref_rsi, 1)} del ${dm(B.ref_date)}`) : ""}
+      ${U ? lv(`Divergenza rialzista del ${dm(U.date)}`, dvTxt(U).split(" (")[0], `minimo ${n2(U.close)} con RSI ${nfIT(U.rsi, 1)} contro ${nfIT(U.ref_rsi, 1)} del ${dm(U.ref_date)}`) : ""}</div>`;
+  const St = D.study || {}, rows = St.rows || [];
+  const cell = a => `<span class="c"><b class="${a[0] >= 0 ? "pos" : "neg"}">${pct(a[0], 1)}</b><small>giù ${a[1]}%</small><small>qualsiasi ${pct(a[2], 1)}</small></span>`;
+  const table = `<p class="ocNote">Dopo ogni divergenza ribassista (stessa definizione): mediana della variazione, quota dei casi in calo e un giorno qualsiasi per confronto.</p>
+    <div class="dxTb" role="table" aria-label="Studio: dollaro e BTC a 10, 30 e 60 giorni dopo le divergenze"><span class="h">dopo</span><span class="h">10 g</span><span class="h">30 g</span><span class="h">60 g</span>
+      ${rows.map((r, i) => `${i ? `<span class="sep"></span>` : ""}<span class="k">${escS(r.k)}<small>${r.n} eventi</small></span>${["10", "30", "60"].map(h => cell(r.h[h])).join("")}`).join("")}</div>
+    <p class="ocNote">Sul dollaro la divergenza non anticipa un calo (a 30 giorni scende nel 39% dei casi, meno di un giorno qualsiasi); su BTC pochi casi e segno instabile.</p>`;
+  const cr = x => x == null ? "–" : nfIT(x, 2);
+  const corr = `<div class="ocT3"><div><span>Dal 2019</span><b>${cr(St.corr_all)}</b><small>settimanale</small></div>
+      <div><span>Ultimo anno</span><b>${cr(St.corr_52w)}</b><small>nello studio</small></div>
+      <div><span>52 settimane</span><b>${cr(St.corr_now)}</b><small>${St.corr_now == null ? "non calcolata" : "ad oggi"}</small></div></div>
+    <p class="ocNote">Correlazione debole e inversa: quando il dollaro sale BTC tende un poco a scendere, ma il dollaro spiega poco dei movimenti di BTC.</p>`;
+  const src = `<p class="ocNote">${escS(D.src_name)}, chiusura del ${dmy(D.date)}.${D.src === "fred" ? " Indice ampio della Fed: altra scala del DXY, circa una settimana di ritardo." : ""}${D.source_note ? " " + escS(D.source_note) + "." : ""} Divergenza: nuovo massimo di 60 sedute con RSI almeno 2 punti sotto il massimo RSI delle 60 precedenti (sopra 65), una ogni 30 giorni; resta da confermare per 30 giorni.</p>`;
+  const panel = `<div class="ocP">${sec("Dove siamo", where)}${sec("Ultimi 6 mesi", chart)}${sec("Livelli di conferma", levels)}` +
+    `${sec("Dopo le divergenze (studio)", table)}${sec("Dollaro e BTC", corr)}` +
+    `${sec("Cosa significa per la posizione", `<p class="ocTxt">${escS(D.frase)}.</p><p class="ocNote">Solo ${escS(D.note)}.</p>`)}${sec("Fonte", src)}</div>`;
+
+  const Sr = D.series, n = Sr.c.length, ref = new Date(D.date);
+  const k30 = Sr.d.findIndex(d => (ref - new Date(d)) / 864e5 <= 30);
+  const isAct = m => (B && B.active && m.date === B.date);
+  const geom = C => { const w = Math.round(C.clientWidth), h = Math.round(C.clientHeight); return w < 40 || h < 40 ? null : { w, h, top: 6, bot: h - 16, lft: 2, rgt: w - 44 }; };
+  const ticks = (g, X) => { const out = []; let pm = null;
+    Sr.d.forEach((d, i) => { const t = new Date(d), m = t.getMonth(); if (pm !== null && m !== pm && i > 6 && i < n - 8)
+      out.push(`<text class="ax" x="${X(i)}" y="${g.h - 3}" text-anchor="middle">${t.toLocaleDateString("it-IT", { month: "short" })}</text>`); pm = m; });
+    return out.join(""); };
+  const draw = C => {
+    const g = geom(C); if (!g) return;
+    const all = Sr.c.concat(Sr.e20, Sr.e50, [D.lo30, D.hi30]), lo = Math.min(...all), hi = Math.max(...all), pd = (hi - lo) * 0.06 || 1;
+    const X = i => (g.lft + (g.rgt - g.lft) * i / (n - 1)).toFixed(1), Y = v => (g.bot - (g.bot - g.top) * (v - lo + pd) / (hi - lo + 2 * pd)).toFixed(1);
+    const line = a => a.map((v, i) => `${i ? "L" : "M"}${X(i)},${Y(v)}`).join("");
+    const x30 = X(Math.max(0, k30)), xr = X(n - 1);
+    const dv = (arr, cls, pc) => arr.map(m => `<path class="${cls}" style="opacity:${isAct(m) ? 1 : .45}" d="M${X(m.j)},${Y(Sr.c[m.j])}L${X(m.i)},${Y(Sr.c[m.i])}"/>` +
+      `<circle class="dvp ${pc}" cx="${X(m.i)}" cy="${Y(Sr.c[m.i])}" r="3"/><circle class="dvp ${pc}" cx="${X(m.j)}" cy="${Y(Sr.c[m.j])}" r="3"/>`).join("");
+    const yl = Y(Sr.c[n - 1]), ly = Math.min(g.bot - 2, Math.max(g.top + 10, +yl + 4)), ylo = Y(D.lo30), yhi = Y(D.hi30);
+    C.innerHTML = `<svg width="${g.w}" height="${g.h}" viewBox="0 0 ${g.w} ${g.h}" aria-hidden="true">
+      <line class="dlo" x1="${x30}" x2="${xr}" y1="${ylo}" y2="${ylo}"/><line class="dhi" x1="${x30}" x2="${xr}" y1="${yhi}" y2="${yhi}"/>
+      <text class="ax" x="${+xr + 7}" y="${Math.max(+ylo, +ly + 14)}">${n2(D.lo30)}</text><text class="ax" x="${+xr + 7}" y="${Math.min(+yhi, ly - 13)}">${n2(D.hi30)}</text>
+      <path class="d50" d="${line(Sr.e50)}"/><path class="d20" d="${line(Sr.e20)}"/><path class="dc" d="${line(Sr.c)}"/>
+      ${dv(Sr.bear || [], "dvb", "b")}${dv(Sr.bull || [], "dvu", "u")}${ticks(g, X)}
+      <circle class="td ${S === "forte" ? "eup" : S === "debole" ? "cap" : "norm"}" cx="${xr}" cy="${yl}" r="4"/><text class="tl" x="${+xr + 7}" y="${ly}">${n2(D.close)}</text></svg>`;
+  };
+  const drawR = C => {
+    const g = geom(C); if (!g) return;
+    const X = i => (g.lft + (g.rgt - g.lft) * i / (n - 1)).toFixed(1), Y = v => (g.bot - (g.bot - g.top) * (v - 15) / 75).toFixed(1);   // scala 15–90
+    const line = a => a.map((v, i) => `${i ? "L" : "M"}${X(i)},${Y(v)}`).join("");
+    const dv = (arr, cls, pc) => arr.map(m => `<path class="${cls}" style="opacity:${isAct(m) ? 1 : .45}" d="M${X(m.j)},${Y(Sr.rsi[m.j])}L${X(m.i)},${Y(Sr.rsi[m.i])}"/>` +
+      `<circle class="dvp ${pc}" cx="${X(m.i)}" cy="${Y(Sr.rsi[m.i])}" r="3"/><circle class="dvp ${pc}" cx="${X(m.j)}" cy="${Y(Sr.rsi[m.j])}" r="3"/>`).join("");
+    const y70 = Y(70), y30 = Y(30), xr = X(n - 1), yl = Y(Sr.rsi[n - 1]);
+    C.innerHTML = `<svg width="${g.w}" height="${g.h}" viewBox="0 0 ${g.w} ${g.h}" aria-hidden="true">
+      <rect class="rb" x="${g.lft}" y="${y70}" width="${g.rgt - g.lft}" height="${(y30 - y70).toFixed(1)}"/>
+      <line class="l1" x1="${g.lft}" x2="${g.rgt}" y1="${y70}" y2="${y70}"/><line class="l1" x1="${g.lft}" x2="${g.rgt}" y1="${y30}" y2="${y30}"/>
+      <text class="ax" x="${+xr + 7}" y="${+y70 + 3}">70</text><text class="ax" x="${+xr + 7}" y="${+y30 + 3}">30</text>
+      <text class="ax" x="${g.lft + 2}" y="${g.top + 8}">RSI 14</text>
+      <path class="rsi" d="${line(Sr.rsi)}"/>${dv(Sr.bear || [], "dvb", "b")}${dv(Sr.bull || [], "dvu", "u")}${ticks(g, X)}
+      <circle class="td norm" cx="${xr}" cy="${yl}" r="3.5"/></svg>`;
+  };
+  $("dxOpen").onclick = () => {
+    const P = openSheet(`Dollaro (${lbl}) · solo contesto`, panel), C = P.querySelector("#dxChartP"), CR = P.querySelector("#dxChartR");
+    requestAnimationFrame(() => { draw(C); drawR(CR); });
+    if (window.ResizeObserver) new ResizeObserver(() => { if (C.isConnected) { draw(C); drawR(CR); } }).observe(C);
   };
 })();
 // ---- Oggi: riga di stato delle posizioni ("BTC short +6,8% · ETH short +16,7%"), stessi numeri in evidenza nelle card di Posizioni; porta a Posizioni
