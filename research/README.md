@@ -50,6 +50,7 @@ ogni confronto: W3.1 dal 01/01/2021, 10.000 → 27.190 $, drawdown −9,8%, 13 t
 | [`peso_btc_eth`](peso_btc_eth/README.md) | peso del capitale fra BTC ed ETH con W3.2 | 50/50 resta; 100/0 non promosso (124) |
 | [`utxo_pl`](utxo_pl/README.md) | indicatore UTXO P/L (CryptoQuant, sostituto MVRV) come supporto a W3.2 | no come regola, solo contesto (125) |
 | [`v1_confronto`](v1_confronto/README.md) | strategia v1 dell'utente (voto di 17 indicatori) contro W3.2 | W3.2 migliore; v1 solo come confronto (126) |
+| [`dorito`](dorito/README.md) | indicatore "dorito" (Leledc InSilico) da solo e su W3.2 | non funziona (127) |
 | [`multi_asset`](multi_asset/README.md) · [`ema200_vix`](ema200_vix/LOGICA.md) | W3.1 solo prezzo su 13 asset, EMA200 + VIX | non si trasferisce (104) |
 | [`top50`](top50/) · [`top10_w3`](top10_w3/README.md) · [`w2_alt`](w2_alt/) | W2/W3 su altre crypto e indici | solo BTC (74) |
 | [`short_w2`](short_w2/README.md) | strategie short dedicate | non promosse (80) |
