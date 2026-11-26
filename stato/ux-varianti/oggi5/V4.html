@@ -1,0 +1,211 @@
+<!doctype html><html lang="it" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>V4 Grafico al centro · Oggi · anteprima</title>
+<script>(function(){var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f4f5f7;--bg2:#fff;--card:#fff;--card2:#f8f9fb;--raise:#f2f4f7;--fill:#f2f4f7;--line:#e6e8ec;--line2:#d5d9e0;
+--label:#0f1218;--label2:#4d5461;--label3:#6b7280;--tint:#2f4cf0;--green:#0f8a4a;--red:#d6342a;--orange:#b45f00;--indigo:#5b4dff;
+--green-bg:#e8f6ee;--red-bg:#fdecea;--tint-bg:#eef1ff;--orange-bg:#fdf1e3;--chrome:rgba(255,255,255,.88);
+--shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.05);--font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+--r-card:20px;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0c0d10;--bg2:#111317;--card:#15171c;--card2:#1a1d23;--raise:#1e2128;--fill:#1e2128;--line:#252931;--line2:#333843;
+--label:#f1f3f7;--label2:#a3aab6;--label3:#8b919c;--tint:#7088ff;--green:#3fd185;--red:#ff6b5f;--orange:#f5a23a;--indigo:#8a7dff;
+--green-bg:rgba(63,209,133,.12);--red-bg:rgba(255,107,95,.12);--tint-bg:rgba(112,136,255,.14);--orange-bg:rgba(245,162,58,.13);--chrome:rgba(21,23,28,.88);
+--shadow:0 1px 2px rgba(0,0,0,.3);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--label);font:400 15px/1.5 var(--font);letter-spacing:-.006em;margin:0;-webkit-font-smoothing:antialiased}
+b,strong,.num{font-variant-numeric:tabular-nums}
+a{color:inherit}
+.shell{display:grid;grid-template-columns:minmax(0,1fr);min-height:100dvh}
+@media(min-width:900px){.shell{grid-template-columns:232px minmax(0,1fr)}}
+.app{width:100%;max-width:1160px;margin:0 auto;padding:16px 16px 112px;display:grid;gap:20px;align-content:start}
+@media(min-width:900px){.app{padding:28px 32px 56px}}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--label)}
+.logo svg{width:34px;height:34px;padding:6.5px;border-radius:7.5px;color:#fff;background:#2f4cf0;flex:none}
+.logo b{font:700 18px/1 var(--font);letter-spacing:-.035em}.logo b span{color:var(--tint);font-weight:600}
+.logo small{display:block;font:500 13px/1 var(--font);color:var(--label2);margin-top:5px}
+.side{display:none}
+@media(min-width:900px){.side{display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100dvh;padding:26px 16px;border-right:1px solid var(--line);background:var(--bg2)}.mbar{display:none!important}}
+.side nav{display:grid;gap:4px}
+.side nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--label2);text-decoration:none;font-weight:500;font-size:15px;min-height:44px}
+.side nav a svg{width:20px;height:20px}.side nav a.on{background:var(--tint-bg);color:var(--tint);font-weight:600}
+.mbar{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+.mbarR{display:inline-flex;align-items:center;gap:8px}
+.btn{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--label);padding:0;flex:none;cursor:pointer}
+.btn svg{width:18px;height:18px}
+.status{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 var(--font);padding:10px 13px;border-radius:999px;color:var(--label);background:var(--raise);white-space:nowrap}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--tint)}
+@media(max-width:380px){.mbar .logo>span{display:none}.status{padding:9px 10px}}
+.hero{display:grid;gap:2px;padding:0 4px}
+.hero .top{display:flex;justify-content:space-between;align-items:center;gap:10px;font:500 13px var(--font);color:var(--label2)}
+.hero .top .mbarR{display:none}@media(min-width:900px){.hero .top .mbarR{display:inline-flex}}
+.hero h1{margin:0;font:700 clamp(36px,10vw,52px)/1.05 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.hero p{margin:0;color:var(--label2);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:18px;min-width:0;position:relative}
+.sh{margin:0 4px;font:600 17px/1.25 var(--font);letter-spacing:-.02em;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cap{font:500 13px/1.3 var(--font);color:var(--label2)}
+.more{display:inline-flex;align-items:center;gap:2px;min-height:44px;padding:0 4px;margin:-6px -4px -10px auto;color:var(--tint);font:600 14px var(--font);text-decoration:none;white-space:nowrap}
+.more svg{width:16px;height:16px}
+.foot{font-size:13px;color:var(--label2);line-height:1.45}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.grid{display:grid;gap:20px;min-width:0}
+@media(min-width:900px){.g2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(560px,calc(100% - 24px));padding:6px;border-radius:26px;background:var(--chrome);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 11.5px var(--font);color:var(--label2);text-decoration:none}
+.tabbar svg{width:22px;height:22px}.tabbar a.on{color:var(--tint);background:var(--tint-bg);font-weight:600}
+@media(min-width:900px){.tabbar{display:none}}
+body.full .tabbar{position:static;transform:none;margin:0 auto 16px}
+/* chip lato */
+.side-chip{display:inline-flex;align-items:center;gap:4px;font:600 12.5px/1 var(--font);padding:5px 8px;border-radius:999px;background:var(--raise);color:var(--label2)}
+/* barra di uscita */
+.xbar{position:relative;height:64px;margin:4px 2px 0}
+.xbar .rail{position:absolute;left:0;right:0;top:28px;height:8px;border-radius:4px;background:var(--raise);overflow:hidden}
+.xbar .zp{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--green) 30%,transparent)}
+.xbar .zl{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--red) 28%,transparent)}
+.xbar .tk{position:absolute;top:22px;width:2px;height:20px;margin-left:-1px;border-radius:1px;background:var(--label2)}
+.xbar .tk.r{background:var(--red)}.xbar .tk.g{background:var(--green)}
+.xbar .dot{position:absolute;top:24px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--label);border:3px solid var(--card)}
+.xbar .lb{position:absolute;font:500 13px/1 var(--font);color:var(--label2);white-space:nowrap}
+.xbar .lb.up{top:2px}.xbar .lb.dn{top:48px}
+.xbar .lb.c{transform:translateX(-50%)}.xbar .lb.e{transform:translateX(-100%)}
+.xbar .lb b{color:var(--label);font-weight:600}
+/* intervallo a 30 giorni */
+.rng{position:relative;height:58px;margin:2px 2px 0}
+.rng .rail{position:absolute;left:0;right:0;top:24px;height:6px;border-radius:3px;background:var(--raise)}
+.rng .b80{position:absolute;top:18px;height:18px;border-radius:9px;background:color-mix(in srgb,var(--indigo) 22%,transparent)}
+.rng .b50{position:absolute;top:18px;height:18px;border-radius:9px;background:color-mix(in srgb,var(--indigo) 50%,transparent)}
+.rng .now{position:absolute;top:16px;width:3px;height:24px;margin-left:-1.5px;border-radius:2px;background:var(--label)}
+.rng .tk{position:absolute;top:16px;width:2px;height:24px;margin-left:-1px;background:var(--red)}
+.rng .lb{position:absolute;top:44px;font:500 13px/1 var(--font);color:var(--label2);white-space:nowrap}
+.rng .lb.c{transform:translateX(-50%)}.rng .lb.e{transform:translateX(-100%)}
+.rng .lt{position:absolute;top:0;font:500 13px/1 var(--font);color:var(--label2);white-space:nowrap;transform:translateX(-50%)}
+.leg{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;font-size:13px;color:var(--label2)}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+/* righe livelli */
+.lvl{display:grid;grid-template-columns:minmax(0,1fr) auto 64px;gap:4px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-height:52px}
+.lvl:first-child{border-top:0}
+.lvl .t{min-width:0}.lvl .t b{display:block;font:600 15px/1.3 var(--font)}.lvl .t small{display:block;font-size:13px;color:var(--label2);line-height:1.35}
+.lvl .p{text-align:right;font:600 15px var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}.lvl .p small{display:block;font:500 13px var(--font);color:var(--label2)}
+.lvl .pr{display:grid;gap:4px;justify-items:end}.lvl .pr b{font:700 15px var(--font)}
+.pbar{width:56px;height:6px;border-radius:3px;background:var(--raise);overflow:hidden}.pbar i{display:block;height:100%;background:var(--indigo);border-radius:3px}
+/* operazioni simili */
+.sim{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:end;height:118px}
+.sim div{display:grid;justify-items:center;align-content:end;gap:4px;height:100%;min-width:0}
+.sim b{font:600 13px var(--font);font-variant-numeric:tabular-nums;color:var(--green)}
+.sim i{display:block;width:100%;max-width:44px;border-radius:6px 6px 2px 2px;background:color-mix(in srgb,var(--green) 55%,transparent)}
+.sim i.now{background:transparent;border:2px dashed color-mix(in srgb,var(--green) 70%,transparent)}
+.sim span{font-size:13px;color:var(--label2);white-space:nowrap}
+/* semafori */
+.mp6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.mp6 i{display:grid;place-items:center;height:28px;border-radius:7px;font:700 15px/1 var(--font);font-style:normal}
+.st-favore{color:#fff;background:var(--tint)}.st-contro{color:#1a1205;background:var(--orange)}.st-neutro{color:var(--label2);background:var(--raise)}
+.mpRow{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-height:52px}
+.mpRow:first-child{border-top:0}
+.mpRow .s{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font:700 16px/1 var(--font)}
+.mpRow .t b{display:block;font:600 15px/1.3 var(--font)}.mpRow .t small{display:block;font-size:13px;color:var(--label2);line-height:1.35}
+.mpRow .v{font:600 13px var(--font);white-space:nowrap}
+.mpRow .v.favore{color:var(--tint)}.mpRow .v.contro{color:var(--orange)}.mpRow .v.neutro{color:var(--label2)}
+.tagW{display:inline-block;margin-left:6px;font:600 13px/1 var(--font);padding:3px 6px;border-radius:6px;background:var(--tint-bg);color:var(--tint);vertical-align:2px}
+/* notizie */
+.nw{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.nw:first-of-type{border-top:0}
+.nw .tm{font:600 13px/1.35 var(--font);color:var(--tint);padding-top:2px}
+.nw b{display:block;font:600 15px/1.35 var(--font)}.nw small{display:block;font-size:13px;color:var(--label2)}
+
+.pills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pill{display:grid;gap:1px;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid var(--line);text-decoration:none;min-height:44px;min-width:0}
+.pill span{font:600 13px var(--font);color:var(--label2)}.pill b{font:700 18px var(--font);white-space:nowrap}.pill small{font:600 13px var(--font)}
+@media(max-width:380px){.pill b{font-size:16px}}
+.chC{padding:16px}
+.ch2{display:flex;justify-content:space-between;align-items:center;gap:8px}.ch2 b{font:650 16px/1.3 var(--font)}
+.chart{margin:6px -4px 4px;min-height:330px}
+.keys{display:grid;gap:2px}@media(min-width:900px){.keys{grid-template-columns:1fr 1fr;column-gap:24px}}
+.ky{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.ky i{display:block;width:22px;margin-top:10px}.ky i.cn{height:12px;border-radius:3px;margin-top:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--indigo) 22%,transparent) 50%,color-mix(in srgb,var(--indigo) 50%,transparent) 50%)}
+.ky b{display:block;font:600 15px/1.35 var(--font)}.ky small{display:block;font-size:13px;color:var(--label2);line-height:1.4}
+.big{margin:2px 0 6px;font:700 22px/1.2 var(--font);letter-spacing:-.02em}.big small{font:500 13px var(--font);color:var(--label2)}
+</style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mark" viewBox="0 0 64 64"><circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="32" cy="32" r="4" fill="currentColor"/></symbol>
+<symbol id="i-oggi" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 12l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-pos" viewBox="0 0 24 24"><path d="M8 4v16M8 4l-4 4M8 4l4 4M16 20V4M16 20l-4-4M16 20l4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-scan" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-graf" viewBox="0 0 24 24"><path d="M7 3v18M17 3v18" stroke="currentColor" stroke-width="1.6"/><rect x="5" y="7" width="4" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="15" y="9" width="4" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="i-mov" viewBox="0 0 24 24"><path d="M5 20V10M10 20V6M15 20v-8M20 20V4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-news" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-theme" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-reload" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-exit" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-cone" viewBox="0 0 24 24"><path d="M3 12h4l13-7M7 12l13 7M7 12h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M9 3v4M15 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-btc" viewBox="0 0 24 24"><path d="M9 6h5a3 3 0 0 1 0 6H9zm0 6h6a3 3 0 0 1 0 6H9zM9 6v12M11 4v2M13 4v2M11 18v2M13 18v2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="i-eth" viewBox="0 0 24 24"><path d="M12 3l6 9-6 3.5L6 12zM6 13.5l6 7.5 6-7.5-6 3.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<div class="shell"><aside class="side"><a class="logo" href="#"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · W3.2</small></span></a><nav><a href="#" class="on"><svg><use href="#i-oggi"/></svg>Oggi</a><a href="#" class=""><svg><use href="#i-pos"/></svg>Posizioni</a><a href="#" class=""><svg><use href="#i-scan"/></svg>Scanner</a><a href="#" class=""><svg><use href="#i-graf"/></svg>Grafico</a><a href="#" class=""><svg><use href="#i-mov"/></svg>Movimenti</a><a href="#" class=""><svg><use href="#i-news"/></svg>Notizie</a></nav></aside>
+<div class="app">
+<header class="mbar"><a class="logo" href="#"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · W3.2</small></span></a><span class="mbarR"><span class="status">Short aperto</span><button class="btn" aria-label="Cambia tema chiaro o scuro" onclick="var r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'"><svg><use href="#i-theme"/></svg></button><button class="btn" aria-label="Aggiorna"><svg><use href="#i-reload"/></svg></button></span></header>
+<div class="hero"><div class="top"><span>Bitcoin · BTC/USDT</span><span class="mbarR"><span class="status">Short aperto</span><button class="btn" aria-label="Cambia tema chiaro o scuro" onclick="var r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'"><svg><use href="#i-theme"/></svg></button><button class="btn" aria-label="Aggiorna"><svg><use href="#i-reload"/></svg></button></span></div><h1>$60.458</h1><p>chiusura del 25/11 · dati aggiornati 26/11 19:20</p></div>
+
+<div class="pills">
+ <a class="pill" href="#"><span>BTC short</span><b class="pos">+2.169 $</b><small class="pos">+7,2%</small></a>
+ <a class="pill" href="#"><span>ETH short</span><b class="pos">+4.971 $</b><small class="pos">+16,6%</small></a>
+ <a class="pill tot" href="#"><span>Totale</span><b class="pos">+7.140 $</b><small class="pos">+11,9%</small></a>
+</div>
+<div class="card chC">
+ <div class="ch2"><b>BTC: dove siamo, dove usciamo, dove può andare</b><a class="more" href="#">Grafico<svg><use href="#i-chev"/></svg></a></div>
+ <div id="ch" class="chart"></div>
+ <div class="keys">
+  <div class="ky"><i style="border-top:2px solid var(--red)"></i><div><b>Uscita in perdita subito: 75.764 $</b><small>stop mobile controllato ogni ora · −4.718 $ · 15% di probabilità in 30 giorni</small></div></div>
+  <div class="ky"><i style="border-top:2px dashed var(--red)"></i><div><b>Uscita in perdita domenica: sopra 74.273 $</b><small>chiusura settimanale sopra la media a 21 settimane · −4.051 $</small></div></div>
+  <div class="ky"><i style="border-top:2px dashed var(--label2)"></i><div><b>Ingresso dello short: 65.286 $</b><small>16/11 · sotto questa linea la posizione è in utile</small></div></div>
+  <div class="ky"><i style="border-top:2px dashed var(--green)"></i><div><b>Utile bloccato sotto 47.800 $</b><small>lo stop mobile scende sotto l'ingresso · in profitto anche con la distribuzione di domenica (oggi no, +2.128 $)</small></div></div>
+  <div class="ky"><i class="cn"></i><div><b>Dove può essere il 25/12</b><small>zona chiara 8 volte su 10 (52.100–74.800 $), scura 5 su 10 (57.000–68.100 $); dalla volatilità, non dalla direzione</small></div></div>
+ </div>
+</div>
+<div class="grid g2">
+ <div class="card"><div class="ch2"><b>ETH</b><a class="more" href="#">Posizioni<svg><use href="#i-chev"/></svg></a></div><div class="xbar" role="img" aria-label="Prezzo, ingresso e uscite di ETH"><div class="rail"><i class="zp" style="left:0;width:75.3%"></i><i class="zl" style="left:75.3%;right:0"></i></div><span class="tk g" style="left:4.4%"></span><span class="tk" style="left:75.3%"></span><span class="tk r" style="left:83.8%"></span><span class="tk r" style="left:94.1%"></span><span class="dot" style="left:31.3%"></span><span class="lb up c" style="left:31.3%"><b>oggi</b></span><span class="lb up c" style="left:75.3%">ingresso</span><span class="lb dn" style="left:4.4%">sotto <b>1.400</b></span><span class="lb dn e" style="left:94.1%">uscite in perdita</span></div>
+  <p class="foot">Esce in perdita se domenica chiude sopra 2.209 $ (−993 $, serve +30,5%) o subito a 2.311 $ (−2.160 $). In profitto con la distribuzione (oggi no, +4.942 $) o sotto 1.400 $.</p></div>
+ <div class="card"><div class="ch2"><b>Pre-analisi di domenica 29/11</b><a class="more" href="#">Dettagli<svg><use href="#i-chev"/></svg></a></div>
+  <p class="big">Restano aperte</p><p class="foot">Nessuna condizione di uscita vicina; distribuzione no per entrambe. Short BTC simili dal 2022: 4 su 4 in utile.</p><div class="sim" role="img" aria-label="Short simili dal 2022: movimento a favore"><div><b>+0,8%</b><i class="" style="height:6px"></i><span>gen 22</span></div><div><b>+13,9%</b><i class="" style="height:70px"></i><span>ago 22</span></div><div><b>+12,8%</b><i class="" style="height:64px"></i><span>dic 25</span></div><div><b>+4,8%</b><i class="" style="height:24px"></i><span>mag 26</span></div><div><b>+7,4%</b><i class="now" style="height:37px"></i><span>ora</span></div></div></div>
+ <div class="card"><div class="ch2"><b>Mercato power</b><a class="more" href="#">Dettagli<svg><use href="#i-chev"/></svg></a></div>
+  <p class="big"><span style="color:var(--tint)">1 a favore</span> · <span style="color:var(--orange)">2 contro</span> <small>3 neutri</small></p><div class="mp6" aria-hidden="true"><i class="st-contro">−</i><i class="st-neutro">=</i><i class="st-contro">−</i><i class="st-neutro">=</i><i class="st-neutro">=</i><i class="st-favore">+</i></div>
+  <p class="foot">Contro: ciclo on-chain e scadenza opzioni a 70.000 $. A favore: i perp vendono. Trend in ribasso (−16,1% dalla media a 200 giorni), volatilità alta.</p></div>
+ <div class="card"><div class="ch2"><b>Oggi nelle notizie</b><a class="more" href="#">Notizie<svg><use href="#i-chev"/></svg></a></div><div class="nw"><span class="tm">mer 9/12<br>20:00</span><div><b>Fed: decisione sui tassi</b><small>dopo la chiusura di domenica · impatto alto</small></div></div><div class="nw"><span class="tm" style="color:var(--label2)">3 h fa</span><div><b>Bitcoin’s recovery above $60,000 faces a threat from Japan while Wall Street sleeps</b><small>BTC · CryptoSlate</small></div></div></div>
+</div>
+</div></div>
+<nav class="tabbar"><a href="#" class="on"><svg><use href="#i-oggi"/></svg>Oggi</a><a href="#" class=""><svg><use href="#i-pos"/></svg>Posizioni</a><a href="#" class=""><svg><use href="#i-scan"/></svg>Scanner</a><a href="#" class=""><svg><use href="#i-graf"/></svg>Grafico</a><a href="#" class=""><svg><use href="#i-mov"/></svg>Movimenti</a><a href="#" class=""><svg><use href="#i-news"/></svg>Notizie</a></nav>
+<script>const D={"past": [{"t": -44, "p": 81850}, {"t": -43, "p": 83169}, {"t": -42, "p": 81682}, {"t": -41, "p": 82246}, {"t": -40, "p": 81616}, {"t": -39, "p": 81491}, {"t": -38, "p": 82116}, {"t": -37, "p": 81938}, {"t": -36, "p": 83028}, {"t": -35, "p": 84093}, {"t": -34, "p": 81416}, {"t": -33, "p": 81189}, {"t": -32, "p": 80888}, {"t": -31, "p": 80154}, {"t": -30, "p": 80151}, {"t": -29, "p": 80910}, {"t": -28, "p": 81344}, {"t": -27, "p": 77992}, {"t": -26, "p": 77369}, {"t": -25, "p": 77582}, {"t": -24, "p": 78354}, {"t": -23, "p": 76816}, {"t": -22, "p": 77454}, {"t": -21, "p": 80504}, {"t": -20, "p": 76088}, {"t": -19, "p": 75844}, {"t": -18, "p": 75868}, {"t": -17, "p": 74851}, {"t": -16, "p": 75368}, {"t": -15, "p": 73796}, {"t": -14, "p": 74015}, {"t": -13, "p": 71460}, {"t": -12, "p": 68314}, {"t": -11, "p": 64150}, {"t": -10, "p": 65351}, {"t": -9, "p": 64883}, {"t": -8, "p": 64947}, {"t": -7, "p": 63068}, {"t": -6, "p": 61987}, {"t": -5, "p": 58952}, {"t": -4, "p": 60216}, {"t": -3, "p": 61271}, {"t": -2, "p": 61271}, {"t": -1, "p": 59832}, {"t": 0, "p": 60458}], "cone": [{"t": 0, "a": 60458.01, "b": 60458.01, "c": 60458.01, "d": 60458.01}, {"t": 1, "a": 58836.79423567166, "b": 62849.324340150255, "c": 59803.70934283997, "d": 61789.87473812986}, {"t": 2, "a": 58178.06525575889, "b": 63867.33162893712, "c": 59534.767545313414, "d": 62350.10814071492}, {"t": 3, "a": 57677.60980195299, "b": 64659.642808004995, "c": 59329.22161164313, "d": 62783.43213256217}, {"t": 4, "a": 57259.05228985812, "b": 65335.22307488127, "c": 59156.48978791866, "d": 63151.07990080681}, {"t": 5, "a": 56892.81325552528, "b": 65936.26763991837, "c": 59004.72674449834, "d": 63476.76755607945}, {"t": 6, "a": 56563.72449950084, "b": 66484.41111628182, "c": 58867.857600461546, "d": 63772.65715846258}, {"t": 7, "a": 56262.776554084085, "b": 66992.50215457383, "c": 58742.27367103869, "d": 64045.97294263375}, {"t": 8, "a": 55984.0999877988, "b": 67468.91023043319, "c": 58625.62374571215, "d": 64301.421518155235}, {"t": 9, "a": 55723.61838750475, "b": 67919.44732996143, "c": 58516.27470072813, "d": 64542.2718453433}, {"t": 10, "a": 55478.364110089155, "b": 68348.34405777375, "c": 58413.03749231672, "d": 64770.90384431086}, {"t": 11, "a": 55246.09710219325, "b": 68758.79337548303, "c": 58315.01450632502, "d": 64989.11401941857}, {"t": 12, "a": 55025.07728035281, "b": 69153.27527417446, "c": 58221.50839968868, "d": 65198.2979648857}, {"t": 13, "a": 54813.92101839982, "b": 69533.7614665297, "c": 58131.96462307275, "d": 65399.56543540853}, {"t": 14, "a": 54611.50661592773, "b": 69901.85020973368, "c": 58045.93355891621, "d": 65593.81614445736}, {"t": 15, "a": 54416.90974489558, "b": 70258.85836781432, "c": 57963.04466521834, "d": 65781.79152616713}, {"t": 16, "a": 54229.35801447495, "b": 70605.88620506198, "c": 57882.988276129574, "d": 65964.1111680336}, {"t": 17, "a": 54048.19815831311, "b": 70943.86417649705, "c": 57805.50245796273, "d": 66141.29912268187}, {"t": 18, "a": 53872.87180598714, "b": 71273.58747550679, "c": 57730.36330338989, "d": 66313.80333654169}, {"t": 19, "a": 53702.897243825624, "b": 71595.74203977268, "c": 57657.37762461615, "d": 66482.01027597494}, {"t": 20, "a": 53537.85544922952, "b": 71910.9244628288, "c": 57586.377358317244, "d": 66646.25612666609}, {"t": 21, "a": 53377.379234962864, "b": 72219.6574707318, "c": 57517.21521632879, "d": 66806.83549922334}, {"t": 22, "a": 53221.14469670107, "b": 72522.40211437365, "c": 57449.76125897702, "d": 66964.00828784083}, {"t": 23, "a": 53068.864393343145, "b": 72819.56749104495, "c": 57383.90016254593, "d": 67118.00513946971}, {"t": 24, "a": 52920.28184942627, "b": 73111.51858089239, "c": 57319.52901639035, "d": 67269.03186278886}, {"t": 25, "a": 52775.167079270956, "b": 73398.5826266144, "c": 57256.555529377605, "d": 67417.27301783285}, {"t": 26, "a": 52633.31290994783, "b": 73681.05437426282, "c": 57194.896556366286, "d": 67562.89486502204}, {"t": 27, "a": 52494.531935445746, "b": 73959.20041416783, "c": 57134.47687757622, "d": 67706.04780800703}, {"t": 28, "a": 52358.653974465815, "b": 74233.26280389611, "c": 57075.22817974336, "d": 67846.86843262908}, {"t": 29, "a": 52225.52393366255, "b": 74503.46211322969, "c": 57017.08819972854, "d": 67985.48122072674}, {"t": 30, "a": 52095.0, "b": 74770.0, "c": 56960.0, "d": 68122.0}], "lines": [{"p": 75763.76, "lab": "stop mobile", "k": "red", "dash": 0}, {"p": 74273.45, "lab": "chiusura dom.", "k": "red", "dash": 1}, {"p": 65285.7, "lab": "ingresso", "k": "label2", "dash": 1}, {"p": 47800, "lab": "utile bloccato", "k": "green", "dash": 1}], "price": 60458.01, "i80": [52095.0, 74770.0], "d0": "25/11", "d1": "25/12", "d_past": "12/10"};
+const fmt=x=>Math.round(x).toLocaleString('it-IT');
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue('--'+v).trim();}
+function draw(){
+ const box=document.getElementById('ch');const W=box.clientWidth,H=W<600?330:400;const LW=W<600?108:132,pl=4,pt=14,pb=26,pw=W-LW-pl-6,ph=H-pt-pb;
+ const all=[...D.past.map(d=>d.p),...D.cone.map(c=>c.a),...D.cone.map(c=>c.b),...D.lines.map(l=>l.p)];const lo=Math.min(...all)*0.985,hi=Math.max(...all)*1.01;
+ const t0=D.past[0].t,t1=30;const X=t=>pl+(t-t0)/(t1-t0)*pw,Y=p=>pt+(hi-p)/(hi-lo)*ph;
+ const ind=css('indigo'),lab=css('label'),l2=css('label2'),ln=css('line'),red=css('red'),grn=css('green'),card=css('card');
+ const col={red:red,green:grn,label2:l2};
+ let s=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Prezzo di BTC negli ultimi 45 giorni, intervallo probabile a 30 giorni, ingresso e uscite">`;
+ // griglia leggera
+ [60000,70000,80000].forEach(v=>{if(v>lo&&v<hi)s+=`<line x1="${pl}" x2="${pl+pw}" y1="${Y(v)}" y2="${Y(v)}" stroke="${ln}"/>`;});
+ const area=(k1,k2)=>D.cone.map(c=>`${X(c.t)},${Y(c[k1])}`).join(' ')+' '+D.cone.slice().reverse().map(c=>`${X(c.t)},${Y(c[k2])}`).join(' ');
+ s+=`<polygon points="${area('a','b')}" fill="${ind}" fill-opacity=".18"/><polygon points="${area('c','d')}" fill="${ind}" fill-opacity=".38"/>`;
+ // oggi
+ s+=`<line x1="${X(0)}" x2="${X(0)}" y1="${pt}" y2="${pt+ph}" stroke="${l2}" stroke-dasharray="2 3"/>`;
+ // linee orizzontali
+ D.lines.forEach(l=>{s+=`<line x1="${pl}" x2="${pl+pw}" y1="${Y(l.p)}" y2="${Y(l.p)}" stroke="${col[l.k]}" stroke-width="1.6" ${l.dash?'stroke-dasharray="5 4"':''}/>`;});
+ // prezzo
+ s+=`<polyline points="${D.past.map(d=>X(d.t)+','+Y(d.p)).join(' ')}" fill="none" stroke="${lab}" stroke-width="2.2" stroke-linejoin="round"/>`;
+ s+=`<circle cx="${X(0)}" cy="${Y(D.price)}" r="5" fill="${lab}" stroke="${card}" stroke-width="2.5"/>`;
+ // etichette a destra senza sovrapposizioni (rilassamento verticale, 2 righe per etichetta: valore + nome)
+ const L=D.lines.map(l=>({y:Y(l.p),v:fmt(l.p),n:l.lab,c:col[l.k]}));
+ L.push({y:Y(D.i80[1]),v:fmt(Math.round(D.i80[1]/100)*100),n:'8 su 10, max',c:ind},{y:Y(D.i80[0]),v:fmt(Math.round(D.i80[0]/100)*100),n:'8 su 10, min',c:ind});
+ L.sort((a,b)=>a.y-b.y);const gap=31;
+ for(let it=0;it<60;it++){for(let i=1;i<L.length;i++){const d=L[i].y-L[i-1].y;if(d<gap){const m=(gap-d)/2;L[i].y+=m;L[i-1].y-=m;}}L.forEach(o=>{o.y=Math.max(pt+6,Math.min(pt+ph-18,o.y));});}
+ const lx=pl+pw+8;
+ L.forEach(o=>{s+=`<text x="${lx}" y="${o.y+4}" font-size="13" font-weight="650" fill="${o.c}" style="font-variant-numeric:tabular-nums">${o.v}</text><text x="${lx}" y="${o.y+18}" font-size="12.5" fill="${l2}">${o.n}</text>`;});
+ // asse date
+ s+=`<text x="${pl}" y="${H-6}" font-size="13" fill="${l2}">${D.d_past}</text><text x="${X(0)}" y="${H-6}" font-size="13" fill="${lab}" text-anchor="middle" font-weight="600">oggi</text><text x="${pl+pw}" y="${H-6}" font-size="13" fill="${l2}" text-anchor="end">${D.d1}</text>`;
+ s+='</svg>';box.innerHTML=s;
+}
+draw();addEventListener('resize',draw);new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+</script></body></html>
