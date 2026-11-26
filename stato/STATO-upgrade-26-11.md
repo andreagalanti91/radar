@@ -23,3 +23,6 @@ Agenti in parallelo: A1 (research/dati_provvisori/) e A2+B1 (journal, nuovo modu
 Studio fatto: research/dati_provvisori/ (0 decisioni cambiate dai provvisori; rischio reale = funding OKX). Patch F1+P1 proposta, NON applicata: in attesa dell'ok dell'utente.
 ## A2+B1 (26/11)
 Diario W3.2 BTC/ETH, Reale contro modello, allarme Fuori dal backtest (radar/limiti.py): suite 541, deploy fatto. Da confermare: limiti propri per ETH.
+
+## C1+C2 e verifica (26/11, 08:33 UTC)
+Pagina leggera (index 653 KB; grafico/scanner/movimenti/news.json con versione, tutti 200) e legenda su telefono: suite 554, deploy fatto. Sito: 5 pagine a 400/1280 senza errori JS né overflow, nessun messaggio "non arrivati", Movimenti con i limiti storici. In attesa dell'utente: "applica A1" e limiti di ETH.
