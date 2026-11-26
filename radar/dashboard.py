@@ -45,6 +45,15 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
         from .journal import averages, load
         j = load()
         report = dict(report, journal={"trades": j["trades"], "avg": averages(j)})
+    if "journal" in report and "rvm" not in report["journal"]:   # "Reale contro modello" della pagina Movimenti
+        from .journal import real_vs_model
+        report = dict(report, journal=dict(report["journal"], rvm=real_vs_model(report["journal"])))
+    if "limiti" not in report and report.get("weekly"):   # allarme "fuori dal backtest" (radar/limiti.py): solo calcolo
+        from .limiti import status
+        try:
+            report = dict(report, limiti=status({"BTC": report.get("weekly"), "ETH": report.get("weekly_eth")}, report.get("journal")))
+        except Exception as e:  # noqa: BLE001
+            print(f"[dashboard] limiti storici non calcolati: {e!r}")
     if "scout" not in report and (ROOT / "data" / "wallet_picks.json").exists():   # balene del giorno (radar/scout.py)
         from .scout import summary
         report = dict(report, scout=summary(ROOT / "data"))

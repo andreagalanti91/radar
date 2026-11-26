@@ -737,6 +737,12 @@ body.noscroll{overflow:hidden}
 .yBar span{font-size:.86rem;color:var(--label2)} .yBar b{font:600 .88rem var(--font);text-align:right}
 .yBar .tr{position:relative;height:10px;border-radius:5px;background:var(--raise)}
 .yBar .tr i{position:absolute;top:0;bottom:0;border-radius:5px}
+.rvm .row .k small+small{margin-top:3px}
+.rvm .row .v small{display:block;font-size:.72rem;font-weight:500;color:var(--label3)}
+.rvm .lim .k b{font-weight:600} .rvm .lim .dot{flex:0 0 10px;width:10px;height:10px;border-radius:50%;background:var(--green)}
+.rvm .lim.out .dot{background:var(--red)} .rvm .lim.out .k b{color:var(--red)}
+.rvm .tot .k{font-weight:600} .rvm .tot .k small{font-weight:400}
+.rvm code{font:500 .78rem ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--raise);padding:1px 5px;border-radius:6px;white-space:nowrap}
 .trM{display:grid}
 .trM button{display:grid;grid-template-columns:minmax(0,1fr) auto auto 12px;gap:10px;align-items:center;width:100%;min-height:52px;padding:10px 16px;border:0;border-top:1px solid var(--line);background:none;color:var(--label);font:inherit;text-align:left;cursor:pointer}
 .trM button:first-child{border-top:0}
@@ -1007,6 +1013,12 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 
   <!-- ============ MOVIMENTI (ex Storico): storico BTC ed ETH, simulatore ============ -->
   <div class="view" id="v-movimenti" hidden>
+    <!-- Reale contro modello (radar/journal.real_vs_model) e stato dei limiti storici (radar/limiti.py): solo lettura -->
+    <div class="section" id="rvmSec" hidden>
+      <div class="sh">Reale contro modello <small id="rvmSub"></small></div>
+      <div class="list rvm" id="rvmList"></div>
+      <p class="foot" id="rvmFoot"></p>
+    </div>
     <div class="section" id="wkStatSec" hidden>
       <div class="sh">Storico W3.2 <small id="wkStatSub"></small></div>
       <div class="card wkSumM" id="wkSumM"></div>
@@ -1541,6 +1553,50 @@ function qxLine(U, px) {
       (o ? r("Stato", "aperto") : r("Uscita", `${fmtD(t.exit)} · ${usd(t.exit_px)}`) + r("Motivo dell'uscita", why[t.reason] || t.reason)) +
       r("Mercato", mkt(t.market, t.expo)) + r("Durata", wks(t) + " settimane") + r("Movimento del prezzo", pc1(t.move_pct)) +
       r("Sul capitale ETH", pc1(t.pnl_pct), t.pnl_pct >= 0 ? "pos" : "neg") + `</div>`); });
+})();
+
+// ---- Movimenti · "Reale contro modello" (report.journal.rvm, radar/journal.real_vs_model) e limiti storici (report.limiti,
+// radar/limiti.py): per ogni operazione vera di W3.2 prezzo e data del modello contro l'eseguito, slittamento, risultato reale
+// contro quello del modello alla stessa quantità ed effetto dell'esecuzione; in testa una riga per asset "Dentro / Fuori"
+(function renderRvm() {
+  const J = (R.journal || {}).rvm, LM = R.limiti || {};
+  if (!J && !Object.keys(LM).length) return;
+  const e = t => String(t == null ? "" : t).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
+  const px = x => x == null ? "–" : Math.abs(x) >= 10000 ? usd(x) : "$" + nfIT(x, 2);
+  const sus = x => x == null ? "–" : (x >= 0 ? "+" : "−") + usd(Math.abs(x));
+  const dh = d => { if (!d) return "–"; const s = String(d); const t = new Date(s.replace(" ", "T") + (s.length > 10 ? "Z" : ""));
+    return t.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" }) + (s.length > 10 ? " " + s.slice(11, 16) : ""); };
+  const sl = x => x == null ? "–" : pct(x, 2);
+  let h = "";
+  for (const a of ["BTC", "ETH"]) {
+    const g = LM[a]; if (!g) continue;
+    const L = g.limits || {}, out = !g.inside;
+    const det = out ? (g.why || []).map(e).join(" · ")
+      : `calo ${pct(g.dd_pct, 1)} (limite ${pct(L.dd_pct, 1)}) · perdite di fila ${g.losses} (limite ${L.losses}) · nessuna operazione oltre ${pct(L.trade_pct, 1)}`;
+    h += `<div class="row lim${out ? " out" : ""}"><span class="dot" aria-hidden="true"></span><span class="k"><b>${a} · ${out ? "Fuori dai limiti storici" : "Dentro i limiti storici"}</b><small>${det}</small></span></div>`;
+  }
+  const rows = (J && J.rows) || [];
+  if (!rows.length) {
+    h += `<div class="row"><span class="k">Nessuna operazione vera registrata.<small>Scrivi al bot dopo l'esecuzione: <code>/entrato 65150 0,45 btc comm 14,7</code> · <code>/uscito 59800 btc comm 13,5</code> · <code>/registro</code> (comandi: <code>/aiuto</code>)</small></span></div>`;
+  }
+  for (const r of rows.slice().reverse()) {
+    const ex = r.effect_usd, side = r.side === "long" ? "Long" : "Short";
+    const l1 = `Ingresso · modello ${px(r.model_entry)} (${dh(r.model_entry_time)}) · eseguito ${px(r.real_entry)} (${dh(r.real_entry_time)}) · slittamento ${sl(r.slip_entry_pct)}`;
+    const l2 = r.closed ? `Uscita · modello ${px(r.model_exit)} (${dh(r.model_exit_time)}) · eseguito ${px(r.real_exit)} (${dh(r.real_exit_time)}) · slittamento ${sl(r.slip_exit_pct)}`
+      : `Aperta${r.partial_out ? " · già uscita in parte" : ""}: per ora conta solo l'ingresso`;
+    const l3 = r.closed ? `Risultato · reale ${pct(r.real_pct, 2)}${r.real_usd != null ? " (" + sus(r.real_usd) + ")" : ""} · modello ${pct(r.model_pct, 2)}${r.model_usd != null ? " (" + sus(r.model_usd) + ")" : ""} sul prezzo, commissioni incluse` : "";
+    h += `<div class="row"><span class="k">${r.asset} ${side} · segnale ${r.signal_date ? fmtD(r.signal_date) : "non agganciato"}<small>${l1}</small><small>${l2}</small>${l3 ? `<small>${l3}</small>` : ""}</span>` +
+      `<span class="v strong ${ex == null ? "" : ex >= 0 ? "pos" : "neg"}">${sus(ex)}<small>esecuzione</small></span></div>`;
+  }
+  if (rows.length) {
+    const T = J.effect_usd;
+    h += `<div class="row tot"><span class="k">Totale: l'esecuzione reale ha ${T == null ? "–" : T >= 0 ? "aggiunto" : "tolto"}<small>${J.n_effect} operazioni con quantità e prezzo del modello${J.closed < J.n ? " · le aperte solo per l'ingresso" : ""}</small></span>` +
+      `<span class="v strong ${T == null ? "" : T >= 0 ? "pos" : "neg"}">${sus(T)}<small>${J.effect_cap_pct == null ? "" : pct(J.effect_cap_pct, 2) + " del capitale"}</small></span></div>`;
+  }
+  $("rvmList").innerHTML = h;
+  $("rvmSub").textContent = rows.length ? `${rows.length} operazion${rows.length === 1 ? "e" : "i"} vere · W3.2` : "operazioni vere · W3.2";
+  $("rvmFoot").textContent = "Slittamento positivo = peggio del modello (che conta già 0,1% di slittamento e le commissioni; il funding resta fuori). Oltre un limite storico arriva un avviso Telegram.";
+  $("rvmSec").hidden = false;
 })();
 
 // ---- Posizioni · "Ciclo on-chain" (report.onchain, radar/onchain.py): MVRV di CoinMetrics, zone dello studio research/utxo_pl
