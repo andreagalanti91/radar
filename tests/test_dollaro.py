@@ -290,7 +290,7 @@ class TestScheda(unittest.TestCase):
         self.assertIn('<div class="oc" id="ocBox" hidden></div><div class="oc" id="dxBox" hidden></div>', T)
         self.assertLess(T.index('id="ocSec"'), T.index('id="dxSec"'))
         self.assertLess(T.index('id="dxSec"'), T.index('id="v-opzioni"'))
-        js = T[T.index("function renderDollaro"):T.index("// ---- Oggi e Posizioni · posizioni aperte")]   # variante B: la riga di Oggi è diventata la tessera delle posizioni
+        js = T[T.index("function renderDollaro"):T.index("function renderPosLine")]
         for x in ('class="ocTap" id="dxOpen" aria-haspopup="dialog"', "Dettagli ›", "dxChartP", "dxChartR", "D.frase", "D.note"):
             self.assertIn(x, js)
         for t in ("Dove siamo", "Ultimi 6 mesi", "Divergenza", "Livelli di conferma", "Dopo le divergenze passate (studio)",
@@ -328,7 +328,7 @@ class TestScheda(unittest.TestCase):
             cut("const nfIT = window.nfIT", "const nfS = "), cut("const pct = ", "const css = "),
             next(l for l in T.splitlines() if l.startswith("const escS = ")),
             "const R = " + json.dumps({"dollaro": r, "weekly": {"status": "flat"}}) + ";",
-            cut("(function renderDollaro()", "// ---- Oggi e Posizioni · posizioni aperte")])
+            cut("(function renderDollaro()", "// ---- Oggi: riga di stato delle posizioni")])
         page = Path(tmp.name) / "dx.html"
         page.write_text(f'<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
                         f'{style}</head><body><div class="section" id="dxSec" hidden><div class="card ocCard" id="dxCard"></div></div>'

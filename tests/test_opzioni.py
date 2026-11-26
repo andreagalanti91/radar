@@ -230,7 +230,7 @@ class TestPagina(unittest.TestCase):
             self.assertIn(f'"{a}"', T)
         i = T.index('<div class="view" id="v-oggi">')
         oggi = T[i:T.index('<div class="view"', i + 10)]
-        self.assertLess(oggi.index('id="ogPos"'), oggi.index('id="opLine" href="#opzioni"'))   # variante B: sotto le tessere delle posizioni
+        self.assertLess(oggi.index('id="posLine"'), oggi.index('id="opLine" href="#opzioni"'))
         self.assertNotIn('id="opBody"', oggi)
 
     def test_render(self):

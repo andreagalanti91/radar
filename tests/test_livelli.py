@@ -203,8 +203,8 @@ class Dashboard(unittest.TestCase):
         self.assertIn("R.livelli", blk)
         self.assertIn("volatilità, non dalla direzione", blk)          # diciture brevi in Oggi, complete nel Grafico
         self.assertIn("L.nota_prob", blk)
-        self.assertEqual(self.T.count('id="ogCone"'), 1)                # variante B: tessera dei livelli prima del contesto in Oggi
-        self.assertLess(self.T.index('id="ogCone"'), self.T.index('id="ogCtx"'))
+        self.assertEqual(self.T.count('id="cnCard"'), 1)
+        self.assertLess(self.T.index('id="cnCard"'), self.T.index('id="cxCard"'))
         self.assertIn("LightweightCharts.createChart", blk)            # grafico con i livelli: sezione Grafico
         self.assertNotIn("new Chart(", self.T)                         # niente Chart.js
 

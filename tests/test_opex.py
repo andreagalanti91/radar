@@ -200,7 +200,7 @@ class TestScheda(unittest.TestCase):
         self.assertIn('<div class="oc" id="dxBox" hidden></div><div class="oc" id="oxBox" hidden></div>', T)
         self.assertLess(T.index('id="dxSec"'), T.index('id="oxSec"'))
         self.assertLess(T.index('id="oxSec"'), T.index('id="v-opzioni"'))
-        js = T[T.index("function renderOpex"):T.index("// ---- Oggi e Posizioni · posizioni aperte")]   # variante B: la riga di Oggi è diventata la tessera delle posizioni
+        js = T[T.index("function renderOpex"):T.index("function renderPosLine")]
         for x in ('class="ocTap" id="oxOpen" aria-haspopup="dialog"', "OPEX · solo contesto", "Dettagli ›", 'class="oxTh"',
                   'class="mp"', 'class="dot"', "oxChartP", "O.frase", "O.note"):
             self.assertIn(x, js)
@@ -235,7 +235,7 @@ class TestScheda(unittest.TestCase):
             cut("const nfIT = window.nfIT", "const nfS = "), cut("const pct = ", "const css = "),
             next(l for l in T.splitlines() if l.startswith("const escS = ")),
             "const R = " + json.dumps({"opex": r, "weekly": {"status": "flat"}}) + ";",
-            cut("(function renderOpex()", "// ---- Oggi e Posizioni · posizioni aperte")])
+            cut("(function renderOpex()", "// ---- Oggi: riga di stato delle posizioni")])
         page = Path(tmp.name) / "ox.html"
         page.write_text(f'<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
                         f'{style}</head><body><div class="section" id="oxSec" hidden><div class="card ocCard" id="oxCard"></div></div>'
