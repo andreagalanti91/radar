@@ -1,6 +1,6 @@
 # STATO · Piano di miglioria del 26/11 · avviato 26/11/2026
 
-Stato: IN CORSO
+Stato: COMPLETATO (26/11/2026) · resta solo A4 (promemoria del lunedì, dalla conversazione originale)
 
 ## Prompt originale
 "Procedi con tutto, apprendi e migliora" — sul piano `stato/PIANO-UPGRADE-26-11.md`.
@@ -26,3 +26,6 @@ Diario W3.2 BTC/ETH, Reale contro modello, allarme Fuori dal backtest (radar/lim
 
 ## C1+C2 e verifica (26/11, 08:33 UTC)
 Pagina leggera (index 653 KB; grafico/scanner/movimenti/news.json con versione, tutti 200) e legenda su telefono: suite 554, deploy fatto. Sito: 5 pagine a 400/1280 senza errori JS né overflow, nessun messaggio "non arrivati", Movimenti con i limiti storici. In attesa dell'utente: "applica A1" e limiti di ETH.
+
+## A1 applicata e verificata (26/11, 08:55 UTC)
+Approvata dall'utente ("Ok tutto procedi come ti sembra meglio"). Suite 564; deploy; primo giro ok: data/funding.csv ed eth_funding.csv con righe recenti source "premio" senza buchi; BTC ed ETH restano short, nessuna uscita né pending_exit nuovi; flusso BTC −1,01. Limiti dell'allarme ETH: tenuti quelli del suo storico.
