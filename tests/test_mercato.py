@@ -139,27 +139,28 @@ class Giro(unittest.TestCase):
 
 
 class SchedaOggi(unittest.TestCase):
-    """Oggi: la scheda Contesto diventa "Mercato power" (conteggio + 6 righe); il pannello ha regole, motivo, ETH e il Contesto."""
+    """Oggi: scheda "Il mercato è con noi?" (Mercato power: frase con il conteggio + 6 righe); il pannello ha regole, motivo, ETH e il Contesto."""
     T = (ROOT / "radar" / "dashboard_template.html").read_text()
     J = T[T.index("(function renderMercato()"):T.index("// Oggi: riassunto coerente")]
 
     def test_scheda_con_conteggio_e_sei_righe(self):
-        self.assertIn("Mercato power <small>· contesto, decide W3.2</small>", self.J)
-        self.assertIn('$("cxCard").innerHTML', self.J)                                     # stesso posto della scheda Contesto
-        self.assertIn('<p class="mpCount">${count(c, side)}', self.J)
-        self.assertIn('${x.contro || 0} contro</span> ${verso(s)}', self.J)                 # "… 2 contro lo short"
+        self.assertIn('$("cxCard").innerHTML = `<p class="qA">${ans}', self.J)              # stesso posto della scheda Contesto
+        self.assertIn("ans = qMpAns(side, c)", self.J)                                        # frase con il conteggio
+        self.assertIn('${x.contro || 0} contro</span> ${verso(s)}', self.J)                 # "… 2 contro lo short" (pannello)
         self.assertIn('"nessuna posizione aperta"', self.J)
-        self.assertIn('items.map(i => `<div class="mpR"><i class="mpDot ${esc(i.stato)}"', self.J)   # una riga per semaforo
-        self.assertIn('<span class="mpW3">usato da W3.2</span>', self.J)
+        self.assertIn('items.map(i => `<div class="qM"><span class="s st-${esc(i.stato)}" aria-hidden="true">${SYM[i.stato] || "="}</span>', self.J)   # una riga per semaforo
+        self.assertIn('<span class="qTag">usato dalla strategia</span>', self.J)
+        self.assertNotIn("--green", self.J)                                                   # verde/rosso solo per profitto/perdita
+        self.assertNotIn("--red", self.J)
         for k in ("onchain", "dollaro", "opex", "vix", "fed", "flusso"):                     # valore breve per ognuno dei sei
             self.assertIn(f"    {k}: i => ", self.J)
         self.assertEqual(len(M.SEMAFORI), 6)
         self.assertNotRegex(self.J.lower(), r"punteggio\s*[:=]|score|probabilit|prevision")
 
     def test_pannello_regole_eth_e_contesto(self):
-        self.assertIn('openSheet("Mercato power · perché ogni semaforo", body)', self.J)
+        self.assertIn('$("qMpM").onclick = () => openSheet("Mercato power · perché ogni semaforo", body)', self.J)
         self.assertIn('Regola: ${esc(i.regola || "")}', self.J)
-        self.assertIn('Oggi ${COL[i.stato] || "grigio"}', self.J)                            # perché oggi verde/grigio/rosso
+        self.assertIn('Oggi ${COL[i.stato] || "neutro"}', self.J)                            # perché oggi a favore/neutro/contro
         self.assertIn("Diversi da BTC:", self.J)                                              # semafori di ETH se diversi
         self.assertIn('sec("Contesto di mercato e politica economica", ctxPanel(ctxC))', self.J)
         P = self.T[self.T.index("const ctxPanel = C =>"):self.T.index("const MP = R.mercato")]

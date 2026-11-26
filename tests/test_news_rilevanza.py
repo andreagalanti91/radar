@@ -198,9 +198,9 @@ class Pagina(unittest.TestCase):
             self.assertIn(s, T)
         self.assertNotIn('<details class="calPast nwOther" id="nwOther" open', T)   # "Altre notizie" chiuse di default
         self.assertNotIn('id="newsSeg"', T)
-        # Oggi: riassunto con link alla sezione Notizie, nessun pannello
-        self.assertIn('location.hash = "#notizie"', T)
-        self.assertIn('href="#notizie">Calendario e notizie per noi', T)
+        # Oggi: riassunto ("Cosa succede oggi?") con "Dettagli" verso la sezione Notizie, nessun pannello
+        self.assertIn('<a class="qMore" href="#notizie" aria-label="Dettagli: apri calendario e notizie">Dettagli', T)
+        self.assertIn('$("todayN").innerHTML = `<p class="qA">${ans}</p>`', T)
 
 
 if __name__ == "__main__":
