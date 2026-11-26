@@ -1,6 +1,6 @@
 # STATO · Applicazione della variante B "Cruscotto a tessere" a tutto il tool · avviato 26/11/2026
 
-Stato: IN CORSO
+Stato: ANNULLATO (26/11/2026) · variante B annullata su richiesta dell'utente, grafica precedente ripristinata e verificata sul sito; resta il calcolo del Mercato power
 
 ## Prompt originale
 "Ottimizza la UX UI" (Oggi: posizioni in sintesi, livelli e probabilità a 30 giorni, pre-analisi; posizione aperta: quando esce

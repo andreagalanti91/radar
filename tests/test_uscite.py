@@ -3,7 +3,6 @@ e esiti per short e long con valori noti, simmetria, nessun cambio ai segnali; r
 dashboard; pannello "Perché è aperta e quando si chiude" con le condizioni e la distribuzione del lato giusto (bug 24/11:
 mostrava le regole del long per lo short BTC)."""
 import json
-import re
 import shutil
 import subprocess
 import tempfile
@@ -109,7 +108,8 @@ class TestTemplate(unittest.TestCase):
         self.assertIn("In profitto se…", T)
         self.assertIn("${qxHtml(W.uscite, px)}", T)                       # card BTC (prezzo live)
         self.assertIn("${qxHtml(E.uscite, E.price)}", T)                  # card ETH
-        self.assertIn("qxLine(W.uscite, r.px)", T)                        # frase in Oggi
+        self.assertIn("qExitBlock(tag, X, px, W)", T)                     # scheda "Quando escono?" in Oggi
+        self.assertIn('openSheet("Quando escono", body)', T)               # Dettagli: lo stesso riquadro di Posizioni
         self.assertIn('id="wkQxD"', T)                                    # anche nel pannello
 
     def test_pannello_short_senza_regole_long(self):
@@ -146,11 +146,8 @@ class TestJs(unittest.TestCase):
         u = blk()
         js = STUB + block("function qxAt(U, x) {", "(function renderWeekly() {") + \
             f"const U = {json.dumps(u)}; const P = qxParts(U, U.price);\n" \
-            "console.log(JSON.stringify({ line: qxLine(U, U.price), loss: P.loss.map(r => r[0]), gain: P.gain.map(r => r[0]), html: qxHtml(U, U.price) }));"
-        o = self.run_js(js)
-        line = re.sub("<[^>]+>", "", o["line"])
-        self.assertEqual(line, "esce in perdita sopra $74273 (chiusura settimanale) o a $75764 (trailing) · "
-                               "in profitto con chiusura sotto ~$47800 o per distribuzione")
+            "console.log(JSON.stringify({ loss: P.loss.map(r => r[0]), gain: P.gain.map(r => r[0]), html: qxHtml(U, U.price) }));"
+        o = self.run_js(js)   # la frase di Oggi è nella scheda "Quando escono?" (tests/test_oggi_schede.py)
         self.assertEqual(o["loss"], ["Trailing a $75764", "Chiusura sett. sopra $74273"])
         self.assertEqual(o["gain"], ["Chiusura sotto ~$47800", "EMA 21 sotto $65286", "Distribuzione"])
         self.assertIn("~13 sett. a prezzo fermo", o["html"])

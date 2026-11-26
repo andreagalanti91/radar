@@ -1,0 +1,9 @@
+oggetto,finale_gt_10k,S_gt_BH,DD_ge_m35,senza2_gt_10k,trade_ge_8,placebo_p,holm_soglia,holm_ok,vicini_ok,vicini_pass,competitiva_W32,esito,S_per_periodo,DD_entro_1pt,finale_o_DD_dal2021,wr_ge_70,senza2_meglio
+S1,False,False,False,False,False,0.811,0.0125,False,0/8,False,False,NON VALIDA,,,,,
+S2,False,False,False,False,False,1.0,0.025,False,0/8,False,False,NON VALIDA,,,,,
+S3,False,False,False,False,True,0.959,0.0167,False,0/8,False,False,NON VALIDA,,,,,
+S4,False,False,False,False,False,1.0,0.05,False,0/8,False,False,NON VALIDA,,,,,
+W1,,,,,,0.672,0.01,False,0/8,False,,NON MIGLIORA,False,False,False,False,False
+W2,,,,,,0.469,0.0071,False,0/8,False,,NON MIGLIORA,False,False,False,True,False
+W3,,,,,,0.443,0.0063,False,3/11,False,,NON MIGLIORA,False,True,False,True,False
+W4,,,,,,0.55,0.0083,False,0/11,False,,NON MIGLIORA,False,False,False,True,False

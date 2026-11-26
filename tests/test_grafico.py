@@ -195,7 +195,7 @@ class Grafico(unittest.TestCase):
 
     def test_oggi_forbice(self):
         o = block("// Oggi · \"Livelli e probabilità a 30 giorni\" = FORBICE", "// ---- Grafico (solo BTC)")
-        self.assertIn('href="#grafico">Apri nel Grafico', o)
+        self.assertIn('<a class="qMore" href="#grafico" aria-label="Dettagli: apri il Grafico con tutti i livelli">Dettagli', T)
         self.assertIn("volatilità, non dalla direzione", o)
         self.assertIn("liquidazioni stimate tranne quelle on-chain", o)
         self.assertNotIn("lvChart", T)

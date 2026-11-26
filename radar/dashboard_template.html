@@ -788,6 +788,27 @@ body.noscroll{overflow:hidden}
 .cxT b{display:block;font:600 .98rem/1.3 var(--font);letter-spacing:-.015em;font-variant-numeric:tabular-nums}
 .cxT small{display:block;font-size:.76rem;line-height:1.4;color:var(--label2);margin-top:2px;font-variant-numeric:tabular-nums}
 @media (max-width:700px){.cxTiles{grid-template-columns:minmax(0,1fr);gap:8px}.cxT{padding:10px 12px;align-items:center}}
+/* Oggi · "Mercato power" (report.mercato, radar/mercato.py): prende il posto della scheda Contesto quando c'è. In testa il conteggio
+   a favore / neutri / contro la posizione BTC aperta, poi una riga per semaforo (pallino, nome, valore breve). Nessun punteggio unico.
+   Il tocco apre il pannello con regole, motivo di oggi, ETH se diverso e i contenuti del Contesto (report.context). */
+.mpCount{margin:8px 0 0;font:600 .92rem/1.35 var(--font);color:var(--label);font-variant-numeric:tabular-nums}
+.mpCount .favore{color:var(--tint)} .mpCount .contro{color:var(--orange)} .mpCount .neutro{color:var(--label2)}
+.mpRows{margin-top:10px;border-top:1px solid var(--line)}
+.mpR{display:grid;grid-template-columns:auto minmax(0,auto) minmax(0,1fr);gap:4px 10px;align-items:center;padding:9px 0;min-height:44px;box-sizing:border-box}
+.mpR+.mpR{border-top:1px solid var(--line)}
+.mpR .n{font:500 .9rem/1.3 var(--font);color:var(--label);min-width:0}
+.mpR .v{font:500 .86rem/1.35 var(--font);color:var(--label2);text-align:right;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
+.mpDot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--label3)}
+.mpDot.favore{background:var(--tint)} .mpDot.contro{background:var(--orange)}   /* verde/rosso restano per profitto/perdita */
+.mpDot.neutro{background:var(--label3)}
+.mpW3{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;font:600 .66rem/1.3 var(--font);color:var(--tint);background:var(--tint-bg);white-space:nowrap;vertical-align:1px}
+.mpSr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:560px){.mpR{grid-template-columns:auto minmax(0,1fr);padding:8px 0}.mpR .v{grid-column:2;text-align:left;font-size:.82rem}}
+/* pannello: una riga per semaforo con stato, motivo di oggi e regola */
+.mpP .row{align-items:flex-start;padding:12px 16px}
+.mpP .row .mpDot{margin-top:6px}
+.mpP .row .v{white-space:nowrap;padding-top:1px;font-weight:600} .mpP .row .v.favore{color:var(--green)} .mpP .row .v.contro{color:var(--red)}
+.mpP .row .k small.rule{color:var(--label3)}
 .tdRow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;margin-top:10px}
 .tdRow .tm{font:600 .8rem var(--mono);font-variant-numeric:tabular-nums;color:var(--tint);white-space:nowrap}
 .tdRow b{font:600 .9rem/1.35 var(--font);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -923,6 +944,81 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 #v-scanner .opMore summary{min-height:40px}
 .scMore{color:var(--tint);font:600 .86rem var(--font);background:none;border:0;min-height:40px;cursor:pointer;padding:0 4px;justify-self:start}
 @media (max-width:700px){#scSec>.sh small{display:none}}
+/* ---------- Oggi · schede-domanda (V2): domanda piccola nel colore del tema, risposta in una frase grande, sotto i numeri.
+   Testi ≥ 13 px (.8125rem), "Dettagli ›" e righe toccabili ≥ 44 px, testi secondari in --label2. Verde/rosso solo profitto/perdita;
+   Mercato power: blu a favore, arancio contro, grigio neutro, con simbolo + = − leggibile anche senza colore. */
+.qGrid{display:grid;gap:20px;min-width:0}
+@media (min-width:900px){.qGrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.q{padding:18px;display:grid;gap:0;align-content:start}
+.qH{margin:0;font:600 .875rem/1.3 var(--font);color:var(--tint);letter-spacing:0}
+.qA{margin:6px 0 12px;font:650 1.3rem/1.3 var(--font);letter-spacing:-.02em;color:var(--label);text-wrap:pretty}
+.qA b{font-weight:750} .qA .fav{color:var(--tint)} .qA .con{color:var(--orange)}
+.qF{display:flex;justify-content:flex-end;margin-top:4px}
+.qMore{display:inline-flex;align-items:center;gap:2px;min-height:44px;min-width:44px;padding:0 6px;margin:0 -6px -8px auto;border:0;background:none;color:var(--tint);font:600 .875rem var(--font);text-decoration:none;white-space:nowrap;cursor:pointer;border-radius:10px}
+.qMore svg{width:16px;height:16px}
+.qMore:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.qSub{margin:14px 0 4px;font:600 .8125rem/1.35 var(--font);color:var(--label2)}
+.qFoot{margin:8px 0 0;font-size:.8125rem;line-height:1.45;color:var(--label2)}
+.q .pos{color:var(--green)} .q .neg{color:var(--red)}
+/* posizioni */
+.qP{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-height:60px}
+.qP .ic{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--raise);color:var(--label)} .qP .ic svg{width:22px;height:22px}
+.qP b{display:block;font:600 1rem/1.3 var(--font)} .qP small{display:block;font-size:.8125rem;line-height:1.35;color:var(--label2)}
+.qP .rv{text-align:right;white-space:nowrap} .qP .rv b{font:700 1.19rem var(--font)} .qP .rv small{font-weight:600}
+/* quando escono: barra di uscita e due tessere */
+.qX{padding:8px 0 4px;border-top:1px solid var(--line);min-width:0} .qX>b{font:700 1rem var(--font)}
+.xbar{position:relative;height:66px;margin:4px 2px 0}
+.xbar .rail{position:absolute;left:0;right:0;top:28px;height:8px;border-radius:4px;background:var(--raise);overflow:hidden}
+.xbar .zp,.xbar .zl{position:absolute;top:0;bottom:0}
+.xbar .zp{background:color-mix(in srgb,var(--green) 30%,transparent)} .xbar .zl{background:color-mix(in srgb,var(--red) 28%,transparent)}
+.xbar .tk{position:absolute;top:22px;width:2px;height:20px;margin-left:-1px;border-radius:1px;background:var(--label2)}
+.xbar .tk.r{background:var(--red)} .xbar .tk.g{background:var(--green)}
+.xbar .dot{position:absolute;top:24px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--label);border:3px solid var(--card)}
+.xbar .lb{position:absolute;font:500 .8125rem/1 var(--font);color:var(--label2);white-space:nowrap}
+.xbar .lb.up{top:2px} .xbar .lb.dn{top:50px} .xbar .lb.c{transform:translateX(-50%)} .xbar .lb.e{transform:translateX(-100%)}
+.xbar .lb b{color:var(--label);font-weight:600}
+.qX2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:8px 0 6px}
+.qX2>div{display:grid;gap:2px;align-content:start;padding:10px 12px;border-radius:var(--r-tile);background:var(--raise);min-width:0}
+.qX2 span,.qX2 small{font-size:.8125rem;line-height:1.35;color:var(--label2)} .qX2 b{font:700 1.12rem/1.25 var(--font);overflow-wrap:anywhere}
+/* 30 giorni */
+.q .cnScale{height:66px;margin:6px 2px 0}
+.q .cnScale .rail{top:28px} .q .cnScale .b80,.q .cnScale .b50{top:20px;height:20px}
+.q .cnScale .b80{background:color-mix(in srgb,var(--indigo) 22%,transparent)} .q .cnScale .b50{background:color-mix(in srgb,var(--indigo) 50%,transparent)}
+.q .cnScale .now{top:16px;height:28px} .q .cnScale .xt{position:absolute;top:16px;width:2px;height:28px;margin-left:-1px;border-radius:1px}
+.q .cnScale .nowL,.q .cnScale .xl{position:absolute;top:0;font:500 .8125rem/1 var(--font);color:var(--label2);white-space:nowrap}
+.q .cnScale .tk{top:50px;font:500 .8125rem/1 var(--font);color:var(--label2)}
+.q .cnKey{font-size:.8125rem;margin-top:8px} .q .cnKey i{background:color-mix(in srgb,var(--indigo) 22%,transparent)} .q .cnKey i.k50{background:color-mix(in srgb,var(--indigo) 50%,transparent)}
+.qL{display:grid;grid-template-columns:minmax(0,1fr) auto 60px;gap:4px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line);min-height:52px}
+.qL .t{min-width:0} .qL .t b{display:block;font:600 .94rem/1.3 var(--font)} .qL .t small{display:block;font-size:.8125rem;line-height:1.35;color:var(--label2)}
+.qL .p{text-align:right;font:600 .94rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap} .qL .p small{display:block;font:500 .8125rem var(--font);color:var(--label2)}
+.qL .pr{display:grid;gap:4px;justify-items:end} .qL .pr b{font:700 .94rem var(--font)}
+.qL .pr s{display:block;width:56px;height:6px;border-radius:3px;background:var(--raise);overflow:hidden;text-decoration:none} .qL .pr s i{display:block;height:100%;border-radius:3px;background:var(--indigo)}
+.q .cxNote{font-size:.8125rem;color:var(--label2);margin-top:10px}
+/* pre-analisi */
+.qKV{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 0;border-top:1px solid var(--line);min-height:48px}
+.qKV span{font-size:.875rem;line-height:1.4;color:var(--label2)} .qKV b{font:700 1.12rem var(--font);white-space:nowrap}
+.qSim{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;align-items:end;height:118px}
+.qSim div{display:grid;justify-items:center;align-content:end;gap:4px;height:100%;min-width:0}
+.qSim b{font:600 .8125rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+.qSim i{display:block;width:100%;max-width:44px;border-radius:6px 6px 2px 2px;background:color-mix(in srgb,var(--green) 55%,transparent)}
+.qSim i.l{background:color-mix(in srgb,var(--red) 55%,transparent)}
+.qSim i.now{background:transparent;border:2px dashed color-mix(in srgb,var(--green) 70%,transparent)} .qSim i.now.l{border-color:color-mix(in srgb,var(--red) 70%,transparent)}
+.qSim span{font-size:.8125rem;color:var(--label2);white-space:nowrap}
+.q .pvMacF{margin-top:10px} .q .pvMacF .fl span{font-size:.8125rem}
+/* Mercato power */
+.qM{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-height:52px}
+.qM .s{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font:700 1rem/1 var(--font)}
+.qM .t{min-width:0} .qM .t b{display:block;font:600 .94rem/1.3 var(--font)} .qM .t small{display:block;font-size:.8125rem;line-height:1.35;color:var(--label2)}
+.qM .v{font:600 .8125rem var(--font);white-space:nowrap}
+.st-favore{color:#fff;background:var(--tint)} .st-contro{color:#1a1205;background:var(--orange)} .st-neutro{color:var(--label2);background:var(--raise)}
+.qM .v.favore{color:var(--tint)} .qM .v.contro{color:var(--orange)} .qM .v.neutro{color:var(--label2)}
+.qTag{display:inline-block;margin-left:6px;font:600 .8125rem/1 var(--font);padding:3px 6px;border-radius:6px;background:var(--tint-bg);color:var(--tint);vertical-align:1px}
+.mpP .row .v.favore{color:var(--tint)} .mpP .row .v.contro{color:var(--orange)}
+/* notizie */
+.qN{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;align-items:start;padding:10px 0;border-top:1px solid var(--line);min-height:48px;color:var(--label);text-decoration:none}
+.qN .tm{font:600 .8125rem/1.35 var(--font);color:var(--tint);padding-top:2px;font-variant-numeric:tabular-nums} .qN .tm.o{color:var(--label2)}
+.qN b{display:block;font:600 .94rem/1.35 var(--font)} .qN small{display:block;font-size:.8125rem;line-height:1.4;color:var(--label2)}
+.pvLink{margin-top:12px}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
@@ -943,6 +1039,9 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   <symbol id="i-opz" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18.5h16"/><path d="M5 16.5c3.5 0 5-9 7-9s3.5 9 7 9"/><path d="M12 7.5V4"/></g></symbol>
   <symbol id="i-scan" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20"/><path d="M7.5 12l2-2.5 1.8 1.5 2.2-3"/></g></symbol>
   <symbol id="i-warn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/></g><circle cx="12" cy="17" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-btc" viewBox="0 0 24 24"><path d="M9 6h5a3 3 0 0 1 0 6H9zm0 6h6a3 3 0 0 1 0 6H9zM9 6v12M11 4v2M13 4v2M11 18v2M13 18v2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-eth" viewBox="0 0 24 24"><path d="M12 3l6 9-6 3.5L6 12zM6 13.5l6 7.5 6-7.5-6 3.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
 
@@ -972,25 +1071,31 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
     <p><span class="live" id="liveTag">chiusura</span><span id="chg24" class="num"></span><span id="sub"></span></p>
   </div>
 
-<!-- ============ OGGI: stato delle posizioni in una riga, livelli e probabilità a 30 giorni, contesto, notizie del giorno ============ -->
+<!-- ============ OGGI (variante V2 "una domanda per scheda", scelta dell'utente 26/11): ogni scheda è una domanda con la risposta in una
+     frase grande e sotto i numeri che la sostengono; "Dettagli ›" apre il dettaglio esistente (pagina o pannello). Ordine fisso:
+     posizioni · uscite · 30 giorni · pre-analisi · Mercato power · notizie. Ogni dato una volta sola; verde/rosso solo profitto/perdita. ============ -->
   <div class="view" id="v-oggi">
-    <a class="card posLine" id="posLine" href="#posizioni" hidden></a>
+    <div class="qGrid">
+      <section class="card q" id="qPos" aria-labelledby="qPosH"><h2 class="qH" id="qPosH">Come vanno le posizioni?</h2>
+        <div id="posLine"></div>
+        <div class="qF"><a class="qMore" href="#posizioni" aria-label="Dettagli: apri la pagina Posizioni">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></a></div></section>
+      <section class="card q" id="qExit" aria-labelledby="qExitH"><h2 class="qH" id="qExitH">Quando escono?</h2>
+        <div id="qExitB"></div>
+        <div class="qF"><button type="button" class="qMore" id="qExitM" aria-haspopup="dialog">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></button></div></section>
+      <section class="card q" id="qCone" aria-labelledby="qConeH"><h2 class="qH" id="qConeH">Dove può andare BTC in 30 giorni?</h2>
+        <div id="cnCard"><p class="qA">Livelli e probabilità non disponibili in questo momento.</p></div>
+        <div class="qF"><a class="qMore" href="#grafico" aria-label="Dettagli: apri il Grafico con tutti i livelli">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></a></div></section>
+      <section class="card q" id="qPre" aria-labelledby="qPreH"><h2 class="qH" id="qPreH">Cosa dice la pre-analisi?</h2>
+        <div id="pvQ"><p class="qA">Pre-analisi non disponibile in questo momento.</p></div>
+        <div class="qF"><button type="button" class="qMore" id="qPreM" aria-haspopup="dialog" hidden>Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></button></div></section>
+      <section class="card q" id="qMp" aria-labelledby="qMpH"><h2 class="qH" id="qMpH">Il mercato è con noi?</h2>
+        <div id="cxCard"><p class="qA">Dati del mercato non disponibili in questo momento.</p></div>
+        <div class="qF"><button type="button" class="qMore" id="qMpM" aria-haspopup="dialog" hidden>Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></button></div></section>
+      <section class="card q" id="todaySec" aria-labelledby="qNewsH"><h2 class="qH" id="qNewsH">Cosa succede oggi?</h2>
+        <div id="todayN"></div>
+        <div class="qF"><a class="qMore" href="#notizie" aria-label="Dettagli: apri calendario e notizie">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></a></div></section>
+    </div>
     <a class="card posLine opLine" id="opLine" href="#opzioni" hidden></a>
-
-    <div class="section" id="cnSec" hidden>
-      <div class="card cn" id="cnCard"></div>
-    </div>
-
-    <div class="section" id="cxSec" hidden>
-      <button type="button" class="card tapCard cx" id="cxCard" aria-haspopup="dialog"></button>
-    </div>
-
-    <div class="section" id="todaySec" hidden>
-      <div class="sh">Oggi nelle notizie <small id="todaySub"></small></div>
-      <button type="button" class="card tapCard mOnly" id="todayCard" aria-label="Apri la pagina Notizie"></button>
-      <div class="todayN mHide" id="todayN"></div>
-    </div>
-
   </div>
 
 <!-- ============ POSIZIONI: posizioni aperte BTC ed ETH, pre-analisi della prossima chiusura ============ -->
@@ -1412,17 +1517,6 @@ function qxHtml(U, px, head = true) {
   const P = qxParts(U, px), row = r => `<div class="qxR"><span class="k">${r[0]}<small>${r[1]}</small></span><span class="v">${r[2]}</span></div>`;
   const col = (cls, t, list) => `<div class="qxC ${cls}"><div class="qxT">${t}</div>${list.length ? list.map(row).join("") : `<div class="qxR"><span class="k"><small>nessuna uscita da questo lato</small></span></div>`}</div>`;
   return `<div class="qx">${head ? `<div class="qxH">Quando esce · ingresso ${usd(U.entry_px)}</div>` : ""}<div class="qxG">${col("loss", "In perdita se…", P.loss)}${col("gain", "In profitto se…", P.gain)}</div></div>`;
-}
-// frase compatta per Oggi: "Esce in perdita sopra 74.273 (chiusura settimanale) o a 75.764 (trailing) · in profitto con chiusura sotto ~47.800 o per distribuzione"
-function qxLine(U, px) {
-  if (!U || !U.calc) return "";
-  const P = qxParts(U, px), L = P.L, T = P.T, E = P.E, lo = [], hi = [];
-  const ema = `${L ? "sotto" : "sopra"} ${usd(E.level)} (chiusura settimanale)`, tr = `a ${usd(T.level)} (trailing)`;
-  (E.esito === "profitto" ? hi : lo).push(ema); (T.esito === "profitto" ? hi : lo).push(tr);
-  if (T.esito !== "profitto") hi.push(`con chiusura ${L ? "sopra" : "sotto"} ~${usd(P.r100(T.soglia))}`);
-  (P.dn.esito === "profitto" ? hi : lo).push("per distribuzione");
-  return (lo.length ? `esce <span class="neg">in perdita</span> ${lo.join(" o ")}` : "") + (lo.length && hi.length ? " · " : "") +
-    (hi.length ? `${lo.length ? "" : "esce "}<span class="pos">in profitto</span> ${hi.join(" o ")}` : "");
 }
 (function renderWeekly() {
   const W = R.weekly; if (!W) return;
@@ -2018,15 +2112,153 @@ function qxLine(U, px) {
   };
 })();
 // ---- Oggi: riga di stato delle posizioni ("BTC short +6,8% · ETH short +16,7%"), stessi numeri in evidenza nelle card di Posizioni; porta a Posizioni
+// ---- Oggi · schede-domanda (V2). Funzioni comuni: P&L sul capitale al prezzo mostrato (stessa base di pnl_pct del server:
+// P&L al prezzo del server + movimento fino a px, senza i costi d'uscita), date brevi, segni. BTC sul prezzo di riferimento (live),
+// ETH sull'ultima chiusura del report (come la card ETH in Posizioni).
+const isOpenX = X => !!X && (X.status === "aperto" || X.status === "uscita");
+const usdS = x => (Math.round(x) > 0 ? "+" : Math.round(x) < 0 ? "−" : "") + usd(Math.abs(x));
+const dmQ = t => new Date(t).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", timeZone: "UTC" });
+const capAt = (X, px) => { const U = X.uscite, c = U && U.calc;
+  if (c && px > 0 && U.entry_px > 0) { const f = c.pnl_pct / 100 + c.sg * c.expo * (px - c.px0) / U.entry_px; return { pct: f * 100, usd: c.capital * f, cap: c.capital }; }
+  return X.pnl_pct != null && X.capital > 0 ? { pct: X.pnl_pct, usd: X.capital * X.pnl_pct / 100, cap: X.capital } : null; };
+const sunQ = X => X && X.week ? dmQ(Date.parse(X.week + "T00:00:00Z") + 7 * 864e5) : null;   // prossima chiusura settimanale (domenica)
+const monQ = X => X && X.week ? dmQ(Date.parse(X.week + "T00:00:00Z") + 864e5) : null;      // lunedì dopo la chiusura già fatta
+const ASSETS_Q = () => [["BTC", "Bitcoin", R.weekly, REF.px], ["ETH", "Ethereum", R.weekly_eth, R.weekly_eth && R.weekly_eth.price]].filter(a => a[2]);
+const WHY_Q = { trail: "lo stop mobile", stop: "lo stop iniziale", ema: "la chiusura oltre la media a 21 settimane", dist: "la distribuzione" };
+const pctQ = x => { const a = Math.abs(x); return nfIT(a, a < 1 ? 1 : 0) + "%"; };
+// "Come vanno le posizioni?": frase-risposta + una riga per asset (lato, ingresso, risultato in $ e % sul capitale)
+const qPosHtml = () => {
+  const A = ASSETS_Q();
+  if (!A.length) return `<p class="qA">Dati delle posizioni non disponibili in questo momento.</p>`;
+  const open = A.filter(a => isOpenX(a[2])).map(a => ({ a, v: capAt(a[2], a[3]) })).filter(o => o.v);
+  let ans;
+  if (open.length) { const tot = open.reduce((s, o) => s + o.v.usd, 0), cap = open.reduce((s, o) => s + o.v.cap, 0), cls = tot >= 0 ? "pos" : "neg";
+    ans = `${tot >= 0 ? "Bene" : "In perdita"}: <b class="${cls}">${usdS(tot)}</b> ${open.length > 1 ? "in tutto" : "sulla posizione aperta"} (${pct(tot / cap * 100, 1)}).`; }
+  else if (A.some(a => isOpenX(a[2]))) ans = "Posizioni aperte: risultato non disponibile, vedi i Dettagli.";
+  else { const sig = A.filter(a => a[2].status === "segnale");
+    ans = sig.length ? `Nessuna posizione aperta: lunedì ${sig.map(a => `${a[0]} entra ${a[2].side}`).join(", ")}.` : "Nessuna posizione aperta: si aspetta il prossimo segnale."; }
+  const row = ([tag, name, X, px]) => { const o = isOpenX(X), v = o ? capAt(X, px) : null, sd = X.side === "long" ? "long" : "short";
+    const sub = o ? `${artD("dal", dmQ(X.entry + "T00:00:00Z"))}, ingresso ${usd(X.entry_px)}${X.status === "uscita" ? ` · esce lunedì ${monQ(X) || ""}` : ""}`
+      : X.status === "segnale" ? `segnale ${sd} · ingresso lunedì` : `prossima decisione domenica ${sunQ(X) || ""}`;
+    return `<div class="qP"><span class="ic" aria-hidden="true"><svg><use href="#i-${tag.toLowerCase()}"/></svg></span><div><b>${name} · ${o ? sd : X.status === "segnale" ? "segnale" : "nessuna posizione"}</b><small>${sub}</small></div>` +
+      (v ? `<div class="rv"><b class="${v.usd >= 0 ? "pos" : "neg"}">${usdS(v.usd)}</b><small class="${v.usd >= 0 ? "pos" : "neg"}">${pct(v.pct, 1)}</small></div>` : `<div class="rv"><small>–</small></div>`) + `</div>`; };
+  return `<p class="qA">${ans}</p>${A.map(row).join("")}`;
+};
+// "Quando escono?": frase-risposta (uscita già decisa, uscita se domenica chiude come oggi, oppure "non prima di domenica" con il
+// rialzo/ribasso che serve per lo stop mobile) e, per ogni posizione aperta, barra di uscita + due tessere (prima uscita in perdita,
+// prima in profitto) + una riga con le altre. Numeri dalle stesse funzioni di "Quando esce" in Posizioni (qxParts, qxAt).
+const qExitAns = () => {
+  const A = ASSETS_Q();
+  if (!A.length) return "Dati delle uscite non disponibili in questo momento.";
+  const O = A.filter(a => isOpenX(a[2]));
+  if (!O.length) { const s = sunQ(A[0][2]); return `Nessuna posizione aperta, niente da chiudere.${s ? ` La prossima decisione è domenica ${s}.` : ""}`; }
+  const out = [];
+  O.filter(a => a[2].status === "uscita").forEach(([tag, , X]) => out.push(`${tag} esce lunedì ${monQ(X) || ""} all'apertura${WHY_Q[X.reason] ? ", per " + WHY_Q[X.reason] : ""}.`));
+  const live = O.filter(a => a[2].status === "aperto");
+  if (live.some(a => !a[2].uscite || !a[2].uscite.calc)) out.push("Uscite non disponibili per " + live.filter(a => !a[2].uscite || !a[2].uscite.calc).map(a => a[0]).join(" e ") + ": vedi i Dettagli.");
+  const L2 = live.filter(a => a[2].uscite && a[2].uscite.calc), s = sunQ((L2[0] || O[0])[2]);
+  const soon = [];
+  L2.forEach(([tag, , X, px]) => { const U = X.uscite, L = U.side === "long", E = U.ema21, dn = qxAt(U, px);
+    if (L ? px < E.level : px > E.level) soon.push(`se domenica ${s} chiude come oggi, ${tag} esce in ${E.esito}: è ${L ? "sotto" : "sopra"} ${usd(E.level)}`);
+    else if (U.dist && U.dist.attiva) soon.push(`se domenica ${s} resta così, ${tag} esce in ${dn.esito} per distribuzione`); });
+  if (soon.length) out.push(soon.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join(". ") + ".");
+  else if (L2.length) { const near = L2.map(([tag, , X, px]) => ({ tag, d: (X.uscite.trail.level / px - 1) * 100, ok: X.uscite.trail.esito === "profitto" })).sort((a, b) => Math.abs(a.d) - Math.abs(b.d))[0];
+    out.push(`Non prima di domenica ${s}, a meno che ${near.tag} ${near.d > 0 ? "salga" : "scenda"} del ${pctQ(near.d)} e tocchi lo stop mobile${near.ok ? " (in utile)" : ""}.`); }
+  return out.join(" ");
+};
+const r100Q = v => { const q = v >= 10000 ? 100 : v >= 1000 ? 10 : 1; return Math.round(v / q) * q; };
+function qXbar(tag, U, px, W0) {
+  const L = U.side === "long", T = U.trail, E = U.ema21, so = T.esito !== "profitto" && T.soglia > 0 ? T.soglia : null;
+  const vs = [px, U.entry_px, T.level, E.level].concat(so ? [so] : []), lo0 = Math.min(...vs), hi0 = Math.max(...vs), pad = (hi0 - lo0) * 0.05 || 1;
+  const f = v => (v - lo0 + pad) / (hi0 - lo0 + 2 * pad) * 100, e = f(U.entry_px), n = f(px), W = W0 || 320, chw = 7.2;
+  const zp = L ? `left:${e.toFixed(1)}%;right:0` : `left:0;width:${e.toFixed(1)}%`, zl = L ? `left:0;width:${e.toFixed(1)}%` : `left:${e.toFixed(1)}%;right:0`;
+  const tk = (v, c) => `<span class="tk${c ? " " + c : ""}" style="left:${f(v).toFixed(1)}%"></span>`, cE = E.esito === "profitto" ? "g" : "r", cT = T.esito === "profitto" ? "g" : "r";
+  // etichette sopra: "oggi" e "ingresso", allineate in versi opposti quando sono vicine (mai sovrapposte)
+  const gap = Math.abs(n - e) / 100 * W;
+  let up;
+  if (gap < 10) up = `<span class="lb up c" style="left:${n.toFixed(1)}%"><b>oggi</b> ≈ ingresso</span>`;
+  else if (gap < 80) { const r = e > n;
+    up = `<span class="lb up${r ? " e" : ""}" style="left:calc(${n.toFixed(1)}% ${r ? "- 4px" : "+ 4px"})"><b>oggi</b></span><span class="lb up${r ? "" : " e"}" style="left:calc(${e.toFixed(1)}% ${r ? "+ 4px" : "- 4px"})">ingresso</span>`; }
+  else up = `<span class="lb up c" style="left:${n.toFixed(1)}%"><b>oggi</b></span><span class="lb up c" style="left:${e.toFixed(1)}%">ingresso</span>`;
+  // etichette sotto: le uscite in perdita raggruppate verso l'estremo e la soglia oltre la quale lo stop passa in utile
+  const lossX = [E, T].filter(x => x.esito !== "profitto").map(x => f(x.level)), nl = lossX.length;
+  let dn = "", usedL = -1, usedR = 101;
+  if (nl) { const x = L ? Math.min(...lossX) : Math.max(...lossX), t = nl > 1 ? "uscite in perdita" : "uscita in perdita", wd = t.length * chw / W * 100;
+    dn += L ? `<span class="lb dn" style="left:${Math.max(0, x - 1).toFixed(1)}%">${t}</span>` : `<span class="lb dn e" style="left:${Math.min(100, x + 1).toFixed(1)}%">${t}</span>`;
+    if (L) usedL = x - 1 + wd; else usedR = x + 1 - wd; }
+  if (so) { const x = f(so), t = `${L ? "sopra" : "sotto"} <b>${nfIT(r100Q(so))}</b>`, wd = (7 + String(nfIT(r100Q(so))).length) * chw / W * 100;
+    if (L ? x - wd > usedL + 2 : x + wd < usedR - 2) dn += L ? `<span class="lb dn e" style="left:${Math.min(100, x + 1).toFixed(1)}%">${t}</span>` : `<span class="lb dn" style="left:${Math.max(0, x - 1).toFixed(1)}%">${t}</span>`; }
+  return `<div class="xbar" role="img" aria-label="${tag}: prezzo ${usd(px)}, ingresso ${usd(U.entry_px)}, uscite a ${usd(E.level)} (chiusura settimanale) e ${usd(T.level)} (stop mobile)">` +
+    `<div class="rail"><i class="zp" style="${zp}"></i><i class="zl" style="${zl}"></i></div>${so ? tk(so, "g") : ""}${tk(U.entry_px)}${tk(E.level, cE)}${tk(T.level, cT)}` +
+    `<span class="dot" style="left:${n.toFixed(1)}%"></span>${up}${dn}</div>`;
+}
+function qExitBlock(tag, X, px, W) {
+  const U = X.uscite, L = U.side === "long", T = U.trail, E = U.ema21, dn = qxAt(U, px), dir = L ? "sotto" : "sopra";
+  const P = [{ k: "ema", lv: E.level, usd: E.usd, es: E.esito, h: `esce in ${E.esito} ${dir}`, s: `domenica · ${usdS(E.usd)}`, txt: `Chiusura di domenica ${dir} ${usd(E.level)} (${usdS(E.usd)})` },
+    { k: "trail", lv: T.level, usd: T.usd, es: T.esito, h: `esce in ${T.esito} a`, s: `stop mobile · ${usdS(T.usd)}`, txt: `Stop mobile a ${usd(T.level)} (${usdS(T.usd)}), controllato ogni ora` }]
+    .sort((a, b) => Math.abs(a.lv - px) - Math.abs(b.lv - px));
+  const lossP = P.find(o => o.es !== "profitto"), gainP = P.find(o => o.es === "profitto");
+  const tile = (cls, h, v, s) => `<div><span>${h}</span><b class="${cls}">${v}</b><small>${s}</small></div>`;
+  const distS = `${U.dist && U.dist.attiva ? "attiva: decide domenica" : "oggi no"} · varrebbe ${usdS(dn.usd)}`;
+  let tL, tG, usedDist = false, usedSo = false;
+  if (lossP) tL = tile("neg", lossP.h, usd(lossP.lv), lossP.s);
+  else if (dn.esito !== "profitto") { tL = tile("neg", "esce in perdita", "distribuzione", distS); usedDist = true; }
+  else tL = tile("", "esce in perdita", "nessuna uscita", "le uscite sono tutte in utile");
+  if (gainP) tG = tile("pos", gainP.h, usd(gainP.lv), gainP.s);
+  else if (dn.esito === "profitto") { tG = tile("pos", "esce in profitto", "distribuzione", distS); usedDist = true; }
+  else if (T.soglia > 0) { tG = tile("pos", "esce in profitto", `${L ? "sopra" : "sotto"} ~${usd(r100Q(T.soglia))}`, "lo stop mobile passa in utile"); usedSo = true; }
+  else tG = tile("", "esce in profitto", "–", "");
+  const rest = P.filter(o => o !== lossP && o !== gainP).map(o => o.txt + ".");
+  if (!usedDist) rest.push(`Distribuzione: ${distS}.`);
+  if (T.esito !== "profitto" && T.soglia > 0 && !usedSo) rest.push(`${L ? "Sopra" : "Sotto"} ~${usd(r100Q(T.soglia))} lo stop passa in utile.`);
+  return `<div class="qX"><b>${tag}</b>${qXbar(tag, U, px, W)}<div class="qX2">${tL}${tG}</div>${rest.length ? `<p class="qFoot">${rest.join(" ")}</p>` : ""}</div>`;
+}
+// "Cosa dice la pre-analisi?": frase-risposta. px = prezzo mostrato per BTC, sunS = "29/11", band = fascia della scala delle chiusure
+// (preview.scenarios) in cui cade px: serve solo da flat (segnale di ingresso o nessun ingresso)
+const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+function qPreAns(px, sunS, band) {
+  const A = ASSETS_Q(), dd = sunS ? `domenica ${sunS}` : "domenica";
+  const O = A.filter(a => isOpenX(a[2]) && a[2].uscite && a[2].uscite.calc).map(a => a[0] === "BTC" ? [a[0], a[1], a[2], px] : a), plur = O.length > 1;
+  const gone = A.filter(a => a[2].status === "uscita");
+  let ans = gone.map(a => `${a[0]} esce lunedì ${monQ(a[2]) || ""}: l'uscita è già decisa.`).join(" ");
+  if (O.length) {
+    const beyond = ([, , X, p]) => { const U = X.uscite; return U.side === "long" ? p < U.ema21.level : p > U.ema21.level; };
+    const out = O.filter(a => a[2].status === "aperto" && (beyond(a) || (a[2].uscite.dist && a[2].uscite.dist.attiva)));
+    if (out.length) ans += ` Se ${dd} chiude come oggi, ${out.map(a => a[0]).join(" ed ")} ${out.length > 1 ? "escono" : "esce"}.`;
+    else if (!gone.length) { const nr = O.map(([tag, , X, p]) => ({ tag, d: Math.abs(X.uscite.ema21.level / p - 1) * 100 })).sort((a, b) => a.d - b.d)[0];
+      ans += nr.d < 5 ? `${cap1(dd)} ${plur ? "restano aperte" : "resta aperta"}, ma ${nr.tag} è a ${pctQ(nr.d)} dalla soglia di uscita.` : `${cap1(dd)} ${plur ? "restano aperte" : "resta aperta"}: nessuna uscita è vicina.`; }
+  } else if (!gone.length && A.length) ans = band && (band.outcome === "short" || band.outcome === "long") ? `Se ${dd} chiude come oggi, scatta un segnale ${band.outcome}: ingresso lunedì.` : `${cap1(dd)} nessun ingresso: con i dati di oggi le condizioni non ci sono.`;
+  return ans.trim() || "Pre-analisi non disponibile in questo momento.";
+}
+// "Il mercato è con noi?": frase con il conteggio dei semafori (side = lato della posizione BTC, null senza posizione)
+function qMpAns(side, c) {
+  if (!c) return "Dati del mercato non disponibili in questo momento.";
+  const f = c.favore || 0, k = c.contro || 0, n = c.neutro || 0;
+  const cnt = `<span class="fav">${f} ${f === 1 ? "segnale" : "segnali"} a favore</span>, <span class="con">${k} contro</span>, ${n} ${n === 1 ? "neutro" : "neutri"}`;
+  return !side ? "Nessuna posizione aperta: i semafori dicono solo com'è il mercato."
+    : f > 0 && k === 0 ? `Sì: ${cnt}.` : f === 0 && k > 0 ? `No: ${cnt}.` : f === k ? `In parità: ${cnt}.` : f > k ? `Per lo più sì: ${cnt}.` : `Non del tutto: ${cnt}.`;
+}
 (function renderPosLine() {
-  const W = R.weekly, E = R.weekly_eth; if (!W && !E) return;
-  const st = (tag, o, v) => { const open = o.status === "aperto" || o.status === "uscita";
-    return `<span><b>${tag}</b> ${open ? `${o.side} <b class="${v >= 0 ? "pos" : "neg"}">${pct(v, 1)}</b>${o.status === "uscita" ? " · esce lunedì" : ""}` : o.status === "segnale" ? `segnale ${o.side} lunedì` : "flat"}</span>`; };
-  const draw = r => { $("posLine").innerHTML = `<span class="plK">Posizioni</span><span class="plV">` +
-    (W ? st("BTC", W, (W.side === "short" ? -1 : 1) * (r.px / W.entry_px - 1) * 100) : "") + (E ? st("ETH", E, E.pnl_pct) : "") +
-    `</span><span class="more"><span>Posizioni </span>›</span>` +
-    (W && W.uscite && (W.status === "aperto" || W.status === "uscita") ? `<span class="plX" id="plX"><b>BTC</b> ${qxLine(W.uscite, r.px)}</span>` : ""); };
-  draw(REF); window.onRef(draw); $("posLine").hidden = false;
+  const draw = () => {
+    $("posLine").innerHTML = qPosHtml();
+    const W = Math.max(240, ($("qExitB").clientWidth || 320) - 4);
+    const O = ASSETS_Q().filter(a => isOpenX(a[2]) && a[2].uscite && a[2].uscite.calc);
+    $("qExitB").innerHTML = `<p class="qA">${qExitAns()}</p>` + O.map(([tag, , X, px]) => qExitBlock(tag, X, px, W)).join("");
+  };
+  draw(); window.onRef(draw);
+  let rz = 0; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(draw, 150); });
+  // Dettagli delle uscite: il riquadro "Quando esce" di Posizioni (tutte le uscite, in perdita e in profitto, con i $) per ogni
+  // posizione aperta e i pulsanti verso il pannello completo (condizioni, piano, storico) di ognuna
+  $("qExitM").onclick = () => {
+    const A = ASSETS_Q().filter(a => isOpenX(a[2]));
+    const body = document.createElement("div"); body.style.cssText = "display:grid;gap:12px;min-width:0";
+    body.innerHTML = (A.length ? A.map(([tag, , X, px]) => `<section class="card" style="padding:14px"><b style="font:700 1rem var(--font)">${tag} · ${X.side}</b>${X.uscite ? qxHtml(X.uscite, px) : `<p class="foot">Uscite non disponibili.</p>`}
+        <button type="button" class="wkMore" data-a="${tag}" style="margin-top:10px"><span>Perché è aperta e quando si chiude<small>condizioni, uscite, piano in dollari e tutti i trade dal 2021</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button></section>`).join("")
+      : `<p class="foot" style="margin:0">Nessuna posizione aperta. Le uscite si attivano solo con una posizione aperta.</p>`) +
+      `<p class="foot" style="margin:0">Uscite di W3.2: stop mobile (2,5 volte la volatilità settimanale, controllato ogni ora), chiusura settimanale oltre la media a 21 settimane, distribuzione alla chiusura della domenica. Risultati con costi e funding.</p>`;
+    body.querySelectorAll("button[data-a]").forEach(b => b.onclick = () => { closeSheet(); const X = b.dataset.a === "BTC" ? R.weekly : R.weekly_eth; setTimeout(() => window.wkDlgOpen && window.wkDlgOpen(X, b.dataset.a, b.dataset.a === "BTC"), 50); });
+    openSheet("Quando escono", body);
+  };
 })();
 
 // ---- Opzioni (pagina a sé) e riga sintetica in Oggi: report.opzioni (radar/opzioni.py). Solo BTC, sulla carta: nessun ordine.
@@ -2397,13 +2629,45 @@ function renderScanner() {   // avviata da route() quando scanner.json è arriva
   // con la posizione aperta "oggi short aperto" ripete il blocco sopra: su telefono (≤ 700 px) resta solo la data della decisione
   const whenX = PB ? `<span class="pvWhenX"> · oggi <b>${posT}</b></span>` : ` · oggi <b>${posT}</b>`;
   const whenS = sun ? `Decisione alla chiusura di <b>domenica ${sun.toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" })}</b>${whenX}` : `Decisione alla prossima chiusura settimanale${whenX}`;
-  el.innerHTML = `<div class="wkTop"><b style="font:600 1rem var(--font)">Pre-analisi · prossima chiusura</b></div>
-    ${PB ? `<div id="pvPosW"></div>` : ""}
-    <div class="pvWhen">${whenS}</div>
-    <div id="pvScaleW"></div>${key}${PB ? "" : `<div id="pvNowW"></div>`}${macFlags}
-    <button type="button" class="wkMore" id="pvMore"><span>Dettagli pre-analisi<small>condizioni, flussi${MA.length ? ", mercati di ieri" : ""}, ${TD && (SR.length || AN) ? "livelli, situazioni simili, " : ""}${PV.history ? `storico degli ${sideL(PV.history.side || (S && S.side))} simili, ` : ""}liquidazioni e note</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
-  el.hidden = false; draw(REF); window.onRef(draw);
-  let rzT = 0; window.addEventListener("resize", () => { clearTimeout(rzT); rzT = setTimeout(() => draw(REF), 150); });   // soglie in px: ridisegno alla nuova larghezza
+  // Posizioni: rimando alla scheda di Oggi (la pre-analisi è stata spostata lì, 26/11); scala, soglie e dettagli nel pannello
+  el.innerHTML = `<button type="button" class="wkMore" id="pvGo"><span>Pre-analisi della prossima chiusura<small>è in Oggi, nella scheda «Cosa dice la pre-analisi?»: uscite di domenica, distribuzione e short simili</small></span><span aria-hidden="true" style="font-size:1.3rem;color:var(--label2)">›</span></button>`;
+  el.hidden = false;
+  $("pvGo").onclick = () => { location.hash = "#oggi"; setTimeout(() => $("qPre").scrollIntoView({ block: "start" }), 80); };
+  // Oggi · "Cosa dice la pre-analisi?": frase-risposta (esce / resta aperta / segnale), quanto manca alle uscite di domenica, distribuzione,
+  // short (o long) simili dal primo trade dello storico; scala delle chiusure, condizioni e tutto il resto nel pannello "Dettagli"
+  const sunS = sun ? dmQ(sun) : null;
+  const qPre = px => {
+    const O = ASSETS_Q().filter(a => isOpenX(a[2]) && a[2].uscite && a[2].uscite.calc).map(a => a[0] === "BTC" ? [a[0], a[1], a[2], px] : a);
+    let ans = qPreAns(px, sunS, bandOf(px)), kv = "";
+    const gone = ASSETS_Q().filter(a => a[2].status === "uscita");
+    if (O.length) {
+      const beyond = ([, , X, p]) => { const U = X.uscite; return U.side === "long" ? p < U.ema21.level : p > U.ema21.level; };
+      const side0 = O[0][2].uscite.side;
+      kv = O.map(([tag, , X, p], i) => { const U = X.uscite, L = U.side === "long", dir = L ? "sotto" : "sopra", v = (U.ema21.level / p - 1) * 100;
+        const lab = beyond([tag, , X, p]) ? `${tag} è già ${dir} la media a 21 settimane: conta la chiusura di domenica` : i > 0 && U.side === side0 ? `Lo stesso per ${tag}` : `Per uscire domenica ${tag} dovrebbe chiudere ${dir} la media a 21 settimane`;
+        return `<div class="qKV"><span>${lab}</span><b>${pct(v, 1)}</b></div>`; }).join("");
+      const D = O[0][2].uscite.dist, Ls = side0 === "long", on = O.filter(a => a[2].uscite.dist && a[2].uscite.dist.attiva).map(a => a[0]);
+      if (D) kv += `<div class="qKV"><span>Uscita per distribuzione (si attiva se i perp ${Ls ? "vendono" : "comprano"} e il funding medio di 7 giorni ${Ls ? "sale sopra" : "scende sotto"} ${qxFz(D.fund_soglia)})</span><b>${on.length ? on.join(" e ") + " sì" : "no"}</b></div>`;
+    } else if (!gone.length) {
+      const ok = cMain.filter(k => k.now === true).length;
+      if (cMain.length) kv = `<div class="qKV"><span>Condizioni ${focus ? `per ${focus === "long" ? "il long" : "lo short"} ` : ""}soddisfatte oggi</span><b>${ok} su ${cMain.length}</b></div>`;
+    }
+    if (!ans.trim()) ans = "Pre-analisi non disponibile in questo momento.";
+    // operazioni simili dello storico: barre del movimento a favore (verde utile, rosso perdita), quella aperta tratteggiata
+    let sim = "";
+    const HT = PV.history && (PV.history.trades || []).filter(t => t && isFinite(t.move_pct));
+    if (HT && HT.length) { const cl = HT.filter(t => t.reason !== "posizione aperta" && t.reason !== "open"), w = cl.filter(t => t.move_pct > 0).length, mx = Math.max(...HT.map(t => Math.abs(t.move_pct)), 1);
+      const y0 = String(HT[0].entry).slice(0, 4), sdL = PV.history.side === "long" ? "long" : "short", art = sdL === "long" ? "I" : "Gli";
+      const head = cl.length ? (w === cl.length ? `${art} ${sdL} simili dal ${y0} sono finiti tutti in utile (${w} su ${cl.length})` : `${art} ${sdL} simili dal ${y0}: ${w} su ${cl.length} in utile`) : `${art} ${sdL} simili dal ${y0}`;
+      sim = `<div class="qSub">${head}</div><div class="qSim" role="img" aria-label="${head}">` + HT.map(t => { const o = t.reason === "posizione aperta" || t.reason === "open", d = new Date(t.entry + "T00:00:00Z");
+        return `<div><b class="${t.move_pct >= 0 ? "pos" : "neg"}">${pct(t.move_pct, 1)}</b><i class="${o ? "now" : ""}${t.move_pct < 0 ? " l" : ""}" style="height:${Math.max(6, Math.abs(t.move_pct) / mx * 70).toFixed(0)}px"></i><span>${o ? "ora" : d.toLocaleDateString("it-IT", { month: "short", timeZone: "UTC" }) + " " + String(d.getUTCFullYear()).slice(2)}</span></div>`; }).join("") + `</div>`; }
+    return `<p class="qA">${ans.trim()}</p>${kv}${sim}${macFlags}`;
+  };
+  const drawQ = r => { $("pvQ").innerHTML = qPre(r.px); };
+  drawQ(REF); window.onRef(drawQ);
+  // pannello: scala delle chiusure e soglia d'uscita (prima nella card di Posizioni) ridisegnate sul prezzo mostrato finché è aperto
+  window.onRef(r => { if ($("pvScaleW")) draw(r); });
+  let rzT = 0; window.addEventListener("resize", () => { clearTimeout(rzT); rzT = setTimeout(() => { if ($("pvScaleW")) draw(REF); }, 150); });   // soglie in px: ridisegno alla nuova larghezza
   // --- pannello dei dettagli
   const H = PV.history, F = PV.flow, LC = PV.liq_context;
   const hist = H && (H.trades || []).length ? `<h3>Storico ${sideL(H.side)} di W3.2 · vinti ${H.wins}/${H.n}</h3>
@@ -2429,8 +2693,9 @@ function renderScanner() {   // avviata da route() quando scanner.json è arriva
     `<p class="foot">${TD.note ? TD.note + " " : ""}Contesto, non segnale: decide W3.2.</p>` : "";
   const cond = conds ? `<div class="list checks" style="box-shadow:none"><div class="cap2">Condizioni ${focus === "long" ? "per il long " : focus === "short" ? "per lo short " : ""}con i dati di oggi</div>${conds}</div>` : "";
   const drBox = PB && (() => { const dr = PB.dist_rule, t = dr == null || dr === "" ? "" : typeof dr === "string" ? dr : (dr.text || dr.label || dr.detail || ""); return t ? `<div class="list"><div class="row"><span class="k">Uscita su distribuzione<small>${t}</small></span></div></div>` : ""; })() || "";
-  $("pvMore").onclick = () => openSheet("Dettagli pre-analisi", `<div class="pv" style="gap:12px;min-width:0"><div class="pvWhen">${whenTxt} · oggi <b>${posT}</b></div>${nowBox(REF.px)}${drBox}${cond}${sig}${ctx}${macroBox}${ctxD}${hist}${flow}${liq}` +
-    `<p class="foot">${PV.note ? PV.note + " " : ""}Stima calcolata con i dati di oggi: la decisione vale solo alla chiusura di domenica.${PV.updated_utc ? " Aggiornata: " + (new Date(PV.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" })) + " UTC." : ""}</p></div>`);
+  $("qPreM").hidden = false;
+  $("qPreM").onclick = () => { openSheet("Dettagli pre-analisi", `<div class="pv" style="gap:12px;min-width:0">${PB ? `<div id="pvPosW"></div>` : ""}<div id="pvScaleW"></div>${key}<div class="pvWhen">${whenTxt} · oggi <b>${posT}</b></div>${nowBox(REF.px)}${drBox}${cond}${sig}${ctx}${macroBox}${ctxD}${hist}${flow}${liq}` +
+    `<p class="foot">${PV.note ? PV.note + " " : ""}Stima calcolata con i dati di oggi: la decisione vale solo alla chiusura di domenica.${PV.updated_utc ? " Aggiornata: " + (new Date(PV.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" })) + " UTC." : ""}</p></div>`); draw(REF); };
 })();
 
 // ---- grafici
@@ -2680,43 +2945,50 @@ const lvRow = (o, extra = "", lab = null) => { const t = LVX.LT[o.tipo], p = o.p
     `<span class="t"><b>${lab || (o.tipo === "media" ? escS(o.cosa) : t[0])}</b><small>${o.tipo === "media" ? "media mobile" : LVX.info(o)}</small></span>` +
     `<span class="p">${p == null ? "" : `<s><i style="width:${Math.max(0, Math.min(100, p))}%"></i></s>`}<em>${p == null ? "–" : p + "%"}</em></span></div>`; };
 
-// Oggi · "Livelli e probabilità a 30 giorni" = FORBICE: intervallo probabile 80/50% e i livelli che contano subito (primo supporto,
-// prima resistenza, liquidazioni long e short più vicine, stima e on-chain, trailing W3.2), con distanza e tocco sul prezzo live.
-// La scala completa, le zone e il grafico sono nel Grafico ("Apri nel Grafico").
+// Oggi · "Livelli e probabilità a 30 giorni" = FORBICE, nella scheda "Dove può andare BTC in 30 giorni?": frase con l'intervallo all'80%,
+// scala 80/50% con il prezzo e (con BTC aperto) l'uscita dello stop mobile, i livelli che contano subito (prima resistenza, primo supporto,
+// liquidazioni long e short più vicine, stima e on-chain) con distanza e tocco sul prezzo live. Scala completa, zone e grafico nel Grafico.
 (function renderCone() {
   const L = LVX.L; if (!L) return;
   const H = LVX.H, r100 = x => usd(Math.round(x / 100) * 100), rng = a => `${r100(a[0])} – ${r100(a[1])}`;
   const tgt = new Date(Date.parse(L.data + "T00:00:00Z") + H * 864e5).toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "UTC" });
+  $("qConeH").textContent = `Dove può andare BTC in ${H} giorni?`;
+  // nomi in parole (niente sigle); descrizione dal livello (LVX.info), "di swing" tolto
+  const NAME = (o, lab) => lab;
   const draw = () => {
-    const px = LVX.px(), rs = LVX.rows(px), i80 = LVX.interval(0.8, px), i50 = LVX.interval(0.5, px);
-    let top = "";
+    const px = LVX.px(), rs = LVX.rows(px), i80 = LVX.interval(0.8, px), i50 = LVX.interval(0.5, px), W = LVX.L && R.weekly;
+    const tr = rs.find(o => o.tipo === "trailing") || null, wOpen = W && isOpenX(R.weekly) && tr;
+    const trOk = wOpen && R.weekly.uscite && R.weekly.uscite.trail && R.weekly.uscite.trail.esito === "profitto";
+    let top = "", ans = "";
     if (i80 && i50) {
-      const all = [i80[0], i80[1], px], lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
+      ans = `Probabilmente fra <b>${r100(i80[0])}</b> e <b>${r100(i80[1])}</b> al ${tgt}.`;
+      // scala: intervallo all'80% e al 50%, prezzo di oggi e (con BTC aperto) l'uscita dello stop mobile se è vicina al bordo
+      const all = [i80[0], i80[1], px].concat(wOpen && Math.abs(tr.prezzo / px - 1) < 0.45 ? [tr.prezzo] : []), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * .04 || 1;
       const x = v => Math.max(0, Math.min(100, (v - lo + pad) / (hi - lo + 2 * pad) * 100)), xp = v => x(v).toFixed(2) + "%";
-      const xn = x(px), al = xn < 14 ? " l" : xn > 86 ? " r" : "";
-      top = `<span class="cnK">Intervallo probabile all'80% al ${tgt}</span><div class="cnBig">${rng(i80)}</div>
-        <div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(i80)}, al 50% ${rng(i50)}, prezzo ${usd(px)}">
+      const xn = x(px), al = v => v < 12 ? "transform:none" : v > 88 ? "transform:translateX(-100%)" : "transform:translateX(-50%)";
+      let ex = "";
+      if (all.length === 4) { const xt = x(tr.prezzo), lab = "uscita BTC", far = Math.abs(xt - xn) > 22;
+        ex = `<i class="xt" style="left:${xp(tr.prezzo)};background:var(${trOk ? "--green" : "--red"})"></i>` + (far ? `<span class="xl" style="left:${xp(tr.prezzo)};${al(xt)};color:var(${trOk ? "--green" : "--red"})">${lab}</span>` : ""); }
+      top = `<div class="cnScale" role="img" aria-label="Intervallo all'80% ${rng(i80)}, al 50% ${rng(i50)}, prezzo ${usd(px)}">
         <div class="rail"></div><div class="b80" style="left:${xp(i80[0])};width:${(x(i80[1]) - x(i80[0])).toFixed(2)}%"></div><div class="b50" style="left:${xp(i50[0])};width:${(x(i50[1]) - x(i50[0])).toFixed(2)}%"></div>
-        <div class="now" style="left:${xp(px)}"></div><span class="nowL${al}" style="left:${xp(px)}"><em>${LVX.isLive() ? "live" : "chiusura"}</em>${usd(px)}</span>
+        <div class="now" style="left:${xp(px)}"></div><span class="nowL" style="left:${xp(px)};${al(xn)}">oggi</span>${ex}
         <span class="tk" style="left:${xp(i80[0])}">${r100(i80[0])}</span><span class="tk e" style="left:${xp(i80[1])}">${r100(i80[1])}</span></div>
-        <div class="cnKey"><span><i></i>80% dei casi</span><span><i class="k50"></i>50%: ${rng(i50)}</span></div>`;
-    }
-    // forbice: dal più alto al più basso, con la riga del prezzo nel punto giusto
-    const pick = [[LVX.nearest(rs, "liq_short", true, true), "Liq. short on-chain"], [LVX.nearest(rs, "liq_short", true, false), "Liq. short stimate"],
-      [LVX.nearest(rs, "resistenza", true), "Prima resistenza"], [rs.find(o => o.tipo === "trailing") || null, "Trailing W3.2"],
-      [LVX.nearest(rs, "supporto", false), "Primo supporto"], [LVX.nearest(rs, "liq_long", false, false), "Liq. long stimate"], [LVX.nearest(rs, "liq_long", false, true), "Liq. long on-chain"]]
+        <div class="cnKey"><span><i></i>8 volte su 10</span><span><i class="k50"></i>5 su 10: ${rng(i50)}</span>${ex ? `<span><i style="background:var(${trOk ? "--green" : "--red"})"></i>uscita BTC in ${trOk ? "utile" : "perdita"} (stop mobile)</span>` : ""}</div>
+        <p class="qFoot">8 volte su 10 il prezzo resta in questo intervallo.${wOpen && tr.prob != null ? ` Lo stop mobile di BTC ha il ${tr.prob}% di probabilità di essere toccato entro ${H} giorni.` : ""}</p>`;
+    } else ans = "Intervallo a " + H + " giorni non disponibile oggi.";
+    // livelli che contano subito, dal più alto al più basso (lo stop mobile è nella scheda "Quando escono?")
+    const pick = [[LVX.nearest(rs, "liq_short", true, true), "Short a leva da chiudere"], [LVX.nearest(rs, "liq_short", true, false), "Short a leva da chiudere (stima)"],
+      [LVX.nearest(rs, "resistenza", true), "Prima resistenza"], [wOpen ? null : tr, "Stop mobile"],
+      [LVX.nearest(rs, "supporto", false), "Primo supporto"], [LVX.nearest(rs, "liq_long", false, false), "Long a leva da chiudere (stima)"], [LVX.nearest(rs, "liq_long", false, true), "Long a leva da chiudere"]]
       .filter(q => q[0]).sort((a, b) => b[0].prezzo - a[0].prezzo);
-    let lad = "", done = false, first = true;
-    const nowRow = () => `<div class="cnDiv"><em>${LVX.isLive() ? "live" : "chiusura"}</em>${usd(px)}</div>`;
-    pick.forEach(([o, lab]) => { if (!done && o.prezzo < px) { lad += nowRow(); done = true; first = true; }
-      lad += lvRow(o, (first ? " first" : "") + (o.tipo === "trailing" ? " tr" : ""), lab); first = false; });
-    if (!done) lad += nowRow();
-    $("cnCard").innerHTML = `<div class="tapHead"><b>Livelli e probabilità a ${H} giorni</b><a class="more" href="#grafico">Apri nel Grafico ›</a></div>
-      <div class="cnGrid cnF"><div class="cnTop">${top}</div><div class="cnLad"><p class="cnCap">Livelli più vicini · tocco entro ${H} giorni · da ${LVX.refLab()}</p>
-      <div class="lvH" aria-hidden="true"><span></span><span>Livello</span><span>Dist.</span><span>Tipo</span><span>Tocco</span></div>${lad}</div></div>
+    const sub = o => String(LVX.info(o)).replace(/ di swing/g, "").replace(/^stima Radar$/, "stima");
+    const lad = pick.map(([o, lab]) => `<div class="qL" data-px="${o.prezzo}"><div class="t"><b>${NAME(o, lab)}</b><small>${o.tipo === "media" ? "media mobile" : sub(o)}</small></div>` +
+      `<div class="p">${usd(o.prezzo)}<small>${pct(o.dist * 100, 1)}</small></div><div class="pr"><b>${o.prob == null ? "–" : o.prob + "%"}</b>${o.prob == null ? "" : `<s><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></s>`}</div></div>`).join("");
+    $("cnCard").innerHTML = `<p class="qA">${ans}</p>${top}
+      <div class="qSub">Livelli e probabilità a ${H} giorni</div>${lad}
       <p class="cxNote">Probabilità dalla volatilità, non dalla direzione. Livelli e liquidazioni sono contesto, non un segnale; liquidazioni stimate tranne quelle on-chain.</p>`;
   };
-  draw(); $("cnSec").hidden = false; window.onRef(draw);
+  draw(); window.onRef(draw);
 })();
 // ---- Grafico (solo BTC): candele + volumi su 4h, 1D, 1W, 1M; livelli della mappa unica (report.livelli) come linee orizzontali con
 // interruttori (salvati su questo dispositivo), zone come fasce, marcatori dei trade W3.2 su 1D/1W, tabella completa sotto.
@@ -2946,10 +3218,19 @@ function renderChart() {   // avviata da route() quando grafico.json è arrivato
 }
 // Contesto (report.context, radar/context.py): stato di mercato e politica economica. Solo descrizione: nessuna probabilità.
 // Tre tessere (Mercato / Fed / Dati): la prima parte del testo del server in evidenza, il resto sotto; colore di stato sobrio
+// Con report.mercato presente la scheda diventa "Mercato power" (sotto): il Contesto passa nel suo pannello, nessuna informazione tolta.
+const ctxC = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;
+const ctxPanel = C => { const det = (C.details || []).filter(o => o && o.label), rows = (C.rows || []).filter(o => o && o.label && o.text);
+  const L = det.length ? det.map(o => [o.label, o.text, o.value == null ? "–" : o.value]) : rows.map(o => [o.label, "", o.text]);
+  return `<div class="list" style="box-shadow:none">${L.map(([l, x, v]) => `<div class="row"><span class="k">${esc(l)}${x ? `<small>${esc(x)}</small>` : ""}</span><span class="v strong">${esc(v)}</span></div>`).join("")}</div>
+    ${C.warn ? `<p class="cxWarn">${esc(C.warn)}</p>` : ""}<p class="foot">${esc(C.note || "")}</p>
+    <p class="foot">${esc(C.source || "")}${C.updated_utc ? " Aggiornato: " + new Date(C.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC." : ""}</p>`; };
+const MP = R.mercato && R.mercato.assets && (R.mercato.assets.BTC || R.mercato.assets.ETH) ? R.mercato : null;
 (function renderContext() {
-  const C = R.context && typeof R.context === "object" && Array.isArray(R.context.rows) ? R.context : null;
+  const C = ctxC;
   const rows = C ? C.rows.filter(o => o && o.label && o.text) : [];
-  if (!rows.length) return;
+  if (!rows.length || MP) return;
+  // senza report.mercato: la scheda "Il mercato è con noi?" mostra il Contesto (tre tessere) e il suo pannello
   const note = C.note ? `<p class="cxNote">${esc(C.note)}</p>` : "", warn = C.warn ? `<p class="cxWarn">${esc(C.warn)}</p>` : "";
   const ICO = { Mercato: "i-sim", Fed: "i-fed", Dati: "i-stat" }, cap = t => t.charAt(0).toUpperCase() + t.slice(1);
   // testo del server "a, b · c · d" → titolo "a" e resto "b · c · d" (una parentesi in coda al titolo scende nel resto): nessuna parola persa
@@ -2957,39 +3238,89 @@ function renderChart() {   // avviata da route() quando grafico.json è arrivato
     const c = h.indexOf(", "); if (c > 0) { x.push(h.slice(c + 2)); h = h.slice(0, c); }
     const m = /^(.*\S)\s*\(([^()]*)\)$/.exec(h); if (m) { h = m[1]; x.unshift(m[2]); }
     return [cap(h), x.concat(p).join(" · ")]; };
-  // colore: mercato verde/rosso per il trend; Fed e dati arancione se stringono o salgono, azzurro se scendono, grigio altrimenti
-  const tone = (l, h) => l === "Mercato" ? (/rialzo/i.test(h) ? "--green" : /ribasso/i.test(h) ? "--red" : "--label3")
-    : /in rialzo|in salita|in aumento/i.test(h) ? "--orange" : /in calo|in discesa/i.test(h) ? "--teal" : "--label3";
-  $("cxCard").innerHTML = `<div class="tapHead"><b>${esc(C.title || "Contesto")}</b><span class="more">Dettagli ›</span></div>
+  // colore neutro per tutte le tessere (verde/rosso solo per profitto/perdita)
+  $("cxCard").innerHTML = `<p class="qA">Semafori non disponibili oggi: resta il contesto.</p>
     <div class="cxTiles">${rows.map(o => { const [h, x] = split(o.text);
-      return `<div class="cxT" style="--c:var(${tone(o.label, h)})"><span class="ico"><svg><use href="#${ICO[o.label] || "i-met"}"/></svg></span><div><span class="l">${esc(o.label)}</span><b>${esc(h)}</b>${x ? `<small>${esc(x)}</small>` : ""}</div></div>`; }).join("")}</div>${warn}${note}`;
-  $("cxSec").hidden = false;
-  const det = (C.details || []).filter(o => o && o.label);
-  $("cxCard").onclick = () => openSheet("Contesto di mercato e politica economica", `<div style="display:grid;gap:12px;min-width:0">
-    <div class="list" style="box-shadow:none">${det.map(o => `<div class="row"><span class="k">${esc(o.label)}${o.text ? `<small>${esc(o.text)}</small>` : ""}</span><span class="v strong">${esc(o.value == null ? "–" : o.value)}</span></div>`).join("")}</div>
-    ${warn}<p class="foot">${esc(C.note || "")}</p>
-    <p class="foot">${esc(C.source || "")}${C.updated_utc ? " Aggiornato: " + new Date(C.updated_utc).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC." : ""}</p></div>`);
+      return `<div class="cxT" style="--c:var(--label2)"><span class="ico"><svg><use href="#${ICO[o.label] || "i-met"}"/></svg></span><div><span class="l">${esc(o.label)}</span><b>${esc(h)}</b>${x ? `<small>${esc(x)}</small>` : ""}</div></div>`; }).join("")}</div>${warn}${note}`;
+  $("qMpM").hidden = false;
+  $("qMpM").onclick = () => openSheet("Contesto di mercato e politica economica", `<div style="display:grid;gap:12px;min-width:0">${ctxPanel(C)}</div>`);
 })();
-// Oggi: riassunto coerente con la pagina Notizie: il prossimo evento ad alto impatto prima della chiusura di domenica (o il primo
-// dopo) e le 1–2 notizie più rilevanti delle ultime 24 ore che toccano le posizioni; il resto in #notizie
+// Mercato power (report.mercato, radar/mercato.py): sei semafori a favore / neutri / contro la posizione BTC aperta; nessun punteggio unico.
+// Scheda "Il mercato è con noi?": frase con il conteggio e una riga per semaforo in parole semplici (blu a favore, arancio contro, grigio
+// neutro, con simbolo); "Dettagli" apre il pannello con regola e motivo di oggi per ognuno, i semafori di ETH se diversi e i contenuti del
+// Contesto. Solo contesto: decide W3.2 (l'unico semaforo che W3.2 usa è il flusso e funding dei perp).
+(function renderMercato() {
+  if (!MP) return;
+  const A = MP.assets.BTC || MP.assets.ETH, side = A.lato, E = MP.assets.BTC && MP.assets.ETH;
+  const items = (A.items || []).filter(i => i && i.nome), c = A.conteggio || {};
+  if (!items.length) return;
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "", dmS = s => String(s).slice(8, 10) + "/" + String(s).slice(5, 7);
+  const verso = s => s === "short" ? "lo short" : s === "long" ? "il long" : "";
+  const ST = { favore: "a favore", neutro: "neutro", contro: "contro" }, COL = { favore: "a favore", neutro: "neutro", contro: "contro" }, SYM = { favore: "+", neutro: "=", contro: "−" };
+  // nomi in parole al posto delle sigle (il nome del server resta nel pannello)
+  const NOME = { onchain: "Ciclo on-chain", dollaro: "Dollaro", opex: "Scadenza opzioni", vix: "Paura sulle borse", fed: "Fed", flusso: "Flusso dei perp" };
+  // valore breve leggibile, costruito dai campi del server (valore, etichetta) e dai dati già in pagina
+  const VAL = {
+    onchain: i => R.onchain && R.onchain.zone && R.onchain.zone !== "norm" && R.onchain.since ? `${cap(i.etichetta)} dal ${dmS(R.onchain.since)}` : `${cap(i.etichetta)} · ${i.valore}`,
+    dollaro: i => `${i.valore} · ${i.etichetta}`,
+    opex: i => `Scadenza ${String(i.etichetta || "").split(" · ")[0]} · max pain ${R.opex && R.opex.max_pain ? nfIT(R.opex.max_pain) + " $" : String(i.valore).replace("max pain ", "")}`,
+    vix: i => `VIX ${i.valore} ${String(i.etichetta || "").replace(/\s*\(.*\)$/, "")}`,
+    fed: i => `${i.valore} · ${String(i.etichetta || "").replace(/^tra (\d+) g$/, (m, n) => `tra ${n} ${n === "1" ? "giorno" : "giorni"}`)}`,
+    flusso: i => `Flusso ${i.valore} ${i.etichetta}`,
+  };
+  const val = i => { try { return (VAL[i.key] || (x => [x.valore, x.etichetta].filter(Boolean).join(" · ")))(i); } catch (_) { return i.valore || ""; } };
+  // riga breve della scheda: il motivo del server; per il flusso (sigle) le parole "in vendita/in acquisto, nel verso dello short"
+  const why = i => i.key === "flusso" ? `${cap(i.etichetta || "")}${side && i.stato === "favore" ? `, nel verso del${side === "short" ? "lo short" : " long"}` : side && i.stato === "contro" ? `, contro ${verso(side)}` : ""}`
+    : cap(i.perche || val(i));
+  const w3 = i => i.w3 ? `<span class="mpW3">usato da W3.2</span>` : "";
+  const count = (x, s) => s ? `<span class="favore">${x.favore || 0} a favore</span> · <span class="neutro">${x.neutro || 0} ${x.neutro === 1 ? "neutro" : "neutri"}</span> · <span class="contro">${x.contro || 0} contro</span> ${verso(s)}`
+    : "nessuna posizione aperta";
+  const f = c.favore || 0, k = c.contro || 0, n = c.neutro || 0, ans = qMpAns(side, c);
+  let ethTxt = "";
+  if (E) { const B = MP.assets.BTC, Ex = MP.assets.ETH, bs = {}; (B.items || []).forEach(i => { bs[i.key] = i.stato; });
+    const d = (Ex.items || []).filter(i => bs[i.key] !== i.stato).length, ec = Ex.conteggio || {};
+    ethTxt = !d && Ex.lato === B.lato ? " Uguale per ETH." : ` ETH: ${ec.favore || 0} a favore, ${ec.contro || 0} contro.`; }
+  const trend = ctxC && (ctxC.rows || []).find(o => o && o.label === "Mercato" && o.text);
+  $("cxCard").innerHTML = `<p class="qA">${ans}${MP.assets.BTC ? "" : " (ETH)"}</p>
+    ${items.map(i => `<div class="qM"><span class="s st-${esc(i.stato)}" aria-hidden="true">${SYM[i.stato] || "="}</span><div class="t"><b>${esc(NOME[i.key] || i.nome)}${i.w3 ? `<span class="qTag">usato dalla strategia</span>` : ""}</b><small>${esc(why(i))}</small></div><span class="v ${esc(i.stato)}">${side ? ST[i.stato] || "" : "–"}</span></div>`).join("")}
+    <p class="qFoot">${trend ? "Trend: " + esc(trend.text) + ". " : ""}Solo contesto: decide la strategia.${ethTxt}</p>`;
+  $("qMp").setAttribute("aria-label", `Il mercato è con noi? ${side ? `${f} a favore, ${n} neutri, ${k} contro ${verso(side)}` : "nessuna posizione aperta"}`);
+  // ---- pannello
+  const row = (i, s) => `<div class="row"><i class="mpDot ${esc(i.stato)}" aria-hidden="true"></i><span class="k">${esc(NOME[i.key] || i.nome)}${w3(i)}
+      <small>Oggi ${COL[i.stato] || "neutro"}: ${i.key === "flusso" && i.perche ? "" : esc(val(i)) + (i.perche ? ". " : "")}${i.perche ? esc(cap(i.perche)) : ""}${s ? "" : " (nessuna posizione aperta)"}</small>
+      <small class="rule">Regola: ${esc(i.regola || "")}</small></span><span class="v ${esc(i.stato)}">${ST[i.stato] || "–"}</span></div>`;
+  const sec = (h, x) => `<section class="ocSec"><h3>${h}</h3>${x}</section>`;
+  let eth = "";
+  if (E) { const B = MP.assets.BTC, Ex = MP.assets.ETH, bs = {}; (B.items || []).forEach(i => { bs[i.key] = i.stato; });
+    const diff = (Ex.items || []).filter(i => bs[i.key] !== i.stato);
+    eth = sec(`ETH${Ex.lato ? " " + Ex.lato : ""}`, diff.length || Ex.lato !== B.lato
+      ? `<p class="foot" style="margin:0">${count(Ex.conteggio || {}, Ex.lato)}${diff.length ? ". Diversi da BTC:" : ". Stessi semafori di BTC."}</p>${diff.length ? `<div class="list" style="box-shadow:none">${diff.map(i => row(i, Ex.lato)).join("")}</div>` : ""}`
+      : `<p class="foot" style="margin:0">Stessi semafori di BTC: ${count(Ex.conteggio || {}, Ex.lato)}.</p>`); }
+  const body = `<div class="ocP mpP">
+    ${sec(`BTC${side ? " " + side : ""} · ${side ? count(c, side) : "nessuna posizione aperta"}`, `<div class="list" style="box-shadow:none">${items.map(i => row(i, side)).join("")}</div>
+      <p class="foot" style="margin:0">Blu (+): il dato aiuta la posizione aperta. Grigio (=): neutro. Arancio (−): le va contro. Nessun punteggio unico: si contano solo i semafori.</p>`)}
+    ${eth}
+    ${ctxC ? sec("Contesto di mercato e politica economica", ctxPanel(ctxC)) : ""}
+    ${sec("Come si usa", `<p class="foot" style="margin:0">${esc(MP.nota || "Contesto: decide W3.2.")}</p>`)}</div>`;
+  $("qMpM").hidden = false;
+  $("qMpM").onclick = () => openSheet("Mercato power · perché ogni semaforo", body);
+})();
+// Oggi: riassunto coerente con la pagina Notizie (scheda "Cosa succede oggi?"): il prossimo evento ad alto impatto prima della chiusura di domenica
+// (o il primo dopo) e la notizia più rilevante delle ultime 24 ore che tocca le posizioni; il resto in #notizie ("Dettagli")
 function renderToday() {
   const now = Date.now(), A = agendaW(CAL, BANKS, now);
   const up = A.events.filter(e => e.impact === "alto" && !e.past), nx = up[0] || A.next_after;
   const fresh = NEWS.filter(n => isNoi(n) && now - new Date(n.date) < 864e5);
-  const nws = (fresh.length ? fresh : NEWS.filter(isNoi)).slice().sort((a, b) => ((b.rel ?? b.impact) - (a.rel ?? a.impact)) || (a.date < b.date ? 1 : -1)).slice(0, 2);
+  const nws = (fresh.length ? fresh : NEWS.filter(isNoi)).slice().sort((a, b) => ((b.rel ?? b.impact) - (a.rel ?? a.impact)) || (a.date < b.date ? 1 : -1)).slice(0, 1);
   const tag = n => (n.assets && n.assets.length ? n.assets.join(" ") : "mercato");
-  const when = e => `${dayR(e.at)} ${hmR(e.at)}`;
-  const evH = nx ? `<div class="ev"><span class="tm">${when(nx)}</span><span><b>${esc(nx.name)}</b><small>${up[0] ? "prima della chiusura di domenica" : "dopo la chiusura di domenica"}${nx.forecast ? " · previsto " + esc(fcIT(nx.forecast)) : ""}</small></span><span class="imp ${nx.impact}">${nx.impact}</span></div>` : "";
-  const nH = nws.map(n => `<a class="n" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><small>${esc(tag(n))} · ${esc(n.source)} · ${ago(n.date)}</small></a>`).join("");
-  $("todaySec").hidden = !(evH || nH);
-  $("todaySub").textContent = up.length ? `${up.length} ${up.length === 1 ? "evento importante" : "eventi importanti"} prima di domenica` : "nessun evento importante prima di domenica";
-  $("todayN").innerHTML = evH + nH + `<a class="more" href="#notizie">Calendario e notizie per noi →</a>`;
-  // telefono: una scheda sola (prossimo evento e notizia principale); il tocco apre la pagina Notizie
+  const nm = e => esc(String(e.name).replace(/\bFOMC\b/g, "Fed"));   // parole al posto delle sigle
+  const ans = up.length ? `${up.length === 1 ? "Un dato importante" : up.length + " dati importanti"} prima di domenica: ${nm(up[0]).split(" · ")[0]}, ${dayR(up[0].at)} alle ${hmR(up[0].at)}.`
+    : nx ? `Nessun dato importante prima di domenica. ${(p => p === "Fed" ? "La Fed decide" : "Poi " + p + ",")(nm(nx).split(" · ")[0])} ${dayR(nx.at)}.`
+    : CAL.length || BANKS.length ? "Nessun dato importante in calendario." : NEWS.length ? "Calendario non disponibile in questo momento." : "Notizie e calendario non disponibili in questo momento.";
   const top = nws[0];
-  $("todayCard").innerHTML = `<div class="tapHead"><b>Oggi nelle notizie</b><span class="more">Notizie ›</span></div>` +
-    (nx ? `<div class="tdRow"><span class="tm">${when(nx)}</span><span><b>${esc(nx.name)}</b><small>${up[0] ? "prima della chiusura di domenica" : "dopo la chiusura di domenica"} · impatto ${nx.impact}</small></span></div>` : "") +
-    (top ? `<div class="tdRow"><span class="tm" style="color:var(--label3)">${ago(top.date).replace(" fa", "")}</span><span><b>${esc(top.title)}</b><small>${esc(tag(top))} · ${esc(top.source)}</small></span></div>` : "");
-  $("todayCard").onclick = () => { location.hash = "#notizie"; };
+  $("todayN").innerHTML = `<p class="qA">${ans}</p>` +
+    (nx ? `<div class="qN"><span class="tm">${dayR(nx.at)}<br>${hmR(nx.at)}</span><span><b>${nm(nx)}</b><small>${up[0] ? "prima della chiusura di domenica" : "dopo la chiusura di domenica"} · impatto ${nx.impact}${nx.forecast ? " · previsto " + esc(fcIT(nx.forecast)) : ""}</small></span></div>` : "") +
+    (top ? `<a class="qN" href="${esc(top.link)}" target="_blank" rel="noopener"><span class="tm o">${ago(top.date)}</span><span><b>${esc(top.title)}</b><small>${esc(tag(top))} · ${esc(top.source)}</small></span></a>` : "");
 }
 renderNews();
 // pagina Notizie: nella pagina ci sono solo le notizie "per noi" (le usa Oggi) e il calendario; l'elenco completo (altre notizie, fonti)

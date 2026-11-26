@@ -84,13 +84,14 @@ class TestStruttura(unittest.TestCase):
 
     def test_oggi(self):
         o = self._view("oggi")
-        for i in ('id="posLine" href="#posizioni"', 'id="cnCard"', 'id="cxCard"', 'id="todaySec"'):
+        # schede-domanda (V2): posizioni · uscite · 30 giorni · pre-analisi · Mercato power · notizie (tests/test_oggi_schede.py)
+        ids = ('id="posLine"', 'id="qExitB"', 'id="cnCard"', 'id="pvQ"', 'id="cxCard"', 'id="todayN"')
+        for i in ids:
             self.assertIn(i, o)
+        for a, b in zip(ids, ids[1:]):
+            self.assertLess(o.index(a), o.index(b))
         for i in ('id="wkHero"', 'id="pvCard"', 'id="wkChart"', 'id="lvCard"'):
             self.assertNotIn(i, o)
-        self.assertLess(o.index('id="posLine"'), o.index('id="cnCard"'))
-        self.assertLess(o.index('id="cnCard"'), o.index('id="cxCard"'))
-        self.assertLess(o.index('id="cxCard"'), o.index('id="todaySec"'))
 
     def test_posizioni_grafico_movimenti(self):
         p, g, m = self._view("posizioni"), self._view("grafico"), self._view("movimenti")
@@ -107,12 +108,15 @@ class TestStruttura(unittest.TestCase):
         self.assertNotIn("v-storico", T)
 
     def test_card_di_oggi(self):
-        # un dato grande, fascia con prezzo e livelli sulla stessa scala, probabilità ordinate per prezzo, tre tessere di contesto
-        for w in ('class="cnBig"', 'class="cnScale"', 'class="b80"', 'class="b50"', 'class="cnDiv"', ".sort((a, b) => b.price - a.price)",
-                  'class="cxTiles"', 'class="cxT"', "Dettagli ›", "Apri nel Grafico ›"):
+        # frase con l'intervallo, scala 80/50% con il prezzo, livelli ordinati per prezzo, tre tessere di contesto (senza Mercato power)
+        for w in ('class="cnScale"', 'class="b80"', 'class="b50"', 'class="qL"', ".sort((a, b) => b[0].prezzo - a[0].prezzo)",
+                  'class="cxTiles"', 'class="cxT"', "Dettagli ›"):
             self.assertIn(w, T)
         # le diciture arrivano dal report e restano in pagina, testuali
         self.assertIn('<p class="cxNote">${esc(C.note)}</p>', T)
+        # con report.mercato la scheda diventa "Mercato power" (tests/test_mercato.py) e il Contesto passa nel suo pannello
+        self.assertIn("if (!rows.length || MP) return;", T)
+        self.assertIn('${ctxC ? sec("Contesto di mercato e politica economica", ctxPanel(ctxC)) : ""}', T)
         from radar import cone, context
         self.assertTrue(context.NOTE.startswith("Contesto, non segnale"))
         self.assertIn("Probabilità calcolate dalla volatilità attuale, non dalla direzione", Path(cone.__file__).read_text())
