@@ -265,7 +265,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
 .tabbar a[aria-current="page"]{color:var(--tint);background:var(--tint-bg);font-weight:600}
-@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.62rem;letter-spacing:-.02em;border-radius:18px}.tabbar svg{width:21px;height:21px}}   /* 6 voci (Opzioni nascosta dal 25/11, OPZIONI_ON): etichette intere anche a 360 px */
+@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.62rem;letter-spacing:-.02em;border-radius:18px}.tabbar svg{width:21px;height:21px}}   /* 7 voci (Opzioni di nuovo nel menu dal 27/11, OPZIONI_ON): etichette intere anche a 360 px */
 @media (max-width:380px){.tabbar{padding:4px;width:calc(100% - 12px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.58rem;letter-spacing:-.03em}}
 
 /* grafici */
@@ -880,6 +880,32 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
 .opLine .opTag{padding:4px 8px;font-size:.66rem}
 .opLine .plV small{color:var(--label3);font-size:.76rem}
 @media (max-width:700px){#opSec>.sh small{display:none}}
+/* Oggi · riga Opzioni dentro "Come vanno le posizioni?": stessa riga .qP di BTC ed ETH, tocco → pagina Opzioni */
+a.qP.qOp{color:var(--label);text-decoration:none} .qOp .opTag{padding:4px 8px;font-size:.66rem;vertical-align:1px}
+.qOp .rv svg{width:16px;height:16px;color:var(--tint);vertical-align:-3px;margin-left:2px}
+/* Opzioni · "Scadenze maggiori" (report.opex.calendar, radar/opex.py): scadenze BTC Deribit con nozionale ≥ 1 mld $ entro 120 giorni,
+   una tessera ciascuna (data, valore, barra call/put, movimento atteso, massimo dolore, muri, frase). Solo contesto: W3.2 non cambia */
+#sxSec{margin-bottom:8px}
+.sxGrid{display:grid;gap:12px;min-width:0}
+@media (min-width:900px){.sxGrid{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));align-items:start}}
+.sxC{padding:16px 18px;display:grid;gap:12px;container-type:inline-size}
+.sxC.on{border-color:color-mix(in srgb,var(--tint) 60%,var(--line));box-shadow:0 0 0 1px color-mix(in srgb,var(--tint) 45%,transparent),var(--shadow)}
+.sxTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;min-width:0}
+.sxD{font:700 1.22rem/1.2 var(--font);letter-spacing:-.02em;min-width:0} .sxD small{display:block;margin-top:4px;font:500 .8125rem/1.3 var(--font);color:var(--label2);letter-spacing:0}
+.sxV{text-align:right;font:700 1.22rem/1.2 var(--font);letter-spacing:-.02em;white-space:nowrap;font-variant-numeric:tabular-nums} .sxV small{display:block;margin-top:4px;font:500 .8125rem var(--font);color:var(--label2);letter-spacing:0}
+.sxK{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font:600 .72rem/1.4 var(--font);background:var(--fill);color:var(--label2);vertical-align:2px}
+.sxK.tq{color:var(--orange);background:color-mix(in srgb,var(--orange) 13%,transparent)} .sxK.nx{color:var(--tint);background:var(--tint-bg)}
+.sxBar{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--fill);gap:2px}
+.sxBar i{display:block;height:100%} .sxBar i.c{background:var(--green);opacity:.8} .sxBar i.p{background:var(--red);opacity:.8}
+.sxBarL{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:.8125rem;color:var(--label2);font-variant-numeric:tabular-nums}
+.sxBarL b{font-weight:650} .sxBarL .c b{color:var(--green)} .sxBarL .p b{color:var(--red)}
+.tiles.sxT{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@container (min-width:560px){.tiles.sxT{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.tiles.sxT>div{background:var(--card2);box-shadow:none;padding:10px 12px}
+.tiles.sxT b{font-size:1.02rem;white-space:nowrap} .tiles.sxT small{font-size:.75rem}
+.sxF{margin:0;font-size:.875rem;line-height:1.5;color:var(--label)} .sxF+.sxF{margin-top:-6px;color:var(--label2)}
+.sxN{padding:14px 18px;display:grid;gap:6px} .sxN p{margin:0;font-size:.8125rem;line-height:1.5;color:var(--label2)}
+.sxN .qF{margin-top:0}
 /* Scanner (pagina a sé, radar/scanner.py e radar/scommesse.py): top 200 crypto con W3.2, in evidenza, ingressi della settimana,
    scommesse sulla carta, tabella con stella delle preferite e riga espandibile. Solo informativa. Telefono prima di tutto (360–400 px) */
 #scBody,#trxBody,#scEvid,#scIng,#scBet{display:grid;min-width:0}
@@ -1078,6 +1104,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
     <div class="qGrid">
       <section class="card q" id="qPos" aria-labelledby="qPosH"><h2 class="qH" id="qPosH">Come vanno le posizioni?</h2>
         <div id="posLine"></div>
+        <a class="qP qOp" id="opLine" href="#opzioni" hidden></a>
         <div class="qF"><a class="qMore" href="#posizioni" aria-label="Dettagli: apri la pagina Posizioni">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></a></div></section>
       <section class="card q" id="qExit" aria-labelledby="qExitH"><h2 class="qH" id="qExitH">Quando escono?</h2>
         <div id="qExitB"></div>
@@ -1095,7 +1122,6 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
         <div id="todayN"></div>
         <div class="qF"><a class="qMore" href="#notizie" aria-label="Dettagli: apri calendario e notizie">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></a></div></section>
     </div>
-    <a class="card posLine opLine" id="opLine" href="#opzioni" hidden></a>
   </div>
 
 <!-- ============ POSIZIONI: posizioni aperte BTC ed ETH, pre-analisi della prossima chiusura ============ -->
@@ -1140,6 +1166,11 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 
 <!-- ============ OPZIONI (solo BTC, sulla carta): l'opzione che esegue il segnale di W3.2 a rischio definito (report.opzioni, radar/opzioni.py) ============ -->
   <div class="view" id="v-opzioni" hidden>
+    <div class="section" id="sxSec" hidden>
+      <div class="sh">Scadenze maggiori <small id="sxSub"></small></div>
+      <div class="sxGrid" id="sxList"></div>
+      <div class="card sxN" id="sxNote"></div>
+    </div>
     <div class="section" id="opSec">
       <div class="sh">Opzioni · W3.2 a rischio definito <small id="opSub"></small></div>
       <div class="opPaper" id="opPaper"><svg><use href="#i-warn"/></svg><span><b>Operatività sulla carta: nessun ordine viene inviato.</b> Radar segue l'opzione su un registro con i prezzi pubblici di OKX; comprare o vendere resta una decisione manuale.</span></div>
@@ -2059,7 +2090,7 @@ function qxHtml(U, px, head = true) {
 
   // ---- pannello
   const sec = (t, h) => `<section class="ocSec"><h3>${t}</h3>${h}</section>`;
-  const hrs = O.hours, left = hrs == null ? "–" : hrs < 24 ? `${Math.max(1, Math.round(hrs))} ore` : `${nfIT(hrs / 24, 1)} giorni`;
+  const hrs = O.hours, left = hrs == null ? "–" : hrs < 24 ? (Math.round(hrs) <= 1 ? "1 ora" : `${Math.round(hrs)} ore`) : `${nfIT(hrs / 24, 1)} giorni`;
   const where = `<div class="ocT3"><div><span>In scadenza ${dm(O.exp)}</span><b>${bn(O.notional)}</b><small>nozionale${O.share != null ? ` · ${nfIT(O.share, 0)}% dell'OI` : ""}</small></div>
       <div><span>Put/call (OI)</span><b>${O.put_call == null ? "–" : nfIT(O.put_call, 2)}</b><small>${O.put_call == null ? "" : O.put_call > 1 ? "più put che call" : "più call che put"}</small></div>
       <div><span>Massimo dolore</span><b style="color:var(--violet)">${n0(mp)}</b><small>${pct(O.dist_pct, 1)} dal prezzo</small></div></div>
@@ -2105,7 +2136,7 @@ function qxHtml(U, px, head = true) {
       <line class="oxMp" x1="${xm}" x2="${xm}" y1="${top - 4}" y2="${bot}"/><line class="oxNow" x1="${xn}" x2="${xn}" y1="${top - 4}" y2="${bot}"/>
       <text class="ax" x="${lft + 2}" y="${top - 4}">call · max ${n0(mx)} BTC</text><text class="ax" x="${lft + 2}" y="${bot - 2}">put</text>${tk}</svg>`;
   };
-  $("oxOpen").onclick = () => {
+  $("oxOpen").onclick = window.openOpexPanel = () => {
     const Pn = openSheet(`OPEX · scadenze delle opzioni su BTC · solo contesto`, panel), C = Pn.querySelector("#oxChartP");
     requestAnimationFrame(() => draw(C));
     if (window.ResizeObserver) new ResizeObserver(() => C.isConnected && draw(C)).observe(C);
@@ -2263,9 +2294,10 @@ function qMpAns(side, c) {
 
 // ---- Opzioni (pagina a sé) e riga sintetica in Oggi: report.opzioni (radar/opzioni.py). Solo BTC, sulla carta: nessun ordine.
 // Etichette: COMPRA (giorno del segnale), TIENI, VENDI (W3.2 esce), FUORI (opzione già chiusa o mai registrata: non si rinnova), ATTESA.
-// OPZIONI_ON = false (25/11/2026, decisione dell'utente: "la riprendiamo successivamente"): niente voce di menu, niente riga in Oggi,
-// #opzioni porta a Oggi. Codice, calcolo (radar/opzioni.py) e registro restano: true riattiva voce (prima di Scanner), pagina e riga.
-const OPZIONI_ON = false;
+// OPZIONI_ON: spenta il 25/11/2026 ("la riprendiamo successivamente"), riattivata il 27/11/2026 su richiesta dell'utente: voce di menu
+// (prima di Scanner), pagina #opzioni con in testa "Scadenze maggiori" e riga Opzioni dentro "Come vanno le posizioni?" in Oggi.
+// false = niente voce, niente riga, #opzioni porta a Oggi.
+const OPZIONI_ON = true;
 (function renderOpzioni() {
   const O = R.opzioni; if (!O || !O.azione) { const b = $("opBody"); if (b) b.innerHTML = `<div class="card"><p class="opNote" style="margin:0">Dati delle opzioni non disponibili in questo aggiornamento.</p></div>`; return; }
   const e = escS, TAG = { compra: "COMPRA", tieni: "TIENI", vendi: "VENDI", fuori: "FUORI", attesa: "ATTESA" };
@@ -2331,11 +2363,60 @@ const OPZIONI_ON = false;
   // Oggi: riga sintetica sotto la riga delle posizioni W3.2
   const L = $("opLine"); if (!L || !OPZIONI_ON) return;
   const K = P || (Q && { tipo: Q.contratto.tipo, strike: Q.contratto.strike, scadenza: Q.contratto.scadenza });
-  L.innerHTML = `<span class="plK">Opzioni</span><span class="plV"><span>${tag(O.azione)} <small>su carta</small></span>` +
-    (K ? `<span><b>${kName(K)}</b> ${dIt(K.scadenza).slice(0, 5)}</span>` : "") +
-    (P && P.risultato != null ? `<span><b class="${cls(P.risultato)}">${sg(P.risultato)}</b></span>` : Q ? `<span>${Q.quantita.contratti} contratti · ${px(Q.quantita.spesa)}</span>` : "") +
-    `</span><span class="more"><span>Opzioni </span>›</span>`;
+  const res = P && P.risultato != null;
+  L.innerHTML = `<span class="ic" aria-hidden="true"><svg><use href="#i-opz"/></svg></span><div><b>Opzioni · ${tag(O.azione)} <span style="font-weight:500;color:var(--label2);font-size:.8125rem">su carta</span></b>` +
+    `<small>${K ? `${kName(K)} · scadenza ${dIt(K.scadenza).slice(0, 5)}` : "nessun contratto"}${!res && Q ? ` · ${Q.quantita.contratti} contratti, ${px(Q.quantita.spesa)}` : ""}</small></div>` +
+    `<div class="rv">${res ? `<b class="${cls(P.risultato)}">${sg(P.risultato)}</b>${P.risultato_pct == null ? "" : `<small class="${cls(P.risultato)}">${pct(P.risultato_pct, 1)}</small>`}` : `<small>apri<svg><use href="#i-chev"/></svg></small>`}</div>`;
+  L.setAttribute("aria-label", `Opzioni sulla carta: ${TAG[O.azione] || O.azione}. Apri la pagina Opzioni`);
   L.hidden = false;
+})();
+
+// ---- Opzioni · "Scadenze maggiori" (report.opex.calendar, radar/opex.py; Deribit, ripiego OKX senza volatilità): le scadenze BTC con
+// nozionale ≥ 1 mld $ entro 120 giorni, per data; la più vicina evidenziata. Per ognuna: valore, barra call/put, put/call, movimento
+// atteso a 1 deviazione standard (≈ 68%) da iv_atm, massimo dolore (riferimento, non calamita: research/opex non trova effetto
+// robusto), muri, frase d'impatto. Solo contesto: W3.2 non cambia, nessun avviso. "Dettagli ›" apre il pannello OPEX completo.
+(function renderScadenze() {
+  const X = R.opex, sec = $("sxSec"); if (!sec || !OPZIONI_ON || !X || !Array.isArray(X.calendar)) return;
+  const now = Date.now(), BIG = 1e9, DAYS = 120, px = X.price;
+  const big = X.calendar.filter(c => c.notional >= BIG && new Date(c.exp) > now && (new Date(c.exp) - now) / 864e5 <= DAYS)
+    .sort((a, b) => new Date(a.exp) - new Date(b.exp));
+  const WD = ["dom", "lun", "mar", "mer", "gio", "ven", "sab"];
+  const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", timeZone: "UTC" });
+  const n0 = x => nfIT(x, 0), r100 = x => Math.round(x / 100) * 100;
+  const bn = x => x >= 1e9 ? `${nfIT(x / 1e9, 1)} mld $` : `${nfIT(x / 1e6, 0)} mln $`;
+  const dist = v => v == null || !px ? "" : `${pct((v / px - 1) * 100, 1)} dal prezzo`;
+  const left = e => { const h = (new Date(e) - now) / 36e5; const g = Math.round(h / 24); return h < 24 ? `tra ${Math.max(1, Math.round(h))} ${Math.round(h) <= 1 ? "ora" : "ore"}` : `tra ${g} ${g === 1 ? "giorno" : "giorni"}`; };
+  const KN = { trimestrale: "trimestrale", mensile: "mensile", settimanale: "settimanale", giornaliera: "giornaliera" };
+  const card = (c, i) => {
+    const oc = c.oi_call, op = c.oi_put, tot = (oc || 0) + (op || 0), m = c.mov_atteso_pct, days = (new Date(c.exp) - now) / 864e5;
+    const bar = tot > 0 ? `<div><div class="sxBar" role="img" aria-label="Open interest: call ${n0(oc)} BTC, put ${n0(op)} BTC"><i class="c" style="width:${(oc / tot * 100).toFixed(1)}%"></i><i class="p" style="width:${(op / tot * 100).toFixed(1)}%"></i></div>` +
+      `<div class="sxBarL"><span class="c"><b>call</b> ${n0(oc)} BTC · ${nfIT(oc / tot * 100, 0)}%</span><span class="p">${nfIT(op / tot * 100, 0)}% · ${n0(op)} BTC <b>put</b></span></div></div>` : "";
+    const t = (k, v, sm, col) => `<div><span>${k}</span><b${col ? ` style="color:var(--${col})"` : ""}>${v}</b><small>${sm || "&nbsp;"}</small></div>`;
+    const tiles = `<div class="tiles sxT">` +
+      t("Movimento atteso", m == null ? "–" : `±${nfIT(m, 1)}%`, m == null ? "volatilità non disponibile" : `±${n0(r100(px * m / 100))} $`) +
+      t("Massimo dolore", c.max_pain == null ? "–" : n0(c.max_pain), dist(c.max_pain), "violet") +
+      t("Muro put", c.put_wall == null ? "–" : n0(c.put_wall), dist(c.put_wall), "red") +
+      t("Muro call", c.call_wall == null ? "–" : n0(c.call_wall), dist(c.call_wall), "green") + `</div>`;
+    const f = [];
+    if (m != null) f.push(`Il mercato prezza <b>±${nfIT(m, 1)}%</b> entro il ${dm(c.exp)}: circa 2 volte su 3 BTC resta fra ${n0(r100(px * (1 - m / 100)))} e ${n0(r100(px * (1 + m / 100)))} $.`);
+    if (c.skew != null && days >= 2) f.push(c.skew >= 2 ? `Le put costano più delle call (${nfIT(c.skew, 1)} punti di volatilità): il mercato paga protezione dal ribasso.`
+      : c.skew <= -2 ? `Le call costano più delle put (${nfIT(-c.skew, 1)} punti di volatilità): il mercato paga per il rialzo.` : `Put e call costano quasi uguale: nessuna inclinazione marcata.`);
+    if (!f.length) f.push(`${c.put_call == null ? "" : c.put_call > 1 ? "Più put che call in scadenza." : "Più call che put in scadenza."} Volatilità non disponibile da questa fonte.`);
+    return `<div class="card sxC${i ? "" : " on"}"><div class="sxTop"><div class="sxD">${WD[new Date(c.exp).getUTCDay()]} ${dm(c.exp)}` +
+      `<small>${left(c.exp)}<span class="sxK${c.kind === "trimestrale" ? " tq" : ""}">${KN[c.kind] || escS(c.kind)}</span>${i ? "" : `<span class="sxK nx">la più vicina</span>`}</small></div>` +
+      `<div class="sxV">${bn(c.notional)}<small>put/call ${c.put_call == null ? "–" : nfIT(c.put_call, 2)}</small></div></div>${bar}${tiles}` +
+      f.map(x => `<p class="sxF">${x}</p>`).join("") + `</div>`;
+  };
+  $("sxList").innerHTML = big.length ? big.map(card).join("")
+    : `<div class="card sxC"><p class="sxF" style="margin:0">Nessuna scadenza sopra 1 mld $ nei prossimi ${DAYS} giorni in questo aggiornamento.</p></div>`;
+  $("sxSub").textContent = `${X.src === "okx" ? "OKX" : "Deribit"} · ≥ 1 mld $ entro ${DAYS} giorni · solo contesto`;
+  const ts = X.ts ? new Date(X.ts).toLocaleString("it-IT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) : "";
+  $("sxNote").innerHTML = `<p><b>Movimento atteso</b>: una deviazione standard dalla volatilità implicita delle opzioni allo strike più vicino al prezzo; circa 2 volte su 3 il prezzo alla scadenza resta dentro. Misura l'ampiezza, non la direzione.</p>` +
+    `<p><b>Massimo dolore</b>: il prezzo al quale le opzioni in scadenza valgono meno per chi le ha comprate. È un riferimento, non una calamita: lo studio sulle scadenze dal 2019 non ha trovato un effetto robusto sul prezzo. <b>Muri</b>: gli strike con più open interest call sopra il prezzo e put sotto.</p>` +
+    `<p>Prezzo ${n0(px)} $ · ${escS(X.src_name || X.src || "")}${ts ? `, dato del ${ts} UTC` : ""}${X.source_note ? ` · ${escS(X.source_note)}` : ""}. Solo contesto: W3.2 non cambia.</p>` +
+    (window.openOpexPanel ? `<div class="qF"><button type="button" class="qMore" id="sxMore" aria-haspopup="dialog">Dettagli<svg aria-hidden="true"><use href="#i-chev"/></svg></button></div>` : "");
+  if ($("sxMore")) $("sxMore").onclick = () => window.openOpexPanel();
+  sec.hidden = false;
 })();
 
 // ---- Scanner (pagina a sé): report.scanner (W3.2 con i parametri di BTC sulle prime 200 crypto, settimanale), report.trx_carta

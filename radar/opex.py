@@ -20,6 +20,12 @@ rapporto put/call sull'OI, massimo dolore (lo strike di regolamento che minimizz
 scadenza, cioè quanto incasserebbero i compratori), muri (strike con più OI call sopra il prezzo e più OI put sotto il prezzo),
 distanza del prezzo dal massimo dolore, giorni/ore alla scadenza.
 
+Calendario (report.opex.calendar, pagina Opzioni · "Scadenze maggiori"): i 6 venerdì più vicini, più le mensili/trimestrali e le
+scadenze con nozionale ≥ 1 mld $ entro 120 giorni, più la prossima trimestrale. Per ognuna: nozionale, put/call, massimo dolore,
+OI call/put (BTC), muri, iv_atm (mark_iv Deribit allo strike più vicino al future della scadenza, media call/put), movimento
+atteso a una deviazione standard (iv_atm · √(giorni/365), ricalcolato a ogni giro) e skew (IV put ~10% sotto − IV call ~10%
+sopra). Stessa chiamata Deribit (get_book_summary_by_currency ha mark_iv e underlying_price); con OKX i campi di volatilità sono null.
+
 Snapshot: una riga compatta per ogni scaricamento in data/opex/snap.jsonl (al più una al giorno, più quelle ogni 4 ore negli
 ultimi 2 giorni): servirà, dopo 12–18 scadenze, a verificare se il prezzo si avvicina al massimo dolore.
 """
@@ -41,7 +47,11 @@ FAST_HOURS = 48            # nelle ultime 48 ore prima della scadenza principale
 FAST_EVERY = 4
 BAND = 0.20                # grafico a barre: strike entro ±20% dal prezzo
 NEAR_PCT = 1.0             # massimo dolore entro ±1% dal prezzo = "vicino"
-CAL_N = 6                  # scadenze nel calendario
+CAL_N = 6                  # scadenze nel calendario (venerdì più vicini), più mensili e grandi entro CAL_DAYS
+CAL_DAYS = 120             # orizzonte di "Scadenze maggiori" (pagina Opzioni)
+BIG_USD = 1e9              # scadenza "maggiore": nozionale ≥ 1 miliardo $
+SKEW_OTM = 0.10            # skew = IV put ~10% sotto il future − IV call ~10% sopra
+SKEW_TOL = 0.04
 SRC_NAME = {"deribit": "Deribit (API pubblica)", "okx": "OKX (API pubblica, ripiego)"}
 NOTE = "contesto, non cambia W3.2 (studio research/opex: nessun vantaggio dimostrabile attorno alle scadenze)"
 # risultati dello studio (research/opex/risultati.txt, 26/11/2026): mediane, scadenze mensili contro gli altri venerdì
@@ -113,7 +123,8 @@ def _get(url: str, params: dict | None = None) -> dict:
 
 
 def fetch_deribit(get=None) -> tuple[list[dict], float]:
-    """(contratti [{exp, strike, type, oi}], prezzo indice). OI in BTC (un contratto Deribit = 1 BTC)."""
+    """(contratti [{exp, strike, type, oi, iv, und}], prezzo indice). OI in BTC (un contratto Deribit = 1 BTC); iv = mark_iv in %
+    (None se assente o zero), und = underlying_price, cioè il future (o sintetico) di quella scadenza, None se assente."""
     j = (get or _get)(DERIBIT, {"currency": "BTC", "kind": "option"})
     res = j.get("result") if isinstance(j, dict) else None
     if not res:
@@ -123,7 +134,8 @@ def fetch_deribit(get=None) -> tuple[list[dict], float]:
         p = parse_deribit_name(str(x.get("instrument_name", "")))
         if not p:
             continue
-        out.append({"exp": p[0], "strike": p[1], "type": p[2], "oi": _f(x.get("open_interest"))})
+        out.append({"exp": p[0], "strike": p[1], "type": p[2], "oi": _f(x.get("open_interest")),
+                    "iv": _f(x.get("mark_iv")) or None, "und": _f(x.get("underlying_price")) or None})
         px = px or _f(x.get("estimated_delivery_price")) or _f(x.get("underlying_price"))
     if not out or px <= 0:
         raise RuntimeError("Deribit: contratti o prezzo mancanti")
@@ -131,7 +143,8 @@ def fetch_deribit(get=None) -> tuple[list[dict], float]:
 
 
 def fetch_okx(get=None) -> tuple[list[dict], float]:
-    """Ripiego OKX: strumenti (scadenza, strike, tipo) + open interest (oiCcy, in BTC) + prezzo indice BTC-USD."""
+    """Ripiego OKX: strumenti (scadenza, strike, tipo) + open interest (oiCcy, in BTC) + prezzo indice BTC-USD. Niente volatilità:
+    iv_atm, mov_atteso_pct e skew del calendario restano null."""
     g = get or _get
 
     def data(path, params):
@@ -218,6 +231,53 @@ def pick(contracts: list[dict], now: datetime) -> tuple[datetime, datetime | Non
     return main, wk
 
 
+def mov_pct(iv: float | None, days: float) -> float | None:
+    """Movimento atteso a una deviazione standard (≈ 68%) in %: iv/100 · √(giorni/365) · 100."""
+    if iv is None or days <= 0:
+        return None
+    return round(iv * math.sqrt(days / 365), 1)
+
+
+def vol_of(contracts: list[dict], exp: datetime) -> dict:
+    """Volatilità di una scadenza dai mark_iv di Deribit: iv_atm (media call/put allo strike più vicino al future di quella
+    scadenza), skew (IV della put ~10% sotto il future − IV della call ~10% sopra, in punti), fut. Tutto None senza mark_iv (OKX)."""
+    rows = [c for c in contracts if c["exp"] == exp and c["strike"] > 0]
+    unds = sorted(c["und"] for c in rows if c.get("und"))
+    out = {"iv_atm": None, "skew": None, "fut": None}
+    ivs = {(c["strike"], c["type"]): c["iv"] for c in rows if c.get("iv")}
+    if not unds or not ivs:
+        return out
+    f = unds[len(unds) // 2]
+    out["fut"] = round(f, 2)
+    ks = sorted({k for k, _ in ivs})
+    atm = min(ks, key=lambda k: abs(k - f))
+    a = [ivs[(atm, t)] for t in ("C", "P") if (atm, t) in ivs]
+    out["iv_atm"] = round(sum(a) / len(a), 1)
+    kp = [k for k, t in ivs if t == "P"]
+    kc = [k for k, t in ivs if t == "C"]
+    if kp and kc:
+        p = min(kp, key=lambda k: abs(k - f * (1 - SKEW_OTM)))
+        c = min(kc, key=lambda k: abs(k - f * (1 + SKEW_OTM)))
+        # solo se gli strike trovati sono davvero ~10% fuori (entro 4 punti), altrimenti la misura non è confrontabile
+        if abs(p / f - (1 - SKEW_OTM)) <= SKEW_TOL and abs(c / f - (1 + SKEW_OTM)) <= SKEW_TOL:
+            out["skew"] = round(ivs[(p, "P")] - ivs[(c, "C")], 1)
+    return out
+
+
+def cal_entry(contracts: list[dict], e: datetime, px: float, now: datetime) -> dict | None:
+    """Una riga del calendario: nozionale, put/call, massimo dolore, OI call/put, muri, volatilità e movimento atteso."""
+    sc = chain_of(contracts, e)
+    s = summarize(sc, px)
+    if s["oi_call"] + s["oi_put"] <= 0:
+        return None
+    v = vol_of(contracts, e)
+    days = (e - now).total_seconds() / 86400
+    return {"exp": e.isoformat(), "kind": kind_of(e), "notional": s["notional"], "put_call": s["put_call"],
+            "max_pain": s["max_pain"], "oi_call": s["oi_call"], "oi_put": s["oi_put"], "call_wall": s["call_wall"],
+            "put_wall": s["put_wall"], "iv_atm": v["iv_atm"], "mov_atteso_pct": mov_pct(v["iv_atm"], days), "skew": v["skew"],
+            "fut": v["fut"]}
+
+
 def compute(contracts: list[dict], px: float, now: datetime, src: str) -> dict:
     """Risultato completo (senza i campi che dipendono dall'ora del giro, aggiunti da finish())."""
     main, wk = pick(contracts, now)
@@ -231,26 +291,32 @@ def compute(contracts: list[dict], px: float, now: datetime, src: str) -> dict:
         weekly = {"exp": wk.isoformat(), "kind": kind_of(wk), "notional": sw["notional"], "max_pain": sw["max_pain"],
                   "put_call": sw["put_call"]}
     cal = []
-    for e in sorted({c["exp"] for c in contracts if c["exp"] > now}):
+    exps = sorted({c["exp"] for c in contracts if c["exp"] > now})
+    for e in exps:
         if e.weekday() != 4 and e != main:
             continue
-        sc = chain_of(contracts, e)
-        oi = sum(v[0] + v[1] for v in sc.values())
-        if oi <= 0:
+        x = cal_entry(contracts, e, px, now)
+        if x is None:
             continue
-        cal.append({"exp": e.isoformat(), "kind": kind_of(e), "notional": round(oi * px), "put_call": put_call(sc),
-                    "max_pain": max_pain(sc)[0]})
+        cal.append(x)
         if len(cal) >= CAL_N:
             break
-    # prossima trimestrale nel calendario anche se oltre le prime CAL_N
+    # oltre le prime CAL_N: le mensili/trimestrali e le scadenze grandi (≥ 1 mld $) entro CAL_DAYS giorni (per "Scadenze maggiori")
+    seen = {c["exp"] for c in cal}
+    for e in exps:
+        if e.isoformat() in seen or (e - now) > timedelta(days=CAL_DAYS):
+            continue
+        x = cal_entry(contracts, e, px, now)
+        if x is not None and (x["kind"] in ("mensile", "trimestrale") or x["notional"] >= BIG_USD):
+            cal.append(x)
+            seen.add(x["exp"])
+    # prossima trimestrale nel calendario anche se oltre
     if not any(c["kind"] == "trimestrale" for c in cal):
-        q = next((e for e in sorted({c["exp"] for c in contracts if c["exp"] > now}) if is_quarterly(e)), None)
-        if q is not None:
-            sc = chain_of(contracts, q)
-            oi = sum(v[0] + v[1] for v in sc.values())
-            if oi > 0:
-                cal.append({"exp": q.isoformat(), "kind": "trimestrale", "notional": round(oi * px), "put_call": put_call(sc),
-                            "max_pain": max_pain(sc)[0]})
+        q = next((e for e in exps if is_quarterly(e)), None)
+        x = cal_entry(contracts, q, px, now) if q is not None else None
+        if x is not None:
+            cal.append(x)
+    cal.sort(key=lambda c: c["exp"])
     total = sum(c["oi"] for c in contracts if c["exp"] > now)
     return dict(s, exp=main.isoformat(), kind=kind_of(main), quarterly=is_quarterly(main), price=round(px, 2),
                 ts=now.isoformat(timespec="seconds"), src=src, bars=bars, weekly=weekly, calendar=cal,
@@ -331,6 +397,8 @@ def due(last: dict | None, now: datetime) -> bool:
         return True
     if ts.date() != now.date() or e <= now:
         return True
+    if any("iv_atm" not in c for c in last.get("calendar") or []):   # file di prima del calendario esteso (27/11/2026): riscarica
+        return True
     return (e - now) <= timedelta(hours=FAST_HOURS) and (now - ts) >= timedelta(hours=FAST_EVERY) - timedelta(minutes=5)
 
 
@@ -342,6 +410,8 @@ def finish(r: dict, side: str | None, now: datetime, note: str | None) -> dict:
     out.update({"hours": round(h, 1), "days": round(h / 24, 2), "status": status_line(r, now), "side": side,
                 "frase": frase(side, r, now), "note": NOTE, "src_name": SRC_NAME.get(r.get("src"), r.get("src")),
                 "source_note": note, "study": STUDY})
+    out["calendar"] = [dict(c, mov_atteso_pct=mov_pct(c.get("iv_atm"), (datetime.fromisoformat(c["exp"]) - now).total_seconds() / 86400))
+                       if c.get("iv_atm") is not None else c for c in (out.get("calendar") or [])]
     if out.get("weekly"):
         out["weekly"] = dict(out["weekly"], hours=round((datetime.fromisoformat(out["weekly"]["exp"]) - now).total_seconds() / 3600, 1))
     return out
