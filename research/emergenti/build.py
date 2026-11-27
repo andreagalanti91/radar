@@ -45,6 +45,20 @@ def okx_series(inst):
     if len(fu): fu[["funding"]].to_csv(OKXD / f"{inst}_funding.csv.gz", compression="gzip")
     return x
 
+def okx_funding(inst):
+    p = OKXD / f"{inst}_funding.csv.gz"
+    if p.exists(): return pd.read_csv(p, index_col=0, parse_dates=True)
+    sys.path.insert(0, str(ROOT))
+    from radar import scanner as SC
+    import requests
+    s = requests.Session(); s.headers["User-Agent"] = "radar-research-script/1.0 (python-requests; academic backtest)"
+    def get(url, params=None):
+        r = s.get(url, params=params, timeout=30)
+        if r.status_code == 404: return None
+        r.raise_for_status(); return r.content
+    fu = SC.scarica_okx_funding(SC.Rete(get=get), inst, date(2026, 10, 25), (LAST + pd.Timedelta(days=1)).date())
+    fu[["funding"]].to_csv(p, compression="gzip"); return fu[["funding"]]
+
 def close_at(sp, pp, day):
     for x in (sp, pp):
         if x is not None and len(x):
@@ -63,6 +77,18 @@ if __name__ == "__main__":
         has_bn = any(c.get("spot") or c.get("perp") for c in ch)
         if has_bn:
             sp, pp, fu, ssp, spp, sfu = B.series(t, ch)
+            # mese non ancora archiviato da Binance (novembre 2026): funding OKX dello stesso asset (come w32_asset2/build.py)
+            if fu is not None and pp is not None and pp.index[-1] >= LAST - pd.Timedelta(days=3) and fu.index[-1] < LAST:
+                o = None
+                for q in (W32 / "data" / "raw" / "okx" / f"{t}-USDT-SWAP_funding.csv.gz",
+                          OKXD / f"{r.okx_perp_simbolo}_funding.csv.gz" if isinstance(r.okx_perp_simbolo, str) else None):
+                    if q is not None and q.exists(): o = pd.read_csv(q, index_col=0, parse_dates=True); break
+                if o is None and bool(r.okx_perp) and isinstance(r.okx_perp_simbolo, str) and r.okx_perp_simbolo:
+                    try: o = okx_funding(r.okx_perp_simbolo)
+                    except Exception as e: print("OKX funding", t, repr(e)[:100]); o = None
+                if o is not None and len(o):
+                    o = o[(o.index > fu.index[-1]) & (o.index <= LAST)][["funding"]]
+                    if len(o): fu = pd.concat([fu, o]); sfu.append(B.seg(o, "okx funding (mese non archiviato da Binance)"))
         elif bool(r.okx_perp) and isinstance(r.okx_perp_simbolo, str) and r.okx_perp_simbolo:
             try: pp = okx_series(r.okx_perp_simbolo)
             except Exception as e: print("OKX", t, repr(e)[:120]); pp = None

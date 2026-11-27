@@ -723,7 +723,7 @@ POL,2026-02-01,2026-02-02,2026,short,0.8567,0.292,con,48.0,2026,False,False,335,
 POL,2026-03-15,2026-03-16,2026,short,0.7484,0.335,con,48.0,2026,False,False,341,38.38,True,True,False
 POL,2026-04-12,2026-04-13,2026,short,0.7427,0.336,con,48.0,2026,False,False,345,25.34,True,True,False
 POL,2026-08-23,2026-08-24,2026,long,0.3571,0.701,con,48.0,2026,False,False,364,12.37,True,True,False
-POL,2026-10-25,2026-10-26,2026,short,0.4788,0.523,contro,48.0,2026,False,False,373,21.39,True,True,True
+POL,2026-10-25,2026-10-26,2026,short,0.4788,0.523,contro,48.0,2026,False,False,373,21.39,True,True,False
 NIGHT,2026-10-04,2026-10-05,2026,long,0.5632,0.444,con,,2026,False,False,42,9.6,True,True,True
 ARB,2023-12-31,2024-01-01,2024,long,0.4126,0.607,con,42.0,2024,False,False,40,267.09,False,True,False
 ARB,2024-01-28,2024-01-29,2024,long,0.4711,0.531,flat,42.0,2024,False,False,44,460.76,False,True,False
@@ -1144,7 +1144,8 @@ XTZ,2025-07-20,2025-07-21,2025,long,0.384,0.652,con,73.0,2025,False,True,303,39.
 XTZ,2025-09-28,2025-09-29,2025,short,0.5537,0.452,contro,73.0,2025,False,True,313,48.57,False,True,False
 XTZ,2025-11-23,2025-11-24,2025,short,0.7405,0.338,flat,93.0,2026,False,True,321,15.47,False,True,False
 XTZ,2026-01-11,2026-01-12,2026,short,0.4911,0.51,con,93.0,2026,False,True,328,12.75,False,True,False
-XTZ,2026-10-25,2026-10-26,2026,short,0.4847,0.517,contro,93.0,2026,False,True,369,4.95,False,True,True
+XTZ,2026-10-25,2026-10-26,2026,short,0.4847,0.517,contro,93.0,2026,False,True,369,4.95,False,True,False
+XTZ,2026-11-15,2026-11-16,2026,short,0.6424,0.388,con,93.0,2026,False,True,372,5.73,False,True,True
 PENDLE,2024-04-14,2024-04-15,2024,long,0.3614,0.693,flat,174.0,2024,True,True,40,114.48,False,False,False
 PENDLE,2024-05-05,2024-05-06,2024,long,0.5487,0.456,flat,174.0,2024,True,True,43,124.33,False,False,False
 PENDLE,2024-09-22,2024-09-23,2024,long,0.6918,0.361,con,174.0,2024,True,True,63,85.24,False,False,False
@@ -1183,7 +1184,7 @@ BONK,2025-09-07,2025-09-08,2025,short,0.77,0.326,contro,52.0,2025,False,True,93,
 BONK,2025-09-28,2025-09-29,2025,short,0.7817,0.321,contro,52.0,2025,False,True,96,389.97,True,True,False
 BONK,2025-12-14,2025-12-15,2025,short,1.2961,0.193,con,75.0,2026,False,True,107,112.99,True,True,False
 BONK,2026-03-22,2026-03-23,2026,short,1.2405,0.202,con,75.0,2026,False,True,121,67.62,True,True,False
-BONK,2026-04-26,2026-04-27,2026,short,0.8732,0.287,con,75.0,2026,False,True,126,37.96,True,True,True
+BONK,2026-04-26,2026-04-27,2026,short,0.8732,0.287,con,75.0,2026,False,True,126,37.96,True,True,False
 RUNE,2021-08-15,2021-08-16,2021,long,0.9791,0.255,con,88.0,2021,False,True,49,185.06,False,False,False
 RUNE,2021-10-03,2021-10-04,2021,long,0.9305,0.269,con,88.0,2021,False,True,56,208.24,False,False,False
 RUNE,2021-10-24,2021-10-25,2021,long,0.6474,0.387,con,88.0,2021,False,True,59,210.2,False,False,False
@@ -1284,7 +1285,7 @@ OP,2024-10-06,2024-10-07,2024,short,0.6501,0.386,contro,26.0,2024,False,True,122
 OP,2024-12-22,2024-12-23,2024,short,0.709,0.353,contro,26.0,2024,False,True,133,186.21,False,True,False
 OP,2025-01-12,2025-01-13,2025,short,0.6702,0.374,contro,50.0,2025,False,True,136,191.3,False,True,False
 OP,2025-09-28,2025-09-29,2025,short,0.6825,0.367,contro,50.0,2025,False,True,173,153.32,False,True,False
-OP,2026-10-25,2026-10-26,2026,short,0.7228,0.347,contro,80.0,2026,False,True,229,37.26,False,True,True
+OP,2026-10-25,2026-10-26,2026,short,0.7228,0.347,contro,80.0,2026,False,True,229,37.26,False,True,False
 SENT,2026-09-13,2026-09-14,2026,short,0.9625,0.26,contro,,2026,False,True,43,6.02,True,True,False
 SENT,2026-11-01,2026-11-02,2026,long,0.6986,0.358,con,,2026,False,True,50,5.37,True,True,False
 SENT,2026-11-22,2026-11-23,2026,long,0.7011,0.357,contro,,2026,False,True,53,6.56,True,True,True
@@ -1782,7 +1783,7 @@ IMX,2026-01-04,2026-01-05,2026,short,1.1698,0.216,con,79.0,2026,False,True,207,1
 IMX,2026-02-01,2026-02-02,2026,short,1.5334,0.163,con,79.0,2026,False,True,211,10.8,False,True,False
 IMX,2026-05-03,2026-05-04,2026,short,0.9286,0.27,flat,79.0,2026,False,True,224,5.36,False,True,False
 IMX,2026-09-27,2026-09-28,2026,long,0.4465,0.561,con,79.0,2026,False,True,245,2.86,False,True,False
-IMX,2026-10-25,2026-10-26,2026,short,0.6353,0.394,contro,79.0,2026,False,True,249,3.51,False,True,True
+IMX,2026-10-25,2026-10-26,2026,short,0.6353,0.394,contro,79.0,2026,False,True,249,3.51,False,True,False
 SNX,2021-05-02,2021-05-03,2021,long,0.6732,0.372,flat,33.0,2021,False,True,42,52.5,False,True,False
 SNX,2021-05-16,2021-05-17,2021,long,0.6468,0.387,flat,33.0,2021,False,True,44,53.35,False,True,False
 SNX,2021-10-24,2021-10-25,2021,short,0.9288,0.27,contro,33.0,2021,False,True,67,68.45,False,True,False
@@ -1894,7 +1895,7 @@ EGLD,2024-12-22,2024-12-23,2024,short,0.6717,0.373,contro,45.0,2024,False,True,2
 EGLD,2025-01-12,2025-01-13,2025,short,0.6557,0.382,contro,103.0,2025,True,True,227,26.62,False,True,False
 EGLD,2026-01-11,2026-01-12,2026,short,0.9282,0.27,con,158.0,2026,True,True,279,9.75,False,True,False
 EGLD,2026-09-06,2026-09-07,2026,long,0.449,0.557,con,158.0,2026,True,True,313,6.25,False,True,False
-EGLD,2026-10-25,2026-10-26,2026,short,0.6304,0.397,contro,158.0,2026,True,True,320,8.08,False,True,True
+EGLD,2026-10-25,2026-10-26,2026,short,0.6304,0.397,contro,158.0,2026,True,True,320,8.08,False,True,False
 APE,2023-03-05,2023-03-06,2023,short,0.9464,0.265,contro,30.0,2023,False,True,50,212.03,False,True,False
 APE,2023-10-15,2023-10-16,2023,short,1.1046,0.227,flat,30.0,2023,False,True,82,145.5,False,True,False
 APE,2023-12-31,2024-01-01,2024,short,0.5667,0.442,contro,98.0,2024,False,True,93,149.08,False,True,False
@@ -2036,7 +2037,8 @@ ZRX,2026-04-12,2026-04-13,2026,short,0.6822,0.367,con,199.0,2026,True,True,345,3
 ZRX,2026-05-17,2026-05-18,2026,short,0.5836,0.433,flat,199.0,2026,True,True,350,2.0,False,True,False
 ZRX,2026-06-07,2026-06-08,2026,short,0.6748,0.37,con,199.0,2026,True,True,353,1.78,False,True,False
 ZRX,2026-09-06,2026-09-07,2026,long,0.3741,0.668,con,199.0,2026,True,True,366,1.12,False,True,False
-ZRX,2026-10-25,2026-10-26,2026,short,0.4301,0.583,contro,199.0,2026,True,True,373,1.38,False,True,True
+ZRX,2026-10-25,2026-10-26,2026,short,0.4301,0.583,contro,199.0,2026,True,True,373,1.38,False,True,False
+ZRX,2026-11-22,2026-11-23,2026,short,0.5424,0.459,con,199.0,2026,True,True,377,1.37,False,True,True
 0G,2026-07-19,2026-07-20,2026,short,3.6282,0.069,con,147.0,2026,True,True,43,6.61,True,True,False
 0G,2026-09-20,2026-09-21,2026,short,1.7072,0.147,contro,147.0,2026,True,True,52,11.66,True,True,True
 SAFE,2025-08-24,2025-08-25,2025,short,0.7619,0.329,contro,161.0,2025,True,True,43,6.8,True,False,False
@@ -2261,7 +2263,7 @@ KSM,2025-11-30,2025-12-01,2025,short,1.0112,0.247,con,187.0,2026,True,True,273,9
 KSM,2026-02-01,2026-02-02,2026,short,1.1443,0.218,con,187.0,2026,True,True,282,7.15,False,True,False
 KSM,2026-03-22,2026-03-23,2026,short,1.0362,0.241,con,187.0,2026,True,True,289,4.97,False,True,False
 KSM,2026-05-24,2026-05-25,2026,short,0.7547,0.33,con,187.0,2026,True,True,298,5.23,False,True,False
-KSM,2026-10-18,2026-10-19,2026,short,0.5411,0.463,contro,187.0,2026,True,True,319,2.63,False,True,True
+KSM,2026-10-18,2026-10-19,2026,short,0.5411,0.463,contro,187.0,2026,True,True,319,2.63,False,True,False
 ZETA,2024-12-15,2024-12-16,2024,short,0.8275,0.303,contro,,2024,False,True,45,61.31,True,True,False
 ZETA,2025-06-22,2025-06-23,2025,short,1.5146,0.166,contro,,2025,False,True,72,20.35,True,True,False
 ZETA,2025-12-14,2025-12-15,2025,short,1.252,0.201,con,,2026,False,True,97,3.71,True,True,False
@@ -2799,7 +2801,7 @@ IOST,2025-06-29,2025-06-30,2025,short,0.7748,0.323,contro,,2025,False,False,304,
 IOST,2025-08-03,2025-08-04,2025,short,0.7116,0.351,contro,,2025,False,False,309,8.65,False,True,False
 IOST,2026-01-18,2026-01-19,2026,short,0.8724,0.286,con,,2026,False,False,333,5.1,False,True,False
 IOST,2026-04-26,2026-04-27,2026,short,0.6881,0.364,con,,2026,False,False,347,1.43,False,True,False
-IOST,2026-11-15,2026-11-16,2026,short,1.2028,0.208,con,,2026,False,False,376,44.35,False,True,True
+IOST,2026-11-15,2026-11-16,2026,short,1.2028,0.208,con,,2026,False,False,376,44.35,False,True,False
 ICX,2021-01-10,2021-01-11,2021,long,0.4312,0.581,flat,69.0,2021,False,False,71,6.19,False,False,False
 ICX,2021-02-21,2021-02-22,2021,long,0.3367,0.742,con,69.0,2021,False,False,77,20.98,False,False,False
 ICX,2021-02-28,2021-03-01,2021,long,0.5753,0.436,flat,69.0,2021,False,False,78,23.29,False,False,False
@@ -3337,7 +3339,7 @@ FLOW,2025-01-19,2025-01-20,2025,short,0.6427,0.39,contro,87.0,2025,False,False,1
 FLOW,2025-08-03,2025-08-04,2025,short,0.5795,0.429,contro,87.0,2025,False,False,209,15.19,False,True,False
 FLOW,2025-09-28,2025-09-29,2025,short,0.4939,0.508,contro,87.0,2025,False,False,217,21.11,False,True,False
 FLOW,2025-12-07,2025-12-08,2025,short,0.7494,0.338,con,117.0,2026,True,False,227,18.98,False,True,False
-FLOW,2026-03-29,2026-03-30,2026,short,3.0036,0.083,con,117.0,2026,True,False,243,21.55,False,True,True
+FLOW,2026-03-29,2026-03-30,2026,short,3.0036,0.083,con,117.0,2026,True,False,243,21.55,False,True,False
 KDA,2025-02-09,2025-02-10,2025,short,1.2825,0.195,contro,,2025,False,False,152,25.99,False,False,False
 KDA,2025-06-15,2025-06-16,2025,short,0.962,0.26,contro,,2025,False,False,170,6.21,False,False,False
 KDA,2025-08-03,2025-08-04,2025,short,0.8689,0.288,contro,,2025,False,False,177,5.6,False,False,False
@@ -3677,7 +3679,7 @@ GMT,2024-12-22,2024-12-23,2024,short,0.8418,0.297,contro,115.0,2024,True,False,1
 GMT,2025-01-19,2025-01-20,2025,short,1.0597,0.236,contro,165.0,2025,True,False,149,116.18,False,True,False
 GMT,2025-05-18,2025-05-19,2025,short,1.0157,0.247,contro,165.0,2025,True,False,166,37.66,False,True,False
 GMT,2026-04-26,2026-04-27,2026,short,0.8315,0.302,con,,2026,False,False,215,4.58,False,True,False
-GMT,2026-10-18,2026-10-19,2026,short,0.6694,0.374,contro,,2026,False,False,240,2.91,False,True,True
+GMT,2026-10-18,2026-10-19,2026,short,0.6694,0.374,contro,,2026,False,False,240,2.91,False,True,False
 MASK,2022-04-03,2022-04-04,2022,short,1.1899,0.21,flat,,2022,False,False,44,35.9,False,True,False
 MASK,2022-07-17,2022-07-18,2022,short,2.4604,0.102,flat,,2022,False,False,59,38.61,False,True,False
 MASK,2022-11-06,2022-11-07,2022,long,0.5291,0.473,contro,,2022,False,False,75,205.82,False,True,False
@@ -3790,7 +3792,7 @@ BLUR,2026-04-05,2026-04-06,2026,short,1.1305,0.222,con,,2026,False,False,153,8.8
 BLUR,2026-05-03,2026-05-04,2026,short,0.8475,0.296,flat,,2026,False,False,157,15.89,False,True,False
 BLUR,2026-08-16,2026-08-17,2026,short,1.0264,0.243,con,,2026,False,False,172,7.9,False,True,False
 BLUR,2026-10-04,2026-10-05,2026,long,0.5437,0.46,con,,2026,False,False,179,7.18,False,True,False
-BLUR,2026-10-18,2026-10-19,2026,short,1.3205,0.19,contro,,2026,False,False,181,5.15,False,True,True
+BLUR,2026-10-18,2026-10-19,2026,short,1.3205,0.19,contro,,2026,False,False,181,5.15,False,True,False
 CORE,2024-07-21,2024-07-22,2024,long,0.8357,0.299,flat,119.0,2024,True,False,75,56.39,False,True,False
 CORE,2024-12-01,2024-12-02,2024,long,0.5847,0.428,con,119.0,2024,True,False,94,27.32,False,True,False
 CORE,2025-03-02,2025-03-03,2025,short,1.3152,0.19,flat,98.0,2025,False,False,107,23.38,False,True,False
@@ -3850,7 +3852,7 @@ POPCAT,2025-06-22,2025-06-23,2025,short,1.8043,0.139,contro,117.0,2025,True,Fals
 POPCAT,2025-07-27,2025-07-28,2025,short,1.0392,0.241,contro,117.0,2025,True,False,48,96.8,True,True,False
 POPCAT,2026-03-01,2026-03-02,2026,short,2.3728,0.106,con,,2026,False,False,79,7.53,True,True,False
 POPCAT,2026-09-13,2026-09-14,2026,short,0.7532,0.333,contro,,2026,False,False,107,3.56,True,True,False
-POPCAT,2026-10-11,2026-10-12,2026,short,0.6623,0.378,contro,,2026,False,False,111,2.55,True,True,True
+POPCAT,2026-10-11,2026-10-12,2026,short,0.6623,0.378,contro,,2026,False,False,111,2.55,True,True,False
 NOT,2025-05-25,2025-05-26,2025,short,1.7964,0.139,contro,132.0,2025,True,False,53,40.28,True,True,False
 NOT,2025-12-07,2025-12-08,2025,short,2.1805,0.115,con,,2026,False,False,81,11.54,True,True,False
 NOT,2026-05-17,2026-05-18,2026,short,1.0338,0.242,flat,,2026,False,False,104,9.02,True,True,False
@@ -3869,7 +3871,7 @@ MEW,2025-11-02,2025-11-03,2025,short,1.1088,0.226,flat,143.0,2025,True,False,71,
 MEW,2025-12-14,2025-12-15,2025,short,1.6035,0.156,con,,2026,False,False,77,4.64,True,True,False
 MEW,2026-04-12,2026-04-13,2026,short,1.2487,0.201,con,,2026,False,False,94,2.22,True,True,False
 MEW,2026-10-04,2026-10-05,2026,long,0.5209,0.481,con,,2026,False,False,119,1.91,True,True,False
-MEW,2026-10-25,2026-10-26,2026,short,0.6237,0.402,contro,,2026,False,False,122,3.05,True,True,True
+MEW,2026-10-25,2026-10-26,2026,short,0.6237,0.402,contro,,2026,False,False,122,3.05,True,True,False
 VANA,2025-10-19,2025-10-20,2025,short,2.6269,0.095,flat,150.0,2025,True,False,43,10.41,True,True,False
 VANA,2025-11-16,2025-11-17,2025,short,2.0153,0.124,flat,,2026,False,False,47,12.36,True,True,False
 VANA,2026-05-17,2026-05-18,2026,short,1.1299,0.221,flat,,2026,False,False,73,4.93,True,True,False
@@ -3959,4 +3961,4 @@ BERA,2026-04-12,2026-04-13,2026,short,3.1075,0.081,con,179.0,2026,True,False,61,
 TOSHI,2026-07-26,2026-07-27,2026,short,1.186,0.211,con,182.0,2026,True,False,44,1.9,True,False,True
 BARD,2026-07-19,2026-07-20,2026,short,2.8028,0.089,con,188.0,2026,True,False,43,3.54,True,True,False
 BARD,2026-08-09,2026-08-10,2026,short,2.6672,0.094,con,188.0,2026,True,False,46,3.1,True,True,False
-BARD,2026-10-18,2026-10-19,2026,short,1.6037,0.156,contro,188.0,2026,True,False,56,2.2,True,True,True
+BARD,2026-10-18,2026-10-19,2026,short,1.6037,0.156,contro,188.0,2026,True,False,56,2.2,True,True,False

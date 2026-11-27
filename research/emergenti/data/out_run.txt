@@ -1,0 +1,13 @@
+B&H equipesato idonee: {"intero": {"fin": 2326, "cagr": -21.9, "dd": -97.2, "cd": -0.23}, "IS": {"fin": 14070, "cagr": 12.1, "dd": -93.1, "cd": 0.13}, "OOS": {"fin": 1653, "cagr": -46.3, "dd": -90.1, "cd": -0.51}, "ultimo anno": {"fin": 4543, "cagr": -54.6, "dd": -57.5, "cd": -0.95}}
+V1 nozionale 1x (quota piena):   28512 |   19.5 |  -83.1 | 0.23 | 196 | 43 | 1
+V1 2x fisso:    7480 |   -4.8 |  -98.4 | -0.05 | 197 | 41 | 14
+V1 5x fisso:       0 |   -100 | -100.0 | -1.0 | 70 | 34 | 40
+V1 per rischio (5% del budget allo stop, max 2x):   18713 |   11.2 |  -55.3 | 0.2 | 198 | 43 | 0
+V1 tetto 3 posizioni:   11648 |    2.6 |  -51.8 | 0.05 | 130 | 41 | 0
+V1 tetto 10 posizioni:   15532 |    7.8 |  -42.6 | 0.18 | 365 | 43 | 0
+V1 uscita forzata dopo 28 giorni:   16144 |    8.5 |  -65.8 | 0.13 | 442 | 48 | 0
+V1 uscita forzata dopo 56 giorni:   17713 |   10.2 |  -66.1 | 0.15 | 321 | 45 | 0
+vista oggi (101-500) intero:    9698 |   -0.5 |  -68.3 | -0.01 | 209 | 38 | 0 | B&H {"fin": 2287, "cagr": -22.1, "dd": -96.8, "cd": -0.23}
+vista oggi (101-500) IS:   24097 |   34.1 |  -35.0 | 0.98 | 107 | 47 | 0 | B&H {"fin": 11663, "cagr": 5.3, "dd": -93.2, "cd": 0.06}
+vista oggi (101-500) OOS:    4016 |  -27.0 |  -70.2 | -0.38 | 119 | 29 | 0 | B&H {"fin": 1961, "cagr": -43.0, "dd": -89.0, "cd": -0.48}
+vista oggi (101-500) ultimo anno:    8223 |  -17.8 |  -29.2 | -0.61 | 39 | 33 | 0 | B&H {"fin": 5083, "cagr": -49.2, "dd": -52.5, "cd": -0.94}
