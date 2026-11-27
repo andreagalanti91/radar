@@ -1,0 +1,4 @@
+BTC pct dal 2021-01-01: trade W3.2 9 long + 5 short · W-F blocca 0 long e 1 short (sui segnali dei trade base) · W-U toccherebbe 0 long e 0 short (soglia raggiunta durante il trade)
+ETH pct dal 2021-01-11: trade W3.2 10 long + 5 short · W-F blocca 0 long e 3 short (sui segnali dei trade base) · W-U toccherebbe 0 long e 0 short (soglia raggiunta durante il trade)
+SOL pct dal 2021-01-11: trade W3.2 15 long + 8 short · W-F blocca 0 long e 6 short (sui segnali dei trade base) · W-U toccherebbe 0 long e 0 short (soglia raggiunta durante il trade)
+SOL abs dal 2021-01-11: trade W3.2 15 long + 8 short · W-F blocca 4 long e 5 short (sui segnali dei trade base) · W-U toccherebbe 8 long e 0 short (soglia raggiunta durante il trade)
