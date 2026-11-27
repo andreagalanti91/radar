@@ -1,7 +1,8 @@
 <!-- ============ PROFILO · account, capitale, bot Telegram, preferenze, dati, info ============
      Pagina separata (radar/pages/profilo.html), iniettata da radar/dashboard.py al posto del segnaposto PAGES del template.
      Si apre dal profilo in fondo alla sidebar (desktop) o dall'avatar in alto a destra (telefono); non è nella barra in basso.
-     Account e password via window.RadarAuth (client Supabase unico del template); capitale ed esportazione CSV via window.WalletAPI
+     Account e password via window.RadarAuth (client Supabase unico del template); capitale, aliquota sulle plusvalenze (user_metadata.aliquota,
+     predefinita 33% dal 2026) ed esportazione CSV via window.WalletAPI
      (radar/pages/wallet.html, stesso archivio del Wallet). Il bot Telegram è solo descritto: nessun avviso nuovo parte da qui.
      Si registra in window.PAGES.profilo: init alla prima visita di #profilo, show ridisegna (sessione, capitale, preferenze). -->
 <div class="view" id="v-profilo" hidden>
@@ -62,6 +63,7 @@
 #v-profilo a.row:hover{background:var(--raise)}
 #v-profilo a.row:focus-visible{outline:2px solid var(--tint);outline-offset:-2px}
 #v-profilo a.row>svg{width:16px;height:16px;color:var(--label3);flex:none}
+#v-profilo .row .v small.prDef{font-size:.76rem;color:var(--label3)}
 #v-profilo .prMsg{margin:0;font:600 .82rem/1.4 var(--font);color:var(--green)} #v-profilo .prMsg.err{color:var(--red)}
 #v-profilo .prBot{display:grid;gap:16px}
 #v-profilo .prBotTop{display:flex;gap:12px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
@@ -124,7 +126,7 @@
       ["⚠️", "Giro non completato (dati, test, salvataggio)", "al massimo ogni 6 ore per tipo"]]],
     ["Diario (risposte ai comandi)", [["✅", "Conferma di /entrato, /aggiungi, /uscito, /registro", "subito, al giro"], ["❔", "Errore di comando o comando sconosciuto", "subito"]]],
   ];
-  let u = null, cap = null, capErr = null;
+  let u = null, cap = null, capErr = null, aliq = null;   // aliq = { value, custom } da window.WalletAPI.aliquota()
 
   const fDT = d => { const x = new Date(String(d).replace(" ", "T")); return isNaN(x) ? "–" : x.toLocaleString("it-IT", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }); };
   const fD = d => { const x = new Date(String(d).length <= 10 ? d + "T12:00:00" : d); return isNaN(x) ? "–" : x.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }); };
@@ -145,13 +147,16 @@
       : `<div class="row"><span class="k"><b>Accesso non attivo</b><small>${RA && RA.configured ? "Nessuna sessione su questo dispositivo: accedi dal Wallet." : "L'accesso con account non è configurato in questa pagina."}</small></span></div>`;
     if ($p("prPw")) $p("prPw").onclick = pwForm;
     if ($p("prOut")) $p("prOut").onclick = async () => { const b = $p("prOut"); b.disabled = true;
-      try { await RA.signOut(); } catch (_) {} u = null; cap = null; paint(); if (!(RA && RA.gate)) location.hash = "#oggi"; };
+      try { await RA.signOut(); } catch (_) {} u = null; cap = null; aliq = null; paint(); if (!(RA && RA.gate)) location.hash = "#oggi"; };
     // Il mio capitale
     $p("prCapB").innerHTML = `
       <div class="row"><span class="k"><b>Capitale di partenza</b><small>Quanto hai messo sul conto all'inizio: serve al Wallet per il valore del conto, le percentuali e il calo massimo.</small></span>
         <span class="v"><b id="prCapV">${cap > 0 ? "$" + nf(cap, 0) : capErr ? "–" : u ? "non impostato" : "–"}</b>${u && window.WalletAPI ? btn("ter sm", "prCapE", "edit", cap > 0 ? "Modifica" : "Imposta", "Modifica il capitale di partenza") : ""}</span></div>
+      <div class="row"><span class="k"><b>Aliquota sulle plusvalenze %</b><small>Per le tasse stimate nel Wallet. Predefinita 33%: Italia, plusvalenze crypto dal 1° gennaio 2026 (26% fino al 2025; franchigia di 2.000 € abolita dal 2025). Stima, non consulenza fiscale.</small></span>
+        <span class="v"><b id="prAliqV">${aliq ? nf(aliq.value, aliq.value % 1 ? 1 : 0) + "%" : u ? "33%" : "–"}</b>${aliq && aliq.custom ? "" : u ? `<small class="prDef">predefinita</small>` : ""}${u && window.WalletAPI ? btn("ter sm", "prAliqE", "edit", "Modifica", "Modifica l'aliquota sulle plusvalenze") : ""}</span></div>
       <div class="row"><span class="k"><b>Valuta mostrata</b><small>Per ora gli importi sono in dollari; altre valute in seguito.</small></span><span class="v"><b>$ · dollaro USA</b></span></div>`;
     if ($p("prCapE")) $p("prCapE").onclick = capForm;
+    if ($p("prAliqE")) $p("prAliqE").onclick = aliqForm;
     // Preferenze
     $p("prPrefB").innerHTML = `
       <div class="row"><span class="k"><b>Tema</b><small>Automatico segue l'impostazione del dispositivo.</small></span><span class="v">${seg("prTheme", "Tema", [["light", "Chiaro"], ["dark", "Scuro"], ["auto", "Automatico"]], themeMode())}</span></div>
@@ -192,6 +197,7 @@
     paint();
     if (u && window.WalletAPI) {
       try { cap = await window.WalletAPI.capital(); capErr = null; } catch (e) { cap = null; capErr = e; }
+      try { aliq = window.WalletAPI.aliquota ? await window.WalletAPI.aliquota() : null; } catch (_) { aliq = null; }
       paint();
     }
   }
@@ -225,6 +231,19 @@
       try { cap = await window.WalletAPI.setCapital(v); window.closeSheet(); paint(); }
       catch (x) { fail(f, "Salvataggio non riuscito: " + String(x && x.message || x).slice(0, 120)); b.disabled = false; } };
   }
+  // aliquota sulle plusvalenze, salvata in user_metadata.aliquota (vuoto = predefinita: 33% dal 2026, 26% fino al 2025)
+  function aliqForm() {
+    const f = sheet("Aliquota sulle plusvalenze", `<p class="waNote">La usa il Wallet per stimare le tasse sul profitto realizzato. In Italia le plusvalenze da cripto-attività sono tassate al 33% dal 1° gennaio 2026 (26% fino al 2025); la franchigia di 2.000 € è abolita dal 2025. Lascia vuoto per la predefinita.</p>
+      <label><span>Aliquota <small>%</small></span><input type="text" inputmode="decimal" autocomplete="off" name="al" placeholder="33" value="${aliq && aliq.custom ? esc(String(aliq.value).replace(".", ",")) : ""}"></label>
+      <p class="waNote">Stima, non consulenza fiscale.</p>${bar("Salva aliquota")}`);
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = async e => { e.preventDefault();
+      const t = f.al.value.trim(), v = t ? (window.WalletCalc ? window.WalletCalc.parseNum(t) : parseFloat(t.replace(",", "."))) : null, b = f.querySelector("button[type=submit]");
+      if (t && !(v >= 0 && v <= 100)) return fail(f, "Aliquota tra 0 e 100.");
+      b.disabled = true;
+      try { aliq = await window.WalletAPI.setAliquota(v); window.closeSheet(); paint(); }
+      catch (x) { fail(f, "Salvataggio non riuscito: " + String(x && x.message || x).slice(0, 120)); b.disabled = false; } };
+  }
   async function exportCsv() {
     const b = $p("prCsv"), m = $p("prCsvMsg"); b.disabled = true; m.hidden = true; m.classList.remove("err");
     try {
@@ -242,7 +261,7 @@
   window.PAGES.profilo = {
     init() {
       paintBot();
-      if (!wired && A()) { wired = true; A().onChange((ev, x) => { if (ev === "SIGNED_OUT") { u = null; cap = null; } else if (x) u = x;
+      if (!wired && A()) { wired = true; A().onChange((ev, x) => { if (ev === "SIGNED_OUT") { u = null; cap = null; aliq = null; } else if (x) u = x;
         if (!$p("v-profilo").hidden) (ev === "SIGNED_OUT" ? paint() : load()); }); }
     },
     show() { load(); },
