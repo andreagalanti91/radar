@@ -1,0 +1,98 @@
+=== DATI E BUCHI ===
+BTC: OI Binance (data/metrics.csv) primo valore 2021-12-30, soglia p90 calcolabile dal 2022-06-28; funding giornaliero dal 2020-01-01 (primo ≠ 0 2020-01-01), soglia p90 fund7 calcolabile dal 2020-07-05; prezzo/SMA40 dal 2014-10-05
+ETH: OI Binance (data/eth_metrics.csv) primo valore 2021-12-30, soglia p90 calcolabile dal 2022-06-28; funding giornaliero dal 2020-01-01 (primo ≠ 0 2020-01-01), soglia p90 fund7 calcolabile dal 2020-07-05; prezzo/SMA40 dal 2020-05-31
+→ D1 non può toccare nulla prima della soglia funding (BTC/ETH ~07/2020) e usa solo il funding fino alla soglia OI (~06/2022).
+
+=== QUOTA DI DOMENICHE CON LA CONDIZIONE VERA (descrittiva, tutte le domeniche, senza esiti) ===
+BTC (% delle domeniche):
+      D1 OI>p90  D1 fund7>p90 e >neutro  D1  D2 età≤3  regime long  D4 <−35%
+date                                                                        
+2018          0                       0   0         6           33        12
+2019          0                       0   0         6           60        13
+2020          0                       2   2        12           75         4
+2021          0                      13  13        13           87         0
+2022          3                       0   4         2            2        44
+2023          5                      13  19         6           94         0
+2024         13                      12  21         6           96         0
+2025          5                       0   6         6           85         0
+2026          6                       0   6         6           26         0
+ETH (% delle domeniche):
+      D1 OI>p90  D1 fund7>p90 e >neutro  D1  D2 età≤3  regime long  D4 <−35%
+2019          0                       0   0         0            0         0
+2020          0                       4   4         6           60         0
+2021          0                      13  13         0          100         0
+2022          9                       0  10         6            8        46
+2023         13                      21  28        13           79         0
+2024         21                      12  27         6           73         0
+2025          7                       0   8         6           44        10
+2026          8                       0   9         6           23        26
+
+=== OPERAZIONI TOCCATE (W3.2 di base: stesse operazioni per costruzione) ===
+
+--- BTC dal 2018: W3.2 23 operazioni (16 long, 7 short; aperta inclusa)
+D1 0.9         (scelta): toccate  3/16 long · per anno {2023: 1, 2024: 1, 2025: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2023-01-22 L 0.94→0.47, 2024-02-11 L 1.00→0.69, 2025-04-27 L 0.99→0.50
+D1 0.8         (vicino): toccate  6/16 long · per anno {2021: 1, 2023: 2, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+D1 0.95        (vicino): toccate  2/16 long · per anno {2024: 1, 2025: 1} · operazioni invariate: sì
+D2 3           (scelta): toccate  9/16 long · per anno {2018: 1, 2020: 2, 2021: 2, 2023: 1, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2018-04-29 L 0.40→0.20, 2020-02-09 L 0.93→0.47, 2020-05-03 L 0.67→0.33, 2021-08-01 L 0.54→0.27, 2021-10-03 L 0.68→0.34, 2023-01-22 L 0.94→0.47, 2024-09-22 L 0.91→0.46, 2025-04-27 L 0.99→0.50, 2026-08-23 L 1.00→0.59
+D2 2           (vicino): toccate  7/16 long · per anno {2020: 2, 2021: 2, 2023: 1, 2024: 1, 2026: 1} · operazioni invariate: sì
+D2 4           (vicino): toccate 10/16 long · per anno {2018: 1, 2019: 1, 2020: 2, 2021: 2, 2023: 1, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+D3 (0.9, 3)    (scelta): toccate 10/16 long · per anno {2018: 1, 2020: 2, 2021: 2, 2023: 1, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2018-04-29 L 0.40→0.20, 2020-02-09 L 0.93→0.47, 2020-05-03 L 0.67→0.33, 2021-08-01 L 0.54→0.27, 2021-10-03 L 0.68→0.34, 2023-01-22 L 0.94→0.47, 2024-02-11 L 1.00→0.69, 2024-09-22 L 0.91→0.46, 2025-04-27 L 0.99→0.50, 2026-08-23 L 1.00→0.59
+D3 (0.8, 2)    (vicino): toccate 11/16 long · per anno {2020: 2, 2021: 3, 2023: 2, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+D3 (0.95, 4)   (vicino): toccate 11/16 long · per anno {2018: 1, 2019: 1, 2020: 2, 2021: 2, 2023: 1, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+D4 0.35        (scelta): toccate  1/7 short · per anno {2020: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2020-03-15 S 0.40→0.20
+D4 0.3         (vicino): toccate  2/7 short · per anno {2020: 1, 2022: 1} · operazioni invariate: sì
+D4 0.4         (vicino): toccate  1/7 short · per anno {2020: 1} · operazioni invariate: sì
+
+--- BTC dal 2021: W3.2 14 operazioni (9 long, 5 short; aperta inclusa)
+D1 0.9         (scelta): toccate  3/9 long · per anno {2023: 1, 2024: 1, 2025: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2023-01-22 L 0.94→0.47, 2024-02-11 L 1.00→0.69, 2025-04-27 L 0.99→0.50
+D1 0.8         (vicino): toccate  6/9 long · per anno {2021: 1, 2023: 2, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+D1 0.95        (vicino): toccate  2/9 long · per anno {2024: 1, 2025: 1} · operazioni invariate: sì
+D2 3           (scelta): toccate  6/9 long · per anno {2021: 2, 2023: 1, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2021-08-01 L 0.54→0.27, 2021-10-03 L 0.68→0.34, 2023-01-22 L 0.94→0.47, 2024-09-22 L 0.91→0.46, 2025-04-27 L 0.99→0.50, 2026-08-23 L 1.00→0.59
+D2 2           (vicino): toccate  5/9 long · per anno {2021: 2, 2023: 1, 2024: 1, 2026: 1} · operazioni invariate: sì
+D2 4           (vicino): toccate  6/9 long · per anno {2021: 2, 2023: 1, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+D3 (0.9, 3)    (scelta): toccate  7/9 long · per anno {2021: 2, 2023: 1, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2021-08-01 L 0.54→0.27, 2021-10-03 L 0.68→0.34, 2023-01-22 L 0.94→0.47, 2024-02-11 L 1.00→0.69, 2024-09-22 L 0.91→0.46, 2025-04-27 L 0.99→0.50, 2026-08-23 L 1.00→0.59
+D3 (0.8, 2)    (vicino): toccate  9/9 long · per anno {2021: 3, 2023: 2, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+D3 (0.95, 4)   (vicino): toccate  7/9 long · per anno {2021: 2, 2023: 1, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+D4 0.35        (scelta): toccate  0/5 short · per anno {} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): —
+D4 0.3         (vicino): toccate  1/5 short · per anno {2022: 1} · operazioni invariate: sì
+D4 0.4         (vicino): toccate  0/5 short · per anno {} · operazioni invariate: sì
+
+--- ETH dal 2021: W3.2 15 operazioni (10 long, 5 short; aperta inclusa)
+D1 0.9         (scelta): toccate  4/10 long · per anno {2023: 1, 2024: 2, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2023-01-22 L 0.70→0.35, 2024-06-02 L 0.94→0.47, 2024-11-10 L 0.80→0.40, 2026-08-23 L 0.92→0.46
+D1 0.8         (vicino): toccate  4/10 long · per anno {2023: 1, 2024: 2, 2026: 1} · operazioni invariate: sì
+D1 0.95        (vicino): toccate  3/10 long · per anno {2023: 1, 2024: 1, 2026: 1} · operazioni invariate: sì
+D2 3           (scelta): toccate  6/10 long · per anno {2022: 1, 2023: 2, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2022-03-27 L 0.57→0.28, 2023-01-22 L 0.70→0.35, 2023-10-29 L 1.00→0.59, 2024-11-10 L 0.80→0.40, 2025-07-13 L 0.72→0.36, 2026-08-23 L 0.92→0.46
+D2 2           (vicino): toccate  6/10 long · per anno {2022: 1, 2023: 2, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+D2 4           (vicino): toccate  6/10 long · per anno {2022: 1, 2023: 2, 2024: 1, 2025: 1, 2026: 1} · operazioni invariate: sì
+D3 (0.9, 3)    (scelta): toccate  7/10 long · per anno {2022: 1, 2023: 2, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2022-03-27 L 0.57→0.28, 2023-01-22 L 0.70→0.35, 2023-10-29 L 1.00→0.59, 2024-06-02 L 0.94→0.47, 2024-11-10 L 0.80→0.40, 2025-07-13 L 0.72→0.36, 2026-08-23 L 0.92→0.46
+D3 (0.8, 2)    (vicino): toccate  7/10 long · per anno {2022: 1, 2023: 2, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+D3 (0.95, 4)   (vicino): toccate  7/10 long · per anno {2022: 1, 2023: 2, 2024: 2, 2025: 1, 2026: 1} · operazioni invariate: sì
+D4 0.35        (scelta): toccate  2/5 short · per anno {2022: 2} · operazioni invariate: sì
+      segnali (esposizione W3.2 → ridotta): 2022-08-07 S 0.42→0.21, 2022-09-18 S 0.34→0.17
+D4 0.3         (vicino): toccate  2/5 short · per anno {2022: 2} · operazioni invariate: sì
+D4 0.4         (vicino): toccate  1/5 short · per anno {2022: 1} · operazioni invariate: sì
+
+=== COPERTURA DEI DUE CASI-GUIDA (noti dall'analisi errori: BTC long 07/01/2018, ETH long 02/06/2024) ===
+D1 BTC dal 2018: caso 2018-01-07 NON toccato
+D2 BTC dal 2018: caso 2018-01-07 NON toccato
+D3 BTC dal 2018: caso 2018-01-07 NON toccato
+D1 ETH dal 2021: caso 2024-06-02 toccato
+D2 ETH dal 2021: caso 2024-06-02 NON toccato
+D3 ETH dal 2021: caso 2024-06-02 toccato
+
+=== CASO FINTO DEI CRITERI (serie sintetica, nessun dato reale) ===
+deriva 0.0015/g, vol 0.035: piena fin ×14.4 CAGR/DD 0.88 DD -63% · dimezzata fin ×5.3 CAGR/DD 0.88 DD -36% → criterio CAGR/DD no, DD passerebbe, capitale −5% BLOCCA
+deriva 0.0008/g, vol 0.035: piena fin ×2.8 CAGR/DD 0.25 DD -75% · dimezzata fin ×2.3 CAGR/DD 0.33 DD -46% → criterio CAGR/DD passerebbe, DD passerebbe, capitale −5% BLOCCA
+deriva 0.0025/g, vol 0.040: piena fin ×1675.8 CAGR/DD 4.84 DD -51% · dimezzata fin ×64.8 CAGR/DD 3.55 DD -28% → criterio CAGR/DD no, DD passerebbe, capitale −5% BLOCCA
+→ il CAGR/DD da solo può premiare una riduzione indiscriminata (dipende da deriva e volatilità); il vincolo sul capitale insieme (≥ −5%) e il placebo a pari numero di operazioni ridotte sono i controlli contro l'effetto scala.

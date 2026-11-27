@@ -1170,6 +1170,17 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   .pzOpen>.pzKv{grid-column:1}
 }
 .pzRow .tkL{display:flex;align-items:center;min-width:0}
+/* Scanner · leva massima compatibile con lo stop (lev_max, d_stop_in di scanner.py) nella riga aperta */
+.pzLev{display:grid;gap:5px;background:var(--card2);border:1px solid var(--line);border-radius:var(--r-tile);padding:10px 12px}
+.pzLev p{margin:0;font-size:.84rem;line-height:1.4;color:var(--label2)} .pzLev p b{color:var(--label);font-variant-numeric:tabular-nums}
+.pzLev small{font-size:.74rem;color:var(--label3);line-height:1.35}
+@media (min-width:900px){.pzOpen>.pzLev{grid-column:1}}
+/* Scanner · "Short emergenti sulla carta" (#scEmc, report.emergenti_carta, radar/emergenti_carta.py): registro V3, solo carta */
+#scEmc{min-width:0}
+.emcSoglie{margin:0;padding-left:20px;display:grid;gap:4px;font-size:.84rem;line-height:1.45}
+.emcL{box-shadow:none;background:var(--card2);margin-top:10px} .emcL .row{padding:8px 12px;min-height:44px} .emcL .row::before{left:12px;right:12px} .emcL .cap2{font:500 .72rem var(--font);color:var(--label3);padding:10px 12px 0}
+.emcL .row .v small{display:block;font:500 .74rem var(--font);color:var(--label2)} .emcL .row .k b{font-weight:600}
+.emcV{color:var(--orange);font-weight:600}
 .pzLeg .pzProt{color:var(--green);font-weight:600}
 </style>
 
@@ -1325,6 +1336,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
       <div id="trxBody"></div>
       <div id="scIng"></div>
       <div id="scPos"></div>
+      <div id="scEmc"></div>
       <div id="scBet"></div>
       <div id="scBody"></div>
     </div>
@@ -2726,8 +2738,18 @@ function renderScanner() {   // avviata da route() quando scanner.json è arriva
     const usd$ = x => x == null ? "–" : p5(x) + " $";
     const storia = r => r.cl === "valutabile" ? "" : r.cl === "breve" ? "segnale non verificato: storia insufficiente" :
       r.cl === "solo prezzo" ? "segnale non verificato: niente storia del flusso perp nello studio" : "segnale non verificato: moneta senza scheda dello studio";
-    const warn = r => storia(r) ? `<span class="pzWarn"><svg><use href="#i-warn"/></svg>${storia(r)}</span>` : "";
-    const btcV = r => r.btc === "stesso" ? `<span class="btcY">con BTC ✓</span>` : r.btc === "opposto" ? `<span class="pzContro">contro BTC</span>` : r.t === "BTC" ? `<span class="btcN">riferimento</span>` : `<span class="btcN">–</span>`;
+    const emLong = r => r.lato === "long" && r.top100 === false;   // long fuori dalla top 100 (moneta emergente)
+    const EML = "Long su moneta emergente: nello studio i long hanno vinto il 29% (lezione 131)";
+    const warn = r => (storia(r) ? `<span class="pzWarn"><svg><use href="#i-warn"/></svg>${storia(r)}</span>` : "") +
+      (emLong(r) ? `<span class="pzWarn pzEm"><svg><use href="#i-warn"/></svg>${EML}</span>` : "");
+    // leva massima compatibile con lo stop (lev_max: oltre questa leva la liquidazione arriva prima dello stop)
+    const leva = r => { if (r.lev_max == null) return "";
+      const x = `${nfIT(r.lev_max, 1)}x`, d = r.d_stop_in == null ? "" : ` (stop a ${nfIT(r.d_stop_in, r.d_stop_in < 10 ? 1 : 0)}% dall'ingresso)`;
+      return `<div class="pzLev"><p>Leva massima compatibile con lo stop: <b>${x}</b>${d}</p>` +
+        (r.lev_max < 2 ? `<span class="pzWarn"><svg><use href="#i-warn"/></svg>a 2x la liquidazione arriva prima dello stop</span>` : "") +
+        `<small>${r.lev_max < 5 ? "5x non compatibile · " : ""}studio research/emergenti: a 5x il budget si azzera</small></div>`; };
+    const bS = r => r.btc_sig === "stesso" || r.btc_sig === "opposto", bv = r => bS(r) ? r.btc_sig : r.btc;   // verso di BTC alla data del segnale; ripiego: oggi
+    const btcV = r => bv(r) === "stesso" ? `<span class="btcY">con BTC ✓</span>` : bv(r) === "opposto" ? `<span class="pzContro">contro BTC</span>` : r.t === "BTC" ? `<span class="btcN">riferimento</span>` : `<span class="btcN">–</span>`;
     const lato = r => r.lato === "long" ? "long" : "short", il = r => r.lato === "long" ? "il long" : "lo short", del_ = r => r.lato === "long" ? "del long" : "dello short";
     const dStop = r => r.du == null ? "–" : (r.lato === "long" ? "−" : "+") + nfIT(r.du, 1) + "%";
     // semafori: ok = sostiene la posizione, wa = non la sostiene ma non basta per uscire, no = contro (uscita), nd = dato assente
@@ -2773,7 +2795,7 @@ function renderScanner() {   // avviata da route() quando scanner.json è arriva
         `<div><dt>Chiusura ${dIt(dom).slice(0, 5)}</dt><dd>${usd$(r.ult)}<small>${aperta(r) ? `<span class="${cls(r.mv)}">${pct(r.mv, 1)}</span> dall'ingresso` : "ultimo prezzo"}</small></dd></div>` +
         `<div><dt>Aperta da</dt><dd>${g == null ? "–" : `${nfIT(g, 0)} giorni`}<small>${aperta(r) ? `${nfIT(r.sett, 0)} chiusure settimanali` : "appena aperta"}</small></dd></div>` +
         `<div><dt>Stop mobile</dt><dd>${r.trail ? usd$(r.trail) : "–"}<small>${r.du == null ? "da fissare all'ingresso" : `${dStop(r)} dal prezzo`}</small></dd></div>` +
-        `<div><dt>Rispetto a BTC</dt><dd>${btcV(r)}<small>${r.btc === "stesso" ? "stesso verso di W3.2 su BTC" : r.btc === "opposto" ? "verso opposto a W3.2 su BTC" : ""}</small></dd></div>` +
+        `<div><dt>Rispetto a BTC</dt><dd>${btcV(r)}<small>${bv(r) === "stesso" || bv(r) === "opposto" ? (bS(r) ? "alla data del segnale" : "oggi") : ""}</small></dd></div>` +
         `<div><dt>Operabile</dt><dd>${oper(r)}<small>${r.rk ? `#${r.rk} per capitalizzazione` : ""}</small></dd></div></dl>`; };
 
     const st = PO._st || (PO._st = { o: "ris", f: "tutte", all: false });
@@ -2783,25 +2805,25 @@ function renderScanner() {   // avviata da route() quando scanner.json è arriva
     const L = P.filter(r => r.lato === "long"), Sh = P.filter(r => r.lato === "short");
     const mL = avg(L.filter(aperta).map(r => r.mv)), mS = avg(Sh.filter(aperta).map(r => r.mv));
     const nuovi = x => x.filter(r => !aperta(r)).length;
-    const nBreve = P.filter(r => r.cl !== "valutabile").length, nBtc = P.filter(r => r.btc === "stesso").length;
+    const nBreve = P.filter(r => r.cl !== "valutabile").length, nBtc = P.filter(r => bv(r) === "stesso").length;
     const head = `<div class="scH">Monete in posizione<small>${P.length} su ${RW.length} · prezzi alla chiusura del ${dIt(dom)}</small></div>` +
       `<div class="card pzCard"><div class="tiles pzTiles">` +
       tile("Long aperti", `${nfIT(L.length - nuovi(L), 0)}${nuovi(L) ? `<small class="pzPlus"> +${nuovi(L)} nuovi</small>` : ""}`, `media <b class="${cls(mL)}">${pct(mL, 1)}</b> dall'ingresso`) +
       tile("Short aperti", `${nfIT(Sh.length - nuovi(Sh), 0)}${nuovi(Sh) ? `<small class="pzPlus"> +${nuovi(Sh)} nuovi</small>` : ""}`, `media <b class="${cls(mS)}">${pct(mS, 1)}</b> dall'ingresso`) +
-      tile("Con BTC", `${nfIT(nBtc, 0)} / ${nfIT(P.length, 0)}`, "nello stesso verso di W3.2 su BTC") +
+      tile("Con BTC", `${nfIT(nBtc, 0)} / ${nfIT(P.length, 0)}`, P.some(bS) ? "stesso verso di W3.2 su BTC alla data del segnale" : "nello stesso verso di W3.2 su BTC") +
       tile("Non verificati", nfIT(nBreve, 0), "storia insufficiente o senza scheda dello studio") + `</div>` +
       `<p class="pzOnesta"><svg><use href="#i-warn"/></svg><span>Lo scanner mostra lo stato di W3.2, <b>non un segnale provato sulle altcoin</b> (lezioni 111 e 123). Risultato = movimento del prezzo nel verso della posizione, senza commissioni, funding né dimensione.</span></p>` +
       `<div class="pzTools"><div class="seg" id="pzF" role="group" aria-label="Verso">${[["tutte", "Tutte"], ["long", "Long"], ["short", "Short"]].map(([k, l]) => `<button type="button" data-v="${k}" aria-pressed="${st.f === k}">${l}</button>`).join("")}</div>` +
       `<div class="seg" id="pzO" role="group" aria-label="Ordina per">${[["ris", "Risultato"], ["data", "Più recenti"], ["cap", "Più grandi"]].map(([k, l]) => `<button type="button" data-v="${k}" aria-pressed="${st.o === k}">${l}</button>`).join("")}</div></div>`;
     const body = `<div class="pzList"><div class="pzHd" aria-hidden="true"><span>Moneta</span><span class="w">Apertura</span><span class="w">Chiusura ${dIt(dom).slice(0, 5)}</span><span class="r">Risultato</span><span class="w r">Stop</span><span class="w">BTC · operabile</span><span></span></div>` +
       vis.map(r => `<details class="pzRow ${r.lato}" data-t="${e(r.t)}"><summary>` +
-        `<span class="nm">${tag(r.lato, r.lato)}<span><span class="tkL"><b>${e(r.t)}</b>${r.cl !== "valutabile" ? `<i class="pzDot" title="${storia(r)}">!</i>` : ""}</span><small>${aperta(r) ? `dal ${dIt(r.ing).slice(0, 5)} · ${nfIT(giorni(r.ing), 0)} g` : `apre lun. ${dIt(lun(r)).slice(0, 5)}`}<span class="n"> · ${r.btc === "opposto" ? "contro BTC" : r.btc === "stesso" ? "con BTC" : ""}</span></small></span></span>` +
+        `<span class="nm">${tag(r.lato, r.lato)}<span><span class="tkL"><b>${e(r.t)}</b>${r.cl !== "valutabile" || emLong(r) ? `<i class="pzDot" title="${[storia(r), emLong(r) ? EML : ""].filter(Boolean).join(" · ")}">!</i>` : ""}</span><small>${aperta(r) ? `dal ${dIt(r.ing).slice(0, 5)} · ${nfIT(giorni(r.ing), 0)} g` : `apre lun. ${dIt(lun(r)).slice(0, 5)}`}<span class="n">${bv(r) === "opposto" ? " · contro BTC" : bv(r) === "stesso" ? " · con BTC" : ""}</span></small></span></span>` +
         `<span class="w">${aperta(r) ? `${dIt(r.ing)}<small>${usd$(r.px_in)}</small>` : `lun. ${dIt(lun(r))}<small>prezzo in arrivo</small>`}</span>` +
         `<span class="w">${usd$(r.ult)}</span>` +
         `<span class="r res"><b class="${cls(r.mv)}">${aperta(r) ? pct(r.mv, 1) : "nuovo"}</b><small>${r.du == null ? "" : `stop ${dStop(r)}`}</small></span>` +
         `<span class="w r">${r.trail ? `${p5(r.trail)}<small>${dStop(r)}</small>` : "–"}</span>` +
         `<span class="w">${btcV(r)}<small>${oper(r)}</small></span><span class="chev">›</span></summary>` +
-        `<div class="pzOpen">${warn(r)}${barra(r)}${kv(r)}${perche(r)}</div></details>`).join("") + `</div>`;
+        `<div class="pzOpen">${warn(r)}${barra(r)}${kv(r)}${leva(r)}${perche(r)}</div></details>`).join("") + `</div>`;
     PO.innerHTML = head + body + (vis.length < rs.length ? `<button type="button" class="scMore" id="pzAll">Mostra tutte (${rs.length})</button>` : "") +
       `<p class="opNote">Semafori: <span class="pzKey ok"><i></i>sostiene la posizione</span> <span class="pzKey wa"><i></i>non la sostiene, ma non basta per uscire</span> <span class="pzKey no"><i></i>porta all'uscita</span> <span class="pzKey nd"><i></i>dato assente</span>. ` +
       `Nuovi = segnale di domenica, ingresso all'apertura di lunedì.</p></div>`;
@@ -2810,6 +2832,40 @@ function renderScanner() {   // avviata da route() quando scanner.json è arriva
     const all = PO.querySelector("#pzAll"); if (all) all.onclick = () => { st.all = true; drawPos(); };
   };
   drawPos();
+
+  // ---- Short emergenti sulla carta (registro V3 dal 30/11/2026, research/emergenti/PREREG-AVANTI-V3.md): solo carta, nessun ordine
+  const EM = $("scEmc");
+  if (EM) { const X = R.emergenti_carta && typeof R.emergenti_carta === "object" ? R.emergenti_carta : {};
+    const ini = X.inizio || "2026-11-30", bud = X.budget || 10000, AP = X.posizioni || [], CH = X.chiuse || [], SG = X.soglie || {}, LS = X.lista || {};
+    const nCh = X.n_chiuse ?? CH.length, minCh = SG.min_chiuse || 20, prima = Date.now() < Date.parse(ini + "T00:00:00Z");
+    const vuoto = !Object.keys(X).length || (!AP.length && !CH.length && !nCh && (prima || !X.settimana));   // registro non ancora partito
+    const riv = X.stato === "rivalutare";
+    let h = `<div class="scH">Short emergenti sulla carta<small>registro V3 · solo carta</small></div><div class="card">` +
+      `<div class="scHead">${tag("carta", riv ? "da rivalutare" : `in raccolta dal ${dSh(ini)}`)}<b>Short di W3.2 sulle monete 101–200</b></div>`;
+    if (vuoto) h += `<p class="opNote" style="margin-top:10px"><b>Il registro parte domenica ${dSh(ini)}.</b> Budget di carta ${usd(bud)}, massimo 5 posizioni.</p>`;
+    else {
+      h += `<div class="tiles scTiles" style="--n:4">` +
+        tile("Budget di carta", X.valore == null ? usd(bud) : usd(X.valore), X.valore == null ? "" : `<span class="${cls(X.valore - bud)}">${pct((X.valore / bud - 1) * 100, 1)}</span> su ${usd(bud)}`) +
+        tile("DD", X.dd == null ? "–" : X.dd ? pct(-Math.abs(X.dd), 1) : "0%", "giornaliero, dal massimo del budget", X.dd ? "neg" : "") +
+        tile("Chiuse · WR", `${nfIT(nCh, 0)} · ${X.wr == null ? "–" : nfIT(X.wr, 0) + "%"}`, `valutazione dopo ${minCh} chiuse`) +
+        tile("Aperte", `${nfIT(AP.length, 0)} / 5`, "posizioni short") + `</div>`;
+      if (riv) h += `<p class="opNote"><span class="emcV">${nfIT(nCh, 0)} operazioni chiuse: soglie da rivalutare.</span> ${X.esito ? e(X.esito) : "La decisione spetta all'utente."}</p>`;
+      if (!AP.length && !CH.length) h += `<p class="opNote">Nessun segnale short sulle emergenti finora.</p>`;
+      // pnl = % sulla quota (costi e funding inclusi), pnl_usd = $ sulla quota; mv = movimento del prezzo a favore dello short
+      const riga = (o, sub) => { const v = o.pnl_usd ?? null, q = o.pnl ?? null;
+        return `<div class="row"><span class="k"><b>${e(o.t)}</b><small>${sub}</small></span><span class="v strong"><span class="${cls(v ?? q)}">${v != null ? u2(v) : pct(q, 1)}</span>${v != null && q != null ? `<small>${pct(q, 1)} sulla quota</small>` : ""}</span></div>`; };
+      if (AP.length) h += `<div class="list emcL"><div class="cap2">Aperte</div>` + AP.map(o => riga(o, `dal ${dSh(o.ing)} · ${p5(o.px_in)} → ${p5(o.ult)} · stop ${p5(o.trail)}`)).join("") + `</div>`;
+      if (CH.length) h += `<details class="opMore" style="margin-top:6px"><summary>Chiuse (${CH.length})</summary><div class="list emcL">` +
+        CH.slice().reverse().map(o => riga(o, `${dSh(o.ing)} → ${dSh(o.usc)} · ${p5(o.px_in)} → ${p5(o.px_out)}${o.motivo ? ` · ${e(o.motivo)}` : ""}`)).join("") + `</div></details>`;
+    }
+    const sg = [`almeno ${minCh} operazioni chiuse`, `WR ≥ ${SG.wr_min ?? 50}%`, "rendimento del budget positivo", `DD giornaliero del budget ≥ ${pct(SG.dd_min ?? -25, 0)}`,
+      `un semestre di fase non ribassista per le alt (BTC W3.2 long) senza perdita oltre ${pct(SG.fase_btc_long_perdita_max ?? -10, 0)}`];
+    h += `<details class="opMore"><summary>Soglie di rivalutazione</summary><p class="opNote" style="margin-top:4px">Si riconsidera una quota reale solo se valgono tutte; altrimenti il registro si chiude.</p><ol class="emcSoglie">${sg.map(x => `<li>${x}</li>`).join("")}</ol>` +
+      `<p class="opNote">Regola: short di W3.2 con i parametri di BTC, solo monete con rank 101–200 nella classifica di inizio anno${LS.anno ? ` (${e(String(LS.anno))}${LS.fonte ? `, ${e(LS.fonte)}` : ""}${LS.n ? `, ${nfIT(LS.n, 0)} monete` : LS.nota ? `: ${e(LS.nota)}` : ""})` : ""}; margine 1/5 del budget, esposizione ≤ 1x, costi 0,2% per lato più funding. Fonte: research/emergenti/PREREG-AVANTI-V3.md.</p></details>` +
+      `<p class="opNote"><b>Solo carta, nessun ordine</b>; studio non operabile (lezione 131).${X.aggiornato ? ` Aggiornato ${dIt(X.aggiornato)}.` : ""}</p>` +
+      ((X.dati || {}).ritardo ? `<p class="opNote"><b class="neg">${e(X.dati.nota || "dati non aggiornati")}</b></p>` : "") + `</div>`;
+    EM.innerHTML = h;
+  }
 
   // ---- Scommesse sulla carta (registro dal 29/11/2026)
   const BE = $("scBet");

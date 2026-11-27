@@ -104,7 +104,7 @@ def split(report: dict) -> tuple[dict, dict[str, str]]:
     if isinstance(r.get("livelli"), dict) and "serie" in r["livelli"]:   # candele 1D del Grafico
         r["livelli"] = dict(r["livelli"])
         lazy["grafico"]["livelli"] = {"serie": r["livelli"].pop("serie")}
-    for k in ("scanner", "trx_carta", "scommesse"):
+    for k in ("scanner", "trx_carta", "scommesse", "emergenti_carta"):
         if k in r:
             lazy["scanner"][k] = r.pop(k)
     for key in ("weekly", "weekly_eth"):

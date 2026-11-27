@@ -1,0 +1,10 @@
+/home/user/radar/research/dati_nuovi/fetch.py:157: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  today = pd.Timestamp.utcnow().tz_localize(None).normalize()
+FUND deribit BTC 66421 2019-04-30
+FUND hyperliquid BTC 30521 2023-05-12
+FUND okx BTC 279 2026-08-26
+FUND bitget BTC 270 2026-08-29
+FUND deribit ETH 66421 2019-04-30
+FUND hyperliquid ETH 30521 2023-05-12
+FUND okx ETH 279 2026-08-26
+FUND bitget ETH 270 2026-08-29

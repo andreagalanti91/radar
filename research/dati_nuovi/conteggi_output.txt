@@ -1,0 +1,57 @@
+=== INVENTARIO FONTI (dati grezzi scaricati) ===
+COT BTC CME (TFF, settimanale): 2018-04-10 → 2026-11-17, 450 report; salti > 7 gg: 4 (max 8 gg); ritardo: martedì → venerdì (+3 gg), 27 report in finestre di shutdown con pubblicazione ritardata
+COT ETH CME (TFF, settimanale): 2021-04-06 → 2026-11-17, 294 report; salti > 7 gg: 2 (max 8 gg); ritardo: martedì → venerdì (+3 gg), 16 report in finestre di shutdown con pubblicazione ritardata
+BASE BTC Deribit: trimestrali 41 (2017-01-06 → 2026-11-26), perpetual 2018-08-14 → 2026-11-26; base calcolabile 2018-08-14 → 2026-11-26 (3027 gg, buchi 0, max 0 gg []); mediana 5.2% annuo, p5/p95 -3.9/19.7%
+     Binance coin-M trimestrali (controllo): 26 contratti, 2020-06-11 → 2026-10-31
+BASE ETH Deribit: trimestrali 33 (2019-03-18 → 2026-11-26), perpetual 2019-03-14 → 2026-11-26; base calcolabile 2019-03-18 → 2026-11-26 (2811 gg, buchi 0, max 0 gg []); mediana 4.6% annuo, p5/p95 -1.9/21.0%
+     Binance coin-M trimestrali (controllo): 26 contratti, 2020-07-24 → 2026-10-31
+FUNDING BTC: binance 2020-01-01→2026-11-24, deribit 2019-04-30→2026-11-27, hyperliquid 2023-06-08→2026-11-26; media disponibile dal 2019-04-30; correlazioni giornaliere binance-deribit 0.69; binance-hyperliquid 0.74; deribit-hyperliquid 0.65
+     okx BTC: solo API recente 2026-08-26 → 2026-11-27 (279 pagamenti) → non usabile nel backtest
+     bitget BTC: solo API recente 2026-08-29 → 2026-11-27 (270 pagamenti) → non usabile nel backtest
+FUNDING ETH: binance 2020-01-01→2026-11-24, deribit 2019-04-30→2026-11-27, hyperliquid 2023-06-08→2026-11-26; media disponibile dal 2019-04-30; correlazioni giornaliere binance-deribit 0.67; binance-hyperliquid 0.72; deribit-hyperliquid 0.67
+     okx ETH: solo API recente 2026-08-26 → 2026-11-27 (279 pagamenti) → non usabile nel backtest
+     bitget ETH: solo API recente 2026-08-29 → 2026-11-27 (270 pagamenti) → non usabile nel backtest
+MINER blockchain.com: hash-rate 2009-01-03 → 2026-11-26 (6534 gg, buchi 1, max 4 gg); anche difficulty, miners-revenue, transaction-fees-usd; ritardo applicato 2 gg
+     controllo: correlazione hash rate blockchain.com vs CoinMetrics dal 2018 (SMA30) 1.000
+CM FLUSSI BTC: FlowIn/FlowOut/SplyEx 2016-01-01 → 2026-11-26 (3983 gg); stato delle righe {'flash': 3983} → tutte 'flash' anche nel passato: storico ricalcolato, NON point-in-time
+CM FLUSSI ETH: FlowIn/FlowOut/SplyEx 2016-01-01 → 2026-11-26 (3983 gg); stato delle righe {'flash': 3983} → tutte 'flash' anche nel passato: storico ricalcolato, NON point-in-time
+
+=== SEGNALI ALLE DOMENICHE (quota di settimane con s = +1 / 0 / −1) ===
+BTC COT            primo segnale ≠ 0: 2018-05-11 · domeniche 464: +1 49% · 0 4% · −1 47%
+BTC BASE           primo segnale ≠ 0: 2018-09-16 · domeniche 464: +1 51% · 0 8% · −1 41%
+BTC FUNDING        primo segnale ≠ 0: 2020-02-04 · domeniche 464: +1 8% · 0 83% · −1 9%
+BTC FUNDING-B      primo segnale ≠ 0: 2019-05-05 · domeniche 464: +1 11% · 0 80% · −1 9%
+BTC MINER          primo segnale ≠ 0: 2016-08-01 · domeniche 464: +1 0% · 0 77% · −1 23%
+BTC MINER-B(E)     primo segnale ≠ 0: 2016-08-24 · domeniche 464: +1 41% · 0 59% · −1 0%
+BTC CM-A netflow7  primo segnale ≠ 0: 2016-01-08 · domeniche 464: +1 52% · 0 0% · −1 48%
+BTC CM-B saldo28   primo segnale ≠ 0: 2016-01-30 · domeniche 464: +1 45% · 0 0% · −1 55%
+ETH COT            primo segnale ≠ 0: 2021-05-07 · domeniche 306: +1 43% · 0 5% · −1 52%
+ETH BASE           primo segnale ≠ 0: 2019-04-20 · domeniche 306: +1 48% · 0 0% · −1 52%
+ETH FUNDING        primo segnale ≠ 0: 2019-11-27 · domeniche 306: +1 12% · 0 76% · −1 12%
+ETH FUNDING-B      primo segnale ≠ 0: 2019-05-05 · domeniche 306: +1 16% · 0 72% · −1 12%
+ETH MINER          primo segnale ≠ 0: 2016-08-01 · domeniche 306: +1 0% · 0 74% · −1 26%
+ETH MINER-B(E)     primo segnale ≠ 0: 2016-08-24 · domeniche 306: +1 49% · 0 51% · −1 0%
+ETH CM-A netflow7  primo segnale ≠ 0: 2016-01-08 · domeniche 306: +1 65% · 0 0% · −1 35%
+ETH CM-B saldo28   primo segnale ≠ 0: 2016-01-30 · domeniche 306: +1 70% · 0 0% · −1 30%
+
+=== CONTEGGI SULLA TRAIETTORIA BASE DI W3.2 (nessun esito) ===
+BTC: ingressi base 23 (16 long, 7 short); domeniche da flat con prezzo ok e flusso contrario (spazio per B): 66
+   COT            A: ingressi base con fonte contraria 9/23 · B: domeniche candidate long 22 (episodi 10), short 13 (episodi 5)
+   BASE           A: ingressi base con fonte contraria 10/23 · B: domeniche candidate long 29 (episodi 12), short 13 (episodi 5)
+   FUNDING        A: ingressi base con fonte contraria 4/23 · B: domeniche candidate long 0 (episodi 0), short 0 (episodi 0)
+   FUNDING-B      A: ingressi base con fonte contraria 3/23 · B: domeniche candidate long 3 (episodi 2), short 0 (episodi 0)
+   MINER          A: ingressi base con fonte contraria 2/23 · B: domeniche candidate long 0 (episodi 0), short 10 (episodi 2)
+   MINER-B(E)     E: domeniche candidate long in più rispetto a W3.2 23 (episodi 12)
+   CM-A netflow7  A: ingressi base con fonte contraria 10/23 · B: domeniche candidate long 17 (episodi 11), short 11 (episodi 4)
+   CM-B saldo28   A: ingressi base con fonte contraria 10/23 · B: domeniche candidate long 15 (episodi 7), short 15 (episodi 5)
+   controllo: regole A/B/E con fonte neutra identiche alla base: True
+ETH: ingressi base 15 (10 long, 5 short); domeniche da flat con prezzo ok e flusso contrario (spazio per B): 58
+   COT            A: ingressi base con fonte contraria 6/15 · B: domeniche candidate long 12 (episodi 5), short 20 (episodi 5)
+   BASE           A: ingressi base con fonte contraria 5/15 · B: domeniche candidate long 23 (episodi 7), short 18 (episodi 5)
+   FUNDING        A: ingressi base con fonte contraria 5/15 · B: domeniche candidate long 0 (episodi 0), short 0 (episodi 0)
+   FUNDING-B      A: ingressi base con fonte contraria 5/15 · B: domeniche candidate long 0 (episodi 0), short 0 (episodi 0)
+   MINER          A: ingressi base con fonte contraria 4/15 · B: domeniche candidate long 0 (episodi 0), short 14 (episodi 3)
+   MINER-B(E)     E: domeniche candidate long in più rispetto a W3.2 31 (episodi 8)
+   CM-A netflow7  A: ingressi base con fonte contraria 7/15 · B: domeniche candidate long 19 (episodi 9), short 11 (episodi 7)
+   CM-B saldo28   A: ingressi base con fonte contraria 8/15 · B: domeniche candidate long 20 (episodi 7), short 13 (episodi 3)
+   controllo: regole A/B/E con fonte neutra identiche alla base: True

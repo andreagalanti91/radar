@@ -430,6 +430,36 @@ triangoli del post sul 3D, con barre che ripartono ogni 1 gennaio. Su BTC dal 20
 - **Riapertura:** solo con dati dal vivo (registro su carta di V2, ≥ 6 chiuse ≈ 3 anni, WR ≥ 60%, rendimento positivo, DD ≥ −30%).
 
 **Lezione 130**: MACD settimanale 12/26/9 su SOL "compra da −3 a −50, vendi da +10" (research/macd_sol, PREREG a5f2206; 4 regole, 8 innesti in W3.2, 3 candidati costruiti in IS, Holm m = 13): niente funziona. Le soglie in dollari pesano 10 volte di più a 20 $ che a 200 $: la regola letterale compra all'inizio del bear 2022 e chiude a 8.292 $ (DD −93%, 3 trade; B&H 374.895 $); normalizzata o con stop −20% non migliora. Dentro W3.2 il MACD non serve: l'uscita "+10 equivalente" non scatta mai su BTC/ETH (W3.2 esce prima), il filtro tocca pochi short (ETH meglio ma placebo p 0,27). Il candidato SOL scelto in IS (W3.2 + cancello ETH + uscita MACD ≥ +10 $, CAGR/DD IS 3,60) in OOS fa 21.454 $ con WR 43%, vicini sotto il B&H, placebo p 0,09. Il livello del MACD non è un segnale; un'uscita aggiunta senza il filtro d'ingresso corrispondente crea trade di una settimana che falsano il WR. Su SOL solo registro su carta. 
+
+**Lezione 131**: monete emergenti (rank 101–200 alla classifica di inizio anno, punto nel tempo; budget 1%, 5 posizioni, 0,2%
+per lato; research/emergenti, PREREG 1110e53): 0 varianti operabili su 10.
+- W3.2 com'è: 19,8k $ su 10k di budget (DD −55%, OOS −19%).
+- **Solo long: 5,4k $ (DD −81%, WR 28%; ultimi 12 mesi WR 18%)**: "i long sono in netto positivo" è falso.
+- Solo short: 13,9k $, DD −21%, WR 52%, ma il placebo non passa Holm (0,060). Inoltre:
+  - il vantaggio sta nelle fasi ribassiste delle alt (quattro semestri negativi nel 2023–24, OOS +9% in tre anni con WR 41%);
+  - il guadagno dell'ultimo anno è soprattutto non realizzato (5 posizioni aperte e correlate valgono +1,4k $ dei +3,9k $);
+  - da tenere solo sulla carta.
+- Lo stop di W3.2 sulle emergenti è al 50% (long) e all'83% (short) dall'ingresso. A 5x è sempre oltre la liquidazione (5x
+  fisso azzera il budget); a 2x lo è per metà dei long. La leva adattiva evita le liquidazioni ma porta il DD a −97%. Sulle
+  monete piccole si usa la size di W3.2 (≤ 1x) oppure nulla.
+- Filtri di qualità, cancello BTC (con o contro), trailing 2,0 e uscita EMA 10 non migliorano.
+- Nei dati delle monete piccole vanno controllati in automatico i cambi di denominazione (salti > 3x con apertura = chiusura
+  precedente / 10ⁿ): un solo cambio non corretto (BNX 1:100) bloccava una quota per 13 mesi.
+
+**Lezione 132**: fonti nuove gratuite per gli ingressi di W3.2 (research/dati_nuovi, PREREG ba77738, 9 varianti, Holm m = 9):
+nessuna passa. Le fonti provate sono COT CFTC degli asset manager CME, base dei future Deribit, funding medio Binance/Deribit/
+Hyperliquid, hash ribbon dei miner, flussi e saldo sugli exchange CoinMetrics.
+- **Filtri d'ingresso (A):** costano su BTC (COT-A 26,6k, base 49,7k, funding 61,9k contro 84,8k): bloccare un ingresso di W3.2
+  sposta o salta il trend invece di evitare la perdita. MINER-A migliora solo ETH (dominato dal trade 06/2024), capitale insieme più basso, vicini incoerenti; il placebo
+  (p 0,042) misura il confronto con un filtro casuale, non con W3.2 (la mediana dei filtri casuali peggiora W3.2).
+- **Ingressi aggiuntivi o anticipati (B/E):** al posto del flusso perp contrario aggiungono 5–8 operazioni con WR del 45–75% e
+  DD fino a −51%. Il flusso perp resta l'unica informazione che separa (conferma delle lezioni 86 e 97).
+- **Analisi delle 11 perdite:** le perdite vengono da long al cambio di regime, long in trend affollati e short dopo un crollo:
+  caratteristiche di prezzo e di leva che nessuna fonte nuova isola.
+- **Movimenti persi:** sono quasi tutti contro il regime, per scelta.
+- **Abbonamenti:** nessun abbonamento (CryptoQuant, Coinglass) giustificato senza un'ipotesi nuova. I flussi exchange
+  CoinMetrics sono "flash" (non point-in-time): non adottabili.
+- **Metodo:** il codice dei segnali va committato con il PREREG o prima, perché l'ordine sia provabile con git.
 **Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
 +0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
 con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai
@@ -1527,7 +1557,7 @@ sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flu
   dati, segnali o posizione. Un controllo che scrive solo nel log di GitHub non è una protezione: ogni nuovo controllo deve
   avvisare. Testi con numeri della strategia (pagina "Come funziona", promemoria del lunedì) vanno letti dal report o riallineati
   a ogni cambio di strategia: la sezione "Limiti" mostrava ancora 78.000 $ e DD −21% (W3 al 25%) tre giorni dopo W3.1.
-- Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git).
+- Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git). Il codice dei segnali va committato con il PREREG o prima (lezione 132).
 - Prima di pubblicare una correzione: test che fallisce prima e passa dopo, suite completa verde, render a 400/1280, deploy e
   verifica online. I test vanno scritti con unittest (pytest non è installato: test in stile pytest non girano mai).
 - Versioni delle librerie: fissarle a quelle realmente installate nei runner (log "Successfully installed"), non a quelle locali.

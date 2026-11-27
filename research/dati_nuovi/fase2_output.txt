@@ -1,0 +1,158 @@
+=== W3.2 (verifica: BTC dal 2018 242.755, dal 2021 84.820; ETH 39.572) ===
+('BTC', 'dal 2018') fin   242,755 $ · rend  2327.5% · CAGR  43.1% · DD  -37.3% · CAGR/DD 1.16 · op. 23 · WR chiuse 77.3% · senza migliore 141,503 $
+('BTC', 'dal 2021') fin    84,820 $ · rend   748.2% · CAGR  43.7% · DD  -21.1% · CAGR/DD 2.07 · op. 14 · WR chiuse 92.3% · senza migliore 55,707 $
+('BTC', 'IS 2018-22') fin    65,568 $ · rend   555.7% · CAGR  45.7% · DD  -37.3% · CAGR/DD 1.23 · op. 14 · WR chiuse 69.2% · senza migliore 38,230 $
+('BTC', 'OOS 2023-') fin    33,046 $ · rend   230.5% · CAGR  35.9% · DD  -27.0% · CAGR/DD 1.33 · op. 10 · WR chiuse 77.8% · senza migliore 23,223 $
+('BTC', '2024-') fin    25,388 $ · rend   153.9% · CAGR  37.9% · DD  -21.1% · CAGR/DD 1.79 · op.  7 · WR chiuse 83.3% · senza migliore 17,841 $
+('ETH', 'dal 2021') fin    39,572 $ · rend   295.7% · CAGR  26.4% · DD  -27.5% · CAGR/DD 0.96 · op. 15 · WR chiuse 57.1% · senza migliore 22,674 $
+('ETH', 'IS 2021-22') fin    19,628 $ · rend    96.3% · CAGR  40.8% · DD  -17.8% · CAGR/DD 2.29 · op.  5 · WR chiuse 50.0% · senza migliore 11,248 $
+('ETH', 'OOS 2023-') fin    18,890 $ · rend    88.9% · CAGR  17.7% · DD  -27.5% · CAGR/DD 0.64 · op. 11 · WR chiuse 60.0% · senza migliore 12,008 $
+('ETH', '2024-') fin    16,599 $ · rend    66.0% · CAGR  19.1% · DD  -27.5% · CAGR/DD 0.69 · op.  8 · WR chiuse 57.1% · senza migliore 10,551 $
+insieme          fin   124,392 $ · rend        % · CAGR  36.5% · DD  -20.2% · CAGR/DD 1.81
+Buy & hold: BTC dal 2018 {'fin': 43514, 'cagr': np.float64(18.0), 'dd': -81.2, 'cd': np.float64(0.221)} · BTC dal 2021 {'fin': 20635, 'cagr': np.float64(13.1), 'dd': -76.6, 'cd': np.float64(0.171)} · ETH dal 2021 {'fin': 13362, 'cagr': np.float64(5.1), 'dd': -79.3, 'cd': np.float64(0.064)}
+
+=== V1 COT-A (regola A) ===
+('BTC', 'dal 2018') fin    46,495 $ · rend   364.9% · CAGR  18.9% · DD  -35.6% · CAGR/DD 0.53 · op. 20 · WR chiuse 68.4% · senza migliore 30,753 $
+('BTC', 'dal 2021') fin    26,639 $ · rend   166.4% · CAGR  18.1% · DD  -26.3% · CAGR/DD 0.69 · op. 13 · WR chiuse 75.0% · senza migliore 18,721 $
+('BTC', 'IS 2018-22') fin    20,308 $ · rend   103.1% · CAGR  15.2% · DD  -35.6% · CAGR/DD 0.43 · op. 11 · WR chiuse 70.0% · senza migliore 13,435 $
+('BTC', 'OOS 2023-') fin    25,962 $ · rend   159.6% · CAGR  27.7% · DD  -21.6% · CAGR/DD 1.28 · op.  9 · WR chiuse 75.0% · senza migliore 18,245 $
+('BTC', '2024-') fin    16,319 $ · rend    63.2% · CAGR  18.4% · DD  -21.6% · CAGR/DD 0.85 · op.  7 · WR chiuse 66.7% · senza migliore 11,468 $
+('ETH', 'dal 2021') fin    32,665 $ · rend   226.6% · CAGR  22.3% · DD  -26.2% · CAGR/DD 0.85 · op. 13 · WR chiuse 58.3% · senza migliore 18,717 $
+('ETH', 'IS 2021-22') fin    20,005 $ · rend   100.0% · CAGR  42.2% · DD  -16.2% · CAGR/DD 2.60 · op.  4 · WR chiuse 66.7% · senza migliore 11,464 $
+('ETH', 'OOS 2023-') fin    17,887 $ · rend    78.9% · CAGR  16.1% · DD  -26.2% · CAGR/DD 0.61 · op.  9 · WR chiuse 62.5% · senza migliore 14,121 $
+('ETH', '2024-') fin    13,444 $ · rend    34.4% · CAGR  10.7% · DD  -26.2% · CAGR/DD 0.41 · op.  7 · WR chiuse 50.0% · senza migliore 10,827 $
+insieme          fin    59,304 $ · rend        % · CAGR  20.3% · DD  -21.4% · CAGR/DD 0.95
+vicini CAGR/DD dal 2021: BTC [1.007, 0.716] (W3.2 2.068) · ETH [0.851, 0.65] (W3.2 0.96)
+criteri: BTC cd> NO · BTC wr≥ NO · BTC senza migliore≥ NO · BTC dd≤+2 NO · BTC 2018 cd≥ NO · BTC IS≥ NO · BTC OOS≥ NO · BTC vicini≥ NO · ETH cd> NO · ETH wr≥ sì · ETH senza migliore≥ NO · ETH dd≤+2 sì · ETH IS≥ sì · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.6898 su 518 slittamenti (mediana CAGR/DD insieme 1.13, reale 0.95)
+
+=== V2 COT-B (regola B) ===
+('BTC', 'dal 2018') fin   185,526 $ · rend  1755.3% · CAGR  38.9% · DD  -41.3% · CAGR/DD 0.94 · op. 30 · WR chiuse 65.5% · senza migliore 96,098 $
+('BTC', 'dal 2021') fin    52,982 $ · rend   429.8% · CAGR  32.7% · DD  -27.7% · CAGR/DD 1.18 · op. 21 · WR chiuse 70.0% · senza migliore 34,797 $
+('BTC', 'IS 2018-22') fin    64,300 $ · rend   543.0% · CAGR  45.1% · DD  -41.3% · CAGR/DD 1.09 · op. 19 · WR chiuse 61.1% · senza migliore 33,316 $
+('BTC', 'OOS 2023-') fin    25,033 $ · rend   150.3% · CAGR  26.5% · DD  -27.0% · CAGR/DD 0.98 · op. 12 · WR chiuse 63.6% · senza migliore 17,592 $
+('BTC', '2024-') fin    19,232 $ · rend    92.3% · CAGR  25.3% · DD  -22.9% · CAGR/DD 1.11 · op.  9 · WR chiuse 62.5% · senza migliore 13,515 $
+('ETH', 'dal 2021') fin    28,931 $ · rend   189.3% · CAGR  19.8% · DD  -45.3% · CAGR/DD 0.44 · op. 21 · WR chiuse 45.0% · senza migliore 16,578 $
+('ETH', 'IS 2021-22') fin    16,283 $ · rend    62.8% · CAGR  28.1% · DD  -41.7% · CAGR/DD 0.67 · op.  9 · WR chiuse 50.0% · senza migliore 9,331 $
+('ETH', 'OOS 2023-') fin    16,648 $ · rend    66.5% · CAGR  14.0% · DD  -35.3% · CAGR/DD 0.40 · op. 13 · WR chiuse 41.7% · senza migliore 9,567 $
+('ETH', '2024-') fin    14,629 $ · rend    46.3% · CAGR  14.0% · DD  -35.3% · CAGR/DD 0.40 · op. 10 · WR chiuse 33.3% · senza migliore 8,407 $
+insieme          fin    74,939 $ · rend        % · CAGR  25.2% · DD  -35.3% · CAGR/DD 0.72
+vicini CAGR/DD dal 2021: BTC [1.376, 1.036] (W3.2 2.068) · ETH [0.441, 0.498] (W3.2 0.96)
+criteri: BTC più op. sì · BTC cd≥ NO · BTC wr≥−5 NO · BTC dd≤+2 NO · BTC 2018 cd≥ NO · BTC IS≥ NO · BTC OOS≥ NO · BTC vicini≥ NO · ETH più op. sì · ETH cd≥ NO · ETH wr≥−5 NO · ETH dd≤+2 NO · ETH IS≥ NO · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.9634 su 518 slittamenti (mediana CAGR/DD insieme 1.29, reale 0.72)
+
+=== V3 BASE-A (regola A) ===
+('BTC', 'dal 2018') fin   108,810 $ · rend   988.1% · CAGR  30.8% · DD  -37.3% · CAGR/DD 0.83 · op. 22 · WR chiuse 71.4% · senza migliore 63,425 $
+('BTC', 'dal 2021') fin    49,680 $ · rend   396.8% · CAGR  31.2% · DD  -21.1% · CAGR/DD 1.48 · op. 13 · WR chiuse 83.3% · senza migliore 35,355 $
+('BTC', 'IS 2018-22') fin    36,310 $ · rend   263.1% · CAGR  29.4% · DD  -37.3% · CAGR/DD 0.79 · op. 14 · WR chiuse 61.5% · senza migliore 21,171 $
+('BTC', 'OOS 2023-') fin    26,884 $ · rend   168.8% · CAGR  28.9% · DD  -27.0% · CAGR/DD 1.07 · op.  9 · WR chiuse 75.0% · senza migliore 19,132 $
+('BTC', '2024-') fin    20,654 $ · rend   106.5% · CAGR  28.4% · DD  -21.1% · CAGR/DD 1.34 · op.  6 · WR chiuse 80.0% · senza migliore 15,668 $
+('ETH', 'dal 2021') fin    19,366 $ · rend    93.7% · CAGR  11.9% · DD  -27.5% · CAGR/DD 0.43 · op. 15 · WR chiuse 50.0% · senza migliore 12,338 $
+('ETH', 'IS 2021-22') fin    17,652 $ · rend    76.5% · CAGR  33.4% · DD  -17.8% · CAGR/DD 1.88 · op.  5 · WR chiuse 50.0% · senza migliore 11,248 $
+('ETH', 'OOS 2023-') fin    12,018 $ · rend    20.2% · CAGR   4.8% · DD  -27.5% · CAGR/DD 0.17 · op. 10 · WR chiuse 55.6% · senza migliore 8,959 $
+('ETH', '2024-') fin    10,289 $ · rend     2.9% · CAGR   1.0% · DD  -27.5% · CAGR/DD 0.04 · op.  8 · WR chiuse 42.9% · senza migliore 7,670 $
+insieme          fin    69,046 $ · rend        % · CAGR  23.5% · DD  -20.7% · CAGR/DD 1.13
+vicini CAGR/DD dal 2021: BTC [1.259, 1.371] (W3.2 2.068) · ETH [0.815, 0.534] (W3.2 0.96)
+criteri: BTC cd> NO · BTC wr≥ NO · BTC senza migliore≥ NO · BTC dd≤+2 sì · BTC 2018 cd≥ NO · BTC IS≥ NO · BTC OOS≥ NO · BTC vicini≥ NO · ETH cd> NO · ETH wr≥ NO · ETH senza migliore≥ NO · ETH dd≤+2 sì · ETH IS≥ NO · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.4663 su 518 slittamenti (mediana CAGR/DD insieme 1.10, reale 1.13)
+
+=== V4 BASE-B (regola B) ===
+('BTC', 'dal 2018') fin   185,894 $ · rend  1758.9% · CAGR  38.9% · DD  -50.8% · CAGR/DD 0.77 · op. 32 · WR chiuse 64.5% · senza migliore 96,217 $
+('BTC', 'dal 2021') fin    67,444 $ · rend   574.4% · CAGR  38.2% · DD  -31.7% · CAGR/DD 1.21 · op. 21 · WR chiuse 75.0% · senza migliore 44,295 $
+('BTC', 'IS 2018-22') fin    64,080 $ · rend   540.8% · CAGR  45.0% · DD  -50.8% · CAGR/DD 0.89 · op. 21 · WR chiuse 60.0% · senza migliore 33,177 $
+('BTC', 'OOS 2023-') fin    25,169 $ · rend   151.7% · CAGR  26.7% · DD  -27.0% · CAGR/DD 0.99 · op. 12 · WR chiuse 63.6% · senza migliore 17,687 $
+('BTC', '2024-') fin    19,336 $ · rend    93.4% · CAGR  25.5% · DD  -22.9% · CAGR/DD 1.12 · op.  9 · WR chiuse 62.5% · senza migliore 13,588 $
+('ETH', 'dal 2021') fin    26,148 $ · rend   161.5% · CAGR  17.8% · DD  -51.0% · CAGR/DD 0.35 · op. 23 · WR chiuse 45.5% · senza migliore 13,824 $
+('ETH', 'IS 2021-22') fin    14,399 $ · rend    44.0% · CAGR  20.3% · DD  -47.8% · CAGR/DD 0.42 · op. 11 · WR chiuse 50.0% · senza migliore 7,613 $
+('ETH', 'OOS 2023-') fin    17,015 $ · rend    70.1% · CAGR  14.6% · DD  -37.4% · CAGR/DD 0.39 · op. 13 · WR chiuse 41.7% · senza migliore 9,777 $
+('ETH', '2024-') fin    14,951 $ · rend    49.5% · CAGR  14.9% · DD  -37.4% · CAGR/DD 0.40 · op. 10 · WR chiuse 33.3% · senza migliore 8,591 $
+insieme          fin    84,713 $ · rend        % · CAGR  27.9% · DD  -36.9% · CAGR/DD 0.76
+vicini CAGR/DD dal 2021: BTC [1.685, 1.146] (W3.2 2.068) · ETH [0.36, 0.543] (W3.2 0.96)
+criteri: BTC più op. sì · BTC cd≥ NO · BTC wr≥−5 NO · BTC dd≤+2 NO · BTC 2018 cd≥ NO · BTC IS≥ NO · BTC OOS≥ NO · BTC vicini≥ NO · ETH più op. sì · ETH cd≥ NO · ETH wr≥−5 NO · ETH dd≤+2 NO · ETH IS≥ NO · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.8574 su 518 slittamenti (mediana CAGR/DD insieme 0.98, reale 0.76)
+
+=== V5 FUNDING-A (regola A) ===
+('BTC', 'dal 2018') fin   192,441 $ · rend  1824.4% · CAGR  39.4% · DD  -31.9% · CAGR/DD 1.24 · op. 21 · WR chiuse 75.0% · senza migliore 112,175 $
+('BTC', 'dal 2021') fin    61,933 $ · rend   519.3% · CAGR  36.2% · DD  -18.9% · CAGR/DD 1.92 · op. 13 · WR chiuse 83.3% · senza migliore 40,676 $
+('BTC', 'IS 2018-22') fin    71,187 $ · rend   611.9% · CAGR  48.1% · DD  -31.9% · CAGR/DD 1.51 · op. 13 · WR chiuse 75.0% · senza migliore 41,505 $
+('BTC', 'OOS 2023-') fin    24,129 $ · rend   141.3% · CAGR  25.3% · DD  -26.7% · CAGR/DD 0.95 · op.  9 · WR chiuse 62.5% · senza migliore 16,957 $
+('BTC', '2024-') fin    22,688 $ · rend   126.9% · CAGR  32.7% · DD  -18.7% · CAGR/DD 1.75 · op.  6 · WR chiuse 80.0% · senza migliore 15,944 $
+('ETH', 'dal 2021') fin    31,395 $ · rend   213.9% · CAGR  21.5% · DD  -27.5% · CAGR/DD 0.78 · op. 13 · WR chiuse 50.0% · senza migliore 17,989 $
+('ETH', 'IS 2021-22') fin    19,388 $ · rend    93.9% · CAGR  39.9% · DD  -19.8% · CAGR/DD 2.02 · op.  5 · WR chiuse 50.0% · senza migliore 11,110 $
+('ETH', 'OOS 2023-') fin    15,317 $ · rend    53.2% · CAGR  11.6% · DD  -27.5% · CAGR/DD 0.42 · op.  9 · WR chiuse 50.0% · senza migliore 9,736 $
+('ETH', '2024-') fin    18,196 $ · rend    82.0% · CAGR  22.9% · DD  -27.5% · CAGR/DD 0.83 · op.  7 · WR chiuse 66.7% · senza migliore 11,566 $
+insieme          fin    93,328 $ · rend        % · CAGR  30.0% · DD  -17.7% · CAGR/DD 1.69
+vicini CAGR/DD dal 2021: BTC [1.918, 1.839] (W3.2 2.068) · ETH [0.782, 0.958] (W3.2 0.96)
+criteri: BTC cd> NO · BTC wr≥ NO · BTC senza migliore≥ NO · BTC dd≤+2 sì · BTC 2018 cd≥ sì · BTC IS≥ sì · BTC OOS≥ NO · BTC vicini≥ NO · ETH cd> NO · ETH wr≥ NO · ETH senza migliore≥ NO · ETH dd≤+2 sì · ETH IS≥ NO · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.6859 su 518 slittamenti (mediana CAGR/DD insieme 1.75, reale 1.69)
+
+=== V6 MINER-A (regola A) ===
+('BTC', 'dal 2018') fin   220,107 $ · rend  2101.1% · CAGR  41.5% · DD  -37.3% · CAGR/DD 1.11 · op. 23 · WR chiuse 72.7% · senza migliore 128,301 $
+('BTC', 'dal 2021') fin    76,906 $ · rend   669.1% · CAGR  41.3% · DD  -21.1% · CAGR/DD 1.96 · op. 14 · WR chiuse 84.6% · senza migliore 50,510 $
+('BTC', 'IS 2018-22') fin    59,411 $ · rend   494.1% · CAGR  42.8% · DD  -37.3% · CAGR/DD 1.15 · op. 14 · WR chiuse 61.5% · senza migliore 34,640 $
+('BTC', 'OOS 2023-') fin    33,068 $ · rend   230.7% · CAGR  35.9% · DD  -27.0% · CAGR/DD 1.33 · op. 10 · WR chiuse 77.8% · senza migliore 23,239 $
+('BTC', '2024-') fin    25,405 $ · rend   154.0% · CAGR  37.9% · DD  -21.1% · CAGR/DD 1.79 · op.  7 · WR chiuse 83.3% · senza migliore 17,853 $
+('ETH', 'dal 2021') fin    42,418 $ · rend   324.2% · CAGR  27.9% · DD  -22.9% · CAGR/DD 1.22 · op. 13 · WR chiuse 58.3% · senza migliore 24,305 $
+('ETH', 'IS 2021-22') fin    18,737 $ · rend    87.4% · CAGR  37.5% · DD  -17.8% · CAGR/DD 2.11 · op.  5 · WR chiuse 50.0% · senza migliore 10,738 $
+('ETH', 'OOS 2023-') fin    21,212 $ · rend   112.1% · CAGR  21.3% · DD  -21.9% · CAGR/DD 0.97 · op.  9 · WR chiuse 62.5% · senza migliore 13,483 $
+('ETH', '2024-') fin    18,639 $ · rend    86.4% · CAGR  24.0% · DD  -21.9% · CAGR/DD 1.09 · op.  6 · WR chiuse 60.0% · senza migliore 11,848 $
+insieme          fin   119,323 $ · rend        % · CAGR  35.6% · DD  -18.9% · CAGR/DD 1.89
+vicini CAGR/DD dal 2021: BTC [2.007, 1.963] (W3.2 2.068) · ETH [1.112, 0.779] (W3.2 0.96)
+criteri: BTC cd> NO · BTC wr≥ NO · BTC senza migliore≥ NO · BTC dd≤+2 sì · BTC 2018 cd≥ NO · BTC IS≥ NO · BTC OOS≥ sì · BTC vicini≥ NO · ETH cd> sì · ETH wr≥ sì · ETH senza migliore≥ sì · ETH dd≤+2 sì · ETH IS≥ NO · ETH OOS≥ sì · ETH vicini≥ NO · insieme sì
+placebo: p esatto 0.0424 su 518 slittamenti (mediana CAGR/DD insieme 1.59, reale 1.89)
+
+=== V7 MINER-E (regola E) ===
+('BTC', 'dal 2018') fin   123,362 $ · rend  1133.6% · CAGR  32.6% · DD  -36.2% · CAGR/DD 0.90 · op. 32 · WR chiuse 58.1% · senza migliore 72,597 $
+('BTC', 'dal 2021') fin    42,695 $ · rend   327.0% · CAGR  27.9% · DD  -36.2% · CAGR/DD 0.77 · op. 22 · WR chiuse 61.9% · senza migliore 28,041 $
+('BTC', 'IS 2018-22') fin    59,852 $ · rend   498.5% · CAGR  43.0% · DD  -31.1% · CAGR/DD 1.38 · op. 18 · WR chiuse 58.8% · senza migliore 35,231 $
+('BTC', 'OOS 2023-') fin    18,397 $ · rend    84.0% · CAGR  16.9% · DD  -36.2% · CAGR/DD 0.47 · op. 15 · WR chiuse 50.0% · senza migliore 12,929 $
+('BTC', '2024-') fin    14,629 $ · rend    46.3% · CAGR  14.0% · DD  -36.2% · CAGR/DD 0.39 · op. 11 · WR chiuse 50.0% · senza migliore 10,280 $
+('ETH', 'dal 2021') fin    35,495 $ · rend   254.9% · CAGR  24.1% · DD  -38.4% · CAGR/DD 0.63 · op. 22 · WR chiuse 47.6% · senza migliore 20,338 $
+('ETH', 'IS 2021-22') fin    22,979 $ · rend   129.8% · CAGR  52.5% · DD  -18.1% · CAGR/DD 2.90 · op.  9 · WR chiuse 50.0% · senza migliore 13,168 $
+('ETH', 'OOS 2023-') fin    14,473 $ · rend    44.7% · CAGR   9.9% · DD  -38.4% · CAGR/DD 0.26 · op. 14 · WR chiuse 46.2% · senza migliore 9,200 $
+('ETH', '2024-') fin    14,566 $ · rend    45.7% · CAGR  13.8% · DD  -38.4% · CAGR/DD 0.36 · op. 10 · WR chiuse 44.4% · senza migliore 9,259 $
+insieme          fin    72,569 $ · rend        % · CAGR  24.6% · DD  -34.9% · CAGR/DD 0.70
+vicini CAGR/DD dal 2021: BTC [0.852, 0.724] (W3.2 2.068) · ETH [0.575, 0.67] (W3.2 0.96)
+criteri: BTC più op. sì · BTC cd≥ NO · BTC wr≥−5 NO · BTC dd≤+2 NO · BTC 2018 cd≥ NO · BTC IS≥ sì · BTC OOS≥ NO · BTC vicini≥ NO · ETH più op. sì · ETH cd≥ NO · ETH wr≥−5 NO · ETH dd≤+2 NO · ETH IS≥ sì · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.7399 su 518 slittamenti (mediana CAGR/DD insieme 0.88, reale 0.70)
+
+=== V8 FLUSSI-A (regola A) ===
+('BTC', 'dal 2018') fin   176,041 $ · rend  1660.4% · CAGR  38.0% · DD  -33.9% · CAGR/DD 1.12 · op. 19 · WR chiuse 73.7% · senza migliore 102,657 $
+('BTC', 'dal 2021') fin    43,499 $ · rend   335.0% · CAGR  28.3% · DD  -23.9% · CAGR/DD 1.18 · op. 12 · WR chiuse 75.0% · senza migliore 30,582 $
+('BTC', 'IS 2018-22') fin    64,172 $ · rend   541.7% · CAGR  45.0% · DD  -33.9% · CAGR/DD 1.33 · op. 11 · WR chiuse 70.0% · senza migliore 37,416 $
+('BTC', 'OOS 2023-') fin    24,486 $ · rend   144.9% · CAGR  25.8% · DD  -27.0% · CAGR/DD 0.95 · op.  9 · WR chiuse 66.7% · senza migliore 17,215 $
+('BTC', '2024-') fin    18,811 $ · rend    88.1% · CAGR  24.3% · DD  -23.9% · CAGR/DD 1.02 · op.  6 · WR chiuse 66.7% · senza migliore 13,225 $
+('ETH', 'dal 2021') fin    18,741 $ · rend    87.4% · CAGR  11.3% · DD  -36.1% · CAGR/DD 0.31 · op. 13 · WR chiuse 41.7% · senza migliore 11,091 $
+('ETH', 'IS 2021-22') fin    18,490 $ · rend    84.9% · CAGR  36.6% · DD  -17.4% · CAGR/DD 2.10 · op.  4 · WR chiuse 66.7% · senza migliore 10,944 $
+('ETH', 'OOS 2023-') fin    11,103 $ · rend    11.0% · CAGR   2.7% · DD  -36.1% · CAGR/DD 0.07 · op.  9 · WR chiuse 37.5% · senza migliore 7,058 $
+('ETH', '2024-') fin    11,645 $ · rend    16.4% · CAGR   5.4% · DD  -36.1% · CAGR/DD 0.15 · op.  7 · WR chiuse 50.0% · senza migliore 7,402 $
+insieme          fin    62,240 $ · rend        % · CAGR  21.3% · DD  -22.4% · CAGR/DD 0.95
+vicini CAGR/DD dal 2021: BTC [0.97, 1.044] (W3.2 2.068) · ETH [0.542, 0.396] (W3.2 0.96)
+criteri: BTC cd> NO · BTC wr≥ NO · BTC senza migliore≥ NO · BTC dd≤+2 NO · BTC 2018 cd≥ NO · BTC IS≥ sì · BTC OOS≥ NO · BTC vicini≥ NO · ETH cd> NO · ETH wr≥ NO · ETH senza migliore≥ NO · ETH dd≤+2 NO · ETH IS≥ NO · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.4721 su 518 slittamenti (mediana CAGR/DD insieme 0.94, reale 0.95)
+
+=== V9 SALDO-B (regola B) ===
+('BTC', 'dal 2018') fin   180,673 $ · rend  1706.7% · CAGR  38.4% · DD  -37.3% · CAGR/DD 1.03 · op. 29 · WR chiuse 64.3% · senza migliore 98,998 $
+('BTC', 'dal 2021') fin    48,762 $ · rend   387.6% · CAGR  30.8% · DD  -31.7% · CAGR/DD 0.97 · op. 19 · WR chiuse 72.2% · senza migliore 32,025 $
+('BTC', 'IS 2018-22') fin    64,912 $ · rend   549.1% · CAGR  45.4% · DD  -37.3% · CAGR/DD 1.22 · op. 18 · WR chiuse 58.8% · senza migliore 35,579 $
+('BTC', 'OOS 2023-') fin    24,148 $ · rend   141.5% · CAGR  25.4% · DD  -27.0% · CAGR/DD 0.94 · op. 12 · WR chiuse 63.6% · senza migliore 16,970 $
+('BTC', '2024-') fin    18,552 $ · rend    85.5% · CAGR  23.8% · DD  -22.9% · CAGR/DD 1.04 · op.  9 · WR chiuse 62.5% · senza migliore 13,037 $
+('ETH', 'dal 2021') fin    20,346 $ · rend   103.5% · CAGR  12.9% · DD  -47.7% · CAGR/DD 0.27 · op. 23 · WR chiuse 45.5% · senza migliore 11,658 $
+('ETH', 'IS 2021-22') fin    12,760 $ · rend    27.6% · CAGR  13.2% · DD  -44.3% · CAGR/DD 0.30 · op. 11 · WR chiuse 50.0% · senza migliore 7,313 $
+('ETH', 'OOS 2023-') fin    14,940 $ · rend    49.4% · CAGR  10.8% · DD  -37.8% · CAGR/DD 0.29 · op. 13 · WR chiuse 41.7% · senza migliore 8,585 $
+('ETH', '2024-') fin    13,128 $ · rend    31.3% · CAGR   9.8% · DD  -37.8% · CAGR/DD 0.26 · op. 10 · WR chiuse 33.3% · senza migliore 7,544 $
+insieme          fin    69,108 $ · rend        % · CAGR  23.5% · DD  -34.9% · CAGR/DD 0.68
+vicini CAGR/DD dal 2021: BTC [1.064, 1.046] (W3.2 2.068) · ETH [0.157, 0.386] (W3.2 0.96)
+criteri: BTC più op. sì · BTC cd≥ NO · BTC wr≥−5 NO · BTC dd≤+2 NO · BTC 2018 cd≥ NO · BTC IS≥ NO · BTC OOS≥ NO · BTC vicini≥ NO · ETH più op. sì · ETH cd≥ NO · ETH wr≥−5 NO · ETH dd≤+2 NO · ETH IS≥ NO · ETH OOS≥ NO · ETH vicini≥ NO · insieme NO
+placebo: p esatto 0.9441 su 518 slittamenti (mediana CAGR/DD insieme 0.99, reale 0.68)
+
+=== VERDETTO ===
+V1 COT-A      A: criteri falliti: BTC cd>, BTC wr≥, BTC senza migliore≥, BTC dd≤+2, BTC 2018 cd≥, BTC IS≥, BTC OOS≥, BTC vicini≥, ETH cd>, ETH senza migliore≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.6898 Holm no → non passa
+V2 COT-B      B: criteri falliti: BTC cd≥, BTC wr≥−5, BTC dd≤+2, BTC 2018 cd≥, BTC IS≥, BTC OOS≥, BTC vicini≥, ETH cd≥, ETH wr≥−5, ETH dd≤+2, ETH IS≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.9634 Holm no → non passa
+V3 BASE-A     A: criteri falliti: BTC cd>, BTC wr≥, BTC senza migliore≥, BTC 2018 cd≥, BTC IS≥, BTC OOS≥, BTC vicini≥, ETH cd>, ETH wr≥, ETH senza migliore≥, ETH IS≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.4663 Holm no → non passa
+V4 BASE-B     B: criteri falliti: BTC cd≥, BTC wr≥−5, BTC dd≤+2, BTC 2018 cd≥, BTC IS≥, BTC OOS≥, BTC vicini≥, ETH cd≥, ETH wr≥−5, ETH dd≤+2, ETH IS≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.8574 Holm no → non passa
+V5 FUNDING-A  A: criteri falliti: BTC cd>, BTC wr≥, BTC senza migliore≥, BTC OOS≥, BTC vicini≥, ETH cd>, ETH wr≥, ETH senza migliore≥, ETH IS≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.6859 Holm no → non passa
+V6 MINER-A    A: criteri falliti: BTC cd>, BTC wr≥, BTC senza migliore≥, BTC 2018 cd≥, BTC IS≥, BTC vicini≥, ETH IS≥, ETH vicini≥ · placebo p 0.0424 Holm no → non passa
+V7 MINER-E    E: criteri falliti: BTC cd≥, BTC wr≥−5, BTC dd≤+2, BTC 2018 cd≥, BTC OOS≥, BTC vicini≥, ETH cd≥, ETH wr≥−5, ETH dd≤+2, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.7399 Holm no → non passa
+V8 FLUSSI-A   A: criteri falliti: BTC cd>, BTC wr≥, BTC senza migliore≥, BTC dd≤+2, BTC 2018 cd≥, BTC OOS≥, BTC vicini≥, ETH cd>, ETH wr≥, ETH senza migliore≥, ETH dd≤+2, ETH IS≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.4721 Holm no → non passa
+V9 SALDO-B    B: criteri falliti: BTC cd≥, BTC wr≥−5, BTC dd≤+2, BTC 2018 cd≥, BTC IS≥, BTC OOS≥, BTC vicini≥, ETH cd≥, ETH wr≥−5, ETH dd≤+2, ETH IS≥, ETH OOS≥, ETH vicini≥, insieme · placebo p 0.9441 Holm no → non passa
