@@ -1,0 +1,12 @@
+C1 OOS dal 01/01/2023 (non scelto, descrittivo): 14,933 $, DD -36.1%, C/DD 0.3, trade 2, WR chiuse 100%, 2024→ 49.3%
+C1 dal 11/01/2021 (descrittivo): 7,143 $, DD -67.0%, C/DD -0.08, trade 3, WR chiuse 67%
+C3 OOS dal 01/01/2023 (non scelto, descrittivo): 44,525 $, DD -47.8%, C/DD 0.98, trade 4, WR chiuse 50%, 2024→ 4.7%
+C3 dal 11/01/2021 (descrittivo): 143,223 $, DD -47.8%, C/DD 1.2, trade 5, WR chiuse 60%
+Operazioni C3 dal 11/01/2021 (descrittivo)
+| n | entrata | prezzo_in | uscita | prezzo_out | motivo | giorni | risultato_pct | conto_dopo |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 2021-08-16 | 53.57 | 2021-12-13 | 172.66 | segnale | 119 | 221.7 | 32167 |
+| 2 | 2023-10-02 | 23.9 | 2024-04-29 | 137.85 | segnale | 210 | 475.5 | 185132 |
+| 3 | 2024-10-28 | 176.81 | 2025-01-13 | 188.31 | segnale | 77 | 6.3 | 196785 |
+| 4 | 2025-01-20 | 252.65 | 2025-02-03 | 203.32 | segnale | 14 | -19.7 | 158041 |
+| 5 | 2025-05-19 | 173.47 | 2025-06-02 | 157.52 | SMA40 | 14 | -9.4 | 143223 |

@@ -1,0 +1,103 @@
+B&H SOL dal 07/12/2020: 374,895 $, CAGR 83.6%, DD -96.3%, CAGR/DD 0.87
+B&H SOL dal 01/01/2021: 460,046 $, DD -96.3%, CAGR/DD 0.95
+B&H sottoperiodi: IS (np.float64(445.6), -96.3) OOS (np.float64(599.0), -76.3) 2024→ (np.float64(-31.5), -76.3)
+
+=== R1 · dal 07/12/2020 ===
+8,292 $ (-17.1%), CAGR -3.1%, DD -93.0%, CAGR/DD -0.03, trade 3 (2 chiuse, WR chiuse 50%), esposizione 55.0%, senza il migliore 4,371 $
+IS -89.0% (DD -93.0) · OOS 655.8% (DD -57.6) · 2021–23 -17.8% · 2024→ 0.8% (DD -57.6) · anni {'2020': 0.0, '2021': 0.0, '2022': -89.0, '2023': 649.6, '2024': 0.0, '2025': 80.4, '2026': -44.1}
+dal 01/01/2021: 8,292 $, DD -93.0%, CAGR/DD -0.03, trade 3
+vicini: banda×0,5 8,292 $ C/DD -0.03 (3 tr); banda×2 8,159 $ C/DD -0.04 (3 tr); vendita+5 5,813 $ C/DD -0.09 (3 tr); vendita+20 6,797 $ C/DD -0.07 (2 tr) → sopra B&H 0/4
+placebo: mediana 20,313 $, p 0.6992
+criteri {'c1': False, 'c2': False, 'c3': False, 'c4': False, 'c5': False, 'c6': False, 'c7': False}
+[R1s con stop −20%, descrittiva] 14,983 $, DD -83.0%, trade 13, WR chiuse 17%, peggior trade -20.3%
+
+=== R2 · dal 07/12/2020 ===
+20,224 $ (+102.2%), CAGR 12.5%, DD -79.3%, CAGR/DD 0.16, trade 3 (2 chiuse, WR chiuse 100%), esposizione 38.0%, senza il migliore 11,458 $
+IS -76.5% (DD -79.3) · OOS 760.6% (DD -44.9) · 2021–23 76.1% · 2024→ 14.8% (DD -43.6) · anni {'2020': 0.0, '2021': 0.0, '2022': -76.5, '2023': 649.6, '2024': 0.0, '2025': 37.8, '2026': -16.7}
+dal 01/01/2021: 20,224 $, DD -79.3%, CAGR/DD 0.16, trade 3
+vicini: banda×0,5 20,224 $ C/DD 0.16 (3 tr); banda×2 20,224 $ C/DD 0.16 (3 tr); vendita+5 14,179 $ C/DD 0.08 (3 tr); vendita+20 10,597 $ C/DD 0.01 (2 tr) → sopra B&H 0/4
+placebo: mediana 19,286 $, p 0.4868
+criteri {'c1': False, 'c2': False, 'c3': True, 'c4': False, 'c5': False, 'c6': True, 'c7': False}
+[R2s con stop −20%, descrittiva] 5,059 $, DD -53.9%, trade 3, WR chiuse 0%, peggior trade -20.3%
+
+=== R3 · dal 07/12/2020 ===
+3,866 $ (-61.3%), CAGR -14.7%, DD -95.1%, CAGR/DD -0.15, trade 1 (0 chiuse, WR chiuse None%), esposizione 82.0%, senza il migliore 10,000 $
+IS -94.5% (DD -95.1) · OOS 599.0% (DD -76.3) · 2021–23 -43.6% · 2024→ -31.5% (DD -76.3) · anni {'2020': 0.0, '2021': -5.7, '2022': -94.1, '2023': 920.3, '2024': 86.1, '2025': -34.2, '2026': -44.1}
+dal 01/01/2021: 3,866 $, DD -95.1%, CAGR/DD -0.16, trade 1
+vicini: banda×0,5 25,159 $ C/DD 0.18 (2 tr); banda×2 3,944 $ C/DD -0.15 (1 tr); vendita+5 4,806 $ C/DD -0.12 (4 tr); vendita+20 3,866 $ C/DD -0.15 (1 tr) → sopra B&H 0/4
+placebo: mediana 21,938 $, p 0.9645
+criteri {'c1': False, 'c2': False, 'c3': False, 'c4': False, 'c5': False, 'c6': False, 'c7': False}
+[R3s con stop −20%, descrittiva] 416 $, DD -96.2%, trade 14, WR chiuse 0%, peggior trade -20.3%
+
+=== R4 · dal 07/12/2020 ===
+8,223 $ (-17.8%), CAGR -3.2%, DD -93.0%, CAGR/DD -0.03, trade 1 (0 chiuse, WR chiuse None%), esposizione 79.0%, senza il migliore 10,000 $
+IS -88.2% (DD -93.0) · OOS 599.0% (DD -76.3) · 2021–23 20.0% · 2024→ -31.5% (DD -76.3) · anni {'2020': 0.0, '2021': 0.0, '2022': -88.2, '2023': 920.3, '2024': 86.1, '2025': -34.2, '2026': -44.1}
+dal 01/01/2021: 8,223 $, DD -93.0%, CAGR/DD -0.04, trade 1
+vicini: banda×0,5 8,124 $ C/DD -0.04 (1 tr); banda×2 11,822 $ C/DD 0.03 (1 tr); vendita+5 5,479 $ C/DD -0.1 (2 tr); vendita+20 8,223 $ C/DD -0.03 (1 tr) → sopra B&H 0/4
+placebo: mediana 20,994 $, p 0.6657
+criteri {'c1': False, 'c2': False, 'c3': False, 'c4': False, 'c5': False, 'c6': False, 'c7': False}
+[R4s con stop −20%, descrittiva] 17,818 $, DD -84.2%, trade 7, WR chiuse 0%, peggior trade -20.3%
+
+Operazioni R1
+| n | entrata | prezzo_in | uscita | prezzo_out | motivo | giorni | risultato_pct | conto_dopo |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 2022-02-21 | 90.79 | 2023-12-11 | 74.81 | segnale | 658 | -17.8 | 8223 |
+| 2 | 2025-03-17 | 126.26 | 2025-09-15 | 239.51 | segnale | 182 | 89.3 | 15568 |
+| 3 | 2025-11-24 | 130.71 | aperta (24/11/2026) | 69.69 | aperta | 365 | -46.8 | 8275 |
+
+Operazioni R2
+| n | entrata | prezzo_in | uscita | prezzo_out | motivo | giorni | risultato_pct | conto_dopo |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 2022-08-01 | 42.38 | 2023-12-11 | 74.81 | segnale | 497 | 76.1 | 17615 |
+| 2 | 2025-05-19 | 173.47 | 2025-09-15 | 239.51 | segnale | 119 | 37.8 | 24272 |
+| 3 | 2026-04-20 | 83.55 | aperta (24/11/2026) | 69.69 | aperta | 218 | -16.8 | 20184 |
+
+Rif. flip solo long: dal 07/12/2020 643,404 $, DD -84.8%, CAGR/DD 1.19, trade 8, WR chiuse 62% · dal 2021 643,404 $, DD -84.8%
+
+
+=== INNESTI IN W3.2 (rischio 25%, trailing 2,5 ATRw) ===
+W-F% BTC: 78,297 $ DD -22.8% C/DD 1.84 trade 13 WR chiuse 92% · base 84,820 $ DD -21.1% C/DD 2.07 WR 92% · IS 2.84 (DD -13.8) vs 3.72 (DD -13.8) · OOS 2.04 (DD -21.1) vs 1.33 (DD -27.0) · trade cambiati 1 · identica alla base: False · placebo p 0.6597
+   criteri {'migliora': False}
+W-U% BTC: 84,820 $ DD -21.1% C/DD 2.07 trade 14 WR chiuse 92% · base 84,820 $ DD -21.1% C/DD 2.07 WR 92% · IS 3.72 (DD -13.8) vs 3.72 (DD -13.8) · OOS 1.33 (DD -27.0) vs 1.33 (DD -27.0) · trade cambiati 0 · identica alla base: True · placebo p 1.0000
+   criteri {'migliora': False}
+W-F% ETH: 40,632 $ DD -27.5% C/DD 0.98 trade 12 WR chiuse 64% · base 39,572 $ DD -27.5% C/DD 0.96 WR 57% · IS 3.11 (DD -12.8) vs 2.3 (DD -17.8) · OOS 0.77 (DD -27.5) vs 0.64 (DD -27.5) · trade cambiati 3 · identica alla base: False · placebo p 0.2674
+   criteri {'migliora': True}
+W-U% ETH: 39,572 $ DD -27.5% C/DD 0.96 trade 15 WR chiuse 57% · base 39,572 $ DD -27.5% C/DD 0.96 WR 57% · IS 2.3 (DD -17.8) vs 2.3 (DD -17.8) · OOS 0.64 (DD -27.5) vs 0.64 (DD -27.5) · trade cambiati 0 · identica alla base: True · placebo p 1.0000
+   criteri {'migliora': False}
+W-F% SOL: 88,597 $ DD -39.8% C/DD 1.13 trade 17 WR chiuse 50% · base 80,661 $ DD -39.8% C/DD 1.07 WR 45% · IS 3.04 (DD -26.6) vs 3.5 (DD -26.6) · OOS 0.75 (DD -39.8) vs 0.57 (DD -39.8) · trade cambiati 7 · identica alla base: False · placebo p 0.2624 · IS 221.3% OOS 175.8% 2024→ -6.4% · senza migliore 30,323 $ · vicini k2/k3 C/DD 0.4/1.24
+   criteri {'c1': True, 'c2': False, 'c3': False, 'c4': False, 'c5': True, 'c6': True, 'c7': False}
+W-U% SOL: 80,661 $ DD -39.8% C/DD 1.07 trade 23 WR chiuse 45% · base 80,661 $ DD -39.8% C/DD 1.07 WR 45% · IS 3.5 (DD -26.6) vs 3.5 (DD -26.6) · OOS 0.57 (DD -39.8) vs 0.57 (DD -39.8) · trade cambiati 0 · identica alla base: True · placebo p 1.0000 · IS 265.7% OOS 120.7% 2024→ -10.4% · senza migliore 27,607 $ · vicini k2/k3 C/DD 0.36/1.16
+   criteri {'c1': True, 'c2': False, 'c3': False, 'c4': False, 'c5': True, 'c6': True, 'c7': False}
+W-F$ SOL: 105,202 $ DD -37.3% C/DD 1.32 trade 14 WR chiuse 54% · base 80,661 $ DD -39.8% C/DD 1.07 WR 45% · IS 2.91 (DD -24.6) vs 3.5 (DD -26.6) · OOS 1.48 (DD -26.6) vs 0.57 (DD -39.8) · trade cambiati 9 · identica alla base: False · placebo p 0.1374 · IS 188.9% OOS 264.1% 2024→ 40.4% · senza migliore 36,006 $ · vicini k2/k3 C/DD 0.72/1.2
+   criteri {'c1': True, 'c2': False, 'c3': False, 'c4': True, 'c5': True, 'c6': True, 'c7': True}
+W-U$ SOL: 61,976 $ DD -32.5% C/DD 1.12 trade 26 WR chiuse 48% · base 80,661 $ DD -39.8% C/DD 1.07 WR 45% · IS 2.17 (DD -25.1) vs 3.5 (DD -26.6) · OOS 1.06 (DD -26.6) vs 0.57 (DD -39.8) · trade cambiati 4 · identica alla base: False · placebo p 0.4523 · IS 135.9% OOS 162.9% 2024→ 38.1% · senza migliore 27,442 $ · vicini k2/k3 C/DD 0.38/1.1
+   criteri {'c1': True, 'c2': True, 'c3': False, 'c4': True, 'c5': True, 'c6': True, 'c7': False}
+riferimenti SOL dal 11/01/2021: B&H C/DD 0.69 (201,456 $), W3.2 ETH C/DD 0.96
+
+
+=== CANDIDATI B · scelta in IS ===
+R in IS: R1 C/DD -0.73 DD -93.0 trade 1; R2 C/DD -0.66 DD -79.3 trade 1; R3 C/DD -0.81 DD -95.1 trade 1; R4 C/DD -0.71 DD -93.0 trade 1
+C1 usa R2
+C1 IS: 4,783 $, DD -56.5%, C/DD -0.55, trade 1, WR chiuse 0%
+C2 IS: 25,110 $, DD -16.6%, C/DD 3.6, trade 6, WR chiuse 80%
+C3 IS: 32,167 $, DD -35.2%, C/DD 2.3, trade 1, WR chiuse 100%
+ammessi ['C2'] → scelto C2
+
+C2 OOS dal 01/01/2023: 21,454 $ (+114.5%), CAGR 21.6%, DD -20.8%, C/DD 1.04, trade 8, WR chiuse 43%, senza il migliore 10,758 $ · 2024→ 7.6% (DD -20.8) · B&H OOS 69,621 $ C/DD 0.85 DD -76.3
+vicini [{'k': 2.0}, {'k': 3.0}]: 18,525 $ C/DD 0.78; 18,912 $ C/DD 0.88 · placebo p 0.0905
+criteri {'c1': True, 'c2': True, 'c3': False, 'c4': np.True_, 'c5': True, 'c6': True, 'c7': False}
+C2 descrittivo dal 11/01/2021: 53,835 $, DD -20.8%, C/DD 1.6, trade 14
+
+Operazioni candidato B (C2, OOS)
+| n | lato | entrata | prezzo_in | uscita | prezzo_out | motivo | esposizione | risultato_pct | conto_dopo |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | long | 2023-10-30 | 32.86 | 2023-12-11 | 74.81 | dist | 0.781 | 99.4 | 19937 |
+| 2 | long | 2024-11-11 | 210.28 | 2024-11-18 | 237.23 | dist | 0.744 | 9.4 | 21806 |
+| 3 | long | 2025-07-21 | 181.62 | 2025-08-04 | 161.82 | ema | 0.629 | -7.0 | 20284 |
+| 4 | long | 2025-09-01 | 200.82 | 2025-09-15 | 239.51 | dist | 0.658 | 12.5 | 22825 |
+| 5 | long | 2025-09-22 | 236.4 | 2025-09-29 | 210.62 | dist | 0.783 | -8.7 | 20843 |
+| 6 | short | 2026-05-25 | 85.18 | 2026-08-21 | 90.49 | trail | 0.539 | -3.4 | 20140 |
+| 7 | long | 2026-08-31 | 101.85 | 2026-11-02 | 94.45 | ema | 0.792 | -5.9 | 18949 |
+| 8 | short | 2026-11-09 | 86.45 | aperta | 69.69 | aperta | 0.686 | 13.2 | 21448 |
+
+Holm (m = 13): B C2 p 0.0905 no; W-F$ SOL p 0.1374 no; W-F% SOL p 0.2624 no; W-F% ETH p 0.2674 no; W-U$ SOL p 0.4523 no; R2 p 0.4868 no; W-F% BTC p 0.6597 no; R4 p 0.6657 no; R1 p 0.6992 no; R3 p 0.9645 no; W-U% BTC p 1.0000 no; W-U% ETH p 1.0000 no; W-U% SOL p 1.0000 no

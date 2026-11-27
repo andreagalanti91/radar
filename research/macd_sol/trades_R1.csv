@@ -1,0 +1,4 @@
+n,entrata,prezzo_in,uscita,prezzo_out,motivo,giorni,risultato_pct,conto_dopo
+1,2022-02-21,90.79,2023-12-11,74.81,segnale,658,-17.8,8223
+2,2025-03-17,126.26,2025-09-15,239.51,segnale,182,89.3,15568
+3,2025-11-24,130.71,aperta (24/11/2026),69.69,aperta,365,-46.8,8275
