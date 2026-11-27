@@ -3,7 +3,7 @@
  "capitale": 10000.0,
  "operazioni": [],
  "stato": {
-  "data": "2026-11-25",
+  "data": "2026-11-26",
   "domenica": "2026-11-22",
   "prezzo": 0.3041,
   "cond": {
@@ -27,8 +27,8 @@
   "pending": null,
   "perche": "nessuna condizione d'ingresso di TRX (regime neutro)"
  },
- "dati_fino": "2026-11-25",
- "aggiornato": "2026-11-26T00:03+00:00",
+ "dati_fino": "2026-11-26",
+ "aggiornato": "2026-11-27T01:03+00:00",
  "capitale_ora": 10000.0,
  "capitale_chiuse": 10000.0
 }

@@ -48,7 +48,7 @@
     "status": "aperto",
     "signal_date": "2026-11-15",
     "trail": 75763.76,
-    "date": "2026-11-25"
+    "date": "2026-11-26"
   },
   "weekly_intraday_keys": [],
   "commod": {
@@ -3070,13 +3070,13 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-26T23:45:45",
+  "last_run": "2026-11-27T01:03:09",
   "heartbeat": "2026-11-26",
   "daily_brief": "2026-11-26",
   "tg_offset": 77505152,
   "guard": {
     "last": {
-      "dd_pct": -2.01,
+      "dd_pct": -2.15,
       "stops_in_a_row": 0,
       "alarm": false
     }
@@ -3188,12 +3188,12 @@
     "status": "aperto",
     "signal_date": "2026-11-08",
     "trail": 2310.6,
-    "date": "2026-11-25"
+    "date": "2026-11-26"
   },
   "weekly_eth_since": "2026-11-21",
   "guard_eth": {
     "last": {
-      "dd_pct": -0.4,
+      "dd_pct": -0.3,
       "stops_in_a_row": 0,
       "alarm": false
     }
@@ -3294,7 +3294,7 @@
   },
   "vix": {
     "zona": "neutra",
-    "ultimo_check": "2026-11-26T20",
+    "ultimo_check": "2026-11-27T00",
     "valore": 26.8,
     "fonte": "Yahoo ^VIX",
     "ora": "2026-11-26T16:30:00",
@@ -3310,14 +3310,14 @@
     "BTC": {
       "last": {
         "inside": true,
-        "dd_pct": -12.39,
+        "dd_pct": -12.52,
         "losses": 1
       }
     },
     "ETH": {
       "last": {
         "inside": true,
-        "dd_pct": -9.81,
+        "dd_pct": -9.72,
         "losses": 1
       }
     }
