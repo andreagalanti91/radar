@@ -45,6 +45,7 @@
 #v-profilo .prHead p{margin:4px 0 0;color:var(--label2);font-size:.86rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #v-profilo .prAv{width:52px;height:52px;font-size:1.05rem}
 #v-profilo .prAv svg{width:24px;height:24px}
+@media (min-width:900px){#v-profilo .prHead{display:none}}   /* desktop: niente intestazione con avatar sotto il prezzo, il profilo resta in fondo alla sidebar; telefono invariato */
 #v-profilo .prGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:start}
 @media (min-width:1100px){#v-profilo .prGrid{grid-template-columns:repeat(2,minmax(0,1fr))} #v-profilo .prWide{grid-column:1/-1}}
 #v-profilo .sh{margin:0 4px}

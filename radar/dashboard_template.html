@@ -61,30 +61,36 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* ---------- accesso al tool (gate a pagina intera, script "ACCESSO AL TOOL"): l'interfaccia resta disegnata sotto, nascosta e inerte */
 .authLock body{overflow:hidden}
 .authLock .shell,.authLock .tabbar{visibility:hidden}
-.authGate{position:fixed;inset:0;z-index:60;overflow-y:auto;background:var(--bg);display:grid;place-items:center;padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.agBox{width:min(400px,100%);display:grid;gap:22px;justify-items:stretch}
-.agLogo{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--label)}
+.authGate{position:fixed;inset:0;z-index:60;overflow-y:auto;display:grid;place-items:center;padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  /* schermata d'ingresso sempre scura, anche col tema chiaro: sfondo a blocchi isometrici (SVG inline, nessuna immagine esterna) e card scura con i token del tema scuro */
+  color-scheme:dark;--label:#f1f3f7;--label2:#a3aab6;--label3:#8a91a0;--line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.16);--tint:#8597ff;--tint-bg:rgba(133,151,255,.14);--red:#ff7b70;--green:#3fd185;
+  color:var(--label);background:radial-gradient(120% 80% at 15% 10%,#231a63 0%,transparent 60%),radial-gradient(90% 70% at 90% 95%,#0b2457 0%,transparent 65%),#06071a}
+.agBg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.agBgM{animation:agDrift 90s ease-in-out infinite alternate;transform-origin:50% 50%}
+@keyframes agDrift{to{transform:translate(-14px,10px) scale(1.015)}}
+.agBox{position:relative;width:min(440px,100%)}
+.agCard{display:grid;gap:16px;background:rgba(14,15,30,.78);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);border:1px solid var(--line);border-radius:28px;box-shadow:0 30px 80px -20px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.06);padding:40px 36px 28px}
+.agLogo{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--label);margin-bottom:6px}
 .agLogo svg{width:44px;height:44px;padding:8.5px;border-radius:10px;color:#fff;background:#2f4cf0;flex:none}
 .agLogo b{font:700 1.6rem/1 var(--font);letter-spacing:-.045em}
 .agLogo b span{color:var(--tint)}
-.agCard{display:grid;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:24px 20px}
-.agCard h1{margin:0;font:650 1.3rem/1.2 var(--font);letter-spacing:-.025em}
-.agCard p{margin:4px 0 0;color:var(--label2);font-size:.88rem;line-height:1.45}
-.agCard label{display:grid;gap:6px;font:500 .8rem var(--font);color:var(--label2)}
-.agCard input{font:500 16px var(--font);color:var(--label);background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:12px 14px;min-height:48px;width:100%;min-width:0}
+.agCard h1{margin:0 0 6px;text-align:center;font:650 1.5rem/1.2 var(--font);letter-spacing:-.03em}
+.agCard p{margin:4px 0 0;color:var(--label2);font-size:.88rem;line-height:1.45} .agCard h1+p{text-align:center}
+.agCard label{display:grid;gap:8px;font:500 .82rem var(--font);color:var(--label2)}
+.agCard input{font:500 16px var(--font);color:var(--label);background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:14px;padding:0 16px;height:56px;width:100%;min-width:0}
+.agCard input:hover{border-color:rgba(255,255,255,.26)}
 .agCard input:focus{outline:2px solid var(--tint);outline-offset:0;border-color:transparent}
 .agMsg{margin:0!important;font:600 .84rem/1.45 var(--font)!important}
 .agMsg.err{color:var(--red)!important} .agMsg.ok{color:var(--green)!important}
-.agBtn{min-height:48px;border:0;border-radius:999px;background:var(--tint);color:#fff;font:600 .95rem var(--font);cursor:pointer;padding:12px 18px}
-:root[data-theme="dark"] .agBtn{color:#0c0d10}
-.agBtn:hover{filter:brightness(1.06)} .agBtn:focus-visible,.agLink:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.agBtn{height:56px;margin-top:6px;border:0;border-radius:999px;background:var(--tint);color:#0b0c1a;font:650 1rem var(--font);cursor:pointer;padding:0 18px;width:100%}
+.agBtn:hover{filter:brightness(1.08)} .agBtn:focus-visible,.agLink:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .agBtn:disabled{opacity:.55;cursor:default;filter:none}
-.agLink{justify-self:center;min-height:44px;padding:10px 14px;border:0;background:none;color:var(--tint);font:600 .86rem var(--font);cursor:pointer;border-radius:999px}
+.agLink{justify-self:center;min-height:44px;padding:10px 14px;border:0;background:none;color:var(--tint);font:600 .88rem var(--font);cursor:pointer;border-radius:999px}
 .agLink:hover{background:var(--tint-bg)} .agLink:disabled{opacity:.5;cursor:default}
-.agWait{display:flex;align-items:center;gap:12px;color:var(--label2);font-size:.9rem}
+.agWait{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--label2);font-size:.9rem;padding:28px}
 .agWait .spin{width:18px;height:18px;flex:none;border-radius:50%;border:2px solid var(--line2);border-top-color:var(--tint);animation:rspin .8s linear infinite}
-.agFoot{margin:0;text-align:center;font-size:.76rem;color:var(--label3)}
-@media (prefers-reduced-motion:reduce){.agWait .spin{animation:none}}
+@media (max-width:440px){.agCard{padding:32px 22px 20px;border-radius:24px}}
+@media (prefers-reduced-motion:reduce){.agWait .spin,.agBgM{animation:none}}
 /* ---------- sidebar desktop */
 .side{display:none}
 @media (min-width:900px){
@@ -1349,10 +1355,12 @@ const AUTH_GATE = true;   // interruttore del gate: false = tool aperto senza ac
   const G = () => document.getElementById("authGate");
   const lock = on => { document.documentElement.classList.toggle("authLock", on); const g = G(); if (g) g.hidden = !on; };
   const logo = `<div class="agLogo"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg><b>radar<span>signal</span></b></div>`;
-  function frame(body) { const g = G(); g.innerHTML = `<main class="agBox">${logo}${body}<p class="agFoot">Strumento di analisi, non consulenza finanziaria.</p></main>`; lock(true); }
+  // sfondo: blocchi isometrici scuri con luce morbida (indaco, blu notte, riflessi lime) e grana leggera; generato una volta, < 5 KB
+  const BG = `<svg class="agBg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="agiT" x2="1" y2="1"><stop stop-color="#6a5cf0"/><stop offset="1" stop-color="#2f2a8c"/></linearGradient><linearGradient id="agiL" x2="0" y2="1"><stop stop-color="#2a1f78"/><stop offset="1" stop-color="#0d0a33"/></linearGradient><linearGradient id="agiR" x2="0" y2="1"><stop stop-color="#111a52"/><stop offset="1" stop-color="#05071c"/></linearGradient><linearGradient id="agiE" x2="1" y2="0"><stop stop-color="#b3a8ff"/><stop offset="1" stop-color="#6a5cf0"/></linearGradient><linearGradient id="agaT" x2="1" y2="1"><stop stop-color="#e3ff6b"/><stop offset="1" stop-color="#8fcf1a"/></linearGradient><linearGradient id="agaL" x2="0" y2="1"><stop stop-color="#5e7d10"/><stop offset="1" stop-color="#1f2c05"/></linearGradient><linearGradient id="agaR" x2="0" y2="1"><stop stop-color="#2c3d07"/><stop offset="1" stop-color="#0b1102"/></linearGradient><linearGradient id="agaE" x2="1" y2="0"><stop stop-color="#f4ffc0"/><stop offset="1" stop-color="#c6ff3d"/></linearGradient><radialGradient id="agGI"><stop stop-color="#5b4dff" stop-opacity="0.55"/><stop offset="1" stop-color="#5b4dff" stop-opacity="0"/></radialGradient><radialGradient id="agGA"><stop stop-color="#c6ff3d" stop-opacity="0.35"/><stop offset="1" stop-color="#c6ff3d" stop-opacity="0"/></radialGradient><radialGradient id="agGS"><stop stop-color="#000" stop-opacity="0.7"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient><filter id="agN"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0"/></filter></defs><g class="agBgM"><circle cx="300" cy="260" r="520" fill="url(#agGI)"/><circle cx="1320" cy="820" r="460" fill="url(#agGI)"/><circle cx="1180" cy="700" r="260" fill="url(#agGA)"/><ellipse cx="300" cy="980" rx="360" ry="70" fill="url(#agGS)"/><g><polygon points="64,435 280,560 280,1080 64,955" fill="url(#agiL)"/><polygon points="280,560 496,435 496,955 280,1080" fill="url(#agiR)"/><polygon points="280,310 496,435 280,560 64,435" fill="url(#agiT)"/><path d="M64 435L280 560L496 435" stroke="url(#agiE)" stroke-width="2" fill="none"/></g><ellipse cx="1380" cy="990" rx="260" ry="50" fill="url(#agGS)"/><g><polygon points="1198,225 1380,330 1380,1090 1198,985" fill="url(#agiL)"/><polygon points="1380,330 1562,225 1562,985 1380,1090" fill="url(#agiR)"/><polygon points="1380,120 1562,225 1380,330 1198,225" fill="url(#agiT)"/><path d="M1198 225L1380 330L1562 225" stroke="url(#agiE)" stroke-width="2" fill="none"/></g><g opacity="0.9"><polygon points="325,95 420,150 420,260 325,205" fill="url(#agiL)"/><polygon points="420,150 515,95 515,205 420,260" fill="url(#agiR)"/><polygon points="420,40 515,95 420,150 325,95" fill="url(#agiT)"/><path d="M325 95L420 150L515 95" stroke="url(#agiE)" stroke-width="2" fill="none"/></g><g opacity="0.85"><polygon points="670,-5 800,70 800,160 670,85" fill="url(#agiL)"/><polygon points="800,70 930,-5 930,85 800,160" fill="url(#agiR)"/><polygon points="800,-80 930,-5 800,70 670,-5" fill="url(#agiT)"/><path d="M670 -5L800 70L930 -5" stroke="url(#agiE)" stroke-width="2" fill="none"/></g><ellipse cx="900" cy="1000" rx="380" ry="40" fill="url(#agGS)"/><g><polygon points="600,750 860,900 860,1040 600,890" fill="url(#agiL)"/><polygon points="860,900 1120,750 1120,890 860,1040" fill="url(#agiR)"/><polygon points="860,600 1120,750 860,900 600,750" fill="url(#agiT)"/><path d="M600 750L860 900L1120 750" stroke="url(#agiE)" stroke-width="2" fill="none"/></g><g><polygon points="1101,650 1170,690 1170,770 1101,730" fill="url(#agaL)"/><polygon points="1170,690 1239,650 1239,730 1170,770" fill="url(#agaR)"/><polygon points="1170,610 1239,650 1170,690 1101,650" fill="url(#agaT)"/><path d="M1101 650L1170 690L1239 650" stroke="url(#agaE)" stroke-width="2" fill="none"/></g><circle cx="1010" cy="150" r="120" fill="url(#agGA)"/><g opacity="0.95"><polygon points="970,147 1010,170 1010,216 970,193" fill="url(#agaL)"/><polygon points="1010,170 1050,147 1050,193 1010,216" fill="url(#agaR)"/><polygon points="1010,124 1050,147 1010,170 970,147" fill="url(#agaT)"/><path d="M970 147L1010 170L1050 147" stroke="url(#agaE)" stroke-width="2" fill="none"/></g><g opacity="0.8"><polygon points="513,873 560,900 560,954 513,927" fill="url(#agiL)"/><polygon points="560,900 607,873 607,927 560,954" fill="url(#agiR)"/><polygon points="560,846 607,873 560,900 513,873" fill="url(#agiT)"/><path d="M513 873L560 900L607 873" stroke="url(#agiE)" stroke-width="2" fill="none"/></g></g><rect width="1600" height="1000" filter="url(#agN)" opacity=".09"/></svg>`;
+  function frame(body) { const g = G(); g.innerHTML = `${BG}<main class="agBox">${body}</main>`; lock(true); }
   function show(msg) {
-    frame(`<form class="agCard" id="agForm" novalidate>
-      <div><h1>Accedi</h1><p>Usa l'account che ti è stato dato. Nessuna registrazione da qui.</p></div>
+    frame(`<form class="agCard" id="agForm" novalidate>${logo}
+      <h1>Accedi a RadarSignal</h1>
       <label>Email<input type="email" name="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false" required></label>
       <label>Password<input type="password" name="pw" autocomplete="current-password" required></label>
       <p class="agMsg err" id="agErr" role="alert" ${msg ? "" : "hidden"}>${esc(msg || "")}</p>
@@ -1381,7 +1389,7 @@ const AUTH_GATE = true;   // interruttore del gate: false = tool aperto senza ac
     setTimeout(() => { const i = f && f.email; if (i && !window.matchMedia("(pointer:coarse)").matches) i.focus(); }, 0);
   }
   function showNewPassword() {   // arrivo dal link dell'email di reset
-    frame(`<form class="agCard" id="agNew" novalidate>
+    frame(`<form class="agCard" id="agNew" novalidate>${logo}
       <div><h1>Nuova password</h1><p>Scegli la nuova password per ${esc(user && user.email || "il tuo account")}.</p></div>
       <label>Nuova password<input type="password" name="p1" autocomplete="new-password" minlength="8" required></label>
       <label>Ripeti la password<input type="password" name="p2" autocomplete="new-password" minlength="8" required></label>
@@ -1397,9 +1405,9 @@ const AUTH_GATE = true;   // interruttore del gate: false = tool aperto senza ac
       try { await A.updatePassword(p1); hide(); emit("SIGNED_IN", user); } catch (x) { er.hidden = false; er.textContent = errIT(x); b.disabled = false; }
     };
   }
-  function showWait() { frame(`<div class="agCard agWait"><span class="spin" aria-hidden="true"></span><span>Controllo dell'accesso…</span></div>`); }
+  function showWait() { frame(`<div class="agCard">${logo}<div class="agWait"><span class="spin" aria-hidden="true"></span><span>Controllo dell'accesso…</span></div></div>`); }
   function showDown(e) {
-    frame(`<div class="agCard"><div><h1>Accesso non disponibile</h1><p>Il modulo di accesso non si è caricato (${esc(e && e.message || "errore")}). Controlla la connessione.</p></div>
+    frame(`<div class="agCard">${logo}<div><h1>Accesso non disponibile</h1><p>Il modulo di accesso non si è caricato (${esc(e && e.message || "errore")}). Controlla la connessione.</p></div>
       <button class="agBtn" type="button" id="agRetry">Riprova</button></div>`);
     document.getElementById("agRetry").onclick = () => { showWait(); check(false); };
   }

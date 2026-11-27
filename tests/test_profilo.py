@@ -44,6 +44,18 @@ class Markup(unittest.TestCase):
         self.assertNotIn("signUp", T + PROF)
         self.assertIn(".authLock .shell,.authLock .tabbar{visibility:hidden}", T)
 
+    def test_schermata_accesso_essenziale(self):
+        show = re.search(r"function show\(msg\) \{(.*?)\n  \}", T, re.S).group(1)
+        self.assertIn("<h1>Accedi a RadarSignal</h1>", show)
+        self.assertNotIn("Nessuna registrazione", T)                              # niente descrizione sotto il titolo
+        self.assertNotIn("agFoot", T)                                             # niente frase finale in fondo
+        self.assertIn('id="agForm" novalidate>${logo}', show)                     # logo dentro la card
+        bg = re.search(r"const BG = `(<svg class=\"agBg\".*?</svg>)`;", T, re.S).group(1)
+        self.assertLess(len(bg.encode()), 15000)                                  # sfondo leggero, SVG inline
+        self.assertNotRegex(bg, r"https?:|<image|href=")                          # nessuna immagine esterna
+        self.assertIn("@media (prefers-reduced-motion:reduce){.agWait .spin,.agBgM{animation:none}}", T)
+        self.assertIn("color-scheme:dark;", T)                                    # ingresso sempre scuro, anche col tema chiaro
+
     def test_profilo_in_sidebar_e_avatar_telefono(self):
         side = re.search(r'<aside class="side">(.*?)</aside>', T, re.S).group(1)
         self.assertIn('<a class="me" href="#profilo" data-v="profilo"', side)
@@ -53,6 +65,7 @@ class Markup(unittest.TestCase):
         self.assertLess(mbar.index("toggleTheme()"), mbar.index("meBtn"))
         tab = re.search(r'<nav class="tabbar" aria-label="Sezioni">(.*?)</nav>', T, re.S).group(1)
         self.assertNotIn("profilo", tab)
+        self.assertIn("@media (min-width:900px){#v-profilo .prHead{display:none}}", PROF)   # desktop: niente profilo sotto il prezzo
 
     def test_pagina_profilo(self):
         self.assertIn('<div class="view" id="v-profilo" hidden>', PROF)
@@ -132,6 +145,12 @@ class NelBrowser(unittest.TestCase):
         self.assertEqual(pg.evaluate("getComputedStyle(document.querySelector('.shell')).visibility"), "hidden")
         self.assertEqual(pg.evaluate("getComputedStyle(document.querySelector('.tabbar')).visibility"), "hidden")
         self.assertEqual(pg.locator("#agForm input").count(), 2)                   # solo email e password
+        self.assertEqual(pg.inner_text("#agForm h1"), "Accedi a RadarSignal")
+        self.assertTrue(pg.is_visible("#authGate svg.agBg"))
+        self.assertEqual(pg.evaluate("Math.round(document.querySelector('#agForm input').getBoundingClientRect().height)"), 56)
+        self.assertEqual(pg.evaluate("getComputedStyle(document.querySelector('.agCard')).borderRadius"), "24px")   # 28px oltre 440px
+        sw, cw = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
+        self.assertLessEqual(sw, cw)
         self.assertIn("Password dimenticata?", pg.inner_text("#authGate"))
         self.assertNotIn("Registrati", pg.inner_text("#authGate"))
         pg.click("#agReset")                                                      # senza email: chiede l'email
@@ -178,6 +197,7 @@ class NelBrowser(unittest.TestCase):
             self.assertEqual(pg.get_attribute("#prBotB a.waCta", "href"), "https://t.me/CryptoRadarGalaBot")
             self.assertIn("26 novembre 2026", pg.inner_text("#prDatiB"))
             self.assertEqual(pg.get_attribute('.side a.me', "aria-current"), "page")
+            self.assertEqual(pg.is_visible("#v-profilo .prHead"), w < 900, f"{w}px")   # intestazione con avatar solo su telefono
             sw, cw = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
             self.assertLessEqual(sw, cw, f"{w}px")
             with pg.expect_download() as dl:
