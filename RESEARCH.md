@@ -460,6 +460,20 @@ Hyperliquid, hash ribbon dei miner, flussi e saldo sugli exchange CoinMetrics.
 - **Abbonamenti:** nessun abbonamento (CryptoQuant, Coinglass) giustificato senza un'ipotesi nuova. I flussi exchange
   CoinMetrics sono "flash" (non point-in-time): non adottabili.
 - **Metodo:** il codice dei segnali va committato con il PREREG o prima, perché l'ordine sia provabile con git.
+
+**Lezione 133**: ridurre la dimensione di W3.2 invece di bloccare gli ingressi (research/dimensione, PREREG f558fb4, 4 varianti,
+R 0,125 invece di 0,25, Holm m = 4): nessuna passa e W3.2 resta com'è.
+- "Affollato" (OI a 28 g o funding 7 g oltre il p90 dell'anno) migliora ETH (47,0k contro 39,6k $, DD −21,6 contro −27,5,
+  grazie al long del 06/2024) ma su BTC dimezza solo vincenti (68,8k contro 84,8k). Capitale insieme −6,9%, vicini instabili.
+- "Long giovane" (≤ 3 settimane sopra la SMA40) e l'unione delle due regole toccano 12–14 operazioni su 19: riducono il DD
+  per effetto scala ma costano il 22% di capitale; il CAGR/DD non migliora in modo apprezzabile e le riduzioni casuali di pari
+  numero peggiorano W3.2 quasi sempre. Su BTC (WR long 92%) qualunque riduzione colpisce soprattutto vincenti.
+- "Short oltre il 35% sotto la SMA40" migliora ovunque tocchi (BTC dal 2018 269k contro 243k, DD −30,4 contro −37,3), ma cambia
+  3 operazioni: vicino al 30% sotto W3.2, placebo p 0,10. È un'osservazione, non una regola.
+- Un placebo basso (p 0,002–0,02) con mediana del placebo sotto W3.2 dice solo che la selezione batte il caso, non W3.2: il
+  confronto decisivo resta con W3.2 e con il capitale.
+- I casi guida non sono coperti dai dati: BTC 01/2018 non ha OI né funding. Le perdite grandi dei long restano un rischio
+  accettato da W3.2 (tetto al 25%).
 **Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
 +0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
 con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai

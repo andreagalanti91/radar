@@ -82,7 +82,7 @@ class NelBrowser(unittest.TestCase):
         self.errs = []
         pg.on("pageerror", lambda e: self.errs.append(str(e)))
         pg.route("**/*", lambda r: r.continue_() if "127.0.0.1" in r.request.url else r.abort())
-        pg.goto(f"http://127.0.0.1:{self.srv.server_port}/{nome}/index.html#scanner", wait_until="networkidle")
+        pg.goto(f"http://127.0.0.1:{self.srv.server_port}/{nome}/index.html?demo=1#scanner", wait_until="networkidle")
         pg.wait_for_selector("#scEmc .card", timeout=5000)
         return pg
 

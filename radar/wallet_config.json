@@ -1,0 +1,5 @@
+{
+  "_nota": "Wallet reale (radar/pages/wallet.html, supabase/LEGGIMI.md): URL del progetto Supabase e chiave pubblica (publishable/anon). Pubblica per design: la sicurezza la dà la Row Level Security di supabase/schema.sql. Mai la chiave service_role / sb_secret_ qui. Override facoltativo: variabili RADAR_SUPABASE_URL e RADAR_SUPABASE_ANON.",
+  "url": "https://shahrgciutsoxxaukwbp.supabase.co",
+  "anon": "sb_publishable_62FcmJKhgMSq9LHvtrfjiQ_gyAZTg58"
+}

@@ -1,0 +1,1182 @@
+<!-- ============ WALLET · sentinella dei wallet Hyperliquid ============
+     Pagina separata (radar/pages/hyperliquid.html), iniettata da radar/dashboard.py al posto del segnaposto PAGES del template.
+     Legge i dati pubblici di Hyperliquid direttamente dal browser (api.hyperliquid.xyz/info, CORS aperto), come whalebot.
+     Si registra in window.PAGES.hyperliquid: in pausa dal 22/11/2026, non raggiungibile (#wallet è il Wallet reale, radar/pages/wallet.html). -->
+<div class="view" id="v-hyperliquid" hidden>
+  <div class="section wl-top">
+    <div class="sh wl-dk">Wallet osservati <small><span class="live" id="wlLive">caricamento</span></small></div>
+    <div class="seg wl-sw" id="wlSeg" role="tablist" aria-label="Wallet osservati"></div>
+    <div class="wl-ov wl-dk" id="wlOv" aria-label="I 3 wallet osservati"></div>
+  </div>
+
+  <div class="section wl-mob">
+    <button class="card tapCard wl-mini" id="wlMini" type="button" aria-label="Dettagli del conto"></button>
+  </div>
+
+  <div class="section wl-dk">
+    <div class="card glow wl-hero" id="wlHero"></div>
+    <div class="big" id="wlKpi"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Prossime mosse <small id="wlNextSub"></small></div>
+    <div class="card wl-next" id="wlNext"></div>
+  </div>
+
+  <div class="section wl-perf" id="wlPerfSec">
+    <div class="sh">Andamento <small id="wlPerfSub">fonte: portfolio Hyperliquid</small></div>
+    <button class="card tapCard wl-mob wl-pmini" id="wlPerfMini" type="button" aria-expanded="false"></button>
+    <div class="wl-pbody">
+      <div class="tiles wl-pnl" id="wlPnl"></div>
+      <div class="card" style="display:grid;gap:10px">
+        <div class="wl-bar">
+          <div class="seg" id="wlMetric" role="group" aria-label="Grafico"><button data-v="pnl" aria-pressed="true">PnL</button><button data-v="av">Valore conto</button></div>
+          <div class="seg" id="wlRange" role="group" aria-label="Periodo"><button data-v="day">24h</button><button data-v="week">7g</button><button data-v="month" aria-pressed="true">30g</button><button data-v="allTime">Tutto</button></div>
+        </div>
+        <div id="wlChart" class="chart wl-chart" role="img" aria-label="Andamento del conto"></div>
+        <div class="legend" id="wlChartLeg"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Dettaglio <small id="wlTabSub"></small></div>
+    <div class="hscroll"><div class="seg wl-tabs" id="wlTabs" role="tablist" aria-label="Tabelle"></div></div>
+    <div class="wl-filters" id="wlFilt"></div>
+    <div class="card wl-tbl"><div class="scroll" id="wlTable"></div></div>
+    <p class="foot wl-dk" id="wlTabNote"></p>
+  </div>
+
+  <div class="section">
+    <div class="sh">Ultime mosse <small id="wlActSub"></small></div>
+    <div class="card"><div class="tl" id="wlAct"></div></div>
+  </div>
+
+  <div class="section" id="wlCandSec">
+    <div class="sh">Candidati <small id="wlCandSub"></small></div>
+    <div class="wl-cand" id="wlCand"></div>
+  </div>
+
+  <div class="section">
+    <div class="sh">Alert <small id="wlAlSub"></small></div>
+    <button class="card tapCard wl-mob wl-almini" id="wlAlMini" type="button"></button>
+    <div class="wl-alerts wl-dk" id="wlAlert"></div>
+  </div>
+
+  <p class="foot wl-dk">Dati pubblici di Hyperliquid letti da questa pagina, sola lettura. Aggiornamento ogni 45 secondi mentre la pagina è aperta (giro completo dei DEX HIP-3 ogni 5 minuti, per restare nei limiti dell'API). L'analisi delle prossime mosse è costruita da regole fisse su posizioni, ordini e fill: non legge le intenzioni del trader. Seguire un wallet non garantisce gli stessi risultati: non è un consiglio di investimento.</p>
+  <div class="wl-toast" id="wlToast" role="status" aria-live="polite"></div>
+</div>
+
+<style>
+:is(#v-hyperliquid,.wl-sheet) select{font:600 .8rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:8px 30px 8px 12px;max-width:62vw;
+  appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--label2) 50%),linear-gradient(135deg,var(--label2) 50%,transparent 50%);
+  background-position:calc(100% - 15px) 52%,calc(100% - 10px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+:is(#v-hyperliquid,.wl-sheet) select option,:is(#v-hyperliquid,.wl-sheet) select optgroup{background:var(--card);color:var(--label)}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:560px){:is(#v-hyperliquid,.wl-sheet) .wl-ov{grid-template-columns:minmax(0,1fr)}}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov button{all:unset;cursor:pointer;display:grid;gap:3px;padding:11px 13px;border-radius:16px;background:var(--card);border:1px solid var(--line);min-width:0;box-sizing:border-box}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov button[aria-pressed="true"]{border-color:color-mix(in srgb,var(--tint) 60%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--tint) 14%,transparent)}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov .t{display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 .88rem var(--font)}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov .t .cap{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov .v{font:600 1.02rem var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+:is(#v-hyperliquid,.wl-sheet) .wl-ov small{font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(#v-hyperliquid,.wl-sheet) .wl-hero{display:grid;gap:10px}
+:is(#v-hyperliquid,.wl-sheet) .wl-hero .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-hero h2{margin:0;font:650 1.3rem/1.15 var(--font);letter-spacing:-.03em}
+:is(#v-hyperliquid,.wl-sheet) .wl-hero .note{font-size:.82rem}
+:is(#v-hyperliquid,.wl-sheet) .wl-eq{font:900 clamp(2.2rem,10vw,3.4rem)/1 var(--dots);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-sub{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.84rem;color:var(--label2);font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-addr{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+:is(#v-hyperliquid,.wl-sheet) .wl-addr code{font:500 .78rem var(--mono);color:var(--label2);background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:6px 9px}
+:is(#v-hyperliquid,.wl-sheet) .wl-btn{font:600 .76rem var(--font);color:var(--label);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:6px 11px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;min-height:30px}
+:is(#v-hyperliquid,.wl-sheet) .wl-btn:hover{border-color:var(--tint)}
+:is(#v-hyperliquid,.wl-sheet) .wl-btn.on{background:var(--label);color:var(--bg);border-color:var(--label)}
+:is(#v-hyperliquid,.wl-sheet) .wl-sum{margin:0;font-size:.92rem;line-height:1.55}
+:is(#v-hyperliquid,.wl-sheet) .wl-split{display:flex;height:6px;border-radius:3px;overflow:hidden;gap:2px;margin-top:4px;background:var(--raise)}
+:is(#v-hyperliquid,.wl-sheet) .wl-split i{display:block;height:100%}
+:is(#v-hyperliquid,.wl-sheet) .big small{font-size:.74rem;color:var(--label2);font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .big b{font-size:1.3rem}
+:is(#v-hyperliquid,.wl-sheet) .wl-next{display:grid;gap:14px}
+:is(#v-hyperliquid,.wl-sheet) .wl-plan{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+:is(#v-hyperliquid,.wl-sheet) .wl-plan li{font-size:.88rem;line-height:1.5;padding:10px 12px;border-radius:14px;background:var(--raise);border:1px solid var(--line)}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv{display:grid;gap:6px}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--raise)}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r .c{display:grid;gap:1px;min-width:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r .c b{font-weight:600;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r .c small{font-size:.74rem;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r .d{text-align:right;display:grid;gap:1px;font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r .d b{font:650 .98rem var(--font)}
+:is(#v-hyperliquid,.wl-sheet) .wl-mv .r .d small{font:500 .64rem var(--mono);color:var(--label3);letter-spacing:.04em}
+:is(#v-hyperliquid,.wl-sheet) .wl-meter{height:4px;border-radius:2px;background:var(--line2);overflow:hidden;margin-top:4px}
+:is(#v-hyperliquid,.wl-sheet) .wl-meter i{display:block;height:100%;background:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .rl{display:inline-flex;align-items:center;font:600 .6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:999px;border:1px solid var(--line2);color:var(--label2);white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .rl.in{color:var(--green);border-color:color-mix(in srgb,var(--green) 45%,transparent);background:color-mix(in srgb,var(--green) 10%,transparent)}
+:is(#v-hyperliquid,.wl-sheet) .rl.out{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 45%,transparent);background:color-mix(in srgb,var(--orange) 10%,transparent)}
+:is(#v-hyperliquid,.wl-sheet) .rl.tp{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 45%,transparent)}
+:is(#v-hyperliquid,.wl-sheet) .rl.sl,:is(#v-hyperliquid,.wl-sheet) .rl.liq{color:var(--red);border-color:color-mix(in srgb,var(--red) 45%,transparent);background:color-mix(in srgb,var(--red) 10%,transparent)}
+:is(#v-hyperliquid,.wl-sheet) .sd{font:650 .66rem var(--mono);letter-spacing:.06em;text-transform:uppercase}
+:is(#v-hyperliquid,.wl-sheet) .sd.L{color:var(--green)} :is(#v-hyperliquid,.wl-sheet) .sd.S{color:var(--red)}
+:is(#v-hyperliquid,.wl-sheet) .dx{font:500 .6rem var(--mono);color:var(--label3);margin-left:4px;text-transform:uppercase}
+:is(#v-hyperliquid,.wl-sheet) .wl-bar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-chart{height:280px}
+@media (max-width:560px){:is(#v-hyperliquid,.wl-sheet) .wl-chart{height:230px}}
+:is(#v-hyperliquid,.wl-sheet) .wl-tabs button{white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-tabs button em{font-style:normal;opacity:.6;margin-left:4px;font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+:is(#v-hyperliquid,.wl-sheet) .wl-filters:empty{display:none}
+:is(#v-hyperliquid,.wl-sheet) .wl-tbl{padding:4px 6px}
+:is(#v-hyperliquid,.wl-sheet) table.grid th.s{cursor:pointer;-webkit-user-select:none;user-select:none}
+:is(#v-hyperliquid,.wl-sheet) table.grid th.s:hover{color:var(--label)}
+:is(#v-hyperliquid,.wl-sheet) table.grid th[aria-sort]{color:var(--label)}
+:is(#v-hyperliquid,.wl-sheet) table.grid th[aria-sort="ascending"]::after{content:" ▲";font-size:.55rem}
+:is(#v-hyperliquid,.wl-sheet) table.grid th[aria-sort="descending"]::after{content:" ▼";font-size:.55rem}
+:is(#v-hyperliquid,.wl-sheet) table.grid td:first-child,:is(#v-hyperliquid,.wl-sheet) table.grid th:first-child{position:sticky;left:0;z-index:1}
+:is(#v-hyperliquid,.wl-sheet) table.grid td:first-child{background:linear-gradient(var(--raise),var(--raise)),var(--card)}
+:is(#v-hyperliquid,.wl-sheet) table.grid th:first-child{background:var(--card)}
+:is(#v-hyperliquid,.wl-sheet) table.grid td small{display:block;color:var(--label3);font-size:.7rem}
+:is(#v-hyperliquid,.wl-sheet) .mut{color:var(--label3)}
+:is(#v-hyperliquid,.wl-sheet) .wl-empty{padding:18px 12px;color:var(--label2);font-size:.9rem;white-space:normal}
+:is(#v-hyperliquid,.wl-sheet) .wl-empty b{display:block;color:var(--label);margin-bottom:2px}
+:is(#v-hyperliquid,.wl-sheet) .wl-moreb{display:block;margin:6px auto 4px;font:600 .82rem var(--font);color:var(--tint);background:none;border:0;cursor:pointer;padding:8px}
+:is(#v-hyperliquid,.wl-sheet) .tl .ev.up .dot{border-color:var(--green)}
+:is(#v-hyperliquid,.wl-sheet) .tl .ev.dn .dot{border-color:var(--orange)}
+:is(#v-hyperliquid,.wl-sheet) .tl .ev.op .dot{border-color:var(--green);background:var(--green)}
+:is(#v-hyperliquid,.wl-sheet) .tl .ev.cl .dot{border-color:var(--label2);background:var(--label3)}
+:is(#v-hyperliquid,.wl-sheet) .tl .ev.rv .dot{border-color:var(--violet);background:var(--violet)}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts{display:grid;gap:10px}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts .card{display:grid;gap:10px}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts h3{margin:0;font:600 .98rem var(--font);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:.86rem;line-height:1.5}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts p{margin:0;font-size:.86rem;line-height:1.5;color:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts .row{padding-inline:12px}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts label.row{cursor:pointer}
+:is(#v-hyperliquid,.wl-sheet) .wl-alerts input[type=checkbox]{width:18px;height:18px;accent-color:var(--tint);flex:none}
+:is(#v-hyperliquid,.wl-sheet) .wl-st{display:inline-flex;align-items:center;gap:6px;font:500 .64rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+:is(#v-hyperliquid,.wl-sheet) .wl-st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+:is(#v-hyperliquid,.wl-sheet) .wl-st.ok{color:var(--green)} :is(#v-hyperliquid,.wl-sheet) .wl-st.ko{color:var(--red)} :is(#v-hyperliquid,.wl-sheet) .wl-st.na{color:var(--orange)}
+:is(#v-hyperliquid,.wl-sheet) .wl-sk{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--raise),var(--line2),var(--raise));background-size:200% 100%;animation:wlsk 1.4s infinite}
+@keyframes wlsk{to{background-position:-200% 0}}
+:is(#v-hyperliquid,.wl-sheet) .wl-err{display:grid;gap:8px;padding:4px 0}
+:is(#v-hyperliquid,.wl-sheet) .wl-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:40;display:grid;gap:6px;width:min(420px,calc(100% - 32px));pointer-events:none}
+@media (min-width:900px){:is(#v-hyperliquid,.wl-sheet) .wl-toast{bottom:24px}}
+:is(#v-hyperliquid,.wl-sheet) .wl-toast div{pointer-events:auto;padding:12px 14px;border-radius:16px;background:var(--chrome);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--line2);box-shadow:0 18px 40px -12px rgba(0,0,0,.5);font-size:.86rem;animation:fade .24s}
+:is(#v-hyperliquid,.wl-sheet) .wl-toast b{display:block;font-size:.9rem}
+:is(#v-hyperliquid,.wl-sheet) .wl-sc{display:grid;gap:14px}
+:is(#v-hyperliquid,.wl-sheet) .wl-sc p{margin:0;font-size:.86rem;line-height:1.55;color:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .wl-sc ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.84rem;line-height:1.5;color:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk{display:grid;gap:8px}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk button{all:unset;cursor:pointer;display:grid;gap:6px;padding:12px 13px;border-radius:16px;background:var(--raise);border:1px solid var(--line);box-sizing:border-box;min-width:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk button[aria-pressed="true"]{border-color:color-mix(in srgb,var(--tint) 60%,transparent)}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline;min-width:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .t b{font:650 .95rem var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .t span{font:600 .9rem var(--font);font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .m{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+@media (max-width:560px){:is(#v-hyperliquid,.wl-sheet) .wl-pk .m{grid-template-columns:repeat(3,minmax(0,1fr))}}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .m div{display:grid;gap:1px;min-width:0;align-content:end}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .m small{font:500 .58rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--label3)}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .m b{font:600 .88rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-pk .y{font-size:.76rem;color:var(--label2);line-height:1.45}
+:is(#v-hyperliquid,.wl-sheet) .wl-sc a{color:var(--label);text-decoration:none;font-weight:600}
+:is(#v-hyperliquid,.wl-sheet) .wl-sc td.wrap{white-space:normal;text-align:left;font-size:.8rem}
+:is(#v-hyperliquid,.wl-sheet) .wl-sc h4{margin:0;font:600 .8rem var(--font);color:var(--label)}
+/* selettore: i 3 wallet osservati */
+:is(#v-hyperliquid,.wl-sheet) .wl-sw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;box-sizing:border-box}
+:is(#v-hyperliquid,.wl-sheet) .wl-sw button{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-sw button i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);margin-left:6px;vertical-align:middle}
+:is(#v-hyperliquid,.wl-sheet) .wl-tag{display:inline-flex;align-items:center;gap:5px;font:600 .72rem var(--font);color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent);border-radius:999px;padding:3px 9px;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-mob{display:none}
+/* prossime mosse: analisi */
+:is(#v-hyperliquid,.wl-sheet) .wl-ab{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+:is(#v-hyperliquid,.wl-sheet) .wl-ab li{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:10px;align-items:baseline;padding:7px 0;font-size:.9rem;line-height:1.45}
+:is(#v-hyperliquid,.wl-sheet) .wl-ab li+li{border-top:1px solid var(--line)}
+:is(#v-hyperliquid,.wl-sheet) .wl-ab li>span{font-size:.78rem;color:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .wl-ab li.warn b{color:var(--orange)} :is(#v-hyperliquid,.wl-sheet) .wl-ab li.bad b{color:var(--red)}
+:is(#v-hyperliquid,.wl-sheet) .wl-deep{justify-self:start}
+:is(#v-hyperliquid,.wl-sheet) .wl-an{display:grid;gap:14px}
+:is(#v-hyperliquid,.wl-sheet) .wl-an h3{margin:2px 0 0;font:600 .95rem var(--font)}
+:is(#v-hyperliquid,.wl-sheet) .wl-an ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.88rem;line-height:1.45}
+:is(#v-hyperliquid,.wl-sheet) .wl-an li.warn::marker{color:var(--orange)} :is(#v-hyperliquid,.wl-sheet) .wl-an li.bad::marker{color:var(--red)} :is(#v-hyperliquid,.wl-sheet) .wl-an li.ok::marker{color:var(--green)}
+:is(#v-hyperliquid,.wl-sheet) .wl-an .scroll{margin:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-an .foot{margin:0}
+/* candidati */
+:is(#v-hyperliquid,.wl-sheet) .wl-cand{display:grid;gap:10px}
+:is(#v-hyperliquid,.wl-sheet) .wl-cand .card{display:grid;gap:8px}
+:is(#v-hyperliquid,.wl-sheet) .wl-cand .t{display:flex;justify-content:space-between;align-items:center;gap:10px;min-width:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-cand .t b{font:650 .98rem var(--font);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-cand .y{font-size:.82rem;color:var(--label2);line-height:1.45}
+:is(#v-hyperliquid,.wl-sheet) .wl-kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+:is(#v-hyperliquid,.wl-sheet) .wl-kv div{display:grid;gap:1px;min-width:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-kv small{font-size:.72rem;color:var(--label3)}
+:is(#v-hyperliquid,.wl-sheet) .wl-kv b{font:600 .92rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-cmd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-cmd code{font:600 .86rem var(--mono);background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--label)}
+:is(#v-hyperliquid,.wl-sheet) table.grid td.win,:is(#v-hyperliquid,.wl-sheet) table.grid td.win b{color:var(--green)}
+:is(#v-hyperliquid,.wl-sheet) .wl-cmp td:first-child{white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-rv td:first-child{white-space:normal;min-width:9em;max-width:15em} :is(#v-hyperliquid,.wl-sheet) .wl-rv td:first-child small{white-space:normal}
+:is(#v-hyperliquid,.wl-sheet) .wl-na,:is(#v-hyperliquid,.wl-sheet) table.grid td small.wl-na{display:inline;color:var(--orange);font-size:.72rem;font-weight:600;white-space:nowrap}
+/* righe compatte delle tabelle (telefono) */
+:is(#v-hyperliquid,.wl-sheet) .wl-li{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;width:100%;padding:10px 12px;align-items:center}
+:is(#v-hyperliquid,.wl-sheet) .wl-li+.wl-li{border-top:1px solid var(--line)}
+:is(#v-hyperliquid,.wl-sheet) .wl-li b{font-weight:600;font-size:.92rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-li small{font-size:.76rem;color:var(--label2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-li .r{text-align:right;font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-li .r b{display:block}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini{display:grid;gap:8px}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini .v{font:900 2.1rem/1 var(--dots);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini .s{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini .s div{display:grid;gap:1px;min-width:0}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini .s small,:is(#v-hyperliquid,.wl-sheet) .wl-pmini small,:is(#v-hyperliquid,.wl-sheet) .wl-almini small{font-size:.74rem;color:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini .s b{font:600 1rem var(--font);font-variant-numeric:tabular-nums;white-space:nowrap}
+:is(#v-hyperliquid,.wl-sheet) .wl-mini .h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.78rem;color:var(--label2)}
+:is(#v-hyperliquid,.wl-sheet) .wl-pmini,:is(#v-hyperliquid,.wl-sheet) .wl-almini{justify-content:space-between;align-items:center;gap:10px}
+:is(#v-hyperliquid,.wl-sheet) .wl-pmini>span,:is(#v-hyperliquid,.wl-sheet) .wl-almini>span{display:grid;gap:1px;min-width:0}
+@media (max-width:700px){
+  :is(#v-hyperliquid,.wl-sheet) .wl-dk{display:none!important}
+  :is(#v-hyperliquid,.wl-sheet) .wl-mob{display:block}
+  :is(#v-hyperliquid,.wl-sheet) .wl-mini,:is(#v-hyperliquid,.wl-sheet) .wl-pmini,:is(#v-hyperliquid,.wl-sheet) .wl-almini{display:grid}
+  :is(#v-hyperliquid,.wl-sheet) .wl-pmini,:is(#v-hyperliquid,.wl-sheet) .wl-almini{display:flex}
+  :is(#v-hyperliquid,.wl-sheet) .wl-top{padding-top:0}
+  :is(#v-hyperliquid,.wl-sheet) .sh small{display:none}
+  :is(#v-hyperliquid,.wl-sheet) .wl-perf:not(.open) .wl-pbody{display:none}
+  :is(#v-hyperliquid,.wl-sheet) .wl-perf .wl-pbody{display:grid;gap:10px}
+  :is(#v-hyperliquid,.wl-sheet) .wl-next .wl-mv,:is(#v-hyperliquid,.wl-sheet) .wl-next .wl-plan,:is(#v-hyperliquid,.wl-sheet) .wl-next .wl-moreb,:is(#v-hyperliquid,.wl-sheet) .wl-next>.foot{display:none}
+  :is(#v-hyperliquid,.wl-sheet) .wl-ab li{grid-template-columns:minmax(0,1fr);gap:0;padding:8px 0}
+  :is(#v-hyperliquid,.wl-sheet) .wl-tbl{padding:0}
+  :is(#v-hyperliquid,.wl-sheet) .rl,:is(#v-hyperliquid,.wl-sheet) .sd{text-transform:none;letter-spacing:0;font-family:var(--font);font-size:.72rem}
+  :is(#v-hyperliquid,.wl-sheet) .wl-kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  :is(#v-hyperliquid,.wl-sheet) .wl-filters select{max-width:100%}
+  :is(#v-hyperliquid,.wl-sheet) table.grid th{text-transform:none;letter-spacing:0;font-family:var(--font);font-size:.74rem}
+  :is(#v-hyperliquid,.wl-sheet) .wl-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;box-sizing:border-box}
+  :is(#v-hyperliquid,.wl-sheet) .wl-tabs button{font-size:.76rem;padding-inline:2px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  :is(#v-hyperliquid,.wl-sheet) .wl-tabs button em{display:none}
+  :is(#v-hyperliquid,.wl-sheet) .wl-sw button{padding-inline:6px;font-size:.86rem}
+  :is(#v-hyperliquid,.wl-sheet) .wl-mini .live{text-transform:none;letter-spacing:0;font-family:var(--font);font-size:.76rem}
+  :is(#v-hyperliquid,.wl-sheet) .wl-cand .t{flex-wrap:wrap}
+}
+</style>
+
+<script>
+(() => {
+"use strict";
+/* ─────────── i 3 wallet osservati ───────────
+   La lista sta in data/wallets_watch.json (R.scout.watch, dalla dashboard). La cambia solo l'utente via Telegram
+   (/sostituisci, /conferma): radar/scout.py propone i candidati, mostrati nella sezione Candidati. */
+const WL0 = [
+  { a: "0xd4c1f7e8d876c4749228d515473d36f919583d1d", n: "Principale", note: "Il riferimento della sentinella: migliaia di operazioni al giorno" },
+  { a: "0x99967871e6c4f9a5185abc57edede9e9540191f6", n: "Simile 1", note: "Dalla classifica: PnL e ROI simili al Principale, poche operazioni, leva bassa" },
+  { a: "0x807a2e2e469df84b299da5f90f15dda4380daca1", n: "Simile 2", note: "Dalla classifica: meno di un'operazione al giorno", status: "provvisorio" },
+];
+const WV = () => (typeof R !== "undefined" && R && R.scout && R.scout.watch) || null;
+// R (dati della dashboard) è dichiarato in uno script successivo: la lista si legge in init(), qui solo il valore iniziale
+const readWL = () => {
+  const sl = (WV() && Array.isArray(WV().slots)) ? WV().slots.filter((x) => /^0x[0-9a-f]{40}$/.test(String(x.address || "").toLowerCase())) : [];
+  if (sl.length !== 3) return WL0.map((w, i) => Object.assign({ slot: i + 1, status: "confermato" }, w));
+  return sl.map((x) => ({ a: x.address.toLowerCase(), n: x.name, slot: x.slot, status: x.status || "confermato", note: x.note || "", x }));
+};
+let WL = readWL();
+const HL = "https://api.hyperliquid.xyz/info";
+const REFRESH = 45e3, FULL_EVERY = 5 * 60e3, OV_EVERY = 3 * 60e3, FUND_EVERY = 30 * 60e3;
+const STABLES = new Set(["USDC", "USDT0", "USDH", "USDE", "USDT"]);
+const AGG_MS = 2 * 60e3;                // come il Worker: fill della stessa coin entro 2 minuti = una mossa
+let byA = Object.fromEntries(WL.map((w) => [w.a, w]));
+function loadWL() {
+  WL = readWL(); byA = Object.fromEntries(WL.map((w) => [w.a, w]));
+  const st = store.get("radarWl.sel", null); S.sel = byA[st] ? st : WL[0].a;
+  const al = store.get("radarWl.alert", null); AL.wallets = al && Array.isArray(al.wallets) ? al.wallets.filter((a) => byA[a]) : WL.map((w) => w.a);
+  if (al && !AL.wallets.length) AL.wallets = WL.map((w) => w.a);
+}
+
+/* ─────────── utilità (locali: i nomi globali del template restano liberi) ─────────── */
+const el = (id) => document.getElementById(id);
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (_) { return d; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} } };
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const bare = (c) => { const i = c.indexOf(":"); return i < 0 ? c : c.slice(i + 1); };
+const dexOf = (c) => { const i = c.indexOf(":"); return i < 0 ? "" : c.slice(0, i); };
+const sgn = (x) => (x > 1e-12 ? 1 : x < -1e-12 ? -1 : 0);
+const fin = (x) => typeof x === "number" && isFinite(x);
+// separatore delle migliaia sempre (toLocaleString in italiano non lo mette sotto 10.000: "$7533")
+const nf = (n, d = 0) => { const [i, f] = Math.abs(n).toFixed(d).split("."); return i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (f ? "," + f : ""); };
+const dIt = (s) => { const t = Date.parse(s); return isFinite(t) ? new Date(t).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" }) : String(s ?? ""); };
+const artD = (p, s) => window.artD ? window.artD(p, s) : p + " " + s;
+const m$ = (n) => { if (!fin(n)) return "–"; const x = Math.abs(n);
+  const s = x >= 1e9 ? nf(x / 1e9, 2) + "B" : x >= 1e6 ? nf(x / 1e6, 2) + "M" : x >= 1e4 ? nf(x / 1e3, 1) + "k" : nf(x, 0);
+  return (n < 0 ? "−" : "") + "$" + s; };
+const s$ = (n) => (fin(n) && n > 0 ? "+" : "") + m$(n);
+const pxd = (p) => { const x = Math.abs(p); return x >= 10000 ? 0 : x >= 100 ? 2 : x >= 1 ? 3 : Math.min(8, Math.max(4, Math.ceil(-Math.log10(x || 1e-8)) + 3)); };
+const px = (p) => fin(p) ? "$" + nf(p, pxd(p)) : "–";
+const qty = (q) => { const x = Math.abs(q); return nf(x, x >= 1000 ? 0 : x >= 1 ? 2 : 4); };
+const pc = (x, d = 1) => fin(x) ? (x > 0 ? "+" : x < 0 ? "−" : "") + nf(x * 100, d) + "%" : "–";
+const pcu = (x, d = 0) => fin(x) ? nf(x * 100, d) + "%" : "–";
+const lev = (x) => fin(x) ? nf(x, x >= 10 ? 0 : 1) + "x" : "–";
+const tone = (n) => (n > 0 ? "pos" : n < 0 ? "neg" : "");
+const side = (d) => `<span class="sd ${d > 0 ? "L" : "S"}">${d > 0 ? "Long" : "Short"}</span>`;
+const act = (d) => `<span class="sd ${d > 0 ? "L" : "S"}">${d > 0 ? "Compra" : "Vende"}</span>`;
+const coinH = (c) => `${esc(bare(c))}${dexOf(c) ? `<span class="dx">${esc(dexOf(c))}</span>` : ""}`;
+const short = (a) => a.slice(0, 6) + "…" + a.slice(-4);
+const hm = (t) => new Date(t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+const dt = (t) => new Date(t).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const ago = (t) => { const s = Math.max(0, Math.round((Date.now() - t) / 1000)); return s < 60 ? s + " s fa" : s < 3600 ? Math.round(s / 60) + " min fa" : s < 86400 ? Math.round(s / 3600) + " h fa" : Math.round(s / 86400) + " g fa"; };
+const dur = (ms) => { const m = Math.round(ms / 60e3), h = Math.floor(m / 60), g = Math.floor(h / 24);
+  return g >= 1 ? `${g}g${h % 24 ? " " + (h % 24) + "h" : ""}` : h >= 1 ? `${h}h${m % 60 ? " " + (m % 60) + "m" : ""}` : `${Math.max(m, 0)}m`; };
+const cssv = (n, fb) => { try { return (typeof css === "function" ? css(n) : getComputedStyle(document.documentElement).getPropertyValue(n).trim()) || fb; } catch (_) { return fb; } };
+const SK = (w = 100) => `<div class="wl-sk" style="width:${w}%"></div>`;
+
+// Hyperliquid: 429 = troppe richieste → la frequenza si dimezza finché non torna normale
+let backoff = 1;
+const post = (body, ms = 15000) => {
+  const ac = typeof AbortController === "function" ? new AbortController() : null, to = ac && setTimeout(() => ac.abort(), ms);
+  return fetch(HL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ac && ac.signal })
+    .then((r) => { if (r.status === 429) { backoff = Math.min(backoff * 2, 8); throw new Error("429"); } if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .finally(() => to && clearTimeout(to));
+};
+
+/* ─────────── stato ─────────── */
+const S = {
+  sel: byA[store.get("radarWl.sel", WL[0].a)] ? store.get("radarWl.sel", WL[0].a) : WL[0].a,
+  tab: store.get("radarWl.tab", "pos"), metric: "pnl", range: "month",
+  sort: {}, trCoin: "", trN: 120, movN: 40, ordAll: false,
+  data: {}, ov: {}, err: null, loading: null, perfOpen: false,
+  timers: [], visible: false,
+};
+let DEXS = null, chart = null, series = null;
+const W = () => byA[S.sel];
+const D = () => S.data[S.sel];
+
+/* ─────────── caricamento ─────────── */
+async function dexList() {
+  if (DEXS) return DEXS;
+  try { DEXS = (await post({ type: "perpDexs" })).filter(Boolean).map((d) => d.name).filter(Boolean); }
+  catch (_) { DEXS = []; }
+  return DEXS;
+}
+const q = (type, a, dex, extra) => post(Object.assign({ type, user: a }, dex ? { dex } : {}, extra || {})).catch(() => null);
+
+async function loadFills(a, prev) {
+  if (!prev || !prev.length) {
+    const f = await post({ type: "userFills", user: a, aggregateByTime: true });   // gli ultimi 2.000 fill
+    return f.sort((x, y) => x.time - y.time || x.tid - y.tid);
+  }
+  const last = prev[prev.length - 1].time;
+  const b = await post({ type: "userFillsByTime", user: a, startTime: last, aggregateByTime: true }).catch(() => []);
+  const seen = new Set(prev.map((f) => f.tid + ":" + f.time));
+  return [...prev, ...b.filter((f) => !seen.has(f.tid + ":" + f.time))].sort((x, y) => x.time - y.time).slice(-4000);
+}
+async function loadFunding(a) {   // 7 giorni, a pagine da 500
+  let start = Date.now() - 7 * 864e5, out = [];
+  for (let i = 0; i < 5; i++) {
+    const b = await post({ type: "userFunding", user: a, startTime: start }).catch(() => null);
+    if (!b) break;
+    out = out.concat(b);
+    if (b.length < 500) break;
+    start = b[b.length - 1].time + 1;
+  }
+  return out;
+}
+
+async function loadWallet(w, forceFull) {
+  const prev = S.data[w.a], now = Date.now();
+  const dexs0 = await dexList();
+  const full = forceFull || !prev || now - (prev.fullAt || 0) > FULL_EVERY;
+  const used = prev ? [...new Set([...prev.pos, ...prev.ord].map((x) => dexOf(x.coin)).filter(Boolean))] : [];
+  const dexs = full ? ["", ...dexs0] : ["", ...used];
+  const [states, orders, spot, port, fills, funding] = await Promise.all([
+    Promise.all(dexs.map((d) => q("clearinghouseState", w.a, d))),
+    Promise.all(dexs.map((d) => q("frontendOpenOrders", w.a, d))),
+    full || !prev ? q("spotClearinghouseState", w.a) : Promise.resolve(null),
+    full || !prev ? q("portfolio", w.a) : Promise.resolve(prev.port),
+    loadFills(w.a, prev && prev.fills).catch(() => (prev ? prev.fills : [])),
+    !prev || now - (prev.fundAt || 0) > FUND_EVERY ? loadFunding(w.a) : Promise.resolve(null),
+  ]);
+  if (!states[0]) throw new Error("Hyperliquid non risponde");
+  // nel giro leggero i DEX non riletti tengono i valori precedenti
+  const keep = (list, key) => full || !prev ? [] : prev[key].filter((x) => dexOf(x.coin) && !dexs.includes(dexOf(x.coin)));
+  let perpEq = 0, margin = 0, withdrawable = 0; const pos = keep(null, "pos");
+  states.forEach((s, i) => {
+    if (!s) return;
+    perpEq += +s.marginSummary?.accountValue || 0; margin += +s.marginSummary?.totalMarginUsed || 0; withdrawable += +s.withdrawable || 0;
+    for (const { position: p } of s.assetPositions || []) {
+      const sz = +p.szi, ntl = +p.positionValue;
+      pos.push({ coin: p.coin, sz, dir: sgn(sz), ntl, entry: +p.entryPx, mark: ntl / Math.abs(sz || 1), upnl: +p.unrealizedPnl,
+        roe: +p.returnOnEquity, lev: p.leverage?.value, levType: p.leverage?.type, liq: p.liquidationPx ? +p.liquidationPx : null,
+        margin: +p.marginUsed, fund: +(p.cumFunding?.sinceOpen || 0) });
+    }
+  });
+  if (!full && prev) for (const d of Object.keys(prev.dexEq || {})) if (d && !dexs.includes(d)) { perpEq += prev.dexEq[d].eq; margin += prev.dexEq[d].m; }
+  const dexEq = Object.assign({}, !full && prev ? prev.dexEq : {}); states.forEach((s, i) => { if (s) dexEq[dexs[i]] = { eq: +s.marginSummary?.accountValue || 0, m: +s.marginSummary?.totalMarginUsed || 0 }; });
+  const spotUsd = spot ? (spot.balances || []).filter((b) => STABLES.has(b.coin)).reduce((s, b) => s + +b.total, 0) : prev ? prev.spotUsd : 0;
+  const rawOrd = [...keep(null, "ordRaw"), ...orders.flat().filter(Boolean)];
+  const mids = prev && !full ? prev.mids : {};
+  const needMid = [...new Set(rawOrd.filter((o) => !pos.find((p) => p.coin === o.coin)).map((o) => dexOf(o.coin)))];
+  await Promise.all(needMid.map(async (dx) => { mids[dx] = await post(dx ? { type: "allMids", dex: dx } : { type: "allMids" }).catch(() => mids[dx] || {}); }));
+  pos.sort((x, y) => y.ntl - x.ntl);
+  const d = { t: now, fullAt: full ? now : prev.fullAt, eq: perpEq + spotUsd, perpEq, spotUsd, margin, withdrawable, dexEq, pos, ordRaw: rawOrd, mids,
+    port: port || (prev && prev.port), fills, funding: funding || (prev && prev.funding) || [], fundAt: funding ? now : prev && prev.fundAt,
+    ledger: prev && prev.ledger, ledgerAt: prev && prev.ledgerAt };
+  d.ord = normOrders(d);
+  S.data[w.a] = d;
+  return d;
+}
+
+const markOf = (d, coin) => d.pos.find((p) => p.coin === coin)?.mark || +(d.mids?.[dexOf(coin)]?.[coin]) || null;
+
+// ruolo di un ordine rispetto alla posizione sulla stessa coin (come la sentinella: aumenta, riduce, nuova entrata, TP, stop…)
+function roleOf(o, pos) {
+  const s = o.side === "B" ? 1 : -1, t = o.orderType || "", p = sgn(pos);
+  if (o.isTrigger || /stop|take/i.test(t)) {
+    if (/take/i.test(t)) return ["tp", "Take profit"];
+    if (o.reduceOnly || o.isPositionTpsl || (p && s !== p)) return ["sl", "Stop"];
+    return ["in", "Entrata a innesco"];
+  }
+  if (!p) return ["in", "Nuova entrata"];
+  if (s === p) return ["in", "Aumenta"];
+  return o.reduceOnly ? ["out", "Riduce"] : ["out", "Chiude o riduce"];
+}
+function normOrders(d) {
+  return d.ordRaw.map((o) => {
+    const p = d.pos.find((x) => x.coin === o.coin), pos = p ? p.sz : 0;
+    const price = +(o.isTrigger ? o.triggerPx : o.limitPx) || +o.limitPx;
+    let sz = +o.sz; if (!sz && (o.isPositionTpsl || o.reduceOnly) && pos) sz = Math.abs(pos);   // TP/SL "su tutta la posizione"
+    const mark = markOf(d, o.coin) || price, [rk, rl] = roleOf(o, pos);
+    return { coin: o.coin, dir: o.side === "B" ? 1 : -1, price, sz, val: sz * price, mark, dist: price / mark - 1, rk, rl,
+      type: o.orderType || (o.isTrigger ? "Trigger" : "Limit"), reduce: !!o.reduceOnly, t: o.timestamp, oid: o.oid, tif: o.tif, pos };
+  }).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist));
+}
+
+/* ─────────── mosse dai fill (stesso criterio del Worker: per coin, blocchi di 2 minuti) ─────────── */
+function classify(s0, s1) {
+  if (Math.abs(s0 - s1) < 1e-12) return null;
+  if (!sgn(s0)) return "APERTURA"; if (!sgn(s1)) return "CHIUSURA";
+  if (sgn(s0) !== sgn(s1)) return "INVERSIONE";
+  return Math.abs(s1) > Math.abs(s0) ? "AUMENTO" : "RIDUZIONE";
+}
+function movesOf(fills) {
+  const open = {}, out = [];
+  for (const f of fills) {
+    if (f.coin.startsWith("@") || f.coin.includes("/")) continue;   // spot
+    const s0 = +f.startPosition, q = (f.side === "B" ? 1 : -1) * +f.sz;
+    let e = open[f.coin];
+    if (!e || f.time - e.t1 > AGG_MS) { e = open[f.coin] = { coin: f.coin, start: s0, end: s0, t0: f.time, t1: f.time, q: 0, qpx: 0, pnl: 0, n: 0, buy: 0 }; out.push(e); }
+    e.end = Math.round((s0 + q) * 1e8) / 1e8; e.t1 = f.time; e.n++; e.q += +f.sz; e.qpx += +f.sz * +f.px; e.pnl += +f.closedPnl - +f.fee; e.buy += q;
+  }
+  for (const e of out) { e.type = classify(e.start, e.end); e.vwap = e.q ? e.qpx / e.q : 0; e.dval = Math.abs(e.end - e.start) * e.vwap; e.ntl = Math.abs(e.end) * e.vwap; }
+  return out.filter((e) => e.type);
+}
+const EVC = { APERTURA: ["op", "Apre"], AUMENTO: ["up", "Aumenta"], RIDUZIONE: ["dn", "Riduce"], CHIUSURA: ["cl", "Chiude"], INVERSIONE: ["rv", "Inverte"] };
+const evDir = (e) => (e.type === "CHIUSURA" ? sgn(e.start) : sgn(e.end));
+const evTitle = (e) => { const d = evDir(e), k = EVC[e.type] || ["", e.type];
+  return e.type === "INVERSIONE" ? `Inverte → ${d > 0 ? "long" : "short"} ${bare(e.coin)}` : `${k[1]} ${d > 0 ? "long" : "short"} ${bare(e.coin)}`; };
+
+/* ─────────── trade per ordine ─────────── */
+function byOrder(fills) {
+  const m = new Map();
+  for (const f of fills) {
+    const k = f.oid ?? f.hash; let o = m.get(k);
+    if (!o) m.set(k, o = { coin: f.coin, dirTxt: f.dir || "", side: f.side === "B" ? 1 : -1, t0: f.time, t: f.time, sz: 0, val: 0, pnl: 0, fee: 0, n: 0, crossed: !!f.crossed });
+    o.t = Math.max(o.t, f.time); o.t0 = Math.min(o.t0, f.time); o.sz += +f.sz; o.val += +f.sz * +f.px; o.pnl += +f.closedPnl; o.fee += +f.fee; o.n++;
+  }
+  return [...m.values()].map((o) => Object.assign(o, { px: o.val / (o.sz || 1), net: o.pnl - o.fee }));
+}
+const DIR_IT = { "Open Long": "Apre long", "Open Short": "Apre short", "Close Long": "Chiude long", "Close Short": "Chiude short", "Long > Short": "Long → short", "Short > Long": "Short → long", "Buy": "Compra", "Sell": "Vende" };
+
+/* ─────────── render: selettore e panoramica ─────────── */
+const prov = (w) => w.status === "provvisorio";
+function renderPicker() {
+  el("wlSeg").innerHTML = WL.map((w) => `<button role="tab" data-a="${w.a}" aria-pressed="${w.a === S.sel}" aria-selected="${w.a === S.sel}"${prov(w) ? ' title="Provvisorio, da approvare"' : ""}>${esc(w.n)}${prov(w) ? "<i></i>" : ""}</button>`).join("");
+  renderOv();
+}
+function renderOv() {
+  el("wlOv").innerHTML = WL.map((w) => {
+    const o = S.data[w.a] ? ovFrom(S.data[w.a]) : S.ov[w.a];
+    const body = !o ? `<span class="v">${SK(60)}</span><small>${SK(80)}</small>` : o.err ? `<span class="v">–</span><small>non disponibile</small>` :
+      `<span class="v">${m$(o.eq)}</span><small><span class="${tone(o.d24)}">${s$(o.d24)} 24h</span>, ${o.net ? (o.net > 0 ? "netto long " : "netto short ") + m$(Math.abs(o.net)) : "flat"}</small>`;
+    return `<button data-a="${w.a}" aria-pressed="${w.a === S.sel}"><span class="t"><span>${esc(w.n)}</span>${prov(w) ? `<span class="wl-tag">da approvare</span>` : `<span class="cap">Posto ${w.slot}</span>`}</span>${body}</button>`;
+  }).join("");
+}
+const portKey = (port, k) => (Array.isArray(port) ? port.find(([x]) => x === k)?.[1] : null);
+const lastOf = (h) => (h && h.length ? +h[h.length - 1][1] : null);
+function ovFrom(d) {
+  const day = portKey(d.port, "day");
+  return { eq: d.eq, d24: lastOf(day?.pnlHistory), net: d.pos.reduce((s, p) => s + p.dir * p.ntl, 0) };
+}
+async function loadOv() {
+  if (isMob()) return;   // telefono: la panoramica dei 3 non si vede, niente richieste in più
+  await Promise.all(WL.filter((w) => w.a !== S.sel).map(async (w) => {
+    if (S.ov[w.a] && !S.ov[w.a].err && Date.now() - S.ov[w.a].t < OV_EVERY - 5e3) return;
+    const [ch, port, spot] = await Promise.all([q("clearinghouseState", w.a), q("portfolio", w.a), q("spotClearinghouseState", w.a)]);
+    if (!ch && !port) { S.ov[w.a] = { err: true, t: Date.now() }; return; }
+    const day = portKey(port, "day");
+    const eq = lastOf(day?.accountValueHistory) ?? ((+ch?.marginSummary?.accountValue || 0) + (spot?.balances || []).filter((b) => STABLES.has(b.coin)).reduce((s, b) => s + +b.total, 0));
+    const net = (ch?.assetPositions || []).reduce((s, { position: p }) => s + sgn(+p.szi) * +p.positionValue, 0);
+    S.ov[w.a] = { t: Date.now(), eq, d24: lastOf(day?.pnlHistory), net };
+  }));
+  if (S.visible) renderOv();
+}
+const isMob = () => (typeof window.isMobile === "function" ? window.isMobile() : matchMedia("(max-width:700px)").matches);
+// pannello (openSheet del template): i pulsanti dentro usano gli stessi gestori della pagina
+function sheet(title, html) {
+  const n = document.createElement("div"); n.className = "wl-sheet"; n.id = "wlSheet"; n.innerHTML = html;
+  n.addEventListener("click", onClick); n.addEventListener("change", onChange);
+  if (typeof window.openSheet === "function") window.openSheet(title, n);
+  return n;
+}
+
+/* ─────────── render: intestazione ─────────── */
+function renderHero() {
+  const w = W(), d = D();
+  const head = `<div class="top"><div><span class="cap">Posto ${w.slot}</span><h2>${esc(w.n)} ${prov(w) ? `<span class="wl-tag">provvisorio, da approvare</span>` : ""}</h2><span class="note">${esc(w.note)}</span></div>
+    <div class="wl-addr"><code title="${w.a}">${short(w.a)}</code><button class="wl-btn" data-copy="${w.a}" type="button">Copia</button>
+    <a class="wl-btn" href="https://hyperdash.com/address/${w.a}" target="_blank" rel="noopener">Hyperdash ↗</a>
+    <a class="wl-btn" href="https://hypurrscan.io/address/${w.a}" target="_blank" rel="noopener">Hypurrscan ↗</a></div></div>`;
+  if (!d) {
+    el("wlHero").innerHTML = head + (S.err ? errBox() : `<div>${SK(45)}</div><div class="wl-sk" style="height:40px;width:60%"></div>`);
+    el("wlKpi").innerHTML = [0, 1, 2, 3].map(() => `<div><span>${SK(50)}</span><b>${SK(70)}</b></div>`).join("");
+    return;
+  }
+  const gross = d.pos.reduce((s, p) => s + p.ntl, 0), L = d.pos.filter((p) => p.dir > 0).reduce((s, p) => s + p.ntl, 0), Sh = gross - L;
+  const upnl = d.pos.reduce((s, p) => s + p.upnl, 0), day = portKey(d.port, "day"), d24 = lastOf(day?.pnlHistory), all = lastOf(portKey(d.port, "allTime")?.pnlHistory);
+  el("wlHero").innerHTML = head + `<div><span class="cap">Valore del conto</span><div class="wl-eq">${m$(d.eq)}</div></div>
+    <div class="wl-sub"><span>PnL 24h <b class="${tone(d24)}">${s$(d24)}</b></span><span>PnL totale <b class="${tone(all)}">${s$(all)}</b></span>
+    <span>${d.spotUsd > 1 ? `${m$(d.perpEq)} perp + ${m$(d.spotUsd)} spot` : "margine perp"}</span><span>prelevabile ${m$(d.withdrawable)}</span></div>
+    ${S.err ? `<p class="wl-sum neg" style="font-size:.82rem">Ultimo aggiornamento non riuscito (${esc(S.err)}): dati di ${ago(d.t)}.</p>` : ""}`;
+  el("wlKpi").innerHTML = `
+    <div><span>PnL non realizzato</span><b class="${tone(upnl)}">${s$(upnl)}</b><small>${pc(upnl / (d.eq || 1))} del conto</small></div>
+    <div><span>Margine usato</span><b>${m$(d.margin)}</b><small>${pcu(d.margin / (d.eq || 1))} del conto</small></div>
+    <div><span>Leva effettiva</span><b>${lev(gross / (d.eq || 1))}</b><small>esposizione ${m$(gross)}</small></div>
+    <div><span>Long · short</span><b><em class="pos" style="font-style:normal">${m$(L)}</em> <em class="mut" style="font-style:normal">/</em> <em class="neg" style="font-style:normal">${m$(Sh)}</em></b>
+      <div class="wl-split">${gross ? `<i style="width:${(L / gross * 100).toFixed(1)}%;background:var(--green)"></i><i style="flex:1;background:var(--red)"></i>` : ""}</div></div>`;
+}
+const errBox = () => `<div class="wl-err"><b>Hyperliquid non risponde</b><span class="note">${esc(S.err || "")} · riprovo da solo tra ${Math.round(REFRESH * backoff / 1000)} s.</span><button class="wl-btn" type="button" data-retry>Riprova ora</button></div>`;
+
+// telefono: un solo riquadro con valore, PnL 24h ed esposizione netta; tocco → dettagli del conto
+function renderMini() {
+  const w = W(), d = D(), b = el("wlMini");
+  const st = `<span class="live${d && !S.err && (Date.now() - d.t) < 120e3 ? " on" : ""}" id="wlLive2">${d ? "aggiornato " + ago(d.t) : S.err ? "non disponibile" : "caricamento"}</span>`;
+  const tag = prov(w) ? `<span class="wl-tag">provvisorio, da approvare</span>` : `<span class="more">Dettagli</span>`;
+  if (!d) { b.innerHTML = `<span class="h">${st}${tag}</span>${S.err ? `<span class="neg">Hyperliquid non risponde: riprovo da solo.</span>` : `<div class="wl-sk" style="height:34px;width:55%"></div>${SK(70)}`}`; return; }
+  const net = d.pos.reduce((s, p) => s + p.dir * p.ntl, 0), gross = d.pos.reduce((s, p) => s + p.ntl, 0), d24 = lastOf(portKey(d.port, "day")?.pnlHistory);
+  b.innerHTML = `<span class="h">${st}${tag}</span><span class="v">${m$(d.eq)}</span>
+    <span class="s"><div><small>PnL 24h</small><b class="${tone(d24)}">${s$(d24)}</b></div>
+    <div><small>Esposizione netta</small><b class="${tone(net)}">${net ? (net > 0 ? "Long " : "Short ") + m$(Math.abs(net)) : "Flat"}</b></div></span>
+    <small class="mut" style="font-size:.76rem">Leva ${lev(gross / (d.eq || 1))}, ${d.pos.length} posizioni, ${d.ord.length} ${d.ord.length === 1 ? "ordine" : "ordini"}</small>`;
+}
+function openAccount() {
+  const w = W(), d = D();
+  renderHero();
+  const html = `<div class="card glow wl-hero">${el("wlHero").innerHTML}</div><div class="big">${el("wlKpi").innerHTML}</div>
+    ${w.x && w.x.metrics ? `<h3>Metriche dello scout</h3>${cmpTable([["Questo wallet", w.x]])}` : ""}`;
+  sheet(w.n, d ? html : `<p>Dati in caricamento.</p>`);
+}
+
+/* ─────────── render: prossime mosse ─────────── */
+const posTxt = (q, c) => (Math.abs(q) < 1e-9 ? "flat" : `${q > 0 ? "long" : "short"} ${qty(q)} ${esc(bare(c))}`);
+function planLines(d) {
+  const g = {}; for (const o of d.ord) (g[o.coin] ||= []).push(o);
+  return Object.entries(g).map(([coin, list]) => {
+    const pos = list[0].pos, mark = list[0].mark;
+    const parts = [1, -1].map((s) => {
+      const rs = list.filter((o) => o.dir === s && o.rk !== "tp" && o.rk !== "sl"); if (!rs.length) return null;
+      const qq = rs.reduce((a, o) => a + o.sz, 0), v = rs.reduce((a, o) => a + o.val, 0), lo = Math.min(...rs.map((o) => o.price)), hi = Math.max(...rs.map((o) => o.price));
+      let after = pos + s * qq; if (pos && sgn(pos) !== s && rs.every((o) => o.reduce)) after = sgn(pos) * Math.max(0, Math.abs(pos) - qq);
+      const what = !pos ? `vuole <b>aprire un ${s > 0 ? "long" : "short"}</b>` : sgn(pos) === s ? `vuole <b>aumentare il ${pos > 0 ? "long" : "short"}</b>` :
+        sgn(after) && sgn(after) !== sgn(pos) ? `vuole <b>invertire</b> il ${pos > 0 ? "long" : "short"}` : !sgn(after) ? `vuole <b>chiudere il ${pos > 0 ? "long" : "short"}</b>` : `vuole <b>ridurre il ${pos > 0 ? "long" : "short"}</b>`;
+      const where = lo === hi ? `a ${px(lo)} (${pc(lo / mark - 1)})` : `tra ${px(lo)} e ${px(hi)} (${pc(Math.min(lo, hi) / mark - 1)} / ${pc(Math.max(lo, hi) / mark - 1)})`;
+      return { v, html: `${what}: ${s > 0 ? "compra" : "vende"} ${qty(qq)} per ${m$(v)} con ${rs.length} ${rs.length === 1 ? "ordine" : "ordini"} ${where}. Se ${rs.length === 1 ? "scatta" : "scattano tutti"}: ${posTxt(pos, coin)} → <b>${posTxt(after, coin)}</b>.` };
+    }).filter(Boolean);
+    const prot = list.filter((o) => o.rk === "tp" || o.rk === "sl").map((o) => `${o.rl.toLowerCase()} a ${px(o.price)} (${pc(o.dist)})`);
+    const v = parts.reduce((a, p) => a + p.v, 0) + list.reduce((a, o) => a + (o.rk === "tp" || o.rk === "sl" ? o.val * 0.01 : 0), 0);
+    return { v, html: `<b>${coinH(coin)}</b> · prezzo ${px(mark)} — ` + [...parts.map((p) => p.html), prot.length ? `Protezioni: ${prot.join(", ")}.` : ""].filter(Boolean).join(" ") };
+  }).sort((a, b) => b.v - a.v);
+}
+/* ─────────── analisi: regole fisse su posizioni, ordini, fill e funding ───────────
+   Non legge le intenzioni del trader: descrive com'è messo, cosa succede se scattano gli ordini, i limiti e le prove. */
+const MOVES = [-0.10, -0.05, 0.05, 0.10];
+function scenario(d, x) {
+  // movimento uniforme di x su tutte le coin (le crypto si muovono insieme; HIP-3 e stablecoin no: è un limite dichiarato)
+  const pnl = d.pos.reduce((s, p) => s + p.dir * p.ntl * x, 0);
+  const hit = d.ord.filter((o) => (x < 0 ? o.dist <= 0 && o.dist >= x : o.dist >= 0 && o.dist <= x));
+  const posN = {}; for (const p of d.pos) posN[p.coin] = p.dir * p.ntl;
+  let buy = 0, sell = 0;
+  for (const o of hit) {
+    const cur = posN[o.coin] || 0, red = o.reduce || o.rk === "tp" || o.rk === "sl";
+    let dv = o.dir * o.val;
+    if (red) dv = sgn(cur) && sgn(cur) !== o.dir ? o.dir * Math.min(o.val, Math.abs(cur)) : 0;
+    posN[o.coin] = cur + dv; if (dv > 0) buy += dv; else sell -= dv;
+  }
+  const net = Object.values(posN).reduce((s, v) => s + v, 0), gross = Object.values(posN).reduce((s, v) => s + Math.abs(v), 0);
+  const eq = d.eq + pnl;
+  return { x, pnl, eq, hit: hit.length, buy, sell, net, lev: eq > 0 ? gross / eq : Infinity };
+}
+function analyze(d) {
+  const eq = d.eq || 1, gross = d.pos.reduce((s, p) => s + p.ntl, 0), net = d.pos.reduce((s, p) => s + p.dir * p.ntl, 0);
+  const L = gross ? d.pos.filter((p) => p.dir > 0).reduce((s, p) => s + p.ntl, 0) : 0, levE = gross / eq;
+  const top = d.pos[0], topSh = top ? top.ntl / (gross || 1) : 0;
+  const now = Date.now(), f24 = d.fills.filter((f) => f.time > now - 864e5), mv24 = movesOf(f24);
+  const maker = f24.length ? f24.filter((f) => !f.crossed).length / f24.length : 0;
+  const realized = f24.reduce((s, f) => s + +f.closedPnl - +f.fee, 0);
+  const flow = {}; for (const e of mv24) flow[e.coin] = (flow[e.coin] || 0) + e.buy * e.vwap;
+  const flows = Object.entries(flow).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
+  const fund = d.funding.filter((r) => (r.delta || {}).type === "funding"), fund7 = fund.reduce((s, r) => s + +r.delta.usdc, 0);
+  const fundY = fund7 / eq * 365 / 7;
+  const liq = d.pos.filter((p) => p.liq && p.mark).map((p) => Object.assign({ ld: Math.abs(p.liq / p.mark - 1) }, p)).sort((a, b) => a.ld - b.ld);
+  const stops = new Set(d.ord.filter((o) => o.rk === "sl").map((o) => o.coin));
+  const naked = d.pos.filter((p) => p.ntl >= 0.05 * eq && !stops.has(p.coin));
+  const losers = d.pos.filter((p) => p.upnl < -0.02 * eq).sort((a, b) => a.upnl - b.upnl);
+  // ordini piccoli (sotto 10.000 $ o lo 0,5% del conto) non sono una "mossa": restano nella tabella Ordini
+  const entry = d.ord.filter((o) => (o.rk === "in" || (o.rk === "out" && !o.reduce)) && o.val >= Math.max(1e4, 0.005 * eq)).sort((a, b) => Math.abs(a.dist) - Math.abs(b.dist));
+  const near = entry.filter((o) => Math.abs(o.dist) <= 0.03);
+  const p30 = portKey(d.port, "month"), pnl30 = lastOf(p30?.pnlHistory), av30 = p30?.accountValueHistory?.[0] ? +p30.accountValueHistory[0][1] : null;
+  const grid = f24.length > 300 && maker > 0.6 && d.ord.filter((o) => o.dir > 0).length && d.ord.filter((o) => o.dir < 0).length;
+  const tilt = gross ? Math.abs(net) / gross : 0;
+  const nm = (c) => esc(bare(c));
+
+  // assetto
+  const setup = !d.pos.length ? "Flat: nessuna posizione aperta."
+    : tilt > 0.6 ? `Netto ${net > 0 ? "long" : "short"} ${m$(Math.abs(net))} (${lev(Math.abs(net) / eq)} il conto): punta al ${net > 0 ? "rialzo" : "ribasso"}.`
+    : tilt > 0.25 ? `Sbilanciato ${net > 0 ? "long" : "short"}: netto ${m$(Math.abs(net))} su ${m$(gross)} di esposizione.`
+    : `Quasi bilanciato: ${m$(gross)} lordi, netto ${s$(net)}. Più un book coperto che una scommessa.`;
+  const style = grid ? `Opera come una griglia di ordini limit (${nf(maker * 100)}% dei fill senza attraversare lo spread, ${nf(f24.length)} fill in 24h): conta il netto, non il singolo ordine.`
+    : f24.length > 100 ? `Molto attivo: ${f24.length >= 1990 ? "oltre " : ""}${nf(f24.length)} fill in 24h, ${maker < 0.05 ? "quasi tutti a mercato" : nf(maker * 100) + "% con ordini limit"}.` : f24.length ? `Poco attivo: ${f24.length} fill in 24h.` : "Nessun fill nelle ultime 24 ore: tiene le posizioni.";
+  // prossime mosse probabili
+  const plans = planLines(d).slice(0, 3);
+  const nextAb = near.length ? `${near[0].dir > 0 ? "Compra" : "Vende"} ${nm(near[0].coin)} ${m$(near[0].val)} a ${px(near[0].price)} (${pc(near[0].dist, 2)})${near.length > 1 ? `, altri ${near.length - 1} ordini entro il 3%` : ""}.`
+    : entry.length ? `Ordini lontani: il primo è ${entry[0].dir > 0 ? "acquisto" : "vendita"} ${nm(entry[0].coin)} a ${pc(entry[0].dist, 1)}.`
+    : flows.length ? `${d.ord.length ? `Nessun ordine d'ingresso rilevante nel book (${d.ord.length === 1 ? "1 ordine" : d.ord.length + " ordini"} di uscita o piccoli): le ultime mosse sono a mercato.` : "Nessun ordine in attesa: entra a mercato."} Ultime 24h ${flows[0][1] > 0 ? "compra" : "vende"} soprattutto ${nm(flows[0][0])} (${s$(flows[0][1])}).`
+    : d.ord.length ? `Nessun ordine d'ingresso rilevante (${d.ord.length === 1 ? "1 ordine" : d.ord.length + " ordini"} di uscita o piccoli) e nessuna mossa recente.` : "Nessun ordine in attesa e nessuna mossa recente.";
+  // scenari
+  const sc = d.pos.length ? MOVES.map((x) => scenario(d, x)) : [];
+  // limiti e guardrail: [classe, testo]
+  const guard = [];
+  if (liq.length) { const l = liq[0], c = l.ld < 0.1 ? "bad" : l.ld < 0.25 ? "warn" : "ok";
+    guard.push([c, `Liquidazione più vicina: ${nm(l.coin)} a ${px(l.liq)}, ${pc(l.liq / l.mark - 1)} dal prezzo${l.levType === "isolated" ? " (isolata)" : " (cross: margine condiviso)"}.`]); }
+  else if (d.pos.length) guard.push(["ok", "Nessun prezzo di liquidazione: margine ampio rispetto alle posizioni."]);
+  if (d.pos.length) guard.push([levE > 5 ? "bad" : levE > 3 ? "warn" : "ok", `Leva effettiva ${lev(levE)} (esposizione ${m$(gross)} su ${m$(d.eq)}); margine usato ${pcu(d.margin / eq)}.`]);
+  if (top) guard.push([top.ntl / eq > 1.5 ? "warn" : "ok", `Concentrazione: ${nm(top.coin)} è il ${pcu(topSh)} dell'esposizione (${lev(top.ntl / eq)} il conto).`]);
+  if (fund.length) guard.push([fundY < -0.1 ? "bad" : fundY < -0.03 ? "warn" : "ok", `Funding 7 giorni ${s$(fund7)} (${pc(fundY, 1)} l'anno sul conto, ${fund7 >= 0 ? "incassato" : "pagato"}).`]);
+  if (d.pos.length) guard.push([naked.length ? "warn" : "ok", naked.length ? `Senza stop nel book: ${naked.slice(0, 4).map((p) => nm(p.coin)).join(", ")}${naked.length > 4 ? ` e altre ${naked.length - 4}` : ""} (stop mentali o a mercato: non si vedono).` : "Ogni posizione rilevante ha uno stop nel book."]);
+  // problemi
+  const prob = [];
+  for (const g of guard) if (g[0] !== "ok") prob.push(g);
+  for (const p of losers.slice(0, 2)) prob.push([p.upnl < -0.08 * eq ? "bad" : "warn", `${nm(p.coin)} ${p.dir > 0 ? "long" : "short"} perde ${m$(Math.abs(p.upnl))} (${pc(p.upnl / eq)} del conto).`]);
+  if (sc.length) { const w = sc.reduce((a, b) => (b.pnl < a.pnl ? b : a)); if (w.pnl < -0.15 * eq) prob.push(["bad", `Con ${pc(w.x, 0)} su tutto il conto scende del ${pcu(Math.abs(w.pnl / eq), 0)}.`]); }
+  if (pnl30 != null && av30 > 0 && pnl30 / av30 < -0.1) prob.push(["warn", `Ultimi 30 giorni ${s$(pnl30)} (${pc(pnl30 / av30)}).`]);
+  // prove
+  const ev = [
+    `24 ore: ${nf(f24.length)} fill, ${mv24.length} mosse, PnL chiuso netto di commissioni ${s$(realized)}.`,
+    flows.length ? `Flusso 24h per coin: ${flows.slice(0, 3).map(([c, v]) => `${nm(c)} ${s$(v)}`).join(", ")} (positivo = comprato).` : null,
+    `Long ${m$(L)}, short ${m$(gross - L)}, PnL non realizzato ${s$(d.pos.reduce((s, p) => s + p.upnl, 0))}.`,
+    d.ord.length ? `${d.ord.length} ${d.ord.length === 1 ? "ordine" : "ordini"} nel book per ${m$(d.ord.reduce((s, o) => s + o.val, 0))}: ${d.ord.filter((o) => o.rk === "in").length} per entrare o aumentare, ${d.ord.filter((o) => o.rk === "out").length} per ridurre, ${d.ord.filter((o) => o.rk === "tp" || o.rk === "sl").length} TP o stop.` : "Nessun ordine nel book.",
+    pnl30 != null ? `PnL 30 giorni ${s$(pnl30)}${av30 > 0 ? ` (${pc(pnl30 / av30)} sul valore di partenza)` : ""}.` : null,
+  ].filter(Boolean);
+  const worst = prob.find((x) => x[0] === "bad") || prob[0];
+  const limAb = liq.length ? `Liquidazione ${nm(liq[0].coin)} a ${pc(liq[0].liq / liq[0].mark - 1, 0)}, leva ${lev(levE)}.` : d.pos.length ? `Leva ${lev(levE)}, nessuna liquidazione vicina.` : "Nessun rischio aperto.";
+  const ab = [["Assetto", setup, ""], ["Prossima mossa", nextAb, ""], ["Limite", limAb, liq.length && liq[0].ld < 0.1 ? "bad" : levE > 5 ? "warn" : ""],
+    ["Da guardare", worst ? worst[1] : "Nessun problema evidente nei dati.", worst ? worst[0] : ""]];
+  const li = (x) => `<li class="${x[0]}">${x[1]}</li>`;
+  const deep = `<div class="wl-an">
+    <h3>Com'è impostato</h3><ul><li>${setup}</li><li>${style}</li>${top ? `<li>Posizioni principali: ${d.pos.slice(0, 4).map((p) => `${p.dir > 0 ? "long" : "short"} ${nm(p.coin)} ${m$(p.ntl)}`).join(", ")}.</li>` : ""}</ul>
+    <h3>Prossime mosse probabili</h3><ul><li>${nextAb}</li>${plans.map((p) => `<li>${p.html}</li>`).join("")}</ul>
+    ${sc.length ? `<h3>Come può evolvere</h3>
+    <div class="scroll"><table class="grid"><thead><tr><th>Se il mercato fa</th><th>PnL</th><th>Conto</th><th>Ordini</th><th>Netto dopo</th><th>Leva</th></tr></thead><tbody>
+    ${sc.map((r) => `<tr><td>${pc(r.x, 0)}</td><td class="${tone(r.pnl)}">${s$(r.pnl)}<small>${pc(r.pnl / eq, 1)}</small></td><td>${m$(r.eq)}</td><td>${r.hit}<small>${r.hit ? `+${m$(r.buy)} / −${m$(r.sell)}` : "nessuno"}</small></td><td>${r.net ? (r.net > 0 ? "long " : "short ") + m$(Math.abs(r.net)) : "flat"}</td><td>${fin(r.lev) ? lev(r.lev) : "–"}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="foot">Stesso movimento su tutte le coin, ordini eseguiti per intero al prezzo indicato. Le coin HIP-3 (azioni, materie prime) di solito non seguono le crypto.</p>` : ""}
+    <h3>Limiti e guardrail</h3><ul>${guard.map(li).join("") || "<li>Nessuna posizione aperta.</li>"}</ul>
+    <h3>Problemi</h3><ul>${prob.map(li).join("") || `<li class="ok">Nessuno evidente nei dati di ora.</li>`}</ul>
+    <h3>Prove</h3><ul>${ev.map((x) => `<li>${x}</li>`).join("")}</ul>
+    <p class="foot">Regole fisse su posizioni, ordini, fill e funding di Hyperliquid, aggiornate ${ago(d.t)}. Gli ordini si possono cancellare in ogni momento; stop e uscite a mercato non si vedono prima.</p></div>`;
+  return { ab, deep };
+}
+function renderNext() {
+  const d = D();
+  if (!d) { el("wlNext").innerHTML = S.err && !d ? `<p class="wl-sum">Dati non disponibili.</p>` : SK(90) + SK(70) + SK(80); el("wlNextSub").textContent = ""; return; }
+  const ord = d.ord, A = analyze(d);
+  S.deep = A.deep;
+  el("wlNextSub").textContent = ord.length ? `${ord.length} ${ord.length === 1 ? "ordine" : "ordini"}, ${m$(ord.reduce((a, o) => a + o.val, 0))}` : "nessun ordine nel book";
+  const rows = ord.slice(0, S.ordAll ? 40 : 6).map((o) => `<div class="r"><span class="rl ${o.rk}">${esc(o.rl)}</span>
+      <span class="c"><b>${act(o.dir)} ${coinH(o.coin)} · ${m$(o.val)}</b><small>${esc(o.type)}${o.reduce ? " · solo riduzione" : ""} · ${qty(o.sz)} @ ${px(o.price)}</small></span>
+      <span class="d"><b class="${Math.abs(o.dist) < 0.01 ? "" : "mut"}">${pc(o.dist, 2)}</b><small>dal prezzo</small></span></div>`);
+  const near = d.pos.filter((p) => p.liq).map((p) => Object.assign({ ld: Math.abs(p.liq / p.mark - 1) }, p)).sort((a, b) => a.ld - b.ld);
+  const liqRows = near.filter((p) => p.ld < 0.3).map((p) => `<div class="r"><span class="rl liq">Liquidazione</span>
+      <span class="c"><b>${side(p.dir)} ${coinH(p.coin)} · ${m$(p.ntl)}</b><small>liquidazione a ${px(p.liq)} · prezzo ${px(p.mark)}</small><div class="wl-meter"><i style="width:${Math.max(4, 100 - p.ld / 0.3 * 100).toFixed(0)}%;background:var(--red)"></i></div></span>
+      <span class="d"><b class="neg">${pc(p.liq / p.mark - 1, 1)}</b><small>distanza</small></span></div>`);
+  el("wlNext").innerHTML = `<ul class="wl-ab">${A.ab.map(([k, v, c]) => `<li class="${c}"><span>${k}</span><b style="font-weight:500">${v}</b></li>`).join("")}</ul>
+    <button class="wl-btn wl-deep" type="button" data-deep>Approfondimento: scenari, limiti, prove</button>
+    ${rows.length || liqRows.length ? `<div class="wl-mv">${liqRows.join("")}${rows.join("")}</div>` : ""}
+    ${ord.length > 6 ? `<button class="wl-moreb" type="button" data-ordall>${S.ordAll ? "Mostra i 6 più vicini" : `Mostra tutti i ${ord.length} ordini per distanza`}</button>` : ""}`;
+}
+
+/* ─────────── render: andamento ─────────── */
+const RANGES = { day: "24h", week: "7 giorni", month: "30 giorni", allTime: "Totale" };
+function renderPerf() {
+  const d = D(), port = d && d.port;
+  const pm = (k) => { const r = portKey(port, k), v = lastOf(r?.pnlHistory); return `<b class="${tone(v)}" style="font-weight:600">${port ? s$(v) : "…"}</b>`; };
+  el("wlPerfSec").classList.toggle("open", S.perfOpen);
+  el("wlPerfMini").setAttribute("aria-expanded", String(S.perfOpen));
+  el("wlPerfMini").innerHTML = `<span><small>PnL 7 giorni, 30 giorni, totale</small><span>${pm("week")} · ${pm("month")} · ${pm("allTime")}</span></span><span class="more">${S.perfOpen ? "Chiudi" : "Grafico"}</span>`;
+  if (isMob() && !S.perfOpen) return;   // telefono: il grafico si disegna solo quando lo si apre
+  el("wlPnl").innerHTML = Object.entries(RANGES).map(([k, l]) => {
+    const r = portKey(port, k), pnl = lastOf(r?.pnlHistory), av0 = r?.accountValueHistory?.[0] ? +r.accountValueHistory[0][1] : null;
+    return `<div><span>PnL ${l}</span><b class="${tone(pnl)}">${port ? s$(pnl) : SK(70)}</b><small>${port ? (k !== "allTime" && av0 > 0 ? pc(pnl / av0) + " · " : "") + "volume " + m$(+r?.vlm) : ""}</small></div>`;
+  }).join("");
+  if (!chart && window.LightweightCharts) makeChart();
+  if (!series) return;
+  const r = portKey(port, S.range), h = (r && (S.metric === "pnl" ? r.pnlHistory : r.accountValueHistory)) || [];
+  let lastT = 0; const pts = [];
+  for (const [t, v] of h) { const s = Math.floor(t / 1000); if (s > lastT) { pts.push({ time: s, value: +v }); lastT = s; } }
+  const up = pts.length < 2 || pts[pts.length - 1].value >= pts[0].value, c = S.metric === "av" ? cssv("--tint", "#4f6bff") : up ? cssv("--green", "#34d77b") : cssv("--red", "#ff5a52");
+  series.applyOptions({ lineColor: c, topColor: hexA(c, .22), bottomColor: hexA(c, 0) });
+  series.setData(pts);
+  chart.applyOptions({ timeScale: { timeVisible: S.range === "day" || S.range === "week", secondsVisible: false } });
+  chart.timeScale().fitContent();
+  const v0 = pts[0]?.value, v1 = pts[pts.length - 1]?.value;
+  el("wlChartLeg").innerHTML = pts.length ? `<span><i style="background:${c}"></i>${S.metric === "pnl" ? "PnL cumulato" : "Valore del conto"} · ${RANGES[S.range]}</span><span>${S.metric === "pnl" ? s$(v1) : `${m$(v0)} → ${m$(v1)}`}</span><span>${pts.length} punti</span>` : `<span>${port ? "Nessun dato per questo periodo" : "caricamento…"}</span>`;
+}
+function hexA(c, a) {
+  const m = /^#([0-9a-f]{6})$/i.exec(c);
+  if (m) { const n = parseInt(m[1], 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
+  return a ? c : "transparent";
+}
+function makeChart() {
+  const base = { handleScroll: false, handleScale: false, rightPriceScale: { borderVisible: false, scaleMargins: { top: .12, bottom: .08 } } };
+  const opts = typeof chartOpts === "function" ? chartOpts(base) : Object.assign({ autoSize: true, layout: { background: { color: "transparent" }, textColor: cssv("--label2", "#999") } }, base);
+  chart = LightweightCharts.createChart(el("wlChart"), opts);
+  series = chart.addAreaSeries({ lineWidth: 2, priceLineVisible: false, lastValueVisible: true,
+    priceFormat: { type: "custom", formatter: (v) => m$(v), minMove: 1 } });
+}
+const mq = matchMedia("(prefers-color-scheme: dark)");
+const onTheme = () => { if (!chart) return; try { chart.applyOptions(typeof chartOpts === "function" ? chartOpts({}) : {}); } catch (_) {} if (S.visible) renderPerf(); };
+mq.addEventListener ? mq.addEventListener("change", onTheme) : mq.addListener && mq.addListener(onTheme);
+
+/* ─────────── render: tabelle ─────────── */
+const TABS = [["pos", "Posizioni", "Posizioni"], ["ord", "Ordini aperti", "Ordini"], ["trade", "Storico trade", "Storico"], ["fund", "Funding", "Funding"], ["mov", "Depositi e prelievi", "Depositi"]];
+// telefono: righe compatte (titolo, sotto, valore, nota), tutti i campi nel pannello al tocco
+function put(t, rows, C, more) {
+  if (!isMob()) { el("wlTable").innerHTML = `<table class="grid">${t.head}${t.body(rows)}</table>${more || ""}`; return; }
+  const cut = !S.mAll && rows.length > 8 ? rows.length - 8 : 0;
+  if (cut) { rows = rows.slice(0, 8); more = `<button class="wl-moreb" type="button" data-mall>Mostra tutte (altre ${cut})</button>`; }
+  S.mRows = { cols: t.cols, rows };
+  el("wlTable").innerHTML = rows.map((r, i) => { const [a, b, c, d2, cl] = C(r);
+    return `<button class="wl-li" type="button" data-row="${i}"><b>${a}</b><span class="r"><b class="${cl || ""}">${c}</b></span><small>${b}</small><small class="r">${d2 || ""}</small></button>`; }).join("") + (more || "");
+}
+function openRow(i) {
+  const m = S.mRows, r = m && m.rows[i]; if (!r) return;
+  const strip = (h) => String(h).replace(/<small>/g, " <small>");
+  sheet(TABS.find((x) => x[0] === S.tab)[1], `<div class="list">${m.cols.map((c) => `<div class="row"><span class="k">${c.l}</span><span class="v strong ${c.c ? c.c(r) : ""}">${strip(c.f(r))}</span></div>`).join("")}</div>`);
+}
+function table(id, cols, rows, def) {
+  const st = S.sort[id] || (S.sort[id] = { k: def[0], d: def[1] });
+  const c = cols.find((x) => x.k === st.k) || cols[0];
+  const val = (r) => { const v = c.v ? c.v(r) : r[c.k]; return v == null || (typeof v === "number" && !isFinite(v)) ? -Infinity : v; };
+  rows = rows.slice().sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * st.d; });
+  return { rows, cols, head: `<tr>${cols.map((x) => `<th class="${x.v || x.k ? "s" : ""}" data-t="${id}" data-k="${x.k}"${x.k === st.k ? ` aria-sort="${st.d > 0 ? "ascending" : "descending"}"` : ""}>${x.l}</th>`).join("")}</tr>`,
+    body: (rs) => rs.map((r) => `<tr>${cols.map((x) => `<td class="${x.c ? x.c(r) : ""}">${x.f(r)}</td>`).join("")}</tr>`).join("") };
+}
+const empty = (t, s) => `<div class="wl-empty"><b>${t}</b>${s || ""}</div>`;
+function renderTabs() {
+  const d = D();
+  const n = d ? { pos: d.pos.length, ord: d.ord.length, trade: null, fund: null, mov: null } : {};
+  const mob = isMob();
+  el("wlTabs").innerHTML = TABS.map(([k, l, ls]) => `<button role="tab" data-tab="${k}" aria-pressed="${k === S.tab}" aria-selected="${k === S.tab}">${mob ? ls : l}${n[k] ? `<em>${n[k]}</em>` : ""}</button>`).join("");
+  el("wlFilt").innerHTML = ""; el("wlTabNote").textContent = ""; el("wlTabSub").textContent = "";
+  if (!d) { el("wlTable").innerHTML = `<div style="padding:14px;display:grid;gap:10px">${SK(90)}${SK(80)}${SK(85)}</div>`; return; }
+  const eq = d.eq || 1;
+  if (S.tab === "pos") {
+    if (!d.pos.length) { el("wlTable").innerHTML = empty("Nessuna posizione aperta", "Il wallet è flat in questo momento."); return; }
+    const t = table("pos", [
+      { k: "coin", l: "Coin", f: (p) => `${coinH(p.coin)}<small>${side(p.dir)}</small>`, v: (p) => bare(p.coin) },
+      { k: "sz", l: "Size", f: (p) => qty(p.sz), v: (p) => Math.abs(p.sz) },
+      { k: "ntl", l: "Valore", f: (p) => `${m$(p.ntl)}<small>${pcu(p.ntl / eq)} del conto</small>` },
+      { k: "entry", l: "Entrata", f: (p) => px(p.entry) },
+      { k: "mark", l: "Mark", f: (p) => px(p.mark) },
+      { k: "upnl", l: "PnL", f: (p) => `${s$(p.upnl)}<small>${pc(p.dir * (p.mark / p.entry - 1), 2)} prezzo</small>`, c: (p) => tone(p.upnl) },
+      { k: "roe", l: "ROE", f: (p) => pc(p.roe, 1), c: (p) => tone(p.roe) },
+      { k: "lev", l: "Leva", f: (p) => `${p.lev ?? "–"}x<small>${p.levType === "isolated" ? "isolato" : "cross"}</small>` },
+      { k: "liq", l: "Liquidazione", f: (p) => p.liq ? `${px(p.liq)}<small>${pc(p.liq / p.mark - 1)}</small>` : "–", v: (p) => p.liq ? Math.abs(p.liq / p.mark - 1) : null },
+      { k: "fund", l: "Funding", f: (p) => s$(-p.fund), c: (p) => tone(-p.fund), v: (p) => -p.fund },
+    ], d.pos, ["ntl", -1]);
+    put(t, t.rows, (p) => [`${side(p.dir)} ${coinH(p.coin)}`, `${p.lev ?? "–"}x, entrata ${px(p.entry)}`, m$(p.ntl), `PnL <span class="${tone(p.upnl)}">${s$(p.upnl)}</span>`]);
+    el("wlTabNote").textContent = "Funding: cumulato da quando la posizione è aperta (positivo = incassato). ROE = PnL sul margine della posizione. Tocca un'intestazione per ordinare.";
+  } else if (S.tab === "ord") {
+    if (!d.ord.length) { el("wlTable").innerHTML = empty("Nessun ordine aperto", "Nessun limit, take profit o stop nel book su nessun DEX."); return; }
+    const t = table("ord", [
+      { k: "coin", l: "Coin", f: (o) => `${coinH(o.coin)}<small>${act(o.dir)}</small>`, v: (o) => bare(o.coin) },
+      { k: "rl", l: "Ruolo", f: (o) => `<span class="rl ${o.rk}">${esc(o.rl)}</span>` },
+      { k: "type", l: "Tipo", f: (o) => `${esc(o.type)}${o.reduce ? "<small>solo riduzione</small>" : ""}` },
+      { k: "price", l: "Prezzo", f: (o) => px(o.price) },
+      { k: "dist", l: "Distanza", f: (o) => pc(o.dist, 2), v: (o) => Math.abs(o.dist) },
+      { k: "sz", l: "Size", f: (o) => qty(o.sz) },
+      { k: "val", l: "Valore", f: (o) => m$(o.val) },
+      { k: "t", l: "Inserito", f: (o) => o.t ? `${dt(o.t)}<small>${ago(o.t)}</small>` : "–" },
+    ], d.ord, ["dist", 1]);
+    put(t, t.rows, (o) => [`${act(o.dir)} ${coinH(o.coin)}`, `${esc(o.rl)}, ${px(o.price)}`, m$(o.val), pc(o.dist, 2)]);
+    el("wlTabNote").textContent = "Distanza dal prezzo attuale. Ruolo rispetto alla posizione sulla stessa coin: nuova entrata, aumenta, riduce o chiude, take profit, stop, entrata a innesco.";
+  } else if (S.tab === "trade") {
+    const all = byOrder(d.fills.filter((f) => !S.trCoin || f.coin === S.trCoin));
+    const coins = [...new Set(d.fills.map((f) => f.coin))].sort();
+    el("wlFilt").innerHTML = `<select id="wlTrCoin" aria-label="Coin"><option value="">Tutte le coin</option>${coins.map((c) => `<option value="${esc(c)}"${c === S.trCoin ? " selected" : ""}>${esc(bare(c))}${dexOf(c) ? " · " + esc(dexOf(c)) : ""}</option>`).join("")}</select>`;
+    if (!all.length) { el("wlTable").innerHTML = empty("Nessun trade", "Nessun fill negli ultimi 2.000."); return; }
+    const t = table("trade", [
+      { k: "t", l: "Ora", f: (o) => `${dt(o.t)}<small>${o.n} fill${o.t - o.t0 > 60e3 ? " · " + dur(o.t - o.t0) : ""}</small>` },
+      { k: "coin", l: "Coin", f: (o) => coinH(o.coin), v: (o) => bare(o.coin) },
+      { k: "dirTxt", l: "Operazione", f: (o) => `<span class="${o.side > 0 ? "pos" : "neg"}">${esc(DIR_IT[o.dirTxt] || o.dirTxt || (o.side > 0 ? "Compra" : "Vende"))}</span><small>${o.crossed ? "a mercato" : "limit"}</small>` },
+      { k: "px", l: "Prezzo medio", f: (o) => px(o.px) },
+      { k: "sz", l: "Size", f: (o) => qty(o.sz) },
+      { k: "val", l: "Valore", f: (o) => m$(o.val) },
+      { k: "pnl", l: "PnL chiuso", f: (o) => Math.abs(o.pnl) > 0.005 ? s$(o.pnl) : "–", c: (o) => tone(o.pnl) },
+      { k: "fee", l: "Commissioni", f: (o) => m$(o.fee) },
+    ], all, ["t", -1]);
+    const trN = isMob() ? Math.min(S.trN, S.trN === 120 ? 30 : S.trN) : S.trN;
+    put(t, t.rows.slice(0, trN), (o) => [`${coinH(o.coin)} <span class="${o.side > 0 ? "pos" : "neg"}" style="font-weight:500">${esc(DIR_IT[o.dirTxt] || o.dirTxt || (o.side > 0 ? "Compra" : "Vende"))}</span>`, `${dt(o.t)}, ${px(o.px)}`, m$(o.val),
+      Math.abs(o.pnl) > 0.005 ? `<span class="${tone(o.pnl)}">${s$(o.pnl)}</span>` : ""], t.rows.length > trN ? `<button class="wl-moreb" type="button" data-trmore>Mostra altri (${t.rows.length - trN})</button>` : "");
+    const span = d.fills.length ? d.fills[d.fills.length - 1].time - d.fills[0].time : 0;
+    el("wlTabSub").textContent = `${all.length} ${all.length === 1 ? "ordine eseguito" : "ordini eseguiti"}`;
+    el("wlTabNote").textContent = `Fill raggruppati per ordine (stesso id): ultimi ${d.fills.length} fill, ${dur(span)} di storico. Il PnL chiuso è al lordo delle commissioni.`;
+  } else if (S.tab === "fund") {
+    const per = {};
+    for (const r of d.funding) { const x = r.delta || {}; if (x.type !== "funding") continue; const o = per[x.coin] ||= { coin: x.coin, n: 0, usd: 0, rate: 0, last: 0, lastRate: 0 };
+      o.n++; o.usd += +x.usdc; o.rate += +x.fundingRate; if (r.time > o.last) { o.last = r.time; o.lastRate = +x.fundingRate; } }
+    const rows = Object.values(per).map((o) => Object.assign(o, { avg: o.rate / o.n }));
+    const tot = rows.reduce((a, o) => a + o.usd, 0), t0 = d.funding[0]?.time;
+    el("wlTabSub").textContent = rows.length ? `${s$(tot)} dal ${t0 ? dt(t0) : "–"}` : "";
+    if (!rows.length) { el("wlTable").innerHTML = empty("Nessun pagamento di funding", "Negli ultimi 7 giorni."); return; }
+    const t = table("fund", [
+      { k: "coin", l: "Coin", f: (o) => coinH(o.coin), v: (o) => bare(o.coin) },
+      { k: "usd", l: "Totale", f: (o) => s$(o.usd), c: (o) => tone(o.usd) },
+      { k: "n", l: "Pagamenti", f: (o) => o.n },
+      { k: "avg", l: "Tasso medio /h", f: (o) => pc(o.avg, 4) },
+      { k: "lastRate", l: "Ultimo tasso", f: (o) => `${pc(o.lastRate, 4)}<small>${o.last ? ago(o.last) : ""}</small>` },
+    ], rows, ["usd", 1]);
+    put(t, t.rows, (o) => [coinH(o.coin), `${o.n} pagamenti, ultimo ${pc(o.lastRate, 4)}/h`, s$(o.usd), "", tone(o.usd)]);
+    el("wlTabNote").textContent = `Funding orario degli ultimi 7 giorni per coin: positivo = incassato, negativo = pagato. Totale ${s$(tot)}.`;
+  } else if (S.tab === "mov") {
+    if (!d.ledger) { el("wlTable").innerHTML = `<div style="padding:14px;display:grid;gap:10px">${SK(80)}${SK(60)}</div>`; loadLedger(S.sel); return; }
+    const me = S.sel, rows = d.ledger.map((r) => { const x = r.delta || {}, t = x.type;
+      const amt = +(x.usdc ?? x.usdcValue ?? x.amount ?? 0);
+      const inflow = t === "deposit" || (t === "send" || t === "spotTransfer" || t === "internalTransfer") && (x.destination || "").toLowerCase() === me && (x.user || "").toLowerCase() !== me;
+      const internal = (t === "send" && (x.user || "").toLowerCase() === me && (x.destination || "").toLowerCase() === me) || t === "accountClassTransfer" || t === "subAccountTransfer";
+      const label = { deposit: "Deposito", withdraw: "Prelievo", send: internal ? "Spostamento tra DEX" : "Trasferimento", accountClassTransfer: "Perp ↔ spot", internalTransfer: "Trasferimento", spotTransfer: "Trasferimento spot", subAccountTransfer: "Sub-account", liquidation: "Liquidazione", vaultDeposit: "Deposito vault", vaultWithdraw: "Prelievo vault", rewardsClaim: "Ricompense" }[t] || t;
+      const other = x.destination && x.destination.toLowerCase() !== me ? x.destination : x.user && x.user.toLowerCase() !== me ? x.user : "";
+      const det = t === "send" ? (internal ? `${x.sourceDex || "perp"} → ${x.destinationDex || "perp"}` : (inflow ? "da " : "a ") + short(other || "")) : t === "accountClassTransfer" ? (x.toPerp ? "verso perp" : "verso spot") : x.fee ? "fee " + m$(+x.fee) : "";
+      return { t: r.time, label, amt: internal ? amt : inflow ? amt : -Math.abs(amt), internal, det, hash: r.hash };
+    });
+    const dep = rows.filter((r) => r.label === "Deposito").reduce((a, r) => a + r.amt, 0), wd = rows.filter((r) => r.label === "Prelievo").reduce((a, r) => a + r.amt, 0);
+    el("wlTabSub").textContent = `30 giorni · depositi ${m$(dep)} · prelievi ${m$(Math.abs(wd))}`;
+    if (!rows.length) { el("wlTable").innerHTML = empty("Nessun movimento", "Nessun deposito, prelievo o trasferimento negli ultimi 30 giorni."); return; }
+    const t = table("mov", [
+      { k: "t", l: "Data", f: (r) => dt(r.t) },
+      { k: "label", l: "Tipo", f: (r) => esc(r.label) },
+      { k: "amt", l: "Importo", f: (r) => r.internal ? m$(r.amt) : s$(r.amt), c: (r) => r.internal ? "" : tone(r.amt) },
+      { k: "det", l: "Dettaglio", f: (r) => `<span class="mut">${esc(r.det)}</span>` },
+    ], rows, ["t", -1]);
+    put(t, t.rows.slice(0, S.movN), (r) => [esc(r.label), `${dt(r.t)}${r.det ? ", " + esc(r.det) : ""}`, r.internal ? m$(r.amt) : s$(r.amt), "", r.internal ? "" : tone(r.amt)],
+      t.rows.length > S.movN ? `<button class="wl-moreb" type="button" data-movmore>Mostra altri (${t.rows.length - S.movN})</button>` : "");
+    el("wlTabNote").textContent = "Depositi, prelievi e trasferimenti degli ultimi 30 giorni (registro non-funding di Hyperliquid). Spiegano salti del valore del conto che non sono PnL.";
+  }
+}
+async function loadLedger(a) {
+  const d = S.data[a]; if (!d || d.ledgerLoading) return;
+  d.ledgerLoading = true;
+  const r = await q("userNonFundingLedgerUpdates", a, null, { startTime: Date.now() - 30 * 864e5 });
+  d.ledgerLoading = false; d.ledger = r || []; d.ledgerAt = Date.now();
+  if (a === S.sel && S.tab === "mov" && S.visible) renderTabs();
+}
+
+/* ─────────── render: ultime mosse ─────────── */
+function renderAct() {
+  const d = D();
+  let evs = null, src = "";
+  if (d) { const mv = movesOf(d.fills), big = mv.filter((e) => e.dval >= 10000 || ((e.type === "APERTURA" || e.type === "CHIUSURA" || e.type === "INVERSIONE") && Math.max(e.ntl, Math.abs(e.start) * e.vwap) >= 10000));
+    evs = (big.length >= 3 ? big : mv).slice().sort((x, y) => y.t1 - x.t1).slice(0, 40); src = big.length >= 3 ? "dai fill · mosse da 10k $ in su" : "dai fill"; }
+  el("wlActSub").textContent = src;
+  if (!evs) { el("wlAct").innerHTML = SK(80) + SK(60); return; }
+  if (!evs.length) { el("wlAct").innerHTML = `<p class="note" style="margin:0">Nessuna mossa negli ultimi fill.</p>`; return; }
+  el("wlAct").innerHTML = evs.slice(0, isMob() ? 6 : 15).map((e) => { const k = EVC[e.type] || ["", ""], delta = e.end - e.start;
+    const sub = e.type === "CHIUSURA" ? `${qty(e.start)} chiusi @ ${px(e.vwap)}${Math.abs(e.pnl) >= 1 ? ` · PnL ${s$(e.pnl)}` : ""}`
+      : `${delta > 0 ? "+" : "−"}${qty(delta)} @ ${px(e.vwap)} → ${posTxt(e.end, e.coin)}${(e.type === "RIDUZIONE" || e.type === "INVERSIONE") && Math.abs(e.pnl) >= 1 ? ` · PnL ${s$(e.pnl)}` : ""}`;
+    return `<div class="ev ${k[0]}"><span class="dot"></span><span class="what"><b>${esc(evTitle(e))}${dexOf(e.coin) ? `<span class="dx">${esc(dexOf(e.coin))}</span>` : ""}</b><small>${sub}${e.n > 1 ? ` · ${e.n} fill` : ""}</small></span>
+      <span class="px">${m$(e.dval)}<small>${hm(e.t1)} · ${ago(e.t1)}</small></span></div>`; }).join("");
+}
+
+/* ─────────── alert ─────────── */
+const AL = Object.assign({ on: false, min: 50000, wallets: WL.map((w) => w.a) }, store.get("radarWl.alert", {}));
+const saveAL = () => store.set("radarWl.alert", AL);
+const canNotify = () => typeof Notification === "function";
+function alertHtml() {
+  const perm = canNotify() ? Notification.permission : "n/d";
+  return `
+  <div class="card"><h3>Telegram <span class="wl-st ok">ogni 5 minuti</span></h3>
+    <p>Il controllo su GitHub (radar/wallets.py) segue <b>${WL.map((w) => esc(w.n)).join(", ")}</b>: posizioni nuove, chiuse o girate, variazioni di size da 50.000 $ e almeno il 25%, ordini nuovi da 100.000 $. Non avvisa a ogni fill. Un wallet appena entrato viene solo registrato al primo giro.</p>
+    <p>Quando lo scout trova un candidato migliore arriva un messaggio con il confronto: approvi tu con /sostituisci.</p></div>
+  <div class="card"><h3>Notifiche in questo browser <span class="wl-st ${AL.on && perm === "granted" ? "ok" : perm === "denied" ? "ko" : ""}">${AL.on && perm === "granted" ? "attive" : perm === "denied" ? "bloccate" : "spente"}</span></h3>
+    <p>Mentre la pagina è aperta controlla ogni minuto i wallet scelti: <b>nuovi fill</b> e <b>nuovi ordini</b> sopra la soglia. Su iPhone serve aggiungere il sito alla schermata Home.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="wl-btn ${AL.on ? "on" : ""}" type="button" data-al="toggle">${AL.on ? "Disattiva" : "Attiva notifiche"}</button>
+      <button class="wl-btn" type="button" data-al="test">Prova</button>
+      <div class="seg" role="group" aria-label="Soglia">${[10000, 50000, 250000, 1000000].map((v) => `<button type="button" data-almin="${v}" aria-pressed="${AL.min === v}">${m$(v)}</button>`).join("")}</div>
+    </div>
+    ${!canNotify() ? `<p class="neg">Questo browser non supporta le notifiche: gli avvisi compaiono solo dentro la pagina.</p>` : perm === "denied" ? `<p class="neg">Le notifiche sono bloccate nelle impostazioni del sito.</p>` : ""}
+    <div class="list">${WL.map((w) => `<label class="row"><input type="checkbox" data-alw="${w.a}"${AL.wallets.includes(w.a) ? " checked" : ""}><span class="k">${esc(w.n)}<small>Posto ${w.slot}</small></span></label>`).join("")}</div>
+    <p class="wlAlLog">${watch.last ? `Ultimo controllo ${ago(watch.last)}${watch.err ? ", " + esc(watch.err) : ""}.` : ""}</p>
+  </div>`;
+}
+function renderAlert() {
+  const perm = canNotify() ? Notification.permission : "n/d", on = AL.on && perm === "granted";
+  el("wlAlSub").textContent = on ? "notifiche del browser attive" : "";
+  el("wlAlert").innerHTML = alertHtml();
+  el("wlAlMini").innerHTML = `<span><b>Telegram ogni 5 minuti</b><small>Notifiche del browser ${on ? "attive" : "spente"}</small></span><span class="more">Imposta</span>`;
+  const sh = document.getElementById("wlSheet");
+  if (sh && sh.dataset.k === "alert" && sh.isConnected) sh.innerHTML = `<div class="wl-alerts">${alertHtml()}</div>`;
+}
+function toast(title, body) {
+  const box = el("wlToast"); if (!box || document.hidden) return;
+  const n = document.createElement("div"); n.innerHTML = `<b>${esc(title)}</b>${esc(body)}`; box.appendChild(n);
+  setTimeout(() => n.remove(), 9000);
+}
+function notify(title, body, tag) {
+  if (AL.on && canNotify() && Notification.permission === "granted") { try { new Notification(title, { body, tag, icon: "icon-192.png" }); } catch (_) {} }
+  if (!document.hidden && !el("v-hyperliquid").hidden) toast(title, body);
+}
+// osservatore: per ogni wallet scelto, fill nuovi e ordini nuovi rispetto al giro precedente (il primo giro fa solo da base)
+const watch = { timer: 0, base: {}, last: 0, err: "" };
+async function watchTick() {
+  if (!AL.on) return;
+  watch.err = "";
+  for (const a of AL.wallets) {
+    const w = byA[a]; if (!w) continue;
+    const b = watch.base[a];
+    try {
+      const [fills, ords] = await Promise.all([
+        post({ type: "userFillsByTime", user: a, startTime: b ? b.t : Date.now() - 60e3, aggregateByTime: true }),
+        post({ type: "frontendOpenOrders", user: a }),
+      ]);
+      const oids = new Set(ords.map((o) => o.oid));
+      if (b) {
+        const fresh = fills.filter((f) => f.time > b.t || (f.time === b.t && !b.tids.has(f.tid)));
+        for (const e of movesOf(fresh.sort((x, y) => x.time - y.time))) {
+          if (e.dval < AL.min && !((e.type === "APERTURA" || e.type === "CHIUSURA" || e.type === "INVERSIONE") && Math.max(e.ntl, Math.abs(e.start) * e.vwap) >= AL.min)) continue;
+          notify(`${w.n}: ${evTitle(e)}`, `${m$(e.dval)} @ ${px(e.vwap)} → ${posTxt(e.end, e.coin).replace(/<[^>]+>/g, "")}`, a + e.coin + e.t1);
+        }
+        for (const o of ords) {
+          if (b.oids.has(o.oid)) continue;
+          const price = +(o.isTrigger ? o.triggerPx : o.limitPx), val = +o.sz * price;
+          if (val < AL.min && !(o.isPositionTpsl && AL.min <= 50000)) continue;
+          notify(`${w.n}: nuovo ordine ${bare(o.coin)}`, `${o.side === "B" ? "Compra" : "Vende"} ${m$(val)} a ${px(price)} · ${o.orderType || "Limit"}${o.reduceOnly ? " · solo riduzione" : ""}`, a + o.oid);
+        }
+      }
+      const tMax = fills.reduce((m, f) => Math.max(m, f.time), b ? b.t : Date.now() - 60e3);
+      watch.base[a] = { t: tMax, tids: new Set(fills.filter((f) => f.time === tMax).map((f) => f.tid)), oids };
+    } catch (e) { watch.err = `${w.n}: ${e.message || e}`; }
+  }
+  watch.last = Date.now();
+  document.querySelectorAll(".wlAlLog").forEach((lg) => { lg.textContent = `Ultimo controllo ${ago(watch.last)}${watch.err ? ", " + watch.err : ""}.`; });
+}
+function watchStart() {
+  clearInterval(watch.timer); watch.timer = 0;
+  if (!AL.on) return;
+  watchTick(); watch.timer = setInterval(watchTick, 60e3);
+}
+async function alertAction(k) {
+  if (k === "toggle") {
+    if (!AL.on && canNotify() && Notification.permission === "default") { try { await Notification.requestPermission(); } catch (_) {} }
+    AL.on = !AL.on; saveAL(); watch.base = {}; watchStart();
+  } else if (k === "test") {
+    if (canNotify() && Notification.permission === "default") { try { await Notification.requestPermission(); } catch (_) {} }
+    const was = AL.on; AL.on = true; notify("Radar · prova", "Le notifiche dei wallet arrivano così.", "radar-test"); AL.on = was;
+  }
+  renderAlert();
+}
+
+/* ─────────── ciclo ─────────── */
+function renderAll() { renderPicker(); renderMini(); renderHero(); renderNext(); renderPerf(); renderTabs(); renderAct(); renderCand(); }
+
+/* ─────────── candidati: proposte di radar/scout.py, approvazione via Telegram ─────────── */
+const SC = () => (typeof R !== "undefined" && R && R.scout) ? R.scout : null;
+const p0 = (x, d = 0) => fin(x) ? nf(x * 100, d) + "%" : "–";
+const r2f = (x) => fin(x) ? nf(x, 2) : "–";
+const actf = (m) => fin(m.fills_day) ? `${nf(m.fills_day, m.fills_day >= 10 ? 0 : 1)}/g` : "–";
+// metriche dello scout non affidabili: segnalate, non mostrate come fatti
+// - leva dai perp quando il conto perp vale meno del 10% del valore totale (il resto è spot/vault)
+// - drawdown e R² quando nell'anno i depositi/prelievi superano il valore del conto: flag dello scout se c'è,
+//   altrimenti dedotto: prelievi netti ≥ PnL 1 anno − valore attuale, quindi PnL > 2 × valore ⇒ prelievi > valore
+const UNREL = "metrica non affidabile (grandi depositi/prelievi)";
+const levBad = (m) => { const pv = fin(m?.perp_value) ? m.perp_value : m?.ch_value; return fin(pv) && fin(m?.value) && m.value > 0 && pv / m.value < 0.1; };
+const flowBad = (m) => !!m && (m.flows_big === true || m.big_flows === true || m.unreliable === true || (fin(m.flow_ratio) && m.flow_ratio > 1)
+  || (fin(m.pnl_1y) && fin(m.value) && m.value > 0 && m.pnl_1y - m.value > m.value));
+const naS = (t) => `<small class="wl-na" title="${t}">non affidabile</small>`;
+const ddf = (m) => flowBad(m) ? naS(UNREL) : p0(m?.dd);
+const r2x = (m) => flowBad(m) ? naS(UNREL) : r2f(m?.r2);
+const levf = (m) => levBad(m) ? naS("leva non affidabile: il conto perp è meno del 10% del valore totale") : fin(m?.lev) ? lev(m.lev) : "–";
+const unrelNote = (ms, withLev = true) => { const f = ms.some(flowBad), l = withLev && ms.some(levBad);
+  return f || l ? `<p class="foot">${f ? "Drawdown e R² “non affidabile”: nell'ultimo anno depositi o prelievi più grandi del valore del conto falsano la curva time-weighted (metrica non affidabile per grandi depositi/prelievi)." : ""}${f && l ? " " : ""}${l ? "Leva “non affidabile”: il conto perp vale meno del 10% del valore totale, la leva calcolata sui soli perp non descrive il conto." : ""}</p>` : ""; };
+// righe del confronto: stesse metriche dello scout; meglio = "hi" (più alto) o "lo" (più basso)
+const CMP = [
+  ["Punteggio", (e) => fin(e.score) ? nf(e.score, 0) : "–", (e) => e.score, "hi"],
+  ["Rendimento 1 anno", (e) => pc(e.metrics?.ret_1y, 0), (e) => e.metrics?.ret_1y, "hi"],
+  ["Max drawdown", (e) => ddf(e.metrics), (e) => flowBad(e.metrics) ? null : e.metrics?.dd, "lo"],
+  ["R² della crescita", (e) => r2x(e.metrics), (e) => flowBad(e.metrics) ? null : e.metrics?.r2, "hi"],
+  ["Periodi positivi", (e) => p0(e.metrics?.pos), (e) => e.metrics?.pos, "hi"],
+  ["Funding sul PnL", (e) => fin(e.metrics?.fund_pnl) ? p0(e.metrics.fund_pnl, 1) : "–", (e) => e.metrics?.fund_pnl, "lo"],
+  ["Valore", (e) => m$(e.metrics?.value), (e) => e.metrics?.value, null],
+  ["Ultimi 30 giorni", (e) => pc(e.metrics?.ret_30d, 1), (e) => e.metrics?.ret_30d, "hi"],
+  ["Leva attuale", (e) => levf(e.metrics), (e) => e.metrics?.lev, null],
+  ["Attività (fill)", (e) => actf(e.metrics || {}), (e) => e.metrics?.fills_day, null],
+];
+function cmpTable(cols) {   // cols: [[intestazione, {score, metrics, fails}]]
+  const best = (get, dir) => { if (!dir || cols.length < 2) return null; const v = cols.map(([, e]) => get(e)).filter(fin); if (v.length < 2) return null; return dir === "hi" ? Math.max(...v) : Math.min(...v); };
+  return `<div class="scroll"><table class="grid wl-cmp"><thead><tr><th></th>${cols.map(([h]) => `<th>${h}</th>`).join("")}</tr></thead><tbody>
+    ${CMP.map(([l, f, get, dir]) => { const b = best(get, dir); return `<tr><td>${l}</td>${cols.map(([, e]) => `<td class="${b != null && get(e) === b ? "win" : ""}">${f(e)}</td>`).join("")}</tr>`; }).join("")}
+    <tr><td>Filtri</td>${cols.map(([, e]) => `<td>${e.fails && e.fails.length ? `<small style="white-space:normal">${esc(e.fails.join(", "))}</small>` : "passa"}</td>`).join("")}</tr>
+  </tbody></table></div>${unrelNote(cols.map(([, e]) => e.metrics))}`;
+}
+const cmdBox = (c) => `<div class="wl-cmd"><code>${esc(c)}</code><button class="wl-btn" type="button" data-copy="${esc(c)}" data-lbl="Copia">Copia</button></div>`;
+const links = (a) => `<div class="wl-cmd"><a class="wl-btn" href="https://hyperdash.com/address/${esc(a)}" target="_blank" rel="noopener">Hyperdash ↗</a><a class="wl-btn" href="https://hypurrscan.io/address/${esc(a)}" target="_blank" rel="noopener">Hypurrscan ↗</a><code>${esc(short(a))}</code></div>`;
+function openCand(i) {
+  const c = (WV()?.candidates || [])[i]; if (!c) return;
+  sheet(`${c.name}: posto ${c.slot}`, `<div class="wl-an">
+    <p style="margin:0">Prenderebbe il posto di <b>${esc(c.vs_name)}</b>. ${esc(c.reason)}.</p>
+    ${cmpTable([[esc(c.name), c], [esc(c.vs_name), { score: c.vs_score, metrics: c.vs_metrics, fails: c.vs_fails }]])}
+    <p class="foot">Rendimento time-weighted (depositi e prelievi non contano), drawdown sull'ultimo anno e sull'ultimo mese, funding pagato in % del PnL dello stesso periodo. In verde il migliore.</p>
+    <h3>Per approvare, scrivi al bot</h3>${cmdBox(`/sostituisci ${c.slot} ${c.id}`)}
+    <p class="foot">Facoltativo un nome: /sostituisci ${c.slot} ${esc(c.id)} Nome. Per scartarlo (30 giorni): /scarta ${esc(c.id)}. Il bot risponde entro un'ora (giro orario); la pagina si aggiorna al giro successivo.</p>
+    <h3>Il wallet</h3>${links(c.address)}
+    <p class="foot">Proposto ${artD("dal", esc(dIt(c.first || c.date)))}${c.display ? `, nome in classifica ${esc(c.display)}` : ""}${c.leader_of ? `, leader del vault ${esc(c.leader_of)}` : ""}.</p></div>`);
+}
+// avviso sotto i testi generati dallo scout (che citano drawdown, R² e leva come fatti)
+const cav = (r) => { const m = r && r.metrics; if (!m) return ""; const f = flowBad(m), l = levBad(m); if (!f && !l) return "";
+  return `<p class="foot" style="color:var(--orange)">Per ${esc(r.name)}: ${[f ? "drawdown e R² sono una metrica non affidabile (grandi depositi/prelievi)" : "", l ? "la leva è calcolata su un conto perp sotto il 10% del valore totale, non affidabile" : ""].filter(Boolean).join("; ")}.</p>`; };
+function openReview() {
+  const rv = WV()?.review; if (!rv) return;
+  const rows = (rv.rows || []).map((r) => { const m = r.metrics || {}, ch = r.address === rv.chosen;
+    return `<tr><td>${ch ? "<b>" : ""}${esc(r.name)}${ch ? "</b> ✓" : ""}<small>${esc(r.group || "")}${r.fails && r.fails.length ? ": " + esc(r.fails.join(", ")) : ""}</small></td><td>${fin(r.score) ? nf(r.score, 0) : "–"}</td><td class="${tone(m.ret_1y)}">${pc(m.ret_1y, 0)}</td><td>${ddf(m)}</td><td>${r2x(m)}</td><td>${p0(m.pos)}</td><td>${fin(m.fund_pnl) ? p0(m.fund_pnl, 1) : "–"}</td><td>${m$(m.value)}</td><td>${levf(m)}</td><td>${actf(m)}</td><td class="${tone(m.ret_30d)}">${pc(m.ret_30d, 0)}</td></tr>`; }).join("");
+  sheet(`Posto ${rv.slot}: confronto`, `<div class="wl-an">
+    <p style="margin:0">${esc(rv.note || "")}</p>${cav((rv.rows || []).find((r) => r.address === rv.chosen))}
+    <div class="scroll"><table class="grid wl-rv"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Periodi +</th><th>Funding</th><th>Valore</th><th>Leva</th><th>Fill</th><th>30g</th></tr></thead><tbody>${rows}</tbody></table></div>${unrelNote((rv.rows || []).map((r) => r.metrics || {}))}
+    <p class="foot">Confronto ${artD("del", esc(dIt(rv.date || "")))} con le metriche dello scout: rendimento time-weighted a 1 anno, max drawdown, R² della crescita, quota di periodi di 2 settimane positivi, funding pagato sul PnL, fill al giorno.</p>
+    <h3>Per confermare la scelta</h3>${cmdBox(`/conferma ${rv.slot}`)}
+    ${(rv.options || []).length ? `<h3>Oppure un'alternativa</h3>${rv.options.map((o) => `<div class="wl-cmd"><span style="min-width:7em">${esc(o.was || o.name)}</span><code>/sostituisci ${rv.slot} ${esc(o.id)}</code></div>`).join("")}` : ""}</div>`);
+}
+function openScout() {
+  const sc = SC() || {}, c = sc.criteria || {}, th = sc.thresholds || {}, tk = sc.track || {}, sn = sc.scanned || {};
+  const hz = ["7", "30", "90"].map((h) => { const x = tk[h] || {};
+    return x.n ? `<tr><td>${h} giorni<small>${x.n} selezioni</small></td><td class="${tone(x.pick)}">${pc(x.pick, 1)}</td><td>${pc(x.passed, 1)}</td><td>${pc(x.bench, 1)}</td><td>${p0(x.beat_bench)}</td></tr>`
+      : `<tr><td>${h} giorni</td><td colspan="4" class="mut">prima verifica ${h} giorni dopo la prima selezione</td></tr>`; }).join("");
+  const top = (sc.picks || []).map((p) => `<tr><td>${esc(short(p.address))}<small>${esc(p.name)}</small></td><td>${fin(p.score) ? nf(p.score, 0) : "–"}</td><td class="${tone(p.metrics?.ret_1y)}">${pc(p.metrics?.ret_1y, 0)}</td><td>${ddf(p.metrics)}</td><td>${r2x(p.metrics)}</td><td>${m$(p.metrics?.value)}</td></tr>`).join("");
+  sheet("Come cerca lo scout", `<div class="wl-an">
+    <h3>Ogni giorno</h3><ul>
+      <li>Legge la classifica di Hyperliquid (${nf(sn.leaderboard_1m || 0)} conti da ${m$(c.min_value || 1e6)} in su) e i vault; ne analizza ${sn.analyzed ?? "–"}.</li>
+      <li>Filtri: ${c.hist_days || 300}+ giorni di storia, attivo negli ultimi 30 giorni, metà del PnL dai perp, rendimento 1 anno oltre ${p0(th.ret)}, drawdown fino a ${p0(th.dd)}, R² da ${r2f(th.r2)}, funding fino al ${p0(th.fund)} del PnL.</li>
+      <li>Punteggio 0–100: rendimento su drawdown 40%, regolarità 25%, periodi positivi 20%, funding basso 15%.</li>
+      <li>Rianalizza i 3 osservati. Propone un candidato solo se supera un osservato del ${p0(c.margin || 0.15)} di punteggio, o se l'osservato non passa i filtri. Non sostituisce mai da solo.</li></ul>
+    <h3>I 3 migliori di oggi per lo scout</h3>
+    <div class="scroll"><table class="grid"><thead><tr><th>Wallet</th><th>Punti</th><th>1 anno</th><th>DD</th><th>R²</th><th>Valore</th></tr></thead><tbody>${top || `<tr><td colspan="6">–</td></tr>`}</tbody></table></div>${unrelNote((sc.picks || []).map((p) => p.metrics || {}), false)}
+    <h3>Verifica delle scelte passate</h3>
+    <div class="scroll"><table class="grid"><thead><tr><th>Dopo</th><th>Scelte</th><th>Chi passava</th><th>Conti ≥ 1M</th><th>Batte ≥ 1M</th></tr></thead><tbody>${hz}</tbody></table></div>
+    <p class="foot">Media delle 3 scelte del giorno contro la mediana di chi passava i filtri e di un campione fisso di conti da 1M $. I pesi del punteggio si correggono al massimo ogni 30 giorni. Non è un consiglio di investimento.</p></div>`);
+}
+function renderCand() {
+  const wv = WV(), cs = (wv && wv.candidates) || [], rv = wv && wv.review, sc = SC();
+  el("wlCandSub").textContent = sc && sc.date ? `scout ${artD("del", dIt(sc.date))}` : "";
+  const vsOf = (c) => ({ score: c.vs_score, metrics: c.vs_metrics || {} });
+  const kv = (l, f, c) => `<div><small>${l}</small><b>${f(c)}</b><small>${esc(c.vs_name)} ${f(vsOf(c))}</small></div>`;
+  const cards = cs.map((c, i) => `<button class="card tapCard" type="button" data-cand="${i}">
+      <span class="t"><b>${esc(c.name)}</b><span class="wl-tag" style="color:var(--tint);background:color-mix(in srgb,var(--tint) 12%,transparent)">posto ${c.slot}</span></span>
+      <span class="y">Al posto di ${esc(c.vs_name)}${c.vs_fails && c.vs_fails.length ? ", che non passa i filtri" : ""}. Punti ${fin(c.score) ? nf(c.score, 0) : "–"} contro ${fin(c.vs_score) ? nf(c.vs_score, 0) : "–"}.</span>
+      <span class="wl-kv">${kv("1 anno", (e) => pc(e.metrics?.ret_1y, 0), c)}${kv("Max DD", (e) => ddf(e.metrics), c)}${kv("R²", (e) => r2x(e.metrics), c)}${kv("30 giorni", (e) => pc(e.metrics?.ret_30d, 1), c)}</span>
+      <span class="more">Confronto e comando per approvare</span></button>`).join("");
+  const rvCard = rv ? `<button class="card tapCard" type="button" data-review>
+      <span class="t"><b>Posto ${rv.slot}: ${esc((WL[rv.slot - 1] || {}).n || "")}</b><span class="wl-tag">provvisorio, da approvare</span></span>
+      <span class="y">Scelto fra ${(rv.rows || []).length} wallet con le metriche dello scout. Conferma con /conferma ${rv.slot}.</span>
+      <span class="more">Confronto completo</span></button>` : "";
+  const none = !cs.length ? `<div class="card"><span class="y" style="font-size:.88rem;color:var(--label2)">${wv ? "Nessun candidato oggi: nessun wallet batte chiaramente i 3 osservati." : "Lista dei candidati non ancora calcolata: arriva con il prossimo giro dello scout."}</span></div>` : "";
+  el("wlCand").innerHTML = rvCard + cards + none + `<button class="card tapCard wl-pmini" type="button" data-scout style="display:flex"><span><b>Come cerca lo scout</b><small>Criteri, i 3 migliori di oggi, verifica a 7, 30 e 90 giorni</small></span><span class="more">Apri</span></button>`;
+}
+function tickAgo() {
+  const d = D(), on = d && (Date.now() - d.t) < 120e3 && !S.err, txt = !d ? (S.err ? "non disponibile" : "caricamento") : "aggiornato " + ago(d.t);
+  for (const lv of [el("wlLive"), el("wlLive2")]) { if (!lv) continue; lv.className = "live" + (on ? " on" : ""); lv.textContent = txt; }
+}
+async function refresh(full) {
+  const w = W();
+  if (S.loading === w.a) return;
+  S.loading = w.a;
+  try { await loadWallet(w, full); S.err = null; if (backoff > 1) backoff = Math.max(1, backoff / 2); }
+  catch (e) { S.err = e.message === "429" ? "troppe richieste, rallento" : (e.message || "errore"); }
+  if (S.loading === w.a) S.loading = null;
+  if (W() === w && S.visible) { renderAll(); tickAgo(); }
+}
+function schedule() {
+  stopTimers();
+  const loop = () => { S.timers[0] = setTimeout(async () => { if (!document.hidden) await refresh(false); loop(); }, REFRESH * backoff); };
+  loop();
+  S.timers[1] = setInterval(tickAgo, 1000);
+  S.timers[2] = setInterval(() => { if (!document.hidden) loadOv(); }, 60e3);
+}
+function stopTimers() { clearTimeout(S.timers[0]); clearInterval(S.timers[1]); clearInterval(S.timers[2]); S.timers = []; }
+function select(a) {
+  if (!byA[a] || a === S.sel) return;
+  S.sel = a; store.set("radarWl.sel", a); S.err = null; S.mAll = false; S.trCoin = ""; S.trN = 120; S.movN = 40; S.ordAll = false;
+  renderAll(); tickAgo(); refresh(false); loadOv();
+}
+const onVis = () => { if (!document.hidden && S.visible) refresh(false); };
+
+// gestori condivisi da pagina e pannelli (openSheet sta fuori da #v-hyperliquid)
+async function onClick(e) {
+  const th = e.target.closest("th.s");
+  if (th) {   // ordinamento delle tabelle
+    const id = th.dataset.t, k = th.dataset.k, st = S.sort[id] || {};
+    S.sort[id] = { k, d: st.k === k ? -st.d : (k === "coin" || k === "dist" || k === "liq" ? 1 : -1) };
+    return renderTabs();
+  }
+  const t = e.target.closest("button,a"); if (!t || !e.currentTarget.contains(t)) return;
+  if (t.dataset.a) return select(t.dataset.a);
+  if (t.id === "wlMini") return openAccount();
+  if (t.id === "wlPerfMini") { S.perfOpen = !S.perfOpen; renderPerf(); if (S.perfOpen) setTimeout(() => { renderPerf(); chart && chart.timeScale().fitContent(); }, 60); return; }
+  if (t.id === "wlAlMini") { const n = sheet("Alert", `<div class="wl-alerts">${alertHtml()}</div>`); n.dataset.k = "alert"; return; }
+  if (t.dataset.deep != null) return sheet(`${W().n}: approfondimento`, S.deep || "<p>Dati in caricamento.</p>");
+  if (t.dataset.row != null) return openRow(+t.dataset.row);
+  if (t.dataset.cand != null) return openCand(+t.dataset.cand);
+  if (t.dataset.review != null) return openReview();
+  if (t.dataset.scout != null) return openScout();
+  if (t.dataset.mall != null) { S.mAll = true; return renderTabs(); }
+  if (t.dataset.tab) { S.mAll = false; S.tab = t.dataset.tab; store.set("radarWl.tab", S.tab); return renderTabs(); }
+  if (t.closest("#wlMetric") && t.dataset.v) { S.metric = t.dataset.v; el("wlMetric").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", b === t)); return renderPerf(); }
+  if (t.closest("#wlRange") && t.dataset.v) { S.range = t.dataset.v; el("wlRange").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", b === t)); return renderPerf(); }
+  if (t.dataset.copy != null) {
+    const lbl = t.textContent;
+    const ok = await (navigator.clipboard ? navigator.clipboard.writeText(t.dataset.copy).then(() => true, () => false) : Promise.resolve(false));
+    t.textContent = ok ? "Copiato" : "Seleziona e copia"; if (!ok) prompt("Copia", t.dataset.copy);
+    return setTimeout(() => { t.textContent = lbl; }, 1600);
+  }
+  if (t.dataset.retry != null) { backoff = 1; return refresh(true); }
+  if (t.dataset.ordall != null) { S.ordAll = !S.ordAll; return renderNext(); }
+  if (t.dataset.trmore != null) { S.trN += 200; return renderTabs(); }
+  if (t.dataset.movmore != null) { S.movN += 100; return renderTabs(); }
+  if (t.dataset.al) return alertAction(t.dataset.al);
+  if (t.dataset.almin) { AL.min = +t.dataset.almin; saveAL(); return renderAlert(); }
+}
+function onChange(e) {
+  if (e.target.id === "wlTrCoin") { S.trCoin = e.target.value; S.trN = 120; renderTabs(); }
+  if (e.target.dataset.alw) {
+    const a = e.target.dataset.alw; AL.wallets = e.target.checked ? [...new Set([...AL.wallets, a])] : AL.wallets.filter((x) => x !== a);
+    delete watch.base[a]; saveAL();
+  }
+}
+function bind() {
+  const root = el("v-hyperliquid");
+  root.addEventListener("click", onClick);
+  root.addEventListener("change", onChange);
+  document.addEventListener("visibilitychange", onVis);
+  let mob = isMob();   // passaggio telefono ↔ desktop (rotazione, finestra): tabelle e grafico cambiano forma
+  addEventListener("resize", () => { if (isMob() !== mob) { mob = isMob(); if (S.visible) { renderAll(); loadOv(); } } });
+}
+
+window.PAGES = window.PAGES || {};
+window.PAGES.hyperliquid = {
+  init() { loadWL(); bind(); renderAll(); renderAlert(); },
+  show() { S.visible = true; renderAll(); renderAlert(); tickAgo(); refresh(false); loadOv(); schedule(); setTimeout(() => chart && chart.timeScale().fitContent(), 80); },
+  hide() { S.visible = false; stopTimers(); },
+};
+// le notifiche scelte restano attive a pagina aperta anche se si parte da un'altra sezione
+if (AL.on) setTimeout(() => { loadWL(); watchStart(); }, 4000);
+})();
+</script>

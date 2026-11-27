@@ -1,0 +1,99 @@
+=== W3.2 com'è ===
+BTC dal 2018       242,755 $ · rend 2327.5% · CAGR 43.1% · DD -37.3% · CAGR/DD 1.16 · MAR 62.46 · op 23 · WR 77.3% · senza migliore 141,503 · senza 2 93,006
+BTC dal 2021        84,820 $ · rend 748.2% · CAGR 43.7% · DD -21.1% · CAGR/DD 2.07 · MAR 35.41 · op 14 · WR 92.3% · senza migliore 55,707 · senza 2 39,165
+ETH dal 2021        39,572 $ · rend 295.7% · CAGR 26.4% · DD -27.5% · CAGR/DD 0.96 · MAR 10.75 · op 15 · WR 57.1% · senza migliore 22,674 · senza 2 14,417
+BTC IS 2018-22      65,568 $ · rend 555.7% · CAGR 45.7% · DD -37.3% · CAGR/DD 1.23 · MAR 14.91 · op 14 · WR 69.2% · senza migliore 38,230 · senza 2 25,127
+ETH IS 2021-22      19,628 $ · rend 96.3% · CAGR 40.8% · DD -17.8% · CAGR/DD 2.29 · MAR 5.41 · op 5 · WR 50.0% · senza migliore 11,248 · senza 2 9,606
+BTC OOS 2023-       33,046 $ · rend 230.5% · CAGR 35.9% · DD -27.0% · CAGR/DD 1.33 · MAR 8.53 · op 10 · WR 77.8% · senza migliore 23,223 · senza 2 16,534
+ETH OOS 2023-       18,890 $ · rend 88.9% · CAGR 17.7% · DD -27.5% · CAGR/DD 0.64 · MAR 3.23 · op 11 · WR 60.0% · senza migliore 12,008 · senza 2 9,482
+BTC 2021-23         33,477 $ · rend 234.8% · CAGR 49.6% · DD -19.3% · CAGR/DD 2.57 · MAR 12.16 · op 7 · WR 100.0% · senza migliore 21,974 · senza 2 15,629
+ETH 2021-23         23,888 $ · rend 138.9% · CAGR 34.1% · DD -22.9% · CAGR/DD 1.49 · MAR 6.07 · op 7 · WR 50.0% · senza migliore 13,678 · senza 2 10,790
+BTC 2024-           25,388 $ · rend 153.9% · CAGR 37.9% · DD -21.1% · CAGR/DD 1.79 · MAR 7.28 · op 7 · WR 83.3% · senza migliore 17,841 · senza 2 13,643
+ETH 2024-           16,599 $ · rend 66.0% · CAGR 19.1% · DD -27.5% · CAGR/DD 0.69 · MAR 2.4 · op 8 · WR 57.1% · senza migliore 10,551 · senza 2 9,025
+insieme            124,392 $ · rend -% · CAGR 36.5% · DD -20.2% · CAGR/DD 1.81
+Buy & hold BTC dal 2018: {'fin': 43514, 'ret': np.float64(335.1), 'dd': -81.2, 'cd': np.float64(0.221)}
+Buy & hold BTC dal 2021: {'fin': 20635, 'ret': np.float64(106.3), 'dd': -76.6, 'cd': np.float64(0.171)}
+Buy & hold ETH dal 2021: {'fin': 13362, 'ret': np.float64(33.6), 'dd': -79.3, 'cd': np.float64(0.064)}
+
+=== D1 (parametro 0.9) ===
+BTC dal 2018       196,818 $ · rend 1868.2% · CAGR 39.8% · DD -37.3% · CAGR/DD 1.07 · MAR 50.13 · op 23 · WR 77.3% · senza migliore 114,726 · senza 2 75,406 · toccate 3
+BTC dal 2021        68,769 $ · rend 587.7% · CAGR 38.7% · DD -19.3% · CAGR/DD 2.00 · MAR 30.38 · op 14 · WR 92.3% · senza migliore 45,166 · senza 2 32,156 · toccate 3
+ETH dal 2021        46,996 $ · rend 370.0% · CAGR 30.2% · DD -21.6% · CAGR/DD 1.40 · MAR 17.16 · op 15 · WR 57.1% · senza migliore 26,928 · senza 2 17,122 · toccate 4
+BTC IS 2018-22      65,568 $ · rend 555.7% · CAGR 45.7% · DD -37.3% · CAGR/DD 1.23 · MAR 14.91 · op 14 · WR 69.2% · senza migliore 38,230 · senza 2 25,127 · toccate 0
+ETH IS 2021-22      19,628 $ · rend 96.3% · CAGR 40.8% · DD -17.8% · CAGR/DD 2.29 · MAR 5.41 · op 5 · WR 50.0% · senza migliore 11,248 · senza 2 9,606 · toccate 0
+BTC OOS 2023-       26,793 $ · rend 167.9% · CAGR 28.8% · DD -22.6% · CAGR/DD 1.27 · MAR 7.43 · op 10 · WR 77.8% · senza migliore 19,067 · senza 2 14,580 · toccate 3
+ETH OOS 2023-       22,434 $ · rend 124.3% · CAGR 23.0% · DD -21.6% · CAGR/DD 1.07 · MAR 5.77 · op 11 · WR 60.0% · senza migliore 14,260 · senza 2 11,261 · toccate 4
+BTC 2021-23         31,517 $ · rend 215.2% · CAGR 46.7% · DD -14.4% · CAGR/DD 3.24 · MAR 14.93 · op 7 · WR 100.0% · senza migliore 20,687 · senza 2 14,714 · toccate 1
+ETH 2021-23         23,311 $ · rend 133.1% · CAGR 33.0% · DD -19.2% · CAGR/DD 1.72 · MAR 6.94 · op 7 · WR 50.0% · senza migliore 13,348 · senza 2 10,530 · toccate 1
+BTC 2024-           21,864 $ · rend 118.6% · CAGR 31.0% · DD -19.3% · CAGR/DD 1.60 · MAR 6.13 · op 7 · WR 83.3% · senza migliore 16,712 · senza 2 12,951 · toccate 2
+ETH 2024-           20,201 $ · rend 102.0% · CAGR 27.4% · DD -21.6% · CAGR/DD 1.27 · MAR 4.73 · op 8 · WR 57.1% · senza migliore 12,840 · senza 2 10,983 · toccate 3
+insieme            115,765 $ · rend -% · CAGR 34.9% · DD -17.8% · CAGR/DD 1.96 · toccate 7
+vicino 0.8: insieme 99,970 $ DD -17.0 CAGR/DD 1.860 · BTC 2018 CAGR/DD 0.959 DD -37.3 (toccate 6) · BTC 2021 1.689 · ETH 1.399
+vicino 0.95: insieme 118,668 $ DD -17.9 CAGR/DD 1.985 · BTC 2018 CAGR/DD 1.093 DD -37.3 (toccate 2) · BTC 2021 2.073 · ETH 1.346
+concentrazione: peggior ripristino BTC_T 2025-04-27 → CAGR/DD insieme 1.779 (W3.2 1.809)
+placebo: 3/9 BTC + 4/10 ETH ridotte a caso, 5000 prove · p 0.0122 · quota che batte W3.2 11.4% · mediana 1.643 · reale 1.956 · W3.2 1.809
+criteri: 1 BTC dal 2018 NO · 1 BTC dal 2021 NO · 1 ETH dal 2021 sì · 1 insieme sì · 2 BTC IS 2018-22 sì · 2 ETH IS 2021-22 sì · 2 BTC OOS 2023- NO · 2 ETH OOS 2023- sì · 3 capitale insieme ≥ −5% NO · 4 vicini NO · 7 non concentrato NO
+
+=== D2 (parametro 3) ===
+BTC dal 2018       167,202 $ · rend 1572.0% · CAGR 37.2% · DD -35.6% · CAGR/DD 1.05 · MAR 44.18 · op 23 · WR 77.3% · senza migliore 97,463 · senza 2 64,060 · toccate 9
+BTC dal 2021        60,906 $ · rend 509.1% · CAGR 35.8% · DD -16.9% · CAGR/DD 2.13 · MAR 30.21 · op 14 · WR 92.3% · senza migliore 40,002 · senza 2 28,123 · toccate 6
+ETH dal 2021        36,348 $ · rend 263.5% · CAGR 24.6% · DD -25.3% · CAGR/DD 0.97 · MAR 10.4 · op 15 · WR 57.1% · senza migliore 20,827 · senza 2 13,242 · toccate 6
+BTC IS 2018-22      56,281 $ · rend 462.8% · CAGR 41.3% · DD -35.6% · CAGR/DD 1.16 · MAR 13.01 · op 14 · WR 69.2% · senza migliore 32,814 · senza 2 21,568 · toccate 5
+ETH IS 2021-22      20,203 $ · rend 102.0% · CAGR 42.9% · DD -15.3% · CAGR/DD 2.80 · MAR 6.67 · op 5 · WR 50.0% · senza migliore 11,578 · senza 2 9,888 · toccate 1
+BTC OOS 2023-       26,517 $ · rend 165.2% · CAGR 28.4% · DD -22.6% · CAGR/DD 1.26 · MAR 7.31 · op 10 · WR 77.8% · senza migliore 18,635 · senza 2 13,267 · toccate 4
+ETH OOS 2023-       16,858 $ · rend 68.6% · CAGR 14.3% · DD -25.3% · CAGR/DD 0.57 · MAR 2.71 · op 11 · WR 60.0% · senza migliore 10,716 · senza 2 9,166 · toccate 5
+BTC 2021-23         28,203 $ · rend 182.0% · CAGR 41.3% · DD -14.4% · CAGR/DD 2.87 · MAR 12.63 · op 7 · WR 100.0% · senza migliore 18,512 · senza 2 13,167 · toccate 3
+ETH 2021-23         21,926 $ · rend 119.3% · CAGR 30.2% · DD -16.7% · CAGR/DD 1.81 · MAR 7.12 · op 7 · WR 50.0% · senza migliore 12,558 · senza 2 10,726 · toccate 3
+BTC 2024-           21,639 $ · rend 116.4% · CAGR 30.5% · DD -16.9% · CAGR/DD 1.81 · MAR 6.91 · op 7 · WR 83.3% · senza migliore 15,207 · senza 2 13,179 · toccate 3
+ETH 2024-           16,600 $ · rend 66.0% · CAGR 19.1% · DD -25.3% · CAGR/DD 0.75 · MAR 2.61 · op 8 · WR 57.1% · senza migliore 10,551 · senza 2 9,026 · toccate 3
+insieme             97,254 $ · rend -% · CAGR 30.9% · DD -16.9% · CAGR/DD 1.83 · toccate 12
+vicino 2: insieme 100,509 $ DD -17.4 CAGR/DD 1.820 · BTC 2018 CAGR/DD 1.062 DD -35.6 (toccate 7) · BTC 2021 1.753 · ETH 0.971
+vicino 4: insieme 97,254 $ DD -16.9 CAGR/DD 1.826 · BTC 2018 CAGR/DD 1.133 DD -30.5 (toccate 10) · BTC 2021 2.127 · ETH 0.971
+concentrazione: peggior ripristino ETH 2026-08-23 → CAGR/DD insieme 1.695 (W3.2 1.809)
+placebo: 6/9 BTC + 6/10 ETH ridotte a caso, 5000 prove · p 0.0206 · quota che batte W3.2 2.6% · mediana 1.514 · reale 1.826 · W3.2 1.809
+criteri: 1 BTC dal 2018 NO · 1 BTC dal 2021 sì · 1 ETH dal 2021 sì · 1 insieme sì · 2 BTC IS 2018-22 NO · 2 ETH IS 2021-22 sì · 2 BTC OOS 2023- NO · 2 ETH OOS 2023- NO · 3 capitale insieme ≥ −5% NO · 4 vicini NO · 7 non concentrato NO
+
+=== D3 (parametro (0.9, 3)) ===
+BTC dal 2018       151,688 $ · rend 1416.9% · CAGR 35.7% · DD -35.6% · CAGR/DD 1.00 · MAR 39.82 · op 23 · WR 77.3% · senza migliore 88,420 · senza 2 58,116 · toccate 10
+BTC dal 2021        55,255 $ · rend 452.5% · CAGR 33.6% · DD -16.9% · CAGR/DD 2.00 · MAR 26.85 · op 14 · WR 92.3% · senza migliore 36,290 · senza 2 25,837 · toccate 7
+ETH dal 2021        41,301 $ · rend 313.0% · CAGR 27.3% · DD -17.2% · CAGR/DD 1.59 · MAR 18.19 · op 15 · WR 57.1% · senza migliore 23,665 · senza 2 15,047 · toccate 7
+BTC IS 2018-22      56,281 $ · rend 462.8% · CAGR 41.3% · DD -35.6% · CAGR/DD 1.16 · MAR 13.01 · op 14 · WR 69.2% · senza migliore 32,814 · senza 2 21,568 · toccate 5
+ETH IS 2021-22      20,203 $ · rend 102.0% · CAGR 42.9% · DD -15.3% · CAGR/DD 2.80 · MAR 6.67 · op 5 · WR 50.0% · senza migliore 11,578 · senza 2 9,888 · toccate 1
+BTC OOS 2023-       24,057 $ · rend 140.6% · CAGR 25.3% · DD -22.6% · CAGR/DD 1.12 · MAR 6.22 · op 10 · WR 77.8% · senza migliore 17,120 · senza 2 13,267 · toccate 5
+ETH OOS 2023-       19,155 $ · rend 91.5% · CAGR 18.1% · DD -18.2% · CAGR/DD 1.00 · MAR 5.03 · op 11 · WR 60.0% · senza migliore 12,176 · senza 2 10,415 · toccate 6
+BTC 2021-23         28,203 $ · rend 182.0% · CAGR 41.3% · DD -14.4% · CAGR/DD 2.87 · MAR 12.63 · op 7 · WR 100.0% · senza migliore 18,512 · senza 2 13,167 · toccate 3
+ETH 2021-23         21,926 $ · rend 119.3% · CAGR 30.2% · DD -16.7% · CAGR/DD 1.81 · MAR 7.12 · op 7 · WR 50.0% · senza migliore 12,558 · senza 2 10,726 · toccate 3
+BTC 2024-           19,631 $ · rend 96.3% · CAGR 26.2% · DD -16.9% · CAGR/DD 1.55 · MAR 5.72 · op 7 · WR 83.3% · senza migliore 15,207 · senza 2 13,179 · toccate 4
+ETH 2024-           18,861 $ · rend 88.6% · CAGR 24.5% · DD -17.2% · CAGR/DD 1.42 · MAR 5.15 · op 8 · WR 57.1% · senza migliore 11,989 · senza 2 10,255 · toccate 4
+insieme             96,556 $ · rend -% · CAGR 30.8% · DD -16.9% · CAGR/DD 1.81 · toccate 14
+vicino (0.8, 2): insieme 83,127 $ DD -17.0 CAGR/DD 1.620 · BTC 2018 CAGR/DD 0.880 DD -35.6 (toccate 11) · BTC 2021 1.630 · ETH 1.588
+vicino (0.95, 4): insieme 96,556 $ DD -16.9 CAGR/DD 1.815 · BTC 2018 CAGR/DD 1.085 DD -30.5 (toccate 11) · BTC 2021 1.995 · ETH 1.588
+concentrazione: peggior ripristino ETH 2026-08-23 → CAGR/DD insieme 1.667 (W3.2 1.809)
+placebo: 7/9 BTC + 7/10 ETH ridotte a caso, 5000 prove · p 0.0020 · quota che batte W3.2 0.3% · mediana 1.469 · reale 1.815 · W3.2 1.809
+criteri: 1 BTC dal 2018 NO · 1 BTC dal 2021 NO · 1 ETH dal 2021 sì · 1 insieme sì · 2 BTC IS 2018-22 NO · 2 ETH IS 2021-22 sì · 2 BTC OOS 2023- NO · 2 ETH OOS 2023- sì · 3 capitale insieme ≥ −5% NO · 4 vicini NO · 7 non concentrato NO
+
+=== D4 (parametro 0.35) ===
+BTC dal 2018       269,224 $ · rend 2592.2% · CAGR 44.8% · DD -30.4% · CAGR/DD 1.47 · MAR 85.19 · op 23 · WR 77.3% · senza migliore 156,932 · senza 2 103,147 · toccate 1
+BTC dal 2021        84,820 $ · rend 748.2% · CAGR 43.7% · DD -21.1% · CAGR/DD 2.07 · MAR 35.41 · op 14 · WR 92.3% · senza migliore 55,707 · senza 2 39,165 · toccate 0
+ETH dal 2021        41,086 $ · rend 310.9% · CAGR 27.2% · DD -27.5% · CAGR/DD 0.99 · MAR 11.3 · op 15 · WR 57.1% · senza migliore 23,542 · senza 2 14,969 · toccate 2
+BTC IS 2018-22      72,718 $ · rend 627.2% · CAGR 48.7% · DD -30.4% · CAGR/DD 1.60 · MAR 20.61 · op 14 · WR 69.2% · senza migliore 42,398 · senza 2 27,867 · toccate 1
+ETH IS 2021-22      19,467 $ · rend 94.7% · CAGR 40.2% · DD -13.4% · CAGR/DD 3.00 · MAR 7.05 · op 5 · WR 50.0% · senza migliore 11,157 · senza 2 9,528 · toccate 2
+BTC OOS 2023-       33,046 $ · rend 230.5% · CAGR 35.9% · DD -27.0% · CAGR/DD 1.33 · MAR 8.53 · op 10 · WR 77.8% · senza migliore 23,223 · senza 2 16,534 · toccate 0
+ETH OOS 2023-       18,890 $ · rend 88.9% · CAGR 17.7% · DD -27.5% · CAGR/DD 0.64 · MAR 3.23 · op 11 · WR 60.0% · senza migliore 12,008 · senza 2 9,482 · toccate 0
+BTC 2021-23         33,477 $ · rend 234.8% · CAGR 49.6% · DD -19.3% · CAGR/DD 2.57 · MAR 12.16 · op 7 · WR 100.0% · senza migliore 21,974 · senza 2 15,629 · toccate 0
+ETH 2021-23         24,802 $ · rend 148.0% · CAGR 35.8% · DD -19.9% · CAGR/DD 1.79 · MAR 7.43 · op 7 · WR 50.0% · senza migliore 14,201 · senza 2 11,203 · toccate 2
+BTC 2024-           25,388 $ · rend 153.9% · CAGR 37.9% · DD -21.1% · CAGR/DD 1.79 · MAR 7.28 · op 7 · WR 83.3% · senza migliore 17,841 · senza 2 13,643 · toccate 0
+ETH 2024-           16,599 $ · rend 66.0% · CAGR 19.1% · DD -27.5% · CAGR/DD 0.69 · MAR 2.4 · op 8 · WR 57.1% · senza migliore 10,551 · senza 2 9,025 · toccate 0
+insieme            125,906 $ · rend -% · CAGR 36.8% · DD -20.2% · CAGR/DD 1.82 · toccate 2
+vicino 0.3: insieme 122,645 $ DD -20.1 CAGR/DD 1.797 · BTC 2018 CAGR/DD 1.451 DD -30.4 (toccate 2) · BTC 2021 2.023 · ETH 0.989
+vicino 0.4: insieme 125,516 $ DD -20.2 CAGR/DD 1.821 · BTC 2018 CAGR/DD 1.472 DD -30.4 (toccate 1) · BTC 2021 2.068 · ETH 0.982
+concentrazione: peggior ripristino ETH 2022-09-18 → CAGR/DD insieme 1.813 (W3.2 1.809)
+placebo: 0/5 BTC + 2/5 ETH ridotte a caso, 5000 prove · p 0.1016 · quota che batte W3.2 21.0% · mediana 1.796 · reale 1.825 · W3.2 1.809
+criteri: 1 BTC dal 2018 sì · 1 BTC dal 2021 sì · 1 ETH dal 2021 sì · 1 insieme sì · 2 BTC IS 2018-22 sì · 2 ETH IS 2021-22 sì · 2 BTC OOS 2023- sì · 2 ETH OOS 2023- sì · 3 capitale insieme ≥ −5% sì · 4 vicini NO · 7 non concentrato sì
+
+=== VERDETTO ===
+D1: criteri falliti: 1 BTC dal 2018, 1 BTC dal 2021, 2 BTC OOS 2023-, 3 capitale insieme ≥ −5%, 4 vicini, 7 non concentrato · p 0.0122 Holm sì → non passa
+D2: criteri falliti: 1 BTC dal 2018, 2 BTC IS 2018-22, 2 BTC OOS 2023-, 2 ETH OOS 2023-, 3 capitale insieme ≥ −5%, 4 vicini, 7 non concentrato · p 0.0206 Holm sì → non passa
+D3: criteri falliti: 1 BTC dal 2018, 1 BTC dal 2021, 2 BTC IS 2018-22, 2 BTC OOS 2023-, 3 capitale insieme ≥ −5%, 4 vicini, 7 non concentrato · p 0.0020 Holm sì → non passa
+D4: criteri falliti: 4 vicini · p 0.1016 Holm no → non passa
+Scelta finale (PREREG §6): nessuna → W3.2 resta com'è

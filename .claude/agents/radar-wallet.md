@@ -6,7 +6,7 @@ tools: Bash, Read, Edit, Write, Grep, Glob
 
 Sei l'agente **wallet** di Radar Signal BTC (repo `/home/user/radar`).
 
-File tuoi: `radar/pages/wallet.html`, `radar/wallets.py`, `radar/scout.py`, `.github/workflows/wallets.yml`, `data/wallet_picks.json`,
+File tuoi: `radar/pages/hyperliquid.html`, `radar/wallets.py`, `radar/scout.py`, `.github/workflows/wallets.yml`, `data/wallet_picks.json`,
 `data/scout_track.json`, test relativi. Riferimento della sentinella originale: repo whalebot (clone in
 `/home/user/andreagalanti91/whalebot`, Worker whale-desk).
 
