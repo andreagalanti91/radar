@@ -1,0 +1,73 @@
+B&H SOL CAGR/DD 0.69 · W3.2 ETH CAGR/DD 0.96 (soglia ★)
+
+=== V1 · rischio 25% · 2021-01-11 → 2026-11-24 ===
+63,004 $ (+530%, CAGR 36.8%), DD -42.8%, CAGR/DD 0.86 · 15 chiuse + 0 aperta, WR chiuse 47% · long 15 (vinti 7), short 0 (vinti 0) · senza il migliore 21,569 $
+IS +221% (DD -26.6) · OOS +96% (DD -42.8) · 2021–23 +848% (DD -26.6) · 2024→ -33% (DD -42.7)
+vicini: trailing 2,0 CAGR/DD 0.22 (18,074 $, DD -48.8) · 3,0 0.94 (52,320 $, DD -34.6) · placebo: reale 1.22, mediana 0.19, p 0.0340
+criteri: {'c1': False, 'c2': False, 'c3': False, 'c4': False, 'c5': True} · 1–5 False · conferma False
+per anno: 2021 +251% · 2022 -8% · 2023 +195% · 2024 +10% · 2025 -36% · 2026 -6%
+   (descrittivo) rischio 15%: 37,453 $, DD -29.5%, CAGR/DD 0.86, senza il migliore 17,398 $, 2024→ -20% (DD -28.2)
+   (descrittivo) rischio 10%: 26,526 $, DD -21.8%, CAGR/DD 0.83, senza il migliore 15,000 $, 2024→ -13% (DD -19.8)
+posizione al 24/11: flat · decisione in sospeso: None
+ n lato    segnale    entrata  px_in  esposizione     uscita  px_out        motivo  giorni  mov_prezzo_pct  pnl_conto_pct  pnl_usd  conto_prima  conto_dopo
+ 1 long 2021-01-17 2021-01-18   3.83        0.433 2021-02-01    4.25 distribuzione      14            11.0            4.7      470        10000       10470
+ 2 long 2021-04-04 2021-04-05  23.80        0.804 2021-05-17   46.80 distribuzione      42            96.6           77.4     8107        10470       18577
+ 3 long 2021-08-22 2021-08-23  72.82        0.651 2021-09-13  151.31      trailing      21           107.8           69.9    12992        18577       31569
+ 4 long 2021-10-03 2021-10-04 173.16        0.682 2021-10-25  201.95 distribuzione      21            16.6           11.2     3534        31569       35104
+ 5 long 2022-04-03 2022-04-04 137.04        0.441 2022-04-11  110.95         EMA21       7           -19.0           -8.5    -2977        35104       32127
+ 6 long 2023-07-09 2023-07-10  21.34        0.487 2023-08-21   21.76         EMA21      42             2.0            0.9      274        32127       32401
+ 7 long 2023-10-01 2023-10-02  23.90        0.592 2024-01-01  101.62 distribuzione      91           325.2          192.1    62245        32401       94646
+ 8 long 2024-07-21 2024-07-22 184.67        0.666 2024-08-05  138.18         EMA21      14           -25.2          -16.9   -15977        94646       78669
+ 9 long 2024-09-22 2024-09-23 144.78        0.516 2024-12-09  236.78 distribuzione      77            63.5           32.6    25671        78669      104339
+10 long 2025-01-19 2025-01-20 252.65        0.644 2025-02-17  188.07         EMA21      28           -25.6          -16.6   -17293       104339       87046
+11 long 2025-05-11 2025-05-12 173.37        0.517 2025-06-02  157.52         EMA21      21            -9.1           -4.8    -4201        87046       82845
+12 long 2025-07-20 2025-07-21 181.62        0.629 2025-08-04  161.82         EMA21      14           -10.9           -7.0    -5781        82845       77064
+13 long 2025-08-31 2025-09-01 200.82        0.658 2025-10-10  171.89      trailing      39           -14.4           -9.6    -7395        77064       69669
+14 long 2025-10-26 2025-10-27 200.23        0.594 2025-11-03  187.52         EMA21       7            -6.3           -3.9    -2705        69669       66964
+15 long 2026-08-30 2026-08-31 101.85        0.792 2026-11-02   94.45         EMA21      63            -7.3           -5.9    -3960        66964       63004
+
+=== V2 · rischio 25% · 2021-01-11 → 2026-11-24 ===
+78,035 $ (+680%, CAGR 41.9%), DD -29.6%, CAGR/DD 1.42 · 11 chiuse + 1 aperta, WR chiuse 55% · long 8 (vinti 4), short 3 (vinti 2) · senza il migliore 29,664 $
+IS +214% (DD -24.8) · OOS +149% (DD -29.6) · 2021–23 +727% (DD -24.8) · 2024→ -6% (DD -29.6)
+vicini: trailing 2,0 CAGR/DD 0.84 (33,161 $, DD -27.0) · 3,0 1.42 (59,468 $, DD -25.1) · placebo: reale 2.01, mediana 0.02, p 0.0025
+criteri: {'c1': True, 'c2': True, 'c3': False, 'c4': False, 'c5': True} · 1–5 False · conferma True
+per anno: 2021 +202% · 2022 +4% · 2023 +163% · 2024 +9% · 2025 -16% · 2026 +3%
+   (descrittivo) rischio 15%: 41,039 $, DD -21.1%, CAGR/DD 1.29, senza il migliore 20,744 $, 2024→ -3% (DD -18.8)
+   (descrittivo) rischio 10%: 27,720 $, DD -16.1%, CAGR/DD 1.18, senza il migliore 16,778 $, 2024→ -2% (DD -12.9)
+posizione al 24/11: short dal 2026-11-09 a 86.45, ultimo 69.69, trailing 101.51, +13.2% · decisione in sospeso: None
+ n  lato    segnale    entrata  px_in  esposizione              uscita  px_out        motivo  giorni  mov_prezzo_pct  pnl_conto_pct  pnl_usd  conto_prima  conto_dopo
+ 1  long 2021-04-04 2021-04-05  23.80        0.804          2021-05-17   46.80 distribuzione      42            96.6           77.4     7743        10000       17743
+ 2  long 2021-08-22 2021-08-23  72.82        0.651          2021-09-13  151.31      trailing      21           107.8           69.9    12408        17743       30151
+ 3  long 2022-04-03 2022-04-04 137.04        0.441          2022-04-11  110.95         EMA21       7           -19.0           -8.5    -2557        30151       27594
+ 4 short 2022-08-21 2022-08-22  36.44        0.217          2022-11-14   13.19 distribuzione      84            63.8           11.0     3043        27594       30637
+ 5 short 2022-12-18 2022-12-19  12.37        0.145          2023-01-02   10.00 distribuzione      14            19.2            2.4      749        30637       31386
+ 6  long 2023-10-29 2023-10-30  32.86        0.781          2024-01-01  101.62 distribuzione      63           209.3          163.0    51160        31386       82547
+ 7  long 2024-11-10 2024-11-11 210.28        0.744          2024-12-09  236.78 distribuzione      28            12.6            9.2     7606        82547       90152
+ 8  long 2025-07-20 2025-07-21 181.62        0.629          2025-08-04  161.82         EMA21      14           -10.9           -7.0    -6291        90152       83861
+ 9  long 2025-08-31 2025-09-01 200.82        0.658          2025-10-10  171.89      trailing      39           -14.4           -9.6    -8047        83861       75814
+10 short 2026-05-24 2026-05-25  85.18        0.539          2026-08-21   90.49      trailing      88            -6.2           -3.4    -2559        75814       73255
+11  long 2026-08-30 2026-08-31 101.85        0.792          2026-11-02   94.45         EMA21      63            -7.3           -5.9    -4332        73255       68923
+12 short 2026-11-08 2026-11-09  86.45        0.686 aperta (2026-11-24)   69.69        aperta      15            19.4           13.2     9093        68923       78016
+V1: Holm soglia 0.01 → False · OPERABILE False
+V2: Holm soglia 0.0083 → True · OPERABILE False
+
+=== V3 · portafoglio (conto unico in dollari, pesi 30/30/10) ===
+[V3a (SOL base 10%) · intero] A (BTC 30k + ETH 30k): 373,175 $ CAGR 36.5% DD -20.2% C/DD 1.81 · B (+ SOL 10k): 402,786 $ CAGR 34.8% DD -19.2% C/DD 1.81 → NON migliora
+   senza il trade migliore di SOL (2023-10-02, +77%): B 389,919 $ DD -19.6% C/DD 1.73 → NON migliora
+   correlazione giornaliera SOL–A 0.27 (solo giorni SOL in posizione 0.33), settimanale 0.26 · operazioni SOL 23 (3.9 l'anno; A ne fa 4.9) · settimane SOL in posizione 145: BTC stesso verso 70%, opposto 14%, flat 17%; ETH stesso verso 47%, opposto 12%, flat 41%
+   per anno A / B: 2021 +98%/+95% · 2022 +7%/+7% · 2023 +35%/+39% · 2024 +72%/+62% · 2025 +8%/+6% · 2026 +17%/+16%
+[V3a (SOL base 10%) · IS] A (BTC 30k + ETH 30k): 127,614 $ CAGR 46.7% DD -12.8% C/DD 3.65 · B (+ SOL 10k): 145,791 $ CAGR 45.2% DD -11.6% C/DD 3.88 → migliora
+[V3a (SOL base 10%) · OOS] A (BTC 30k + ETH 30k): 155,809 $ CAGR 27.8% DD -24.5% C/DD 1.13 · B (+ SOL 10k): 172,104 $ CAGR 26.0% DD -20.7% C/DD 1.26 → migliora
+[V3a (SOL base 10%) · 2021-23] A (BTC 30k + ETH 30k): 172,094 $ CAGR 42.6% DD -18.9% C/DD 2.26 · B (+ SOL 10k): 202,208 $ CAGR 43.0% DD -16.3% C/DD 2.64 → migliora
+[V3a (SOL base 10%) · 2024→] A (BTC 30k + ETH 30k): 125,959 $ CAGR 29.2% DD -20.0% C/DD 1.46 · B (+ SOL 10k): 135,803 $ CAGR 25.7% DD -19.1% C/DD 1.35 → NON migliora
+V3a (SOL base 10%): MIGLIORA secondo PREREG = False ({'intero': np.False_, 'senza_migliore': np.False_, 'IS': True, 'OOS': True, '2021-23': True, '2024→': np.False_})
+[V3b (SOL base 25%) · intero] A (BTC 30k + ETH 30k): 373,175 $ CAGR 36.5% DD -20.2% C/DD 1.81 · B (+ SOL 10k): 453,836 $ CAGR 37.5% DD -19.6% C/DD 1.91 → migliora
+   senza il trade migliore di SOL (2023-10-02, +192%): B 400,789 $ DD -20.0% C/DD 1.73 → NON migliora
+   correlazione giornaliera SOL–A 0.29 (solo giorni SOL in posizione 0.34), settimanale 0.28 · operazioni SOL 23 (3.9 l'anno; A ne fa 4.9) · settimane SOL in posizione 145: BTC stesso verso 70%, opposto 14%, flat 17%; ETH stesso verso 47%, opposto 12%, flat 41%
+   per anno A / B: 2021 +98%/+120% · 2022 +7%/+7% · 2023 +35%/+60% · 2024 +72%/+50% · 2025 +8%/-1% · 2026 +17%/+17%
+[V3b (SOL base 25%) · IS] A (BTC 30k + ETH 30k): 127,614 $ CAGR 46.7% DD -12.8% C/DD 3.65 · B (+ SOL 10k): 164,180 $ CAGR 54.2% DD -11.9% C/DD 4.57 → migliora
+[V3b (SOL base 25%) · OOS] A (BTC 30k + ETH 30k): 155,809 $ CAGR 27.8% DD -24.5% C/DD 1.13 · B (+ SOL 10k): 177,883 $ CAGR 27.0% DD -20.2% C/DD 1.34 → migliora
+[V3b (SOL base 25%) · 2021-23] A (BTC 30k + ETH 30k): 172,094 $ CAGR 42.6% DD -18.9% C/DD 2.26 · B (+ SOL 10k): 262,276 $ CAGR 56.1% DD -14.3% C/DD 3.91 → migliora
+[V3b (SOL base 25%) · 2024→] A (BTC 30k + ETH 30k): 125,959 $ CAGR 29.2% DD -20.0% C/DD 1.46 · B (+ SOL 10k): 134,919 $ CAGR 25.4% DD -19.8% C/DD 1.29 → NON migliora
+V3b (SOL base 25%): MIGLIORA secondo PREREG = False ({'intero': True, 'senza_migliore': np.False_, 'IS': True, 'OOS': True, '2021-23': True, '2024→': np.False_})
+V3c/V3d non calcolate: né V1 né V2 operabili (PREREG).
