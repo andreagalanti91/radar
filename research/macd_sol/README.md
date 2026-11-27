@@ -99,22 +99,26 @@ Il risultato è il trade 1 (da 10.000 a 19.937 $); poi sette operazioni per +8% 
 - **Dentro W3.2 il MACD alto non serve come uscita**: W3.2 esce prima per conto suo; dove scatta (SOL in $) taglia anche i grandi
   trend (uscita a 74,81 $ il 11/12/2023; W3.2 base usciva a 101,62 $ il 01/01/2024). Come filtro tocca solo pochi short e il miglioramento su ETH è compatibile col caso.
 - **La parte "buona" del MACD su SOL resta l'incrocio, non il livello**: il flip solo long fa 643k $ (CAGR/DD 1,19 > B&H 0,87), ma
-  con DD −85% e un risultato dovuto a due rialzi (2021 e fine 2023): conferma la lezione 79, non la ribalta.
+  con DD −85% e un risultato dovuto a tre trade (×9,2 gen–giu 2021, ×3,2 ago–dic 2021, ×5,8 ott 2023–apr 2024; dal 2024 ≈ −15%, B&H −31,5%): conferma la lezione 79, non la ribalta.
 - **Costruire in IS non basta**: il candidato con l'IS migliore (C2, CAGR/DD 3,60, WR 80%) in OOS vince 3 volte su 7 e vive di un trade.
 
 ## 5. Cosa significa per l'utente
 - La regola "compra con MACD da −3 a −50, vendi da +10" su SOL avrebbe portato 10.000 $ a 8.292 $ con un calo intermedio del 93%:
   **non va usata**, né con lo stop né normalizzata. I trade profittevoli ricordati col MACD sono incroci scelti a posteriori (lezione 79).
-- **W3.2 resta com'è**: il MACD 12/26/9 non aggiunge nulla su BTC ed ETH.
+- **W3.2 resta com'è**: il MACD 12/26/9 su BTC peggiora; su ETH migliora di poco (3 short tolti) ma il miglioramento non si distingue dal caso (p 0,27).
 - **Su SOL non c'è oggi una strategia robusta e profittevole**: nessun denaro. Unica proposta: il registro su carta già previsto da
   sol_ciclo (V2, W3.2 con cancello ETH), con accanto la colonna C2 (stessa regola + uscita MACD ≥ +10 $) per vedere dal vivo se
   l'uscita MACD aiuta; rivalutazione solo dopo ≥ 6 chiuse con WR ≥ 60%, rendimento positivo e DD ≥ −30%.
 
 ## 6. Limiti
+- C2 come preregistrato: l'uscita W-U$ non blocca gli ingressi, quindi W3.2 entra long con la linea già ≥ +10 e ne esce la settimana dopo (trade 2 e 5, di una settimana). Senza di essi il WR sarebbe 40%: il verdetto non cambia. Nel registro su carta la colonna C2 applica l'uscita MACD solo a posizioni aperte con linea < +10 (non ritestato: secondo giro vietato).
 SOL ha storia dal 04/2020 (utilizzabile da 12/2020): un solo ciclo completo; R1–R4 fanno 1–3 trade, quindi i loro numeri sono
 aneddoti. Le soglie dell'utente sembrano scelte sui prezzi 2024–26 (rischio di adattamento); proprio lì R1/R2 vincono (+89%, +38%).
 Dati spot Binance (BUSD nei primi mesi), liquidità a 0%, nessun funding sulle regole a sé; C2 e innesti con funding reale come W3.2.
 13 prove con placebo: anche un p di 0,01 non sarebbe bastato con Holm.
+
+## Revisione critica (radar-review, 27/11): confermato
+Codice, motore (84.820/39.572/80.661 $), MACD ricalcolato a mano, operazioni R1/R2/C2, scelta del candidato in IS e Holm verificati. Corrette tre frasi (flip, ETH, limite di C2).
 
 ## 7. Lezione 130 proposta (per RESEARCH.md)
 **Lezione 130**: MACD settimanale 12/26/9 su SOL "compra da −3 a −50, vendi da +10" (research/macd_sol, PREREG a5f2206; 4 regole, 8
@@ -122,5 +126,5 @@ innesti in W3.2, 3 candidati costruiti in IS, Holm m = 13): niente funziona. Le 
 200 $: la regola letterale compra all'inizio del bear 2022 e chiude a 8.292 $ (DD −93%, 3 trade; B&H 374.895 $); normalizzata o con
 stop −20% non migliora. Dentro W3.2 il MACD non serve: l'uscita "+10 equivalente" non scatta mai su BTC/ETH (W3.2 esce prima), il
 filtro tocca pochi short (ETH meglio ma placebo p 0,27). Il candidato SOL scelto in IS (W3.2 + cancello ETH + uscita MACD ≥ +10 $,
-CAGR/DD IS 3,60) in OOS fa 21.454 $ con WR 43%, vicini sotto il B&H, placebo p 0,09. Il livello del MACD non è un segnale; su SOL solo
-registro su carta.
+CAGR/DD IS 3,60) in OOS fa 21.454 $ con WR 43%, vicini sotto il B&H, placebo p 0,09. Il livello del MACD non è un segnale; un'uscita aggiunta senza il filtro d'ingresso corrispondente crea trade di una settimana che
+falsano il WR. Su SOL solo registro su carta.
