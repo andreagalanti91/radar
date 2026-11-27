@@ -9,7 +9,7 @@ from radar.dashboard import render
 
 ROOT = Path(__file__).resolve().parents[1]
 T = (ROOT / "radar" / "dashboard_template.html").read_text()
-MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("scanner", "Scanner"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON)
+MENU = [("oggi", "Oggi"), ("posizioni", "Posizioni"), ("wallet", "Wallet"), ("scanner", "Scanner"), ("grafico", "Grafico"), ("movimenti", "Movimenti"), ("notizie", "Notizie")]   # Liquidazioni fuori dal menu dal 24/11 (LIQ_ON); Wallet (posizioni reali) dal 27/11/2026
 CORTE = {"Liquidazioni": "Liquid."}   # etichette accorciate nella barra in basso del telefono
 
 
@@ -24,11 +24,11 @@ class TestMenu(unittest.TestCase):
             box, links = _nav(T, pat)
             self.assertEqual([(h, t) for h, v, t in links], [(h, short.get(t, t)) for h, t in MENU])
             self.assertTrue(all(h == v for h, v, _ in links))
-            self.assertEqual(box.count("<a "), 6)
+            self.assertEqual(box.count("<a "), 7)
             for w in ("Book", "Come funziona", "Storico", "#book", "#metodo", "Liquid", "#liquidazioni", "Opzioni", "#opzioni"):
                 self.assertNotIn(w, box)
         self.assertNotIn("Navigazione", T)
-        self.assertIn("grid-template-columns:repeat(6,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
+        self.assertIn("grid-template-columns:repeat(7,1fr)", re.search(r"\.tabbar\{[^}]*\}", T).group(0))
 
     def test_ogni_voce_ha_la_sua_pagina_e_icona(self):
         pages = "".join(f.read_text() for f in (ROOT / "radar" / "pages").glob("*.html"))
@@ -39,13 +39,14 @@ class TestMenu(unittest.TestCase):
 
     def test_vecchi_indirizzi(self):
         alias = re.search(r"const ALIAS = \{([^}]*)\}", T).group(1)
-        for old, new in (("storico", "movimenti"), ("simulatore", "movimenti"), ("statistiche", "movimenti"), ("wallet", "oggi")):
+        for old, new in (("storico", "movimenti"), ("simulatore", "movimenti"), ("statistiche", "movimenti")):
             self.assertRegex(alias, rf'\b{old}: "{new}"')
+        self.assertNotIn("wallet:", alias)   # dal 27/11/2026 #wallet è il Wallet reale (prima portava a Oggi)
         self.assertIn('book: BOOK_ON ? "book" : "oggi"', alias)
         self.assertIn('liquidazioni: LIQ_ON ? "liquidazioni" : "grafico"', alias)   # #liquidazioni porta a Grafico finché LIQ_ON = false
         self.assertIn('history.replaceState(null, "", "#" + ok)', T)            # l'indirizzo vecchio viene riscritto
         views = re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1)
-        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "scanner", "grafico", "movimenti", "notizie", "metodo"])
+        self.assertEqual(re.findall(r'"(\w+)"', views), ["oggi", "posizioni", "wallet", "scanner", "grafico", "movimenti", "notizie", "metodo"])
         self.assertIn('.concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : [])', T)
         self.assertIn('opzioni: OPZIONI_ON ? "opzioni" : "oggi"', alias)            # #opzioni porta a Oggi finché OPZIONI_ON = false
 
@@ -63,7 +64,7 @@ class TestMenu(unittest.TestCase):
         self.assertTrue((ROOT / "radar" / "pages" / "book.html").exists())
         self.assertNotIn('href="#book"', T.split("<script")[0])                 # nessun link nel markup
         # la pagina Book parte solo dal router, e solo se la sezione è tra quelle raggiungibili
-        self.assertIn('const PAGE_OF = Object.assign({}, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {})', T)
+        self.assertIn('const PAGE_OF = Object.assign({ wallet: "wallet" }, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {})', T)
         self.assertIn("const LIQ_ON = false;", T)
         self.assertIn("const pk = PAGE_OF[ok], PG = pk && (window.PAGES || {})[pk]", T)
         B = (ROOT / "radar" / "pages" / "book.html").read_text()

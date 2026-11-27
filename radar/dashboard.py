@@ -3,13 +3,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = Path(__file__).with_name("dashboard_template.html")
-PAGES = Path(__file__).with_name("pages")   # pagine separate: Liquidazioni (spenta: LIQ_ON nel template), Book (spento: BOOK_ON), Wallet (in pausa); HTML + script che si registra in window.PAGES
+PAGES = Path(__file__).with_name("pages")   # pagine separate: Liquidazioni (spenta: LIQ_ON nel template), Book (spento: BOOK_ON), Wallet reale (wallet.html), wallet Hyperliquid (in pausa, hyperliquid.html); HTML + script che si registra in window.PAGES
 BRAND = ROOT / "brand"
+WALLET_CONFIG = Path(__file__).with_name("wallet_config.json")   # Wallet reale: URL Supabase e chiave pubblica (supabase_config)
 MANIFEST = {
     "name": "Radar Signal BTC", "short_name": "Radar Signal", "start_url": "./#oggi", "display": "standalone",
     "background_color": "#f4f5f7", "theme_color": "#f4f5f7",
@@ -64,12 +66,48 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
         (out.parent / name).write_text(body)
     pages = "\n".join(f.read_text() for f in sorted(PAGES.glob("*.html"))) if PAGES.exists() else ""
     html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str)).replace("<!--__PAGES__-->", pages)
+    html = html.replace("/*__SUPABASE__*/null", json.dumps(supabase_config()).replace("</", "<\\/"))
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)
     if standalone:
         for name in ("icon.svg", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
             shutil.copy(BRAND / name, out.parent / name)
         (out.parent / "manifest.webmanifest").write_text(json.dumps(MANIFEST, indent=1))
     return out
+
+
+def supabase_config() -> dict | None:
+    """Accesso del Wallet reale (radar/pages/wallet.html, supabase/LEGGIMI.md): URL del progetto e chiave anon/publishable da
+    radar/wallet_config.json (override: RADAR_SUPABASE_URL e RADAR_SUPABASE_ANON, entrambe), pubblica per design
+    (la sicurezza la dà la Row Level Security di supabase/schema.sql). Mai la chiave service_role. None = Wallet non configurato."""
+    url, anon = os.environ.get("RADAR_SUPABASE_URL", "").strip(), os.environ.get("RADAR_SUPABASE_ANON", "").strip()
+    if not (url and anon) and WALLET_CONFIG.exists():   # file pubblico nel repo; le variabili d'ambiente, se presenti, lo sostituiscono
+        try:
+            c = json.loads(WALLET_CONFIG.read_text())
+            url, anon = str(c.get("url") or "").strip(), str(c.get("anon") or "").strip()
+        except (ValueError, OSError) as e:
+            print(f"[dashboard] radar/wallet_config.json non leggibile: {e!r}")
+            return None
+    if not (url.startswith("https://") and anon):
+        return None
+    if _secret_key(anon):
+        print("[dashboard] RADAR_SUPABASE_ANON contiene una chiave segreta (service_role): Wallet lasciato non configurato")
+        return None
+    return {"url": url.rstrip("/"), "anon": anon}
+
+
+def _secret_key(k: str) -> bool:
+    """True per le chiavi che non devono mai finire nella pagina: sb_secret_… o JWT con ruolo service_role."""
+    if k.startswith("sb_secret_"):
+        return True
+    parts = k.split(".")
+    if len(parts) == 3:
+        import base64
+        try:
+            body = json.loads(base64.urlsafe_b64decode(parts[1] + "=" * (-len(parts[1]) % 4)))
+            return body.get("role") != "anon"
+        except Exception:  # noqa: BLE001
+            return False
+    return False
 
 
 # ---- pagina leggera (26/11/2026): nella pagina restano i dati di Oggi e di Posizioni; i dati pesanti delle pagine secondarie vanno

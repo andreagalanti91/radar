@@ -1,0 +1,822 @@
+<!-- ============ WALLET · posizioni reali dell'utente ============
+     Pagina separata (radar/pages/wallet.html), iniettata da radar/dashboard.py al posto del segnaposto PAGES del template.
+     Accesso con Supabase Auth (email + password, nessuna registrazione dalla pagina); dati nelle tabelle wallet_posizioni e
+     wallet_movimenti protette dalla RLS (supabase/schema.sql, supabase/LEGGIMI.md). URL e chiave pubblica: radar/wallet_config.json
+     (o RADAR_SUPABASE_URL / RADAR_SUPABASE_ANON), scritti da dashboard.py al posto del segnaposto SUPABASE. Senza: "Wallet non ancora configurato".
+     Calcoli puri in window.WalletCalc (prezzo medio DCA, P/L, liquidazione stimata, leva massima, confronto con W3.2, statistiche),
+     provati in tests/test_wallet.py. Anteprima: ?demo=1 solo in locale (file:// o localhost), dati finti in memoria al posto di Supabase.
+     Si registra in window.PAGES.wallet: init alla prima visita di #wallet, show/hide avviano e fermano l'aggiornamento dei prezzi. -->
+<div class="view" id="v-wallet" hidden>
+  <div class="section" id="waGate"><div class="card waGate"><span class="spin" aria-hidden="true"></span><span>Caricamento del Wallet…</span></div></div>
+  <div class="waApp" id="waApp" hidden>
+    <div class="section">
+      <div class="sh">Il mio conto <small class="waWho"><span id="waUser"></span><button type="button" class="waLink" id="waOut">Esci</button></small></div>
+      <div class="card waHero" id="waHero"></div>
+    </div>
+    <div class="section">
+      <div class="sh">Posizioni aperte <button type="button" class="waBtn" id="waNew"><span aria-hidden="true">+</span> Nuova posizione</button></div>
+      <div class="waGrid" id="waOpen"></div>
+    </div>
+    <div class="section" id="waCmpSec">
+      <div class="sh">Confronto con la strategia <small>reale contro modello W3.2, stesso periodo</small></div>
+      <div class="waGrid" id="waCmp"></div>
+    </div>
+    <div class="section" id="waClSec">
+      <div class="sh">Storico chiuse <small id="waClSub"></small></div>
+      <div class="big waStats" id="waStats"></div>
+      <div class="list" id="waClosed"></div>
+    </div>
+    <p class="foot" id="waFoot"></p>
+  </div>
+</div>
+<style>
+#v-wallet .waGate{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:.9rem;color:var(--label2)}
+#v-wallet .waGate .spin{width:18px;height:18px;flex:none;border-radius:50%;border:2px solid var(--line2);border-top-color:var(--tint);animation:rspin .8s linear infinite}
+#v-wallet .waGate h2{margin:0;font:600 1.06rem var(--font);color:var(--label);letter-spacing:-.02em;flex-basis:100%}
+#v-wallet .waGate p{margin:0;flex-basis:100%;line-height:1.5}
+#v-wallet .waLogin{display:grid;gap:14px;max-width:420px}
+#v-wallet .waLogin .waLogo{display:flex;align-items:center;gap:10px}
+#v-wallet .waLogin .waLogo svg{width:34px;height:34px;padding:6.5px;border-radius:7.5px;color:#fff;background:#2f4cf0;flex:none}
+#v-wallet .waApp{display:grid;gap:22px;min-width:0}
+#v-wallet .waWho{display:inline-flex;align-items:center;gap:8px;min-width:0;max-width:100%}
+#v-wallet .waWho span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.waLink{font:600 .8rem var(--font);color:var(--tint);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.waBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:600 .86rem var(--font);color:#fff;background:var(--tint);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;min-height:40px;white-space:nowrap}
+:root[data-theme="dark"] .waBtn{color:#0c0d10}
+.waBtn2{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:600 .82rem var(--font);color:var(--label);background:var(--fill);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;cursor:pointer;min-height:38px;white-space:nowrap}
+.waBtn2.del{color:var(--red)}
+.waBtn:focus-visible,.waBtn2:focus-visible,.waLink:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.waBtn:disabled{opacity:.5;cursor:default}
+#v-wallet .waHero{display:grid;gap:16px}
+#v-wallet .waHero .wkBig small .waLink{padding:3px 10px;font-size:.74rem;margin-left:4px}
+#v-wallet .waHero .wkFacts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:14px}
+@media (min-width:700px){#v-wallet .waHero .wkFacts{grid-template-columns:repeat(4,minmax(0,1fr))}}
+#v-wallet .waHero .wkFacts small{display:block;font-size:.74rem;color:var(--label2);line-height:1.3;margin-top:1px}
+#v-wallet .waGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
+@media (min-width:641px){#v-wallet .waPos .kvs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#v-wallet .waEmpty{color:var(--label2);font-size:.9rem;display:grid;gap:10px;justify-items:start}
+#v-wallet .waPos{display:grid;gap:14px}
+.waTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.waTop>div{min-width:0}
+.waTop b.t{display:block;font:650 1.08rem/1.2 var(--font);letter-spacing:-.02em}
+.waTop small{display:block;font-size:.78rem;color:var(--label2);margin-top:3px}
+.waTag{display:inline-flex;align-items:center;font:600 .74rem/1 var(--font);padding:6px 9px;border-radius:999px;background:var(--raise);color:var(--label2);border:1px solid var(--line);white-space:nowrap}
+.waTag.sig{color:var(--tint);background:var(--tint-bg);border-color:transparent}
+.waTag.off{color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent);border-color:transparent}
+.waTag.long{color:var(--green);background:var(--green-bg);border-color:transparent}
+.waTag.short{color:var(--red);background:var(--red-bg);border-color:transparent}
+.waPl{display:flex;align-items:baseline;gap:6px 12px;flex-wrap:wrap}
+.waPl b{font:700 1.9rem/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.waPl span{font-size:.82rem;color:var(--label2)}
+.waPl .pos,.waPl .neg{font-weight:600}
+#v-wallet .kvs small{font-size:.72rem;color:var(--label2);line-height:1.3}
+#v-wallet .kvs b.waIn{display:flex;gap:6px;align-items:center}
+.waWarn{display:flex;gap:7px;align-items:flex-start;font:500 .8rem/1.4 var(--font);color:var(--orange);margin:0}
+.waWarn svg{flex:0 0 15px;width:15px;height:15px;margin-top:1px}
+.waWarn.red{color:var(--red)}
+.waNote{margin:0;font-size:.82rem;color:var(--label2);line-height:1.45}
+.waNote b{color:var(--label);font-weight:600} .waNote b.pos{color:var(--green)} .waNote b.neg{color:var(--red)}
+.waAct{display:flex;gap:8px;flex-wrap:wrap}
+.waBtn2 .waS{display:none}
+@media (max-width:440px){.waPos .waAct{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))} .waPos .waAct .waBtn2 .waL{display:none} .waPos .waAct .waBtn2 .waS{display:inline} .waPos .waAct .waBtn2{padding:8px 6px}}
+#v-wallet .waCmp{display:grid;gap:12px}
+.waCmpG{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.waCmpG>div{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:var(--raise);min-width:0}
+.waCmpG span{font:500 .72rem var(--font);color:var(--label3)}
+.waCmpG b{font-weight:600;font-variant-numeric:tabular-nums}
+.waCmpG small{font-size:.72rem;color:var(--label2);line-height:1.3}
+#v-wallet .waStats{grid-template-columns:repeat(2,minmax(0,1fr))}
+#v-wallet .waStats small{font-size:.72rem;color:var(--label2);line-height:1.3}
+#v-wallet .waStats b{font-size:1.25rem}
+#v-wallet .list button.row{display:flex;width:100%;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+#v-wallet .list .row .v b{display:block;color:var(--label);font-weight:600}
+#v-wallet .list .row .v b.pos{color:var(--green)} #v-wallet .list .row .v b.neg{color:var(--red)}
+#v-wallet .list .row .v small{display:block;font-size:.76rem}
+/* moduli (nel pannello comune #sheet) */
+.waForm{display:grid;gap:12px}
+.waForm .f2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.waForm label{display:grid;gap:5px;font:500 .78rem var(--font);color:var(--label2);min-width:0}
+.waForm label small{font-weight:400;color:var(--label3)}
+.waForm input,.waForm select,.waForm textarea{font:500 16px var(--font);color:var(--label);background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:10px 12px;min-width:0;width:100%;font-variant-numeric:tabular-nums}
+.waForm textarea{min-height:64px;resize:vertical}
+.waForm input:focus,.waForm select:focus,.waForm textarea:focus{outline:2px solid var(--tint);outline-offset:0;border-color:transparent}
+.waForm input[readonly]{background:var(--raise);color:var(--label2)}
+.waForm .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+.waForm .seg button{padding:9px 8px}
+.waForm .grp{display:grid;gap:6px;font:500 .78rem var(--font);color:var(--label2)}
+.waForm .prev{font-size:.84rem;color:var(--label2);background:var(--raise);border-radius:12px;padding:10px 12px;line-height:1.45}
+.waForm .prev b{color:var(--label)}
+.waForm .err{color:var(--red);font:600 .84rem/1.4 var(--font);margin:0}
+.waForm .warn{color:var(--orange);font:600 .84rem/1.4 var(--font);margin:0}
+.waForm .bar{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.waMovs{display:grid;gap:8px}
+.waMov{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.waMov b{font-weight:600} .waMov small{display:block;color:var(--label2);font-size:.78rem}
+.waMov .waAct{grid-column:1/-1}
+.waConfirm{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:12px;background:var(--red-bg);color:var(--label);font-size:.84rem}
+.waConfirm{justify-content:flex-end} .waConfirm span{flex:1 1 100%}
+@media (min-width:700px){
+  #v-wallet .waStats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .waCmpG{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+/* desktop A (≥1100 px): posizioni e confronto su due colonne, conto con i numeri a destra della cifra grande */
+@media (min-width:1100px){
+  #v-wallet .waGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #v-wallet .waGrid>.waOne{grid-column:1/-1}
+  #v-wallet .waHero{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);align-items:center}
+  #v-wallet .waCmp .waCmpG{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:380px){.waPl b{font-size:1.65rem} .waBtn{padding:8px 13px}}
+@media (prefers-reduced-motion:reduce){#v-wallet .waGate .spin{animation:none}}
+</style>
+<script>
+(function () {
+  "use strict";
+  const CFG = /*__SUPABASE__*/null;   // {url, anon} da radar/dashboard.py (radar/wallet_config.json); null = non configurato
+  // supabase-js da CDN, versione esatta (2.119.0, pubblicata il 04/11/2026) con impronta SRI
+  const SB_SRC = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js";
+  const SB_SRI = "sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O";
+  const DEMO = /[?&]demo=1(&|$)/.test(location.search) && (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname));
+  const MMR = 0.005;   // mantenimento usato per la liquidazione stimata (margine isolato)
+
+  // ---------------------------------------------------------------- calcoli puri (provati in tests/test_wallet.py)
+  const ORD = { ingresso: 0, aggiunta: 1, riduzione: 2, chiusura: 3 };
+  const t0 = d => { const x = Date.parse(d); return isFinite(x) ? x : 0; };
+  const C = window.WalletCalc = {
+    MMR,
+    // numero scritto all'italiana o all'inglese: "2,80" "65.286,5" "65286.5" "1.234.567"; null se non è un numero
+    parseNum(s) {
+      if (typeof s === "number") return isFinite(s) ? s : null;
+      let t = String(s == null ? "" : s).trim().replace(/\s|\$|€/g, "").replace(/[−–]/g, "-");
+      if (!t) return null;
+      if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
+      else if ((t.match(/\./g) || []).length > 1 || /^-?[1-9]\d{0,2}\.\d{3}$/.test(t)) t = t.replace(/\./g, "");   // "66.100" = 66.100 (migliaia all'italiana); "0.125" resta decimale
+      if (!/^-?\d*\.?\d+$/.test(t)) return null;
+      const x = parseFloat(t); return isFinite(x) ? x : null;
+    },
+    // stato di una posizione dai suoi movimenti: prezzo medio ponderato degli ingressi e delle tranche (le riduzioni non lo cambiano),
+    // quantità aperta, margine (quello inserito o prezzo×quantità/leva; le riduzioni lo scalano in proporzione), realizzato netto di
+    // commissioni e funding, e la serie del realizzato per il calo massimo del conto
+    posState(movs, lato, leva) {
+      const sg = lato === "short" ? -1 : 1, lv = Math.max(1, +leva || 1);
+      const M = (movs || []).slice().sort((a, b) => (t0(a.data) - t0(b.data)) || (ORD[a.tipo] - ORD[b.tipo]));
+      let qty = 0, cost = 0, margin = 0, gross = 0, fees = 0, fund = 0, qIn = 0, costIn = 0, qOut = 0, valOut = 0, mIn = 0;
+      let first = null, lastAdd = null, closedAt = null, nIn = 0;
+      const ev = [];
+      for (const m of M) {
+        const p = +m.prezzo, q = +m.quantita, f = +m.commissioni || 0, fu = +m.funding || 0;
+        let r = 0;
+        fees += f; fund += fu;
+        if (m.tipo === "ingresso" || m.tipo === "aggiunta") {
+          const mg = m.margine != null && m.margine !== "" && isFinite(+m.margine) ? +m.margine : p * q / lv;
+          qty += q; cost += p * q; qIn += q; costIn += p * q; margin += mg; mIn += mg; nIn++;
+          first = first || m.data; lastAdd = m.data; closedAt = null;
+        } else if (qty > 0) {
+          const qq = Math.min(q, qty), avg = cost / qty;
+          r = sg * (p - avg) * qq; gross += r;
+          margin -= margin * qq / qty; cost -= avg * qq; qty -= qq; qOut += qq; valOut += p * qq;
+          if (qty <= qIn * 1e-9) { qty = 0; cost = 0; margin = 0; closedAt = m.data; }
+        }
+        ev.push({ t: m.data, d: r - f - fu });
+      }
+      return { sg, qty, avg: qty > 0 ? cost / qty : (qIn ? costIn / qIn : null), avgIn: qIn ? costIn / qIn : null, avgOut: qOut ? valOut / qOut : null,
+        margin, marginIn: mIn, gross, fees, funding: fund, realized: gross - fees - fund, qIn, qOut, nIn, first, lastAdd,
+        last: M.length ? M[M.length - 1].data : null, closedAt: qty === 0 && qOut > 0 ? closedAt : null, open: qty > 0, n: M.length, ev };
+    },
+    // P/L non realizzato al prezzo px: in dollari, in % sul margine e movimento del prezzo dal prezzo medio
+    pnl(st, px) {
+      if (!st || !st.open || !(px > 0)) return { usd: 0, pctMargin: null, movePct: null };
+      const usd = st.sg * (px - st.avg) * st.qty;
+      return { usd, pctMargin: st.margin > 0 ? usd / st.margin * 100 : null, movePct: st.sg * (px / st.avg - 1) * 100 };
+    },
+    // liquidazione stimata a margine isolato: il margine meno la perdita arriva al mantenimento (mmr del valore).
+    // Long: L = (medio − margine/q)/(1 − mmr); short: L = (medio + margine/q)/(1 + mmr). Spot e opzioni: nessuna liquidazione
+    liqPrice(avg, qty, margin, lato, mercato, mmr) {
+      mmr = mmr == null ? MMR : mmr;
+      if (mercato !== "perp" || !(avg > 0) || !(qty > 0) || !(margin > 0)) return null;
+      const L = lato === "short" ? (avg + margin / qty) / (1 + mmr) : (avg - margin / qty) / (1 - mmr);
+      return L > 0 ? L : null;
+    },
+    // distanza in % dal prezzo attuale (positiva = sopra)
+    dist: (lvl, px) => lvl > 0 && px > 0 ? (lvl / px - 1) * 100 : null,
+    // leva massima compatibile con lo stop, stessa regola di radar/scanner.py lev_max: 1/(d + 0,05) per difetto a 0,5, tetto 10
+    levMax(d) {
+      if (d == null || !isFinite(d)) return null;
+      const x = d + 0.05; if (x <= 0) return 10;
+      const lv = 1 / x; if (lv >= 10) return 10;
+      if (lv >= 1) return Math.floor(lv * 2 + 1e-9) / 2;
+      return Math.max(0, Math.floor(lv * 10 + 1e-9) / 10);
+    },
+    // distanza dello stop dal prezzo medio, in frazione, dalla parte della perdita
+    stopD: (avg, stop, lato) => avg > 0 && stop > 0 ? (lato === "short" ? (stop - avg) / avg : (avg - stop) / avg) : null,
+    // operazione del modello che corrisponde alla posizione: data del segnale indicata, altrimenti quella attiva al primo ingresso
+    modelFor(trades, segnale, first, lato) {
+      if (!Array.isArray(trades)) return null;
+      if (segnale) { const t = trades.find(x => x.signal === segnale); if (t) return t; }
+      const d = String(first || "").slice(0, 10); if (!d) return null;
+      const c = trades.filter(x => x.side === lato && x.signal <= d && (!x.exit || x.exit >= d));
+      return c.length ? c[c.length - 1] : null;
+    },
+    // reale contro modello nello stesso periodo. Reale: risultato totale (realizzato + aperto, netto di costi) sul valore investito.
+    // Modello: dal suo prezzo d'ingresso alla sua uscita se è uscito prima di te (o prima di oggi se sei ancora dentro), altrimenti al
+    // tuo prezzo di uscita / al prezzo attuale. Deriva = reale − modello (punti %), anche in dollari sulla tua quantità
+    compare(st, lato, model, px) {
+      if (!st || !model || !(model.entry_px > 0) || !(st.avgIn > 0)) return null;
+      const sg = lato === "short" ? -1 : 1, inv = st.avgIn * st.qIn;
+      const unr = st.open && px > 0 ? sg * (px - st.avg) * st.qty : 0;
+      const total = st.realized + unr, realPct = total / inv * 100;
+      const endReal = st.open ? px : st.avgOut, endDay = st.open ? null : String(st.closedAt || "").slice(0, 10);
+      const mClosed = !!(model.exit && model.exit_px > 0 && (st.open || (endDay && model.exit <= endDay)));
+      const mEnd = mClosed ? model.exit_px : endReal;
+      const modelPct = mEnd > 0 ? sg * (mEnd / model.entry_px - 1) * 100 : null;
+      const dPx = sg * (model.entry_px - st.avgIn) / model.entry_px * 100;   // > 0: sei entrato a un prezzo migliore del modello
+      const dDays = model.entry && st.first ? Math.round((Date.parse(String(st.first).slice(0, 10)) - Date.parse(model.entry)) / 864e5) : null;
+      const drift = modelPct == null ? null : realPct - modelPct;
+      return { realPct, realUsd: total, modelPct, modelUsd: modelPct == null ? null : modelPct / 100 * inv, drift,
+        driftUsd: modelPct == null ? null : total - modelPct / 100 * inv, dPx, dDays, mClosed, sameSide: model.side === lato, costs: st.fees + st.funding };
+    },
+    // calo massimo del conto vero: capitale + realizzato cumulato a ogni movimento, più il non realizzato di oggi come ultimo punto
+    ddMax(evs, capital, unrealNow) {
+      const E = (evs || []).slice().sort((a, b) => t0(a.t) - t0(b.t)), c0 = capital > 0 ? capital : 0;
+      let eq = c0, peak = c0, dd = 0, ddp = 0;
+      const step = v => { eq = v; if (eq > peak) peak = eq; dd = Math.min(dd, eq - peak); if (peak > 0) ddp = Math.min(ddp, eq / peak - 1); };
+      E.forEach(e => step(eq + e.d));
+      if (unrealNow) step(eq + unrealNow);
+      return { usd: dd, pct: c0 > 0 ? ddp * 100 : null };
+    },
+    // statistiche delle chiuse: vinte, risultato medio, quante seguono i segnali e con che risultato
+    stats(closed) {
+      const n = closed.length, res = closed.map(c => c.st.realized), inv = closed.map(c => c.st.avgIn * c.st.qIn);
+      const sig = closed.filter(c => c.pos.strategia !== "fuori segnale"), off = closed.filter(c => c.pos.strategia === "fuori segnale");
+      const sum = a => a.reduce((s, c) => s + c.st.realized, 0);
+      return { n, wins: res.filter(x => x > 0).length, avgUsd: n ? res.reduce((s, x) => s + x, 0) / n : null,
+        avgPct: n ? res.reduce((s, x, i) => s + (inv[i] > 0 ? x / inv[i] * 100 : 0), 0) / n : null,
+        total: res.reduce((s, x) => s + x, 0), nSig: sig.length, sigUsd: sum(sig), nOff: off.length, offUsd: sum(off) };
+    },
+    // risultato di oggi (24 h): realizzato con data di oggi + variazione del non realizzato dall'apertura di 24 h fa
+    // (dal prezzo medio se la posizione ha avuto ingressi nelle ultime 24 h)
+    today(items, now) {
+      now = now || Date.now();
+      const day = new Date(now).toDateString();
+      let r = 0, ok = true;
+      items.forEach(({ st, px, open24 }) => {
+        st.ev.forEach(e => { if (new Date(e.t).toDateString() === day) r += e.d; });
+        if (!st.open || !(px > 0)) return;
+        const recent = st.lastAdd && now - t0(st.lastAdd) < 864e5;
+        const base = recent ? st.avg : open24;
+        if (!(base > 0)) { ok = false; return; }
+        r += st.sg * (px - base) * st.qty;
+      });
+      return { usd: r, complete: ok };
+    },
+  };
+
+  // ---------------------------------------------------------------- formati (numeri all'italiana)
+  const nf = (x, d) => window.nfIT ? window.nfIT(x, d) : (x == null ? "–" : (+x).toFixed(d));
+  const esc = t => String(t == null ? "" : t).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+  const pxD = p => p >= 1000 ? 0 : p >= 1 ? 2 : p >= 0.01 ? 4 : 6;
+  const fPx = p => p > 0 ? "$" + nf(p, pxD(p)) : "–";
+  const fUsd = (x, sign) => { if (x == null || !isFinite(x)) return "–"; const s = nf(Math.abs(x), Math.abs(x) < 10 ? 2 : 0), nz = /[1-9]/.test(s);
+    return (x < 0 && nz ? "−\u2060" : sign && x > 0 && nz ? "+\u2060" : "") + "$" + s; };   // il segno non va a capo da solo
+  const fPct = (x, d = 1) => { if (x == null || !isFinite(x)) return "–"; const s = nf(x, d); return (x > 0 && /[1-9]/.test(s) ? "+" : "") + s + "%"; };
+  const fQty = q => { if (!(q > 0)) return "0"; const d = q >= 100 ? 2 : q >= 1 ? 3 : q >= 0.01 ? 4 : 6; return nf(q, d).replace(/,?0+$/, ""); };
+  const fLev = l => nf(+l, +l % 1 ? 1 : 0) + "x";
+  const cls = x => x > 0 ? "pos" : x < 0 ? "neg" : "";
+  const fDay = d => d ? new Date(String(d).length <= 10 ? d + "T12:00:00" : d).toLocaleDateString("it-IT", { day: "numeric", month: "short" }) : "–";
+  const fDayY = d => d ? new Date(String(d).length <= 10 ? d + "T12:00:00" : d).toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "2-digit" }) : "–";
+  const fDT = d => d ? new Date(d).toLocaleString("it-IT", { day: "numeric", month: "short", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "–";
+  const NAMES = { BTC: "Bitcoin", ETH: "Ethereum" };
+  const nameOf = a => NAMES[a] || a;
+  const WARN = '<svg aria-hidden="true"><use href="#i-warn"/></svg>';
+  const $w = id => document.getElementById(id);
+  const localDT = d => { const x = d ? new Date(d) : new Date(); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 16); };
+
+  // ---------------------------------------------------------------- dati del modello (report incorporato nella pagina)
+  const getR = () => { try { return typeof R !== "undefined" && R ? R : null; } catch (_) { return null; } };   // report della pagina (const R del template)
+  const Wof = a => { const rp = getR(); return rp ? (a === "BTC" ? rp.weekly : a === "ETH" ? rp.weekly_eth : null) : null; };
+  const scanRow = a => { const rp = getR(); const S = rp && rp.scanner; return S && Array.isArray(S.righe) ? S.righe.find(r => r.t === a) || null : null; };
+  const stratOf = (pos, st) => {   // modello, stop e leva massima per la posizione
+    const W = Wof(pos.asset), out = { model: null, stop: null, lev: null, levSrc: "", flat: false, row: null };
+    if (W && pos.strategia === "W3.2") {
+      out.model = C.modelFor(W.history && W.history.trades, pos.segnale_data, st.first, pos.lato);
+      if (W.status === "aperto" && W.side === pos.lato && W.trail > 0) out.stop = W.trail; else out.flat = W.status !== "aperto";
+      if (out.stop) { out.lev = C.levMax(C.stopD(st.avg, out.stop, pos.lato)); out.levSrc = "stop W3.2"; }
+    } else if (!W) {
+      const r = out.row = scanRow(pos.asset);
+      if (r && r.lato === pos.lato && r.lev_max != null) { out.lev = r.lev_max; out.levSrc = "Scanner"; }
+      if (r && pos.strategia === "scanner" && r.lato === pos.lato && r.px_in > 0) out.model = { signal: r.sig, entry: r.ing, entry_px: r.px_in, side: r.lato, exit: null };
+    }
+    return out;
+  };
+
+  // ---------------------------------------------------------------- archivio: Supabase oppure demo in memoria
+  let sb = null, store = null, user = null, POS = [], MOV = [], capital = null;
+  function loadSupabase() {
+    if (window.supabase && window.supabase.createClient) return Promise.resolve(window.supabase);
+    return new Promise((ok, ko) => {
+      const s = document.createElement("script");
+      s.src = SB_SRC; s.integrity = SB_SRI; s.crossOrigin = "anonymous"; s.async = true;
+      s.onload = () => window.supabase && window.supabase.createClient ? ok(window.supabase) : ko(new Error("modulo assente"));
+      s.onerror = () => ko(new Error("CDN non raggiungibile"));
+      document.head.appendChild(s);
+    });
+  }
+  const sbErr = e => { const m = String((e && (e.message || e.error_description)) || e || "");
+    if (/invalid login|invalid credentials/i.test(m)) return "Email o password non corretti.";
+    if (/email not confirmed/i.test(m)) return "Email non ancora confermata: confermala dal pannello Supabase.";
+    if (/fetch|network/i.test(m)) return "Connessione non riuscita. Controlla la rete e riprova.";
+    if (/row-level security|permission/i.test(m)) return "Operazione non permessa per questo account.";
+    return "Operazione non riuscita: " + m.slice(0, 140); };
+  const SB = {
+    async session() { const { data } = await sb.auth.getSession(); return data && data.session ? data.session.user : null; },
+    async login(email, pw) { const { data, error } = await sb.auth.signInWithPassword({ email, password: pw }); if (error) throw error; return data.user; },
+    async logout() { await sb.auth.signOut(); },
+    async list() {
+      const [a, b] = await Promise.all([sb.from("wallet_posizioni").select("*").order("created_at"), sb.from("wallet_movimenti").select("*").order("data")]);
+      if (a.error) throw a.error; if (b.error) throw b.error; return [a.data || [], b.data || []];
+    },
+    async addPos(p, m) {
+      const { data, error } = await sb.from("wallet_posizioni").insert(p).select().single(); if (error) throw error;
+      const r = await sb.from("wallet_movimenti").insert(Object.assign({}, m, { posizione_id: data.id }));
+      if (r.error) { await sb.from("wallet_posizioni").delete().eq("id", data.id); throw r.error; }
+      return data;
+    },
+    async updPos(id, patch) { const { error } = await sb.from("wallet_posizioni").update(patch).eq("id", id); if (error) throw error; },
+    async delPos(id) { const { error } = await sb.from("wallet_posizioni").delete().eq("id", id); if (error) throw error; },
+    async addMov(m) { const { error } = await sb.from("wallet_movimenti").insert(m); if (error) throw error; },
+    async updMov(id, patch) { const { error } = await sb.from("wallet_movimenti").update(patch).eq("id", id); if (error) throw error; },
+    async delMov(id) { const { error } = await sb.from("wallet_movimenti").delete().eq("id", id); if (error) throw error; },
+    capital(u) { const c = u && u.user_metadata && +u.user_metadata.capitale; return c > 0 ? c : null; },
+    async setCapital(c) { const { data, error } = await sb.auth.updateUser({ data: { capitale: c } }); if (error) throw error; return data.user; },
+  };
+  // demo (solo ?demo=1 in locale): BTC short W3.2 in 2 tranche, ETH short W3.2, PIEVERSE long 5x fuori segnale, una chiusa
+  function demoStore() {
+    const rp = getR() || {}, W = rp.weekly || {}, E = rp.weekly_eth || {};
+    let n = 0; const id = () => "demo-" + (++n);
+    const P = [], M = [];
+    const pos = (o, movs) => { const p = Object.assign({ id: id(), mercato: "perp", exchange: "Bitget", stato: "aperta", note: null, created_at: movs[0].data }, o); P.push(p);
+      movs.forEach(m => M.push(Object.assign({ id: id(), posizione_id: p.id, commissioni: 0, funding: 0, margine: null, note: null }, m))); };
+    pos({ asset: "BTC", lato: "short", leva: 3, strategia: "W3.2", segnale_data: W.signal_date || "2026-11-15" }, [
+      { tipo: "ingresso", data: (W.entry || "2026-11-16") + "T10:20:00Z", prezzo: 65420, quantita: 0.15, margine: 3271, commissioni: 5.9 },
+      { tipo: "aggiunta", data: "2026-11-20T15:45:00Z", prezzo: 62800, quantita: 0.1, margine: 2093, commissioni: 3.8, funding: 2.4 }]);
+    pos({ asset: "ETH", lato: "short", leva: 2, exchange: "OKX", strategia: "W3.2", segnale_data: E.signal_date || "2026-11-08" }, [
+      { tipo: "ingresso", data: (E.entry || "2026-11-09") + "T14:05:00Z", prezzo: 2118, quantita: 3, margine: 3177, commissioni: 3.2, funding: 1.1 }]);
+    pos({ asset: "PIEVERSE", lato: "long", leva: 5, strategia: "fuori segnale", segnale_data: null }, [
+      { tipo: "ingresso", data: "2026-11-24T09:30:00Z", prezzo: 2.8, quantita: 178.5714, margine: 100, commissioni: 0.3 }]);
+    pos({ asset: "ETH", lato: "long", leva: 1, mercato: "spot", stato: "chiusa", strategia: "W3.2", segnale_data: "2026-08-23" }, [
+      { tipo: "ingresso", data: "2026-08-25T08:10:00Z", prezzo: 2480, quantita: 2, commissioni: 2.5 },
+      { tipo: "chiusura", data: "2026-11-03T09:00:00Z", prezzo: 2255, quantita: 2, commissioni: 2.3 }]);
+    let u = null, cap = 10000;
+    const now = () => new Date().toISOString();
+    return {
+      demo: true,
+      async session() { return u; },
+      async login(email) { u = { email: email || "demo@radar.local", user_metadata: { capitale: cap } }; return u; },
+      async logout() { u = null; },
+      async list() { return [P.map(p => Object.assign({}, p)), M.map(m => Object.assign({}, m))]; },
+      async addPos(p, m) { const q = Object.assign({ id: id(), created_at: now() }, p); P.push(q); M.push(Object.assign({ id: id() }, m, { posizione_id: q.id })); return q; },
+      async updPos(i, patch) { Object.assign(P.find(p => p.id === i) || {}, patch); },
+      async delPos(i) { const k = P.findIndex(p => p.id === i); if (k >= 0) P.splice(k, 1); for (let j = M.length - 1; j >= 0; j--) if (M[j].posizione_id === i) M.splice(j, 1); },
+      async addMov(m) { M.push(Object.assign({ id: id() }, m)); },
+      async updMov(i, patch) { Object.assign(M.find(m => m.id === i) || {}, patch); },
+      async delMov(i) { const k = M.findIndex(m => m.id === i); if (k >= 0) M.splice(k, 1); },
+      capital(x) { return x && x.user_metadata && x.user_metadata.capitale > 0 ? x.user_metadata.capitale : null; },
+      async setCapital(c) { cap = c; u.user_metadata.capitale = c; return u; },
+    };
+  }
+
+  // ---------------------------------------------------------------- prezzi: BTC live della pagina, altre monete Binance/OKX pubblici, a mano se mancano
+  const PX = {};   // asset → { px, open, src, t }
+  const manualKey = a => "radarWalletPx." + a;
+  const getManual = a => { try { const v = JSON.parse(localStorage.getItem(manualKey(a)) || "null"); return v && v.px > 0 ? v : null; } catch (_) { return null; } };
+  async function fetchJ(u) { const ac = window.AbortController ? new AbortController() : null, t = setTimeout(() => ac && ac.abort(), 8000);
+    try { const r = await fetch(u, { signal: ac ? ac.signal : undefined }); if (!r.ok) return null; return await r.json(); } catch (_) { return null; } finally { clearTimeout(t); } }
+  async function fetchPx(a) {
+    if (!/^[A-Z0-9]{1,15}$/.test(a)) return null;
+    let j = await fetchJ(`https://api.binance.com/api/v3/ticker/24hr?symbol=${a}USDT`);
+    if (j && +j.lastPrice > 0) return { px: +j.lastPrice, open: +j.openPrice, src: "Binance" };
+    j = await fetchJ(`https://www.okx.com/api/v5/market/ticker?instId=${a}-USDT`);
+    let d = j && j.data && j.data[0]; if (d && +d.last > 0) return { px: +d.last, open: +d.open24h, src: "OKX" };
+    j = await fetchJ(`https://www.okx.com/api/v5/market/ticker?instId=${a}-USDT-SWAP`);
+    d = j && j.data && j.data[0]; if (d && +d.last > 0) return { px: +d.last, open: +d.open24h, src: "OKX perp" };
+    return null;
+  }
+  function demoPx(a) {
+    const rp = getR() || {}, r = scanRow(a);
+    const px = a === "BTC" ? (window.REF && window.REF.px) || rp.price : a === "ETH" ? (rp.weekly_eth || {}).price : a === "PIEVERSE" ? (r && r.ult) || 3.69 : null;
+    return px > 0 ? { px, open: px * (a === "PIEVERSE" ? 0.94 : 1.012), src: "demo" } : null;
+  }
+  function pxOf(a) {
+    const p = PX[a] || {};
+    if (a === "BTC" && window.REF && window.REF.px > 0) return { px: window.REF.px, open: p.open, src: window.REF.live ? "live" : "chiusura", live: !!window.REF.live };
+    if (p.px > 0) return p;
+    const m = getManual(a); if (m) return { px: m.px, open: null, src: "manuale", manual: true, t: m.t };
+    if (a === "ETH") { const W = Wof("ETH"); if (W && W.price > 0) return { px: W.price, open: null, src: "chiusura" }; }
+    return null;
+  }
+  let pxBusy = false;
+  async function refreshPx() {
+    if (pxBusy) return; pxBusy = true;
+    try {
+      const A = [...new Set(POS.filter(p => p.stato !== "chiusa").map(p => p.asset))];
+      await Promise.all(A.map(async a => { const r = store && store.demo ? demoPx(a) : await fetchPx(a); if (r) PX[a] = Object.assign(r, { t: Date.now() }); }));
+    } finally { pxBusy = false; }
+    render();
+  }
+
+  // ---------------------------------------------------------------- vista
+  const gate = html => { $w("waGate").hidden = false; $w("waApp").hidden = true; $w("waGate").innerHTML = html; };
+  function showNotConfigured() {
+    gate(`<div class="card waGate"><h2>Wallet non ancora configurato</h2><p>Qui si registrano le posizioni reali, con accesso personale.
+      Per attivarlo servono il progetto Supabase e la sua chiave pubblica nella configurazione della dashboard (supabase/LEGGIMI.md).</p></div>`);
+  }
+  function showLogin(msg) {
+    gate(`<form class="card waLogin waForm" id="waLogin" novalidate>
+      <div class="waLogo"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg><div><b style="font:650 1.06rem var(--font)">Accedi al Wallet</b>
+      <small style="display:block;color:var(--label2);font-size:.8rem">Le tue posizioni reali, visibili solo a te${DEMO ? " · anteprima con dati finti" : ""}</small></div></div>
+      <label>Email<input type="email" name="email" autocomplete="username" inputmode="email" required></label>
+      <label>Password<input type="password" name="pw" autocomplete="current-password" required></label>
+      <p class="err" id="waLoginErr" ${msg ? "" : "hidden"}>${esc(msg || "")}</p>
+      <button class="waBtn" type="submit">Accedi</button>
+      <p class="waNote">Nessuna registrazione da qui: gli account li crea l'amministratore.</p></form>`);
+    const f = $w("waLogin");
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const em = f.email.value.trim(), pw = f.pw.value, er = $w("waLoginErr"), b = f.querySelector("button[type=submit]");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) || (!store.demo && !pw)) { er.hidden = false; er.textContent = "Inserisci email e password."; return; }
+      b.disabled = true; b.textContent = "Accesso…";
+      try { user = await store.login(em, pw); await afterLogin(); }
+      catch (x) { er.hidden = false; er.textContent = sbErr(x); b.disabled = false; b.textContent = "Accedi"; }
+    };
+  }
+  async function afterLogin() {
+    capital = store.capital(user);
+    $w("waUser").textContent = user.email || "";
+    $w("waGate").hidden = true; $w("waApp").hidden = false;
+    await reload();
+  }
+  async function reload() {
+    try { [POS, MOV] = await store.list(); }
+    catch (e) { gate(`<div class="card waGate"><h2>Dati non arrivati</h2><p>${esc(sbErr(e))}</p><button type="button" class="waBtn2" id="waRetry">Riprova</button></div>`);
+      $w("waRetry").onclick = () => { $w("waGate").hidden = true; $w("waApp").hidden = false; reload(); }; return; }
+    if (POS.some(p => p.stato !== "chiusa" && !Wof(p.asset)) && window.lazyPending && window.lazyPending("scanner"))   // leva massima delle altcoin dallo Scanner
+      window.lazyData("scanner").then(render).catch(() => {});
+    render(); refreshPx();
+  }
+
+  const movsOf = id => MOV.filter(m => m.posizione_id === id);
+  function build() {
+    return POS.map(p => { const st = C.posState(movsOf(p.id), p.lato, p.leva); return { pos: p, st, sx: stratOf(p, st), q: pxOf(p.asset) }; });
+  }
+
+  function render() {
+    if (!user || $w("waApp").hidden) return;
+    const L = build(), open = L.filter(x => x.st.open), closed = L.filter(x => !x.st.open && x.st.qOut > 0);
+    const unr = open.reduce((s, x) => s + (x.q ? C.pnl(x.st, x.q.px).usd : 0), 0), rea = L.reduce((s, x) => s + x.st.realized, 0);
+    const tot = rea + unr, td = C.today(open.map(x => ({ st: x.st, px: x.q && x.q.px, open24: x.q && x.q.open })).concat(closed.map(x => ({ st: x.st }))));
+    const mg = open.reduce((s, x) => s + x.st.margin, 0), noPx = open.filter(x => !x.q).length;
+    // conto
+    const big = capital ? `${fUsd(capital + tot)}<small>valore del conto · capitale di partenza ${fUsd(capital)} <button type="button" class="waLink" id="waCap">modifica</button></small>`
+      : `<span class="${cls(tot)}">${fUsd(tot, true)}</span><small>risultato totale · <button type="button" class="waLink" id="waCap">imposta il capitale</button> per il valore del conto</small>`;
+    $w("waHero").innerHTML = `<div class="wkBig">${big}</div><div class="wkFacts">
+      <div><span>risultato totale</span><b class="${cls(tot)}">${fUsd(tot, true)}</b><small>${capital ? fPct(tot / capital * 100) + " sul capitale" : "realizzato + aperto"}</small></div>
+      <div><span>oggi (24 h)</span><b class="${cls(td.usd)}">${fUsd(td.usd, true)}</b><small>${td.complete ? (capital ? fPct(td.usd / capital * 100, 2) + " sul capitale" : "variazione nelle 24 h") : "parziale: manca il prezzo di 24 h fa"}</small></div>
+      <div><span>realizzato</span><b class="${cls(rea)}">${fUsd(rea, true)}</b><small>aperto ${fUsd(unr, true)}</small></div>
+      <div><span>posizioni aperte</span><b>${open.length}</b><small>margine ${fUsd(mg)}${noPx ? ` · ${noPx} senza prezzo` : ""}</small></div></div>`;
+    $w("waCap").onclick = capForm;
+    // aperte
+    $w("waOpen").innerHTML = open.length ? open.map(cardHtml).join("") :
+      `<div class="card waEmpty waOne"><span>Nessuna posizione aperta.</span><span>Registra un ingresso con <b>Nuova posizione</b>: prezzo medio, P/L, liquidazione e confronto con W3.2 si calcolano da soli.</span></div>`;
+    open.forEach(x => {
+      const c = $w("waP-" + x.pos.id); if (!c) return;
+      c.querySelectorAll("[data-a]").forEach(b => b.onclick = () => {
+        const a = b.dataset.a;
+        if (a === "add") movForm(x.pos, "aggiunta"); else if (a === "red") movForm(x.pos, "riduzione"); else if (a === "movs") movsSheet(x.pos); else if (a === "px") pxForm(x.pos.asset);
+      });
+    });
+    // confronto
+    const cmpL = L.filter(x => x.st.qIn > 0).sort((a, b) => ((a.pos.strategia === "fuori segnale") - (b.pos.strategia === "fuori segnale")) || (b.st.open - a.st.open) || (t0(b.st.first) - t0(a.st.first)));   // fuori segnale in fondo
+    $w("waCmp").innerHTML = cmpL.length ? cmpL.map(cmpHtml).join("") : `<div class="card waEmpty waOne">Nessuna posizione da confrontare.</div>`;
+    $w("waCmpSec").hidden = !cmpL.length;
+    // chiuse
+    const S = C.stats(closed), evs = [].concat(...L.map(x => x.st.ev)), dd = C.ddMax(evs, capital, unr);
+    $w("waClSub").textContent = closed.length ? `${closed.length} ${closed.length === 1 ? "chiusa" : "chiuse"}` : "";
+    $w("waStats").innerHTML = `<div><span>vinte</span><b>${S.wins} su ${S.n}</b><small>${S.n ? fPct(S.wins / S.n * 100, 0) + " delle chiuse" : "nessuna chiusa"}</small></div>
+      <div><span>risultato medio</span><b class="${cls(S.avgUsd)}">${S.n ? fUsd(S.avgUsd, true) : "–"}</b><small>${S.n ? fPct(S.avgPct) + " sul valore" : "–"}</small></div>
+      <div><span>calo massimo del conto</span><b class="${dd.usd < 0 ? "neg" : ""}">${dd.pct != null ? fPct(dd.pct) : fUsd(dd.usd)}</b><small>${dd.pct != null ? fUsd(dd.usd) + " · " : ""}realizzato + aperto di oggi</small></div>
+      <div><span>seguono i segnali</span><b>${S.nSig} su ${S.n}</b><small>${S.n ? `segnali ${fUsd(S.sigUsd, true)}${S.nOff ? " · fuori " + fUsd(S.offUsd, true) : ""}` : "–"}</small></div>`;
+    $w("waClosed").innerHTML = closed.length ? closed.sort((a, b) => t0(b.st.closedAt) - t0(a.st.closedAt)).map(x => {
+      const inv = x.st.avgIn * x.st.qIn, days = Math.max(0, Math.round((t0(x.st.closedAt) - t0(x.st.first)) / 864e5));
+      return `<button type="button" class="row tapCard" data-mv="${esc(x.pos.id)}"><span class="k">${esc(nameOf(x.pos.asset))} · ${x.pos.lato} ${esc(x.pos.mercato)}${x.pos.leva > 1 ? " " + fLev(x.pos.leva) : ""} <span class="waTag ${x.pos.strategia === "fuori segnale" ? "off" : "sig"}">${esc(x.pos.strategia)}</span>
+        <small>${fDayY(x.st.first)} → ${fDayY(x.st.closedAt)} · ${days} g · ingresso ${fPx(x.st.avgIn)}, uscita ${fPx(x.st.avgOut)}</small></span>
+        <span class="v"><b class="${cls(x.st.realized)}">${fUsd(x.st.realized, true)}</b><small class="${cls(x.st.realized)}">${inv > 0 ? fPct(x.st.realized / inv * 100) : ""}</small></span></button>`; }).join("")
+      : `<div class="row"><span class="k">Nessuna posizione chiusa.<small>Le statistiche si riempiono quando chiudi la prima posizione.</small></span></div>`;
+    $w("waClosed").querySelectorAll("[data-mv]").forEach(b => b.onclick = () => { const p = POS.find(q => q.id === b.dataset.mv); if (p) movsSheet(p); });
+    const empty = POS.filter(p => !movsOf(p.id).length);
+    $w("waFoot").innerHTML = `Prezzi: BTC dal prezzo live della pagina, altre monete da Binance o OKX (pubblici), a mano se non disponibili. Liquidazione stimata a margine isolato con mantenimento ${nf(MMR * 100, 1)}%: quella vera dipende dall'exchange.
+      ${store.demo ? " <b>Anteprima con dati finti in memoria.</b>" : " Dati su Supabase, visibili solo al tuo account."}${empty.length ? ` ${empty.length} posizion${empty.length === 1 ? "e" : "i"} senza movimenti: <button type="button" class="waLink" id="waEmptyP">vedi</button>` : ""}`;
+    if ($w("waEmptyP")) $w("waEmptyP").onclick = () => movsSheet(empty[0]);
+  }
+
+  function cardHtml(x) {
+    const { pos: p, st, sx, q } = x, px = q && q.px, pl = C.pnl(st, px);
+    const liq = C.liqPrice(st.avg, st.qty, st.margin, p.lato, p.mercato), dL = C.dist(liq, px), dS = C.dist(sx.stop, px);
+    const tag = p.strategia === "fuori segnale" ? `<span class="waTag off">fuori segnale</span>` : `<span class="waTag sig">${esc(p.strategia)}</span>`;
+    const warns = [];
+    if (sx.lev != null && +p.leva > sx.lev) warns.push(`<p class="waWarn">${WARN}<span>Leva ${fLev(p.leva)} oltre la massima compatibile con lo ${sx.levSrc === "Scanner" ? "stop dello Scanner" : "stop"} (${fLev(sx.lev)}): la liquidazione arriva prima dello stop.</span></p>`);
+    if (liq && px && sx.stop && (p.lato === "short" ? liq < sx.stop : liq > sx.stop) && !(sx.lev != null && +p.leva > sx.lev)) warns.push(`<p class="waWarn">${WARN}<span>La liquidazione stimata (${fPx(liq)}) è prima dello stop W3.2.</span></p>`);
+    if (dL != null && Math.abs(dL) < 10) warns.push(`<p class="waWarn red">${WARN}<span>Liquidazione vicina: ${fPct(dL)} dal prezzo.</span></p>`);
+    if (p.strategia === "W3.2" && sx.flat) warns.push(`<p class="waWarn">${WARN}<span>La strategia W3.2 su ${esc(p.asset)} non ha una posizione aperta: questa resta senza stop del modello.</span></p>`);
+    else if (p.strategia === "W3.2" && !sx.stop && Wof(p.asset)) warns.push(`<p class="waWarn">${WARN}<span>W3.2 su ${esc(p.asset)} è ${Wof(p.asset).side} : la posizione è nel verso opposto al segnale.</span></p>`);
+    const pxSub = !q ? `<button type="button" class="waLink" data-a="px">inserisci</button>` : q.manual ? `a mano · <button type="button" class="waLink" data-a="px">cambia</button>` : esc(q.src);
+    const seventh = sx.stop ? `<div><span>stop W3.2</span><b>${fPx(sx.stop)}</b><small>${dS != null ? fPct(dS) + " dal prezzo" : ""}</small></div>`
+      : `<div><span>valore posizione</span><b>${px ? fUsd(st.qty * px) : "–"}</b><small>${p.mercato}</small></div>`;
+    const cmp = sx.model ? C.compare(st, p.lato, sx.model, px) : null;
+    const line = p.strategia === "fuori segnale" ? `<p class="waNote">Fuori segnale: nessuna strategia di riferimento.</p>`
+      : cmp ? `<p class="waNote">Segnale ${esc(p.strategia)} ${artDay(sx.model.signal)} · deriva <b class="${cls(cmp.drift)}">${fPct(cmp.drift)}</b> (${fUsd(cmp.driftUsd, true)}) rispetto al modello</p>`
+      : `<p class="waNote">Nessun segnale ${esc(p.strategia)} trovato per questa posizione.</p>`;
+    return `<article class="card waPos" id="waP-${esc(p.id)}">
+      <div class="waTop"><div><b class="t">${esc(nameOf(p.asset))}</b><small>${p.lato === "short" ? "Short" : "Long"} ${fLev(p.leva)} · ${esc(p.mercato)} · ${esc(p.exchange)} · dal ${fDay(st.first)}</small></div>
+        <span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><span class="waTag ${p.lato}">${p.lato}</span>${tag}</span></div>
+      <div class="waPl"><b class="${cls(pl.usd)}">${px ? fUsd(pl.usd, true) : "–"}</b><span><span class="${cls(pl.usd)}">${pl.pctMargin != null ? fPct(pl.pctMargin) + " sul margine" : ""}</span>${pl.movePct != null ? " · prezzo " + fPct(pl.movePct) : ""}${st.realized ? ` · ${st.gross ? "realizzato" : "costi"} ${fUsd(st.realized, true)}` : ""}</span></div>
+      <div class="kvs">
+        <div><span>prezzo medio</span><b>${fPx(st.avg)}</b><small>${st.nIn > 1 ? st.nIn + " tranche" : "1 ingresso"}</small></div>
+        <div><span>prezzo attuale</span><b>${fPx(px)}</b><small>${pxSub}</small></div>
+        <div><span>quantità</span><b>${fQty(st.qty)}</b><small>${esc(p.asset)}</small></div>
+        <div><span>margine</span><b>${fUsd(st.margin)}</b><small>leva ${fLev(p.leva)}</small></div>
+        <div><span>liquidazione stimata</span><b>${liq ? fPx(liq) : "–"}</b><small>${liq ? (dL != null ? fPct(dL) + " dal prezzo" : "") : p.mercato === "perp" ? "margine non indicato" : "senza leva"}</small></div>
+        ${seventh}
+      </div>
+      ${warns.join("")}${line}
+      <div class="waAct"><button type="button" class="waBtn2" data-a="add" aria-label="Aggiungi tranche"><span class="waL">Aggiungi tranche</span><span class="waS" aria-hidden="true">+ Tranche</span></button><button type="button" class="waBtn2" data-a="red" aria-label="Riduci o chiudi"><span class="waL">Riduci / chiudi</span><span class="waS" aria-hidden="true">Riduci</span></button><button type="button" class="waBtn2" data-a="movs">Movimenti</button></div>
+    </article>`;
+  }
+  const artDay = d => window.artD ? window.artD("del", fDay(d)) : "del " + fDay(d);
+
+  function cmpHtml(x) {
+    const { pos: p, st, sx, q } = x, px = q && q.px;
+    const head = `<div class="waTop"><div><b class="t">${esc(nameOf(p.asset))} · ${p.lato}</b><small>${st.open ? "aperta dal " + fDay(st.first) : `chiusa · ${fDayY(st.first)} → ${fDayY(st.closedAt)}`}</small></div>`;
+    if (p.strategia === "fuori segnale") return `<div class="card waCmp">${head}<span class="waTag off">fuori segnale</span></div>
+      <p class="waNote">Posizione aperta senza segnale: non c'è un risultato del modello da confrontare.${sx.lev != null ? ` Leva massima compatibile con lo stop dello Scanner: <b>${fLev(sx.lev)}</b>.` : ""}</p></div>`;
+    const cmp = sx.model ? C.compare(st, p.lato, sx.model, px) : null;
+    if (!cmp) return `<div class="card waCmp">${head}<span class="waTag sig">${esc(p.strategia)}</span></div><p class="waNote">Nessun segnale ${esc(p.strategia)} attivo alla data del primo ingresso${p.segnale_data ? " né alla data indicata (" + fDay(p.segnale_data) + ")" : ""}.</p></div>`;
+    const M = sx.model, better = cmp.dPx >= 0, dd = cmp.dDays;
+    const why = [];
+    if (Math.abs(cmp.dPx) >= 0.05) why.push(`ingresso ${better ? "migliore" : "peggiore"} del ${nf(Math.abs(cmp.dPx), 1)}%`);
+    if (cmp.costs > 0.5) why.push(`costi ${fUsd(cmp.costs)}`);
+    if (!cmp.mClosed && !st.open && M.exit == null) why.push("uscita prima del modello");
+    if (cmp.mClosed && st.open) why.push("il modello è già uscito");
+    return `<div class="card waCmp">${head}<span class="waTag sig">${esc(p.strategia)}</span></div>
+      ${cmp.sameSide ? "" : `<p class="waWarn">${WARN}<span>Lato opposto al segnale del modello (${esc(M.side)}).</span></p>`}
+      <div class="waCmpG">
+        <div><span>segnale</span><b>${fDay(M.signal)}</b><small>modello entra ${fDay(M.entry)} a ${fPx(M.entry_px)}</small></div>
+        <div><span>il tuo ingresso</span><b>${fPx(st.avgIn)}</b><small><span class="${cls(cmp.dPx)}">${fPct(cmp.dPx)}</span> · ${dd == null ? "" : dd === 0 ? "stesso giorno" : (dd > 0 ? dd + " g dopo" : -dd + " g prima")}</small></div>
+        <div><span>reale</span><b class="${cls(cmp.realPct)}">${fPct(cmp.realPct)}</b><small>${fUsd(cmp.realUsd, true)}</small></div>
+        <div><span>modello</span><b class="${cls(cmp.modelPct)}">${fPct(cmp.modelPct)}</b><small>${cmp.mClosed ? "uscito il " + fDay(M.exit) : st.open ? "fino a oggi" : "fino alla tua uscita"}</small></div>
+      </div>
+      <p class="waNote">Deriva <b class="${cls(cmp.drift)}">${fPct(cmp.drift)}</b> (${fUsd(cmp.driftUsd, true)} sulla tua quantità)${why.length ? ": " + why.join(", ") : ""}. Percentuali sul valore della posizione, senza leva.</p></div>`;
+  }
+
+  // ---------------------------------------------------------------- moduli
+  const segH = (name, opts, val) => `<div class="seg" role="group" data-seg="${name}">${opts.map(([v, l]) => `<button type="button" data-v="${esc(v)}" aria-pressed="${v === val}">${esc(l)}</button>`).join("")}</div>`;
+  const segVal = (f, n) => { const b = f.querySelector(`[data-seg="${n}"] [aria-pressed="true"]`); return b ? b.dataset.v : null; };
+  const segWire = (f, cb) => f.querySelectorAll("[data-seg]").forEach(g => g.querySelectorAll("button").forEach(b => b.onclick = () => {
+    g.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); cb && cb(g.dataset.seg, b.dataset.v); }));
+  const numIn = (n, v, ph) => `<input type="text" inputmode="decimal" autocomplete="off" name="${n}" value="${v == null ? "" : esc(String(v).replace(".", ","))}" placeholder="${esc(ph || "")}">`;
+  function sheetForm(title, html) {
+    const box = document.createElement("form"); box.className = "waForm"; box.noValidate = true; box.innerHTML = html;
+    window.openSheet(title, box); return box;
+  }
+  const errOut = (f, m, warn) => { const e = f.querySelector(".err"), w = f.querySelector(".warn"); if (e) { e.hidden = !m || warn; e.textContent = warn ? "" : m || ""; } if (w) { w.hidden = !warn; w.textContent = warn ? m : ""; } };
+  async function save(f, fn) {
+    const b = f.querySelector("button[type=submit]"); b.disabled = true;
+    try { await fn(); window.closeSheet(); await reload(); }
+    catch (e) { errOut(f, sbErr(e)); b.disabled = false; }
+  }
+  // movimento: campi comuni e controlli
+  function movFields(tipo, m, st, lev) {
+    const add = tipo === "ingresso" || tipo === "aggiunta";
+    const note = `<label>Note<input type="text" name="note" maxlength="200" value="${esc(m && m.note || "")}"></label>`;
+    const fund = `<label><span>Funding <small>$, pagato +</small></span>${numIn("funding", m && m.funding, "0")}</label>`;
+    return `<div class="f2"><label><span>Prezzo <small>$</small></span>${numIn("prezzo", m && m.prezzo, "es. 2,80")}</label>
+      <label><span>Quantità <small>${tipo === "chiusura" ? "tutta" : add ? "o solo il margine" : st ? "max " + fQty(st.qty) : "moneta"}</small></span>${numIn("quantita", m ? m.quantita : tipo === "chiusura" && st ? +st.qty.toPrecision(10) : null, "")}</label></div>
+      <div class="f2">${add ? `<label><span>Margine <small>$, facoltativo</small></span>${numIn("margine", m && m.margine, "valore / leva")}</label>` : fund}
+      <label><span>Commissioni <small>$</small></span>${numIn("commissioni", m && m.commissioni, "0")}</label></div>
+      ${add ? `<div class="f2">${fund}${note}</div>` : note}
+      <label>Data e ora<input type="datetime-local" name="data" value="${localDT(m && m.data)}"></label>
+      <div class="prev" data-prev></div><p class="warn" hidden></p><p class="err" hidden></p>`;
+  }
+  // legge e controlla il movimento; restituisce {m} o {err}
+  function readMov(f, tipo, lev, st, ref, editId) {
+    const P = C.parseNum, prezzo = P(f.prezzo.value), qIn = P(f.quantita.value), mg = f.margine ? P(f.margine.value) : null;
+    const comm = P(f.commissioni.value) || 0, fund = f.funding ? P(f.funding.value) || 0 : 0, dt = f.data.value ? new Date(f.data.value) : null;
+    if (!dt || isNaN(dt)) return { err: "Data non valida." };
+    if (dt.getTime() > Date.now() + 36e5) return { err: "La data è nel futuro." };
+    if (!(prezzo > 0)) return { err: "Prezzo mancante o non valido." };
+    let q = qIn;
+    if (!(q > 0) && mg > 0 && f.margine) q = mg * lev / prezzo;
+    if (!(q > 0)) return { err: f.margine ? "Inserisci la quantità oppure il margine." : "Quantità mancante o non valida." };
+    if (f.margine && f.margine.value.trim() && !(mg >= 0)) return { err: "Margine non valido." };
+    if (comm < 0) return { err: "Le commissioni non possono essere negative." };
+    if ((tipo === "riduzione" || tipo === "chiusura") && st) {
+      const avail = st.qty + (editId ? 0 : 0);
+      if (q > avail * (1 + 1e-9) + 1e-12) return { err: `Quantità oltre quella aperta (${fQty(avail)}).` };
+    }
+    const far = ref > 0 && Math.abs(prezzo / ref - 1) > 0.5 && Date.now() - dt.getTime() < 7 * 864e5;
+    return { m: { tipo, data: dt.toISOString(), prezzo, quantita: +q.toPrecision(12), margine: f.margine ? (mg > 0 ? mg : null) : undefined, commissioni: comm, funding: fund, note: f.note.value.trim() || null }, far };
+  }
+  function movPreview(f, tipo, pos, st) {
+    const P = C.parseNum, pr = P(f.prezzo.value), qq = P(f.quantita.value), mg = f.margine ? P(f.margine.value) : null, lev = +pos.leva || 1;
+    const q = qq > 0 ? qq : mg > 0 && pr > 0 ? mg * lev / pr : null, box = f.querySelector("[data-prev]");
+    if (!(pr > 0) || !(q > 0)) { box.innerHTML = "Valore e prezzo medio si calcolano mentre scrivi."; return; }
+    if (tipo === "ingresso" || tipo === "aggiunta") {
+      const m2 = mg > 0 ? mg : pr * q / lev, Q = (st ? st.qty : 0) + q, avg = ((st ? st.avg * st.qty : 0) + pr * q) / Q, M = (st ? st.margin : 0) + m2;
+      const liq = C.liqPrice(avg, Q, M, pos.lato, pos.mercato);
+      box.innerHTML = `Valore <b>${fUsd(pr * q)}</b> · quantità <b>${fQty(q)}</b> · margine <b>${fUsd(m2)}</b>${st && st.qty ? `<br>Nuovo prezzo medio <b>${fPx(avg)}</b> su ${fQty(Q)} ${esc(pos.asset)}` : ""}${liq ? ` · liquidazione stimata <b>${fPx(liq)}</b>` : ""}`;
+    } else {
+      const r = st ? st.sg * (pr - st.avg) * Math.min(q, st.qty) : 0;
+      box.innerHTML = `Risultato di questa uscita <b class="${cls(r)}">${fUsd(r, true)}</b> prima dei costi${st ? ` · resta <b>${fQty(Math.max(0, st.qty - q))}</b> ${esc(pos.asset)}` : ""}`;
+    }
+  }
+  function newForm() {
+    const W = Wof("BTC");
+    const f = sheetForm("Nuova posizione", `
+      <div class="f2"><label>Moneta<input type="text" name="asset" list="waAssets" autocapitalize="characters" autocomplete="off" maxlength="15" placeholder="BTC" value="BTC"></label>
+        <label>Exchange<select name="exchange"><option>Bitget</option><option>OKX</option><option value="altro">altro</option></select></label></div>
+      <datalist id="waAssets">${["BTC", "ETH"].concat(((((getR() || {}).scanner || {}).righe) || []).map(r => r.t).filter(t => t !== "BTC" && t !== "ETH")).slice(0, 160).map(t => `<option value="${esc(t)}">`).join("")}</datalist>
+      <div class="grp">Lato${segH("lato", [["long", "Long"], ["short", "Short"]], W && W.side === "long" ? "long" : "short")}</div>
+      <div class="grp">Mercato${segH("mercato", [["perp", "Perp"], ["spot", "Spot"], ["opzione", "Opzione"]], "perp")}</div>
+      <div class="f2"><label><span>Leva <small>1–125</small></span>${numIn("leva", 1, "1")}</label><label><span>Data del segnale <small>facoltativa</small></span><input type="date" name="segnale_data"></label></div>
+      <div class="grp">Strategia${segH("strategia", [["W3.2", "W3.2"], ["scanner", "Scanner"], ["fuori segnale", "Fuori segnale"]], "W3.2")}</div>
+      <p class="waNote" data-hint></p>
+      ${movFields("ingresso", null, null, 1)}
+      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Salva posizione</button></div>`);
+    let lastFar = null;
+    const pos = () => ({ asset: f.asset.value.trim().toUpperCase(), lato: segVal(f, "lato"), mercato: segVal(f, "mercato"), leva: segVal(f, "mercato") === "perp" ? C.parseNum(f.leva.value) || 1 : 1, strategia: segVal(f, "strategia") });
+    const hint = () => {   // suggerimento dal modello: BTC/ETH con W3.2 aperta nello stesso verso → data del segnale
+      const p = pos(), Wm = Wof(p.asset), h = f.querySelector("[data-hint]");
+      f.leva.readOnly = p.mercato !== "perp"; if (p.mercato !== "perp") f.leva.value = "1";
+      if (p.strategia === "W3.2" && Wm && Wm.status === "aperto" && Wm.side === p.lato) { if (!f.segnale_data.value) f.segnale_data.value = Wm.signal_date || "";
+        h.textContent = `W3.2 su ${p.asset}: ${Wm.side} dal segnale del ${fDay(Wm.signal_date)}, ingresso del modello ${fPx(Wm.entry_px)}, stop ${fPx(Wm.trail)}.`; }
+      else if (p.strategia === "W3.2" && Wm) h.textContent = `W3.2 su ${p.asset} oggi è ${Wm.status === "aperto" ? Wm.side : "flat"}: controlla lato e data del segnale.`;
+      else if (p.strategia === "W3.2") h.textContent = "W3.2 è calcolata solo su BTC ed ETH: per le altre monete scegli Scanner o Fuori segnale.";
+      else h.textContent = "";
+      movPreview(f, "ingresso", p, null);
+    };
+    segWire(f, hint); f.oninput = hint; hint();
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = e => {
+      e.preventDefault();
+      const p = pos();
+      if (!/^[A-Z0-9]{1,15}$/.test(p.asset)) return errOut(f, "Moneta: solo lettere e numeri (es. BTC, ETH, PIEVERSE).");
+      if (!(p.leva >= 1 && p.leva <= 125)) return errOut(f, "Leva tra 1 e 125.");
+      if (p.strategia === "W3.2" && !Wof(p.asset)) return errOut(f, "W3.2 esiste solo per BTC ed ETH.");
+      if (p.lato === "short" && p.mercato === "spot") return errOut(f, "Lo short in spot non è possibile: scegli Perp.");
+      const q = pxOf(p.asset), r = readMov(f, "ingresso", p.leva, null, q && q.px);
+      if (r.err) return errOut(f, r.err);
+      if (r.far && lastFar !== f.prezzo.value) { lastFar = f.prezzo.value; return errOut(f, `Prezzo lontano oltre il 50% da quello attuale (${fPx(q.px)}): controlla le cifre e premi di nuovo Salva.`, true); }
+      save(f, () => store.addPos(Object.assign(p, { exchange: f.exchange.value, stato: "aperta", segnale_data: f.segnale_data.value || null, note: null }), r.m));
+    };
+  }
+  function movForm(pos, tipo, mov) {
+    const all = movsOf(pos.id), st = C.posState(mov ? all.filter(m => m.id !== mov.id) : all, pos.lato, pos.leva);
+    const edit = !!mov; tipo = mov ? mov.tipo : tipo;
+    const exit = tipo === "riduzione" || tipo === "chiusura";
+    const types = edit ? [[tipo, tipo[0].toUpperCase() + tipo.slice(1)]] : exit ? [["riduzione", "Riduzione"], ["chiusura", "Chiusura totale"]] : [["aggiunta", "Tranche (DCA)"]];
+    const title = edit ? "Modifica movimento" : exit ? "Riduci o chiudi" : "Aggiungi tranche";
+    const f = sheetForm(`${title} · ${pos.asset}`, `
+      <p class="waNote">${esc(nameOf(pos.asset))} ${pos.lato} ${fLev(pos.leva)} · aperta <b>${fQty(st.qty)}</b> a <b>${fPx(st.avg)}</b> di media</p>
+      ${types.length > 1 ? `<div class="grp">Tipo${segH("tipo", types, tipo)}</div>` : ""}
+      <div data-fields>${movFields(tipo, mov, st, pos.leva)}</div>
+      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">${edit ? "Salva modifiche" : "Salva"}</button></div>`);
+    let cur = tipo, lastFar = null;
+    const wire = () => { f.oninput = () => movPreview(f, cur, pos, st); movPreview(f, cur, pos, st); };
+    segWire(f, (n, v) => { if (n !== "tipo") return; cur = v; const keep = { data: f.data.value, prezzo: f.prezzo.value };
+      f.querySelector("[data-fields]").innerHTML = movFields(v, null, st, pos.leva); f.data.value = keep.data; f.prezzo.value = keep.prezzo; wire(); });
+    wire();
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = e => {
+      e.preventDefault();
+      const q = pxOf(pos.asset), r = readMov(f, cur, +pos.leva || 1, cur === "riduzione" || cur === "chiusura" ? st : null, q && q.px, mov && mov.id);
+      if (r.err) return errOut(f, r.err);
+      if ((cur === "riduzione" || cur === "chiusura") && !edit && !(st.qty > 0)) return errOut(f, "La posizione non ha quantità aperta.");
+      if (cur === "chiusura" && Math.abs(r.m.quantita - st.qty) > st.qty * 1e-6) return errOut(f, `La chiusura totale vale tutta la quantità aperta (${fQty(st.qty)}); per una parte scegli Riduzione.`);
+      if (cur === "riduzione" && Math.abs(r.m.quantita - st.qty) <= st.qty * 1e-9) r.m.tipo = "chiusura";
+      if (r.far && lastFar !== f.prezzo.value) { lastFar = f.prezzo.value; return errOut(f, `Prezzo lontano oltre il 50% da quello attuale (${fPx(q.px)}): controlla e premi di nuovo Salva.`, true); }
+      if (r.m.margine === undefined) delete r.m.margine;
+      // la posizione resta coerente: chiusa se la quantità arriva a zero, aperta altrimenti
+      const after = C.posState((mov ? all.filter(m => m.id !== mov.id) : all).concat([Object.assign({}, r.m)]), pos.lato, pos.leva);
+      if (edit && after.qOut > after.qIn * (1 + 1e-9)) return errOut(f, "Con questa modifica le uscite superano gli ingressi.");
+      const stato = after.open ? "aperta" : after.qOut > 0 ? "chiusa" : "aperta";
+      save(f, async () => {
+        if (edit) await store.updMov(mov.id, r.m); else await store.addMov(Object.assign({ posizione_id: pos.id }, r.m));
+        if (stato !== pos.stato) await store.updPos(pos.id, { stato });
+      });
+    };
+  }
+  function movsSheet(pos) {
+    const box = document.createElement("div"); box.className = "waForm";
+    const draw = () => {
+      const M = movsOf(pos.id).slice().sort((a, b) => t0(a.data) - t0(b.data) || ORD[a.tipo] - ORD[b.tipo]);
+      const st = C.posState(M, pos.lato, pos.leva);
+      box.innerHTML = `<p class="waNote">${esc(nameOf(pos.asset))} ${pos.lato} ${fLev(pos.leva)} · ${esc(pos.mercato)} · ${esc(pos.exchange)} · ${esc(pos.strategia)}${pos.segnale_data ? " del " + fDay(pos.segnale_data) : ""}<br>
+        ${st.open ? `Aperta <b>${fQty(st.qty)}</b> a <b>${fPx(st.avg)}</b>` : st.qOut > 0 ? `Chiusa · realizzato <b class="${cls(st.realized)}">${fUsd(st.realized, true)}</b>` : "Senza movimenti"}${st.fees ? ` · commissioni ${fUsd(st.fees)}` : ""}${st.funding ? ` · funding ${fUsd(st.funding)}` : ""}</p>
+        <div class="waMovs">${M.map(m => `<div class="waMov" data-id="${esc(m.id)}"><div><b>${esc(m.tipo[0].toUpperCase() + m.tipo.slice(1))} · ${fQty(+m.quantita)} a ${fPx(+m.prezzo)}</b>
+          <small>${fDT(m.data)}${m.margine ? " · margine " + fUsd(+m.margine) : ""}${+m.commissioni ? " · comm. " + fUsd(+m.commissioni) : ""}${+m.funding ? " · funding " + fUsd(+m.funding) : ""}${m.note ? " · " + esc(m.note) : ""}</small></div>
+          <span class="waAct"><button type="button" class="waBtn2" data-e>Modifica</button><button type="button" class="waBtn2 del" data-d>Elimina</button></span></div>`).join("") || `<p class="waNote">Nessun movimento.</p>`}</div>
+        <div class="waAct" data-pbar>${st.open ? `<button type="button" class="waBtn2" data-add>Aggiungi tranche</button><button type="button" class="waBtn2" data-red>Riduci / chiudi</button>` : ""}<button type="button" class="waBtn2" data-ep>Modifica posizione</button><button type="button" class="waBtn2 del" data-dp>Elimina posizione</button></div>
+        <p class="err" hidden></p>`;
+      box.querySelectorAll(".waMov").forEach(r => {
+        const m = M.find(x => x.id === r.dataset.id);
+        r.querySelector("[data-e]").onclick = () => movForm(pos, m.tipo, m);
+        r.querySelector("[data-d]").onclick = () => confirmBox(r, `Eliminare ${m.tipo} del ${fDay(m.data)}? I calcoli si rifanno senza questo movimento.`, async () => {
+          const rest = C.posState(M.filter(x => x.id !== m.id), pos.lato, pos.leva);
+          if (rest.qOut > rest.qIn * (1 + 1e-9)) throw new Error("senza questo ingresso le uscite superano gli ingressi: elimina prima l'uscita");
+          await store.delMov(m.id); const stato = rest.open || !rest.qOut ? "aperta" : "chiusa"; if (stato !== pos.stato) { await store.updPos(pos.id, { stato }); pos.stato = stato; }
+        });
+      });
+      const q = s => box.querySelector(s);
+      if (q("[data-add]")) q("[data-add]").onclick = () => movForm(pos, "aggiunta");
+      if (q("[data-red]")) q("[data-red]").onclick = () => movForm(pos, "riduzione");
+      q("[data-ep]").onclick = () => posForm(pos);
+      q("[data-dp]").onclick = () => confirmBox(q("[data-pbar]"), `Eliminare la posizione ${esc(pos.asset)} con tutti i suoi movimenti?`, async () => { await store.delPos(pos.id); window.closeSheet(); });
+    };
+    const confirmBox = (host, msg, fn) => {
+      if (host.querySelector(".waConfirm")) return;
+      const c = document.createElement("div"); c.className = "waConfirm";
+      c.innerHTML = `<span>${msg}</span><button type="button" class="waBtn2" data-n>Annulla</button><button type="button" class="waBtn2 del" data-y>Elimina</button>`;
+      host.appendChild(c);
+      c.querySelector("[data-n]").onclick = () => c.remove();
+      c.querySelector("[data-y]").onclick = async () => { c.querySelectorAll("button").forEach(b => b.disabled = true);
+        try { await fn(); [POS, MOV] = await store.list(); render(); if ($w("sheet").open && box.isConnected) draw(); }
+        catch (e) { const er = box.querySelector(".err"); if (er) { er.hidden = false; er.textContent = sbErr(e); } c.remove(); } };
+    };
+    draw(); window.openSheet(`Movimenti · ${pos.asset}`, box);
+  }
+  function posForm(pos) {
+    const f = sheetForm(`Modifica posizione · ${pos.asset}`, `
+      <div class="grp">Strategia${segH("strategia", [["W3.2", "W3.2"], ["scanner", "Scanner"], ["fuori segnale", "Fuori segnale"]], pos.strategia)}</div>
+      <div class="f2"><label>Leva${numIn("leva", pos.leva)}</label><label>Exchange<select name="exchange">${["Bitget", "OKX", "altro"].map(x => `<option${x === pos.exchange ? " selected" : ""}>${x}</option>`).join("")}</select></label></div>
+      <label><span>Data del segnale <small>facoltativa</small></span><input type="date" name="segnale_data" value="${esc(pos.segnale_data || "")}"></label>
+      <label>Note<textarea name="note" maxlength="500">${esc(pos.note || "")}</textarea></label>
+      <p class="err" hidden></p>
+      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Salva</button></div>`);
+    segWire(f); f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = e => { e.preventDefault();
+      const lv = C.parseNum(f.leva.value), s = segVal(f, "strategia");
+      if (!(lv >= 1 && lv <= 125)) return errOut(f, "Leva tra 1 e 125.");
+      if (pos.mercato !== "perp" && lv !== 1) return errOut(f, "Spot e opzioni sono senza leva.");
+      if (s === "W3.2" && !Wof(pos.asset)) return errOut(f, "W3.2 esiste solo per BTC ed ETH.");
+      save(f, () => store.updPos(pos.id, { strategia: s, leva: lv, exchange: f.exchange.value, segnale_data: f.segnale_data.value || null, note: f.note.value.trim() || null })); };
+  }
+  function pxForm(a) {
+    const m = getManual(a);
+    const f = sheetForm(`Prezzo di ${a}`, `<p class="waNote">Prezzo pubblico non disponibile per ${esc(a)} (Binance e OKX). Inseriscilo a mano: resta su questo dispositivo finché non arriva quello pubblico.</p>
+      <label><span>Prezzo attuale <small>$</small></span>${numIn("px", m && m.px)}</label><p class="err" hidden></p>
+      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Usa questo prezzo</button></div>`);
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = e => { e.preventDefault(); const v = C.parseNum(f.px.value); if (!(v > 0)) return errOut(f, "Prezzo non valido.");
+      try { localStorage.setItem(manualKey(a), JSON.stringify({ px: v, t: Date.now() })); } catch (_) {}
+      delete PX[a]; window.closeSheet(); render(); };
+  }
+  function capForm() {
+    const f = sheetForm("Capitale di partenza", `<p class="waNote">Quanto hai messo sul conto all'inizio: serve per il valore del conto, le percentuali e il calo massimo. Salvato nel tuo account.</p>
+      <label><span>Capitale <small>$</small></span>${numIn("cap", capital)}</label><p class="err" hidden></p>
+      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Salva</button></div>`);
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = e => { e.preventDefault(); const v = C.parseNum(f.cap.value); if (!(v > 0)) return errOut(f, "Capitale non valido.");
+      save(f, async () => { user = await store.setCapital(v); capital = store.capital(user); }); };
+  }
+
+  // ---------------------------------------------------------------- ciclo di vita della pagina
+  let timer = null, started = false;
+  async function init() {
+    if (started) return; started = true;
+    if (!$w("waOut")) return;
+    $w("waOut").onclick = async () => { try { await store.logout(); } catch (_) {} user = null; POS = []; MOV = []; showLogin(); };
+    $w("waNew").onclick = newForm;
+    if (window.onRef) window.onRef(() => { if (!$w("v-wallet").hidden && POS.some(p => p.asset === "BTC")) render(); });
+    if (DEMO) store = demoStore();
+    else if (!CFG || !CFG.url || !CFG.anon) return showNotConfigured();
+    else {
+      try { const lib = await loadSupabase();
+        sb = lib.createClient(CFG.url, CFG.anon, { auth: { persistSession: true, autoRefreshToken: true, storageKey: "radarWallet.auth" } });
+        store = SB;
+        sb.auth.onAuthStateChange((ev) => { if (ev === "SIGNED_OUT" && user) { user = null; showLogin(); } });
+      } catch (e) {
+        started = false;
+        gate(`<div class="card waGate"><h2>Accesso non disponibile</h2><p>Il modulo di accesso non si è caricato (${esc(e.message)}).</p><button type="button" class="waBtn2" id="waRetry">Riprova</button></div>`);
+        $w("waRetry").onclick = init; return;
+      }
+    }
+    try { user = await store.session(); } catch (_) { user = null; }
+    if (user) await afterLogin(); else showLogin();
+  }
+  window.PAGES = window.PAGES || {};
+  window.PAGES.wallet = {
+    init() { init(); },
+    show() { if (timer) clearInterval(timer); timer = setInterval(() => { if (user && !document.hidden) refreshPx(); }, 30000); if (user) refreshPx(); },
+    hide() { if (timer) clearInterval(timer); timer = null; },
+  };
+})();
+</script>

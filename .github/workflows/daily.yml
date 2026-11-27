@@ -113,6 +113,9 @@ jobs:
           RADAR_WALLETS: ${{ vars.RADAR_WALLETS || '0' }}
           # opzioni su carta (pagina Opzioni): quota del capitale W3.2 BTC per operazione, frazione, tetto 0.10 (radar/opzioni.py)
           RADAR_OPZIONI_QUOTA: ${{ vars.RADAR_OPZIONI_QUOTA || '0.05' }}
+          # Wallet reale: URL e chiave pubblica stanno in radar/wallet_config.json; questi segreti, se impostati, li sostituiscono. Mai service_role
+          RADAR_SUPABASE_URL: ${{ secrets.RADAR_SUPABASE_URL }}
+          RADAR_SUPABASE_ANON: ${{ secrets.RADAR_SUPABASE_ANON }}
         run: python -m radar.cli daily
       - name: Salva i dati grezzi dello scanner in cache
         # chiave = impronta dei file: una nuova voce solo quando il contenuto cambia (TRX una volta al giorno, scanner la domenica);

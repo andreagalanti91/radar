@@ -139,7 +139,7 @@ class Navigazione(unittest.TestCase):
     def test_menu_sei_voci(self):   # Scanner dal 25/11/2026; Opzioni (OPZIONI_ON, attiva dal 27/11/2026) aggiunta dal JS, non nel markup
         side = re.findall(r'data-v="(\w+)"', T[T.index('<nav aria-label="Sezioni">'):T.index("</nav>")])
         tab = re.findall(r'data-v="(\w+)"', T[T.index('<nav class="tabbar"'):T.index("</nav>", T.index('<nav class="tabbar"'))])
-        self.assertEqual(side, ["oggi", "posizioni", "scanner", "grafico", "movimenti", "notizie"])
+        self.assertEqual(side, ["oggi", "posizioni", "wallet", "scanner", "grafico", "movimenti", "notizie"])   # Wallet dal 27/11/2026
         self.assertEqual(tab, side)
 
     def test_liquidazioni_spenta_e_reindirizzata(self):

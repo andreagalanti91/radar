@@ -260,7 +260,7 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(6,1fr);width:min(560px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(7,1fr);width:min(560px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
 @media (min-width:900px){.tabbar{display:none!important}}
 .tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
 .tabbar svg{width:22px;height:22px}
@@ -1212,6 +1212,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   <nav aria-label="Sezioni">
     <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
     <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
+    <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
     <a href="#scanner" data-v="scanner"><svg><use href="#i-scan"/></svg>Scanner</a>
     <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
     <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
@@ -1499,6 +1500,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 <nav class="tabbar" aria-label="Sezioni">
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
+  <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
   <a href="#scanner" data-v="scanner"><svg><use href="#i-scan"/></svg>Scanner</a>
   <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
   <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
@@ -3794,9 +3796,9 @@ const BOOK_ON = false;   // true = riattiva la sezione Book (voce di menu e #boo
 // #liquidazioni porta a Grafico, la pagina resta nel codice ma non si inizializza e non apre connessioni. Le liquidazioni mostrate sono
 // quelle della mappa unica (report.livelli) in Oggi e in Grafico; la pagina, se riaccesa, le ricalcola nel browser con dati live.
 const LIQ_ON = false;
-const VIEWS = ["oggi", "posizioni", "scanner", "grafico", "movimenti", "notizie", "metodo"].concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet: pagina nel repo ma non raggiungibile
-const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", wallet: "oggi", opzioni: OPZIONI_ON ? "opzioni" : "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
-const PAGE_OF = Object.assign({}, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
+const VIEWS = ["oggi", "posizioni", "wallet", "scanner", "grafico", "movimenti", "notizie", "metodo"].concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet = posizioni reali (radar/pages/wallet.html); il vecchio Wallet Hyperliquid (radar/pages/hyperliquid.html) resta nel repo non raggiungibile
+const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", opzioni: OPZIONI_ON ? "opzioni" : "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
+const PAGE_OF = Object.assign({ wallet: "wallet" }, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
 const viewEl = v => $("v-" + v) || (v === "book" ? $("book") : null);   // la pagina Book può usare id "book" o "v-book"
 (function () {   // Opzioni, Liquidazioni o Book riaccesi: la voce torna nel menu (Opzioni prima di Scanner, Liquidazioni prima di Movimenti, Book prima di Notizie)
   if (OPZIONI_ON && viewEl("opzioni")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#opzioni"; a.dataset.v = "opzioni";
