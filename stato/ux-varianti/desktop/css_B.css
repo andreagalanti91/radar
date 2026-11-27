@@ -1,0 +1,16 @@
+/* ---------- Layout desktop B (anteprima): due colonne lette dall'alto in basso. Oggi: a sinistra posizioni, uscite e 30 giorni,
+   a destra pre-analisi, mercato e notizie. Posizioni: scheda BTC con prezzo e uscite a sinistra, contesto a destra.
+   Movimenti: elenchi dei trade su due colonne. Solo ≥1100 px: telefono e tablet invariati. */
+@media (min-width:1100px){
+  .qGrid{display:block;columns:2;column-gap:20px}
+  .qGrid>.q{break-inside:avoid;margin-bottom:20px}
+  #qPre{break-before:column}
+  #wkHero{display:block;columns:2;column-gap:32px}
+  #wkHero>*,#wkPos>*{break-inside:avoid;margin-bottom:14px}
+  #wkHero>.wkTop{column-span:all}
+  #wkHero .qxG{grid-template-columns:minmax(0,1fr)}
+  #ocBox{break-before:column;border-top:0;padding-top:0}
+  #wkHero>.wkMore{margin-bottom:0}
+  .trM{display:block;columns:2;column-gap:0;column-rule:1px solid var(--line)}
+  .trM button{break-inside:avoid}
+}
