@@ -1,0 +1,16 @@
+/home/user/radar/research/dati_nuovi/fetch.py:97: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  today = pd.Timestamp.utcnow().tz_localize(None).normalize()
+BASE BTC trimestrali 41 2017-01-06 2026-11-26 | perp 2018-08-14 2026-11-26
+ERRORE basis HTTPError('400 Client Error: Bad Request for url: https://www.deribit.com/api/v2/public/get_tradingview_chart_data?instrument_name=ETH-31MAR17&start_timestamp=1473638400000&end_timestamp=1491004800000&resolution=1D')
+  nessun dato ETH-31MAR17
+  nessun dato ETH-30JUN17
+  nessun dato ETH-29SEP17
+  nessun dato ETH-29DEC17
+  nessun dato ETH-30MAR18
+  nessun dato ETH-29JUN18
+  nessun dato ETH-28SEP18
+  nessun dato ETH-28DEC18
+BASE ETH trimestrali 33 2019-03-18 2026-11-26 | perp 2019-03-14 2026-11-26
+ERRORE basis ValueError("invalid literal for int() with base 10: 'ef'")
+BINANCE CM BTC 26 2020-06-11 2026-10-31
+BINANCE CM ETH 26 2020-07-24 2026-10-31

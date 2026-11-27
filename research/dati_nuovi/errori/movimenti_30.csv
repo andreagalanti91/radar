@@ -1,0 +1,44 @@
+asset,verso,da,a,giorni,movimento,quota_presa,giorni_stesso_verso,giorni_verso_opposto,domeniche_flat,blocchi,mancato
+BTC,ribasso,2018-01-06,2018-02-05,30,-59.3,0,0,27,3,regime:3 ema21:2 flusso:2,True
+BTC,rialzo,2018-02-05,2018-03-04,27,65.9,0,0,0,3,F1:3 regime:2 ema21:2 flusso:1,True
+BTC,ribasso,2018-03-04,2018-04-06,33,-42.7,0,0,0,5,regime:5 ema21:1 flusso:1,True
+BTC,rialzo,2018-04-06,2018-05-05,29,49.4,11,21,0,3,regime:3 ema21:3 flusso:1,True
+BTC,ribasso,2018-05-05,2018-06-28,54,-40.7,0,0,15,7,regime:7 flusso:5,True
+BTC,rialzo,2018-06-28,2018-07-24,26,43.4,0,0,0,4,regime:4 ema21:4,True
+BTC,ribasso,2018-07-24,2018-12-15,144,-61.8,71,43,0,11,flusso:11 regime:4 ema21:1,False
+BTC,rialzo,2018-12-15,2019-06-26,193,307.7,45,23,55,5,flusso:4 regime:2,False
+BTC,ribasso,2019-06-26,2019-12-17,174,-49.4,0,0,0,25,regime:25 ema21:16 flusso:6,True
+BTC,rialzo,2019-12-17,2020-02-14,59,56.2,4,8,0,7,regime:6 ema21:3 flusso:3,True
+BTC,ribasso,2020-02-14,2020-03-12,27,-53.6,0,0,7,4,regime:4 ema21:2,True
+BTC,rialzo,2020-03-12,2021-04-13,397,1224.5,64,41,11,28,flusso:23 F1:7 regime:1,False
+BTC,ribasso,2021-04-13,2021-07-20,98,-53.1,0,0,0,14,regime:14 flusso:11 ema21:5,True
+BTC,rialzo,2021-07-20,2021-11-08,111,126.7,43,82,0,3,regime:2 ema21:2 flusso:1,False
+BTC,ribasso,2021-11-08,2022-01-22,75,-48.1,46,27,0,7,regime:6 ema21:3 flusso:2,False
+BTC,rialzo,2022-01-22,2022-03-29,66,35.3,0,0,97,1,,True
+BTC,ribasso,2022-03-29,2022-11-21,237,-66.7,39,42,0,19,flusso:16 regime:6 ema21:1,False
+BTC,rialzo,2022-11-21,2025-10-06,1050,689.9,75,59,5,52,F1:36 flusso:29 regime:23 ema21:22,False
+BTC,ribasso,2025-10-06,2026-02-05,122,-49.5,53,55,2,7,regime:7 ema21:2 flusso:1,False
+BTC,rialzo,2026-02-05,2026-09-21,228,37.7,34,13,73,4,regime:4 ema21:1,False
+BTC,ribasso,2026-09-21,2026-11-20,60,-31.9,27,8,80,1,regime:1,True
+ETH,rialzo,2021-01-12,2021-05-11,119,297.4,64,55,0,7,flusso:7,False
+ETH,ribasso,2021-05-11,2021-05-23,12,-49.8,0,0,42,1,regime:1 ema21:1,True
+ETH,rialzo,2021-05-23,2021-05-26,3,37.6,0,0,0,1,F1:1,True
+ETH,ribasso,2021-05-26,2021-07-20,55,-38.1,0,0,0,8,regime:8 flusso:8 ema21:5,True
+ETH,rialzo,2021-07-20,2021-11-08,111,169.2,27,25,0,12,flusso:8 F1:5,True
+ETH,ribasso,2021-11-08,2022-01-22,75,-49.8,0,0,0,10,regime:10 ema21:8 flusso:4,True
+ETH,rialzo,2022-01-22,2022-04-03,71,46.0,18,10,0,9,regime:9 ema21:9,True
+ETH,ribasso,2022-04-03,2022-06-18,76,-71.7,0,0,18,9,flusso:8 regime:5,True
+ETH,rialzo,2022-06-18,2022-08-13,56,99.3,0,0,11,7,regime:7 ema21:7,True
+ETH,ribasso,2022-08-13,2022-09-21,39,-37.2,40,82,0,1,flusso:1,False
+ETH,rialzo,2022-09-21,2022-11-04,44,32.0,0,0,100,0,,True
+ETH,ribasso,2022-11-04,2022-11-09,5,-33.0,100,100,0,0,,False
+ETH,rialzo,2022-11-09,2024-03-11,488,268.6,59,52,14,25,flusso:16 regime:12 ema21:12 F1:11,False
+ETH,ribasso,2024-03-11,2024-09-06,179,-45.3,0,0,18,20,regime:20 ema21:13 flusso:6,True
+ETH,rialzo,2024-09-06,2024-12-08,93,79.9,39,30,0,9,regime:9 ema21:9 flusso:3,False
+ETH,ribasso,2024-12-08,2025-04-08,121,-63.2,67,54,29,3,regime:3 ema21:3 flusso:1,False
+ETH,rialzo,2025-04-08,2025-08-22,136,228.0,41,29,22,9,regime:9 flusso:2 ema21:1,False
+ETH,ribasso,2025-08-22,2026-02-05,167,-62.2,0,0,29,17,regime:17 flusso:10 ema21:4,True
+ETH,rialzo,2026-02-05,2026-04-17,71,32.4,0,0,0,10,regime:10 ema21:10 flusso:1,True
+ETH,ribasso,2026-04-17,2026-06-25,69,-35.2,91,77,0,2,flusso:2,False
+ETH,rialzo,2026-06-25,2026-09-21,88,77.1,21,33,61,0,,True
+ETH,ribasso,2026-09-21,2026-11-20,60,-41.5,50,20,68,1,regime:1,False
