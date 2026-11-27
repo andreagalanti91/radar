@@ -881,7 +881,7 @@ table.grid.opT{font-size:.82rem} table.grid.opT td{padding:9px 10px} table.grid.
 .opLine .plV small{color:var(--label3);font-size:.76rem}
 @media (max-width:700px){#opSec>.sh small{display:none}}
 /* Oggi · riga Opzioni dentro "Come vanno le posizioni?": stessa riga .qP di BTC ed ETH, tocco → pagina Opzioni */
-a.qP.qOp{color:var(--label);text-decoration:none} .qOp .opTag{padding:4px 8px;font-size:.66rem;vertical-align:1px}
+a.qP.qOp{color:var(--label);text-decoration:none} .qOp .opCt2{display:none;white-space:nowrap} .qOp .opTag{padding:4px 8px;font-size:.66rem;vertical-align:1px}
 .qOp .rv svg{width:16px;height:16px;color:var(--tint);vertical-align:-3px;margin-left:2px}
 /* Opzioni · "Scadenze maggiori" (report.opex.calendar, radar/opex.py): scadenze BTC Deribit con nozionale ≥ 1 mld $ entro 120 giorni,
    una tessera ciascuna (data, valore, barra call/put, movimento atteso, massimo dolore, muri, frase). Solo contesto: W3.2 non cambia */
@@ -906,6 +906,28 @@ a.qP.qOp{color:var(--label);text-decoration:none} .qOp .opTag{padding:4px 8px;fo
 .sxF{margin:0;font-size:.875rem;line-height:1.5;color:var(--label)} .sxF+.sxF{margin-top:-6px;color:var(--label2)}
 .sxN{padding:14px 18px;display:grid;gap:6px} .sxN p{margin:0;font-size:.8125rem;line-height:1.5;color:var(--label2)}
 .sxN .qF{margin-top:0}
+/* Opzioni · "La nostra analisi" (research/opzioni_direzione, research/opzioni_scadenze, lezione 128): quattro domande, risposta in una
+   frase, pochi numeri, "Dettagli ›" per il resto. Righe "Oggi" dinamiche da report.opzioni e report.opex.calendar. Solo contesto */
+#anSec{margin-bottom:8px}
+.anGrid{display:grid;gap:12px;min-width:0}
+@media (min-width:900px){.anGrid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}}
+.anC{container-type:inline-size;min-width:0;display:flex;flex-direction:column}
+.anC .qA{margin-bottom:6px}
+.anC .qFoot{margin:0 0 12px}
+.anBars{display:grid;gap:8px;margin:2px 0 4px}
+.anBar{display:grid;grid-template-columns:minmax(86px,auto) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:.8125rem;color:var(--label2)}
+.anBar>b{font-weight:650;color:var(--label);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.anTr{position:relative;height:10px;border-radius:5px;background:var(--fill)}
+.anTr i{position:absolute;top:0;bottom:0;border-radius:5px}
+.anTr i.w{left:0;background:var(--tint)} .anTr i.r{background:color-mix(in srgb,var(--label2) 55%,transparent)}
+.anTr s{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:var(--label);opacity:.55;text-decoration:none}
+.anCap{margin:2px 0 8px;font-size:.75rem;color:var(--label3)}
+.anRule{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.anNow{margin:12px 0 0;padding:10px 12px;border-radius:var(--r-tile);background:var(--tint-bg);color:var(--label);font-size:.86rem;line-height:1.45}
+.anNow b:first-child{color:var(--tint)}
+.anMore{margin:auto 0 -8px;padding-top:6px} .anMore summary{justify-content:flex-end;gap:2px;min-height:40px}
+.anMore p{margin:4px 0 0;font-size:.8125rem;line-height:1.5;color:var(--label2)} .anMore p+p{margin-top:8px}
+.anNote{margin-top:12px}
 /* Scanner (pagina a sé, radar/scanner.py e radar/scommesse.py): top 200 crypto con W3.2, in evidenza, ingressi della settimana,
    scommesse sulla carta, tabella con stella delle preferite e riga espandibile. Solo informativa. Telefono prima di tutto (360–400 px) */
 #scBody,#trxBody,#scEvid,#scIng,#scBet{display:grid;min-width:0}
@@ -1047,6 +1069,34 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 .pvLink{margin-top:12px}
 @media (prefers-reduced-motion:reduce){.view{animation:none}*{transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.tabbar{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
+/* ---------- Layout desktop A (scelto dall'utente il 27/11): griglia a 12 colonne, schede a tutta larghezza con il contenuto su due colonne
+   interne; affiancate solo schede di altezza simile. Solo ≥1100 px: telefono e tablet invariati. */
+@media (min-width:1100px){
+  .qGrid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:stretch}
+  .qGrid>.q{grid-column:1/-1}
+  #qPos{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
+  #qPos:has(>#opLine:not([hidden])){grid-template-columns:repeat(3,minmax(0,1fr))}
+  #posLine{display:contents}
+  #qPos>.qH,#qPos>.qF,#posLine>.qA{grid-column:1/-1}
+  #qExitB{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+  #qExitB>:not(.qX){grid-column:1/-1}
+  #cnCard,#cxCard,#pvQ,#todayN{columns:2;column-gap:36px}
+  #cnCard>:not(.qL),#cxCard>:not(.qM),#pvQ>.qA,#todayN>.qA{column-span:all}
+  .qL,.qM,.qN,.qKV,.qSim{break-inside:avoid}
+  #pvQ>.qSub{break-before:column;margin-top:10px}
+  #wkHero{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:28px}
+  #wkHero>:not(.oc),#wkPos>*{grid-column:1/-1}
+  #v-movimenti{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;align-items:start}
+  #v-movimenti>*{grid-column:1/-1}
+  #v-movimenti>#wkStatSec,#v-movimenti>#ethStatSec{grid-column:auto}
+  #scSec{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;grid-auto-flow:row dense}
+  #scSec>*{grid-column:1/-1}
+  #scSec>#scEvid,#scSec>#trxBody{grid-column:1}
+  #scSec>#scIng{grid-column:2;grid-row:span 2}
+  .qOp .opCt,.qOp .opSc{display:none} .qOp .opCt2{display:inline}   /* riga Opzioni in colonna stretta: 2 righe invece di 4 */
+  .sxGrid{grid-template-columns:repeat(2,minmax(0,1fr))} .sxGrid>.sxC:last-child:nth-child(odd){grid-column:1/-1}   /* Opzioni: scadenze a due a due, l'ultima dispari a tutta larghezza */
+  .nwGrid>.nwGrp:last-child:nth-child(odd){grid-column:1/-1}   /* Notizie: ultimo gruppo dispari a tutta larghezza (sotto 1100 px invariato) */
+}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -1170,6 +1220,11 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
       <div class="sh">Scadenze maggiori <small id="sxSub"></small></div>
       <div class="sxGrid" id="sxList"></div>
       <div class="card sxN" id="sxNote"></div>
+    </div>
+    <div class="section" id="anSec">
+      <div class="sh">La nostra analisi <small>studio dal 2021 · solo contesto</small></div>
+      <div class="anGrid" id="anGrid"></div>
+      <p class="opNote anNote">Studio preregistrato con revisione critica (lezione 128). Solo contesto: W3.2 non cambia. Non è consulenza.</p>
     </div>
     <div class="section" id="opSec">
       <div class="sh">Opzioni · W3.2 a rischio definito <small id="opSub"></small></div>
@@ -2067,15 +2122,17 @@ function qxHtml(U, px, head = true) {
   const KN = { trimestrale: "trimestrale", mensile: "mensile", settimanale: "settimanale", giornaliera: "giornaliera" };
   // "Scadenza venerdì 27/11 · tra 14 h": la data in grande, il tempo che manca e il tipo accanto in piccolo (a 400 px resta su una riga)
   const st = String(O.status || ""), cut = st.indexOf(" · ");
-  const big = `${escS(cut > 0 ? st.slice(0, cut) : st)}<small>${cut > 0 ? escS(st.slice(cut + 3)) : ""}${O.quarterly ? ` · <span class="qt">trimestrale</span>` : ""}</small>`;
+  const big = `${escS(cut > 0 ? st.slice(0, cut) : st)}<small>${cut > 0 ? escS(st.slice(cut + 3)).replace(/(\d) (?=\S)/g, "$1&nbsp;") : ""}${O.quarterly ? ` · <span class="qt">trimestrale</span>` : ""}</small>`;
   // termometro: scala lineare fra il più basso e il più alto di muro put, massimo dolore, prezzo e muro call (margine 8%)
   const vs = [pw, cw, mp, px].filter(v => v != null), lo0 = Math.min(...vs), hi0 = Math.max(...vs), pad = (hi0 - lo0) * 0.08 || px * 0.02;
   const P = v => Math.max(3, Math.min(97, (v - lo0 + pad) / (hi0 - lo0 + 2 * pad) * 100));
   const lab = (x, cls, row, h) => `<span class="lb ${row} ${cls}" style="left:${x.toFixed(1)}%;transform:translateX(-${x.toFixed(1)}%)">${h}</span>`;
   const xn = P(px), xm = P(mp), xp = pw != null ? P(pw) : null, xc = cw != null ? P(cw) : null;
-  const bottom = Math.abs(xn - xm) < 34 ? lab((xn + xm) / 2, "n", "b", `oggi <b>${n0(px)}</b> · dolore <b style="color:var(--violet)">${n0(mp)}</b>`)
+  // etichette unite sotto una certa distanza: 34% della barra; nella colonna stretta del layout desktop A (≥ 1100 px, card di BTC su tre colonne) 50%
+  const TH = box && window.matchMedia && matchMedia("(min-width:1100px)").matches ? 50 : 34;
+  const bottom = Math.abs(xn - xm) < TH ? lab((xn + xm) / 2, "n", "b", `oggi <b>${n0(px)}</b> · dolore <b style="color:var(--violet)">${n0(mp)}</b>`)
     : lab(xn, "n", "b", `oggi <b>${n0(px)}</b>`) + lab(xm, "m", "b", `massimo dolore <b>${n0(mp)}</b>`);
-  const top = (xp != null && xc != null && Math.abs(xc - xp) < 34) ? lab((xp + xc) / 2, "", "t", `muri put <b style="color:var(--red)">${n0(pw)}</b> · call <b style="color:var(--green)">${n0(cw)}</b>`)
+  const top = (xp != null && xc != null && Math.abs(xc - xp) < TH) ? lab((xp + xc) / 2, "", "t", `muri put <b style="color:var(--red)">${n0(pw)}</b> · call <b style="color:var(--green)">${n0(cw)}</b>`)
     : (xp != null ? lab(xp, "p", "t", `muro put <b>${n0(pw)}</b>`) : "") + (xc != null ? lab(xc, "c", "t", `muro call <b>${n0(cw)}</b>`) : "");
   const thermo = `<span class="oxTh" role="img" aria-label="Prezzo ${n0(px)} dollari; massimo dolore ${n0(mp)}; muro put ${pw == null ? "assente" : n0(pw)}; muro call ${cw == null ? "assente" : n0(cw)}">
       <span class="rail"></span>${xp != null && xc != null ? `<span class="band" style="left:${xp.toFixed(1)}%;width:${(xc - xp).toFixed(1)}%"></span>` : ""}
@@ -2272,7 +2329,8 @@ function qMpAns(side, c) {
 (function renderPosLine() {
   const draw = () => {
     $("posLine").innerHTML = qPosHtml();
-    const W = Math.max(240, ($("qExitB").clientWidth || 320) - 4);
+    const qb = $("qExitB"), qc = getComputedStyle(qb).gridTemplateColumns.split(" ").length || 1;   // colonne della scheda (A: BTC | ETH su desktop)
+    const W = Math.max(240, ((qb.clientWidth || 320) - 28 * (qc - 1)) / qc - 4);
     const O = ASSETS_Q().filter(a => isOpenX(a[2]) && a[2].uscite && a[2].uscite.calc);
     $("qExitB").innerHTML = `<p class="qA">${qExitAns()}</p>` + O.map(([tag, , X, px]) => qExitBlock(tag, X, px, W)).join("");
   };
@@ -2364,11 +2422,68 @@ const OPZIONI_ON = true;
   const L = $("opLine"); if (!L || !OPZIONI_ON) return;
   const K = P || (Q && { tipo: Q.contratto.tipo, strike: Q.contratto.strike, scadenza: Q.contratto.scadenza });
   const res = P && P.risultato != null;
-  L.innerHTML = `<span class="ic" aria-hidden="true"><svg><use href="#i-opz"/></svg></span><div><b>Opzioni · ${tag(O.azione)} <span style="font-weight:500;color:var(--label2);font-size:.8125rem">su carta</span></b>` +
-    `<small>${K ? `${kName(K)} · scadenza ${dIt(K.scadenza).slice(0, 5)}` : "nessun contratto"}${!res && Q ? ` · ${Q.quantita.contratti} contratti, ${px(Q.quantita.spesa)}` : ""}</small></div>` +
+  L.innerHTML = `<span class="ic" aria-hidden="true"><svg><use href="#i-opz"/></svg></span><div><b>Opzioni · ${tag(O.azione)} <span class="opCt" style="font-weight:500;color:var(--label2);font-size:.8125rem">su carta</span></b>` +
+    `<small>${K ? `${kName(K)} · <span class="opSc">scadenza </span>${dIt(K.scadenza).slice(0, 5)}` : "nessun contratto"}${!res && Q ? ` · ${Q.quantita.contratti} contratti, ${px(Q.quantita.spesa)}` : ""}<span class="opCt2"> · su carta</span></small></div>` +
     `<div class="rv">${res ? `<b class="${cls(P.risultato)}">${sg(P.risultato)}</b>${P.risultato_pct == null ? "" : `<small class="${cls(P.risultato)}">${pct(P.risultato_pct, 1)}</small>`}` : `<small>apri<svg><use href="#i-chev"/></svg></small>`}</div>`;
   L.setAttribute("aria-label", `Opzioni sulla carta: ${TAG[O.azione] || O.azione}. Apri la pagina Opzioni`);
   L.hidden = false;
+})();
+
+// ---- Opzioni · "La nostra analisi" (research/opzioni_direzione, research/opzioni_scadenze, lezione 128 in RESEARCH.md): quattro domande
+// con la risposta in una frase e pochi numeri dello studio; "Dettagli ›" apre il resto. Due righe "Oggi" dinamiche: la posizione in
+// opzioni di adesso (report.opzioni: tieni/compra/vendi → put o call di W3.2; altrimenti nessuna opzione) e il movimento atteso della
+// prossima scadenza grande (report.opex.calendar, stessa regola di "Scadenze maggiori": ≥ 1 mld $ entro 120 giorni). Solo contesto.
+(function renderAnalisi() {
+  const box = $("anGrid"); if (!box) return;
+  const e = escS, O = R.opzioni || {}, W = R.weekly || {}, P = O.posizione, Q = O.proposta;
+  const dm = d => new Date(d).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", timeZone: "UTC" });
+  const tile = (k, v, s, col) => `<div><span>${k}</span><b${col ? ` style="color:var(--${col})"` : ""}>${v}</b><small>${s || "&nbsp;"}</small></div>`;
+  const more = (...ps) => `<details class="opMore anMore"><summary>Dettagli</summary>${ps.map(x => `<p>${x}</p>`).join("")}</details>`;
+  const card = (id, q, a, sub, body) => `<section class="card q anC" id="${id}" aria-label="${q}"><h3 class="qH">${q}</h3><p class="qA">${a}</p>` +
+    (sub ? `<p class="qFoot">${sub}</p>` : "") + body + `</section>`;
+  // posizione in opzioni di oggi
+  const side = (P && P.verso) || (isOpenX(W) ? W.side : null), kind = v => v === "long" ? "call" : "put";
+  const kTxt = c => c ? ` ${c.tipo === "call" ? "Call" : "Put"} ${usd(c.strike)}, scadenza ${dm(c.scadenza + "T00:00:00Z")}.` : "";
+  const now = O.azione === "tieni" && P ? `W3.2 ${e(side)} → ${e(P.tipo || kind(side))} (quella su carta).${kTxt(P)}`
+    : O.azione === "compra" && Q && side ? `W3.2 ${e(side)} → ${e(kind(side))} da comprare (su carta).${kTxt(Q.contratto)}`
+    : O.azione === "vendi" && P ? `W3.2 esce → vendere la ${e(P.tipo || "opzione")} (su carta).`
+    : O.azione === "fuori" && side ? `W3.2 ${e(side)}, ma l'opzione di questa operazione non è aperta: nessuna opzione fino al prossimo segnale.`
+    : "nessun segnale di W3.2: nessuna opzione.";
+  const onSide = O.azione === "tieni" || O.azione === "compra" ? side : null;
+  // prossima scadenza grande e movimento atteso
+  const X = R.opex, t0 = Date.now();
+  const nx = X && Array.isArray(X.calendar) ? X.calendar.filter(c => c.notional >= 1e9 && new Date(c.exp) > t0 && (new Date(c.exp) - t0) / 864e5 <= 120)
+    .sort((a, b) => new Date(a.exp) - new Date(b.exp))[0] : null;
+  const bn = x => `${nfIT(x / 1e9, 1)} mld $`;
+  const nxTxt = !nx ? "" : nx.mov_atteso_pct != null
+    ? `il mercato prezza <b>±${nfIT(nx.mov_atteso_pct, 1)}%</b> entro il ${dm(nx.exp)} (prossima scadenza grande, ${bn(nx.notional)}): quanto, non dove.`
+    : `prossima scadenza grande il ${dm(nx.exp)} (${bn(nx.notional)}); movimento atteso non disponibile in questo aggiornamento.`;
+  const W32 = 84330, sc = x => (x / W32 * 100).toFixed(1) + "%";
+  box.innerHTML =
+    card("anDir", "Le opzioni dicono dove va BTC?", "No.", "Skew, put/call e variazione del DVOL: il segno cambia fra 2021–23 e 2024–26.",
+      `<div class="anBars" role="img" aria-label="Da 10.000 dollari nel 2021: W3.2 84.330, regole sulle opzioni fra 2.000 e 19.000">` +
+      `<div class="anBar"><span>W3.2</span><span class="anTr"><i class="w" style="width:100%"></i></span><b>${usd(W32)}</b></div>` +
+      `<div class="anBar"><span>Regole opzioni</span><span class="anTr"><i class="r" style="left:${sc(2000)};width:${sc(17000)}"></i><s style="left:${sc(10000)}"></s></span><b>$2.000–19.000</b></div></div>` +
+      `<p class="anCap">Da $10.000 nel 2021 (tacca: capitale di partenza).</p>` +
+      more("Test preregistrati su BTC, domeniche 2021–26: soglie scelte sul 2021–23, verifica sul 2024–26. Skew 25-delta, rapporto put/call e variazione del DVOL non predicono la direzione a 7 né a 30 giorni: nel 2024–26 il segno si inverte o la correlazione resta sotto 0,10. Su ETH nemmeno.",
+        "Usati come regole long/short da $10.000 dal 2021 finiscono fra circa $2.000 e $19.000; W3.2 fa $84.330 (DD −21%). Lo skew a 30 giorni va bene solo nel 2024–26 e perde nel 2021–23, dove sono state scelte le soglie: non è un vantaggio stabile.")) +
+    card("anPain", "Il prezzo va verso il massimo dolore?", "No.", "Ci va nel 31–44% delle scadenze: come un livello a caso.",
+      `<div class="tiles sxT">${tile("Massimo dolore 27/11", "$70.000", "13,8% sopra il prezzo", "violet")}${tile("Regolamento 27/11", "$61.600", "il prezzo è rimasto dov'era")}</div>` +
+      more("70 scadenze mensili e trimestrali dal 2021: nell'ultima settimana il prezzo si è avvicinato al massimo dolore nel 31% dei casi (2021–23) e nel 44% (2024–26), non più spesso che verso uno strike a caso entro ±15% (placebo p 0,64).",
+        "Il 27/11/2026 il massimo dolore era $70.000 con BTC a $61.527 22 minuti prima; il regolamento Deribit è stato $61.600. Lo storico del massimo dolore è ricostruito dai volumi (errore mediano circa 3 punti); l'open interest vero si raccoglie dal 26/11/2026.")) +
+    card("anAmp", "A cosa servono allora?", "A misurare quanto si muove BTC, non dove.", "",
+      `<div class="tiles sxT">${tile("Dentro ±1σ a 7 giorni", "78%", "dei casi · teoria 68%")}${tile("Dentro ±2σ a 7 giorni", "94%", "dei casi · teoria 95%")}` +
+      `${tile("Rialzo o ribasso", "50/50", "il verso non si vede")}${tile("Opzioni care", "72%", "settimane con DVOL sopra il realizzato")}</div>` +
+      (nxTxt ? `<p class="anNow"><b>Oggi</b> · ${nxTxt}</p>` : "") +
+      more("Il livello del DVOL predice l'ampiezza del movimento nei 30 giorni successivi (correlazione 0,48 nel 2024–26), mai il verso. Su 2.062 settimane dal 2021, a 7 giorni BTC è rimasto dentro ±1 deviazione standard nel 78% dei casi e dentro ±2 nel 94%; a 28 giorni 72% e 92%. Il movimento normale è sovrastimato, le code estreme capitano un po' più spesso del previsto.",
+        "Il DVOL supera la volatilità poi realizzata nel 72% delle settimane (in media circa il 20% in più): comprare opzioni senza un segnale costa.")) +
+    card("anUse", "Quando comprare put o call?", "Solo con il segnale di W3.2.", "",
+      `<div class="anRule">${["long", "short"].map(v => `<span class="chip${onSide === v ? ` on ${v}` : ""}">W3.2 ${v} → ${kind(v)}</span>`).join("")}</div>` +
+      `<div class="tiles sxT">${tile("Scadenza", "20–50 giorni", "circa 30")}${tile("Prezzo d'esercizio", "alla pari", "vicino al prezzo di BTC")}` +
+      `${tile("Spesa", "5%", "del capitale = perdita massima")}${tile("Uscita", "con W3.2", "nessun rinnovo")}</div>` +
+      `<p class="anNow"><b>Oggi</b> · ${now}</p>` +
+      more("Quando no: fra un segnale e l'altro, con scadenza sotto 20 giorni, per giocare la scadenza o il massimo dolore. Saltare il segnale quando le opzioni sono care non aiuta: nel 2021–23 avrebbe tolto 3 operazioni vincenti, nel 2024–26 non avrebbe cambiato nulla.",
+        "Dal 2021, da $10.000: put o call sul segnale di W3.2 (regola B0r) $29.856 con DD −9,8%; W3.2 a 1x $84.330 con DD −21%. Si guadagna meno, ma la perdita per operazione è fissata al premio."));
 })();
 
 // ---- Opzioni · "Scadenze maggiori" (report.opex.calendar, radar/opex.py; Deribit, ripiego OKX senza volatilità): le scadenze BTC con
