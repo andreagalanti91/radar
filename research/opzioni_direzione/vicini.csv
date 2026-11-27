@@ -1,0 +1,16 @@
+V,vicino,rho_IS,rho_OOS,stesso_segno,verso_OOS
+V1,rr25s → r7,-0.019,-0.23,False,
+V1,rr25n → r7,0.005,-0.191,False,
+V1,rr25z → r7,-0.014,-0.155,False,
+V2,rr25s → r30,-0.133,-0.085,True,
+V2,rr25n → r30,-0.115,-0.116,True,
+V2,rr25z → r30,-0.138,-0.057,True,
+V3,pc_buy → r7,-0.106,0.096,False,
+V3,pc_camp7 → r7,-0.01,0.024,False,
+V4,pc_buy → r30,-0.12,0.096,False,
+V4,pc_camp7 → r30,-0.129,-0.009,True,
+V5,dvol_d14 → r30,0.094,-0.067,False,
+V5,dvol_d7 → r7,0.105,-0.105,False,
+V6,dvol → rv7,0.519,0.411,True,
+V7,E−3 (28 g),1.18,-0.18,False,56.0
+V7,E−7 cumulato,-0.5,0.37,True,53.0
