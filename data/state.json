@@ -3070,7 +3070,7 @@
       "XRP:sig:1793764800"
     ]
   },
-  "last_run": "2026-11-27T18:52:08",
+  "last_run": "2026-11-27T20:03:04",
   "heartbeat": "2026-11-27",
   "daily_brief": "2026-11-27",
   "tg_offset": 77505154,
@@ -3294,11 +3294,11 @@
   },
   "vix": {
     "zona": "neutra",
-    "ultimo_check": "2026-11-27T16",
-    "valore": 25.37,
+    "ultimo_check": "2026-11-27T20",
+    "valore": 23.81,
     "fonte": "Yahoo ^VIX",
-    "ora": "2026-11-27T15:47:31",
-    "armato_alto": false,
+    "ora": "2026-11-27T18:15:00",
+    "armato_alto": true,
     "armato_basso": true,
     "ultimo_avviso": {
       "tipo": "primo avvio",
