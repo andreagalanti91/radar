@@ -1,8 +1,6 @@
-> **BOZZA, NON ATTIVA.** Registro su carta di V3 solo se l'utente lo approva; in quel caso si committa da sola la versione definitiva PREREG-AVANTI-V3.md prima del 30/11/2026.
+# PREREG in avanti di V3 (solo short sulle emergenti) · registro sulla carta
 
-# PROPOSTA · PREREG in avanti di V3 (solo short sulle emergenti) · registro sulla carta
-
-**Stato: proposta.** Va committato da solo prima del 30/11/2026, e solo se l'utente vuole il registro sulla carta. Le soglie di
+**Stato: approvato dall'utente il 27/11/2026 ("procedi come ti sembra meglio"); registro attivo dal 30/11/2026.** Le soglie di
 questo file sono nuove: non stanno nel PREREG 1110e53 e non cambiano il verdetto dello studio (V3 non operabile).
 
 - **Regola**: V3 come nello studio. Short di W3.2 con i parametri di BTC, solo sulle monete con rank 101–200 nella classifica di
