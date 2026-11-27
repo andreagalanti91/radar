@@ -1,0 +1,3 @@
+BTC dal 2021-01-01: lib.csim 84,820 $ · motore.sim senza innesto 84,820 $ · riferimento 84,820 $ · OK
+ETH dal 2021-01-11: lib.csim 39,572 $ · motore.sim senza innesto 39,572 $ · riferimento 39,572 $ · OK
+SOL dal 2021-01-11: lib.csim 80,661 $ · motore.sim senza innesto 80,661 $ · riferimento 80,661 $ · OK

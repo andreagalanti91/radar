@@ -421,6 +421,15 @@ triangoli del post sul 3D, con barre che ripartono ogni 1 gennaio. Su BTC dal 20
 - **Ampiezza:** il livello del DVOL predice l'ampiezza a 30 g (ρ OOS 0,48, p esatto 0,007, ≈ 0,06 con Holm): controllo positivo, mai per il lato. DVOL sopra la volatilità poi realizzata nel 72% delle settimane: comprare senza segnale costa.
 - **Regola:** per put o call resta B0r (lato di W3.2, 20–50 g, alla pari, 5%). Saltare B0r quando le opzioni sono care toglie vincenti.
 - **Metodo:** placebo a slittamento circolare con N slittamenti distinti ha p minimo 1/(N+1): riportare il p esatto. Una regola buona solo in OOS (V2, specchio di V1) non è un vantaggio.
+
+**Lezione 129**: SOL con W3.2 (research/sol_ciclo, PREREG d38c760, revisione confermata; dati solo dal 2021): non operabile.
+- **Base:** 80.661 $ al 25% (BTC 84.820 $), DD −39,8%, WR chiuse 45%, −10% dal 2024; tre long fanno il risultato (senza il migliore 27,6k).
+- **Solo long:** peggio (63,0k, −33% dal 2024): gli short erano la parte buona.
+- **Cancello ETH:** il filtro migliore (78,0k, DD −29,6%, placebo p 0,0025 con Holm) ma WR 55% e −6% dal 2024: un filtro significativo non basta.
+- **Terza gamba (10k accanto a 30k+30k):** non migliora; senza il long ott. 2023 → gen. 2024 1,73 contro 1,81, dal 2024 peggiora il conto.
+- **Riapertura:** solo con dati dal vivo (registro su carta di V2, ≥ 6 chiuse ≈ 3 anni, WR ≥ 60%, rendimento positivo, DD ≥ −30%).
+
+**Lezione 130**: MACD settimanale 12/26/9 su SOL "compra da −3 a −50, vendi da +10" (research/macd_sol, PREREG a5f2206; 4 regole, 8 innesti in W3.2, 3 candidati costruiti in IS, Holm m = 13): niente funziona. Le soglie in dollari pesano 10 volte di più a 20 $ che a 200 $: la regola letterale compra all'inizio del bear 2022 e chiude a 8.292 $ (DD −93%, 3 trade; B&H 374.895 $); normalizzata o con stop −20% non migliora. Dentro W3.2 il MACD non serve: l'uscita "+10 equivalente" non scatta mai su BTC/ETH (W3.2 esce prima), il filtro tocca pochi short (ETH meglio ma placebo p 0,27). Il candidato SOL scelto in IS (W3.2 + cancello ETH + uscita MACD ≥ +10 $, CAGR/DD IS 3,60) in OOS fa 21.454 $ con WR 43%, vicini sotto il B&H, placebo p 0,09. Il livello del MACD non è un segnale; un'uscita aggiunta senza il filtro d'ingresso corrispondente crea trade di una settimana che falsano il WR. Su SOL solo registro su carta. 
 **Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
 +0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
 con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai

@@ -546,11 +546,14 @@ def condizioni(w: pd.DataFrame) -> dict:
     up = bool(wk["close"] > wk["sma"]) and bool(e20_up)
     dn = bool(wk["close"] < wk["sma"]) and bool(sma_dn) and e20_up is False
     fl = None if pd.isna(wk["flow"]) else round(float(wk["flow"]), 2)
+    fu = wk["fund7"]
     return {"px_sma": 1 if wk["close"] > wk["sma"] else -1, "ema20": 1 if e20_up else -1, "sma_dn": sma_dn,
             "ema21": 1 if wk["close"] > wk["ema21"] else -1, "flow": fl, "f1": bool(wk["f1_ok"]),
             "macd": bool(wk["macd"] > wk["macd_sig"] and wk["macd"] > 0), "eta": int(wk["trend_age"]),
             "regime": "long" if up else "short" if dn else "neutro", "c_long": bool(wk["long"]), "c_short": bool(wk["short"]),
-            "close": float(wk["close"]), "sma": float(wk["sma"]), "ema21_v": float(wk["ema21"])}
+            "close": float(wk["close"]), "sma": float(wk["sma"]), "ema21_v": float(wk["ema21"]),
+            "fund7": None if pd.isna(fu) else round(float(fu), 6),
+            "dist": {"long": bool(wk["dist_long"]), "short": bool(wk["dist_short"])}}
 
 
 def _exit_px(f: pd.DataFrame, t: dict) -> float | None:

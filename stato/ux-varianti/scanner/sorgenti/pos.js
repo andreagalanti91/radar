@@ -1,0 +1,109 @@
+  // ---- Monete in posizione (long/short): risultato dall'ingresso, stop mobile, perché è long/short (variante __VAR__)
+  const PO = $("scPos");
+  const drawPos = () => { if (!PO || !S || !RW.length) return;
+    const VAR = __VAR__;
+    const P = RW.filter(r => r.lato === "long" || r.lato === "short");
+    const sgn = r => r.lato === "long" ? 1 : -1;
+    const dom = S.settimana, oggi = new Date();
+    const giorni = d => d ? Math.max(0, Math.round((oggi - Date.parse(String(d).slice(0, 10) + "T00:00:00Z")) / 864e5)) : null;
+    const lun = r => r.sig ? new Date(Date.parse(r.sig + "T00:00:00Z") + 864e5).toISOString().slice(0, 10) : null;
+    const aperta = r => r.evento !== "ingresso" && r.px_in != null;
+    const avg = a => a.length ? a.reduce((s, x) => s + x, 0) / a.length : null;
+    const usd$ = x => x == null ? "–" : p5(x) + " $";
+    const storia = r => r.cl === "valutabile" ? "" : r.cl === "breve" ? "segnale non verificato: storia insufficiente" :
+      r.cl === "solo prezzo" ? "segnale non verificato: niente storia del flusso perp nello studio" : "segnale non verificato: moneta senza scheda dello studio";
+    const warn = r => storia(r) ? `<span class="pzWarn"><svg><use href="#i-warn"/></svg>${storia(r)}</span>` : "";
+    const btcV = r => r.btc === "stesso" ? `<span class="btcY">con BTC ✓</span>` : r.btc === "opposto" ? `<span class="pzContro">contro BTC</span>` : r.t === "BTC" ? `<span class="btcN">riferimento</span>` : `<span class="btcN">–</span>`;
+    const lato = r => r.lato === "long" ? "long" : "short", il = r => r.lato === "long" ? "il long" : "lo short", del_ = r => r.lato === "long" ? "del long" : "dello short";
+    const dStop = r => r.du == null ? "–" : (r.lato === "long" ? "−" : "+") + nfIT(r.du, 1) + "%";
+    // semafori: ok = sostiene la posizione, wa = non la sostiene ma non basta per uscire, no = contro (uscita), nd = dato assente
+    const semafori = r => { const c = r.cond || {}, s = sgn(r), L = r.lato === "long";
+      const out = [];
+      out.push({ k: "Media lunga", c: c.px_sma * s > 0 ? "ok" : "wa",
+        t: `Prezzo ${c.px_sma > 0 ? "sopra" : "sotto"} la media di 40 settimane${c.dsma == null ? "" : ` (${pct(c.dsma, 1)})`}${!L && c.sma_dn ? ", e la media scende" : ""}`,
+        s: c.px_sma * s > 0 ? `va nel verso ${del_(r)}` : `non sostiene più ${il(r)}: non si aprirebbe oggi` });
+      out.push({ k: "Media veloce", c: c.ema21 * s > 0 ? "ok" : "no",
+        t: `Chiusura ${c.ema21 > 0 ? "sopra" : "sotto"} la media veloce (EMA 21 settimane)`,
+        s: c.ema21 * s > 0 ? `${il(r)} resta aperto` : "domenica si esce" });
+      out.push(c.flow == null ? { k: "Flusso perp", c: "nd", t: "Flusso dei perpetual non disponibile", s: "" } :
+        { k: "Flusso perp", c: c.flow * s > 0 ? "ok" : "wa", t: `Sui perpetual prevale chi ${c.flow > 0 ? "compra" : "vende"} (${nfIT(c.flow, 2)}σ)`,
+          s: c.flow * s > 0 ? "conferma" : "non conferma; da solo non fa uscire" });
+      if (c.fund7 == null) out.push({ k: "Funding", c: "nd", t: "Funding non presente nei dati dello scanner", s: "controllo della distribuzione non mostrato" });
+      else { const dist = c.dist ? !!c.dist[r.lato] : (L ? c.fund7 > 0.0009 && c.flow < 0 : c.fund7 < -0.0003 && c.flow > 0);
+        out.push({ k: "Funding", c: dist ? "no" : "ok", t: `Funding medio 7 giorni ${nfIT(c.fund7 * 100, 3)}% al giorno`, s: dist ? "distribuzione: domenica si esce" : "nessuna distribuzione" }); }
+      out.push({ k: "Regime", c: c.regime === r.lato ? "ok" : c.regime === "neutro" ? "wa" : "no",
+        t: c.regime === "neutro" ? "Regime neutro" : `Regime ${c.regime}`,
+        s: c.regime === r.lato ? (L ? "media lunga sotto il prezzo ed EMA 20 in salita" : "media lunga in calo ed EMA 20 in discesa") : "non si aprirebbero posizioni nuove; questa resta fino all'uscita" });
+      return out; };
+    const frase = r => { const c = r.cond || {}, s = sgn(r), L = r.lato === "long";
+      const a = [`il prezzo è ${c.px_sma > 0 ? "sopra" : "sotto"} la media lunga`, `la chiusura è ${c.ema21 > 0 ? "sopra" : "sotto"} la media veloce`];
+      const f = c.flow == null ? "" : c.flow * s > 0 ? ` e sui perpetual prevale chi ${c.flow > 0 ? "compra" : "vende"}` : `; sui perpetual oggi prevale chi ${c.flow > 0 ? "compra" : "vende"}, ma da solo non basta per uscire`;
+      return r.evento === "ingresso" ? `Domenica ${dIt(r.sig).slice(0, 5)} si sono allineate le condizioni d'ingresso: ${a.join(", ")}${f}.` :
+        `${L ? "Long" : "Short"} dal ${dIt(r.ing).slice(0, 5)}: ${a.join(", ")}${f}.`; };
+    const perche = r => `<div class="pzWhy"><div class="pzWhyH">Perché è ${lato(r)}</div><p>${frase(r)}</p><ul class="pzSem">` +
+      semafori(r).map(x => `<li class="${x.c}"><i></i><span><b>${x.t}</b>${x.s ? `<small>${x.s}</small>` : ""}</span></li>`).join("") + `</ul>` +
+      (r.trail ? `<p class="pzStop">Uscita automatica se il prezzo ${r.lato === "long" ? "scende" : "sale"} a <b>${usd$(r.trail)}</b> (stop mobile: si sposta solo a favore)${r.du == null ? "" : `, ${dStop(r)} dalla chiusura del ${dIt(dom).slice(0, 5)}`}.</p>` : "") +
+      `<p class="pzCap">Condizioni alla chiusura del ${dIt(dom)}, non quelle del giorno d'ingresso.</p></div>` +
+      `<details class="opMore pzDet"><summary>Dettagli</summary>${dettaglio(r)}</details>`;
+    // mini-barra: 0 = stop, a destra = a favore della posizione; segna ingresso e chiusura
+    const barra = r => { if (!aperta(r) || !r.trail) return "";
+      const s = sgn(r), a = s * (r.px_in - r.trail), b = s * (r.ult - r.trail), m0 = Math.min(0, a, b), M = Math.max(0, a, b), span = (M - m0) * 1.08 || 1;
+      const x = v => Math.max(0, Math.min(100, (v - m0) / span * 100)).toFixed(1), lo = Math.min(a, b), hi = Math.max(a, b), prot = a < 0;
+      return `<div class="pzBar" role="img" aria-label="Stop ${usd$(r.trail)}, ingresso ${usd$(r.px_in)}, chiusura ${usd$(r.ult)}">` +
+        `<span class="trk"></span><span class="fill ${r.mv >= 0 ? "pos" : "neg"}" style="left:${x(lo)}%;width:${(x(hi) - x(lo)).toFixed(1)}%"></span>` +
+        `<span class="mk stop" style="left:${x(0)}%"></span><span class="mk in" style="left:${x(a)}%"></span><span class="mk now ${r.mv >= 0 ? "pos" : "neg"}" style="left:${x(b)}%"></span></div>` +
+        `<div class="pzLeg"><span><i class="stop"></i>stop ${p5(r.trail)}</span><span><i class="in"></i>ingresso ${p5(r.px_in)}</span><span><i class="now ${r.mv >= 0 ? "pos" : "neg"}"></i>${dIt(dom).slice(0, 5)} ${p5(r.ult)}</span>${prot ? `<span class="pzProt">stop oltre l'ingresso: guadagno protetto</span>` : ""}</div>`; };
+    const kv = r => { const g = giorni(aperta(r) ? r.ing : lun(r));
+      return `<dl class="pzKv">` +
+        `<div><dt>Apertura</dt><dd>${aperta(r) ? `${dIt(r.ing)}<small>${usd$(r.px_in)}</small>` : `lun. ${dIt(lun(r))}<small>prezzo nel prossimo aggiornamento</small>`}</dd></div>` +
+        `<div><dt>Chiusura ${dIt(dom).slice(0, 5)}</dt><dd>${usd$(r.ult)}<small>${aperta(r) ? `<span class="${cls(r.mv)}">${pct(r.mv, 1)}</span> dall'ingresso` : "ultimo prezzo"}</small></dd></div>` +
+        `<div><dt>Aperta da</dt><dd>${g == null ? "–" : `${nfIT(g, 0)} giorni`}<small>${aperta(r) ? `${nfIT(r.sett, 0)} chiusure settimanali` : "appena aperta"}</small></dd></div>` +
+        `<div><dt>Stop mobile</dt><dd>${r.trail ? usd$(r.trail) : "–"}<small>${r.du == null ? "da fissare all'ingresso" : `${dStop(r)} dal prezzo`}</small></dd></div>` +
+        `<div><dt>Rispetto a BTC</dt><dd>${btcV(r)}<small>${r.btc === "stesso" ? "stesso verso di W3.2 su BTC" : r.btc === "opposto" ? "verso opposto a W3.2 su BTC" : ""}</small></dd></div>` +
+        `<div><dt>Operabile</dt><dd>${oper(r)}<small>${r.rk ? `#${r.rk} per capitalizzazione` : ""}</small></dd></div></dl>`; };
+
+    const st = PO._st || (PO._st = { o: "ris", f: "tutte", all: false });
+    const ORD = { ris: (a, b) => (b.mv ?? -1e9) - (a.mv ?? -1e9), data: (a, b) => (b.ing || lun(b) || "").localeCompare(a.ing || lun(a) || ""), cap: (a, b) => (a.rk || 999) - (b.rk || 999) };
+    const rs = P.filter(r => st.f === "tutte" || r.lato === st.f).sort((a, b) => ORD[st.o](a, b) || (a.rk || 999) - (b.rk || 999));
+    const LIM = VAR === 1 ? 15 : 9, vis = st.all ? rs : rs.slice(0, LIM);
+    const L = P.filter(r => r.lato === "long"), Sh = P.filter(r => r.lato === "short");
+    const mL = avg(L.filter(aperta).map(r => r.mv)), mS = avg(Sh.filter(aperta).map(r => r.mv));
+    const nuovi = x => x.filter(r => !aperta(r)).length;
+    const nBreve = P.filter(r => r.cl !== "valutabile").length, nBtc = P.filter(r => r.btc === "stesso").length;
+    const head = `<div class="scH">Monete in posizione<small>${P.length} su ${RW.length} · prezzi alla chiusura del ${dIt(dom)}</small></div>` +
+      `<div class="card pzCard"><div class="tiles pzTiles">` +
+      tile("Long aperti", `${nfIT(L.length - nuovi(L), 0)}${nuovi(L) ? `<small class="pzPlus"> +${nuovi(L)} nuovi</small>` : ""}`, `media <b class="${cls(mL)}">${pct(mL, 1)}</b> dall'ingresso`) +
+      tile("Short aperti", `${nfIT(Sh.length - nuovi(Sh), 0)}${nuovi(Sh) ? `<small class="pzPlus"> +${nuovi(Sh)} nuovi</small>` : ""}`, `media <b class="${cls(mS)}">${pct(mS, 1)}</b> dall'ingresso`) +
+      tile("Con BTC", `${nfIT(nBtc, 0)} / ${nfIT(P.length, 0)}`, "nello stesso verso di W3.2 su BTC") +
+      tile("Non verificati", nfIT(nBreve, 0), "storia insufficiente o senza scheda dello studio") + `</div>` +
+      `<p class="pzOnesta"><svg><use href="#i-warn"/></svg><span>Lo scanner mostra lo stato di W3.2, <b>non un segnale provato sulle altcoin</b> (lezioni 111 e 123). Risultato = movimento del prezzo nel verso della posizione, senza commissioni, funding né dimensione.</span></p>` +
+      `<div class="pzTools"><div class="seg" id="pzF" role="group" aria-label="Verso">${[["tutte", "Tutte"], ["long", "Long"], ["short", "Short"]].map(([k, l]) => `<button type="button" data-v="${k}" aria-pressed="${st.f === k}">${l}</button>`).join("")}</div>` +
+      `<div class="seg" id="pzO" role="group" aria-label="Ordina per">${[["ris", "Risultato"], ["data", "Più recenti"], ["cap", "Più grandi"]].map(([k, l]) => `<button type="button" data-v="${k}" aria-pressed="${st.o === k}">${l}</button>`).join("")}</div></div>`;
+    let body;
+    if (VAR === 1) {
+      body = `<div class="pzList"><div class="pzHd" aria-hidden="true"><span>Moneta</span><span class="w">Apertura</span><span class="w">Chiusura ${dIt(dom).slice(0, 5)}</span><span class="r">Risultato</span><span class="w r">Stop</span><span class="w">BTC · operabile</span><span></span></div>` +
+        vis.map(r => `<details class="pzRow ${r.lato}" data-t="${e(r.t)}"><summary>` +
+          `<span class="nm">${tag(r.lato, r.lato)}<span><span class="tkL"><b>${e(r.t)}</b>${r.cl !== "valutabile" ? `<i class="pzDot" title="${storia(r)}">!</i>` : ""}</span><small>${aperta(r) ? `dal ${dIt(r.ing).slice(0, 5)} · ${nfIT(giorni(r.ing), 0)} g` : `apre lun. ${dIt(lun(r)).slice(0, 5)}`}<span class="n"> · ${r.btc === "opposto" ? "contro BTC" : r.btc === "stesso" ? "con BTC" : ""}</span></small></span></span>` +
+          `<span class="w">${aperta(r) ? `${dIt(r.ing)}<small>${usd$(r.px_in)}</small>` : `lun. ${dIt(lun(r))}<small>prezzo in arrivo</small>`}</span>` +
+          `<span class="w">${usd$(r.ult)}</span>` +
+          `<span class="r res"><b class="${cls(r.mv)}">${aperta(r) ? pct(r.mv, 1) : "nuovo"}</b><small>${r.du == null ? "" : `stop ${dStop(r)}`}</small></span>` +
+          `<span class="w r">${r.trail ? `${p5(r.trail)}<small>${dStop(r)}</small>` : "–"}</span>` +
+          `<span class="w">${btcV(r)}<small>${oper(r)}</small></span><span class="chev">›</span></summary>` +
+          `<div class="pzOpen">${warn(r)}${barra(r)}${kv(r)}${perche(r)}</div></details>`).join("") + `</div>`;
+    } else {
+      body = `<div class="pzGrid">` + vis.map(r => `<article class="pzTile ${r.lato}">` +
+        `<div class="pzTh"><span><b>${e(r.t)}</b><small>${e(r.n || "")}${r.rk ? ` · #${r.rk}` : ""}</small></span>${tag(r.lato, r.lato)}</div>` +
+        `<div class="pzRes"><b class="${aperta(r) ? cls(r.mv) : ""}">${aperta(r) ? pct(r.mv, 1) : "nuovo"}</b><small>${aperta(r) ? `dal ${dIt(r.ing)} · ${nfIT(giorni(r.ing), 0)} giorni<br>${usd$(r.px_in)} → ${usd$(r.ult)}` : `apre lun. ${dIt(lun(r))}<br>prezzo d'ingresso nel prossimo aggiornamento`}</small></div>` +
+        (barra(r) || `<div class="pzBar empty"><span class="trk"></span></div><div class="pzLeg"><span>stop fissato all'ingresso (2,5 ATR settimanali)</span></div>`) +
+        `<div class="pzLights" aria-label="Condizioni">${semafori(r).map(x => `<span class="${x.c}" title="${x.t}${x.s ? ": " + x.s : ""}"><i></i>${x.k}</span>`).join("")}</div>` +
+        `<div class="pzFoot">${btcV(r)}<span>${oper(r)}</span></div>${warn(r)}` +
+        `<details class="pzMore"><summary>Perché è ${lato(r)}</summary><div class="pzIn">${kv(r)}${perche(r)}</div></details></article>`).join("") + `</div>`;
+    }
+    PO.innerHTML = head + body + (vis.length < rs.length ? `<button type="button" class="scMore" id="pzAll">Mostra tutte (${rs.length})</button>` : "") +
+      `<p class="opNote">Semafori: <span class="pzKey ok"><i></i>sostiene la posizione</span> <span class="pzKey wa"><i></i>non la sostiene, ma non basta per uscire</span> <span class="pzKey no"><i></i>porta all'uscita</span> <span class="pzKey nd"><i></i>dato assente</span>. ` +
+      `Nuovi = segnale di domenica, ingresso all'apertura di lunedì.</p></div>`;
+    PO.querySelector("#pzF").onclick = ev => { const b = ev.target.closest("button"); if (b) { st.f = b.dataset.v; st.all = false; drawPos(); } };
+    PO.querySelector("#pzO").onclick = ev => { const b = ev.target.closest("button"); if (b) { st.o = b.dataset.v; drawPos(); } };
+    const all = PO.querySelector("#pzAll"); if (all) all.onclick = () => { st.all = true; drawPos(); };
+  };
+  drawPos();

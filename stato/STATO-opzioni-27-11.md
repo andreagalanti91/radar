@@ -1,5 +1,5 @@
 # STATO · Ciclo opzioni 27/11/2026
-Stato: IN CORSO (fasi 2-3-4 fatte; attesa scelte utente e revisione)
+Stato: COMPLETATO (salvo scelta utente % BTC)
 
 Richiesta: desktop senza spazi (card full width); riattivare Opzioni; scadenze maggiori Deribit e impatti; analisi scadenza vicina
 e movimento atteso; studio "le opzioni danno la direzione di BTC? il prezzo ha seguito le scadenze?"; quando put o call.
@@ -27,3 +27,4 @@ Fase 3 dati dal vivo (Deribit raggiungibile dal contenitore), agenti fasi 1 e 4 
   lezione 128 e indici. F5 risposta consegnata. Restano solo le decisioni utente: desktop A/B, "pubblica Opzioni", % BTC.
 ## Prossima azione
 Alla scelta dell'utente: applicare patch desktop (A: css_A.css + js_A.py; B: css_B.css) con test, suite, render, deploy unico con Opzioni.
+- 27/11 08:42 UTC: pubblicati layout desktop A e Opzioni con Scadenze maggiori e La nostra analisi; verifica sito OK (12 colonne a 1280, 1 a 400, muri e movimento atteso valorizzati, 0 errori JS).
