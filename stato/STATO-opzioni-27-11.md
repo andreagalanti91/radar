@@ -23,3 +23,7 @@ Fase 3 dati dal vivo (Deribit raggiungibile dal contenitore), agenti fasi 1 e 4 
 - F3 rapporto: research/opzioni_scadenze/README.md (regolamento 61.600, max pain 70k non raggiunto).
 - F4 studio: PREREG 14cadc0, risultati committati; revisione radar-review in corso. Poi lezione 128 e indice.
 - F5 risposta put/call: dalla sezione del README dello studio, dopo la revisione.
+- 27/11 ~08:40: revisione critica fatta (confermato nella sostanza; V6 p esatto 0,007/Holm ≈0,06, V2 = −V1), correzioni applicate,
+  lezione 128 e indici. F5 risposta consegnata. Restano solo le decisioni utente: desktop A/B, "pubblica Opzioni", % BTC.
+## Prossima azione
+Alla scelta dell'utente: applicare patch desktop (A: css_A.css + js_A.py; B: css_B.css) con test, suite, render, deploy unico con Opzioni.
