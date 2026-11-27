@@ -78,13 +78,17 @@ class Markup(unittest.TestCase):
         self.assertIn("driftSum(cmps)", PAGE)
 
     def test_pulsanti_con_icona_e_aria_label(self):
-        for icon, label in (("plus", "Nuova posizione"), ("out", "Esci dall'account")):
+        for icon, label in (("plus", "Apri posizione"), ("out", "Esci dall'account")):
             self.assertRegex(PAGE, rf'<button type="button" class="waCta [a-z ]+" id="wa\w+" aria-label="{label}"><svg class="waI" aria-hidden="true"><use href="#i-{icon}"/></svg>')
-        for icon, label, aria in (("plus", "Tranche", "Aggiungi tranche"), ("minus", "Riduci", "Riduci o chiudi"), ("list", "Movimenti", "Movimenti della posizione"),
+        # etichette d'azione dal 27/11/2026: Aumenta (era Tranche), Riduci o chiudi, Storico (era Movimenti), Modifica, Elimina
+        for icon, label, aria in (("plus", "Aumenta", "Aumenta la posizione"), ("minus", "Riduci o chiudi", "Riduci o chiudi la posizione"), ("list", "Storico", "Storico della posizione"),
                                   ("edit", "Modifica", "Modifica movimento"), ("trash", "Elimina", "Elimina movimento")):
             self.assertRegex(PAGE, rf'cta\("[a-z ]+", [^)]*"{icon}", "{label}", "[^"]*", "{aria}"\)')
             self.assertIn(f'<symbol id="i-{icon}"', T)
         self.assertIn('class="waCta ${kind}" ${attrs} aria-label="${esc(aria || label)}"><svg class="waI" aria-hidden="true">', PAGE)
+        for vecchia in ('"Tranche"', '"Movimenti"', "Aggiungi tranche", "Nuova posizione", "Riduci / chiudi"):
+            self.assertNotIn(vecchia, PAGE)
+        self.assertIn("window.openSheet(`Storico · ${pos.asset}`, box)", PAGE)
         css = re.search(r"\.waCta\{[^}]*\}", PAGE).group(0)
         self.assertIn("min-height:var(--h)", css)
         self.assertIn("--h:44px", css)                          # area di tocco di almeno 44 px
@@ -270,6 +274,148 @@ class NelBrowser(unittest.TestCase):
         self.assertEqual(self.errs, [])
         pg.close()
 
+    def test_calcoli_operazioni_e_tasse(self):
+        pg = self.pagina()
+        pg.wait_for_function("window.WalletCalc")
+        r = pg.evaluate("""() => { const C = window.WalletCalc;
+          const W = { status: "aperto", side: "short", signal_date: "2026-11-15", trail: 75000 };
+          const st = C.posState([{ tipo: "ingresso", data: "2026-11-16T10:00:00Z", prezzo: 65000, quantita: 0.1, margine: 2000 }], "short", 3);
+          return {
+            sz: [C.size("margine", 1000, 3, 60000), C.size("quantita", 0.05, 3, 60000), C.size("valore", 3000, 3, 60000), C.size("margine", 1000, 1, 60000), C.size("margine", 0, 3, 60000)],
+            fr: [C.feeRate("Bitget", "perp"), C.feeRate("OKX", "perp"), C.feeRate("altro", "perp"), C.feeRate("Bitget", "spot")], fee: C.fee(3000, 0.06),
+            pre: [C.preStrategy("short", W, null), C.preStrategy("long", W, null), C.preStrategy("long", null, { lato: "long", sig: "2026-11-22" }),
+                  C.preStrategy("short", null, { lato: "long", sig: "2026-11-22" }), C.preStrategy("short", null, null), C.preStrategy("short", { status: "flat" }, null)],
+            plan: C.plan({ px: 60000, qty: 0.05, lev: 3, lato: "short", mercato: "perp", stop: 75000, capital: 10000, feeRate: 0.06 }),
+            plan10: C.plan({ px: 60000, qty: 0.05, lev: 10, lato: "short", mercato: "perp", stop: 75000, capital: 10000, feeRate: 0.06 }),
+            planSpot: C.plan({ px: 2, qty: 100, lev: 1, lato: "long", mercato: "spot", stop: null, levMax: 4, capital: null, feeRate: 0.1 }),
+            add: C.addPreview(st, 60000, 0.1, 2000, "short", "perp"),
+            red: C.reducePreview(st, 60000, C.qtyOfPct(st.qty, 50), 0.06), redAll: C.reducePreview(st, 60000, C.qtyOfPct(st.qty, 100), 0.06),
+            pct: [C.qtyOfPct(0.3, 25), C.qtyOfPct(0.3, 100), C.qtyOfPct(0, 50)],
+            rate: [C.taxRate(null, 2026), C.taxRate(null, 2025), C.taxRate(20, 2026), C.taxRate("", 2027), C.taxRate(0, 2026)],
+            ty: C.taxYears([{ t: "2026-03-01T10:00:00Z", d: 3000 }, { t: "2026-06-01T10:00:00Z", d: -1200 }, { t: "2025-05-01T10:00:00Z", d: -500 },
+                            { t: "2025-09-01T10:00:00Z", d: 200 }, { t: "2024-01-10T10:00:00Z", d: 1000 }], null),
+            tyAl: C.taxYears([{ t: "2026-03-01T10:00:00Z", d: 3000 }], 20),
+            tc: [C.taxIfClosed(1800, 1200, 33), C.taxIfClosed(-500, 200, 33), C.taxIfClosed(1000, -1500, 33)],
+            em: [C.emergBudget(60, 50, 10000), C.emergBudget(60, 40, 10000), C.emergBudget(60, 50, null)] }; }""")
+        for x in r["sz"][:3]:                                                                  # margine, quantità o valore: gli altri due dalla leva
+            self.assertAlmostEqual(x["value"], 3000)
+            self.assertAlmostEqual(x["margin"], 1000)
+            self.assertAlmostEqual(x["qty"], 0.05)
+        self.assertAlmostEqual(r["sz"][3]["value"], 1000)                                      # 1x: valore = margine
+        self.assertIsNone(r["sz"][4])
+        self.assertEqual(r["fr"], [0.06, 0.05, 0.06, 0.1])                                     # taker stimata
+        self.assertAlmostEqual(r["fee"], 1.8)
+        self.assertEqual([(x["strategia"], x["segnale"]) for x in r["pre"]], [("W3.2", "2026-11-15"), ("fuori segnale", None), ("scanner", "2026-11-22"),
+                                                                              ("fuori segnale", None), ("fuori segnale", None), ("fuori segnale", None)])
+        P = r["plan"]
+        self.assertAlmostEqual(P["value"], 3000)
+        self.assertAlmostEqual(P["margin"], 1000)
+        self.assertAlmostEqual(P["liq"], (60000 + 1000 / 0.05) / 1.005, places=4)
+        self.assertAlmostEqual(P["liqD"], ((60000 + 20000) / 1.005 / 60000 - 1) * 100, places=6)
+        self.assertAlmostEqual(P["stopD"], 25)
+        self.assertEqual(P["levMax"], 3.0)                                                     # 1 / (0,25 + 0,05) = 3,33 → 3
+        self.assertFalse(P["levOver"])
+        self.assertAlmostEqual(P["atStop"], -(15000 * 0.05) - 1.8 - 75000 * 0.05 * 0.0006, places=6)   # commissioni di entrata e uscita
+        self.assertAlmostEqual(P["riskPct"], P["atStop"] / 10000 * 100, places=6)
+        self.assertAlmostEqual(P["weight"], 10)
+        self.assertAlmostEqual(P["expo"], 30)
+        self.assertTrue(r["plan10"]["levOver"])                                                # leva oltre quella compatibile con lo stop
+        self.assertTrue(r["plan10"]["liqFirst"])
+        self.assertIsNone(r["planSpot"]["liq"])
+        self.assertEqual(r["planSpot"]["levMax"], 4)                                           # senza stop: leva massima dello Scanner
+        self.assertIsNone(r["planSpot"]["weight"])
+        A = r["add"]                                                                           # Aumenta: nuovo prezzo medio e liquidazione
+        self.assertAlmostEqual(A["avg"], 62500)
+        self.assertAlmostEqual(A["qty"], 0.2)
+        self.assertAlmostEqual(A["margin"], 4000)
+        self.assertAlmostEqual(A["liq"], (62500 + 4000 / 0.2) / 1.005, places=4)
+        self.assertAlmostEqual(A["liqNow"], (65000 + 2000 / 0.1) / 1.005, places=4)
+        self.assertAlmostEqual(A["dAvg"], (62500 / 65000 - 1) * 100, places=6)
+        D = r["red"]                                                                           # Riduci 50%: P/L realizzato stimato
+        self.assertAlmostEqual(D["qty"], 0.05)
+        self.assertAlmostEqual(D["gross"], 5000 * 0.05)
+        self.assertAlmostEqual(D["fee"], 60000 * 0.05 * 0.0006)
+        self.assertAlmostEqual(D["net"], 250 - 1.8)
+        self.assertAlmostEqual(D["rest"], 0.05)
+        self.assertAlmostEqual(D["marginRest"], 1000)
+        self.assertFalse(D["full"])
+        self.assertTrue(r["redAll"]["full"])
+        self.assertEqual(r["redAll"]["rest"], 0)
+        self.assertAlmostEqual(r["pct"][0], 0.075)
+        self.assertEqual(r["pct"][1], 0.3)
+        self.assertIsNone(r["pct"][2])
+        self.assertEqual(r["rate"], [33, 26, 20, 33, 0])                                        # 33% dal 2026, 26% fino al 2025, aliquota del profilo
+        y26, y25, y24 = r["ty"]                                                                # tasse per anno con compensazione
+        self.assertEqual((y26["year"], y25["year"], y24["year"]), (2026, 2025, 2024))
+        self.assertAlmostEqual(y26["net"], 1800)
+        self.assertAlmostEqual(y26["tax"], 1800 * 0.33)                                        # le perdite dell'anno compensano i guadagni
+        self.assertAlmostEqual(y26["after"], 1800 * 0.67)
+        self.assertAlmostEqual(y26["monthly"], 1800 * 0.67 / 12)                               # netto al mese = netto annuo / 12
+        self.assertAlmostEqual(y25["net"], -300)
+        self.assertEqual(y25["tax"], 0)                                                        # saldo negativo: niente tasse, nessun riporto
+        self.assertAlmostEqual(y25["monthly"], -25)
+        self.assertAlmostEqual(y24["tax"], 260)                                                # 26% prima del 2026
+        self.assertAlmostEqual(r["tyAl"][0]["tax"], 600)                                       # aliquota dal profilo
+        self.assertAlmostEqual(r["tc"][0]["tax"], 990)                                         # se chiudessi oggi
+        self.assertAlmostEqual(r["tc"][0]["extra"], 990 - 594)
+        self.assertAlmostEqual(r["tc"][0]["monthly"], (3000 - 990) / 12)
+        self.assertEqual(r["tc"][1]["tax"], 0)
+        self.assertAlmostEqual(r["tc"][2]["extra"], -330)
+        self.assertEqual([x["over"] for x in r["em"]], [True, False, False])                   # regola dell'1% sulle emergenti
+        self.assertAlmostEqual(r["em"][0]["limit"], 100)
+        self.assertEqual(self.errs, [])
+        pg.close()
+
+    def test_apri_posizione_a_passi(self):
+        for w in (360, 1280):
+            pg = self.pagina(w, "?demo=1")
+            pg.wait_for_selector("#waLogin", timeout=5000)
+            pg.evaluate("m => Object.assign(R, m)", MODELLO)
+            pg.fill("#waLogin input[name=email]", "demo@radar.local")
+            pg.click("#waLogin button[type=submit]")
+            pg.wait_for_selector(".waPos", timeout=5000)
+            self.assertEqual(pg.inner_text("#waNew"), "Apri posizione")
+            pg.click("#waNew")
+            pg.wait_for_selector("#sheet[open] .waSteps")
+            self.assertEqual(pg.get_attribute("#sheet [data-st='1']", "aria-current"), "step")
+            self.assertEqual(pg.get_attribute("#sheet [data-side=short]", "aria-pressed"), "true")   # W3.2 su BTC è short
+            self.assertEqual(pg.get_attribute("#sheet [data-seg=strategia] [data-v='W3.2']", "aria-pressed"), "true")   # preselezionata
+            self.assertEqual(pg.input_value("#sheet input[name=segnale_data]"), "2026-11-15")  # data del segnale compilata
+            pg.click("#sheet [data-side=long]")                                                # lato opposto al segnale: fuori segnale
+            self.assertEqual(pg.get_attribute("#sheet [data-seg=strategia] [data-v='fuori segnale']", "aria-pressed"), "true")
+            self.assertEqual(pg.input_value("#sheet input[name=segnale_data]"), "")
+            pg.click("#sheet [data-side=short]")
+            pg.click("#sheet [data-coin=ETH]")
+            self.assertEqual(pg.input_value("#sheet input[name=segnale_data]"), "2026-11-08")
+            pg.click("#sheet [data-coin=BTC]")
+            for b in pg.locator("#sheet .waChip, #sheet .waSide button, #sheet [data-step='1'] .seg button, #sheet .waBar .waCta").all():   # tocco ≥ 44 px
+                self.assertGreaterEqual(b.bounding_box()["height"], 44)
+            pg.click("#sheet [data-next]")
+            pg.wait_for_selector("#sheet [data-step='2']:not([hidden])")
+            self.assertEqual(pg.input_value("#sheet input[name=prezzo]"), "60000")            # prezzo attuale precompilato
+            self.assertEqual(pg.inner_text("#sheet [data-back]"), "Indietro")
+            pg.click("#sheet [data-next]")
+            self.assertIn("importo", pg.inner_text("#sheet .err"))
+            pg.fill("#sheet input[name=importo]", "1.000")
+            pg.click("#sheet [data-lev='3']")
+            self.assertIn("$3.000", pg.inner_text("#sheet [data-calc]"))                       # valore = margine × leva
+            self.assertIn("$1,80", pg.inner_text("#sheet [data-feev]"))                        # 0,06% di 3.000
+            pg.click("#sheet [data-next]")
+            pg.wait_for_selector("#sheet [data-step='3']:not([hidden])")
+            sumT = pg.inner_text("#sheet [data-sum]")
+            for k in ("valore della posizione", "margine", "liquidazione stimata", "stop della strategia", "leva massima con lo stop", "rischio allo stop", "peso sul capitale", "commissione stimata"):
+                self.assertIn(k, sumT)
+            self.assertIn("trailing W3.2", sumT)
+            self.assertIn("10,0%", sumT)                                                       # 1.000 su 10.000
+            sw, cw = pg.evaluate("[document.getElementById('sheet').scrollWidth, document.getElementById('sheet').clientWidth]")
+            self.assertLessEqual(sw, cw, f"{w}px")
+            self.assertEqual(pg.inner_text("#sheet [data-next]"), "Apri posizione")
+            pg.click("#sheet [data-next]")
+            pg.wait_for_function("!document.getElementById('sheet').open")
+            pg.wait_for_function("document.querySelectorAll('.waPos').length === 4")
+            self.assertEqual(self.errs, [])
+            pg.close()
+
     def test_demo_senza_scorrimento_orizzontale(self):
         for w in (360, 1280):
             pg = self.pagina(w, "?demo=1")
@@ -294,16 +440,42 @@ class NelBrowser(unittest.TestCase):
                 self.assertGreaterEqual(b.bounding_box()["height"], 44)
             sw, cw = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
             self.assertLessEqual(sw, cw, f"{w}px")
-            pg.locator(".waPos [data-a=add]").first.click()                                    # modulo nuova tranche
-            pg.wait_for_selector("#sheet[open] .waForm input[name=prezzo]")
+            pg.locator(".waPos [data-a=add]").first.click()                                    # modulo Aumenta
+            pg.wait_for_selector("#sheet[open] .waForm input[name=importo]")
+            self.assertTrue(pg.input_value("#sheet input[name=prezzo]"))                       # prezzo attuale precompilato
+            self.assertIn("Usa prezzo attuale", pg.inner_text("#sheet [data-src]"))
+            self.assertEqual(pg.input_value("#sheet input[name=fee]"), "0,06")                 # taker Bitget perp, stima
             pg.fill("#sheet .waForm input[name=prezzo]", "0")
             pg.click("#sheet .waForm button[type=submit]")
             self.assertIn("Prezzo", pg.inner_text("#sheet .waForm .err"))                     # validazione
             pg.fill("#sheet .waForm input[name=prezzo]", "61.000")
-            pg.fill("#sheet .waForm input[name=quantita]", "0,05")
+            pg.click("#sheet [data-seg=by] [data-v=quantita]")
+            pg.fill("#sheet .waForm input[name=importo]", "0,05")
+            prev = pg.inner_text("#sheet [data-prev]")
+            self.assertIn("nuovo prezzo medio", prev)                                          # anteprima prima di salvare
+            self.assertIn("nuova liquidazione", prev)
+            self.assertIn("$3.050", pg.inner_text("#sheet [data-calc]"))                       # valore = 0,05 × 61.000
+            sw2, cw2 = pg.evaluate("[document.getElementById('sheet').scrollWidth, document.getElementById('sheet').clientWidth]")
+            self.assertLessEqual(sw2, cw2, f"{w}px Aumenta")
             pg.click("#sheet .waForm button[type=submit]")
             pg.wait_for_function("!document.getElementById('sheet').open")
-            pg.wait_for_function("document.querySelector('.waPos').innerText.includes('3 tranche')")
+            pg.wait_for_function("document.querySelector('.waPos').innerText.includes('3 ingressi')")
+            pg.locator(".waPos [data-a=red]").first.click()                                    # modulo Riduci o chiudi
+            pg.wait_for_selector("#sheet[open] [data-pct]")
+            pg.click("#sheet [data-pct='50']")
+            prev = pg.inner_text("#sheet [data-prev]")
+            self.assertIn("Riduzione del 50%", prev)
+            self.assertIn("P/L realizzato stimato", prev)
+            self.assertEqual(pg.inner_text("#sheet button[type=submit]"), "Riduci posizione")
+            pg.click("#sheet [data-pct='100']")
+            self.assertEqual(pg.inner_text("#sheet button[type=submit]"), "Chiudi posizione")
+            self.assertIn("Chiusura totale", pg.inner_text("#sheet [data-prev]"))
+            pg.click("#sheetX")
+            self.assertIn("Tasse stimate", pg.inner_text("#waHero"))                           # tasse nel conto
+            self.assertIn("netto al mese", pg.inner_text("#waHero"))
+            self.assertIn("Se chiudessi oggi", pg.inner_text("#waHero"))
+            self.assertIn("aliquota 33%", pg.inner_text("#waTaxY"))
+            self.assertIn("compensano", pg.inner_text("#waTaxN"))
             self.assertEqual(self.errs, [])
             pg.close()
 

@@ -15,7 +15,7 @@ from radar.dashboard import LAZY_FILES, render, split
 ROOT = Path(__file__).resolve().parents[1]
 T = (ROOT / "radar" / "dashboard_template.html").read_text()
 PAGES = "".join(f.read_text() for f in sorted((ROOT / "radar" / "pages").glob("*.html")))
-SOGLIA_INDEX = 800_000   # byte; misura col report pubblicato del 26/11/2026: 1.463.028 prima, 652.781 dopo (template e pagine ~510 KB); 27/11: +~30 KB di codice (accesso al tool e pagina Profilo), nessun dato in più
+SOGLIA_INDEX = 850_000   # byte; misura col report pubblicato del 26/11/2026: 1.463.028 prima, 652.781 dopo (template e pagine ~510 KB); 27/11: +~30 KB di codice (accesso al tool e pagina Profilo), nessun dato in più; 27/11 sera: +~35 KB di codice del Wallet (Apri posizione a passi, Aumenta/Riduci, tasse), nessun dato in più
 
 
 def report() -> dict:

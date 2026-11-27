@@ -82,6 +82,9 @@ class Markup(unittest.TestCase):
         self.assertIn('href="#metodo"', PROF)
         self.assertIn('ls.set("radarStart"', PROF)
         self.assertIn("try { return localStorage.getItem(k); } catch (_) { return null; }", PROF)
+        self.assertIn("<b>Aliquota sulle plusvalenze %</b>", PROF)                     # in "Il mio capitale", salvata in user_metadata.aliquota
+        self.assertIn("window.WalletAPI.setAliquota(v)", PROF)
+        self.assertIn("Stima, non consulenza fiscale.", PROF)
 
     def test_versione_iniettata(self):
         with tempfile.TemporaryDirectory() as t, mock.patch.object(dashboard, "build_info", return_value={"commit": "abc1234"}):
@@ -192,6 +195,8 @@ class NelBrowser(unittest.TestCase):
             self.assertIn("demo@radar.local", pg.inner_text("#prAccB"))
             self.assertIn("Cambia password", pg.inner_text("#prAccB"))
             self.assertIn("$10.000", pg.inner_text("#prCapB"))
+            self.assertIn("33%", pg.inner_text("#prAliqV"))                                # predefinita: Italia dal 2026
+            self.assertIn("predefinita", pg.inner_text("#prCapB"))
             self.assertIn("@CryptoRadarGalaBot", pg.inner_text("#prBotB"))
             self.assertEqual(pg.locator("#prBotB .prSt").count(), 19)
             self.assertEqual(pg.get_attribute("#prBotB a.waCta", "href"), "https://t.me/CryptoRadarGalaBot")
@@ -207,6 +212,30 @@ class NelBrowser(unittest.TestCase):
             self.assertEqual(len(txt.strip().split("\r\n")), 1 + 6)                # 4 posizioni demo, 6 movimenti
             self.assertEqual(self.errs, [])
             ctx.close()
+
+    def test_aliquota_dal_profilo_al_wallet(self):
+        ctx, pg = self.pagina("on/index.html?demo=1#profilo")
+        pg.wait_for_selector("#prAliqE", timeout=5000)
+        pg.click("#prAliqE")
+        pg.wait_for_selector("#sheet[open] input[name=al]")
+        self.assertGreaterEqual(pg.locator("#sheet button[type=submit]").bounding_box()["height"], 44)
+        pg.fill("#sheet input[name=al]", "150")
+        pg.click("#sheet button[type=submit]")
+        self.assertIn("tra 0 e 100", pg.inner_text("#sheet .err"))                       # validazione
+        pg.fill("#sheet input[name=al]", "26,5")
+        pg.click("#sheet button[type=submit]")
+        pg.wait_for_function("!document.getElementById('sheet').open")
+        self.assertEqual(pg.inner_text("#prAliqV"), "26,5%")
+        self.assertNotIn("predefinita", pg.inner_text("#prCapB"))
+        self.assertEqual(pg.evaluate("window.WalletAPI.aliquota().then(a => a.value)"), 26.5)
+        pg.evaluate("location.hash = '#wallet'")                                          # il Wallet usa l'aliquota del profilo
+        pg.wait_for_selector("#waHero .waTax", timeout=5000)
+        self.assertIn("aliquota 26,5% dal Profilo", pg.inner_text("#waHero"))
+        self.assertIn("aliquota 26,5%", pg.inner_text("#waTaxY"))
+        pg.evaluate("window.WalletAPI.setAliquota(null)")                                 # vuoto: torna la predefinita
+        pg.wait_for_function("document.getElementById('waHero').innerText.includes('aliquota 33% (Italia)')")
+        self.assertEqual(self.errs, [])
+        ctx.close()
 
     def test_csv_da_dati_finti(self):
         ctx, pg = self.pagina("off/index.html#oggi")
