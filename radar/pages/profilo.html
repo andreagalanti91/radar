@@ -154,7 +154,7 @@
         <span class="v"><b id="prCapV">${cap > 0 ? "$" + nf(cap, 0) : capErr ? "–" : u ? "non impostato" : "–"}</b>${u && window.WalletAPI ? btn("ter sm", "prCapE", "edit", cap > 0 ? "Modifica" : "Imposta", "Modifica il capitale di partenza") : ""}</span></div>
       <div class="row"><span class="k"><b>Aliquota sulle plusvalenze %</b><small>Per le tasse stimate nel Wallet. Predefinita 33%: Italia, plusvalenze crypto dal 1° gennaio 2026 (26% fino al 2025; franchigia di 2.000 € abolita dal 2025). Stima, non consulenza fiscale.</small></span>
         <span class="v"><b id="prAliqV">${aliq ? nf(aliq.value, aliq.value % 1 ? 1 : 0) + "%" : u ? "33%" : "–"}</b>${aliq && aliq.custom ? "" : u ? `<small class="prDef">predefinita</small>` : ""}${u && window.WalletAPI ? btn("ter sm", "prAliqE", "edit", "Modifica", "Modifica l'aliquota sulle plusvalenze") : ""}</span></div>
-      <div class="row"><span class="k"><b>Valuta mostrata</b><small>Per ora gli importi sono in dollari; altre valute in seguito.</small></span><span class="v"><b>$ · dollaro USA</b></span></div>`;
+      <div class="row"><span class="k"><b>Valuta mostrata</b><small>Prezzi e risultati in dollari; tasse stimate in euro ai cambi BCE della data delle operazioni.</small></span><span class="v"><b>$ · tasse in €</b></span></div>`;
     if ($p("prCapE")) $p("prCapE").onclick = capForm;
     if ($p("prAliqE")) $p("prAliqE").onclick = aliqForm;
     // Preferenze

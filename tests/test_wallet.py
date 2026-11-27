@@ -32,6 +32,11 @@ MODELLO = {"weekly": WEEKLY,
                                                                           "exit": None, "exit_px": None, "reason": "open"}]})}
 
 
+def dashboard_nf2(x: float) -> str:
+    """Numero all'italiana con 2 decimali, come nfIT: 1234.5 -> "1.234,50"."""
+    return f"{abs(x):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
 def _jwt(role: str) -> str:
     enc = lambda o: base64.urlsafe_b64encode(json.dumps(o).encode()).decode().rstrip("=")
     return f"{enc({'alg': 'HS256'})}.{enc({'role': role, 'iss': 'supabase'})}.firma"
@@ -46,6 +51,7 @@ class Markup(unittest.TestCase):
         self.assertIn('"wallet"', re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1))
         self.assertIn('const PAGE_OF = Object.assign({ wallet: "wallet", profilo: "profilo" }', T)
         self.assertIn("window.PAGES.wallet = {", PAGE)
+        self.assertNotIn("const R = ", PAGE)                    # i test leggono il report dalla prima "const R = " della pagina
 
     def test_vecchio_wallet_hyperliquid_non_raggiungibile(self):
         old = (ROOT / "radar" / "pages" / "hyperliquid.html").read_text()
@@ -365,6 +371,118 @@ class NelBrowser(unittest.TestCase):
         self.assertAlmostEqual(r["em"][0]["limit"], 100)
         self.assertEqual(self.errs, [])
         pg.close()
+
+    def test_tasse_in_euro_cambi_bce(self):
+        pg = self.pagina()
+        pg.wait_for_function("window.WalletCalc && window.WalletFX")
+        r = pg.evaluate("""async () => { const C = window.WalletCalc, FX = window.WalletFX;
+          // cambi finti (euro per 1 $): venerdì 6/3, poi lunedì 9/3; weekend senza cambio
+          const tab = { "2025-12-31": 0.80, "2026-03-02": 0.90, "2026-03-06": 0.92, "2026-03-09": 0.95, "2026-06-01": 0.85, "2026-11-27": 0.91 };
+          const rateOf = d => { const x = C.fxAt(tab, d); return x ? x.rate : null; };
+          const spot = C.eurEvents([   // spot long: due ingressi a date diverse, chiusura sabato 7/3 (cambio del venerdì)
+            { tipo: "ingresso", data: "2026-03-02T10:00:00Z", prezzo: 1000, quantita: 1, commissioni: 0 },
+            { tipo: "aggiunta", data: "2026-03-06T10:00:00Z", prezzo: 2000, quantita: 1, commissioni: 10 },
+            { tipo: "riduzione", data: "2026-03-07T10:00:00Z", prezzo: 3000, quantita: 1, commissioni: 0 },
+            { tipo: "chiusura", data: "2026-06-01T10:00:00Z", prezzo: 2500, quantita: 1, commissioni: 0 }], "long", "spot", rateOf);
+          const perp = C.eurEvents([   // perp short: risultato in $ al cambio della chiusura, funding al cambio della sua data
+            { tipo: "ingresso", data: "2026-03-02T10:00:00Z", prezzo: 60000, quantita: 0.1, commissioni: 0 },
+            { tipo: "chiusura", data: "2026-03-09T10:00:00Z", prezzo: 50000, quantita: 0.1, commissioni: 0, funding: 20 }], "short", "perp", rateOf);
+          const loss = C.eurEvents([{ tipo: "ingresso", data: "2026-03-02T10:00:00Z", prezzo: 100, quantita: 10 },
+            { tipo: "chiusura", data: "2026-06-01T10:00:00Z", prezzo: 50, quantita: 10 }], "long", "spot", rateOf);
+          const ty = C.taxYears(spot.ev.concat(perp.ev, loss.ev), null);
+          const miss = C.eurEvents([{ tipo: "ingresso", data: "2020-01-02T10:00:00Z", prezzo: 1, quantita: 1 }], "long", "spot", rateOf);
+          // caricamento: rete finta, cache in localStorage finta, ripiego sulla cache, nessun cambio
+          const mkSt = () => { const m = {}; return { getItem: k => k in m ? m[k] : null, setItem: (k, v) => { m[k] = String(v); }, m }; };
+          let calls = 0; const okF = async url => { calls++; return { ok: true, json: async () => ({ rates: { "2025-12-31": { EUR: 0.86 }, "2026-11-27": { EUR: 0.91 } }, url }) }; };
+          const badF = async () => { calls++; throw new Error("rete"); };
+          FX.mem = {}; const st1 = mkSt(); const live = await FX.load([2026], { fetch: okF, storage: st1 });
+          const c1 = calls; const again = await FX.load([2026], { fetch: okF, storage: st1 }); const c2 = calls;
+          FX.mem = {}; const old = mkSt(); old.setItem(FX.KEY + "2026", JSON.stringify({ rates: { "2026-11-20": 0.9 }, t: Date.now() - 864e5 }));
+          const cache = await FX.load([2026], { fetch: badF, storage: old });
+          FX.mem = {}; const none = await FX.load([2026], { fetch: badF, storage: mkSt() });
+          FX.mem = {}; const part = await FX.load([2025, 2026], { fetch: url => String(url).includes("/2026-") ? okF(url) : badF(), storage: mkSt() });
+          FX.mem = {};
+          return { fxSat: C.fxAt(tab, "2026-03-07T10:00:00Z"), fxSun: C.fxAt(tab, "2026-03-08"), fxNone: C.fxAt(tab, "2025-01-01"), spot, perp, loss, ty, miss: miss.missing,
+            live, stored: JSON.parse(st1.m[FX.KEY + "2026"]), c1, c2, again, cache, none, part }; }""")
+        self.assertEqual(r["fxSat"], {"date": "2026-03-06", "rate": 0.92})                    # sabato: cambio del venerdì
+        self.assertEqual(r["fxSun"]["date"], "2026-03-06")
+        self.assertIsNone(r["fxNone"])
+        ev = r["spot"]["ev"]
+        avg_eur = (1000 * 0.90 + 2000 * 0.92) / 2                                             # costo medio in euro ponderato su due ingressi
+        self.assertAlmostEqual(ev[1]["d"], -10 * 0.92)                                         # commissione al cambio della sua data
+        self.assertAlmostEqual(ev[2]["d"], 3000 * 0.92 - avg_eur)                              # corrispettivo al cambio dell'uscita − costo medio in euro
+        self.assertAlmostEqual(ev[3]["d"], 2500 * 0.85 - avg_eur)
+        self.assertAlmostEqual(ev[2]["usd"], 3000 - 1500)
+        self.assertFalse(r["spot"]["missing"])
+        pe = r["perp"]["ev"]
+        self.assertAlmostEqual(pe[1]["d"], (60000 - 50000) * 0.1 * 0.95 - 20 * 0.95)           # perp: risultato in $ al cambio della chiusura
+        self.assertAlmostEqual(r["loss"]["ev"][1]["d"], 500 * 0.85 - 1000 * 0.90)
+        y = r["ty"][0]
+        gains = (3000 * 0.92 - avg_eur) + (2500 * 0.85 - avg_eur) + pe[1]["d"]
+        losses = -10 * 0.92 + (500 * 0.85 - 1000 * 0.90)
+        self.assertEqual(y["year"], 2026)
+        self.assertAlmostEqual(y["gains"], gains)
+        self.assertAlmostEqual(y["losses"], losses)                                            # compensazione in euro nell'anno
+        self.assertAlmostEqual(y["tax"], (gains + losses) * 0.33)
+        self.assertAlmostEqual(y["after"], (gains + losses) * 0.67)
+        self.assertAlmostEqual(y["monthly"], (gains + losses) * 0.67 / 12)                     # netto / 12 in euro
+        self.assertTrue(r["miss"])                                                             # movimento senza cambio: niente euro
+        self.assertTrue(r["live"]["ok"])
+        self.assertFalse(r["live"]["fallback"])
+        self.assertEqual(r["live"]["last"], {"date": "2026-11-27", "rate": 0.91})
+        self.assertIn("2026-11-27", r["stored"]["rates"])                                      # salvato in localStorage
+        self.assertEqual((r["c1"], r["c2"]), (1, 1))                                           # seconda volta dalla cache: nessuna richiesta
+        self.assertTrue(r["cache"]["ok"])                                                      # rete giù: ultimo cambio in cache, dichiarato
+        self.assertTrue(r["cache"]["fallback"])
+        self.assertEqual(r["cache"]["last"], {"date": "2026-11-20", "rate": 0.9})
+        self.assertFalse(r["none"]["ok"])                                                      # nessun cambio
+        self.assertIsNone(r["none"]["last"])
+        self.assertFalse(r["part"]["ok"])                                                      # manca un anno: non si mostra in euro
+        self.assertEqual(self.errs, [])
+        pg.close()
+
+    def test_riepilogo_tasse_in_euro_e_senza_cambio(self):
+        rates = {"2025-12-31": {"EUR": 0.86}, "2026-08-25": {"EUR": 0.85}, "2026-11-03": {"EUR": 0.88}, "2026-11-27": {"EUR": 0.9}}
+        for fx in (True, False):
+            pg = self.b.new_page(viewport={"width": 400, "height": 860})
+            errs = []
+            pg.on("pageerror", lambda e: errs.append(str(e)))
+            def route(rq, _req=None, fx=fx):   # Playwright passa (route, request)
+                u = rq.request.url
+                if "127.0.0.1" in u:
+                    return rq.continue_()
+                if fx and u.startswith("https://api.frankfurter.dev/v1/2026-01-01..2026-12-31?from=USD&to=EUR"):
+                    return rq.fulfill(status=200, content_type="application/json", headers={"access-control-allow-origin": "*"},
+                                      body=json.dumps({"amount": 1, "base": "USD", "rates": rates}))
+                return rq.abort()
+            pg.route("**/*", route)
+            pg.goto(f"http://127.0.0.1:{self.srv.server_port}/index.html?demo=1#wallet")
+            pg.wait_for_selector("#waLogin", timeout=5000)
+            pg.evaluate("() => { try { localStorage.clear(); } catch (_) {} window.WalletFX.mem = {}; }")
+            pg.fill("#waLogin input[name=email]", "demo@radar.local")
+            pg.click("#waLogin button[type=submit]")
+            pg.wait_for_selector(".waTax", timeout=5000)
+            if fx:
+                pg.wait_for_selector("#waFx:has-text('Cambi BCE')", timeout=5000)
+                t = pg.inner_text(".waTax")
+                self.assertIn("in euro ai cambi BCE", t)
+                self.assertRegex(t, r"profitto lordo 2026\s+−\u2060[\d.]+,\d\d\u00a0€")          # formato italiano in euro
+                self.assertIn("netto al mese", t)
+                self.assertIn("≈ −\u2060$", t)                                                  # controvalore in dollari
+                self.assertIn("ultimo 27/11: 1\u00a0$\u00a0=\u00a00,9000\u00a0€", t)
+                closed = (2255 * 2 * 0.88 - 2480 * 2 * 0.85) - (2.5 * 0.85 + 2.3 * 0.88)       # chiusa spot ETH: costo al cambio d'ingresso
+                costs = (5.9 + 3.8 + 2.4 + 3.2 + 1.1 + 0.3) * 0.88                              # commissioni e funding delle aperte (novembre)
+                self.assertIn("euro ai cambi di riferimento BCE", pg.inner_text("#waTaxN"))
+                self.assertIn("saldo −\u2060" + dashboard_nf2(closed - costs) + "\u00a0€", pg.inner_text("#waTaxY"))
+            else:
+                pg.wait_for_selector("#waFxW", timeout=5000)
+                self.assertIn("Cambio non disponibile", pg.inner_text("#waFxW"))
+                self.assertRegex(pg.inner_text(".waTax"), r"profitto lordo 2026\s+−\u2060\$")
+            self.assertIn("Stima, non consulenza fiscale", pg.inner_text("#waTaxN"))
+            sw, cw = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
+            self.assertLessEqual(sw, cw)
+            self.assertEqual(errs, [])
+            pg.close()
 
     def test_apri_posizione_a_passi(self):
         for w in (360, 1280):

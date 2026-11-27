@@ -7,7 +7,8 @@
      l'accesso è già fatto e il modulo di accesso qui sotto resta solo per AUTH_GATE = false. window.WalletAPI serve il Profilo.
      Calcoli puri in window.WalletCalc (prezzo medio DCA, P/L, liquidazione stimata, leva massima, confronto con W3.2, statistiche; dal
      27/11/2026 anche dimensione da margine/quantità/valore, commissione stimata, strategia preselezionata, riepilogo prima di salvare,
-     anteprima di Aumenta e Riduci, tasse per anno con compensazione e netto al mese), provati in tests/test_wallet.py.
+     anteprima di Aumenta e Riduci, tasse per anno con compensazione e netto al mese, in euro ai cambi BCE della data delle operazioni:
+     window.WalletFX, API pubblica Frankfurter con cache in localStorage), provati in tests/test_wallet.py.
      Azioni: "Apri posizione" (modulo a 3 passi), "Aumenta", "Riduci o chiudi", "Storico" (movimenti, Modifica, Elimina). Anteprima: ?demo=1 solo in locale (file:// o localhost), dati finti in memoria al posto di Supabase.
      Si registra in window.PAGES.wallet: init alla prima visita di #wallet, show/hide avviano e fermano l'aggiornamento dei prezzi. -->
 <div class="view" id="v-wallet" hidden>
@@ -233,6 +234,7 @@
 .waTaxG>div{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:var(--raise);min-width:0}
 .waTaxG span{font:500 .72rem var(--font);color:var(--label3)} .waTaxG b{font:650 1.05rem var(--font);font-variant-numeric:tabular-nums}
 .waTaxG small{font-size:.72rem;color:var(--label2);line-height:1.3}
+.waTax .waFx{margin:-2px 2px 0;font-size:.74rem;color:var(--label3);line-height:1.35}
 .waTaxG b.pos,.waTax .waNote b.pos{color:var(--green)} .waTaxG b.neg,.waTax .waNote b.neg{color:var(--red)}
 #v-wallet .waSubH{margin:6px 4px 0;font:600 .95rem var(--font);color:var(--label)} #v-wallet .waSubH small{font:500 .78rem var(--font);color:var(--label2);margin-left:6px}
 @media (prefers-reduced-motion:reduce){.waSpin{animation:none}}
@@ -458,10 +460,86 @@
       const pre = (+yearNet || 0) + (+unreal || 0), tax = Math.max(0, pre) * rate / 100, now = Math.max(0, +yearNet || 0) * rate / 100;
       return { pre, tax, after: pre - tax, monthly: (pre - tax) / 12, extra: tax - now };
     },
+    // ---- tasse in euro ai cambi di riferimento BCE (27/11/2026)
+    // giorno "AAAA-MM-GG" di una data ISO (le date dei movimenti sono timestamp UTC)
+    fxDay: d => { const m = /^(\d{4}-\d{2}-\d{2})/.exec(String(d || "")); return m ? m[1] : null; },
+    // cambio USD→EUR (euro per 1 $) del giorno d da una tabella { "AAAA-MM-GG": cambio }: weekend e festivi = ultimo cambio precedente
+    fxAt(tab, d) {
+      const day = C.fxDay(d); if (!tab || !day) return null;
+      if (tab[day] > 0) return { date: day, rate: +tab[day] };
+      let best = null; for (const k in tab) if (k <= day && tab[k] > 0 && (!best || k > best)) best = k;
+      return best ? { date: best, rate: +tab[best] } : null;
+    },
+    // eventi fiscali in euro di una posizione (stima): per ogni riduzione o chiusura spot long, plusvalenza = corrispettivo al cambio
+    // della data di uscita − costo medio ponderato in euro (ogni ingresso al cambio della sua data); per perp e short, risultato in $
+    // della riduzione al cambio della data di chiusura (approssimazione). Commissioni e funding al cambio della loro data.
+    // rateOf(d) = euro per 1 $ nel giorno d, o null; missing = almeno un movimento senza cambio
+    eurEvents(movs, lato, mercato, rateOf) {
+      const sg = lato === "short" ? -1 : 1, spot = mercato === "spot" && sg === 1;
+      const M = (movs || []).slice().sort((a, b) => (t0(a.data) - t0(b.data)) || (ORD[a.tipo] - ORD[b.tipo]));
+      let qty = 0, cost = 0, costEur = 0, qIn = 0, missing = false;
+      const ev = [];
+      for (const m of M) {
+        const p = +m.prezzo, q = +m.quantita, f = (+m.commissioni || 0) + (+m.funding || 0), fx = rateOf(m.data);
+        if (!(fx > 0)) { missing = true; continue; }
+        let g = 0, usd = 0;
+        if (m.tipo === "ingresso" || m.tipo === "aggiunta") { qty += q; cost += p * q; costEur += p * q * fx; qIn += q; }
+        else if (qty > 0) {
+          const qq = Math.min(q, qty), avg = cost / qty, avgEur = costEur / qty;
+          usd = sg * (p - avg) * qq;
+          g = spot ? p * qq * fx - avgEur * qq : usd * fx;
+          cost -= avg * qq; costEur -= avgEur * qq; qty -= qq;
+          if (qty <= qIn * 1e-9) { qty = 0; cost = 0; costEur = 0; }
+        }
+        ev.push({ t: m.data, d: g - f * fx, usd: usd - f, fx });
+      }
+      return { ev, missing };
+    },
     // regola dell'utente sulle emergenti: margine totale sulle monete emergenti al massimo l'1% del capitale
     emergBudget(open, add, capital) {
       const total = (+open || 0) + (+add || 0), limit = capital > 0 ? capital * 0.01 : null;
       return { total, limit, over: limit != null && total > limit + 1e-9 };
+    },
+  };
+
+  // ---------------------------------------------------------------- cambi USD→EUR di riferimento BCE (API pubblica Frankfurter, senza chiave)
+  // Una richiesta per anno solare (intervallo 1/1–31/12: la risposta parte dall'ultimo giorno disponibile prima del 1/1), cache in memoria
+  // e in localStorage. Anni passati: definitivi; anno in corso: si aggiorna dopo 6 ore. Se la rete non risponde si usa la cache, anche vecchia.
+  // api.frankfurter.app risponde con un 301 senza CORS verso api.frankfurter.dev/v1: si chiama direttamente quest'ultima.
+  const FX = window.WalletFX = {
+    API: "https://api.frankfurter.dev/v1", KEY: "radar.fx.usdeur.", TTL: 6 * 3600e3,
+    mem: {}, busy: {},
+    read(y, st) { if (FX.mem[y]) return FX.mem[y];
+      try { const v = JSON.parse((st || localStorage).getItem(FX.KEY + y) || "null"); if (v && v.rates && Object.keys(v.rates).length) return (FX.mem[y] = v); } catch (_) {}
+      return null; },
+    fresh(y, v, now) { return !!v && (new Date(v.t).getFullYear() > y || now - v.t < FX.TTL); },
+    // anno y: { rates, t, src: "rete" | "cache" | "ripiego" } oppure null. opt = { fetch, storage, now } per le prove
+    async year(y, opt) {
+      opt = opt || {}; const now = opt.now || Date.now(), st = opt.storage || null, have = FX.read(y, st);
+      if (FX.fresh(y, have, now)) return Object.assign({}, have, { src: "cache" });
+      if (FX.busy[y]) return FX.busy[y];
+      return (FX.busy[y] = (async () => {
+        try {
+          const f = opt.fetch || window.fetch.bind(window);
+          const r = await f(`${FX.API}/${y}-01-01..${y}-12-31?from=USD&to=EUR`);
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          const j = await r.json(), rates = {};
+          Object.keys(j.rates || {}).forEach(d => { const v = j.rates[d] && +j.rates[d].EUR; if (v > 0) rates[d] = v; });
+          if (!Object.keys(rates).length) throw new Error("nessun cambio");
+          const v = FX.mem[y] = { rates, t: now };
+          try { (st || localStorage).setItem(FX.KEY + y, JSON.stringify(v)); } catch (_) {}
+          return Object.assign({}, v, { src: "rete" });
+        } catch (_) { return have ? Object.assign({}, have, { src: "ripiego" }) : null; }
+        finally { delete FX.busy[y]; }
+      })());
+    },
+    // più anni insieme: tabella unica, ok = tutti gli anni hanno cambi, fallback = almeno un anno dalla cache dopo un errore di rete
+    async load(years, opt) {
+      const Y = [...new Set(years)].sort(), RY = await Promise.all(Y.map(y => FX.year(y, opt)));
+      const tab = {}; RY.forEach(r => r && Object.assign(tab, r.rates));
+      const keys = Object.keys(tab).sort(), lastD = keys[keys.length - 1];
+      return { tab, ok: RY.every(Boolean) && keys.length > 0, any: keys.length > 0, fallback: RY.some(r => r && r.src === "ripiego"),
+        last: lastD ? { date: lastD, rate: tab[lastD] } : null, years: Y };
     },
   };
 
@@ -472,6 +550,9 @@
   const fPx = p => p > 0 ? "$" + nf(p, pxD(p)) : "–";
   const fUsd = (x, sign) => { if (x == null || !isFinite(x)) return "–"; const s = nf(Math.abs(x), Math.abs(x) < 10 ? 2 : 0), nz = /[1-9]/.test(s);
     return (x < 0 && nz ? "−\u2060" : sign && x > 0 && nz ? "+\u2060" : "") + "$" + s; };   // il segno non va a capo da solo
+  const fEur = (x, sign) => { if (x == null || !isFinite(x)) return "–"; const s = nf(Math.abs(x), 2), nz = /[1-9]/.test(s);
+    return (x < 0 && nz ? "−\u2060" : sign && x > 0 && nz ? "+\u2060" : "") + s + "\u00a0€"; };   // 1.234,56 € (formato italiano)
+  const fDM = d => d ? String(d).slice(8, 10) + "/" + String(d).slice(5, 7) : "–";
   const fPct = (x, d = 1) => { if (x == null || !isFinite(x)) return "–"; const s = nf(x, d); return (x > 0 && /[1-9]/.test(s) ? "+" : "") + s + "%"; };
   const fQty = q => { if (!(q > 0)) return "0"; const d = q >= 100 ? 2 : q >= 1 ? 3 : q >= 0.01 ? 4 : 6; return nf(q, d).replace(/,?0+$/, ""); };
   const fLev = l => nf(+l, +l % 1 ? 1 : 0) + "x";
@@ -675,21 +756,26 @@
       <div><span>oggi (24 h)</span><b class="${cls(td.usd)}">${fUsd(td.usd, true)}</b><small>${td.complete ? (capital ? fPct(td.usd / capital * 100, 2) + " sul capitale" : "variazione nelle 24 h") : "parziale: manca il prezzo di 24 h fa"}</small></div>
       <div><span>realizzato</span><b class="${cls(rea)}">${fUsd(rea, true)}</b><small>aperto ${fUsd(unr, true)}</small></div>
       <div><span>posizioni aperte</span><b>${open.length}</b><small>margine ${fUsd(mg)}${noPx ? ` · ${noPx} senza prezzo` : ""}</small></div></div>`;
-    // tasse stimate dell'anno solare in corso (compensazione delle perdite dell'anno) e "se chiudessi oggi"
-    const evsAll = [].concat(...L.map(x => x.st.ev)), aliq = aliqOf(user), TY = C.taxYears(evsAll, aliq), yNow = new Date().getFullYear();
-    const Ty = TY.find(t => t.year === yNow) || { year: yNow, gains: 0, losses: 0, net: 0, tax: 0, after: 0, monthly: 0, rate: C.taxRate(aliq, yNow) };
-    const TC = C.taxIfClosed(Ty.net, unr, Ty.rate), rateS = nf(Ty.rate, Ty.rate % 1 ? 1 : 0) + "%";
+    // tasse stimate dell'anno solare in corso (compensazione delle perdite dell'anno) e "se chiudessi oggi": in euro ai cambi BCE
+    // della data di ogni operazione; senza alcun cambio, in dollari con l'avviso
+    const aliq = aliqOf(user), yNow = new Date().getFullYear(), TX = taxCalc(L, aliq, unr, yNow), E = TX.eur, Ty = TX.Ty, TC = TX.TC;
+    const rateS = nf(Ty.rate, Ty.rate % 1 ? 1 : 0) + "%", fM = E ? fEur : fUsd;
+    const sub = (x, txt, sign) => `<small>${E && x ? `≈ ${fUsd(x / E.rate, sign)} · ` : ""}${txt}</small>`;
+    const fxLine = E ? `Cambi BCE, ultimo ${fDM(E.date)}: 1\u00a0$\u00a0=\u00a0${nf(E.rate, 4)}\u00a0€ (anche per i controvalori in $)${TX.fx.fallback ? ". Servizio dei cambi non raggiungibile: uso l'ultimo cambio salvato." : ""}`
+      : TX.loading ? "Cambi BCE in caricamento: per ora importi in dollari." : "";
     $w("waHero").insertAdjacentHTML("beforeend", `<div class="waTax">
-      <div class="waTaxH"><div><b>Tasse stimate ${yNow}</b><small>aliquota ${rateS}${aliqCustom(aliq) ? " dal Profilo" : " (Italia)"} · stima in dollari, non consulenza fiscale</small></div>
+      <div class="waTaxH"><div><b>Tasse stimate ${yNow}</b><small>aliquota ${rateS}${aliqCustom(aliq) ? " dal Profilo" : " (Italia)"} · ${E ? "in euro ai cambi BCE" : "in dollari"} · stima, non consulenza fiscale</small></div>
         <button type="button" class="waCta ter sm" id="waTaxI" aria-label="Come si calcolano le tasse stimate"><svg class="waI" aria-hidden="true"><use href="#i-met"/></svg><span>Come si calcola</span></button></div>
+      ${!E && !TX.loading ? `<p class="waWarn" id="waFxW">${WARN}<span>Cambio non disponibile: importi in dollari, non in euro.</span></p>` : ""}
       <div class="waTaxG">
-        <div><span>realizzato ${yNow}</span><b class="${cls(Ty.net)}">${fUsd(Ty.net, true)}</b><small>prima delle tasse</small></div>
-        <div><span>tasse stimate</span><b>${fUsd(Ty.tax)}</b><small>${rateS} sul saldo positivo</small></div>
-        <div><span>netto</span><b class="${cls(Ty.after)}">${fUsd(Ty.after, true)}</b><small>dopo le tasse</small></div>
-        <div><span>netto al mese</span><b class="${cls(Ty.monthly)}">${fUsd(Ty.monthly, true)}</b><small>netto annuo / 12</small></div>
+        <div><span>profitto lordo ${yNow}</span><b class="${cls(Ty.net)}">${fM(Ty.net, true)}</b>${sub(Ty.net, "prima delle tasse", true)}</div>
+        <div><span>tasse stimate</span><b>${fM(Ty.tax)}</b>${sub(Ty.tax, rateS + " sul saldo positivo")}</div>
+        <div><span>netto</span><b class="${cls(Ty.after)}">${fM(Ty.after, true)}</b>${sub(Ty.after, "dopo le tasse", true)}</div>
+        <div><span>netto al mese</span><b class="${cls(Ty.monthly)}">${fM(Ty.monthly, true)}</b>${sub(Ty.monthly, "netto annuo\u00a0/\u00a012", true)}</div>
       </div>
-      <p class="waNote">Se chiudessi oggi: risultato ${yNow} <b class="${cls(TC.pre)}">${fUsd(TC.pre, true)}</b>, tasse <b>${fUsd(TC.tax)}</b>, netto <b class="${cls(TC.after)}">${fUsd(TC.after, true)}</b>, cioè <b class="${cls(TC.monthly)}">${fUsd(TC.monthly, true)}</b> al mese.</p></div>`);
-    $w("waTaxI").onclick = () => taxInfo(Ty.rate, aliqCustom(aliq));
+      ${fxLine ? `<p class="waFx" id="waFx">${fxLine}</p>` : ""}
+      <p class="waNote">Se chiudessi oggi: risultato ${yNow} <b class="${cls(TC.pre)}">${fM(TC.pre, true)}</b>, tasse <b>${fM(TC.tax)}</b>, netto <b class="${cls(TC.after)}">${fM(TC.after, true)}</b>, cioè <b class="${cls(TC.monthly)}">${fM(TC.monthly, true)}</b> al mese${E ? " (aperto al cambio di oggi)" : ""}.</p></div>`);
+    $w("waTaxI").onclick = () => taxInfo(Ty.rate, aliqCustom(aliq), E);
     $w("waCap").onclick = capForm;
     // aperte
     $w("waOpen").innerHTML = open.length ? open.map(cardHtml).join("") :
@@ -720,11 +806,14 @@
         <small>${fDayY(x.st.first)} → ${fDayY(x.st.closedAt)} · ${days} g · ingresso ${fPx(x.st.avgIn)}, uscita ${fPx(x.st.avgOut)}</small></span>
         <span class="v"><b class="${cls(x.st.realized)}">${fUsd(x.st.realized, true)}</b><small class="${cls(x.st.realized)}">${inv > 0 ? fPct(x.st.realized / inv * 100) : ""}</small></span></button>`; }).join("")
       : `<div class="row"><span class="k">Nessuna posizione chiusa.<small>Le statistiche si riempiono quando chiudi la prima posizione.</small></span></div>`;
+    const TY = TX.TY;
     $w("waTaxY").innerHTML = TY.length ? TY.map(t => `<div class="row"><span class="k">${t.year} · aliquota ${nf(t.rate, t.rate % 1 ? 1 : 0)}%
-        <small>guadagni ${fUsd(t.gains)} · perdite e costi ${fUsd(t.losses)} · saldo ${fUsd(t.net, true)} · tasse ${fUsd(t.tax)}</small></span>
-        <span class="v"><b class="${cls(t.after)}">${fUsd(t.after, true)}</b><small>netto · ${fUsd(t.monthly, true)} al mese</small></span></div>`).join("")
+        <small>guadagni ${fM(t.gains)} · perdite e costi ${fM(t.losses)} · saldo ${fM(t.net, true)} · tasse ${fM(t.tax)}</small></span>
+        <span class="v"><b class="${cls(t.after)}">${fM(t.after, true)}</b><small>netto · ${fM(t.monthly, true)} al mese</small></span></div>`).join("")
       : `<div class="row"><span class="k">Nessun risultato realizzato.<small>Le tasse stimate compaiono con la prima riduzione o chiusura.</small></span></div>`;
-    $w("waTaxN").textContent = "Tasse solo sul saldo netto positivo di ogni anno solare: le perdite dell'anno compensano i guadagni dello stesso anno. Le minusvalenze riportabili agli anni successivi non sono gestite. Importi in dollari, netti di commissioni e funding: in Italia il calcolo si fa in euro al cambio della data di ogni operazione, quindi è una stima. Non è consulenza fiscale.";
+    $w("waTaxN").textContent = "Tasse solo sul saldo netto positivo di ogni anno solare: le perdite dell'anno compensano i guadagni dello stesso anno. Le minusvalenze riportabili agli anni successivi non sono gestite. " +
+      (E ? "Importi in euro ai cambi di riferimento BCE della data delle operazioni, netti di commissioni e funding (per i perp il risultato in dollari è convertito al cambio della chiusura: approssimazione). "
+        : "Importi in dollari perché il cambio non è disponibile: in Italia il calcolo si fa in euro al cambio della data di ogni operazione. ") + "Stima, non consulenza fiscale.";
     $w("waClosed").querySelectorAll("[data-mv]").forEach(b => b.onclick = () => { const p = POS.find(q => q.id === b.dataset.mv); if (p) movsSheet(p); });
     const empty = POS.filter(p => !movsOf(p.id).length);
     $w("waFoot").innerHTML = `Prezzi: BTC dal prezzo live della pagina, altre monete da Binance o OKX (pubblici), a mano se non disponibili. Liquidazione stimata a margine isolato con mantenimento ${nf(MMR * 100, 1)}%: quella vera dipende dall'exchange.
@@ -732,15 +821,45 @@
     if ($w("waEmptyP")) $w("waEmptyP").onclick = () => movsSheet(empty[0]);
   }
 
+  // cambi per gli anni dei movimenti: subito quelli in cache (sincrono), poi la richiesta alla rete e un nuovo render
+  let FXS = null, fxReq = "", fxAt0 = 0;
+  function fxFor(years) {
+    const k = years.slice().sort().join(","), now = Date.now();
+    if (fxReq !== k || now - fxAt0 > FX.TTL) {
+      fxReq = k; fxAt0 = now;
+      FX.load(years).then(r => { if (fxReq === k) { FXS = r; render(); } }).catch(() => {});
+    }
+    if (FXS && FXS.years.join(",") === k) return { fx: FXS, loading: false };
+    const tab = {}; let all = true; years.forEach(y => { const v = FX.read(y); if (v) Object.assign(tab, v.rates); else all = false; });
+    const keys = Object.keys(tab).sort(), d = keys[keys.length - 1];
+    return { fx: { tab, ok: all && !!d, any: !!d, fallback: false, last: d ? { date: d, rate: tab[d] } : null, years }, loading: true };
+  }
+  // tasse per anno in euro (eur = { rate, date } del cambio di oggi) oppure in dollari se manca anche un solo cambio
+  function taxCalc(L, aliq, unr, yNow) {
+    const years = [...new Set(MOV.map(m => +String(C.fxDay(m.data) || "").slice(0, 4)).filter(y => y >= 2000 && y <= yNow).concat([yNow]))];
+    const { fx, loading } = fxFor(years), rateOf = d => { const r = C.fxAt(fx.tab, d); return r ? r.rate : null; };
+    const today = C.fxAt(fx.tab, new Date().toISOString().slice(0, 10));
+    let eur = null, evs;
+    if (fx.ok && today) {
+      const EV = L.map(x => C.eurEvents(movsOf(x.pos.id), x.pos.lato, x.pos.mercato, rateOf));
+      if (!EV.some(r => r.missing)) { eur = today; evs = [].concat(...EV.map(r => r.ev)); }
+    }
+    if (!eur) evs = [].concat(...L.map(x => x.st.ev));
+    const TY = C.taxYears(evs, aliq);
+    const Ty = TY.find(t => t.year === yNow) || { year: yNow, gains: 0, losses: 0, net: 0, tax: 0, after: 0, monthly: 0, rate: C.taxRate(aliq, yNow) };
+    return { TY, Ty, TC: C.taxIfClosed(Ty.net, unr * (eur ? eur.rate : 1), Ty.rate), eur, fx, loading: loading && !eur };
+  }
+
   // aliquota sulle plusvalenze dal profilo (user_metadata.aliquota, in %); null = predefinita (33% dal 2026, 26% fino al 2025)
   const aliqOf = u => { const a = u && u.user_metadata ? u.user_metadata.aliquota : null; return a == null || a === "" || !isFinite(+a) ? null : +a; };
   const aliqCustom = a => a != null && a >= 0 && a <= 100;
-  function taxInfo(rate, custom) {
+  function taxInfo(rate, custom, eur) {
     window.openSheet("Tasse stimate: come si calcolano", `<div class="waForm">
       <p class="waNote"><b>Aliquota ${nf(rate, rate % 1 ? 1 : 0)}%</b>${custom ? ", impostata nel Profilo" : ""}. In Italia le plusvalenze da cripto-attività sono tassate al 33% dal 1° gennaio 2026 (26% fino al 2025); la franchigia di 2.000 € è abolita dal 2025. Senza un valore nel Profilo il Wallet usa 26% per gli anni fino al 2025 e 33% dal 2026.</p>
-      <p class="waNote"><b>Compensazione nell'anno.</b> Le tasse si stimano solo sul saldo netto positivo dell'anno solare: le perdite dell'anno compensano i guadagni dello stesso anno. Le minusvalenze riportabili agli anni successivi non sono gestite.</p>
-      <p class="waNote"><b>Cosa entra.</b> Il realizzato di riduzioni e chiusure, al netto di commissioni e funding. Netto = realizzato − tasse; netto al mese = netto dell'anno / 12. "Se chiudessi oggi" aggiunge il risultato aperto al prezzo attuale, senza le commissioni di uscita.</p>
-      <p class="waNote"><b>Valuta.</b> Importi in dollari. In Italia il calcolo si fa in euro, al cambio della data di ogni operazione: questa è una stima.</p>
+      <p class="waNote"><b>In euro, ai cambi BCE.</b> Ogni operazione si converte al cambio di riferimento BCE del suo giorno (sabato, domenica e festivi: l'ultimo cambio precedente). Spot: plusvalenza = incasso in euro al cambio dell'uscita − costo medio in euro degli ingressi, ciascuno al cambio della sua data. Perp: il risultato in dollari della riduzione è convertito al cambio della chiusura (approssimazione). Commissioni e funding al cambio della loro data.${eur ? ` Ultimo cambio: ${fDM(eur.date)}, 1\u00a0$\u00a0=\u00a0${nf(eur.rate, 4)}\u00a0€.` : " Ora il cambio non è disponibile: importi in dollari."}</p>
+      <p class="waNote"><b>Compensazione nell'anno.</b> Le tasse si stimano solo sul saldo netto positivo in euro dell'anno solare: le perdite dell'anno compensano i guadagni dello stesso anno. Le minusvalenze riportabili agli anni successivi non sono gestite.</p>
+      <p class="waNote"><b>Cosa entra.</b> Il realizzato di riduzioni e chiusure, al netto di commissioni e funding. Netto = profitto lordo − tasse; netto al mese = netto dell'anno / 12. "Se chiudessi oggi" aggiunge il risultato aperto al prezzo attuale, convertito al cambio di oggi, senza le commissioni di uscita.</p>
+      <p class="waNote">Cambi: Frankfurter (dati BCE), salvati sul dispositivo per non ripetere le richieste.</p>
       <p class="waNote">Stima, non consulenza fiscale.</p>
       <div class="bar"><a class="waCta ter" href="#profilo" aria-label="Cambia l'aliquota nel Profilo"><svg class="waI" aria-hidden="true"><use href="#i-user"/></svg><span>Cambia l'aliquota nel Profilo</span></a></div></div>`);
   }
