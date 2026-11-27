@@ -15,3 +15,8 @@ a trend is getting exhausted - and usually means a reversal is near", grafico BT
 
 ## Prossima azione
 Due agenti in parallelo: UI (template) e ricerca (research/dorito/).
+
+## Aggiornamento 26/11 22:25 UTC · COMPLETATO
+- Dorito: esito negativo (0/8, placebo p 0,44–1,00), lezione 127; nessun ingresso in W3.2.
+- V2 Oggi: commit 225b0ec, deploy, verifica sul sito a 400/1280: 6 schede presenti, 12 link Dettagli, pannello apre, 0 errori JS.
+- In attesa dell'utente: % BTC in "Come vanno le posizioni?" (sul capitale +6,8% o movimento prezzo +7,0%).

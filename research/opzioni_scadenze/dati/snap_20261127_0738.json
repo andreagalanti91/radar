@@ -1,0 +1,579 @@
+{
+ "ora_utc": "2026-11-27 07:38",
+ "indice": 61527.26,
+ "dvol": 49.12,
+ "scadenze": [
+  {
+   "scadenza": "27NOV26",
+   "data": "2026-11-27",
+   "giorni": 0.02,
+   "oi_call": 61963,
+   "oi_put": 48827,
+   "nozionale_musd": 6817,
+   "put_call": 0.79,
+   "max_pain": 70000.0,
+   "dist_max_pain_pct": 13.8,
+   "futuro": 61569,
+   "iv_atm": 41.0,
+   "mov_atteso_usd": 163,
+   "mov_atteso_pct": 0.3,
+   "skew_put10_call10": 22.0,
+   "muri_call": [
+    [
+     90000.0,
+     4792
+    ],
+    [
+     85000.0,
+     2629
+    ],
+    [
+     65000.0,
+     2596
+    ]
+   ],
+   "muri_put": [
+    [
+     63000.0,
+     2932
+    ],
+    [
+     70000.0,
+     2911
+    ],
+    [
+     69000.0,
+     2655
+    ]
+   ]
+  },
+  {
+   "scadenza": "28NOV26",
+   "data": "2026-11-28",
+   "giorni": 1.02,
+   "oi_call": 1058,
+   "oi_put": 1008,
+   "nozionale_musd": 127,
+   "put_call": 0.95,
+   "max_pain": 60000.0,
+   "dist_max_pain_pct": -2.5,
+   "futuro": 61515,
+   "iv_atm": 46.4,
+   "mov_atteso_usd": 1506,
+   "mov_atteso_pct": 2.4,
+   "skew_put10_call10": 22.8,
+   "muri_call": [
+    [
+     62000.0,
+     172
+    ],
+    [
+     63000.0,
+     136
+    ],
+    [
+     65000.0,
+     108
+    ]
+   ],
+   "muri_put": [
+    [
+     59000.0,
+     132
+    ],
+    [
+     54000.0,
+     128
+    ],
+    [
+     59500.0,
+     124
+    ]
+   ]
+  },
+  {
+   "scadenza": "29NOV26",
+   "data": "2026-11-29",
+   "giorni": 2.02,
+   "oi_call": 436,
+   "oi_put": 1500,
+   "nozionale_musd": 119,
+   "put_call": 3.44,
+   "max_pain": 60500.0,
+   "dist_max_pain_pct": -1.7,
+   "futuro": 61521,
+   "iv_atm": 38.7,
+   "mov_atteso_usd": 1769,
+   "mov_atteso_pct": 2.9,
+   "skew_put10_call10": 17.7,
+   "muri_call": [
+    [
+     61500.0,
+     67
+    ],
+    [
+     60500.0,
+     43
+    ],
+    [
+     67000.0,
+     38
+    ]
+   ],
+   "muri_put": [
+    [
+     58500.0,
+     249
+    ],
+    [
+     59500.0,
+     225
+    ],
+    [
+     59000.0,
+     190
+    ]
+   ]
+  },
+  {
+   "scadenza": "30NOV26",
+   "data": "2026-11-30",
+   "giorni": 3.02,
+   "oi_call": 130,
+   "oi_put": 210,
+   "nozionale_musd": 21,
+   "put_call": 1.62,
+   "max_pain": 60500.0,
+   "dist_max_pain_pct": -1.7,
+   "futuro": 61509,
+   "iv_atm": 40.0,
+   "mov_atteso_usd": 2235,
+   "mov_atteso_pct": 3.6,
+   "skew_put10_call10": 17.7,
+   "muri_call": [
+    [
+     66000.0,
+     46
+    ],
+    [
+     63000.0,
+     21
+    ],
+    [
+     62500.0,
+     18
+    ]
+   ],
+   "muri_put": [
+    [
+     58500.0,
+     53
+    ],
+    [
+     60000.0,
+     49
+    ],
+    [
+     55000.0,
+     41
+    ]
+   ]
+  },
+  {
+   "scadenza": "4DEC26",
+   "data": "2026-12-04",
+   "giorni": 7.02,
+   "oi_call": 11028,
+   "oi_put": 15843,
+   "nozionale_musd": 1653,
+   "put_call": 1.44,
+   "max_pain": 63000.0,
+   "dist_max_pain_pct": 2.4,
+   "futuro": 61556,
+   "iv_atm": 47.7,
+   "mov_atteso_usd": 4072,
+   "mov_atteso_pct": 6.6,
+   "skew_put10_call10": 14.3,
+   "muri_call": [
+    [
+     75000.0,
+     1302
+    ],
+    [
+     70000.0,
+     1030
+    ],
+    [
+     64000.0,
+     728
+    ]
+   ],
+   "muri_put": [
+    [
+     58000.0,
+     6352
+    ],
+    [
+     60000.0,
+     3052
+    ],
+    [
+     62000.0,
+     1029
+    ]
+   ]
+  },
+  {
+   "scadenza": "11DEC26",
+   "data": "2026-12-11",
+   "giorni": 14.02,
+   "oi_call": 5272,
+   "oi_put": 6922,
+   "nozionale_musd": 750,
+   "put_call": 1.31,
+   "max_pain": 62000.0,
+   "dist_max_pain_pct": 0.8,
+   "futuro": 61588,
+   "iv_atm": 51.0,
+   "mov_atteso_usd": 6153,
+   "mov_atteso_pct": 10.0,
+   "skew_put10_call10": 12.5,
+   "muri_call": [
+    [
+     66000.0,
+     1148
+    ],
+    [
+     68000.0,
+     550
+    ],
+    [
+     65000.0,
+     538
+    ]
+   ],
+   "muri_put": [
+    [
+     58000.0,
+     1065
+    ],
+    [
+     60000.0,
+     733
+    ],
+    [
+     56000.0,
+     701
+    ]
+   ]
+  },
+  {
+   "scadenza": "18DEC26",
+   "data": "2026-12-18",
+   "giorni": 21.02,
+   "oi_call": 83,
+   "oi_put": 289,
+   "nozionale_musd": 23,
+   "put_call": 3.47,
+   "max_pain": 62000.0,
+   "dist_max_pain_pct": 0.8,
+   "futuro": 61647,
+   "iv_atm": 49.3,
+   "mov_atteso_usd": 7297,
+   "mov_atteso_pct": 11.8,
+   "skew_put10_call10": 10.3,
+   "muri_call": [
+    [
+     61000.0,
+     36
+    ],
+    [
+     66000.0,
+     22
+    ],
+    [
+     62000.0,
+     16
+    ]
+   ],
+   "muri_put": [
+    [
+     60000.0,
+     90
+    ],
+    [
+     59000.0,
+     70
+    ],
+    [
+     62000.0,
+     66
+    ]
+   ]
+  },
+  {
+   "scadenza": "25DEC26",
+   "data": "2026-12-25",
+   "giorni": 28.02,
+   "oi_call": 97650,
+   "oi_put": 67124,
+   "nozionale_musd": 10138,
+   "put_call": 0.69,
+   "max_pain": 70000.0,
+   "dist_max_pain_pct": 13.8,
+   "futuro": 61693,
+   "iv_atm": 47.6,
+   "mov_atteso_usd": 8134,
+   "mov_atteso_pct": 13.2,
+   "skew_put10_call10": 8.0,
+   "muri_call": [
+    [
+     80000.0,
+     8425
+    ],
+    [
+     100000.0,
+     6507
+    ],
+    [
+     90000.0,
+     5731
+    ]
+   ],
+   "muri_put": [
+    [
+     60000.0,
+     7015
+    ],
+    [
+     40000.0,
+     5656
+    ],
+    [
+     55000.0,
+     3803
+    ]
+   ]
+  },
+  {
+   "scadenza": "29JAN27",
+   "data": "2027-01-29",
+   "giorni": 63.02,
+   "oi_call": 13584,
+   "oi_put": 14906,
+   "nozionale_musd": 1753,
+   "put_call": 1.1,
+   "max_pain": 67000.0,
+   "dist_max_pain_pct": 8.9,
+   "futuro": 61983,
+   "iv_atm": 45.7,
+   "mov_atteso_usd": 11767,
+   "mov_atteso_pct": 19.0,
+   "skew_put10_call10": 6.1,
+   "muri_call": [
+    [
+     70000.0,
+     946
+    ],
+    [
+     71000.0,
+     800
+    ],
+    [
+     68000.0,
+     732
+    ]
+   ],
+   "muri_put": [
+    [
+     58000.0,
+     2116
+    ],
+    [
+     40000.0,
+     2043
+    ],
+    [
+     45000.0,
+     1335
+    ]
+   ]
+  },
+  {
+   "scadenza": "26FEB27",
+   "data": "2027-02-26",
+   "giorni": 91.02,
+   "oi_call": 10,
+   "oi_put": 3,
+   "nozionale_musd": 1,
+   "put_call": 0.35,
+   "max_pain": 62000.0,
+   "dist_max_pain_pct": 0.8,
+   "futuro": 62235,
+   "iv_atm": 45.7,
+   "mov_atteso_usd": 14209,
+   "mov_atteso_pct": 22.8,
+   "skew_put10_call10": 5.2,
+   "muri_call": [
+    [
+     70000.0,
+     4
+    ],
+    [
+     74000.0,
+     1
+    ],
+    [
+     90000.0,
+     1
+    ]
+   ],
+   "muri_put": [
+    [
+     48000.0,
+     1
+    ],
+    [
+     46000.0,
+     1
+    ],
+    [
+     61000.0,
+     1
+    ]
+   ]
+  },
+  {
+   "scadenza": "26MAR27",
+   "data": "2027-03-26",
+   "giorni": 119.02,
+   "oi_call": 33834,
+   "oi_put": 22732,
+   "nozionale_musd": 3480,
+   "put_call": 0.67,
+   "max_pain": 70000.0,
+   "dist_max_pain_pct": 13.8,
+   "futuro": 62475,
+   "iv_atm": 45.8,
+   "mov_atteso_usd": 16350,
+   "mov_atteso_pct": 26.2,
+   "skew_put10_call10": 4.5,
+   "muri_call": [
+    [
+     80000.0,
+     2270
+    ],
+    [
+     150000.0,
+     1913
+    ],
+    [
+     110000.0,
+     1756
+    ]
+   ],
+   "muri_put": [
+    [
+     50000.0,
+     3230
+    ],
+    [
+     55000.0,
+     2791
+    ],
+    [
+     40000.0,
+     2657
+    ]
+   ]
+  },
+  {
+   "scadenza": "25JUN27",
+   "data": "2027-06-25",
+   "giorni": 210.02,
+   "oi_call": 13101,
+   "oi_put": 11278,
+   "nozionale_musd": 1500,
+   "put_call": 0.86,
+   "max_pain": 70000.0,
+   "dist_max_pain_pct": 13.8,
+   "futuro": 63373,
+   "iv_atm": 45.7,
+   "mov_atteso_usd": 21949,
+   "mov_atteso_pct": 34.6,
+   "skew_put10_call10": 2.8,
+   "muri_call": [
+    [
+     60000.0,
+     1190
+    ],
+    [
+     130000.0,
+     948
+    ],
+    [
+     70000.0,
+     845
+    ]
+   ],
+   "muri_put": [
+    [
+     40000.0,
+     1480
+    ],
+    [
+     52000.0,
+     1288
+    ],
+    [
+     64000.0,
+     1191
+    ]
+   ]
+  },
+  {
+   "scadenza": "24SEP27",
+   "data": "2027-09-24",
+   "giorni": 301.02,
+   "oi_call": 9161,
+   "oi_put": 6443,
+   "nozionale_musd": 960,
+   "put_call": 0.7,
+   "max_pain": 80000.0,
+   "dist_max_pain_pct": 30.0,
+   "futuro": 64301,
+   "iv_atm": 46.0,
+   "mov_atteso_usd": 26878,
+   "mov_atteso_pct": 41.8,
+   "skew_put10_call10": 2.3,
+   "muri_call": [
+    [
+     115000.0,
+     1040
+    ],
+    [
+     150000.0,
+     924
+    ],
+    [
+     84000.0,
+     743
+    ]
+   ],
+   "muri_put": [
+    [
+     50000.0,
+     1570
+    ],
+    [
+     40000.0,
+     1231
+    ],
+    [
+     35000.0,
+     627
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+/* ---------- Layout desktop A (anteprima): griglia a 12 colonne, schede a tutta larghezza con il contenuto su due colonne
+   interne; affiancate solo schede di altezza simile. Solo ≥1100 px: telefono e tablet invariati. */
+@media (min-width:1100px){
+  .qGrid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:stretch}
+  .qGrid>.q{grid-column:1/-1}
+  #qPos{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
+  #qPos:has(>#opLine:not([hidden])){grid-template-columns:repeat(3,minmax(0,1fr))}
+  #posLine{display:contents}
+  #qPos>.qH,#qPos>.qF,#posLine>.qA{grid-column:1/-1}
+  #qExitB{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+  #qExitB>:not(.qX){grid-column:1/-1}
+  #cnCard,#cxCard,#pvQ,#todayN{columns:2;column-gap:36px}
+  #cnCard>:not(.qL),#cxCard>:not(.qM),#pvQ>.qA,#todayN>.qA{column-span:all}
+  .qL,.qM,.qN,.qKV,.qSim{break-inside:avoid}
+  #pvQ>.qSub{break-before:column;margin-top:10px}
+  #wkHero{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:28px}
+  #wkHero>:not(.oc),#wkPos>*{grid-column:1/-1}
+  #v-movimenti{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;align-items:start}
+  #v-movimenti>*{grid-column:1/-1}
+  #v-movimenti>#wkStatSec,#v-movimenti>#ethStatSec{grid-column:auto}
+  #scSec{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;grid-auto-flow:row dense}
+  #scSec>*{grid-column:1/-1}
+  #scSec>#scEvid,#scSec>#trxBody{grid-column:1}
+  #scSec>#scIng{grid-column:2;grid-row:span 2}
+}
+@media (min-width:1000px){.nwGrid>.nwGrp:last-child:nth-child(odd){grid-column:1/-1}}

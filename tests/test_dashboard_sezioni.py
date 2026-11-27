@@ -1,4 +1,4 @@
-"""Struttura delle sezioni (radar/dashboard_template.html): menu a 6 voci (Scanner dal 25/11; Opzioni nascosta dal 25/11 con OPZIONI_ON) uguale su telefono e desktop, Book e "Come funziona"
+"""Struttura delle sezioni (radar/dashboard_template.html): menu a 6 voci nel markup (Scanner dal 25/11; Opzioni aggiunta dal JS con OPZIONI_ON, di nuovo attiva dal 27/11) uguale su telefono e desktop, Book e "Come funziona"
 fuori dal menu, vecchi indirizzi reindirizzati, Liquidazioni pagina a sé, card di Oggi con le diciture obbligatorie. Niente rete."""
 import re
 import tempfile
@@ -49,13 +49,14 @@ class TestMenu(unittest.TestCase):
         self.assertIn('.concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : [])', T)
         self.assertIn('opzioni: OPZIONI_ON ? "opzioni" : "oggi"', alias)            # #opzioni porta a Oggi finché OPZIONI_ON = false
 
-    def test_opzioni_nascosta_ma_presente(self):
-        self.assertIn("const OPZIONI_ON = false;", T)
-        self.assertLess(T.index("const OPZIONI_ON = false;"), T.index("(function renderOpzioni()"))   # dichiarata prima dell'uso
-        self.assertIn('const L = $("opLine"); if (!L || !OPZIONI_ON) return;', T)  # niente riga sintetica in Oggi
-        self.assertIn('<div class="view" id="v-opzioni" hidden>', T)               # pagina conservata
-        self.assertNotIn('href="#opzioni" data-v="opzioni"', T.split("<script")[0])   # nessuna voce nel markup
+    def test_opzioni_attiva(self):   # nascosta dal 25/11, riattivata il 27/11/2026 su richiesta dell'utente
+        self.assertIn("const OPZIONI_ON = true;", T)
+        self.assertLess(T.index("const OPZIONI_ON = true;"), T.index("(function renderOpzioni()"))   # dichiarata prima dell'uso
+        self.assertIn('const L = $("opLine"); if (!L || !OPZIONI_ON) return;', T)  # riga in Oggi solo con il flag
+        self.assertIn('<div class="view" id="v-opzioni" hidden>', T)
+        self.assertNotIn('href="#opzioni" data-v="opzioni"', T.split("<script")[0])   # voce aggiunta dal JS, prima di Scanner
         self.assertIn("if (OPZIONI_ON && viewEl(\"opzioni\"))", T)
+        self.assertIn("/* 7 voci (Opzioni di nuovo nel menu dal 27/11, OPZIONI_ON)", T)
 
     def test_book_spento_ma_presente(self):
         self.assertIn("const BOOK_ON = false;", T)                              # una riga per riaccenderlo
