@@ -8,3 +8,5 @@ leggere i risultati:
   ripetizione dentro la prova, prove indipendenti fra loro (quindi con ripetizione fra prove, come dichiarato per D3 e D4).
 - **Controllo:** l'insieme calcolato con le date ridotte coincide al dollaro con quello calcolato con la regola (assert nel codice).
 - **MAR** = rendimento totale / |DD| (definizione di RESEARCH.md); è informativo.
+
+- Procedura: conteggi committati in 010ee98, contemporaneo a f558fb4 e prima di fase2.py (il PREREG li voleva nello stesso commit). Un solo generatore con seme 20261127 consumato in ordine D1→D4: i p di D2–D4 dipendono dall'ordine (riproducibile). Il controllo "operazioni identiche" è stato fatto fuori da fase2.py (revisione).

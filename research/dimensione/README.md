@@ -3,7 +3,7 @@
 **Verdetto** (PREREG f558fb4, conteggi 010ee98, nessuna deviazione dalle regole: DEVIAZIONI.md)
 - **D1 affollato** (OI 28 g o funding 7 g sopra il p90 dell'anno): **non passa**. ETH migliora molto, ma BTC peggiora (68,8k contro 84,8k $), il capitale insieme scende del 6,9% e i vicini non reggono.
 - **D2 giovane** (prime 3 settimane sopra la SMA40): **non passa**. Riduce 12 operazioni su 19, quindi è quasi un rischio più basso per tutti i long: capitale insieme −22%, OOS peggiore su entrambi gli asset.
-- **D3 = D1 ∪ D2:** **non passa**. Capitale insieme −22%, BTC peggiore in tutti i periodi.
+- **D3 = D1 ∪ D2:** **non passa**. Capitale insieme −22%, BTC peggiore in tutti i periodi decisivi (dal 2018, dal 2021, IS, OOS); migliore solo nel 2021–23 informativo.
 - **D4 short tardo** (oltre il 35% sotto la SMA40): **non passa**. È l'unica che migliora ovunque tocchi, ma cambia 1 operazione su BTC e 2 su ETH, il vicino al 30% è sotto W3.2 e il placebo dà p 0,10 (non può passare Holm per costruzione).
 
 **Scelta finale (PREREG §6): nessuna. W3.2 resta com'è.**
@@ -40,8 +40,8 @@ migliori, MAR: `fase2_output.txt`.
 - **D1 lavora su ETH, non su BTC.** Dimezza il long ETH del 06/2024 (−21,4%) e porta ETH da 39,6k a 47,0k $ con DD −21,6%. Su
   BTC le 3 operazioni toccate sono tutte vincenti (2023, 2024, 2025): BTC dal 2021 perde 16k $. Il caso guida BTC 2018 non è
   coperto (niente OI né funding prima del 2020). Il vicino p95 è a 1,09 su BTC 2018 (sotto 1,16): la soglia non è stabile.
-- **D2 e D3 sono un "rischio più basso" mascherato.** Abbassano il DD (BTC dal 2021 −16,9%) e il capitale insieme di più del 20%:
-  è l'effetto scala della lezione 101, già noto (W3.1 al 10%). Metà dei long vincenti è giovane come i perdenti.
+- **D2 e D3 riducono il DD per effetto scala ma costano il 22% di capitale.** Il CAGR/DD non migliora in modo apprezzabile
+  (+0,9% D2, +0,3% D3) e le riduzioni casuali di pari numero peggiorano W3.2 quasi sempre (lo battono nel 2,6% e 0,3% delle prove). Metà dei long vincenti è giovane come i perdenti.
 - **D4 è un singolo episodio per asset.** Su BTC cambia solo lo short del 03/2020 (−17,9%): da qui +26k $ dal 2018 e DD da
   −37,3% a −30,4%. Su ETH cambia i 2 short persi del 2022. Il segno è coerente, ma 3 operazioni non bastano: il vicino al 30% tocca
   anche uno short vincente BTC del 2022 e scende sotto W3.2.
@@ -64,13 +64,19 @@ migliori, MAR: `fase2_output.txt`.
 - **Insieme sensibile al percorso:** rimettere a dimensione piena una sola operazione BTC vincente (04/2025) porta D1 sotto
   W3.2. Il CAGR/DD dell'insieme dipende da dove cade il DD massimo, non solo dalle operazioni ridotte.
 
+## Revisione critica (radar-review, 27/11): confermato
+PREREG, assenza di sguardo al futuro, operazioni identiche (controllo indipendente), motore e 4 operazioni ridotte ricalcolati a
+mano. Corrette la frase su D3 e la lettura dell'effetto scala. Idee: D1 solo su ETH da seguire su carta (senza altri backtest);
+D4 da rivalutare al prossimo bear con la regola già fissata.
+
 ## Lezione 133 proposta
 **Lezione 133**: ridurre la dimensione di W3.2 invece di bloccare gli ingressi (research/dimensione, PREREG f558fb4, 4 varianti,
 R 0,125 invece di 0,25, Holm m = 4): nessuna passa e W3.2 resta com'è.
 - "Affollato" (OI a 28 g o funding 7 g oltre il p90 dell'anno) migliora ETH (47,0k contro 39,6k $, DD −21,6 contro −27,5,
   grazie al long del 06/2024) ma su BTC dimezza solo vincenti (68,8k contro 84,8k). Capitale insieme −6,9%, vicini instabili.
-- "Long giovane" (≤ 3 settimane sopra la SMA40) e l'unione delle due regole toccano 12–14 operazioni su 19: sono un rischio più
-  basso per tutti, con capitale −22% (effetto scala, lezione 101).
+- "Long giovane" (≤ 3 settimane sopra la SMA40) e l'unione delle due regole toccano 12–14 operazioni su 19: riducono il DD
+  per effetto scala ma costano il 22% di capitale; il CAGR/DD non migliora in modo apprezzabile e le riduzioni casuali di pari
+  numero peggiorano W3.2 quasi sempre. Su BTC (WR long 92%) qualunque riduzione colpisce soprattutto vincenti.
 - "Short oltre il 35% sotto la SMA40" migliora ovunque tocchi (BTC dal 2018 269k contro 243k, DD −30,4 contro −37,3), ma cambia
   3 operazioni: vicino al 30% sotto W3.2, placebo p 0,10. È un'osservazione, non una regola.
 - Un placebo basso (p 0,002–0,02) con mediana del placebo sotto W3.2 dice solo che la selezione batte il caso, non W3.2: il

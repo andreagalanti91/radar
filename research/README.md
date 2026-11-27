@@ -56,6 +56,7 @@ ogni confronto: W3.1 dal 01/01/2021, 10.000 → 27.190 $, drawdown −9,8%, 13 t
 | [`macd_sol`](macd_sol/README.md) | MACD settimanale su SOL (buy −3/−50, sell +10), MACD dentro W3.2, strategia SOL costruita | non funziona (130) |
 | [`emergenti`](emergenti/README.md) | W3.2 e 9 varianti sulle monete emergenti (rank 101–200), budget 1% del capitale, leva 1x/2x/5x | nessuna operabile; long in perdita, 5x azzera (131) |
 | [`dati_nuovi`](dati_nuovi/README.md) | analisi delle 11 perdite di W3.2; COT CFTC, base Deribit, funding medio, miner, flussi exchange come filtri o ingressi | nessuna passa (132); nessun abbonamento |
+| [`dimensione`](dimensione/README.md) | rischio dimezzato nei long affollati/giovani e negli short dopo un crollo, invece di bloccare gli ingressi | nessuna passa (133) |
 | [`opzioni_scadenze`](opzioni_scadenze/README.md) | scadenze Deribit 27/11/2026, movimento atteso e sua calibrazione | descrittivo |
 | [`multi_asset`](multi_asset/README.md) · [`ema200_vix`](ema200_vix/LOGICA.md) | W3.1 solo prezzo su 13 asset, EMA200 + VIX | non si trasferisce (104) |
 | [`top50`](top50/) · [`top10_w3`](top10_w3/README.md) · [`w2_alt`](w2_alt/) | W2/W3 su altre crypto e indici | solo BTC (74) |
