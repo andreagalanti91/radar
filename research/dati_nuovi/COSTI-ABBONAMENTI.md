@@ -6,6 +6,10 @@ Uso considerato: progetto personale, trading settimanale BTC/ETH più scanner di
 se possibile.
 
 ## Conclusione
+> **Aggiornamento dopo il test (27/11/2026, research/dati_nuovi/README.md):** nessuna spesa è consigliata. Le fonti gratuite
+> equivalenti a quelle a pagamento (flussi exchange, funding medio, open interest) non hanno migliorato W3.2; un abbonamento ha
+> senso solo con un'ipotesi nuova da verificare. La stima sotto resta come riferimento dei prezzi.
+
 
 - **Per questo uso non serve Glassnode.** L'accesso API completo richiede il piano Professional, che costa almeno 7.008 USD l'anno,
   più un add-on API dal prezzo non pubblico.

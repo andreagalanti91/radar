@@ -1,5 +1,5 @@
 # STATO · Dati nuovi per le decisioni buy/sell 27/11/2026
-Stato: IN CORSO
+Stato: COMPLETATO
 
 Richiesta: "Analizza se possono aiutarti altri dati per determinare le posizioni buy/sell della strategia. Apprendi dagli errori."
 Risposte: testare entrambi gli obiettivi (evitare perdite / entrare prima o più spesso), si tiene il più profittevole; stima costi
@@ -12,3 +12,4 @@ abbonamenti a pagamento; applicabile dappertutto (BTC, ETH, scanner).
 4. Stima costi fonti a pagamento (Glassnode, CryptoQuant, CoinMetrics, Kaiko, Coinglass, Amberdata). [ ]
 5. Proposta all'utente (W3.2 non cambia senza ok). [ ]
 In parallelo: research/emergenti correzioni della revisione (agente in corso).
+- 27/11: PREREG ba77738, 0/9 passano, revisione confermata, correzioni testuali, lezione 132. Nessun abbonamento consigliato.

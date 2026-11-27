@@ -40,7 +40,7 @@ IS 2018–22 / 2021–22, 2024→ e vicini sono in `fase2_output.txt` e `risulta
   qualche settimana oppure salta un trend intero. COT-A porta BTC dal 2021 da 84,8k a 26,6k.
 - **Il più vicino, MINER-A.** Su ETH migliora (42,4k contro 39,6k, DD −22,9 contro −27,5) perché evita il long del 06/2024
   (−21,4%). Ma salta anche il long del 07/2025 (+15,3%), su BTC peggiora (76,9k) e i vicini non reggono su nessuno dei due
-  asset. Placebo p 0,042, sopra la soglia di Holm (0,0056): è l'effetto di un trade solo.
+  asset. Placebo p 0,042, sopra la soglia di Holm (0,0056): è concentrato su 2 episodi (capitolazione dei miner dopo il bando cinese del 2021 e dopo l'halving del 2024), dominato dal trade ETH del 06/2024; su ETH cambia 6 operazioni, su BTC ne sposta 2 di una settimana; il capitale BTC+ETH insieme scende (119.323 contro 124.392 $), sale solo il CAGR/DD grazie al DD.
 - **Ingressi B/E.** Aggiungono 5–8 operazioni per asset, ma con WR del 45–75% e DD del −28/−51%. Gli ingressi che W3.2 scarta
   perché il flusso perp è contrario sono davvero peggiori. Il flusso resta il filtro che separa, nessuna fonte nuova lo sostituisce.
 
@@ -68,27 +68,32 @@ IS 2018–22 / 2021–22, 2024→ e vicini sono in `fase2_output.txt` e `risulta
 ## Limiti
 - **Pochi trade:** 14 su BTC dal 2021, 15 su ETH. Le varianti cambiano da 1 a 10 trade: i risultati sono fragili in entrambe le
   direzioni.
-- **Flussi CoinMetrics:** sono "flash" e ricalcolati anche nel passato. Il loro risultato è un limite superiore, e anche così
+- **Flussi CoinMetrics:** sono "flash" e ricalcolati anche nel passato. Non sono point-in-time, quindi non adottabili (una revisione non è per forza favorevole), e anche così
   non passa.
 - **Fonti corte:** COT ETH dal 04/2021, base BTC dal 08/2018, Hyperliquid dal 2023. OKX e Bitget non hanno storico gratuito,
   Bybit e BitMEX sono bloccati. Le date del COT durante gli shutdown sono approssimate per prudenza.
 - **Analisi degli errori vista prima:** ho analizzato le perdite prima di scrivere le definizioni (rischio dichiarato nel
   PREREG). Le definizioni sono da manuale e uguali per tutti gli asset.
 
+## Revisione critica (radar-review, 27/11): confermato
+PREREG, motore, ritardi di pubblicazione (COT, base, funding, miner), regole A/B/E e 2 perdite ricalcolati a mano. Corrette la
+descrizione di MINER-A, la lettura del placebo, la dicitura sui flussi CoinMetrics e il file dei costi.
+
 ## Lezione 132 proposta
 **Lezione 132**: fonti nuove gratuite per gli ingressi di W3.2 (research/dati_nuovi, PREREG ba77738, 9 varianti, Holm m = 9):
 nessuna passa. Le fonti provate sono COT CFTC degli asset manager CME, base dei future Deribit, funding medio Binance/Deribit/
 Hyperliquid, hash ribbon dei miner, flussi e saldo sugli exchange CoinMetrics.
 - **Filtri d'ingresso (A):** costano su BTC (COT-A 26,6k, base 49,7k, funding 61,9k contro 84,8k): bloccare un ingresso di W3.2
-  sposta o salta il trend invece di evitare la perdita. MINER-A migliora solo ETH grazie a un trade (06/2024), placebo p 0,042,
-  vicini incoerenti.
+  sposta o salta il trend invece di evitare la perdita. MINER-A migliora solo ETH (dominato dal trade 06/2024), capitale insieme più basso, vicini incoerenti; il placebo
+  (p 0,042) misura il confronto con un filtro casuale, non con W3.2 (la mediana dei filtri casuali peggiora W3.2).
 - **Ingressi aggiuntivi o anticipati (B/E):** al posto del flusso perp contrario aggiungono 5–8 operazioni con WR del 45–75% e
   DD fino a −51%. Il flusso perp resta l'unica informazione che separa (conferma delle lezioni 86 e 97).
 - **Analisi delle 11 perdite:** le perdite vengono da long al cambio di regime, long in trend affollati e short dopo un crollo:
   caratteristiche di prezzo e di leva che nessuna fonte nuova isola.
 - **Movimenti persi:** sono quasi tutti contro il regime, per scelta.
 - **Abbonamenti:** nessun abbonamento (CryptoQuant, Coinglass) giustificato senza un'ipotesi nuova. I flussi exchange
-  CoinMetrics sono "flash" (non point-in-time): limite superiore.
+  CoinMetrics sono "flash" (non point-in-time): non adottabili.
+- **Metodo:** il codice dei segnali va committato con il PREREG o prima, perché l'ordine sia provabile con git.
 
 ## File
 `PREREG.md`, `DEVIAZIONI.md`, `fetch.py` (scarico), `fonti.py` (segnali), `motore.py` (W3.2 + una regola; verifica 84.820 /

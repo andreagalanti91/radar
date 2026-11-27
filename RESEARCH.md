@@ -445,6 +445,21 @@ per lato; research/emergenti, PREREG 1110e53): 0 varianti operabili su 10.
 - Filtri di qualità, cancello BTC (con o contro), trailing 2,0 e uscita EMA 10 non migliorano.
 - Nei dati delle monete piccole vanno controllati in automatico i cambi di denominazione (salti > 3x con apertura = chiusura
   precedente / 10ⁿ): un solo cambio non corretto (BNX 1:100) bloccava una quota per 13 mesi.
+
+**Lezione 132**: fonti nuove gratuite per gli ingressi di W3.2 (research/dati_nuovi, PREREG ba77738, 9 varianti, Holm m = 9):
+nessuna passa. Le fonti provate sono COT CFTC degli asset manager CME, base dei future Deribit, funding medio Binance/Deribit/
+Hyperliquid, hash ribbon dei miner, flussi e saldo sugli exchange CoinMetrics.
+- **Filtri d'ingresso (A):** costano su BTC (COT-A 26,6k, base 49,7k, funding 61,9k contro 84,8k): bloccare un ingresso di W3.2
+  sposta o salta il trend invece di evitare la perdita. MINER-A migliora solo ETH (dominato dal trade 06/2024), capitale insieme più basso, vicini incoerenti; il placebo
+  (p 0,042) misura il confronto con un filtro casuale, non con W3.2 (la mediana dei filtri casuali peggiora W3.2).
+- **Ingressi aggiuntivi o anticipati (B/E):** al posto del flusso perp contrario aggiungono 5–8 operazioni con WR del 45–75% e
+  DD fino a −51%. Il flusso perp resta l'unica informazione che separa (conferma delle lezioni 86 e 97).
+- **Analisi delle 11 perdite:** le perdite vengono da long al cambio di regime, long in trend affollati e short dopo un crollo:
+  caratteristiche di prezzo e di leva che nessuna fonte nuova isola.
+- **Movimenti persi:** sono quasi tutti contro il regime, per scelta.
+- **Abbonamenti:** nessun abbonamento (CryptoQuant, Coinglass) giustificato senza un'ipotesi nuova. I flussi exchange
+  CoinMetrics sono "flash" (non point-in-time): non adottabili.
+- **Metodo:** il codice dei segnali va committato con il PREREG o prima, perché l'ordine sia provabile con git.
 **Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
 +0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
 con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai
@@ -1541,7 +1556,7 @@ sugli ingressi W3 (che usa già pf14z). Contesto, non regola. File: research/flu
   dati, segnali o posizione. Un controllo che scrive solo nel log di GitHub non è una protezione: ogni nuovo controllo deve
   avvisare. Testi con numeri della strategia (pagina "Come funziona", promemoria del lunedì) vanno letti dal report o riallineati
   a ogni cambio di strategia: la sezione "Limiti" mostrava ancora 78.000 $ e DD −21% (W3 al 25%) tre giorni dopo W3.1.
-- Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git).
+- Preregistrazione: committare PREREG.md da solo, prima di eseguire qualsiasi script (l'ordine deve essere provabile con git). Il codice dei segnali va committato con il PREREG o prima (lezione 132).
 - Prima di pubblicare una correzione: test che fallisce prima e passa dopo, suite completa verde, render a 400/1280, deploy e
   verifica online. I test vanno scritti con unittest (pytest non è installato: test in stile pytest non girano mai).
 - Versioni delle librerie: fissarle a quelle realmente installate nei runner (log "Successfully installed"), non a quelle locali.
