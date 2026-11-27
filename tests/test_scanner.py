@@ -362,9 +362,9 @@ class TestUniversoEPagina(unittest.TestCase):
     def test_struttura_pagina(self):
         T = (ROOT / "radar" / "dashboard_template.html").read_text()
         v = T[T.index('<div class="view" id="v-scanner"'):T.index("<!-- ============ GRAFICO")]
-        ordine = ['id="scWarn"', 'id="scLeg"', 'id="scEvid"', 'id="trxBody"', 'id="scIng"', 'id="scBet"', 'id="scBody"']
+        ordine = ['id="scWarn"', 'id="scLeg"', 'id="scEvid"', 'id="trxBody"', 'id="scIng"', 'id="scPos"', 'id="scBet"', 'id="scBody"']
         pos = [v.index(x) for x in ordine]
-        self.assertEqual(pos, sorted(pos))                                                    # avviso, legenda, evidenza, TRX, ingressi, scommesse, tabella
+        self.assertEqual(pos, sorted(pos))                                                    # avviso, legenda, evidenza, TRX, ingressi, posizioni, scommesse, tabella
         for w in ("long</span></dt>", "short</span></dt>", "flat</span></dt>", "Nel verso di BTC", "Settimane in posizione", "uscita automatica"):
             self.assertIn(w, v)                                                               # legenda in parole semplici
         js = T[T.index("// ---- Scanner (pagina a sé)"):T.index("// ---- pre-analisi della prossima chiusura")]
