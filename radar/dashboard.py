@@ -67,12 +67,26 @@ def render(report: dict, out: Path | None = None, standalone: bool = True) -> Pa
     pages = "\n".join(f.read_text() for f in sorted(PAGES.glob("*.html"))) if PAGES.exists() else ""
     html = TEMPLATE.read_text().replace("/*__DATA__*/null", json.dumps(report, default=str)).replace("<!--__PAGES__-->", pages)
     html = html.replace("/*__SUPABASE__*/null", json.dumps(supabase_config()).replace("</", "<\\/"))
+    html = html.replace("/*__BUILD__*/null", json.dumps(build_info()).replace("</", "<\\/"))
     out.write_text((HEAD + html + "\n</body>\n</html>\n") if standalone else html)
     if standalone:
         for name in ("icon.svg", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"):
             shutil.copy(BRAND / name, out.parent / name)
         (out.parent / "manifest.webmanifest").write_text(json.dumps(MANIFEST, indent=1))
     return out
+
+
+def build_info() -> dict:
+    """Versione mostrata nel Profilo: commit corto del codice (GITHUB_SHA nel workflow, altrimenti git locale; None se non disponibile)."""
+    sha = os.environ.get("GITHUB_SHA", "").strip()[:7] or None
+    if not sha:
+        import subprocess
+        try:
+            r = subprocess.run(["git", "rev-parse", "--short=7", "HEAD"], cwd=ROOT, capture_output=True, text=True, timeout=3)
+            sha = r.stdout.strip() or None if r.returncode == 0 else None
+        except (OSError, subprocess.SubprocessError):
+            sha = None
+    return {"commit": sha}
 
 
 def supabase_config() -> dict | None:

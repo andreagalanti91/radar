@@ -1,0 +1,251 @@
+<!-- ============ PROFILO · account, capitale, bot Telegram, preferenze, dati, info ============
+     Pagina separata (radar/pages/profilo.html), iniettata da radar/dashboard.py al posto del segnaposto PAGES del template.
+     Si apre dal profilo in fondo alla sidebar (desktop) o dall'avatar in alto a destra (telefono); non è nella barra in basso.
+     Account e password via window.RadarAuth (client Supabase unico del template); capitale ed esportazione CSV via window.WalletAPI
+     (radar/pages/wallet.html, stesso archivio del Wallet). Il bot Telegram è solo descritto: nessun avviso nuovo parte da qui.
+     Si registra in window.PAGES.profilo: init alla prima visita di #profilo, show ridisegna (sessione, capitale, preferenze). -->
+<div class="view" id="v-profilo" hidden>
+  <div class="prHead">
+    <span class="meAv prAv" id="prAv"><svg aria-hidden="true"><use href="#i-user"/></svg></span>
+    <div><h1>Profilo</h1><p id="prWho">Impostazioni di questo account e di questo dispositivo</p></div>
+  </div>
+  <div class="prGrid">
+    <section class="section" id="prAccount" aria-labelledby="prAccountH">
+      <h2 class="sh" id="prAccountH">Account</h2>
+      <div class="list" id="prAccB"></div>
+    </section>
+    <section class="section" id="prCapitale" aria-labelledby="prCapitaleH">
+      <h2 class="sh" id="prCapitaleH">Il mio capitale</h2>
+      <div class="list" id="prCapB"></div>
+    </section>
+    <section class="section prWide" id="prBot" aria-labelledby="prBotH">
+      <h2 class="sh" id="prBotH">Bot Telegram</h2>
+      <div class="card prBot" id="prBotB"></div>
+    </section>
+    <section class="section" id="prPref" aria-labelledby="prPrefH">
+      <h2 class="sh" id="prPrefH">Preferenze <small>su questo dispositivo</small></h2>
+      <div class="list" id="prPrefB"></div>
+    </section>
+    <section class="section" id="prDati" aria-labelledby="prDatiH">
+      <h2 class="sh" id="prDatiH">Dati</h2>
+      <div class="list" id="prDatiB"></div>
+    </section>
+    <section class="section prWide" id="prInfo" aria-labelledby="prInfoH">
+      <h2 class="sh" id="prInfoH">Info</h2>
+      <div class="list" id="prInfoB"></div>
+    </section>
+  </div>
+</div>
+<style>
+#v-profilo{display:grid;gap:22px;min-width:0}
+#v-profilo[hidden]{display:none!important}
+#v-profilo .prHead{display:flex;align-items:center;gap:14px;margin:0 4px;min-width:0}
+#v-profilo .prHead>div{min-width:0}
+#v-profilo .prHead h1{margin:0;font:700 1.6rem/1.1 var(--font);letter-spacing:-.035em}
+#v-profilo .prHead p{margin:4px 0 0;color:var(--label2);font-size:.86rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-profilo .prAv{width:52px;height:52px;font-size:1.05rem}
+#v-profilo .prAv svg{width:24px;height:24px}
+#v-profilo .prGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:start}
+@media (min-width:1100px){#v-profilo .prGrid{grid-template-columns:repeat(2,minmax(0,1fr))} #v-profilo .prWide{grid-column:1/-1}}
+#v-profilo .sh{margin:0 4px}
+#v-profilo .row{flex-wrap:wrap;row-gap:8px}
+#v-profilo .row .k{flex:1 1 180px;min-width:0;display:grid;gap:2px}
+#v-profilo .row .k b{font-weight:600;color:var(--label)}
+#v-profilo .row .k small{font-size:.78rem;color:var(--label2);line-height:1.4;overflow-wrap:anywhere}
+#v-profilo .row .v{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto}
+#v-profilo .row .v b{font:650 1.05rem var(--font);font-variant-numeric:tabular-nums}
+#v-profilo .seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr}
+#v-profilo .seg button{min-height:40px;padding:8px 12px}
+@media (max-width:440px){#v-profilo .row .v{margin-left:0;width:100%;justify-content:flex-start} #v-profilo .seg{width:100%}}
+#v-profilo a.row{color:inherit;text-decoration:none}
+#v-profilo a.row:hover{background:var(--raise)}
+#v-profilo a.row:focus-visible{outline:2px solid var(--tint);outline-offset:-2px}
+#v-profilo a.row>svg{width:16px;height:16px;color:var(--label3);flex:none}
+#v-profilo .prMsg{margin:0;font:600 .82rem/1.4 var(--font);color:var(--green)} #v-profilo .prMsg.err{color:var(--red)}
+#v-profilo .prBot{display:grid;gap:16px}
+#v-profilo .prBotTop{display:flex;gap:12px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#v-profilo .prBotTop p{margin:0;color:var(--label2);font-size:.88rem;line-height:1.5;flex:1 1 260px}
+#v-profilo .prBot h3{margin:0;font:600 .9rem var(--font)}
+#v-profilo .prCmds{display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:700px){#v-profilo .prCmds{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#v-profilo .prCmd{display:grid;gap:3px;padding:10px 12px;border-radius:var(--r-tile);background:var(--raise);min-width:0}
+#v-profilo .prCmd code{font:500 .8rem var(--mono);color:var(--label);overflow-wrap:anywhere}
+#v-profilo .prCmd code b{color:var(--tint);font-weight:600}
+#v-profilo .prCmd small{font-size:.78rem;color:var(--label2);line-height:1.35}
+#v-profilo details.prStates{border-top:1px solid var(--line);padding-top:12px}
+#v-profilo details.prStates>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:44px;font:600 .9rem var(--font)}
+#v-profilo details.prStates>summary::-webkit-details-marker{display:none}
+#v-profilo details.prStates>summary svg{width:16px;height:16px;color:var(--label3);transition:transform .2s;flex:none}
+#v-profilo details.prStates[open]>summary svg{transform:rotate(90deg)}
+#v-profilo details.prStates>summary:focus-visible{outline:2px solid var(--tint);outline-offset:2px;border-radius:8px}
+#v-profilo .prTag{font:600 .72rem/1 var(--font);padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--orange) 12%,transparent);color:var(--orange);white-space:nowrap}
+#v-profilo .prFam{display:grid;gap:6px;margin-top:12px}
+#v-profilo .prFam h4{margin:0;font:600 .78rem var(--font);color:var(--label3)}
+#v-profilo .prSt{display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 8px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+#v-profilo .prSt:first-of-type{border-top:0}
+#v-profilo .prSt i{font-style:normal;font-size:1rem;line-height:1.3;text-align:center;grid-row:span 2}
+#v-profilo .prSt b{font-weight:600;font-size:.86rem;line-height:1.3}
+#v-profilo .prSt small{font-size:.76rem;color:var(--label2)}
+#v-profilo .prStates>p{margin:8px 0 0;font-size:.78rem;color:var(--label2);line-height:1.45}
+@media (min-width:700px){#v-profilo .prFams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}}
+@media (prefers-reduced-motion:reduce){#v-profilo details.prStates>summary svg{transition:none}}
+</style>
+<script>
+(function () {
+  "use strict";
+  const $p = id => document.getElementById(id);
+  const esc = t => String(t == null ? "" : t).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+  const nf = (x, d) => window.nfIT ? window.nfIT(x, d) : (+x).toFixed(d);
+  const ico = n => `<svg class="waI" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+  const btn = (kind, id, icon, label, aria) => `<button type="button" class="waCta ${kind}" id="${id}" aria-label="${esc(aria || label)}">${ico(icon)}<span>${esc(label)}</span></button>`;
+  const A = () => window.RadarAuth || null;
+  const getR = () => { try { return typeof R !== "undefined" && R ? R : null; } catch (_) { return null; } };
+  const ls = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (_) {} } };
+  const BOT = "CryptoRadarGalaBot";
+  // comandi del diario (radar/journal.py), esempi brevi
+  const CMDS = [
+    ["/entrato", "65150 0,45 btc comm 14,7", "Ingresso eseguito: prezzo, quantità (BTC o ETH), commissioni in $. In alternativa alla quantità: importo 29000."],
+    ["/aggiungi", "65300 0,05 comm 1,6", "Un altro pezzo dello stesso ingresso (ordine riempito in più volte)."],
+    ["/uscito", "59800 btc comm 13,5", "Uscita; con una quantità minore di quella aperta è un'uscita parziale."],
+    ["/registro", "", "Ultime operazioni vere confrontate con il modello."],
+  ];
+  // stati del bot: lista definitiva PROPOSTA (stato/BOT-STATI.md, 27/11/2026), non ancora approvata né applicata al bot
+  const STATES = [
+    ["Strategia W3.2 (BTC ed ETH)", [
+      ["🟢", "Nuovo segnale long/short", "domenica dopo la chiusura"], ["⚪", "Segnale annullato", "raro, fra domenica e lunedì"],
+      ["🟢", "Ingresso eseguito", "lunedì"], ["🔔", "Uscita automatica spostata (trailing)", "al massimo una volta al giorno"],
+      ["⏳", "Possibile uscita per distribuzione", "una volta a settimana"], ["🎯", "Uscita decisa per lunedì", "domenica"],
+      ["🔴", "Uscita annullata", "raro"], ["🛑", "Stop toccato", "a qualsiasi ora"], ["🎯", "Uscita eseguita (profitto o perdita)", "dopo l'uscita"]]],
+    ["Riepilogo e contesto", [["📋", "Riepilogo «Oggi»", "una volta al giorno"], ["📊", "VIX in zona alta (> 30) o bassa (< 15)", "al primo controllo di ogni 4 ore"]]],
+    ["Rischio della strategia", [["🚨", "Allarme strategia (attenzione o fuori dal backtest)", "una volta per evento"]]],
+    ["Salute del sistema", [["⚠️", "Problemi tecnici del giorno", "una volta al giorno"], ["⚠️", "Dati da verificare prima della decisione", "una volta per evento"],
+      ["⚠️", "Fonte critica ferma o dati vecchi", "una volta al giorno per fonte"], ["⚠️", "Segnale non calcolato (BTC o ETH)", "una volta al giorno"],
+      ["⚠️", "Giro non completato (dati, test, salvataggio)", "al massimo ogni 6 ore per tipo"]]],
+    ["Diario (risposte ai comandi)", [["✅", "Conferma di /entrato, /aggiungi, /uscito, /registro", "subito, al giro"], ["❔", "Errore di comando o comando sconosciuto", "subito"]]],
+  ];
+  let u = null, cap = null, capErr = null;
+
+  const fDT = d => { const x = new Date(String(d).replace(" ", "T")); return isNaN(x) ? "–" : x.toLocaleString("it-IT", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }); };
+  const fD = d => { const x = new Date(String(d).length <= 10 ? d + "T12:00:00" : d); return isNaN(x) ? "–" : x.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }); };
+  const themeMode = () => { const t = ls.get("radarTheme"); return t === "dark" || t === "light" ? t : "auto"; };
+  const startPage = () => { const s = ls.get("radarStart"); return s === "wallet" || s === "posizioni" ? s : "oggi"; };
+  const seg = (id, label, opts, val) => `<div class="seg" role="group" aria-label="${esc(label)}" id="${id}">${opts.map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${v === val}">${esc(l)}</button>`).join("")}</div>`;
+
+  function paint() {
+    const RA = A(), mail = u && u.email;
+    $p("prAv").innerHTML = mail && RA ? esc(RA.initials(mail)) || ico("user") : ico("user");
+    $p("prWho").textContent = mail ? mail : "Impostazioni di questo dispositivo";
+    // Account
+    const demo = RA && RA.isDemo && RA.isDemo();
+    $p("prAccB").innerHTML = mail ? `
+      <div class="row"><span class="k"><b>Email</b><small>${esc(mail)}${demo ? " · anteprima con dati finti" : ""}</small></span></div>
+      <div class="row"><span class="k"><b>Password</b><small>Cambiala quando vuoi: resta valida su tutti i dispositivi.</small></span><span class="v">${btn("ter", "prPw", "key", "Cambia password")}</span></div>
+      <div class="row"><span class="k"><b>Esci</b><small>Chiude la sessione su questo dispositivo.</small></span><span class="v">${btn("del", "prOut", "out", "Esci", "Esci dall'account")}</span></div>`
+      : `<div class="row"><span class="k"><b>Accesso non attivo</b><small>${RA && RA.configured ? "Nessuna sessione su questo dispositivo: accedi dal Wallet." : "L'accesso con account non è configurato in questa pagina."}</small></span></div>`;
+    if ($p("prPw")) $p("prPw").onclick = pwForm;
+    if ($p("prOut")) $p("prOut").onclick = async () => { const b = $p("prOut"); b.disabled = true;
+      try { await RA.signOut(); } catch (_) {} u = null; cap = null; paint(); if (!(RA && RA.gate)) location.hash = "#oggi"; };
+    // Il mio capitale
+    $p("prCapB").innerHTML = `
+      <div class="row"><span class="k"><b>Capitale di partenza</b><small>Quanto hai messo sul conto all'inizio: serve al Wallet per il valore del conto, le percentuali e il calo massimo.</small></span>
+        <span class="v"><b id="prCapV">${cap > 0 ? "$" + nf(cap, 0) : capErr ? "–" : u ? "non impostato" : "–"}</b>${u && window.WalletAPI ? btn("ter sm", "prCapE", "edit", cap > 0 ? "Modifica" : "Imposta", "Modifica il capitale di partenza") : ""}</span></div>
+      <div class="row"><span class="k"><b>Valuta mostrata</b><small>Per ora gli importi sono in dollari; altre valute in seguito.</small></span><span class="v"><b>$ · dollaro USA</b></span></div>`;
+    if ($p("prCapE")) $p("prCapE").onclick = capForm;
+    // Preferenze
+    $p("prPrefB").innerHTML = `
+      <div class="row"><span class="k"><b>Tema</b><small>Automatico segue l'impostazione del dispositivo.</small></span><span class="v">${seg("prTheme", "Tema", [["light", "Chiaro"], ["dark", "Scuro"], ["auto", "Automatico"]], themeMode())}</span></div>
+      <div class="row"><span class="k"><b>Pagina iniziale</b><small>Quella che si apre quando entri nel tool.</small></span><span class="v">${seg("prStart", "Pagina iniziale", [["oggi", "Oggi"], ["wallet", "Wallet"], ["posizioni", "Posizioni"]], startPage())}</span></div>`;
+    $p("prTheme").querySelectorAll("button").forEach(b => b.onclick = () => {
+      const v = b.dataset.v; if (v === themeMode()) return;
+      if (window.setTheme) window.setTheme(v); else { ls.set("radarTheme", v === "auto" ? null : v); location.reload(); } });
+    $p("prStart").querySelectorAll("button").forEach(b => b.onclick = () => {
+      ls.set("radarStart", b.dataset.v === "oggi" ? null : b.dataset.v);
+      $p("prStart").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); });
+    // Dati
+    const rp = getR() || {}, B = window.RADAR_BUILD || {};
+    $p("prDatiB").innerHTML = `
+      <div class="row"><span class="k"><b>Esporta il mio Wallet in CSV</b><small>Posizioni e movimenti del tuo account, per Excel o Numbers (separatore punto e virgola).</small><p class="prMsg" id="prCsvMsg" hidden></p></span>
+        <span class="v">${btn("ter", "prCsv", "down", "Esporta CSV", "Esporta il mio Wallet in CSV")}</span></div>
+      <div class="row"><span class="k"><b>Dati aggiornati al</b><small>${rp.updated_4h ? esc(fDT(rp.updated_4h)) + " · " : ""}chiusura giornaliera del ${esc(fD(rp.date))}</small></span></div>
+      ${B.commit ? `<div class="row"><span class="k"><b>Versione</b><small>commit <code>${esc(B.commit)}</code></small></span></div>` : ""}`;
+    const cb = $p("prCsv"); if (!u || !window.WalletAPI) cb.disabled = true; else cb.onclick = exportCsv;
+    // Info
+    $p("prInfoB").innerHTML = `<a class="row" href="#metodo"><span class="k"><b>Come funziona</b><small>Regole della strategia W3.2, uscite e rischio.</small></span><svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <div class="row"><span class="k"><b>Strumento di analisi, non consulenza finanziaria</b><small>Le decisioni di investimento restano tue; i risultati passati non garantiscono quelli futuri.</small></span></div>`;
+  }
+
+  function paintBot() {
+    $p("prBotB").innerHTML = `<div class="prBotTop"><p>Segnale settimanale, uscita automatica aggiornata e uscite arrivano su <b>@${BOT}</b>. Dal bot registri anche le tue operazioni nel diario.</p>
+        <a class="waCta sec" href="https://t.me/${BOT}" target="_blank" rel="noopener" aria-label="Apri @${BOT} su Telegram">${ico("send")}<span>Apri il bot</span></a></div>
+      <div><h3>Comandi del diario</h3></div>
+      <div class="prCmds">${CMDS.map(([c, ex, t]) => `<div class="prCmd"><code><b>${esc(c)}</b>${ex ? " " + esc(ex) : ""}</code><small>${esc(t)}</small></div>`).join("")}</div>
+      <details class="prStates"><summary><svg aria-hidden="true"><use href="#i-chev"/></svg><span>Messaggi che il bot può inviare · ${STATES.reduce((s, f) => s + f[1].length, 0)} stati</span><span class="prTag">lista proposta</span></summary>
+        <p>Proposta del 27/11/2026, da approvare: il bot oggi può differire. Per ogni stato: quando arriva.</p>
+        <div class="prFams">${STATES.map(([fam, L]) => `<div class="prFam"><h4>${esc(fam)}</h4>${L.map(([i, n, w]) => `<div class="prSt"><i aria-hidden="true">${i}</i><b>${esc(n)}</b><small>${esc(w)}</small></div>`).join("")}</div>`).join("")}</div>
+      </details>`;
+  }
+
+  async function load() {
+    const RA = A();
+    try { u = RA ? (RA.user() || await RA.session()) : null; } catch (_) { u = null; }
+    paint();
+    if (u && window.WalletAPI) {
+      try { cap = await window.WalletAPI.capital(); capErr = null; } catch (e) { cap = null; capErr = e; }
+      paint();
+    }
+  }
+
+  function sheet(title, html) { const f = document.createElement("form"); f.className = "waForm"; f.noValidate = true; f.innerHTML = html; window.openSheet(title, f); return f; }
+  const bar = label => `<p class="err" hidden></p><div class="bar"><button type="button" class="waCta ter" data-x>Annulla</button><button type="submit" class="waCta pri">${esc(label)}</button></div>`;
+  const fail = (f, m) => { const e = f.querySelector(".err"); e.hidden = !m; e.textContent = m || ""; };
+  function pwForm() {
+    const RA = A();
+    const f = sheet("Cambia password", `<p class="waNote">La nuova password vale da subito per ${esc(u && u.email || "il tuo account")}.</p>
+      <label>Nuova password<input type="password" name="p1" autocomplete="new-password" minlength="8"></label>
+      <label>Ripeti la password<input type="password" name="p2" autocomplete="new-password" minlength="8"></label>${bar("Salva password")}`);
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = async e => { e.preventDefault();
+      const p1 = f.p1.value, p2 = f.p2.value, b = f.querySelector("button[type=submit]");
+      if (p1.length < 8) return fail(f, "Almeno 8 caratteri.");
+      if (p1 !== p2) return fail(f, "Le due password non coincidono.");
+      if (RA.isDemo && RA.isDemo()) { window.closeSheet(); return; }
+      b.disabled = true;
+      try { await RA.updatePassword(p1); window.closeSheet(); }
+      catch (x) { fail(f, RA.errIT ? RA.errIT(x) : String(x)); b.disabled = false; } };
+  }
+  function capForm() {
+    const f = sheet("Capitale di partenza", `<p class="waNote">Quanto hai messo sul conto all'inizio. Salvato nel tuo account, lo usa il Wallet.</p>
+      <label><span>Capitale <small>$</small></span><input type="text" inputmode="decimal" autocomplete="off" name="cap" value="${cap > 0 ? esc(String(cap).replace(".", ",")) : ""}"></label>${bar("Salva")}`);
+    f.querySelector("[data-x]").onclick = () => window.closeSheet();
+    f.onsubmit = async e => { e.preventDefault();
+      const v = window.WalletCalc ? window.WalletCalc.parseNum(f.cap.value) : parseFloat(f.cap.value), b = f.querySelector("button[type=submit]");
+      if (!(v > 0)) return fail(f, "Capitale non valido.");
+      b.disabled = true;
+      try { cap = await window.WalletAPI.setCapital(v); window.closeSheet(); paint(); }
+      catch (x) { fail(f, "Salvataggio non riuscito: " + String(x && x.message || x).slice(0, 120)); b.disabled = false; } };
+  }
+  async function exportCsv() {
+    const b = $p("prCsv"), m = $p("prCsvMsg"); b.disabled = true; m.hidden = true; m.classList.remove("err");
+    try {
+      const { pos, mov } = await window.WalletAPI.rows();
+      const txt = window.WalletAPI.csv(pos, mov), name = `radar-wallet-${new Date().toISOString().slice(0, 10)}.csv`;
+      const url = URL.createObjectURL(new Blob([txt], { type: "text/csv;charset=utf-8" })), a = document.createElement("a");
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+      m.textContent = `Scaricato ${name}: ${pos.length} ${pos.length === 1 ? "posizione" : "posizioni"}, ${mov.length} ${mov.length === 1 ? "movimento" : "movimenti"}.`;
+    } catch (e) { m.classList.add("err"); m.textContent = "Esportazione non riuscita: " + String(e && e.message || e).slice(0, 120); }
+    m.hidden = false; b.disabled = false;
+  }
+
+  let wired = false;
+  window.PAGES = window.PAGES || {};
+  window.PAGES.profilo = {
+    init() {
+      paintBot();
+      if (!wired && A()) { wired = true; A().onChange((ev, x) => { if (ev === "SIGNED_OUT") { u = null; cap = null; } else if (x) u = x;
+        if (!$p("v-profilo").hidden) (ev === "SIGNED_OUT" ? paint() : load()); }); }
+    },
+    show() { load(); },
+    hide() {},
+  };
+})();
+</script>

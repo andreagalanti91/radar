@@ -44,7 +44,7 @@ class Markup(unittest.TestCase):
             self.assertIn('<a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>', box)
         self.assertIn('<div class="view" id="v-wallet" hidden>', PAGE)
         self.assertIn('"wallet"', re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1))
-        self.assertIn('const PAGE_OF = Object.assign({ wallet: "wallet" }', T)
+        self.assertIn('const PAGE_OF = Object.assign({ wallet: "wallet", profilo: "profilo" }', T)
         self.assertIn("window.PAGES.wallet = {", PAGE)
 
     def test_vecchio_wallet_hyperliquid_non_raggiungibile(self):
@@ -55,15 +55,41 @@ class Markup(unittest.TestCase):
         self.assertNotIn("hyperliquid", re.search(r"const VIEWS = \[([^\]]*)\]", T).group(1))
         self.assertNotIn('href="#hyperliquid"', T)
 
-    def test_supabase_da_cdn_versione_esatta(self):
-        m = re.search(r'const SB_SRC = "https://cdn\.jsdelivr\.net/npm/@supabase/supabase-js@(\d+)\.(\d+)\.(\d+)/dist/umd/supabase\.js"', PAGE)
+    def test_supabase_da_cdn_versione_esatta(self):   # dal 27/11/2026 il caricamento e il client unico sono nel template (window.RadarAuth)
+        m = re.search(r'const SB_SRC = "https://cdn\.jsdelivr\.net/npm/@supabase/supabase-js@(\d+)\.(\d+)\.(\d+)/dist/umd/supabase\.js"', T)
         self.assertIsNotNone(m)
         self.assertEqual(m.group(1), "2")
         self.assertGreaterEqual(int(m.group(2)), 40)            # chiavi sb_publishable_ supportate
-        self.assertRegex(PAGE, r'const SB_SRI = "sha384-[A-Za-z0-9+/=]{64}"')
+        self.assertRegex(T, r'const SB_SRI = "sha384-[A-Za-z0-9+/=]{64}"')
         self.assertIn("const CFG = /*__SUPABASE__*/null;", PAGE)
-        self.assertNotIn("signUp", PAGE)                        # nessuna registrazione dalla pagina
+        self.assertNotIn("SB_SRC", PAGE)                        # una sola istanza: il Wallet usa window.RadarAuth.client()
+        self.assertNotIn("createClient", PAGE)
+        self.assertIn("window.RadarAuth.client()", PAGE)
+        self.assertEqual(T.count("createClient(CFG.url"), 1)
+        for src in (PAGE, T):
+            self.assertNotIn("signUp", src)                     # nessuna registrazione dalla pagina
         self.assertNotIn("Telegram", PAGE)
+
+    def test_confronto_accordion_chiuso(self):
+        sec = re.search(r'<details class="section waAcc" id="waCmpSec">(.*?)</details>', PAGE, re.S)
+        self.assertIsNotNone(sec)                               # <details> senza "open": chiuso di default
+        self.assertIn('<summary class="card"><span class="waAccT"><b>Confronto con la strategia</b><small id="waCmpSum">', sec.group(1))
+        self.assertIn("Deriva totale", PAGE)
+        self.assertIn("driftSum(cmps)", PAGE)
+
+    def test_pulsanti_con_icona_e_aria_label(self):
+        for icon, label in (("plus", "Nuova posizione"), ("out", "Esci dall'account")):
+            self.assertRegex(PAGE, rf'<button type="button" class="waCta [a-z ]+" id="wa\w+" aria-label="{label}"><svg class="waI" aria-hidden="true"><use href="#i-{icon}"/></svg>')
+        for icon, label, aria in (("plus", "Tranche", "Aggiungi tranche"), ("minus", "Riduci", "Riduci o chiudi"), ("list", "Movimenti", "Movimenti della posizione"),
+                                  ("edit", "Modifica", "Modifica movimento"), ("trash", "Elimina", "Elimina movimento")):
+            self.assertRegex(PAGE, rf'cta\("[a-z ]+", [^)]*"{icon}", "{label}", "[^"]*", "{aria}"\)')
+            self.assertIn(f'<symbol id="i-{icon}"', T)
+        self.assertIn('class="waCta ${kind}" ${attrs} aria-label="${esc(aria || label)}"><svg class="waI" aria-hidden="true">', PAGE)
+        css = re.search(r"\.waCta\{[^}]*\}", PAGE).group(0)
+        self.assertIn("min-height:var(--h)", css)
+        self.assertIn("--h:44px", css)                          # area di tocco di almeno 44 px
+        for st in (".waCta:focus-visible{", ".waCta:disabled", ".waCta.pri:hover", ".waCta.pri{", ".waCta.sec{", ".waCta.ter{", ".waCta.del{"):
+            self.assertIn(st, PAGE)
 
     def test_demo_solo_in_locale(self):
         self.assertIn('/[?&]demo=1(&|$)/.test(location.search) && (location.protocol === "file:" || /^(localhost|127\\.0\\.0\\.1|\\[::1\\])$/.test(location.hostname))', PAGE)
@@ -256,7 +282,16 @@ class NelBrowser(unittest.TestCase):
             self.assertEqual(pg.locator(".waPos").count(), 3)
             self.assertEqual(pg.locator("#waClosed button.row").count(), 1)
             self.assertIn("fuori segnale", pg.inner_text("#waOpen"))
+            self.assertIsNone(pg.get_attribute("#waCmpSec", "open"))                          # confronto chiuso di default
+            self.assertRegex(pg.inner_text("#waCmpSum"), r"^Deriva totale [−+]?\u2060?\$[\d.,]+ · 4 posizioni$")
+            self.assertTrue(pg.is_hidden("#waCmp"))
+            pg.click("#waCmpSec > summary")
+            self.assertTrue(pg.is_visible("#waCmp"))
             self.assertIn("Deriva", pg.inner_text("#waCmp"))
+            for b in pg.locator(".waPos .waCta").all():                                    # icona, aria-label, tocco ≥ 44 px
+                self.assertTrue(b.get_attribute("aria-label"))
+                self.assertEqual(b.locator("svg use").count(), 1)
+                self.assertGreaterEqual(b.bounding_box()["height"], 44)
             sw, cw = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
             self.assertLessEqual(sw, cw, f"{w}px")
             pg.locator(".waPos [data-a=add]").first.click()                                    # modulo nuova tranche

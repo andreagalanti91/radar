@@ -58,6 +58,33 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .logo b span{color:var(--tint);font-weight:600}
 .logo small{display:block;font:500 .72rem/1 var(--font);letter-spacing:0;color:var(--label3);margin-top:5px;white-space:nowrap}
 
+/* ---------- accesso al tool (gate a pagina intera, script "ACCESSO AL TOOL"): l'interfaccia resta disegnata sotto, nascosta e inerte */
+.authLock body{overflow:hidden}
+.authLock .shell,.authLock .tabbar{visibility:hidden}
+.authGate{position:fixed;inset:0;z-index:60;overflow-y:auto;background:var(--bg);display:grid;place-items:center;padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.agBox{width:min(400px,100%);display:grid;gap:22px;justify-items:stretch}
+.agLogo{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--label)}
+.agLogo svg{width:44px;height:44px;padding:8.5px;border-radius:10px;color:#fff;background:#2f4cf0;flex:none}
+.agLogo b{font:700 1.6rem/1 var(--font);letter-spacing:-.045em}
+.agLogo b span{color:var(--tint)}
+.agCard{display:grid;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:24px 20px}
+.agCard h1{margin:0;font:650 1.3rem/1.2 var(--font);letter-spacing:-.025em}
+.agCard p{margin:4px 0 0;color:var(--label2);font-size:.88rem;line-height:1.45}
+.agCard label{display:grid;gap:6px;font:500 .8rem var(--font);color:var(--label2)}
+.agCard input{font:500 16px var(--font);color:var(--label);background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:12px 14px;min-height:48px;width:100%;min-width:0}
+.agCard input:focus{outline:2px solid var(--tint);outline-offset:0;border-color:transparent}
+.agMsg{margin:0!important;font:600 .84rem/1.45 var(--font)!important}
+.agMsg.err{color:var(--red)!important} .agMsg.ok{color:var(--green)!important}
+.agBtn{min-height:48px;border:0;border-radius:999px;background:var(--tint);color:#fff;font:600 .95rem var(--font);cursor:pointer;padding:12px 18px}
+:root[data-theme="dark"] .agBtn{color:#0c0d10}
+.agBtn:hover{filter:brightness(1.06)} .agBtn:focus-visible,.agLink:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.agBtn:disabled{opacity:.55;cursor:default;filter:none}
+.agLink{justify-self:center;min-height:44px;padding:10px 14px;border:0;background:none;color:var(--tint);font:600 .86rem var(--font);cursor:pointer;border-radius:999px}
+.agLink:hover{background:var(--tint-bg)} .agLink:disabled{opacity:.5;cursor:default}
+.agWait{display:flex;align-items:center;gap:12px;color:var(--label2);font-size:.9rem}
+.agWait .spin{width:18px;height:18px;flex:none;border-radius:50%;border:2px solid var(--line2);border-top-color:var(--tint);animation:rspin .8s linear infinite}
+.agFoot{margin:0;text-align:center;font-size:.76rem;color:var(--label3)}
+@media (prefers-reduced-motion:reduce){.agWait .spin{animation:none}}
 /* ---------- sidebar desktop */
 .side{display:none}
 @media (min-width:900px){
@@ -69,9 +96,19 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .side nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--label2);text-decoration:none;font-weight:500;font-size:.92rem;transition:background .15s,color .15s}
 .side nav a svg{width:20px;height:20px}
 .side nav a[aria-current="page"]{background:var(--tint-bg);color:var(--tint);font-weight:600}
-.side .promo{margin-top:auto;border-radius:16px;padding:14px;background:var(--card2);border:1px solid var(--line);display:grid;gap:6px}
-.side .promo b{font-weight:600;font-size:.92rem}
-.side .promo span{font-size:.8rem;color:var(--label2)}
+/* profilo in fondo alla sidebar (al posto della vecchia card "Alert su Telegram", ora nella pagina Profilo): avatar con le iniziali + email */
+.side .me{margin-top:auto;display:flex;align-items:center;gap:10px;min-height:56px;padding:10px 12px;border-radius:16px;background:var(--card2);border:1px solid var(--line);color:var(--label);text-decoration:none;min-width:0;transition:border-color .15s,background .15s}
+.side .me:hover{border-color:var(--line2)} .side .me:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.side .me[aria-current="page"]{border-color:transparent;background:var(--tint-bg)}
+.side .me .meTx{display:grid;gap:2px;min-width:0;flex:1}
+.side .me .meTx b{font-weight:600;font-size:.88rem;line-height:1.2}
+.side .me .meTx small{font-size:.76rem;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side .me>svg{width:16px;height:16px;color:var(--label3);flex:none}
+.meAv{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:50%;background:var(--tint-bg);color:var(--tint);font:650 .8rem/1 var(--font);letter-spacing:.02em;text-transform:uppercase}
+.meAv svg{width:18px;height:18px}
+.mbar .meBtn{text-decoration:none;background:var(--tint-bg);border-color:transparent;color:var(--tint);font:650 .74rem/1 var(--font);letter-spacing:.02em;text-transform:uppercase}
+.mbar .meBtn[aria-current="page"]{outline:2px solid var(--tint);outline-offset:1px}
+.mbar .meBtn svg{width:18px;height:18px}
 
 /* ---------- top bar mobile */
 .mbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -91,6 +128,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .status{font-weight:600;font-size:.78rem;white-space:nowrap}
 .mbar{min-width:0}.mbar .logo{min-width:0}
+@media (max-width:440px){.mbar .logo>span{display:none}}   /* telefono: stato + tema + aggiorna + avatar; del logo resta la tile (il nome non ci sta senza sovrapporsi) */
 @media (max-width:380px){.mbar{gap:8px}.mbar .logo small{display:none}.mbar .logo b{font-size:1.02rem}.mbar .logo{gap:8px}.mbar .status{padding:8px 9px}.mbarR{gap:6px}.mbar .reload{width:34px;height:34px}}
 .status.long{color:var(--green);background:var(--green-bg);border-color:transparent} .status.short{color:var(--red);background:var(--red-bg);border-color:transparent} .status.open{color:var(--tint);background:var(--tint-bg);border-color:transparent}
 
@@ -260,13 +298,19 @@ a,button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 
 /* tab bar mobile: pillola flottante */
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;display:grid;grid-template-columns:repeat(7,1fr);width:min(560px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:20;width:min(620px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));padding:6px;border-radius:24px;background:var(--chrome);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow-lg)}
 @media (min-width:900px){.tabbar{display:none!important}}
-.tabbar a{display:grid;justify-items:center;gap:3px;padding:7px 0 6px;border-radius:20px;font:500 .72rem var(--font);letter-spacing:0;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
+/* barra a scorrimento (27/11/2026, richiesta dell'utente "da mobile la navbar in swipe così non viene stretta"): voci a larghezza naturale
+   con etichetta intera, scroll-snap, nessuna barra di scorrimento; la sfumatura ai bordi (--fl/--fr, da tabFade) dice che c'è altro;
+   la voce attiva si porta al centro a ogni cambio di vista (tabCenter). Scorre solo la barra, mai la pagina. */
+.tabbar .tbs{--fl:0px;--fr:0px;display:flex;gap:2px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;border-radius:20px;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%)}
+.tabbar .tbs::-webkit-scrollbar{display:none}
+.tabbar .tbs.fl{--fl:30px} .tabbar .tbs.fr{--fr:30px}
+.tabbar a{flex:1 0 auto;min-width:70px;min-height:52px;scroll-snap-align:center;display:grid;justify-items:center;align-content:center;gap:3px;padding:7px 10px 6px;border-radius:20px;font:500 .72rem/1.1 var(--font);letter-spacing:0;white-space:nowrap;color:var(--label2);text-decoration:none;transition:background .2s,color .2s}
+.tabbar a:focus-visible{outline:2px solid var(--tint);outline-offset:-2px}
 .tabbar svg{width:22px;height:22px}
 .tabbar a[aria-current="page"]{color:var(--tint);background:var(--tint-bg);font-weight:600}
-@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.62rem;letter-spacing:-.02em;border-radius:18px}.tabbar svg{width:21px;height:21px}}   /* 7 voci (Opzioni di nuovo nel menu dal 27/11, OPZIONI_ON): etichette intere anche a 360 px */
-@media (max-width:380px){.tabbar{padding:4px;width:calc(100% - 12px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{font-size:.58rem;letter-spacing:-.03em}}
+@media (max-width:440px){.tabbar{padding:5px;width:calc(100% - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))}.tabbar a{border-radius:18px;min-width:68px}}   /* 8 voci (Opzioni nel menu dal 27/11, OPZIONI_ON): etichette intere, la barra scorre */
 
 /* grafici */
 .chart{height:330px}
@@ -1203,8 +1247,186 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-btc" viewBox="0 0 24 24"><path d="M9 6h5a3 3 0 0 1 0 6H9zm0 6h6a3 3 0 0 1 0 6H9zM9 6v12M11 4v2M13 4v2M11 18v2M13 18v2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
   <symbol id="i-eth" viewBox="0 0 24 24"><path d="M12 3l6 9-6 3.5L6 12zM6 13.5l6 7.5 6-7.5-6 3.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M8 12h8"/></g></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 7h11M9 12h11M9 17h11"/><circle cx="4.8" cy="7" r=".9" fill="currentColor"/><circle cx="4.8" cy="12" r=".9" fill="currentColor"/><circle cx="4.8" cy="17" r=".9" fill="currentColor"/></g></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5h4l10-10a2.8 2.8 0 0 0-4-4l-10 10Z"/><path d="M13 7l4 4"/></g></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15M9.5 7V4.8h5V7"/><path d="M6.5 7l.9 11.6a1.6 1.6 0 0 0 1.6 1.4h6a1.6 1.6 0 0 0 1.6-1.4L17.5 7"/><path d="M10.3 11v5M13.7 11v5"/></g></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5H7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h7"/><path d="M11 12h9.5M17 8.5l3.5 3.5-3.5 3.5"/></g></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></g></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l8.5-8.5M16 7l2.5 2.5M18.5 4.5 20 6"/></g></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5"/><path d="M4.5 16.5v1.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-1.5"/></g></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 3.5 3.5 10.6l6.3 2.6 2.6 6.3Z"/><path d="M9.8 13.2 20.5 3.5"/></g></symbol>
   <symbol id="i-met" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/></g><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></symbol>
 </defs></svg>
+
+<!-- ============ ACCESSO AL TOOL (27/11/2026) ============
+     Schermata di accesso a pagina intera: senza una sessione Supabase si vede solo questa (logo, email, password, "Accedi",
+     "Password dimenticata?"; nessuna registrazione). Dopo l'accesso il tool è quello di sempre.
+     ATTENZIONE · protezione "di facciata", dichiarata all'utente: la pagina è statica e pubblica, i dati del report restano nel
+     sorgente (const R) e nei file JSON accanto a index.html, leggibili da chiunque senza accedere. Il gate nasconde solo l'interfaccia;
+     i dati personali (Wallet) sono protetti davvero dalla Row Level Security di Supabase (supabase/schema.sql).
+     AUTH_GATE = false lo spegne; senza Supabase configurato (radar/wallet_config.json) si spegne da solo; in locale con ?demo=1
+     (file:// o localhost, test e anteprime) si salta. Un solo client Supabase per tutto il tool (window.RadarAuth.client(), caricato
+     al primo bisogno, sessione persistente in localStorage "radarWallet.auth", la stessa del Wallet). -->
+<div class="authGate" id="authGate" hidden></div>
+<script>
+const AUTH_GATE = true;   // interruttore del gate: false = tool aperto senza accesso (il Wallet chiede comunque il suo accesso)
+(function () {
+  "use strict";
+  const CFG = /*__SUPABASE__*/null;   // {url, anon} da radar/dashboard.py (supabase_config); null = Supabase non configurato
+  // supabase-js da CDN, versione esatta (2.119.0, pubblicata il 04/11/2026) con impronta SRI
+  const SB_SRC = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js";
+  const SB_SRI = "sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O";
+  const KEY = "radarWallet.auth";
+  const LOCAL = location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  const DEMO = /[?&]demo=1(&|$)/.test(location.search) && LOCAL;
+  const CONF = !!(CFG && CFG.url && CFG.anon);
+  const ON = AUTH_GATE && CONF && !DEMO;
+  const esc = t => String(t == null ? "" : t).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+  // token del link nell'email di reset (…#access_token=…&type=recovery): letti subito, prima che il router riscriva l'indirizzo
+  let tok = null;
+  if (/(^#|&)(access_token|error_description)=/.test(location.hash)) {
+    const q = new URLSearchParams(location.hash.slice(1));
+    tok = { at: q.get("access_token"), rt: q.get("refresh_token"), type: q.get("type"), err: q.get("error_description") };
+    history.replaceState(null, "", location.pathname + location.search + "#oggi");
+  }
+  let clientP = null, user = null, isDemoUser = false;
+  const subs = [];
+  const emit = (ev, u) => subs.forEach(f => { try { f(ev, u); } catch (e) { console.error(e); } });
+  function loadLib() {
+    if (window.supabase && window.supabase.createClient) return Promise.resolve(window.supabase);
+    return new Promise((ok, ko) => {
+      const s = document.createElement("script");
+      s.src = SB_SRC; s.integrity = SB_SRI; s.crossOrigin = "anonymous"; s.async = true;
+      s.onload = () => window.supabase && window.supabase.createClient ? ok(window.supabase) : ko(new Error("modulo assente"));
+      s.onerror = () => { s.remove(); ko(new Error("CDN non raggiungibile")); };
+      document.head.appendChild(s);
+    });
+  }
+  // client unico, creato al primo bisogno (gate, Wallet o Profilo)
+  function client() {
+    if (!CONF) return Promise.reject(new Error("Supabase non configurato"));
+    return clientP || (clientP = loadLib().then(L => {
+      const c = L.createClient(CFG.url, CFG.anon, { auth: { persistSession: true, autoRefreshToken: true, storageKey: KEY, detectSessionInUrl: false } });
+      c.auth.onAuthStateChange((ev, s) => { user = s ? s.user : null;
+        setTimeout(() => { emit(ev, user); if (ON && ev === "SIGNED_OUT") show(); }, 0); });   // fuori dal callback: niente chiamate auth annidate
+      return c;
+    }).catch(e => { clientP = null; throw e; }));
+  }
+  const errIT = e => { const m = String((e && (e.message || e.error_description)) || e || "");
+    if (/invalid login|invalid credentials/i.test(m)) return "Email o password non corretti.";
+    if (/email not confirmed/i.test(m)) return "Email non ancora confermata.";
+    if (/rate limit|too many|security purposes/i.test(m)) return "Troppi tentativi: riprova fra qualche minuto.";
+    if (/password.*(short|least|weak)|weak password/i.test(m)) return "Password troppo debole: almeno 8 caratteri.";
+    if (/same.*password|different from the old/i.test(m)) return "La nuova password deve essere diversa da quella attuale.";
+    if (/fetch|network|CDN/i.test(m)) return "Connessione non riuscita. Controlla la rete e riprova.";
+    return "Operazione non riuscita: " + m.slice(0, 140); };
+  const A = window.RadarAuth = {
+    gate: ON, configured: CONF, demo: DEMO, errIT, client,
+    user: () => user,
+    isDemo: () => isDemoUser,
+    async session() {
+      if (DEMO) { if (!user) { user = { email: "demo@radar.local", user_metadata: { capitale: 10000 } }; isDemoUser = true; } return user; }
+      if (!CONF) return null;
+      const c = await client(); const { data } = await c.auth.getSession(); user = data && data.session ? data.session.user : null; return user;
+    },
+    async signIn(email, pw) { const c = await client(); const { data, error } = await c.auth.signInWithPassword({ email, password: pw }); if (error) throw error; user = data.user; return user; },
+    async signOut() { if (isDemoUser) { user = null; emit("SIGNED_OUT", null); return; } if (!CONF) return; const c = await client(); await c.auth.signOut(); user = null; },
+    async resetPassword(email) { const c = await client(); const { error } = await c.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }); if (error) throw error; },
+    async updatePassword(pw) { const c = await client(); const { data, error } = await c.auth.updateUser({ password: pw }); if (error) throw error; user = data.user; return user; },
+    async updateMeta(meta) {
+      if (isDemoUser) { user.user_metadata = Object.assign({}, user.user_metadata, meta); emit("USER_UPDATED", user); return user; }
+      const c = await client(); const { data, error } = await c.auth.updateUser({ data: meta }); if (error) throw error; user = data.user; return user; },
+    onChange(f) { subs.push(f); },
+    // iniziali e email abbreviata per l'avatar (sidebar e barra del telefono)
+    initials(e) { const l = String(e || "").split("@")[0].replace(/\d+/g, ""), p = l.split(/[._\-+]+/).filter(Boolean);
+      return (p.length > 1 ? p[0][0] + p[1][0] : (p[0] || "").slice(0, 2)).toUpperCase(); },
+    short(e) { const [l, d] = String(e || "").split("@"); return (l.length > 14 ? l.slice(0, 13) + "…" : l) + (d ? "@" + d : ""); },
+  };
+
+  // ---------------------------------------------------------------- schermata di accesso
+  const G = () => document.getElementById("authGate");
+  const lock = on => { document.documentElement.classList.toggle("authLock", on); const g = G(); if (g) g.hidden = !on; };
+  const logo = `<div class="agLogo"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg><b>radar<span>signal</span></b></div>`;
+  function frame(body) { const g = G(); g.innerHTML = `<main class="agBox">${logo}${body}<p class="agFoot">Strumento di analisi, non consulenza finanziaria.</p></main>`; lock(true); }
+  function show(msg) {
+    frame(`<form class="agCard" id="agForm" novalidate>
+      <div><h1>Accedi</h1><p>Usa l'account che ti è stato dato. Nessuna registrazione da qui.</p></div>
+      <label>Email<input type="email" name="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false" required></label>
+      <label>Password<input type="password" name="pw" autocomplete="current-password" required></label>
+      <p class="agMsg err" id="agErr" role="alert" ${msg ? "" : "hidden"}>${esc(msg || "")}</p>
+      <p class="agMsg ok" id="agOk" role="status" hidden></p>
+      <button class="agBtn" type="submit">Accedi</button>
+      <button class="agLink" type="button" id="agReset">Password dimenticata?</button></form>`);
+    const f = document.getElementById("agForm"), er = document.getElementById("agErr"), okm = document.getElementById("agOk");
+    const say = (m, good) => { er.hidden = good || !m; okm.hidden = !good; (good ? okm : er).textContent = m; };
+    const mailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const em = f.email.value.trim(), pw = f.pw.value, b = f.querySelector(".agBtn");
+      if (!mailOk(em) || !pw) return say("Inserisci email e password.");
+      b.disabled = true; b.textContent = "Accesso…"; say("");
+      try { await A.signIn(em, pw); hide(); }   // SIGNED_IN arriva da onAuthStateChange
+      catch (x) { say(errIT(x)); b.disabled = false; b.textContent = "Accedi"; }
+    };
+    document.getElementById("agReset").onclick = async ev => {
+      const em = f.email.value.trim(), b = ev.currentTarget;
+      if (!mailOk(em)) { say("Scrivi la tua email qui sopra, poi premi di nuovo «Password dimenticata?»."); f.email.focus(); return; }
+      b.disabled = true;
+      try { await A.resetPassword(em); say("Se l'indirizzo ha un account, arriva un'email con il link per scegliere una nuova password.", true); }
+      catch (x) { say(errIT(x)); }
+      b.disabled = false;
+    };
+    setTimeout(() => { const i = f && f.email; if (i && !window.matchMedia("(pointer:coarse)").matches) i.focus(); }, 0);
+  }
+  function showNewPassword() {   // arrivo dal link dell'email di reset
+    frame(`<form class="agCard" id="agNew" novalidate>
+      <div><h1>Nuova password</h1><p>Scegli la nuova password per ${esc(user && user.email || "il tuo account")}.</p></div>
+      <label>Nuova password<input type="password" name="p1" autocomplete="new-password" minlength="8" required></label>
+      <label>Ripeti la password<input type="password" name="p2" autocomplete="new-password" minlength="8" required></label>
+      <p class="agMsg err" id="agErr" role="alert" hidden></p>
+      <button class="agBtn" type="submit">Salva e entra</button></form>`);
+    const f = document.getElementById("agNew"), er = document.getElementById("agErr");
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const p1 = f.p1.value, p2 = f.p2.value, b = f.querySelector(".agBtn");
+      if (p1.length < 8) { er.hidden = false; er.textContent = "Almeno 8 caratteri."; return; }
+      if (p1 !== p2) { er.hidden = false; er.textContent = "Le due password non coincidono."; return; }
+      b.disabled = true;
+      try { await A.updatePassword(p1); hide(); emit("SIGNED_IN", user); } catch (x) { er.hidden = false; er.textContent = errIT(x); b.disabled = false; }
+    };
+  }
+  function showWait() { frame(`<div class="agCard agWait"><span class="spin" aria-hidden="true"></span><span>Controllo dell'accesso…</span></div>`); }
+  function showDown(e) {
+    frame(`<div class="agCard"><div><h1>Accesso non disponibile</h1><p>Il modulo di accesso non si è caricato (${esc(e && e.message || "errore")}). Controlla la connessione.</p></div>
+      <button class="agBtn" type="button" id="agRetry">Riprova</button></div>`);
+    document.getElementById("agRetry").onclick = () => { showWait(); check(false); };
+  }
+  function hide() { lock(false); const g = G(); if (g) g.innerHTML = ""; }
+  A.showGate = show;
+  // all'apertura: con una sessione salvata la pagina resta visibile mentre la verifico (nessun lampo); senza, solo la schermata di accesso
+  async function check(had) {
+    try {
+      const c = await client();
+      if (tok && tok.at && tok.rt) { const { error } = await c.auth.setSession({ access_token: tok.at, refresh_token: tok.rt }); if (error) throw error; }
+      const u = await A.session();
+      if (tok && tok.type === "recovery" && u) showNewPassword();
+      else if (!u) show(tok && tok.err ? "Il link non è più valido: chiedi un nuovo reset della password." : "");
+      else { hide(); emit("SESSION", u); }
+      tok = null;
+    } catch (e) { if (!had) showDown(e); }
+  }
+  if (ON) {
+    let had = false;
+    try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); had = !!(s && (s.refresh_token || (s.currentSession && s.currentSession.refresh_token))); } catch (_) {}
+    if (tok) had = false;
+    if (!had) showWait();
+    check(had);
+  } else if (DEMO) { A.session(); }
+  else if (CONF) { setTimeout(() => { let s = null; try { s = localStorage.getItem(KEY); } catch (_) {} if (s) A.session().then(u => u && emit("SESSION", u)).catch(() => {}); }, 0); }   // gate spento: avatar se c'è già una sessione del Wallet
+})();
+</script>
 
 <div class="shell">
 <aside class="side">
@@ -1218,13 +1440,13 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
     <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
     <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
   </nav>
-  <div class="promo"><b>Alert su Telegram</b><span>Segnale settimanale, trailing aggiornato e uscite arrivano su @CryptoRadarGalaBot.</span></div>
+  <a class="me" href="#profilo" data-v="profilo" aria-label="Profilo e impostazioni"><span class="meAv" data-me-ini><svg aria-hidden="true"><use href="#i-user"/></svg></span><span class="meTx"><b>Profilo</b><small data-me-mail>impostazioni</small></span><svg aria-hidden="true"><use href="#i-chev"/></svg></a>
 </aside>
 
 <div class="app">
   <header class="mbar">
     <a class="logo" href="#oggi"><svg viewBox="0 0 64 64"><use href="#mark"/></svg><span><b>radar<span>signal</span></b><small>BTC · W3.2</small></span></a>
-    <span class="mbarR"><span id="state" class="status"></span><button type="button" class="reload themeB" title="Tema chiaro o scuro" aria-label="Cambia tema chiaro o scuro" onclick="toggleTheme()"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"/></svg></button><button type="button" class="reload" title="Aggiorna dati e pagina" aria-label="Aggiorna dati e pagina" onclick="hardReload(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
+    <span class="mbarR"><span id="state" class="status"></span><button type="button" class="reload themeB" title="Tema chiaro o scuro" aria-label="Cambia tema chiaro o scuro" onclick="toggleTheme()"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-theme"/></svg></button><button type="button" class="reload" title="Aggiorna dati e pagina" aria-label="Aggiorna dati e pagina" onclick="hardReload(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8 8 0 1 0 17.7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 5.5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button><a class="reload meBtn" href="#profilo" data-v="profilo" title="Profilo" aria-label="Profilo e impostazioni" data-me-ini><svg aria-hidden="true"><use href="#i-user"/></svg></a></span>
   </header>
 
   <div class="hero">
@@ -1497,7 +1719,7 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
 </div>
 </div>
 
-<nav class="tabbar" aria-label="Sezioni">
+<nav class="tabbar" aria-label="Sezioni"><div class="tbs">
   <a href="#oggi" data-v="oggi"><svg><use href="#i-oggi"/></svg>Oggi</a>
   <a href="#posizioni" data-v="posizioni"><svg><use href="#i-pos"/></svg>Posizioni</a>
   <a href="#wallet" data-v="wallet"><svg><use href="#i-wal"/></svg>Wallet</a>
@@ -1505,11 +1727,12 @@ table.scT .scWide{display:none} table.scT .scNarrow{display:block}
   <a href="#grafico" data-v="grafico"><svg><use href="#i-graf"/></svg>Grafico</a>
   <a href="#movimenti" data-v="movimenti"><svg><use href="#i-stat"/></svg>Movimenti</a>
   <a href="#notizie" data-v="notizie"><svg><use href="#i-news"/></svg>Notizie</a>
-</nav>
+</div></nav>
 
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
 const R = /*__DATA__*/null;
+window.RADAR_BUILD = /*__BUILD__*/null;   // {commit, built} da radar/dashboard.py (build_info): versione mostrata nel Profilo
 const $ = id => document.getElementById(id);
 // ---- dati delle pagine secondarie (radar/dashboard.py split): file JSON accanto a index.html, scaricati alla prima apertura della
 // pagina e uniti in R con la stessa forma del report. Oggi non ne dipende. R._lazy = { pagina: "file.json?v=impronta" }; chiave assente
@@ -1544,6 +1767,10 @@ window.lazyView = (k, boxIds, what, ready, onErr) => {
 window.toggleTheme = () => {   // chiaro ↔ scuro: salvato su questo dispositivo; ricarico perché i grafici leggono i colori alla creazione
   const t = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   try { localStorage.setItem("radarTheme", t); } catch (_) {}
+  location.reload();
+};
+window.setTheme = mode => {   // Profilo → Preferenze: "light" | "dark" | "auto" (auto = nessuna scelta salvata, segue il dispositivo)
+  try { if (mode === "light" || mode === "dark") localStorage.setItem("radarTheme", mode); else localStorage.removeItem("radarTheme"); } catch (_) {}
   location.reload();
 };
 window.hardReload = async btn => {
@@ -3790,26 +4017,34 @@ function startLive() {
 }
 startLive();
 
-// ---- sezioni: Oggi · Posizioni · Scanner · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre solo da "Regole complete" nella card della posizione
+// ---- sezioni: Oggi · Posizioni · Scanner · Grafico · Movimenti · Notizie. "Come funziona" (#metodo) si apre da "Regole complete" nella card della posizione e dal Profilo (Info)
 const BOOK_ON = false;   // true = riattiva la sezione Book (voce di menu e #book); false = nessuna voce, #book porta a Oggi e la pagina non apre connessioni
 // true = riattiva la pagina Liquidazioni (radar/pages/liquidazioni.html: voce di menu dopo Grafico e #liquidazioni); false = nessuna voce,
 // #liquidazioni porta a Grafico, la pagina resta nel codice ma non si inizializza e non apre connessioni. Le liquidazioni mostrate sono
 // quelle della mappa unica (report.livelli) in Oggi e in Grafico; la pagina, se riaccesa, le ricalcola nel browser con dati live.
 const LIQ_ON = false;
-const VIEWS = ["oggi", "posizioni", "wallet", "scanner", "grafico", "movimenti", "notizie", "metodo"].concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet = posizioni reali (radar/pages/wallet.html); il vecchio Wallet Hyperliquid (radar/pages/hyperliquid.html) resta nel repo non raggiungibile
+const VIEWS = ["oggi", "posizioni", "wallet", "scanner", "grafico", "movimenti", "notizie", "metodo", "profilo"].concat(OPZIONI_ON ? ["opzioni"] : [], LIQ_ON ? ["liquidazioni"] : [], BOOK_ON ? ["book"] : []);   // Wallet = posizioni reali (radar/pages/wallet.html); il vecchio Wallet Hyperliquid (radar/pages/hyperliquid.html) resta nel repo non raggiungibile
 const ALIAS = { storico: "movimenti", simulatore: "movimenti", statistiche: "movimenti", book: BOOK_ON ? "book" : "oggi", opzioni: OPZIONI_ON ? "opzioni" : "oggi", liquidazioni: LIQ_ON ? "liquidazioni" : "grafico" };   // vecchi indirizzi
-const PAGE_OF = Object.assign({ wallet: "wallet" }, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
+const PAGE_OF = Object.assign({ wallet: "wallet", profilo: "profilo" }, LIQ_ON ? { liquidazioni: "liquidazioni" } : {}, BOOK_ON ? { book: "book" } : {});   // sezione → pagina di radar/pages (window.PAGES) da avviare e fermare con lei
 const viewEl = v => $("v-" + v) || (v === "book" ? $("book") : null);   // la pagina Book può usare id "book" o "v-book"
 (function () {   // Opzioni, Liquidazioni o Book riaccesi: la voce torna nel menu (Opzioni prima di Scanner, Liquidazioni prima di Movimenti, Book prima di Notizie)
   if (OPZIONI_ON && viewEl("opzioni")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#opzioni"; a.dataset.v = "opzioni";
-    a.innerHTML = `<svg><use href="#i-opz"/></svg>Opzioni`; n.insertBefore(a, n.querySelector('[data-v="scanner"]')); });
+    a.innerHTML = `<svg><use href="#i-opz"/></svg>Opzioni`; const ref = n.querySelector('[data-v="scanner"]'); ref.parentNode.insertBefore(a, ref); });
   if (LIQ_ON && viewEl("liquidazioni")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#liquidazioni"; a.dataset.v = "liquidazioni";
-    a.innerHTML = `<svg><use href="#i-liq"/></svg>${n.classList.contains("tabbar") ? "Liquid." : "Liquidazioni"}`; n.insertBefore(a, n.querySelector('[data-v="movimenti"]')); });
+    a.innerHTML = `<svg><use href="#i-liq"/></svg>Liquidazioni`; const ref = n.querySelector('[data-v="movimenti"]'); ref.parentNode.insertBefore(a, ref); });
   if (BOOK_ON && viewEl("book")) document.querySelectorAll(".side nav, .tabbar").forEach(n => { const a = document.createElement("a"); a.href = "#book"; a.dataset.v = "book";
-    a.innerHTML = `<svg><use href="#i-book"/></svg>Book`; n.insertBefore(a, n.querySelector('[data-v="notizie"]')); });
+    a.innerHTML = `<svg><use href="#i-book"/></svg>Book`; const ref = n.querySelector('[data-v="notizie"]'); ref.parentNode.insertBefore(a, ref); });
 })();
 document.querySelectorAll('a[data-v]').forEach(a => { if (!viewEl(a.dataset.v)) a.hidden = true; });   // tab senza pagina: nascosto
-document.querySelector(".tabbar").style.gridTemplateColumns = `repeat(${[...document.querySelectorAll(".tabbar a")].filter(a => !a.hidden).length},1fr)`;
+// barra in basso a scorrimento: sfumatura sul bordo dove c'è altro da scorrere, voce attiva portata al centro
+const TBS = document.querySelector(".tabbar .tbs");
+const tabFade = () => { if (!TBS) return; const x = TBS.scrollLeft, m = TBS.scrollWidth - TBS.clientWidth;
+  TBS.classList.toggle("fl", x > 2); TBS.classList.toggle("fr", m - x > 2); };
+const tabCenter = smooth => { if (!TBS || !TBS.clientWidth) return; const a = TBS.querySelector('a[aria-current="page"]'); if (!a) { tabFade(); return; }
+  const left = a.offsetLeft - (TBS.clientWidth - a.offsetWidth) / 2;
+  if (TBS.scrollTo) TBS.scrollTo({ left: Math.max(0, left), behavior: smooth && !matchMedia("(prefers-reduced-motion:reduce)").matches ? "smooth" : "auto" }); else TBS.scrollLeft = left;
+  tabFade(); };
+if (TBS) { TBS.addEventListener("scroll", tabFade, { passive: true }); window.addEventListener("resize", () => tabCenter(false)); }
 function route() {
   const v0 = (location.hash || "#oggi").slice(1), v = ALIAS[v0] || v0, ok = VIEWS.includes(v) && viewEl(v) ? v : "oggi";
   if (v0 !== ok && location.hash) history.replaceState(null, "", "#" + ok);   // vecchio indirizzo o pagina assente → la sezione giusta
@@ -3824,9 +4059,19 @@ function route() {
   const pk = PAGE_OF[ok], PG = pk && (window.PAGES || {})[pk]; if (PG) { try { if (!PG._done) { PG._done = true; PG.init && PG.init(); } PG.show && PG.show(); } catch (e) { console.error(e); } }
   Object.entries(window.PAGES || {}).forEach(([k, P]) => { if (k !== pk && P._done && P.hide) try { P.hide(); } catch (_) {} });
   document.querySelectorAll("[data-v]").forEach(a => { if (a.tagName === "A") a.dataset.v === ok ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"); });
+  tabCenter(route._n++ > 0);
   setTimeout(() => { simChart && simChart.timeScale().fitContent(); detChart && detChart.timeScale().fitContent(); }, 60);
 }
+route._n = 0;
 function grReady() { renderChart(); if (!$("v-grafico").hidden && window.grInit) try { window.grInit(); } catch (e) { console.error(e); } }
 window.addEventListener("hashchange", () => { const sh = $("sheet"); if (sh && sh.open) closeSheet(); route(); window.scrollTo({ top: 0 }); });
+// avatar del profilo (sidebar e barra del telefono): iniziali dell'email e email abbreviata; icona generica senza accesso
+const paintMe = u => { const e = u && u.email, ini = e ? RadarAuth.initials(e) : "";
+  document.querySelectorAll("[data-me-ini]").forEach(el => { el.innerHTML = ini ? ini.replace(/[<>&"]/g, "") : '<svg aria-hidden="true"><use href="#i-user"/></svg>'; });
+  document.querySelectorAll("[data-me-mail]").forEach(el => { el.textContent = e ? RadarAuth.short(e) : "impostazioni"; el.title = e || ""; }); };
+if (window.RadarAuth) { RadarAuth.onChange((ev, u) => paintMe(u)); paintMe(RadarAuth.user()); }
+// pagina iniziale scelta nel Profilo (localStorage radarStart): solo se l'indirizzo non indica già una sezione
+(function () { let s = null; try { s = localStorage.getItem("radarStart"); } catch (_) {}
+  if (!location.hash && (s === "wallet" || s === "posizioni")) history.replaceState(null, "", "#" + s); })();
 route();
 </script>

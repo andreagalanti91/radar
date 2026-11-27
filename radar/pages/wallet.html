@@ -3,6 +3,8 @@
      Accesso con Supabase Auth (email + password, nessuna registrazione dalla pagina); dati nelle tabelle wallet_posizioni e
      wallet_movimenti protette dalla RLS (supabase/schema.sql, supabase/LEGGIMI.md). URL e chiave pubblica: radar/wallet_config.json
      (o RADAR_SUPABASE_URL / RADAR_SUPABASE_ANON), scritti da dashboard.py al posto del segnaposto SUPABASE. Senza: "Wallet non ancora configurato".
+     Client Supabase unico del tool: window.RadarAuth.client() (template, schermata di accesso globale AUTH_GATE); con il gate attivo
+     l'accesso è già fatto e il modulo di accesso qui sotto resta solo per AUTH_GATE = false. window.WalletAPI serve il Profilo.
      Calcoli puri in window.WalletCalc (prezzo medio DCA, P/L, liquidazione stimata, leva massima, confronto con W3.2, statistiche),
      provati in tests/test_wallet.py. Anteprima: ?demo=1 solo in locale (file:// o localhost), dati finti in memoria al posto di Supabase.
      Si registra in window.PAGES.wallet: init alla prima visita di #wallet, show/hide avviano e fermano l'aggiornamento dei prezzi. -->
@@ -10,17 +12,19 @@
   <div class="section" id="waGate"><div class="card waGate"><span class="spin" aria-hidden="true"></span><span>Caricamento del Wallet…</span></div></div>
   <div class="waApp" id="waApp" hidden>
     <div class="section">
-      <div class="sh">Il mio conto <small class="waWho"><span id="waUser"></span><button type="button" class="waLink" id="waOut">Esci</button></small></div>
+      <div class="sh">Il mio conto <small class="waWho"><span id="waUser"></span><button type="button" class="waCta ter sm" id="waOut" aria-label="Esci dall'account"><svg class="waI" aria-hidden="true"><use href="#i-out"/></svg><span>Esci</span></button></small></div>
       <div class="card waHero" id="waHero"></div>
     </div>
     <div class="section">
-      <div class="sh">Posizioni aperte <button type="button" class="waBtn" id="waNew"><span aria-hidden="true">+</span> Nuova posizione</button></div>
+      <div class="sh">Posizioni aperte <button type="button" class="waCta pri" id="waNew" aria-label="Nuova posizione"><svg class="waI" aria-hidden="true"><use href="#i-plus"/></svg><span>Nuova posizione</span></button></div>
       <div class="waGrid" id="waOpen"></div>
     </div>
-    <div class="section" id="waCmpSec">
-      <div class="sh">Confronto con la strategia <small>reale contro modello W3.2, stesso periodo</small></div>
+    <!-- confronto con la strategia: accordion chiuso di default (titolo + riassunto in una riga), si apre al tocco -->
+    <details class="section waAcc" id="waCmpSec">
+      <summary class="card"><span class="waAccT"><b>Confronto con la strategia</b><small id="waCmpSum">reale contro modello W3.2, stesso periodo</small></span><svg class="waAccC" aria-hidden="true"><use href="#i-chev"/></svg></summary>
+      <p class="waNote waAccN">Reale contro modello W3.2 nello stesso periodo: percentuali sul valore della posizione, senza leva.</p>
       <div class="waGrid" id="waCmp"></div>
-    </div>
+    </details>
     <div class="section" id="waClSec">
       <div class="sh">Storico chiuse <small id="waClSub"></small></div>
       <div class="big waStats" id="waStats"></div>
@@ -40,13 +44,28 @@
 #v-wallet .waApp{display:grid;gap:22px;min-width:0}
 #v-wallet .waWho{display:inline-flex;align-items:center;gap:8px;min-width:0;max-width:100%}
 #v-wallet .waWho span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* pulsanti d'azione (CTA) con icona: primario (pieno indaco), secondario (indaco tenue), terziario (neutro), distruttivo (rosso);
+   area di tocco di almeno 44 px; su telefono le etichette corte restano con l'icona (.waL lunga, .waS corta) */
+.waCta{--h:44px;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:var(--h);min-width:44px;padding:0 16px;border-radius:999px;border:1px solid transparent;font:600 .86rem/1 var(--font);white-space:nowrap;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,color .15s,filter .15s;-webkit-tap-highlight-color:transparent}
+.waCta .waI{width:18px;height:18px;flex:none}
+.waCta.pri{background:var(--tint);color:#fff;box-shadow:var(--shadow)}
+:root[data-theme="dark"] .waCta.pri{color:#0c0d10}
+.waCta.pri:hover{filter:brightness(1.07)}
+.waCta.sec{background:var(--tint-bg);color:var(--tint)}
+.waCta.sec:hover{border-color:color-mix(in srgb,var(--tint) 35%,transparent)}
+.waCta.ter{background:var(--card);color:var(--label);border-color:var(--line2)}
+.waCta.ter:hover{background:var(--raise)}
+.waCta.del{background:transparent;color:var(--red);border-color:color-mix(in srgb,var(--red) 35%,transparent)}
+.waCta.del:hover{background:var(--red-bg)}
+.waCta.del.solid{background:var(--red);color:#fff;border-color:transparent}
+:root[data-theme="dark"] .waCta.del.solid{color:#0c0d10}
+.waCta.sm{font-size:.8rem;padding:0 13px}
+.waCta:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.waCta:active{transform:scale(.97)}
+.waCta:disabled,.waCta[aria-disabled="true"]{opacity:.45;cursor:default;filter:none;transform:none;box-shadow:none}
+.waCta .waS{display:none}
 .waLink{font:600 .8rem var(--font);color:var(--tint);background:var(--raise);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap}
-.waBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:600 .86rem var(--font);color:#fff;background:var(--tint);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;min-height:40px;white-space:nowrap}
-:root[data-theme="dark"] .waBtn{color:#0c0d10}
-.waBtn2{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:600 .82rem var(--font);color:var(--label);background:var(--fill);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;cursor:pointer;min-height:38px;white-space:nowrap}
-.waBtn2.del{color:var(--red)}
-.waBtn:focus-visible,.waBtn2:focus-visible,.waLink:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
-.waBtn:disabled{opacity:.5;cursor:default}
+.waLink:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
 #v-wallet .waHero{display:grid;gap:16px}
 #v-wallet .waHero .wkBig small .waLink{padding:3px 10px;font-size:.74rem;margin-left:4px}
 #v-wallet .waHero .wkFacts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:14px}
@@ -77,8 +96,22 @@
 .waNote{margin:0;font-size:.82rem;color:var(--label2);line-height:1.45}
 .waNote b{color:var(--label);font-weight:600} .waNote b.pos{color:var(--green)} .waNote b.neg{color:var(--red)}
 .waAct{display:flex;gap:8px;flex-wrap:wrap}
-.waBtn2 .waS{display:none}
-@media (max-width:440px){.waPos .waAct{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))} .waPos .waAct .waBtn2 .waL{display:none} .waPos .waAct .waBtn2 .waS{display:inline} .waPos .waAct .waBtn2{padding:8px 6px}}
+.waPos .waAct{border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:440px){.waPos .waAct .waCta{flex:1 1 auto;padding:0 10px;gap:6px}}   /* etichette corte con icona; a 360 px "Movimenti" va a capo a tutta larghezza invece di stringersi */
+.waMov .waAct{justify-content:flex-end}
+@media (max-width:440px){.waMov .waAct .waCta .waL{display:none} .waMov .waAct .waCta .waS{display:inline}}
+/* accordion del confronto */
+#v-wallet .waAcc>summary{list-style:none;display:flex;align-items:center;gap:12px;cursor:pointer;padding:16px 18px;min-height:56px}
+#v-wallet .waAcc>summary::-webkit-details-marker{display:none}
+#v-wallet .waAcc>summary:hover{border-color:var(--line2)}
+#v-wallet .waAcc>summary:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+.waAccT{display:grid;gap:3px;min-width:0;flex:1}
+.waAccT b{font:600 1.02rem/1.25 var(--font);letter-spacing:-.02em}
+.waAccT small{font:500 .82rem/1.35 var(--font);color:var(--label2);font-variant-numeric:tabular-nums}
+.waAccT small b{font:inherit;font-weight:650} .waAccT small b.pos{color:var(--green)} .waAccT small b.neg{color:var(--red)}
+.waAccC{width:18px;height:18px;flex:none;color:var(--label3);transition:transform .2s}
+#v-wallet .waAcc[open]>summary .waAccC{transform:rotate(90deg)}
+.waAccN{margin:0 4px}
 #v-wallet .waCmp{display:grid;gap:12px}
 .waCmpG{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .waCmpG>div{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:var(--raise);min-width:0}
@@ -126,16 +159,15 @@
   #v-wallet .waHero{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);align-items:center}
   #v-wallet .waCmp .waCmpG{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media (max-width:380px){.waPl b{font-size:1.65rem} .waBtn{padding:8px 13px}}
+@media (max-width:380px){.waPl b{font-size:1.65rem} .sh .waCta.pri{padding:0 13px}}
+@media (prefers-reduced-motion:reduce){.waAccC{transition:none} .waCta:active{transform:none}}
 @media (prefers-reduced-motion:reduce){#v-wallet .waGate .spin{animation:none}}
 </style>
 <script>
 (function () {
   "use strict";
   const CFG = /*__SUPABASE__*/null;   // {url, anon} da radar/dashboard.py (radar/wallet_config.json); null = non configurato
-  // supabase-js da CDN, versione esatta (2.119.0, pubblicata il 04/11/2026) con impronta SRI
-  const SB_SRC = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js";
-  const SB_SRI = "sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O";
+  // supabase-js (versione esatta con SRI) e client unico: window.RadarAuth nel template (script "ACCESSO AL TOOL")
   const DEMO = /[?&]demo=1(&|$)/.test(location.search) && (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname));
   const MMR = 0.005;   // mantenimento usato per la liquidazione stimata (margine isolato)
 
@@ -253,6 +285,24 @@
         avgPct: n ? res.reduce((s, x, i) => s + (inv[i] > 0 ? x / inv[i] * 100 : 0), 0) / n : null,
         total: res.reduce((s, x) => s + x, 0), nSig: sig.length, sigUsd: sum(sig), nOff: off.length, offUsd: sum(off) };
     },
+    // deriva totale in dollari delle posizioni confrontabili con il modello (riga chiusa dell'accordion "Confronto con la strategia")
+    driftSum(cmps) { const v = (cmps || []).filter(c => c && c.driftUsd != null && isFinite(c.driftUsd));
+      return { usd: v.reduce((s, c) => s + c.driftUsd, 0), n: v.length }; },
+    // esportazione CSV (Profilo → Dati): una riga per movimento con i dati della sua posizione, più le posizioni senza movimenti.
+    // Formato italiano per Excel: separatore ";", virgola decimale, date ISO; BOM iniziale per l'UTF-8
+    toCSV(pos, mov) {
+      const H = ["posizione", "moneta", "lato", "mercato", "leva", "exchange", "strategia", "data_segnale", "stato", "tipo", "data", "prezzo", "quantita", "margine", "commissioni", "funding", "note_movimento", "note_posizione"];
+      const num = x => x == null || x === "" || !isFinite(+x) ? "" : String(+x).replace(".", ",");
+      const cell = x => { const t = x == null ? "" : String(x); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+      const rows = [];
+      (pos || []).slice().sort((a, b) => t0(a.created_at) - t0(b.created_at)).forEach(p => {
+        const P = [p.id, p.asset, p.lato, p.mercato, num(p.leva), p.exchange, p.strategia, p.segnale_data || "", p.stato];
+        const M = (mov || []).filter(m => m.posizione_id === p.id).sort((a, b) => (t0(a.data) - t0(b.data)) || (ORD[a.tipo] - ORD[b.tipo]));
+        if (!M.length) rows.push(P.concat(["", "", "", "", "", "", "", "", p.note || ""]));
+        M.forEach(m => rows.push(P.concat([m.tipo, m.data, num(m.prezzo), num(m.quantita), num(m.margine), num(m.commissioni), num(m.funding), m.note || "", p.note || ""])));
+      });
+      return "\ufeff" + [H].concat(rows).map(r => r.map(cell).join(";")).join("\r\n") + "\r\n";
+    },
     // risultato di oggi (24 h): realizzato con data di oggi + variazione del non realizzato dall'apertura di 24 h fa
     // (dal prezzo medio se la posizione ha avuto ingressi nelle ultime 24 h)
     today(items, now) {
@@ -288,6 +338,9 @@
   const NAMES = { BTC: "Bitcoin", ETH: "Ethereum" };
   const nameOf = a => NAMES[a] || a;
   const WARN = '<svg aria-hidden="true"><use href="#i-warn"/></svg>';
+  // pulsante d'azione con icona (simboli del template, tratto 1,7): kind = pri | sec | ter | del; short = etichetta corta su telefono
+  const cta = (kind, attrs, icon, label, short, aria) => `<button type="button" class="waCta ${kind}" ${attrs} aria-label="${esc(aria || label)}"><svg class="waI" aria-hidden="true"><use href="#i-${icon}"/></svg>` +
+    (short ? `<span class="waL">${esc(label)}</span><span class="waS" aria-hidden="true">${esc(short)}</span>` : `<span>${esc(label)}</span>`) + `</button>`;
   const $w = id => document.getElementById(id);
   const localDT = d => { const x = d ? new Date(d) : new Date(); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 16); };
 
@@ -311,16 +364,8 @@
 
   // ---------------------------------------------------------------- archivio: Supabase oppure demo in memoria
   let sb = null, store = null, user = null, POS = [], MOV = [], capital = null;
-  function loadSupabase() {
-    if (window.supabase && window.supabase.createClient) return Promise.resolve(window.supabase);
-    return new Promise((ok, ko) => {
-      const s = document.createElement("script");
-      s.src = SB_SRC; s.integrity = SB_SRI; s.crossOrigin = "anonymous"; s.async = true;
-      s.onload = () => window.supabase && window.supabase.createClient ? ok(window.supabase) : ko(new Error("modulo assente"));
-      s.onerror = () => ko(new Error("CDN non raggiungibile"));
-      document.head.appendChild(s);
-    });
-  }
+  // client Supabase unico del tool (window.RadarAuth.client() nel template: caricato al primo bisogno, sessione persistente)
+  const getClient = () => window.RadarAuth ? window.RadarAuth.client() : Promise.reject(new Error("modulo di accesso assente"));
   const sbErr = e => { const m = String((e && (e.message || e.error_description)) || e || "");
     if (/invalid login|invalid credentials/i.test(m)) return "Email o password non corretti.";
     if (/email not confirmed/i.test(m)) return "Email non ancora confermata: confermala dal pannello Supabase.";
@@ -437,7 +482,7 @@
       <label>Email<input type="email" name="email" autocomplete="username" inputmode="email" required></label>
       <label>Password<input type="password" name="pw" autocomplete="current-password" required></label>
       <p class="err" id="waLoginErr" ${msg ? "" : "hidden"}>${esc(msg || "")}</p>
-      <button class="waBtn" type="submit">Accedi</button>
+      <button class="waCta pri" type="submit">Accedi</button>
       <p class="waNote">Nessuna registrazione da qui: gli account li crea l'amministratore.</p></form>`);
     const f = $w("waLogin");
     f.onsubmit = async e => {
@@ -457,7 +502,7 @@
   }
   async function reload() {
     try { [POS, MOV] = await store.list(); }
-    catch (e) { gate(`<div class="card waGate"><h2>Dati non arrivati</h2><p>${esc(sbErr(e))}</p><button type="button" class="waBtn2" id="waRetry">Riprova</button></div>`);
+    catch (e) { gate(`<div class="card waGate"><h2>Dati non arrivati</h2><p>${esc(sbErr(e))}</p><button type="button" class="waCta ter" id="waRetry">Riprova</button></div>`);
       $w("waRetry").onclick = () => { $w("waGate").hidden = true; $w("waApp").hidden = false; reload(); }; return; }
     if (POS.some(p => p.stato !== "chiusa" && !Wof(p.asset)) && window.lazyPending && window.lazyPending("scanner"))   // leva massima delle altcoin dallo Scanner
       window.lazyData("scanner").then(render).catch(() => {});
@@ -498,6 +543,8 @@
     const cmpL = L.filter(x => x.st.qIn > 0).sort((a, b) => ((a.pos.strategia === "fuori segnale") - (b.pos.strategia === "fuori segnale")) || (b.st.open - a.st.open) || (t0(b.st.first) - t0(a.st.first)));   // fuori segnale in fondo
     $w("waCmp").innerHTML = cmpL.length ? cmpL.map(cmpHtml).join("") : `<div class="card waEmpty waOne">Nessuna posizione da confrontare.</div>`;
     $w("waCmpSec").hidden = !cmpL.length;
+    const D = C.driftSum(cmpL.map(x => x.sx.model ? C.compare(x.st, x.pos.lato, x.sx.model, x.q && x.q.px) : null));
+    $w("waCmpSum").innerHTML = (D.n ? `Deriva totale <b class="${cls(D.usd)}">${fUsd(D.usd, true)}</b> · ` : "Nessun segnale da confrontare · ") + `${cmpL.length} ${cmpL.length === 1 ? "posizione" : "posizioni"}`;
     // chiuse
     const S = C.stats(closed), evs = [].concat(...L.map(x => x.st.ev)), dd = C.ddMax(evs, capital, unr);
     $w("waClSub").textContent = closed.length ? `${closed.length} ${closed.length === 1 ? "chiusa" : "chiuse"}` : "";
@@ -548,7 +595,7 @@
         ${seventh}
       </div>
       ${warns.join("")}${line}
-      <div class="waAct"><button type="button" class="waBtn2" data-a="add" aria-label="Aggiungi tranche"><span class="waL">Aggiungi tranche</span><span class="waS" aria-hidden="true">+ Tranche</span></button><button type="button" class="waBtn2" data-a="red" aria-label="Riduci o chiudi"><span class="waL">Riduci / chiudi</span><span class="waS" aria-hidden="true">Riduci</span></button><button type="button" class="waBtn2" data-a="movs">Movimenti</button></div>
+      <div class="waAct">${cta("sec", 'data-a="add"', "plus", "Tranche", "", "Aggiungi tranche")}${cta("sec", 'data-a="red"', "minus", "Riduci", "", "Riduci o chiudi")}${cta("ter", 'data-a="movs"', "list", "Movimenti", "", "Movimenti della posizione")}</div>
     </article>`;
   }
   const artDay = d => window.artD ? window.artD("del", fDay(d)) : "del " + fDay(d);
@@ -650,7 +697,7 @@
       <div class="grp">Strategia${segH("strategia", [["W3.2", "W3.2"], ["scanner", "Scanner"], ["fuori segnale", "Fuori segnale"]], "W3.2")}</div>
       <p class="waNote" data-hint></p>
       ${movFields("ingresso", null, null, 1)}
-      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Salva posizione</button></div>`);
+      <div class="bar"><button type="button" class="waCta ter" data-x>Annulla</button><button type="submit" class="waCta pri">Salva posizione</button></div>`);
     let lastFar = null;
     const pos = () => ({ asset: f.asset.value.trim().toUpperCase(), lato: segVal(f, "lato"), mercato: segVal(f, "mercato"), leva: segVal(f, "mercato") === "perp" ? C.parseNum(f.leva.value) || 1 : 1, strategia: segVal(f, "strategia") });
     const hint = () => {   // suggerimento dal modello: BTC/ETH con W3.2 aperta nello stesso verso → data del segnale
@@ -688,7 +735,7 @@
       <p class="waNote">${esc(nameOf(pos.asset))} ${pos.lato} ${fLev(pos.leva)} · aperta <b>${fQty(st.qty)}</b> a <b>${fPx(st.avg)}</b> di media</p>
       ${types.length > 1 ? `<div class="grp">Tipo${segH("tipo", types, tipo)}</div>` : ""}
       <div data-fields>${movFields(tipo, mov, st, pos.leva)}</div>
-      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">${edit ? "Salva modifiche" : "Salva"}</button></div>`);
+      <div class="bar"><button type="button" class="waCta ter" data-x>Annulla</button><button type="submit" class="waCta pri">${edit ? "Salva modifiche" : "Salva"}</button></div>`);
     let cur = tipo, lastFar = null;
     const wire = () => { f.oninput = () => movPreview(f, cur, pos, st); movPreview(f, cur, pos, st); };
     segWire(f, (n, v) => { if (n !== "tipo") return; cur = v; const keep = { data: f.data.value, prezzo: f.prezzo.value };
@@ -723,8 +770,8 @@
         ${st.open ? `Aperta <b>${fQty(st.qty)}</b> a <b>${fPx(st.avg)}</b>` : st.qOut > 0 ? `Chiusa · realizzato <b class="${cls(st.realized)}">${fUsd(st.realized, true)}</b>` : "Senza movimenti"}${st.fees ? ` · commissioni ${fUsd(st.fees)}` : ""}${st.funding ? ` · funding ${fUsd(st.funding)}` : ""}</p>
         <div class="waMovs">${M.map(m => `<div class="waMov" data-id="${esc(m.id)}"><div><b>${esc(m.tipo[0].toUpperCase() + m.tipo.slice(1))} · ${fQty(+m.quantita)} a ${fPx(+m.prezzo)}</b>
           <small>${fDT(m.data)}${m.margine ? " · margine " + fUsd(+m.margine) : ""}${+m.commissioni ? " · comm. " + fUsd(+m.commissioni) : ""}${+m.funding ? " · funding " + fUsd(+m.funding) : ""}${m.note ? " · " + esc(m.note) : ""}</small></div>
-          <span class="waAct"><button type="button" class="waBtn2" data-e>Modifica</button><button type="button" class="waBtn2 del" data-d>Elimina</button></span></div>`).join("") || `<p class="waNote">Nessun movimento.</p>`}</div>
-        <div class="waAct" data-pbar>${st.open ? `<button type="button" class="waBtn2" data-add>Aggiungi tranche</button><button type="button" class="waBtn2" data-red>Riduci / chiudi</button>` : ""}<button type="button" class="waBtn2" data-ep>Modifica posizione</button><button type="button" class="waBtn2 del" data-dp>Elimina posizione</button></div>
+          <span class="waAct">${cta("ter sm", "data-e", "edit", "Modifica", "Modifica", "Modifica movimento")}${cta("del sm", "data-d", "trash", "Elimina", "Elimina", "Elimina movimento")}</span></div>`).join("") || `<p class="waNote">Nessun movimento.</p>`}</div>
+        <div class="waAct" data-pbar>${st.open ? cta("sec", "data-add", "plus", "Aggiungi tranche") + cta("sec", "data-red", "minus", "Riduci / chiudi", "", "Riduci o chiudi") : ""}${cta("ter", "data-ep", "edit", "Modifica posizione")}${cta("del", "data-dp", "trash", "Elimina posizione")}</div>
         <p class="err" hidden></p>`;
       box.querySelectorAll(".waMov").forEach(r => {
         const m = M.find(x => x.id === r.dataset.id);
@@ -744,7 +791,7 @@
     const confirmBox = (host, msg, fn) => {
       if (host.querySelector(".waConfirm")) return;
       const c = document.createElement("div"); c.className = "waConfirm";
-      c.innerHTML = `<span>${msg}</span><button type="button" class="waBtn2" data-n>Annulla</button><button type="button" class="waBtn2 del" data-y>Elimina</button>`;
+      c.innerHTML = `<span>${msg}</span><button type="button" class="waCta ter sm" data-n>Annulla</button>${cta("del solid sm", "data-y", "trash", "Elimina", "", "Conferma eliminazione")}`;
       host.appendChild(c);
       c.querySelector("[data-n]").onclick = () => c.remove();
       c.querySelector("[data-y]").onclick = async () => { c.querySelectorAll("button").forEach(b => b.disabled = true);
@@ -760,7 +807,7 @@
       <label><span>Data del segnale <small>facoltativa</small></span><input type="date" name="segnale_data" value="${esc(pos.segnale_data || "")}"></label>
       <label>Note<textarea name="note" maxlength="500">${esc(pos.note || "")}</textarea></label>
       <p class="err" hidden></p>
-      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Salva</button></div>`);
+      <div class="bar"><button type="button" class="waCta ter" data-x>Annulla</button><button type="submit" class="waCta pri">Salva</button></div>`);
     segWire(f); f.querySelector("[data-x]").onclick = () => window.closeSheet();
     f.onsubmit = e => { e.preventDefault();
       const lv = C.parseNum(f.leva.value), s = segVal(f, "strategia");
@@ -773,7 +820,7 @@
     const m = getManual(a);
     const f = sheetForm(`Prezzo di ${a}`, `<p class="waNote">Prezzo pubblico non disponibile per ${esc(a)} (Binance e OKX). Inseriscilo a mano: resta su questo dispositivo finché non arriva quello pubblico.</p>
       <label><span>Prezzo attuale <small>$</small></span>${numIn("px", m && m.px)}</label><p class="err" hidden></p>
-      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Usa questo prezzo</button></div>`);
+      <div class="bar"><button type="button" class="waCta ter" data-x>Annulla</button><button type="submit" class="waCta pri">Usa questo prezzo</button></div>`);
     f.querySelector("[data-x]").onclick = () => window.closeSheet();
     f.onsubmit = e => { e.preventDefault(); const v = C.parseNum(f.px.value); if (!(v > 0)) return errOut(f, "Prezzo non valido.");
       try { localStorage.setItem(manualKey(a), JSON.stringify({ px: v, t: Date.now() })); } catch (_) {}
@@ -782,7 +829,7 @@
   function capForm() {
     const f = sheetForm("Capitale di partenza", `<p class="waNote">Quanto hai messo sul conto all'inizio: serve per il valore del conto, le percentuali e il calo massimo. Salvato nel tuo account.</p>
       <label><span>Capitale <small>$</small></span>${numIn("cap", capital)}</label><p class="err" hidden></p>
-      <div class="bar"><button type="button" class="waBtn2" data-x>Annulla</button><button type="submit" class="waBtn">Salva</button></div>`);
+      <div class="bar"><button type="button" class="waCta ter" data-x>Annulla</button><button type="submit" class="waCta pri">Salva</button></div>`);
     f.querySelector("[data-x]").onclick = () => window.closeSheet();
     f.onsubmit = e => { e.preventDefault(); const v = C.parseNum(f.cap.value); if (!(v > 0)) return errOut(f, "Capitale non valido.");
       save(f, async () => { user = await store.setCapital(v); capital = store.capital(user); }); };
@@ -793,25 +840,50 @@
   async function init() {
     if (started) return; started = true;
     if (!$w("waOut")) return;
-    $w("waOut").onclick = async () => { try { await store.logout(); } catch (_) {} user = null; POS = []; MOV = []; showLogin(); };
+    $w("waOut").onclick = async () => { try { if (store && !store.demo && window.RadarAuth) await window.RadarAuth.signOut(); else await store.logout(); } catch (_) {} user = null; POS = []; MOV = []; showLogin(); };
     $w("waNew").onclick = newForm;
     if (window.onRef) window.onRef(() => { if (!$w("v-wallet").hidden && POS.some(p => p.asset === "BTC")) render(); });
-    if (DEMO) store = demoStore();
-    else if (!CFG || !CFG.url || !CFG.anon) return showNotConfigured();
-    else {
-      try { const lib = await loadSupabase();
-        sb = lib.createClient(CFG.url, CFG.anon, { auth: { persistSession: true, autoRefreshToken: true, storageKey: "radarWallet.auth" } });
-        store = SB;
-        sb.auth.onAuthStateChange((ev) => { if (ev === "SIGNED_OUT" && user) { user = null; showLogin(); } });
-      } catch (e) {
-        started = false;
-        gate(`<div class="card waGate"><h2>Accesso non disponibile</h2><p>Il modulo di accesso non si è caricato (${esc(e.message)}).</p><button type="button" class="waBtn2" id="waRetry">Riprova</button></div>`);
-        $w("waRetry").onclick = init; return;
-      }
+    const ok = await ensureStore().catch(e => e);
+    if (ok === false) return showNotConfigured();
+    if (ok instanceof Error) {
+      started = false;
+      gate(`<div class="card waGate"><h2>Accesso non disponibile</h2><p>Il modulo di accesso non si è caricato (${esc(ok.message)}).</p><button type="button" class="waCta ter" id="waRetry">Riprova</button></div>`);
+      $w("waRetry").onclick = init; return;
     }
-    try { user = await store.session(); } catch (_) { user = null; }
+    try { user = user || await store.session(); } catch (_) { user = null; }
     if (user) await afterLogin(); else showLogin();
   }
+  // archivio pronto (demo o Supabase) anche senza aprire la pagina: serve al Profilo (capitale, CSV). false = non configurato
+  let storeP = null;
+  function ensureStore() {
+    if (store) return Promise.resolve(true);
+    if (DEMO) { store = demoStore(); return Promise.resolve(true); }
+    if (!CFG || !CFG.url || !CFG.anon) return Promise.resolve(false);
+    return storeP || (storeP = getClient().then(c => {
+      sb = c; store = SB;
+      window.RadarAuth.onChange((ev, u) => {   // accesso e uscita dalla schermata globale o dal Profilo
+        if (ev === "SIGNED_OUT" && user) { user = null; POS = []; MOV = []; showLogin(); }
+        else if (u && !user && started && (ev === "SIGNED_IN" || ev === "SESSION")) { user = u; afterLogin(); }
+        else if (u && user && ev === "USER_UPDATED") { user = u; capital = store.capital(user); render(); }
+      });
+      return true;
+    }).catch(e => { storeP = null; throw e; }));
+  }
+  async function needUser() {
+    if (!(await ensureStore())) throw new Error("Wallet non configurato");
+    if (!user) { try { user = await store.session(); } catch (_) { user = null; } }
+    if (!user && store.demo) user = await store.login("demo@radar.local", "");
+    if (!user) throw new Error("accesso richiesto");
+    capital = store.capital(user);
+    return user;
+  }
+  // per il Profilo (radar/pages/profilo.html): capitale di partenza e dati da esportare, con lo stesso archivio della pagina
+  window.WalletAPI = {
+    async capital() { await needUser(); return capital; },
+    async setCapital(v) { await needUser(); user = await store.setCapital(v); capital = store.capital(user); if (!$w("waApp").hidden) render(); return capital; },
+    async rows() { await needUser(); const [P, M] = await store.list(); return { pos: P, mov: M }; },
+    csv: (P, M) => C.toCSV(P, M),
+  };
   window.PAGES = window.PAGES || {};
   window.PAGES.wallet = {
     init() { init(); },
