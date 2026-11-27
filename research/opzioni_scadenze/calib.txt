@@ -1,0 +1,6 @@
+ 7 g 2021-2023  n=1013 dentro ±1σ   80%  ±2σ   94%  σ attesa mediana  9.8%  |mov| reale mediano  4.1%  rialzo  50%
+ 7 g 2024-oggi  n=1049 dentro ±1σ   77%  ±2σ   94%  σ attesa mediana  6.7%  |mov| reale mediano  3.6%  rialzo  51%
+ 7 g tutto      n=2062 dentro ±1σ   78%  ±2σ   94%  σ attesa mediana  7.6%  |mov| reale mediano  3.8%  rialzo  50%
+28 g 2021-2023  n=1013 dentro ±1σ   71%  ±2σ   94%  σ attesa mediana 19.6%  |mov| reale mediano 11.2%  rialzo  48%
+28 g 2024-oggi  n=1028 dentro ±1σ   73%  ±2σ   91%  σ attesa mediana 13.5%  |mov| reale mediano  7.6%  rialzo  55%
+28 g tutto      n=2041 dentro ±1σ   72%  ±2σ   92%  σ attesa mediana 15.3%  |mov| reale mediano  8.8%  rialzo  51%
