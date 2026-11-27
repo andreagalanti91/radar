@@ -2315,3 +2315,9 @@ run,exchange,stato,scaricati,nuovi,nota
 2026-11-27T14:02:45Z,kraken,ok,0,0,
 2026-11-27T14:02:45Z,dydx,ok,0,0,
 2026-11-27T14:02:45Z,lighter,ok,0,0,
+2026-11-27T15:03:03Z,okx,ok,1500,1424,
+2026-11-27T15:03:03Z,gate,ok,727,679,
+2026-11-27T15:03:03Z,deribit,errore,0,0,"ReadTimeout: HTTPSConnectionPool(host='www.deribit.com', port=443): Read timed out. (read tim"
+2026-11-27T15:03:03Z,kraken,ok,0,0,
+2026-11-27T15:03:03Z,dydx,ok,20,20,
+2026-11-27T15:03:03Z,lighter,ok,0,0,
