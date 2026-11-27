@@ -15,18 +15,20 @@
 **In parole semplici.** Dal 2021 W3.2 su SOL ha guadagnato, ma quasi tutto in due anni (2021 e 2023) e grazie a un'operazione sola
 (ott. 2023 → gen. 2024, da 24 a 102 $). Dal 2024 tutte le versioni provate sono in perdita o ferme, mentre BTC con la stessa regola
 fa +154%. Il cancello ETH è il filtro che funziona meglio (dimezza le operazioni perse e porta il DD a −30%), ma vince ancora una
-volta su due e dal 2024 perde. Nel portafoglio SOL aggiunge qualcosa solo grazie a quell'unico trade del 2023.
+volta su due e dal 2024 perde. Nel portafoglio, sull'intero periodo, il vantaggio sparisce senza quell'unico trade del 2023 e dal 2024 SOL peggiora il conto.
 
 ## 1. Conviene operare SOL "sempre"? Risposta onesta
 - **No, oggi non conviene.** Il guadagno storico dipende da un trade; negli ultimi tre anni SOL con W3.2 non ha guadagnato in nessuna
   versione; con lo stesso capitale W3.2 su BTC ha reso di più e con metà del calo a pari rischio (BTC al 10%: CAGR/DD 1,97; SOL 1,01).
-- **Se lo fa comunque**: conto separato da 10.000 $ (≈ 14% del totale con 30k + 30k), **rischio 10%** allo stop (perdita massima per
-  operazione ~1.000 $, DD storico −16/−20%), mai nelle posizioni già aperte (si entra al prossimo segnale nuovo). Fra le versioni
-  provate la meno cattiva è V2 (cancello ETH, al 10%: 27.720 $, DD −16,1%, CAGR/DD 1,18, ~2 operazioni l'anno), ma non ha passato i
-  criteri: è una scelta di rischio dell'utente, non una raccomandazione. Attese: una vinta su due, anni negativi possibili (2025 −16%
+- **Se lo fa comunque (fuori dai dati: il verdetto è "non operabile")**: conto separato e piccolo, rischio basso (10% del conto
+  allo stop: 1.000 $ con il conto a 10k; perdita peggiore storica al 10% −2.102 $ nel base, −1.091 $ in V2). Fra le versioni provate
+  la meno cattiva è V2 (cancello ETH, al 10%: 27.720 $, DD −16,1%, CAGR/DD 1,18, ~2 operazioni l'anno), ma non ha passato i criteri
+  e il suo effetto sul portafoglio BTC + ETH non è stato misurato (V3c non calcolata). Entrare solo al prossimo segnale nuovo è una
+  prudenza in più, non una regola del backtest (il miglior trade di V2, 30/10/2023, è un'entrata a posizione già in corso). Attese: una vinta su due, anni negativi possibili (2025 −16%
   al 25%), il risultato dipende da 1–2 grandi rialzi.
-- **Alternativa sulla carta (consigliata)**: seguire SOL con V2 in un registro su carta, senza denaro, fino a 6 operazioni chiuse o
-  12 mesi; rivalutare solo con quei dati nuovi. Nel frattempo gli stessi 10.000 $ su W3.2 BTC (o in liquidità remunerata) hanno un
+- **Alternativa sulla carta (consigliata)**: seguire SOL con V2 in un registro su carta, senza denaro, fino ad almeno 6 operazioni chiuse
+  (circa 3 anni, V2 fa ~2 operazioni l'anno). Soglie di rivalutazione fissate da ora: WR sulle chiuse ≥ 60%, rendimento positivo, DD
+  non peggiore di −30%. È l'unico modo ammesso di riaprire SOL: il PREREG non consente nuove varianti tarate su questi dati. Nel frattempo gli stessi 10.000 $ su W3.2 BTC (o in liquidità remunerata) hanno un
   profilo storico migliore.
 
 ## 2. V1 e V2 (rischio 25%, dal 11/01/2021 al 24/11/2026, costi e funding reali)
@@ -50,7 +52,7 @@ Per anno (25%): V1 2021 +251% · 2022 −8% · 2023 +195% · 2024 +10% · 2025 �
 2024 +9% · 2025 −16% · 2026 +3%.
 **Perché V1 peggiora**: gli short di SOL (2022, fine 2025–inizio 2026) erano l'unica parte positiva dal 2024; senza di loro restano
 i long del 2024–25, quasi tutti in perdita. **Perché V2 aiuta ma non basta**: toglie 3 dei 5 long persi del 2025, il long perso di luglio
-2024 e gli short persi del 2023, ma lascia due long del 2025 (−7%, −10%), uno short (−3%) e un long (−6%) del 2026; su 11 chiuse ne vince 6.
+2024 e gli short persi del 2023, ma lascia due long del 2025 (−7%, −10%), uno short (−3%) e un long (−6%) del 2026; su 11 chiuse ne vince 6. Perde però anche due vincenti del base: lo short del 10/11/2025 (+24,2%) e il long del 23/09/2024 (+32,6%, sostituito da quello dell'11/11/2024 a +9,2%).
 Posizione oggi: V1 flat; V2 short dal 09/11/2026 a 86,45 $ (come il base), +13,2% sul conto al 25%.
 
 ### Operazioni V1 · solo long
@@ -104,6 +106,10 @@ Correlazione dei rendimenti giornalieri conto SOL – conto A: 0,27–0,29 (0,33
 0,26–0,28. SOL aggiunge 23 operazioni (3,9 l'anno; BTC + ETH ne fanno 4,9). Nelle 145 settimane con SOL in posizione BTC è nello
 stesso verso il 70% delle volte (opposto 14%, flat 17%), ETH il 47% (opposto 12%, flat 41%). La correlazione bassa è reale, ma il
 beneficio viene dal 2021–23 e da un trade: dal 2024 SOL peggiora il conto unico in entrambe le versioni.
+
+## Revisione critica (radar-review, 27/11): confermato
+Numeri, PREREG, assenza di sguardo al futuro nel cancello ETH e 3 operazioni ricalcolate a mano tornano. Corrette le frasi sulle
+raccomandazioni (oltre il verdetto), il registro su carta (12 mesi = 2 operazioni: insufficiente) e la lettura del portafoglio.
 
 ## 4. Limiti
 - Storia corta: 5,9 anni, 11–23 operazioni; il risultato si regge su 1–3 movimenti (2021, ott. 2023). Dal 2018 i dati non esistono.
@@ -238,6 +244,7 @@ taglia il DD (−58% → −40%) pagando molto rendimento.
 **Lezione 129**: SOL con W3.2 (research/sol_ciclo, PREREG d38c760; dati solo dal 2021, non dal 2018) non è operabile. Base 80.661 $
 al 25% con DD −39,8%, WR chiuse 45%, −10% dal 2024; solo long peggiora (63,0k, DD −42,8%, −33% dal 2024: gli short erano la parte
 buona); cancello ETH è il filtro migliore (78,0k, DD −29,6%, CAGR/DD 1,42, placebo p 0,0025 con Holm) ma vince il 55% e perde dal
-2024. Come terza gamba (SOL 10k accanto a BTC 30k + ETH 30k) alza il CAGR/DD solo grazie al long ott. 2023 → gen. 2024: senza di esso
-1,73 contro 1,81. Ridurre il rischio riduce il DD ma non la dipendenza da 1–3 movimenti. Se l'utente vuole SOL: carta prima, poi al
-più 10k al 10% con V2, come scelta di rischio.
+2024. Come terza gamba (SOL 10k accanto a BTC 30k + ETH 30k) sull'intero periodo non migliora: senza il long ott. 2023 → gen. 2024
+1,73 contro 1,81, e dal 2024 peggiora il conto. Ridurre il rischio riduce il DD ma non la dipendenza da 1–3 movimenti. Un filtro
+significativo contro il placebo (V2) non basta se WR e periodo recente falliscono. SOL si riapre solo con dati dal vivo: registro su
+carta di V2 con soglie fissate prima (≥ 6 chiuse, WR ≥ 60%, rendimento positivo, DD ≥ −30%).

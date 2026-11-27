@@ -1,5 +1,5 @@
 # STATO · Ciclo SOL 27/11/2026
-Stato: IN CORSO
+Stato: COMPLETATO
 
 Richiesta: "Ciclo analisi su SOL con strategia. Vorrei inserirla nell'operatività sempre. Rapporto completo con buy e sell dal 2018,
 capiamo se è profittevole." Dati SOL: spot da 04/2020, perp da 09/2020 (dal 2018 impossibile, dichiarato).
@@ -11,3 +11,4 @@ Già noto: research/w32_asset2 Q7 (SOL 80.661 $ dal 2021, DD −39,8%, WR 48%, d
 3. Revisione radar-review. [ ]
 4. Rapporto finale + proposta all'utente. [ ]
 Cartella: research/sol_ciclo/. W3.2 su BTC/ETH non si tocca.
+- 27/11: PREREG d38c760, varianti, revisione confermata, correzioni applicate, lezione 129. Verdetto: non operabile; proposta registro su carta V2 (attesa decisione utente).
