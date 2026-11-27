@@ -15,3 +15,4 @@ Bitget e OKX. Operazione reale: PIEVERSE long a 2,80, 5x, 100 $ di margine (data
 Cartella: research/emergenti/. W3.2 su BTC/ETH non si tocca; nessun avviso Telegram nuovo.
 In parallelo: research/macd_sol fase 2 in corso (poi revisione).
 - 27/11: fase 2, revisione confermata, correzioni (BNX/STRAX/BTCST cambi di denominazione), lezione 131. PREREG-AVANTI-V3.md NON committato: solo se l'utente vuole il registro su carta, prima del 30/11.
+- 27/11 13:20 UTC: pubblicati leva massima, avviso long emergenti, verso BTC alla data del segnale e sezione Short emergenti sulla carta; verifica sito OK (55/55 righe con i campi nuovi, registro in raccolta, 0 errori JS).
