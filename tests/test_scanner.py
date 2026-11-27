@@ -159,6 +159,60 @@ class TestStatoW32(unittest.TestCase):
         self.assertIsNone(SC._verso_btc("flat", "long"))
 
 
+class TestCampiPosizione(unittest.TestCase):
+    """research/emergenti/README.md §6: distanza dello stop, leva massima compatibile, verso di BTC al segnale, top 100."""
+
+    def test_lev_max(self):
+        self.assertEqual(SC.lev_max(0.15), 5.0)          # 1/0,20
+        self.assertEqual(SC.lev_max(0.10), 6.5)          # 6,67 -> per difetto a 0,5
+        self.assertEqual(SC.lev_max(0.0), 10.0)          # tetto
+        self.assertEqual(SC.lev_max(-0.2), 10.0)         # stop già oltre l'ingresso dalla parte del guadagno
+        self.assertEqual(SC.lev_max(0.83), 1.0)          # 1,14
+        self.assertEqual(SC.lev_max(1.5), 0.6)           # sotto 1: una decimale
+        self.assertEqual(SC.lev_max(20.0), 0.0)          # minimo 0
+        self.assertIsNone(SC.lev_max(None))
+
+    def test_campi_long_short_ingresso_flat(self):
+        lo = SC.campi_posizione({"lato": "long", "px_in": 100.0, "trail": 80.0, "g": "short", "rk": 150, "sig": "2026-11-01"})
+        self.assertEqual((lo["d_stop_in"], lo["lev_max"], lo["btc_sig"], lo["top100"]), (20.0, 4.0, "opposto", False))
+        sh = SC.campi_posizione({"lato": "short", "px_in": 1.0, "trail": 1.83, "g": "short", "rk": 12})
+        self.assertEqual((sh["d_stop_in"], sh["lev_max"], sh["btc_sig"], sh["top100"]), (83.0, 1.0, "stesso", True))
+        ing = SC.campi_posizione({"lato": "short", "evento": "ingresso", "d0": 0.5, "g": "flat", "rk": None})
+        self.assertEqual((ing["d_stop_in"], ing["lev_max"], ing["btc_sig"], ing["top100"]), (50.0, 1.5, None, False))
+        fl = SC.campi_posizione({"lato": "flat", "rk": 5})
+        self.assertNotIn("lev_max", fl)
+
+    def test_campi_nel_giro_e_sulle_righe_salvate(self):
+        net, _, _ = rete_finta(end="2026-11-29")
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            uni = universo_finto()
+            uni[1]["rank_oggi"] = 150
+            out = SC.giro(None, d, datetime(2026, 11, 30, 0, 30, tzinfo=UTC), net=SC.Rete(net, pausa=0), cache=d / "c", universo=uni, seed_dir=None)
+            rows = {r["t"]: r for r in out["righe"]}
+            for t in ("UPX", "DNX"):
+                r = rows[t]
+                sg = 1 if r["lato"] == "long" else -1
+                dd = (r["px_in"] - r["trail"]) / r["px_in"] * sg if r.get("px_in") else r["d0"]
+                self.assertEqual(r["d_stop_in"], round(dd * 100, 1))
+                self.assertEqual(r["lev_max"], SC.lev_max(dd))
+                self.assertEqual(r["btc_sig"], None if r.get("g") not in ("long", "short") else "stesso" if r["g"] == r["lato"] else "opposto")
+            self.assertFalse(rows["UPX"]["top100"])
+            # BTC al segnale, non oggi: DNX short con BTC long oggi; al segnale vale g
+            self.assertEqual(rows["DNX"]["btc"], "opposto")
+            # risultato salvato senza i campi (settimana già calcolata): si aggiungono senza ricalcolo né richieste
+            old = json.loads((d / "scanner.json").read_text())
+            for r in old["righe"]:
+                for k in ("lev_max", "d_stop_in", "btc_sig", "top100"):
+                    r.pop(k, None)
+            (d / "scanner.json").write_text(json.dumps(old))
+            n0 = len(net.calls)
+            again = SC.giro(None, d, datetime(2026, 12, 1, 9, tzinfo=UTC), net=SC.Rete(net, pausa=0), cache=d / "c", universo=uni, seed_dir=None)
+            self.assertEqual(len(net.calls), n0)
+            self.assertEqual({r["t"]: r.get("lev_max") for r in again["righe"]}, {t: r.get("lev_max") for t, r in rows.items()})
+            self.assertIn("lev_max", json.loads((d / "scanner.json").read_text())["righe"][1])
+
+
 class TestCancelloTRX(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

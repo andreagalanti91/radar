@@ -41,9 +41,10 @@ def riga(t, lato, rk, mv=None, cl="valutabile", **kw):
 
 RIGHE = [
     riga("BTC", "short", 1, mv=6.0, btc=None, cond=cond("short", flow=-0.4, px=-1, ema=-1)),
-    riga("AAA", "long", 10, mv=10.0, cond=cond("long")),
-    riga("BBB", "long", 20, mv=20.0, cl="breve", cond=cond("long", flow=-0.3, fund7=None)),
-    riga("CCC", "short", 5, mv=-5.0, btc="opposto", cond=cond("short", flow=-0.2, fund7=-0.0005, px=-1, ema=-1)),
+    riga("AAA", "long", 10, mv=10.0, cond=cond("long"), lev_max=6.2, d_stop_in=16.7, btc_sig="opposto", top100=True),
+    riga("BBB", "long", 20, mv=20.0, cl="breve", cond=cond("long", flow=-0.3, fund7=None), lev_max=1.5, d_stop_in=38.0, top100=False),
+    riga("CCC", "short", 5, mv=-5.0, btc="opposto", cond=cond("short", flow=-0.2, fund7=-0.0005, px=-1, ema=-1), lev_max=3.4,
+         d_stop_in=26.4, btc_sig="stesso", top100=False),
     riga("NEW", "short", 30, evento="ingresso", sig="2026-11-22", sett=0, cond=cond("short", flow=-0.6, px=-1, ema=-1)),
     riga("FLT", "flat", 3, cond=cond("neutro")),
 ]
@@ -63,7 +64,9 @@ class Markup(unittest.TestCase):
         self.assertNotIn("VAR", js)                       # solo la variante 1: niente ramo delle tessere
         self.assertNotIn("pzGrid", T)
         self.assertNotRegex(T, r"pzTile\b")              # (pzTiles = tessere del riepilogo, restano)
-        for w in ("Long aperti", "Short aperti", "Non verificati", "non un segnale provato sulle altcoin",
+        for w in ("Long aperti", "Short aperti", "Non verificati", "non un segnale provato sulle altcoin", "Leva massima compatibile con lo stop",
+                  "a 2x la liquidazione arriva prima dello stop", "5x non compatibile", "studio research/emergenti: a 5x il budget si azzera",
+                  "Long su moneta emergente: nello studio i long hanno vinto il 29% (lezione 131)", "alla data del segnale",
                   "segnale non verificato: storia insufficiente", "Funding medio 7 giorni", "Mostra tutte"):
             self.assertIn(w, js)
 
@@ -149,6 +152,7 @@ class NelBrowser(unittest.TestCase):
         self.assertNotIn("FLT", self.righe(pg))                       # solo monete in posizione
         # moneta con storia breve: punto arancio nella riga e avviso nella riga aperta
         self.assertEqual(pg.eval_on_selector_all("#scPos .pzRow .pzDot", "els => els.map(e => e.closest('.pzRow').dataset.t)"), ["BBB"])
+        self.assertIn("Con BTC\n3 / 5", tiles)                      # AAA opposto al segnale; CCC stesso al segnale; BBB, NEW stesso oggi
         pg.evaluate("document.querySelector('#scPos .pzRow[data-t=BBB]').open = true")
         bbb = pg.inner_text("#scPos .pzRow[data-t=BBB] .pzOpen")
         self.assertIn("segnale non verificato: storia insufficiente", bbb)
@@ -162,6 +166,35 @@ class NelBrowser(unittest.TestCase):
         self.assertEqual(self.errs, [])
         sw = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.clientWidth]")
         self.assertEqual(sw[0], sw[1])
+        pg.close()
+
+    def test_leva_emergente_btc_al_segnale(self):
+        pg = self.pagina(400)
+        txt = lambda t: pg.text_content(f"#scPos .pzRow[data-t={t}] .pzOpen")
+        bbb, aaa, ccc, btc = txt("BBB"), txt("AAA"), txt("CCC"), txt("BTC")
+        # BBB: long fuori top 100, leva 1,5x → avviso emergente, avviso arancio 2x, 5x non compatibile
+        self.assertIn("Long su moneta emergente: nello studio i long hanno vinto il 29% (lezione 131)", bbb)
+        self.assertIn("Leva massima compatibile con lo stop: 1,5x (stop a 38% dall'ingresso)", bbb)
+        self.assertIn("a 2x la liquidazione arriva prima dello stop", bbb)
+        self.assertIn("5x non compatibile", bbb)
+        self.assertEqual(pg.eval_on_selector_all("#scPos .pzRow[data-t=BBB] .pzLev .pzWarn", "els => els.length"), 1)
+        # AAA: in top 100, leva 6,2x → nessun avviso, solo la nota dello studio
+        self.assertNotIn("moneta emergente", aaa)
+        self.assertIn("6,2x", aaa)
+        self.assertNotIn("liquidazione", aaa)
+        self.assertNotIn("5x non compatibile", aaa)
+        self.assertIn("studio research/emergenti: a 5x il budget si azzera", aaa)
+        # CCC: short fuori top 100 → niente avviso dei long; leva 3,4x → 5x non compatibile senza avviso arancio
+        self.assertNotIn("moneta emergente", ccc)
+        self.assertIn("5x non compatibile", ccc)
+        self.assertNotIn("liquidazione", ccc)
+        # rispetto a BTC: verso al segnale (btc_sig) se c'è, altrimenti quello di oggi
+        kv = lambda t: pg.text_content(f"#scPos .pzRow[data-t={t}] .pzKv div:nth-child(5) dd")
+        self.assertEqual(kv("AAA"), "contro BTCalla data del segnale")     # oggi "stesso", al segnale "opposto"
+        self.assertEqual(kv("CCC"), "con BTC ✓alla data del segnale")      # oggi "opposto", al segnale "stesso"
+        self.assertEqual(kv("NEW"), "con BTC ✓oggi")                        # btc_sig assente: ripiego sul campo btc
+        self.assertNotIn("Leva massima", btc)                               # lev_max assente: nessuna tessera
+        self.assertEqual(self.errs, [])
         pg.close()
 
     def test_distribuzione_rossa(self):

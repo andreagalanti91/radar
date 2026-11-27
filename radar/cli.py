@@ -359,7 +359,10 @@ def daily() -> None:
     # registro "scommesse" sulla carta (radar/scommesse.py, research/w32_asset2/REGISTRO-SCOMMESSE.md): ingressi nuovi dello
     # scanner nel verso di BTC dal 29/11/2026, 100 $ fissi; aperte rivalutate una volta al giorno. Nessun ordine né avviso
     report["scommesse"] = _soft("scommesse sulla carta", lambda: mod("scommesse").giro(report.get("scanner"), DATA_DIR))
-    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse", "mercato", "opex", "onchain", "dollaro"):
+    # registro V3 sulla carta (radar/emergenti_carta.py, research/emergenti/PREREG-AVANTI-V3.md): solo short di W3.2 sulle monete
+    # 101–200 della lista d'inizio anno, dal 30/11/2026, budget di carta 10.000 $, ricalcolo a settimana nuova. Nessun ordine né avviso
+    report["emergenti_carta"] = _soft("emergenti sulla carta (V3)", lambda: mod("emergenti_carta").giro(f, DATA_DIR))
+    for k in ("levels", "liqmap", "orderbook", "preview", "cone", "livelli", "opzioni", "trx_carta", "scanner", "scommesse", "emergenti_carta", "mercato", "opex", "onchain", "dollaro"):
         if report.get(k) is None:
             report.pop(k, None)
     # v2: solo stato e storico per la dashboard (messaggi Telegram di v2 eliminati il 25/11/2026; spenti dal 12/11/2026)

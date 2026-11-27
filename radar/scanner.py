@@ -20,6 +20,8 @@ funding del mese non ancora archiviato. Finestra dello scanner: WINDOW_DAYS gior
 con la storia completa dello studio su 127 monete su 127, controllo del 25/11/2026 con finestre di 730, 1000 e 1200 giorni).
 Se la cache manca si parte dai file dello studio (research/w32_asset2/crypto/data, già in git) e si scarica solo il resto.
 Errori di rete: si tiene l'ultimo risultato con un avviso; il giro orario non si rompe (radar.cli._soft).
+Campi informativi delle righe in posizione (research/emergenti/README.md §6, dal 27/11/2026): d_stop_in, lev_max = 1/(d + 0,05)
+compatibile con lo stop, btc_sig (verso di BTC alla data del segnale della moneta), top100 (campi_posizione).
 """
 from __future__ import annotations
 
@@ -615,10 +617,56 @@ def stato_moneta(f: pd.DataFrame | None, dom: date) -> dict:
             out.update(lato="flat", evento="uscita", motivo=MOTIVO_BREVE.get(pe["arg"], pe["arg"]), da=op["side"])
     elif pe and pe["kind"] == "enter":
         out.update(lato="long" if pe["arg"] > 0 else "short", evento="ingresso", sig=pe["date"], sett=0)
+        wk = w.iloc[-1]   # ingresso al lunedì: distanza dello stop iniziale stimata sulla chiusura della domenica (2,5 ATRw)
+        if wk["close"] > 0 and np.isfinite(wk["atr"]):
+            out["d0"] = _r(W.STOP_K * float(wk["atr"]) / float(wk["close"]), 6)
     last = o["trades"][-1] if o["trades"] else None
     if out["evento"] is None and last and last["reason"] in ("trail", "stop") and pd.Timestamp(last["exit"]) > pd.Timestamp(dom) - pd.Timedelta(days=7):
         out.update(evento="uscita", motivo=MOTIVO_BREVE.get(last["reason"], last["reason"]), da=last["side"], uscita=last["exit"])
     return out
+
+
+def lev_max(d: float | None) -> float | None:
+    """Leva massima compatibile con lo stop (research/emergenti/README.md §6): 1/(d + 0,05) arrotondata per difetto a 0,5, tetto
+    10, minimo 0; sotto 1 la cifra con una decimale (per difetto). d = distanza dello stop dal prezzo d'ingresso in frazione;
+    stop oltre l'ingresso dalla parte del guadagno (d ≤ −0,05) = tetto."""
+    if d is None or not np.isfinite(d):
+        return None
+    x = d + 0.05
+    if x <= 0:
+        return 10.0
+    lv = 1 / x
+    if lv >= 10:
+        return 10.0
+    if lv >= 1:
+        return float(np.floor(lv * 2 + 1e-9) / 2)
+    return max(0.0, float(np.floor(lv * 10 + 1e-9) / 10))
+
+
+def campi_posizione(r: dict) -> dict:
+    """Campi informativi delle righe in posizione (lato long/short): d_stop_in (% dello stop dal prezzo d'ingresso: trailing
+    attuale; per un ingresso del lunedì lo stop iniziale stimato), lev_max, btc_sig (verso di W3.2 su BTC alla domenica del
+    segnale della moneta: "stesso", "opposto", None se BTC flat o ignoto), top100 (rank attuale ≤ 100)."""
+    if r.get("lato") not in ("long", "short"):
+        return r
+    sg = 1 if r["lato"] == "long" else -1
+    px, tr = r.get("px_in"), r.get("trail")
+    d = (px - tr) / px * sg if px and tr is not None else r.get("d0")
+    g = r.get("g")
+    r.update(d_stop_in=None if d is None else round(d * 100, 1), lev_max=lev_max(d),
+             btc_sig=None if g not in ("long", "short") else "stesso" if g == r["lato"] else "opposto",
+             top100=bool(r.get("rk") and r["rk"] <= 100))
+    return r
+
+
+def _arricchisci(out: dict | None) -> bool:
+    """Aggiunge i campi di campi_posizione alle righe in posizione che non li hanno (risultati salvati prima del 27/11/2026)."""
+    n = 0
+    for r in (out or {}).get("righe") or []:
+        if r.get("lato") in ("long", "short") and "lev_max" not in r:
+            campi_posizione(r)
+            n += 1
+    return n > 0
 
 
 def _verso_btc(lato: str | None, btc: str | None) -> str | None:
@@ -692,6 +740,7 @@ def calcola_scanner(universo: list[dict], net: Rete, now: datetime, cache: Path 
         r["btc"] = _verso_btc(r["lato"], g_dom) if r["t"] != "BTC" else None
         if r.get("sig") and r["lato"] in ("long", "short"):
             r["g"] = gdir(r["sig"])
+        campi_posizione(r)
     n_ok = sum(r["lato"] is not None for r in rows)
     cnt = {k: sum(r["lato"] == k for r in rows) for k in ("long", "short", "flat")} | {"nd": len(rows) - n_ok}
     provv = perp_ok < 0.9 * max(n_ok, 1)
@@ -715,10 +764,11 @@ def giro(f_btc: pd.DataFrame | None, data_dir: Path, now: datetime | None = None
     path = data_dir / "scanner.json"
     prev = _load(path)
     dom = ultima_domenica(now)
-    if prev and prev.get("settimana") == str(dom) and (not prev.get("provvisorio")
-                                                        or pd.Timestamp(now).date() > dom + timedelta(days=PROVV_FINO_GIORNI)):
-        return prev
-    if prev and (prev.get("settimana") or "") > str(dom):
+    if prev and ((prev.get("settimana") == str(dom) and (not prev.get("provvisorio")
+                                                         or pd.Timestamp(now).date() > dom + timedelta(days=PROVV_FINO_GIORNI)))
+                 or (prev.get("settimana") or "") > str(dom)):
+        if _arricchisci(prev):   # campi nuovi sulle righe salvate, senza ricalcolo né richieste
+            path.write_text(json.dumps(prev, ensure_ascii=False, separators=(",", ":"), default=str))
         return prev
     net = net or Rete()
     try:
@@ -776,6 +826,7 @@ def aggiorna_universo(net: Rete, now: datetime, cache: Path = CACHE_DIR, static:
 def ultimo(data_dir: Path) -> dict | None:
     """Ultimo risultato salvato (se il giro dello scanner si è rotto): con l'avviso di dati non aggiornati."""
     prev = _load(Path(data_dir) / "scanner.json")
+    _arricchisci(prev)
     if prev:
         prev["dati"] = dict(prev.get("dati") or {}, ritardo=True, nota="Scanner non calcolato in questo giro: ultimo risultato salvato.")
     return prev
