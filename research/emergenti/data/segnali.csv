@@ -3654,12 +3654,7 @@ ETHW,2025-08-17,2025-08-18,2025,short,0.6434,0.389,contro,190.0,2025,True,False,
 ETHW,2025-08-31,2025-09-01,2025,short,0.6704,0.375,contro,190.0,2025,True,False,91,3.38,True,True,False
 ETHW,2026-10-11,2026-10-12,2026,short,0.5102,0.491,contro,,2026,False,False,149,0.8,True,True,True
 BNX,2022-09-04,2022-09-05,2022,long,0.459,0.546,contro,,2022,False,False,43,25.27,False,False,False
-BNX,2023-01-15,2023-01-16,2023,short,0.749,0.335,con,113.0,2023,True,False,62,75.38,False,False,False
-BNX,2023-03-12,2023-03-13,2023,short,127.6683,0.002,contro,113.0,2023,True,False,70,84.88,False,False,False
-BNX,2024-05-05,2024-05-06,2024,long,1.3049,0.192,flat,,2024,False,False,130,53.19,False,False,False
-BNX,2024-07-07,2024-07-08,2024,long,1.0189,0.245,flat,,2024,False,False,139,87.14,False,False,False
-BNX,2025-01-05,2025-01-06,2025,short,1.3689,0.183,contro,,2025,False,False,165,25.93,False,False,False
-BNX,2025-02-16,2025-02-17,2025,long,0.6794,0.368,con,,2025,False,False,171,122.52,False,False,True
+BNX,2023-01-15,2023-01-16,2023,short,0.749,0.335,con,113.0,2023,True,False,62,75.38,False,False,True
 LUNA,2021-08-01,2021-08-02,2021,long,0.67,0.373,con,,2021,False,False,49,143.12,False,False,False
 LUNA,2021-09-26,2021-09-27,2021,long,0.5037,0.497,con,,2021,False,False,57,528.98,False,False,False
 LUNA,2021-12-05,2021-12-06,2021,long,0.3843,0.652,flat,,2021,False,False,67,738.27,False,False,False

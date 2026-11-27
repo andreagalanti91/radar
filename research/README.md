@@ -54,6 +54,7 @@ ogni confronto: W3.1 dal 01/01/2021, 10.000 → 27.190 $, drawdown −9,8%, 13 t
 | [`opzioni_direzione`](opzioni_direzione/README.md) | le opzioni (skew, put/call, DVOL, massimo dolore) danno la direzione di BTC? | no; DVOL solo per l'ampiezza (128) |
 | [`sol_ciclo`](sol_ciclo/README.md) | SOL con W3.2: rapporto operazione per operazione, solo long, cancello ETH, terza gamba | non operabile (129) |
 | [`macd_sol`](macd_sol/README.md) | MACD settimanale su SOL (buy −3/−50, sell +10), MACD dentro W3.2, strategia SOL costruita | non funziona (130) |
+| [`emergenti`](emergenti/README.md) | W3.2 e 9 varianti sulle monete emergenti (rank 101–200), budget 1% del capitale, leva 1x/2x/5x | nessuna operabile; long in perdita, 5x azzera (131) |
 | [`opzioni_scadenze`](opzioni_scadenze/README.md) | scadenze Deribit 27/11/2026, movimento atteso e sua calibrazione | descrittivo |
 | [`multi_asset`](multi_asset/README.md) · [`ema200_vix`](ema200_vix/LOGICA.md) | W3.1 solo prezzo su 13 asset, EMA200 + VIX | non si trasferisce (104) |
 | [`top50`](top50/) · [`top10_w3`](top10_w3/README.md) · [`w2_alt`](w2_alt/) | W2/W3 su altre crypto e indici | solo BTC (74) |

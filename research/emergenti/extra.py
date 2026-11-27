@@ -27,12 +27,26 @@ for name, kf in (("V3 leva adattiva 2x", R.k_adapt(2)), ("V3 2x fisso", lambda t
     m = R.evaluate(R.cands(trs, kf), s, e)[0]; p(f"{name} (a posteriori): " + R.fmt(m))
 for per in R.PER:
     m = R.evaluate(R.cs_for("short", {}, R.K_W32, *R.PER[per]), *R.PER[per])[0]; p(f"V3 {per}: " + R.fmt(m))
-# long dello scanner (posizioni aperte al 24/11)
-p("\nLONG DELLO SCANNER (posizione aperta nella simulazione per moneta, V1 senza lista dell'anno: vista di oggi)")
-o = R.tradeset(s, e, {}, "both", view="oggi")
+# V3: posizioni aperte, semestri, robustezza (richieste della revisione critica)
+cs3 = R.cs_for("short", {}, R.K_W32, s, e); m3, eq3, tk3 = R.evaluate(cs3, s, e)
+op = [x for x in tk3 if x["reason"] == "open"]
+p(f"\nV3 finale {m3['fin']} $: posizioni aperte {len(op)} (ingressi {sorted(set(x['entry'] for x in op))}), valore non realizzato {sum(x['m'] * x['pnl'] for x in op):+.0f} $ su {m3['fin'] - 10000:+.0f} $")
+x = pd.Series(eq3, index=R.G[R.G.searchsorted(pd.Timestamp(s)):][:len(eq3)])
+sem = x.resample("6MS").last(); prev = pd.concat([pd.Series([10000.0]), sem.iloc[:-1]]).to_numpy()
+p("V3 semestri (%): " + ", ".join(f"{d:%Y-%m} {(v / q - 1) * 100:+.1f}" for d, v, q in zip(sem.index, sem.to_numpy(), prev)))
+top3 = {(y["ticker"], y["i0"]) for y in sorted(tk3, key=lambda y: -y["pnl"])[:3]}
+p(f"V3 senza i 3 migliori: {R.evaluate([c for c in cs3 if (c['ticker'], c['i0']) not in top3], s, e)[0]['fin']} $")
+p(f"V3 senza il 2021 (dal 2022-01-01): {R.evaluate(R.cs_for('short', {}, R.K_W32, '2022-01-01', e), '2022-01-01', e)[0]['fin']} $")
+p(f"V3 OOS: WR {R.evaluate(R.cs_for('short', {}, R.K_W32, *R.PER['OOS']), *R.PER['OOS'])[0]['wr']}%")
+# long dello scanner: simulazione per moneta senza liste (posizione W3.2 della moneta al 24/11)
+import engine as E
+p("\nLONG DELLO SCANNER (simulazione W3.2 per moneta senza liste, dati al 24/11, costi 0,2%/lato, esito per quota con la size di W3.2)")
 for t in ("JST", "PIEVERSE", "NIGHT", "BEAMX", "SENT"):
-    x = [y for y in o if y["ticker"] == t and y["reason"] == "open"]
-    if x:
-        y = R.cands(x, R.K_W32)[0]; p(f"  {t}: ingresso {y['entry']} {y['side']}, d {y['d']:.2f}, esito per quota al 24/11 {y['pnl'] * 100:+.1f}%, BTC {'con' if y['btc'] > 0 else 'contro' if y['btc'] < 0 else 'flat'}")
-    else: p(f"  {t}: nessuna posizione aperta nella vista (segnale del 22/11: ingresso lunedì 23/11, dati al 24/11)" )
+    f = R.feats(t)[0]; o = E.simulate(f, start=R.CM.loc[t, "completa_da"], all_perp=True); tr = o["open"]
+    if not tr: p(f"  {t}: nessuna posizione aperta"); continue
+    tr = dict(tr, d=abs(tr["entry_px"] - tr["stop0"]) / tr["entry_px"], ticker=t, btc=0, vol90=0, sett=0, dates=f.index[tr["i_entry"]:tr["i_exit"] + 1])
+    y = R.cands([tr], R.K_W32)[0]; prev_l = [z for z in o["trades"] if z["side"] == "long"]
+    p(f"  {t}: in posizione long W3.2 dal {tr['entry']} (segnale {tr['signal']}) a {tr['entry_px']:.5g}, chiusura 24/11 {f.close.iloc[-1]:.5g} "
+      f"({(f.close.iloc[-1] / tr['entry_px'] - 1) * 100:+.1f}%), stop iniziale −{tr['d'] * 100:.0f}%, esito per quota {y['pnl'] * 100:+.1f}%; long chiusi in passato {len(prev_l)}, vinti {sum(z['pnl'] > 0 for z in prev_l)}")
+p("  Nota: JST è in posizione W3.2 da luglio; nello scanner del 22/11 compare fra i long ma non è un ingresso nuovo.")
 (R.D / "out_extra.txt").write_text("\n".join(L) + "\n"); print("\n".join(L))

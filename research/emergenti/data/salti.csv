@@ -1,0 +1,44 @@
+ticker,serie,data,chiusura_prec,apertura,chiusura,giorni_dal_prec,tipo
+DOGE,spot,2021-01-28,0.0074124,0.0074104,0.0364995,1,movimento reale (apertura continua)
+DOGE,perp,2021-01-28,0.007416,0.007414,0.036324,1,movimento reale (apertura continua)
+RAY,perp,2024-12-10,0.248,4.494,4.8934,756,salto su un buco di dati
+LUNC,spot,2022-05-11,17.46,17.46,1.0769,1,movimento reale (apertura continua)
+LUNC,spot,2022-05-12,1.0769,1.0782,0.00032,1,movimento reale (apertura continua)
+LUNC,perp,2022-05-11,17.505,17.506,1.0902,1,movimento reale (apertura continua)
+LUNC,perp,2022-05-12,1.0902,1.09,0.008,1,movimento reale (apertura continua)
+LUNC,perp,2022-09-09,0.008,0.0004728,0.0004293,120,salto su un buco di dati
+Q,perp,2026-10-26,0.057317,0.057318,0.199394,1,movimento reale (apertura continua)
+Q,perp,2026-10-27,0.199394,0.199393,0.053101,1,movimento reale (apertura continua)
+ARIA,perp,2026-04-14,0.7743,0.7744,0.1153,1,movimento reale (apertura continua)
+NU,spot,2021-10-15,0.2945,0.2948,1.389,1,movimento reale (apertura continua)
+VELVET,perp,2026-06-12,1.54411,1.54474,0.43815,1,movimento reale (apertura continua)
+VELVET,perp,2026-07-02,1.5232,1.5233,0.4708,1,movimento reale (apertura continua)
+VELVET,perp,2026-08-24,0.6713,0.671,0.1567,1,movimento reale (apertura continua)
+JELLYJELLY,perp,2025-11-03,0.06191,0.0619,0.20678,1,movimento reale (apertura continua)
+DEXE,spot,2026-07-21,35.473,35.458,6.2,1,movimento reale (apertura continua)
+DEXE,perp,2026-07-21,35.42,35.42,5.8,1,movimento reale (apertura continua)
+MMT,spot,2025-11-05,2.64,2.6401,0.749,1,movimento reale (apertura continua)
+MMT,perp,2025-11-05,2.6157,2.6157,0.7487,1,movimento reale (apertura continua)
+FTT,spot,2022-11-08,22.08,22.08,5.5,1,movimento reale (apertura continua)
+FTT,perp,2022-11-08,22.072,22.072,5.472,1,movimento reale (apertura continua)
+FTT,perp,2022-11-09,5.472,5.471,1.7835,1,movimento reale (apertura continua)
+STRAX,spot,2024-03-28,1.423,0.1423,0.146,8,cambio di denominazione: dati tagliati
+VIC,perp,2025-03-12,1.2792,0.3342,0.3743,484,salto su un buco di dati
+AVA,spot,2024-12-12,0.7369,0.7371,2.65,1,movimento reale (apertura continua)
+REQ,spot,2021-11-25,0.2048,0.2048,0.7793,1,movimento reale (apertura continua)
+BTCST,spot,2021-03-19,374.996,37.499,48.278,4,cambio di denominazione: dati tagliati
+BNX,spot,2023-02-22,175.5,1.755,1.585,6,cambio di denominazione: dati tagliati
+BNX,perp,2023-02-22,85.59,1.411,1.585,22,salto su un buco di dati
+LUNA,spot,2022-05-11,17.46,17.46,1.0769,1,movimento reale (apertura continua)
+LUNA,spot,2022-05-12,1.0769,1.0782,0.00032,1,movimento reale (apertura continua)
+LUNA,spot,2022-05-13,0.00032,0.00032,5e-05,1,movimento reale (apertura continua)
+LUNA,spot,2022-05-31,5e-05,1.0,8.87,18,salto su un buco di dati
+LUNA,perp,2022-05-11,17.505,17.506,1.0902,1,movimento reale (apertura continua)
+LUNA,perp,2022-05-12,1.0902,1.09,0.008,1,movimento reale (apertura continua)
+OM,spot,2025-04-13,6.2606,6.2607,1.0092,1,movimento reale (apertura continua)
+OM,perp,2025-04-13,6.25772,6.25772,1.008,1,movimento reale (apertura continua)
+PNUT,spot,2024-11-13,0.4419,0.4422,1.6921,1,movimento reale (apertura continua)
+PNUT,perp,2024-11-13,0.4427,0.44276,1.69171,1,movimento reale (apertura continua)
+MYX,perp,2025-08-05,0.39625,0.39616,1.25311,1,movimento reale (apertura continua)
+MYX,perp,2025-09-08,3.488,3.4895,13.8888,1,movimento reale (apertura continua)
+H,perp,2026-06-08,0.7148,0.7148,0.07565,1,movimento reale (apertura continua)

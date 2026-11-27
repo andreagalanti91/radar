@@ -59,6 +59,25 @@ def okx_funding(inst):
     fu = SC.scarica_okx_funding(SC.Rete(get=get), inst, date(2026, 10, 25), (LAST + pd.Timedelta(days=1)).date())
     fu[["funding"]].to_csv(p, compression="gzip"); return fu[["funding"]]
 
+SALTI = []
+def salti(t, sp, pp):
+    """Controllo automatico dei salti giornalieri > 3x (chiusura/chiusura precedente) su spot e perp. Cambio di denominazione =
+    apertura del giorno del salto pari alla chiusura precedente divisa (o moltiplicata) per 10, 100 o 1000 (±3%): i dati della
+    moneta si tagliano dal giorno prima del salto (resta la storia vecchia, come un delisting). Gli altri salti si segnalano
+    (data/salti.csv): su un buco di dati (> 3 giorni) o movimento reale (apertura continua: crolli come LUNA, FTT, OM, DEXE, H)."""
+    cut = None
+    for k, x in (("spot", sp), ("perp", pp)):
+        if x is None or len(x) < 2: continue
+        c = x["close"]; pc = c.shift(); r = c / pc
+        for d in r.index[(r > 3) | (r < 1 / 3)]:
+            i = x.index.get_loc(d); prev, o = float(c.iloc[i - 1]), float(x["open"].iloc[i]); gap = (d - x.index[i - 1]).days
+            red = any(0.97 <= o * f / prev <= 1.03 for f in (10, 100, 1000, 0.1, 0.01, 0.001))
+            tipo = "cambio di denominazione: dati tagliati" if red else ("salto su un buco di dati" if gap > 3 else "movimento reale (apertura continua)")
+            SALTI.append(dict(ticker=t, serie=k, data=str(d.date()), chiusura_prec=prev, apertura=o, chiusura=float(c.iloc[i]),
+                              giorni_dal_prec=gap, tipo=tipo))
+            if red: cut = d if cut is None else min(cut, d)
+    return cut
+
 def close_at(sp, pp, day):
     for x in (sp, pp):
         if x is not None and len(x):
@@ -98,6 +117,9 @@ if __name__ == "__main__":
             ssp, spp, sfu = [], ([B.seg(pp, "okx swap (taker da rubik)")] if pp is not None and len(pp) else []), ([B.seg(fu, "okx funding ~3 mesi")] if fu is not None else [])
         else:
             sp = pp = fu = None; ssp = spp = sfu = []
+        cut = salti(t, sp, pp)
+        if cut is not None:
+            sp, pp, fu = (None if x is None else x[x.index < cut] for x in (sp, pp, fu))
         # controllo dell'abbinamento per prezzo
         m = dict(ticker=t)
         if r.prezzo_oggi == r.prezzo_oggi and r.prezzo_oggi:
@@ -115,4 +137,5 @@ if __name__ == "__main__":
             elif p.exists(): p.unlink()
         srcs.append(dict(ticker=t, spot=" | ".join(filter(None, ssp)), perp=" | ".join(filter(None, spp)), funding=" | ".join(filter(None, sfu))))
     pd.DataFrame(srcs).to_csv(D / "sources.csv", index=False); pd.DataFrame(match).to_csv(D / "match_raw.csv", index=False)
+    pd.DataFrame(SALTI).to_csv(D / "salti.csv", index=False); print(pd.DataFrame(SALTI).groupby("tipo").ticker.apply(lambda x: sorted(set(x))).to_string())
     print("monete con file:", len({p.name.split("_")[0] for p in COINS.glob("*.csv.gz")}))

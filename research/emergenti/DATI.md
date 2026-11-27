@@ -34,10 +34,19 @@ stop 50% sui long, 83% sugli short; BTC 21–28%). Con le monete di oggi 101–5
   derivati): LDO, JTO, LISTA, ANKR, FXS, RPL, TRIBE, STAKE, BTG, SPX.
 - **Controllo dell'abbinamento per prezzo** (nuovo rispetto a w32_asset2): prezzo CoinGecko di oggi e prezzo CMC di ogni
   istantanea contro la chiusura Binance dello stesso giorno, rapporto in [0,5; 2] (con le catene BTT→BTTC e NPXS→PUNDIX
-  riscalate): 383 verificate, 14 non verificabili (nessun prezzo di confronto o quotazione Binance successiva all'ultima classifica:
-  STEEM, SNT, ARK, QKC, MLN, ADX, ORBS, METIS, CFG, EWT; tenute), **6 abbinamenti errati, dati tolti**: META (MetaDAO ≠ META
+  riscalate): 382 verificate, 15 non verificabili (nessun prezzo di confronto o quotazione Binance successiva all'ultima classifica:
+  STEEM, SNT, ARK, QKC, MLN, ADX, ORBS, METIS, CFG, EWT e altre; tenute), **6 abbinamenti errati, dati tolti (contano come "senza dati")**: META (MetaDAO ≠ META
   Binance), ADI e PURR (perp OKX di altre monete), LA, NET, BZ (ticker riusati). ONE: il rank di oggi è di ONEchain, i dati
   sono di Harmony (rank di oggi tolto).
+
+- **Salti giornalieri > 3x** (controllo automatico in `build.py`, aggiunto dopo la revisione del 27/11; elenco in
+  `data/salti.csv`). Se l'apertura del giorno del salto è la chiusura precedente divisa o moltiplicata per 10, 100 o 1000
+  (±3%), si tratta di un cambio di denominazione e i dati della moneta si tagliano da quel giorno: **BNX** (22/02/2023, 1:100,
+  175,5 → 1,755; prima generava uno short artefatto con d = 12.767% che occupava una quota fino al 29/04/2024), **STRAX**
+  (28/03/2024, 1:10), **BTCST** (19/03/2021). Gli altri salti sono segnalati e tenuti: su buchi di dati (LUNA/LUNC, RAY, VIC,
+  perp BNX) o crolli reali con apertura continua e prezzi coerenti con CMC/CoinGecko (DEXE 21/07/2026 35,5 → 6,2 e poi 1,7;
+  H, OM, FTT, LUNA, ARIA, ...). Lo short di DEXE con d = 1.053% è il comportamento di W3.2 dopo un crollo (ATR assoluto alto
+  rispetto al prezzo), non un errore di dati.
 
 ## 3. Definizione di "emergente" (fissata qui, prima dei rendimenti)
 **Emergente alla data D = rank 101–200 nell'istantanea CMC più recente prima del 1° gennaio dell'anno di D** (punto nel tempo,
@@ -63,10 +72,10 @@ contano anche le monete diventate complete durante l'anno (ammissibili nella val
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 2021 | 98 | 43 | 4 | 17 | 79 | 73 | 6 | 27 / 0 | 0 / 0 | 66% | 62 | 79 |
 | 2022 | 95 | 69 | 30 | 45 | 119 | 9 | 110 | 0 / 6 | 60 / 0 | 121% | 119 | 119 |
-| 2023 | 98 | 74 | 43 | 64 | 184 | 98 | 86 | 87 / 4 | 5 / 70 | 58% | 133 | 184 |
+| 2023 | 98 | 74 | 43 | 64 | 183 | 98 | 85 | 87 / 4 | 5 / 69 | 58% | 133 | 184 |
 | 2024 | 96 | 76 | 47 | 61 | 281 | 166 | 115 | 70 / 0 | 0 / 63 | 53% | 163 | 281 |
 | 2025 | 94 | 84 | 54 | 57 | 273 | 57 | 216 | 44 / 1 | 16 / 148 | 76% | 242 | 273 |
-| 2026* | 95 | 81 | 62 | 61 | 254 | 60 | 194 | 38 / 16 | 119 / 55 | 72% | 199 | 253 |
+| 2026* | 95 | 81 | 62 | 61 | 255 | 60 | 195 | 38 / 16 | 119 / 55 | 72% | 199 | 253 |
 
 \* fino al 24/11. Il resto rispetto a "con/contro" è BTC flat (W3.2 su BTC né long né short alla domenica del segnale).
 La prima metà del 2021 ha pochissime idonee al 1/1 (4): il test utile parte di fatto dal 2022 per la selezione annuale.
