@@ -8,7 +8,7 @@ PREREG `14cadc0` (committato da solo, prima dei risultati). Deviazioni dichiarat
 | **H1** skew 25-delta → direzione a 7/30 g | **no**: nessuna correlazione OOS significativa; a 7 g il segno si inverte fra IS e OOS |
 | **H2** rapporto put/call → direzione (contrarian o tendenza) | **no**: il segno IS (negativo) si inverte in OOS a 7 e 30 g |
 | **H3** DVOL → direzione | **no** (ΔDVOL → 30 g: segno invertito in OOS) |
-| **H3** DVOL → ampiezza | **strumento valido** (controllo positivo): ρ OOS 0,48, Holm 0,0008, ETH sì. Dice **quanto** si muoverà BTC, non **dove** |
+| **H3** DVOL → ampiezza | **controllo positivo superato**: ρ OOS 0,48, p esatto 0,007 (≈ 0,06 dopo Holm, al limite della risoluzione del placebo), ETH ρ 0,23 (p 0,036). Dice **quanto** si muoverà BTC, non **dove** |
 | **H4** il prezzo converge al massimo dolore | **no**: il prezzo è andato verso il massimo dolore solo nel 31% (IS) e nel 44% (OOS) delle scadenze; placebo p 0,56–0,64 |
 | **H5** put/call di B0r solo se l'opzione non è cara | **no** (descrittivo): in OOS non cambia nulla; in IS avrebbe tolto 3 operazioni vincenti |
 
@@ -25,7 +25,7 @@ PREREG `14cadc0` (committato da solo, prima dei risultati). Deviazioni dichiarat
 | V3 | put/call → r7 | 157/149 | −0,099 | +0,074 | 0,80 | 1 | 0/2 | −0,03 (0,36) |
 | V4 | put/call → r30 | 157/146 | −0,133 | +0,039 | 0,67 | 1 | 1/2 | +0,10 (0,71) |
 | V5 | ΔDVOL 7 g → r30 | 144/146 | +0,090 | −0,057 | 0,77 | 1 | 0/2 | −0,01 (0,57) |
-| V6 | DVOL → volatilità realizzata a 30 g | 145/146 | +0,607 | **+0,484** | 0,0001 | **0,0008** | 1/1 | +0,23 (0,036) |
+| V6 | DVOL → volatilità realizzata a 30 g | 145/146 | +0,607 | **+0,484** | 0,007 (esatto) | ≈ 0,06 | 1/1 | +0,23 (0,036) |
 | V7 | convergenza al massimo dolore − specchio | 36/34 scadenze | −0,78 pt | −0,16 pt | 0,56 | 1 | 1/2 | — |
 | V8 | B0r saltando VRP > q75 IS | 4/6 operazioni | — | — | 1,00 | 1 | — | — |
 
@@ -78,12 +78,24 @@ Il prezzo non si è avvicinato al massimo dolore: è rimasto lì dov'era.
   - con scadenza sotto 20 giorni;
   - per "giocare" la scadenza o il massimo dolore.
 - **Opzioni care**: saltare la call/put di B0r quando il VRP è alto non ha aiutato. Nel 2021–23 avrebbe tolto 3 operazioni
-  vincenti (18.432 → 15.443 $); nel 2024–26 non avrebbe cambiato nulla. Il segnale conta più del prezzo pagato. Il costo
-  alto si gestisce con la dimensione, non saltando il segnale.
-- **Dimensione**: 5% del conto o una cifra fissa per operazione. La perdita massima è il premio. Dal 2021 B0r fa 29.856 $ con
+  vincenti (18.432 → 15.443 $); nel 2024–26 non avrebbe cambiato nulla. Il segnale conta più del prezzo pagato.
+  Ridurre la dimensione quando le opzioni sono care non è stato testato.
+- **Dimensione**: 5% del conto per operazione (regola B0r). La perdita massima è il premio. Dal 2021 B0r fa 29.856 $ con
   DD −9,8% (W3.2 a 1x: 84.330 $, DD −21%).
 - **Ampiezza**: il DVOL indica bene quanto si muoverà BTC nel mese (ρ 0,48 in OOS). È utile per leggere il movimento atteso,
   non per scegliere il lato.
+
+## Correzioni dopo la revisione critica (radar-review, 27/11)
+- V6: il placebo a slittamento circolare ha circa 135 slittamenti distinti, quindi 10.000 ricampionamenti davano p = 1/10001 (artefatto).
+  p esatto su tutti gli slittamenti: 0,0074 in OOS (≈ 0,06 con Holm su 8), 0,063 in IS. "Strumento valido" non si applica a V6
+  (il PREREG lo definisce per V1–V5 e V7): è un controllo positivo superato, noto in letteratura; il DVOL aggiunge informazione
+  rispetto alla volatilità passata (correlazione parziale 0,46 OOS).
+- La regola V2 è esattamente V1 col segno opposto (stessa tenuta di 7 giorni): il +150% OOS di V2 è lo specchio del −70% di V1.
+  Senza le 3 operazioni migliori V2 scende a 9.376 $ (10.851 $ senza le 2).
+- In OOS tutti i 6 vicini di V1/V2 hanno ρ negativo (skew alto → rendimenti più bassi): solo un'idea per una verifica in avanti
+  preregistrata con verso fissato, non un risultato.
+- Riferimento W3.2: 84.330 $ con dati al 21/11; il rapporto ufficiale (RAPPORTO-W32.md) dà 84.820 $ al 24/11. Differenza solo di data di fine.
+- Tolta la frase non testata sulla dimensione con opzioni care.
 
 ## Limiti
 - **Skew**: per fasce di delta (0,15–0,35), con F = indice. Mancano 23 domeniche su 308 (nessuna scadenza fra 20 e 50 giorni).
@@ -106,9 +118,10 @@ Il prezzo non si è avvicinato al massimo dolore: è rimasto lì dov'era.
 - **Massimo dolore**: è un proxy dal volume, validato sull'open interest di oggi (errore mediano 3%). Il prezzo non converge
   verso il massimo dolore nell'ultima settimana: ci va nel 31–44% delle scadenze, placebo p 0,56–0,64. Il 27/11/2026 il
   massimo dolore era a 70.000 $ e il regolamento a 61.600 $.
-- **Ampiezza**: solo il livello del DVOL predice l'ampiezza dei movimenti a 30 giorni (ρ OOS 0,48, Holm 0,0008).
+- **Ampiezza**: solo il livello del DVOL predice l'ampiezza dei movimenti a 30 giorni (ρ OOS 0,48; p esatto 0,007, ≈ 0,06 dopo Holm: controllo positivo, utile per ampiezza e costo, mai per il lato).
 - **Costo**: il DVOL supera la volatilità poi realizzata nel 72% delle settimane, quindi comprare opzioni senza segnale costa.
   Saltare le call/put di B0r quando sono care toglie vincenti.
 - **Regola**: per put o call resta B0r (lato di W3.2, 20–50 giorni, alla pari, 5%).
+- **Metodo (placebo)**: con N slittamenti distinti il p minimo è 1/(N+1): riportare il p esatto, mai 1/10001.
 - **Metodo**: una regola che va bene solo in OOS (skew a 30 g: +150% OOS, −24% IS) non è un vantaggio. Va giudicata con il
   periodo in cui sono state scelte le soglie e con la correlazione, non con il solo capitale finale."

@@ -25,3 +25,5 @@ PREREG non fissava del tutto, o limiti di realizzazione, dichiarati qui.
    dal lunedì dopo la prima domenica del periodo (il 04/01/2021 per l'IS).
 9. **Scadenza del 27/11/2026**: osservazione solo descrittiva, fuori dal test, come chiesto. Fonti: istantanea Deribit delle
    07:38 (`research/opzioni_scadenze/dati/snap_20261127_0738.json`) e `get_delivery_prices` (btc_usd).
+
+10. **Dalla revisione critica**: V2 = −V1 (posizioni speculari nel 100% delle settimane, stessa tenuta di 7 g), come V3 = V4. p di V6 ricalcolato esatto su tutti gli slittamenti: 0,0074 OOS (Holm ≈ 0,06); il valore 0,0001 era la risoluzione del ricampionamento.

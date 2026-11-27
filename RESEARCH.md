@@ -414,6 +414,13 @@ triangoli del post sul 3D, con barre che ripartono ogni 1 gennaio. Su BTC dal 20
 - **Da solo:** sotto il buy & hold in ogni periodo (S1 3D dal 2021: 5,2k contro 20,8k); gli short a 1x si azzerano.
 - **Dentro W3.2:** come uscita peggiora (W1 68,8k e DD −28% contro 78,5k e −21%); come filtro anche (W3 52,8k).
 - **Placebo:** p 0,44–1,00.
+
+**Lezione 128**: opzioni come bussola della direzione di BTC (research/opzioni_direzione, PREREG 14cadc0, 8 varianti, Holm, revisione critica):
+- **Direzione:** skew 25-delta, put/call dei volumi e variazione del DVOL non predicono la direzione a 7/30 g: in OOS il segno si inverte o ρ < 0,10; su ETH nemmeno. Come regole dal 2021: 2–19k contro 84,3k di W3.2.
+- **Massimo dolore (proxy dal volume, validato sull'OI di oggi):** il prezzo ci va nel 31–44% delle scadenze, placebo p 0,64. Il 27/11/2026: massimo dolore 70.000 $, regolamento 61.600 $.
+- **Ampiezza:** il livello del DVOL predice l'ampiezza a 30 g (ρ OOS 0,48, p esatto 0,007, ≈ 0,06 con Holm): controllo positivo, mai per il lato. DVOL sopra la volatilità poi realizzata nel 72% delle settimane: comprare senza segnale costa.
+- **Regola:** per put o call resta B0r (lato di W3.2, 20–50 g, alla pari, 5%). Saltare B0r quando le opzioni sono care toglie vincenti.
+- **Metodo:** placebo a slittamento circolare con N slittamenti distinti ha p minimo 1/(N+1): riportare il p esatto. Una regola buona solo in OOS (V2, specchio di V1) non è un vantaggio.
 **Lezione 126**: la "v1 · voto di 17 indicatori" dell'utente (trend, momentum, rottura e OBV giornalieri e settimanali; long ≥
 +0,50, short ≤ −0,90, uscita a ±0,25; research/v1_confronto) si riproduce esattamente (184.406 $ dal 2018, 30 operazioni, anche
 con i dati di Radar). Batte W3.2 solo nel 2018–21, dove sono state scelte le soglie (84,5k contro 54,9k $). Nel 2022–26, mai
