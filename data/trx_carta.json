@@ -3,9 +3,9 @@
  "capitale": 10000.0,
  "operazioni": [],
  "stato": {
-  "data": "2026-11-26",
+  "data": "2026-11-27",
   "domenica": "2026-11-22",
-  "prezzo": 0.3041,
+  "prezzo": 0.3009,
   "cond": {
    "px_sma": -1,
    "ema20": -1,
@@ -20,15 +20,20 @@
    "c_short": false,
    "close": 0.3057,
    "sma": 0.32637,
-   "ema21_v": 0.32504277663469544
+   "ema21_v": 0.32504277663469544,
+   "fund7": -0.000444,
+   "dist": {
+    "long": false,
+    "short": true
+   }
   },
   "btc": "short",
   "lato": "flat",
   "pending": null,
   "perche": "nessuna condizione d'ingresso di TRX (regime neutro)"
  },
- "dati_fino": "2026-11-26",
- "aggiornato": "2026-11-27T01:03+00:00",
+ "dati_fino": "2026-11-27",
+ "aggiornato": "2026-11-28T00:03+00:00",
  "capitale_ora": 10000.0,
  "capitale_chiuse": 10000.0
 }
